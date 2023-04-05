@@ -9,7 +9,7 @@ import {
   rem,
 } from "@mantine/core";
 
-const PageNotFound = () => {
+export const PageNotFound = () => {
   const { classes } = useStyles();
 
   return (
@@ -35,8 +35,6 @@ const PageNotFound = () => {
     </Container>
   );
 };
-
-export default PageNotFound;
 
 const useStyles = createStyles((theme) => ({
   root: {

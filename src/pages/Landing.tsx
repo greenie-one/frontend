@@ -1,6 +1,11 @@
+import { DarkMode } from "../utils/DarkMode";
 
 const Landing = () => {
-  return <>Landing</>;
+  return (
+    <>
+      <DarkMode />
+    </>
+  );
 };
 
 export default Landing;
