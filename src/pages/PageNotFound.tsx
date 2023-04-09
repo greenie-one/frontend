@@ -27,8 +27,8 @@ export const PageNotFound = () => {
       </Text>
       <Group position="center">
         <Link to="/">
-          <Button variant="outline" size="md">
-            Take me back to home page
+          <Button variant="filled" size="md" color="green">
+            Take me back to Greenie Home Page
           </Button>
         </Link>
       </Group>
