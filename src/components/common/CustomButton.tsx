@@ -2,16 +2,18 @@ import { createStyles, Button } from "@mantine/core";
 
 type CustomButtonProps = {
     children: string | JSX.Element | JSX.Element[];
-    variant: "fill" | "transparent";
+    variant: "fill" | "outline";
     classNames: string | null;
-    border: boolean;
+    outline: boolean;
+    onClick?: () => any;
 };
 
 export const CustomButton: React.FC<CustomButtonProps> = ({
     children,
     variant,
     classNames,
-    border,
+    outline,
+    onClick,
 }) => {
     const { classes } = useStyles();
 
@@ -19,9 +21,10 @@ export const CustomButton: React.FC<CustomButtonProps> = ({
         <Button
             variant="subtle"
             color="dark"
-            className={`${classNames} ${classes.customButton} ${
-                classes[variant]
-            } ${border ? null : classes.noBorder}`}
+            className={`${classes.customButton} ${classes[variant]} ${
+                outline ? "" : classes.noOutline
+            } ${classNames}`}
+            onClick={onClick ? onClick : () => null}
         >
             {children}
         </Button>
@@ -34,7 +37,7 @@ const useStyles = createStyles((theme) => ({
         border: "1px solid",
     },
 
-    transparent: {
+    outline: {
         backgroundColor: "transparent",
         ":hover": {
             backgroundColor: "transparent",
@@ -50,7 +53,7 @@ const useStyles = createStyles((theme) => ({
         borderColor: "#8CF078",
     },
 
-    noBorder: {
+    noOutline: {
         borderColor: "transparent",
     },
 }));

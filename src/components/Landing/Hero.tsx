@@ -3,9 +3,9 @@ import { createStyles, Title, Text, rem, Box, Image } from "@mantine/core";
 import { CustomButton } from "../common/CustomButton";
 
 import girlCheckingPhone from "../../assets/images/girl-checking-phone.png";
-import popup1 from "../../assets/images/popup-illustration-1.png";
-import popup2 from "../../assets/images/popup-illustration-2.png";
-import popup3 from "../../assets/images/popup-illustration-3.png";
+import popup1 from "../../assets/images/popup-illustration-1.svg";
+import popup2 from "../../assets/images/popup-illustration-2.svg";
+import popup3 from "../../assets/images/popup-illustration-3.svg";
 import popup4 from "../../assets/images/popup-illustration-4.svg";
 import popup5 from "../../assets/images/popup-illustration-5.svg";
 import popup6 from "../../assets/images/popup-illustration-6.svg";
@@ -26,21 +26,21 @@ export const LandingHero = () => {
                 <Box className={classes.heroActionBtn}>
                     <CustomButton
                         variant={"fill"}
-                        border={true}
-                        classNames={null}
+                        outline={true}
+                        classNames={""}
                     >
                         Try For Free
                     </CustomButton>
                     <CustomButton
-                        variant={"transparent"}
-                        border={true}
-                        classNames={null}
+                        variant={"outline"}
+                        outline={true}
+                        classNames={""}
                     >
                         Signup
                     </CustomButton>
                 </Box>
             </Box>
-            <Box className={""}>
+            <Box className={classes.heroIllustration}>
                 <span className={classes.girlImageContainer}>
                     <img
                         src={girlCheckingPhone}
@@ -97,6 +97,10 @@ const useStyles = createStyles((theme) => ({
     heroActionBtn: {
         display: "flex",
         gap: "1rem",
+    },
+
+    heroIllustration: {
+        zIndex: -1,
     },
 
     girlImageContainer: {

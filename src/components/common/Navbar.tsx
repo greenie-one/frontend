@@ -40,15 +40,15 @@ export const Navbar = () => {
                 </nav>
                 <Group>
                     <CustomButton
-                        variant={"transparent"}
-                        border={false}
+                        variant={"outline"}
+                        outline={false}
                         classNames={classes.signupBtn}
                     >
                         Signup
                     </CustomButton>
                     <CustomButton
                         variant={"fill"}
-                        border={true}
+                        outline={true}
                         classNames={null}
                     >
                         Try For Free
@@ -61,13 +61,16 @@ export const Navbar = () => {
 
 const useStyles = createStyles((theme) => ({
     root: {
-        paddingBlock: rem(24),
         position: "fixed",
         inset: 0,
         bottom: "auto",
+        background:
+            "linear-gradient(180deg, #ffffff 0%, #edfff9 44.79%, #ffffff 89.07%, #d7fff0 100%)",
+        backgroundSize: "100dvw 100dvh",
     },
 
     header: {
+        marginBlockStart: rem(24),
         backgroundColor: "#FFFFFF",
         boxShadow: "0px 4px 34px rgba(0, 0, 0, 0.1)",
         display: "flex",
