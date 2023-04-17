@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { createStyles, Title, Text, rem, Box, Image } from "@mantine/core";
+import { _2ColumnLayout } from "../layouts/_2ColumnLayout";
 import { CustomButton } from "../common/CustomButton";
 
 import girlCheckingPhone from "../../assets/images/girl-checking-phone.png";
@@ -15,68 +16,66 @@ export const LandingHero = () => {
 
     return (
         <section className={`${classes.root} section`}>
-            <Box className={classes.heroContentContainer}>
-                <Title order={1} className={classes.heroTitle}>
-                    Unlocking the Future of Background Verification
-                </Title>
-                <Text className={classes.heroText}>
-                    Streamlining background checks with State-of-the-Art
-                    technology redefining trust in the verification industry
-                </Text>
-                <Box className={classes.heroActionBtn}>
-                    <CustomButton
-                        variant={"fill"}
-                        outline={true}
-                        classNames={""}
-                    >
-                        Try For Free
-                    </CustomButton>
-                    <CustomButton
-                        variant={"outline"}
-                        outline={true}
-                        classNames={""}
-                    >
-                        Signup
-                    </CustomButton>
+            <_2ColumnLayout>
+                <Box className={classes.heroContentContainer}>
+                    <Title order={1} className={classes.heroTitle}>
+                        Unlocking the Future of Background Verification
+                    </Title>
+                    <Text className={classes.heroText}>
+                        Streamlining background checks with State-of-the-Art
+                        technology redefining trust in the verification industry
+                    </Text>
+                    <Box className={classes.heroActionBtn}>
+                        <CustomButton
+                            variant={"fill"}
+                            outline={true}
+                            classNames={""}
+                        >
+                            Try For Free
+                        </CustomButton>
+                        <CustomButton
+                            variant={"outline"}
+                            outline={true}
+                            classNames={""}
+                        >
+                            Signup
+                        </CustomButton>
+                    </Box>
                 </Box>
-            </Box>
-            <Box className={classes.heroIllustration}>
-                <span className={classes.girlImageContainer}>
-                    <img
-                        src={girlCheckingPhone}
-                        alt="girlCheckingPhone"
-                        className={""}
-                    />
-                    <span className={classes.popups}>
-                        <img src={popup1} alt="popup1" className={""} />
+                <Box className={classes.heroIllustration}>
+                    <span className={classes.girlImageContainer}>
+                        <img
+                            src={girlCheckingPhone}
+                            alt="girlCheckingPhone"
+                            className={""}
+                        />
+                        <span className={classes.popups}>
+                            <img src={popup1} alt="popup1" className={""} />
+                        </span>
+                        <span className={classes.popups}>
+                            <img src={popup2} alt="popup2" className={""} />
+                        </span>
+                        <span className={classes.popups}>
+                            <img src={popup3} alt="popup3" className={""} />
+                        </span>
+                        <span className={classes.popups}>
+                            <img src={popup4} alt="popup4" className={""} />
+                        </span>
+                        <span className={classes.popups}>
+                            <img src={popup5} alt="popup5" className={""} />
+                        </span>
+                        <span className={classes.popups}>
+                            <img src={popup6} alt="popup6" className={""} />
+                        </span>
                     </span>
-                    <span className={classes.popups}>
-                        <img src={popup2} alt="popup2" className={""} />
-                    </span>
-                    <span className={classes.popups}>
-                        <img src={popup3} alt="popup3" className={""} />
-                    </span>
-                    <span className={classes.popups}>
-                        <img src={popup4} alt="popup4" className={""} />
-                    </span>
-                    <span className={classes.popups}>
-                        <img src={popup5} alt="popup5" className={""} />
-                    </span>
-                    <span className={classes.popups}>
-                        <img src={popup6} alt="popup6" className={""} />
-                    </span>
-                </span>
-            </Box>
+                </Box>
+            </_2ColumnLayout>
         </section>
     );
 };
 
 const useStyles = createStyles((theme) => ({
     root: {
-        width: "100%",
-        display: "grid",
-        gridTemplateColumns: "1fr 1fr",
-        gap: "3rem",
         alignItems: "start",
     },
 

@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import { createStyles, List, Group, rem, Box, Flex } from "@mantine/core";
+
 import { MdVerified } from "react-icons/md";
+
 import { CustomButton } from "./CustomButton";
 
 export const Navbar = () => {

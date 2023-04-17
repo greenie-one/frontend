@@ -5,6 +5,7 @@ type CustomButtonProps = {
     variant: "fill" | "outline";
     classNames: string | null;
     outline: boolean;
+    type?: "button" | "submit" | "reset";
     onClick?: () => any;
 };
 
@@ -13,12 +14,14 @@ export const CustomButton: React.FC<CustomButtonProps> = ({
     variant,
     classNames,
     outline,
+    type,
     onClick,
 }) => {
     const { classes } = useStyles();
 
     return (
         <Button
+            type={type || "button"}
             variant="subtle"
             color="dark"
             className={`${classes.customButton} ${classes[variant]} ${

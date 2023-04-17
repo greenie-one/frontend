@@ -1,13 +1,5 @@
 import React, { useState } from "react";
-import {
-    createStyles,
-    getStylesRef,
-    Title,
-    Text,
-    Box,
-    Grid,
-    rem,
-} from "@mantine/core";
+import { createStyles, Title, Text, Box, Grid } from "@mantine/core";
 import { randomId } from "@mantine/hooks";
 import { LandingSectionHeading } from "./SectionHeading";
 import { CustomButton } from "../common/CustomButton";
@@ -183,6 +175,7 @@ const useStyles = createStyles((theme) => ({
         marginInline: "auto",
         gridRow: "1/2",
         gridColumn: "1/2",
+        zIndex: -1,
 
         ":nth-of-type(1)": {
             width: "85%",
