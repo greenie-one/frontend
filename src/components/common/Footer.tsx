@@ -8,7 +8,7 @@ import {
     rem,
     Box,
     Flex,
-    Input,
+    TextInput,
 } from "@mantine/core";
 import { BsInstagram } from "react-icons/bs";
 import { FiLinkedin } from "react-icons/fi";
@@ -18,23 +18,6 @@ import { CustomButton } from "./CustomButton";
 
 export const Footer: React.FC = (): JSX.Element => {
     const { classes } = useStyles();
-
-    const onFormSubmit = async (e: React.SyntheticEvent): Promise<void> => {
-        e.preventDefault();
-
-        const target = e.target as typeof e.target & {
-            email: { value: string };
-        };
-
-        const email = target.email.value;
-
-        if (!email) {
-            /** @todo Add some error toaster here before return */
-            return;
-        }
-
-        /** @todo Add form submit action here */
-    };
 
     return (
         <Box className={`${classes.root} app-padding-inline section`}>
@@ -79,24 +62,17 @@ export const Footer: React.FC = (): JSX.Element => {
                         </Flex>
                     </Box>
                     <Box className={classes.gridLeftContainer}>
-                        <form
-                            className={classes.emailForm}
-                            onSubmit={(e: React.SyntheticEvent) =>
-                                onFormSubmit(e)
-                            }
-                        >
-                            <Input
-                                variant="unstyled"
+                        <form className={classes.emailForm}>
+                            <input
+                                name="email"
+                                id="email"
                                 placeholder="Enter Your Email"
                                 className={classes.footerEmailInput}
-                                size="sm"
-                                sx={{ color: "#FFFFFF" }}
                             />
                             <CustomButton
                                 variant="fill"
                                 classNames={null}
                                 outline={true}
-                                type="submit"
                             >
                                 Try For Free
                             </CustomButton>
@@ -218,9 +194,14 @@ const useStyles = createStyles((theme) => ({
 
     footerEmailInput: {
         flex: 1,
-        paddingInline: "1.25rem",
-        paddingBlock: "0.3rem",
+        paddingInline: "1.35rem",
+        paddingBlock: "0.9rem",
         color: "#FFFFFF",
+        fontSize: rem(14),
+
+        "::placeholder": {
+            color: "#FFFFFF",
+        },
     },
 
     footerBottom: {
