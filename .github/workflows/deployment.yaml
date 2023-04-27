@@ -41,9 +41,6 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=ref,event=branch
-            type=ref,event=tag
-            type=ref,event=pr
             type=sha
 
       - name: Build and push Docker image
@@ -65,12 +62,6 @@ jobs:
           secret-name: regcred
           namespace: frontend
 
-      - uses: Azure/k8s-deploy@v4
-        with:
-          namespace: frontend
-          manifests: |
-            deployment/deployment.yaml
-            deployment/service.yaml
-          images: ${{ steps.meta.outputs.tags }}
-          imagepullsecrets: |
-            regcred
+      - name: Deploy chart
+        run: |
+          helm upgrade --install --namespace frontend -f deployment/values.yaml greenie-mvp-frontend-dev ./deployment --set image.name=${{ steps.meta.outputs.tags }} --wait
