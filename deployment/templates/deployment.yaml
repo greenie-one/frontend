@@ -31,11 +31,8 @@ spec:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.name }}"
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          env: 
-            - name: APP_ENV
-              value: {{ .Values.APP_ENV }}
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
@@ -44,14 +41,12 @@ spec:
             httpGet:
               path: /
               port: http
-            initialDelaySeconds: 20
-            periodSeconds: 300
           readinessProbe:
             httpGet:
               path: /
               port: http
-            initialDelaySeconds: 20
-            periodSeconds: 300
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
