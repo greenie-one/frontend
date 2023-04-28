@@ -7,7 +7,7 @@ import { _2ColumnLayout } from "../layouts/_2ColumnLayout";
 import cap from "../../assets/images/cap.svg";
 import hiringDocuments from "../../assets/images/hiring-documents.png";
 
-export const Hiring: React.FC = (): JSX.Element => {
+export const LandingHiring: React.FC = (): JSX.Element => {
     const { classes } = useStyles();
 
     return (
@@ -99,9 +99,10 @@ const useStyles = createStyles((theme) => ({
     },
 
     hiringText: {
-        fontSize: "0.9rem",
+        fontSize: rem(17),
         marginBlockStart: "1.75rem",
         marginBlockEnd: "1.25rem",
+        maxWidth: "40ch",
     },
 
     hiringIllustration: {

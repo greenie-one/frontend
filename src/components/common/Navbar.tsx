@@ -3,7 +3,7 @@ import { createStyles, List, Group, rem, Box, Flex } from "@mantine/core";
 
 import { MdVerified } from "react-icons/md";
 
-import { CustomButton } from "./CustomButton";
+import { Button } from "./Button";
 
 export const Navbar = () => {
     const { classes } = useStyles();
@@ -27,34 +27,22 @@ export const Navbar = () => {
                 <nav className={classes.navOptionsContainer}>
                     <List className={classes.navOptionsList}>
                         <List.Item className={classes.navOptionsListItems}>
-                            Learn
+                            Features
                         </List.Item>
                         <List.Item className={classes.navOptionsListItems}>
                             Pricing
                         </List.Item>
-                        <List.Item className={classes.navOptionsListItems}>
-                            About Us
-                        </List.Item>
-                        <List.Item className={classes.navOptionsListItems}>
-                            Career
-                        </List.Item>
                     </List>
                 </nav>
                 <Group>
-                    <CustomButton
-                        variant={"outline"}
-                        outline={false}
-                        classNames={classes.signupBtn}
-                    >
-                        Signup
-                    </CustomButton>
-                    <CustomButton
+                    <Button
                         variant={"fill"}
+                        color={"#17A672"}
                         outline={true}
-                        classNames={null}
+                        classNames={classes.tryBtn}
                     >
                         Try For Free
-                    </CustomButton>
+                    </Button>
                 </Group>
             </header>
         </Box>
@@ -72,18 +60,19 @@ const useStyles = createStyles((theme) => ({
     },
 
     header: {
-        marginBlockStart: rem(24),
+        marginBlockStart: rem(20),
         backgroundColor: "#FFFFFF",
-        boxShadow: "0px 4px 34px rgba(0, 0, 0, 0.1)",
+        boxShadow: "0px 4px 34px rgba(0, 0, 0, 0.15)",
         display: "flex",
         justifyContent: "space-between",
         gap: "2rem",
-        padding: "1rem",
+        paddingBlock: "1rem",
+        paddingInline: "1.6rem",
         borderRadius: "5rem",
     },
 
     logo: {
-        paddingInline: rem(20),
+        paddingInline: rem(10),
     },
 
     greenie: {
@@ -101,7 +90,7 @@ const useStyles = createStyles((theme) => ({
         flex: 1,
         display: "flex",
         alignItems: "center",
-        justifyContent: "flex-end",
+        justifyContent: "center",
     },
 
     navOptionsList: {
@@ -124,12 +113,12 @@ const useStyles = createStyles((theme) => ({
             position: "absolute",
             width: 0,
             bottom: "-2px",
-            borderTop: "1px solid #9FE870",
+            borderTop: "1px solid #17A672",
             transition: "width 200ms linear",
         },
 
         ":hover": {
-            color: "#9FE870",
+            color: "#17A672",
             transition: "color 150ms linear",
         },
 
@@ -139,13 +128,7 @@ const useStyles = createStyles((theme) => ({
         },
     },
 
-    signupBtn: {
-        transition: "border-color 100ms linear, color 150ms linear",
-
-        ":hover": {
-            borderColor: "#8CF078",
-            color: "#8CF078",
-            transition: "border-color 100ms linear, color 100ms linear",
-        },
+    tryBtn: {
+        color: "white",
     },
 }));
