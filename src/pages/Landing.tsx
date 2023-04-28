@@ -123,7 +123,7 @@ export const Landing = () => {
 
     return (
         <>
-            <div className={`${classes.root} page`}>
+            {/* <div className={`${classes.root} page`}>
                 <LandingHero />
                 <LandingFeatures />
                 <LandingGreenieWorkings />
@@ -149,7 +149,7 @@ export const Landing = () => {
                         })}
                     </OwlCarousel>
                 </Box>
-            </section>
+            </section> */}
         </>
     );
 };

@@ -41,7 +41,7 @@ html:focus-within {
 }
 
 body {
-    min-height: 100vh;
+    min-height: 100dvh;
     width: 100%;
     font-size: 0.938rem;
     font-weight: 400;
@@ -186,4 +186,97 @@ header {
 
 .section {
     padding-block: var(--section-padding-block);
+}
+
+.mantine-Drawer-content {
+    background-color: transparent !important;
+    box-shadow: none !important;
+}
+
+@media screen and (max-width: 30em) {
+    html,
+    html:focus-within {
+        font-size: 97.5%;
+    }
+}
+
+@media screen and (max-width: 25.875em) {
+    html,
+    html:focus-within {
+        font-size: 92.5%;
+    }
+}
+
+@media screen and (max-width: 21.875em) {
+    html,
+    html:focus-within {
+        font-size: 90%;
+    }
+}
+
+@media screen and (max-width: 20em) {
+    html,
+    html:focus-within {
+        font-size: 87.5%;
+    }
+}
+
+@media screen and (min-width: 197.5em) {
+    html,
+    html:focus-within {
+        font-size: 200%;
+    }
+}
+
+@media screen and (min-width: 143.75em) {
+    html,
+    html:focus-within {
+        font-size: 180%;
+    }
+}
+
+@media screen and (min-width: 120em) {
+    html,
+    html:focus-within {
+        font-size: 150%;
+    }
+}
+
+@media screen and (min-width: 100em) {
+    html,
+    html:focus-within {
+        font-size: 125%;
+    }
+}
+
+@media screen and (max-width: 80em) {
+    :root {
+        --app-padding-inline: 8rem;
+    }
+}
+
+@media screen and (max-width: 70em) {
+    :root {
+        --app-padding-inline: 6rem;
+        --section-padding-block: 3rem;
+    }
+}
+
+@media screen and (max-width: 48em) {
+    :root {
+        --app-padding-inline: 5rem;
+    }
+}
+
+@media screen and (max-width: 40em) {
+    :root {
+        --app-padding-inline: 3rem;
+        --section-padding-block: 2.5rem;
+    }
+}
+
+@media screen and (max-width: 33.75em) {
+    :root {
+        --app-padding-inline: 2rem;
+    }
 }
