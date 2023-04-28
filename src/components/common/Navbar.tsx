@@ -50,7 +50,6 @@ export const Navbar = () => {
                 <Group className={classes.headerBtnsContainer}>
                     <Button
                         variant={"fill"}
-                        color={"#17A672"}
                         outline={true}
                         classNames={classes.tryBtn}
                     >
@@ -242,6 +241,8 @@ const useStyles = createStyles((theme) => ({
 
     tryBtn: {
         color: "white",
+        backgroundColor: "#17A672",
+        borderColor: "#17A672",
     },
 
     menuBtn: {

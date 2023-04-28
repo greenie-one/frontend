@@ -193,6 +193,27 @@ header {
     box-shadow: none !important;
 }
 
+.landingFeaturesIllustration0 {
+    width: 12.5rem;
+    bottom: 0;
+}
+
+.landingFeaturesIllustration1 {
+    width: 9.375rem;
+    bottom: 1rem;
+}
+
+.landingFeaturesIllustration2 {
+    width: 9.375rem;
+    bottom: 1rem;
+}
+
+.landingFeaturesIllustration3 {
+    width: 21.25rem;
+    right: 0;
+    bottom: 0;
+}
+
 @media screen and (max-width: 30em) {
     html,
     html:focus-within {

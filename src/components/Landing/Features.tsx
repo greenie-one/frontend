@@ -55,9 +55,7 @@ const FeaturesCard: React.FC<FeaturesCardPropsType> = ({
             >
                 {text}
             </Text>
-            <span
-                className={`${classes.featuresCardIllustration} ${classes[id]}`}
-            >
+            <span className={`${classes.featuresCardIllustration} ${id}`}>
                 <img
                     src={illustrationSmall}
                     alt="illustration"
@@ -132,7 +130,7 @@ export const LandingFeatures = () => {
                     return (
                         <FeaturesCard
                             key={cardContent.id}
-                            id={`illustration${id}`}
+                            id={`landingFeaturesIllustration${id}`}
                             cardBg={cardContent.cardBg}
                             title={cardContent.title}
                             titleColor={cardContent.titleColor}
@@ -224,27 +222,6 @@ const useStyles = createStyles((theme) => ({
     featuresCardIllustration: {
         position: "absolute",
         right: "2rem",
-    },
-
-    illustration0: {
-        width: rem(200),
-        bottom: 0,
-    },
-
-    illustration1: {
-        width: rem(150),
-        bottom: "1rem",
-    },
-
-    illustration2: {
-        width: rem(150),
-        bottom: "1rem",
-    },
-
-    illustration3: {
-        width: rem(340),
-        right: 0,
-        bottom: 0,
     },
 
     featuresCardIllustrationSmall: {
