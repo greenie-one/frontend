@@ -3,7 +3,6 @@ import { createStyles, rem, em } from "@mantine/core";
 type ButtonProps = {
     children: string | JSX.Element | JSX.Element[];
     variant: "fill" | "outline";
-    color?: "#8CF078" | "#17A672";
     classNames: string | null;
     outline: boolean;
     onClick?: () => any;
@@ -12,12 +11,11 @@ type ButtonProps = {
 export const Button: React.FC<ButtonProps> = ({
     children,
     variant,
-    color = "#8CF078",
     classNames,
     outline,
     onClick,
 }) => {
-    const { classes } = useStyles({ color });
+    const { classes } = useStyles();
 
     return (
         <button
@@ -31,7 +29,7 @@ export const Button: React.FC<ButtonProps> = ({
     );
 };
 
-const useStyles = createStyles((theme, { color }) => ({
+const useStyles = createStyles((theme) => ({
     customButton: {
         borderRadius: "3rem",
         fontSize: rem(13),
@@ -46,8 +44,8 @@ const useStyles = createStyles((theme, { color }) => ({
     },
 
     fill: {
-        backgroundColor: color,
-        border: `1px solid ${color}`,
+        backgroundColor: "#8CF078",
+        border: `1px solid #8CF078`,
     },
 
     noOutline: {

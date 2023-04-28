@@ -5,6 +5,7 @@ import {
     List,
     Title,
     Text,
+    em,
     rem,
     Box,
     Flex,
@@ -79,7 +80,7 @@ export const Footer: React.FC = (): JSX.Element => {
                             />
                             <Button
                                 variant="fill"
-                                classNames={""}
+                                classNames={classes.formSubmitBtn}
                                 outline={true}
                             >
                                 Try For Free
@@ -88,12 +89,13 @@ export const Footer: React.FC = (): JSX.Element => {
                     </Box>
                 </Box>
                 <Box className={classes.footerBottom}>
-                    <span className={""}>
+                    <span className={classes.footerBottomLogoContainer}>
                         <Flex
                             justify="center"
-                            align="flex-start"
-                            direction="column"
-                            className={""}
+                            align={{ base: "center", md: "flex-start" }}
+                            direction={{ base: "row", md: "column" }}
+                            className={classes.footerBottomLogo}
+                            gap={{ base: "0.5rem" }}
                         >
                             <Link to={"/"}>
                                 <span className={classes.greenie}>Greenie</span>
@@ -143,9 +145,13 @@ const useStyles = createStyles((theme) => ({
 
     footerGridContainer: {
         display: "grid",
-        gridTemplateColumns: "1.8fr 1.2fr",
+        gridTemplateColumns: "2fr 1fr",
         gap: "2.5rem",
         alignItems: "start",
+
+        [`@media screen and (max-width: ${em(992)})`]: {
+            gridTemplateColumns: "1fr",
+        },
     },
 
     gridLeftContainer: {
@@ -153,16 +159,48 @@ const useStyles = createStyles((theme) => ({
         flexDirection: "column",
         alignItems: "flex-start",
         gap: "1.5rem",
+
+        [`@media screen and (max-width: ${em(1280)})`]: {
+            gap: rem(20),
+        },
+
+        [`@media screen and (max-width: ${em(992)})`]: {
+            alignItems: "center",
+        },
+
+        [`@media screen and (max-width: ${em(480)})`]: {
+            gap: rem(15),
+        },
     },
 
     footerHeading: {
         fontSize: rem(40),
         fontWeight: 700,
+
+        [`@media screen and (max-width: ${em(1280)})`]: {
+            fontSize: rem(36),
+        },
+
+        [`@media screen and (max-width: ${em(768)})`]: {
+            fontSize: rem(32),
+        },
+
+        [`@media screen and (max-width: ${em(480)})`]: {
+            fontSize: rem(30),
+        },
     },
 
     verified: {
         fontSize: rem(30),
         color: "#9FE870",
+
+        [`@media screen and (max-width: ${em(1280)})`]: {
+            fontSize: rem(26),
+        },
+
+        [`@media screen and (max-width: ${em(768)})`]: {
+            fontSize: rem(22),
+        },
     },
 
     footerTagline: {
@@ -171,10 +209,39 @@ const useStyles = createStyles((theme) => ({
         fontSize: rem(34),
         letterSpacing: "0.01em",
         color: "#8E8E8E",
+        maxWidth: "30ch",
+
+        [`@media screen and (max-width: ${em(1280)})`]: {
+            fontSize: rem(30),
+        },
+
+        [`@media screen and (max-width: ${em(992)})`]: {
+            textAlign: "center",
+        },
+
+        [`@media screen and (max-width: ${em(768)})`]: {
+            fontSize: rem(26),
+        },
+
+        [`@media screen and (max-width: ${em(480)})`]: {
+            fontSize: rem(24),
+        },
     },
 
     footerSocialLinks: {
         marginBlockStart: "1.5rem",
+
+        [`@media screen and (max-width: ${em(1280)})`]: {
+            marginBlockStart: "1.2rem",
+        },
+
+        [`@media screen and (max-width: ${em(768)})`]: {
+            marginBlockStart: "1rem",
+        },
+
+        [`@media screen and (max-width: ${em(768)})`]: {
+            marginBlockStart: "0.5rem",
+        },
     },
 
     socialLinkIcons: {
@@ -188,6 +255,15 @@ const useStyles = createStyles((theme) => ({
         background: "linear-gradient(180deg, #FFFFFF 0%, #898989 100%);",
         WebkitBackgroundClip: "text",
         WebkitTextFillColor: "transparent",
+
+        [`@media screen and (max-width: ${em(1280)})`]: {
+            fontSize: rem(20),
+        },
+
+        [`@media screen and (max-width: ${em(768)})`]: {
+            fontSize: rem(16),
+            padding: "0.5rem",
+        },
     },
 
     form: {
@@ -196,6 +272,19 @@ const useStyles = createStyles((theme) => ({
         alignItems: "flex-start",
         marginInlineStart: "auto",
         gap: "1rem",
+
+        [`@media screen and (max-width: ${em(992)})`]: {
+            marginInlineEnd: "auto",
+        },
+
+        [`@media screen and (max-width: ${em(480)})`]: {
+            gap: "0.75rem",
+        },
+
+        [`@media screen and (max-width: ${em(350)})`]: {
+            width: "100%",
+            gap: "0.6rem",
+        },
     },
 
     formInput: {
@@ -209,6 +298,24 @@ const useStyles = createStyles((theme) => ({
         "::placeholder": {
             color: "#FFFFFF",
         },
+
+        [`@media screen and (max-width: ${em(992)})`]: {
+            width: rem(310),
+        },
+
+        [`@media screen and (max-width: ${em(640)})`]: {
+            paddingBlock: "0.8rem",
+        },
+
+        [`@media screen and (max-width: ${em(992)})`]: {
+            width: "100%",
+        },
+    },
+
+    formSubmitBtn: {
+        [`@media screen and (max-width: ${em(992)})`]: {
+            marginInlineStart: "auto",
+        },
     },
 
     footerBottom: {
@@ -216,6 +323,34 @@ const useStyles = createStyles((theme) => ({
         alignItems: "flex-end",
         justifyContent: "space-between",
         fontSize: rem(13),
+
+        [`@media screen and (max-width: ${em(992)})`]: {
+            display: "grid",
+            gridTemplateColumns: "auto auto",
+            gap: "1rem",
+            placeItems: "center",
+        },
+
+        [`@media screen and (max-width: ${em(768)})`]: {
+            gridTemplateColumns: "1fr",
+        },
+    },
+
+    footerBottomLogoContainer: {
+        [`@media screen and (max-width: ${em(992)})`]: {
+            marginInlineStart: "auto",
+        },
+
+        [`@media screen and (max-width: ${em(768)})`]: {
+            marginInlineEnd: "auto",
+        },
+    },
+
+    footerBottomLogo: {
+        [`@media screen and (max-width: ${em(540)})`]: {
+            flexDirection: "column",
+            gap: "0",
+        },
     },
 
     greenie: {
@@ -232,7 +367,15 @@ const useStyles = createStyles((theme) => ({
         transform: "translateY(2px)",
     },
 
-    madeInIndiaText: {},
+    madeInIndiaText: {
+        [`@media screen and (max-width: ${em(992)})`]: {
+            marginInlineEnd: "auto",
+        },
+
+        [`@media screen and (max-width: ${em(768)})`]: {
+            marginInlineStart: "auto",
+        },
+    },
 
     navOptionsList: {
         display: "flex",
@@ -241,6 +384,19 @@ const useStyles = createStyles((theme) => ({
         paddingInline: rem(20),
         color: "#FFFFFF",
         fontSize: rem(13),
+
+        [`@media screen and (max-width: ${em(992)})`]: {
+            width: "100%",
+            gridColumn: "1/-1",
+            gridRow: "1/span 1",
+            justifyContent: "flex-start",
+            paddingInlineStart: rem(4),
+        },
+
+        [`@media screen and (max-width: ${em(768)})`]: {
+            justifyContent: "center",
+            paddingInline: rem(20),
+        },
     },
 
     navOptionsListItems: {
