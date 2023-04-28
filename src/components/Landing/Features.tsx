@@ -1,22 +1,42 @@
 import React from "react";
-import { createStyles, getStylesRef, Title, Text, Box } from "@mantine/core";
+import {
+    createStyles,
+    getStylesRef,
+    Title,
+    Text,
+    em,
+    rem,
+    Box,
+} from "@mantine/core";
 import { randomId } from "@mantine/hooks";
 import { LandingSectionHeading } from "./SectionHeading";
 
+import documentVerified from "../../assets/images/document-verified.svg";
+import clock from "../../assets/images/clock.svg";
+import liveTracking from "../../assets/images/live-tracking.svg";
+import dataControll from "../../assets/images/data-controll.svg";
+import dataControllMobile from "../../assets/images/data-controll-mobile.svg";
+
 type FeaturesCardPropsType = {
+    id: string;
     cardBg: string;
     title: string;
     titleColor: string;
     text: string;
     textColor: string;
+    illustrationSmall: string;
+    illustrationLarge: string;
 };
 
 const FeaturesCard: React.FC<FeaturesCardPropsType> = ({
+    id,
     cardBg,
     title,
     titleColor,
     text,
     textColor,
+    illustrationSmall,
+    illustrationLarge,
 }): JSX.Element => {
     const { classes } = useStyles();
 
@@ -35,6 +55,20 @@ const FeaturesCard: React.FC<FeaturesCardPropsType> = ({
             >
                 {text}
             </Text>
+            <span
+                className={`${classes.featuresCardIllustration} ${classes[id]}`}
+            >
+                <img
+                    src={illustrationSmall}
+                    alt="illustration"
+                    className={classes.featuresCardIllustrationSmall}
+                />
+                <img
+                    src={illustrationLarge}
+                    alt="illustration"
+                    className={classes.featuresCardIllustrationLarge}
+                />
+            </span>
         </Box>
     );
 };
@@ -42,35 +76,43 @@ const FeaturesCard: React.FC<FeaturesCardPropsType> = ({
 const featuresCardContent = [
     {
         id: randomId(),
-        cardBg: "#C7FFBC",
+        cardBg: "#17A672",
         title: "Instantly verify all documents at one place.",
-        titleColor: "#260A30",
+        titleColor: "#FFFFFF",
         text: "Streamlining background checks with State-of-the-Art technology redefining trust in the verification industry",
-        textColor: "#000000",
+        textColor: "#FFFFFF",
+        illustrationSmall: documentVerified,
+        illustrationLarge: documentVerified,
     },
     {
         id: randomId(),
-        cardBg: "#17A672",
+        cardBg: "#47DAA4",
         title: "Improve turn around time.",
         titleColor: "#FFFFFF",
         text: "Streamlining background checks with State-of-the-Art technology redefining trust in the verification industry",
         textColor: "#FFFFFF",
+        illustrationSmall: clock,
+        illustrationLarge: clock,
     },
     {
         id: randomId(),
-        cardBg: "#17A672",
+        cardBg: "#85D1B5",
         title: "Live tracking.",
         titleColor: "#FFFFFF",
         text: "Streamlining background checks with State-of-the-Art technology redefining trust in the verification industry",
         textColor: "#FFFFFF",
+        illustrationSmall: liveTracking,
+        illustrationLarge: liveTracking,
     },
     {
         id: randomId(),
-        cardBg: "#C7FFBC",
+        cardBg: "#A0E2E1",
         title: "Control over data.",
         titleColor: "#310805",
         text: "Streamlining background checks with State-of-the-Art technology redefining trust in the verification industry",
-        textColor: "#000000",
+        textColor: "#191819",
+        illustrationSmall: dataControllMobile,
+        illustrationLarge: dataControll,
     },
 ];
 
@@ -86,15 +128,18 @@ export const LandingFeatures = () => {
                 }
             />
             <Box className={classes.featureGrid}>
-                {featuresCardContent.map((cardContent) => {
+                {featuresCardContent.map((cardContent, id) => {
                     return (
                         <FeaturesCard
                             key={cardContent.id}
+                            id={`illustration${id}`}
                             cardBg={cardContent.cardBg}
                             title={cardContent.title}
                             titleColor={cardContent.titleColor}
                             text={cardContent.text}
                             textColor={cardContent.textColor}
+                            illustrationSmall={cardContent.illustrationSmall}
+                            illustrationLarge={cardContent.illustrationLarge}
                         />
                     );
                 })}
@@ -124,6 +169,7 @@ const useStyles = createStyles((theme) => ({
     featuresCard: {
         padding: "2rem",
         borderRadius: "1rem",
+        position: "relative",
 
         ":nth-of-type(1)": {
             gridColumn: "1/4",
@@ -174,6 +220,38 @@ const useStyles = createStyles((theme) => ({
         maxWidth: "20ch",
         marginBlockStart: "1rem",
     },
+
+    featuresCardIllustration: {
+        position: "absolute",
+        right: "2rem",
+    },
+
+    illustration0: {
+        width: rem(200),
+        bottom: 0,
+    },
+
+    illustration1: {
+        width: rem(150),
+        bottom: "1rem",
+    },
+
+    illustration2: {
+        width: rem(150),
+        bottom: "1rem",
+    },
+
+    illustration3: {
+        width: rem(340),
+        right: 0,
+        bottom: 0,
+    },
+
+    featuresCardIllustrationSmall: {
+        display: "none",
+    },
+
+    featuresCardIllustrationLarge: {},
 
     manyMore: {
         gridColumn: "3/6",

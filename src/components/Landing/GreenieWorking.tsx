@@ -1,8 +1,13 @@
 import React, { useState } from "react";
-import { createStyles, Title, Text, Box, Grid } from "@mantine/core";
+import { createStyles, Title, Text, Box, rem, keyframes } from "@mantine/core";
 import { randomId } from "@mantine/hooks";
 import { LandingSectionHeading } from "./SectionHeading";
-import { CustomButton } from "../common/CustomButton";
+import { Button } from "../common/Button";
+
+import workingIllustration1 from "../../assets/images/account-circle.png";
+import workingIllustration2 from "../../assets/images/demography-1.png";
+import workingIllustration3 from "../../assets/images/demography-2.png";
+import workingIllustration4 from "../../assets/images/demography-3.png";
 
 type WorkingsCardPropsType = {
     cardBg: string;
@@ -10,7 +15,13 @@ type WorkingsCardPropsType = {
     titleColor: string;
     text: string;
     textColor: string;
+    illustration: string;
 };
+
+const slideUp = keyframes({
+    from: { translate: "0 25%" },
+    to: { translate: "0 0" },
+});
 
 const WorkingsCard: React.FC<WorkingsCardPropsType> = ({
     cardBg,
@@ -18,24 +29,30 @@ const WorkingsCard: React.FC<WorkingsCardPropsType> = ({
     titleColor,
     text,
     textColor,
+    illustration,
 }): JSX.Element => {
     const { classes } = useStyles();
 
     return (
         <Box sx={{ backgroundColor: cardBg }} className={classes.workingsCard}>
-            <Title
-                sx={{ color: titleColor }}
-                order={2}
-                className={classes.workingsCardTitle}
-            >
-                {title}
-            </Title>
-            <Text
-                sx={{ color: textColor }}
-                className={classes.workingsCardText}
-            >
-                {text}
-            </Text>
+            <Box>
+                <Title
+                    sx={{ color: titleColor }}
+                    order={2}
+                    className={classes.workingsCardTitle}
+                >
+                    {title}
+                </Title>
+                <Text
+                    sx={{ color: textColor }}
+                    className={classes.workingsCardText}
+                >
+                    {text}
+                </Text>
+            </Box>
+            <span className={classes.workingIllustration}>
+                <img src={illustration} alt="illustration" className={""} />
+            </span>
         </Box>
     );
 };
@@ -48,6 +65,7 @@ const workingsCardContent = [
         titleColor: "#17A672",
         text: "It is very simple and easy to create your greenie account.",
         textColor: "#191819",
+        illustration: workingIllustration1,
     },
     {
         id: randomId(),
@@ -56,6 +74,7 @@ const workingsCardContent = [
         titleColor: "#17A672",
         text: "Verify all your documents and get a unique Greenie ID that will save all your documents in a repository. Upload your documents and forget about it.",
         textColor: "#191819",
+        illustration: workingIllustration2,
     },
     {
         id: randomId(),
@@ -64,6 +83,7 @@ const workingsCardContent = [
         titleColor: "#018454",
         text: "Share your Greenie ID your recruiters, your organisations or anywhere you would want to verify your documents and background.",
         textColor: "#191819",
+        illustration: workingIllustration3,
     },
     {
         id: randomId(),
@@ -72,6 +92,7 @@ const workingsCardContent = [
         titleColor: "#A1FFDD",
         text: "You have all control to grant access to any of the documents that you uploaded online. Recruiters you request you to reveal only the documents to verify. You control your background verification and track it live.",
         textColor: "#FFFFFF",
+        illustration: workingIllustration4,
     },
 ];
 
@@ -96,7 +117,7 @@ export const LandingGreenieWorkings = () => {
                     "Accept Request",
                 ].map((text, id) => {
                     return (
-                        <CustomButton
+                        <Button
                             key={id}
                             variant={"outline"}
                             classNames={`${classes.workingsBtn} ${
@@ -108,7 +129,7 @@ export const LandingGreenieWorkings = () => {
                             onClick={() => setActiveWorkingBtn(id)}
                         >
                             {text}
-                        </CustomButton>
+                        </Button>
                     );
                 })}
             </Box>
@@ -122,6 +143,7 @@ export const LandingGreenieWorkings = () => {
                             titleColor={cardContent.titleColor}
                             text={cardContent.text}
                             textColor={cardContent.textColor}
+                            illustration={cardContent.illustration}
                         />
                     ) : (
                         <React.Fragment key={id}></React.Fragment>
@@ -151,14 +173,14 @@ const useStyles = createStyles((theme) => ({
         transition: "border-color 100ms linear, color 150ms linear",
 
         ":hover": {
-            borderColor: "#17A672",
+            border: "1px solid #17A672",
             color: "#17A672",
             transition: "border-color 100ms linear, color 100ms linear",
         },
     },
 
     activeWorkingBtn: {
-        borderColor: "#17A672",
+        border: "1px solid #17A672",
         color: "#17A672",
     },
 
@@ -176,6 +198,9 @@ const useStyles = createStyles((theme) => ({
         gridRow: "1/2",
         gridColumn: "1/2",
         zIndex: -1,
+        animation: `${slideUp} 500ms ease`,
+        display: "grid",
+        gridTemplateColumns: "2fr 1fr",
 
         ":nth-of-type(1)": {
             width: "85%",
@@ -207,5 +232,12 @@ const useStyles = createStyles((theme) => ({
         fontSize: "0.9rem",
         maxWidth: "40ch",
         marginBlockStart: "1rem",
+    },
+
+    workingIllustration: {
+        display: "grid",
+        placeItems: "center",
+        aspectRatio: "1",
+        width: rem(220),
     },
 }));

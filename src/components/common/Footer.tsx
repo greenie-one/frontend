@@ -14,7 +14,7 @@ import { BsInstagram } from "react-icons/bs";
 import { FiLinkedin } from "react-icons/fi";
 import { MdOutlineFacebook, MdVerified } from "react-icons/md";
 
-import { CustomButton } from "./CustomButton";
+import { Button } from "./Button";
 
 export const Footer: React.FC = (): JSX.Element => {
     const { classes } = useStyles();
@@ -62,20 +62,28 @@ export const Footer: React.FC = (): JSX.Element => {
                         </Flex>
                     </Box>
                     <Box className={classes.gridLeftContainer}>
-                        <form className={classes.emailForm}>
+                        <form className={classes.form}>
                             <input
+                                type="text"
+                                name="name"
+                                id="name"
+                                placeholder="Your Name"
+                                className={classes.formInput}
+                            />
+                            <input
+                                type="email"
                                 name="email"
                                 id="email"
-                                placeholder="Enter Your Email"
-                                className={classes.footerEmailInput}
+                                placeholder="Your Email"
+                                className={classes.formInput}
                             />
-                            <CustomButton
+                            <Button
                                 variant="fill"
-                                classNames={null}
+                                classNames={""}
                                 outline={true}
                             >
                                 Try For Free
-                            </CustomButton>
+                            </Button>
                         </form>
                     </Box>
                 </Box>
@@ -182,18 +190,17 @@ const useStyles = createStyles((theme) => ({
         WebkitTextFillColor: "transparent",
     },
 
-    emailForm: {
-        backgroundColor: "#2B2B2B",
-        paddingInlineEnd: "0.4rem",
-        width: "100%",
+    form: {
         display: "flex",
-        alignItems: "center",
-        borderRadius: "3rem",
-        overflow: "hidden",
+        flexDirection: "column",
+        alignItems: "flex-start",
+        marginInlineStart: "auto",
+        gap: "1rem",
     },
 
-    footerEmailInput: {
-        flex: 1,
+    formInput: {
+        backgroundColor: "#2B2B2B",
+        borderRadius: "3rem",
         paddingInline: "1.35rem",
         paddingBlock: "0.9rem",
         color: "#FFFFFF",

@@ -8,9 +8,9 @@
 
     --app-bg-gradient: linear-gradient(
         180deg,
-        #ffffff 0%,
+        hsl(0, 0%, 100%) 0%,
         #edfff9 44.79%,
-        #ffffff 89.07%,
+        hsl(0, 0%, 100%) 89.07%,
         #d7fff0 100%
     );
 
@@ -154,7 +154,7 @@ button {
 }
 
 header {
-    z-index: 999;
+    z-index: 99999999999;
 }
 
 @media (prefers-reduced-motion: reduce) {
