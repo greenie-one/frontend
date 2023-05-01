@@ -111,7 +111,7 @@ export const Footer: React.FC = (): JSX.Element => {
                     <Text className={classes.madeInIndiaText}>
                         Made In India
                     </Text>
-                    <List className={classes.navOptionsList}>
+                    {/* <List className={classes.navOptionsList}>
                         <List.Item className={classes.navOptionsListItems}>
                             Learn
                         </List.Item>
@@ -124,7 +124,7 @@ export const Footer: React.FC = (): JSX.Element => {
                         <List.Item className={classes.navOptionsListItems}>
                             Career
                         </List.Item>
-                    </List>
+                    </List> */}
                 </Box>
             </footer>
         </Box>

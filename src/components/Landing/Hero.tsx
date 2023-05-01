@@ -1,5 +1,13 @@
 import { useEffect, useState } from "react";
-import { createStyles, Title, Text, rem, Box, keyframes } from "@mantine/core";
+import {
+    createStyles,
+    Title,
+    Text,
+    rem,
+    Box,
+    keyframes,
+    em,
+} from "@mantine/core";
 import { _2ColumnLayout } from "../layouts/_2ColumnLayout";
 import { Button } from "../common/Button";
 
@@ -24,21 +32,21 @@ export const LandingHero = () => {
         let activePopup = 0;
 
         const activatePopupInterval = setInterval(() => {
-            if (activePopup === 4) {
+            if (activePopup === 5) {
                 clearInterval(activatePopupInterval);
                 return;
             }
 
             setPopupNo(activePopup);
             activePopup = activePopup + 1;
-        }, 1500);
+        }, 1000);
     };
 
     useEffect(() => {
         const activatePopupTimeout = setTimeout(() => {
             activatePopups();
             clearTimeout(activatePopupTimeout);
-        }, 1000);
+        }, 150);
     }, []);
 
     return (
@@ -56,13 +64,13 @@ export const LandingHero = () => {
                         <Button variant={"fill"} outline={true} classNames={""}>
                             Try For Free
                         </Button>
-                        <Button
+                        {/* <Button
                             variant={"outline"}
                             outline={true}
                             classNames={""}
                         >
                             Signup
-                        </Button>
+                        </Button> */}
                     </Box>
                 </Box>
                 <Box className={classes.heroIllustration}>
@@ -72,7 +80,7 @@ export const LandingHero = () => {
                             alt="girlCheckingPhone"
                             className={""}
                         />
-                        {popupNo >= 2 ? (
+                        {popupNo >= 4 ? (
                             <span
                                 className={`${classes.popups} ${classes.popup1}`}
                             >
@@ -80,34 +88,34 @@ export const LandingHero = () => {
                             </span>
                         ) : null}
                         {popupNo >= 3 ? (
-                            <>
-                                <span
-                                    className={`${classes.popups} ${classes.popup2}`}
-                                >
-                                    <img src={popup2} alt="popup2" />
-                                </span>
-                                <span
-                                    className={`${classes.popups} ${classes.popup3}`}
-                                >
-                                    <img src={popup3} alt="popup3" />
-                                </span>
-                            </>
+                            <span
+                                className={`${classes.popups} ${classes.popup2}`}
+                            >
+                                <img src={popup2} alt="popup2" />
+                            </span>
+                        ) : null}
+                        {popupNo >= 2 ? (
+                            <span
+                                className={`${classes.popups} ${classes.popup3}`}
+                            >
+                                <img src={popup3} alt="popup3" />
+                            </span>
                         ) : null}
                         {popupNo >= 0 ? (
-                            <>
-                                <span
-                                    className={`${classes.popups} ${classes.popup4}`}
-                                >
-                                    <img src={popup4} alt="popup4" />
-                                </span>
-                                <span
-                                    className={`${classes.popups} ${classes.popup5}`}
-                                >
-                                    <img src={popup5} alt="popup5" />
-                                </span>
-                            </>
+                            <span
+                                className={`${classes.popups} ${classes.popup4}`}
+                            >
+                                <img src={popup4} alt="popup4" />
+                            </span>
                         ) : null}
                         {popupNo >= 1 ? (
+                            <span
+                                className={`${classes.popups} ${classes.popup5}`}
+                            >
+                                <img src={popup5} alt="popup5" />
+                            </span>
+                        ) : null}
+                        {popupNo >= 0 ? (
                             <span
                                 className={`${classes.popups} ${classes.popup6}`}
                             >
@@ -128,25 +136,69 @@ const useStyles = createStyles((theme) => ({
 
     heroContentContainer: {
         paddingBlockStart: "1rem",
+        marginBlockStart: "2rem",
+
+        [`@media screen and (max-width: ${em(1280)})`]: {
+            gridRow: "2/3",
+        },
     },
 
     heroTitle: {
         fontSize: "2.5rem",
+
+        [`@media screen and (max-width: ${em(1280)})`]: {
+            textAlign: "center",
+            maxWidth: "25ch",
+            marginInline: "auto",
+        },
+
+        [`@media screen and (max-width: ${em(768)})`]: {
+            fontSize: "2rem",
+        },
+
+        [`@media screen and (max-width: ${em(540)})`]: {
+            fontSize: "1.75rem",
+        },
+
+        [`@media screen and (max-width: ${em(414)})`]: {
+            fontSize: "1.5rem",
+        },
     },
 
     heroText: {
         fontSize: "0.9rem",
         marginBlockStart: "1.75rem",
         marginBlockEnd: "1.25rem",
+
+        [`@media screen and (max-width: ${em(1280)})`]: {
+            textAlign: "center",
+            marginInline: "auto",
+        },
+
+        [`@media screen and (max-width: ${em(768)})`]: {
+            marginBlockStart: "1.25rem",
+        },
+
+        [`@media screen and (max-width: ${em(540)})`]: {
+            marginBlockStart: "1rem",
+        },
     },
 
     heroActionBtn: {
         display: "flex",
         gap: "1rem",
+
+        [`@media screen and (max-width: ${em(1280)})`]: {
+            justifyContent: "center",
+        },
     },
 
     heroIllustration: {
         zIndex: -1,
+
+        [`@media screen and (max-width: ${em(1280)})`]: {
+            gridRow: "1/2",
+        },
     },
 
     girlImageContainer: {
@@ -156,11 +208,16 @@ const useStyles = createStyles((theme) => ({
         placeItems: "center",
         marginInlineStart: "auto",
         position: "relative",
+
+        [`@media screen and (max-width: ${em(1280)})`]: {
+            width: `min(80%, ${rem(450)})`,
+            marginInlineEnd: "auto",
+        },
     },
 
     popups: {
         position: "absolute",
-        animation: `${popupAnimation} 250ms ease-in-out`,
+        animation: `${popupAnimation} 200ms ease-in-out`,
         transformOrigin: "center",
     },
 
@@ -169,18 +226,30 @@ const useStyles = createStyles((theme) => ({
         transform: "translateX(-40%) translateY(-50%)",
         top: 0,
         left: 0,
+
+        [`@media screen and (max-width: ${em(768)})`]: {
+            width: "35dvw",
+        },
     },
 
     popup2: {
         width: rem(280),
         transform: "translateX(-68.5%) translateY(-25%)",
         bottom: 0,
+
+        [`@media screen and (max-width: ${em(768)})`]: {
+            width: "40dvw",
+        },
     },
 
     popup3: {
         width: rem(350),
         transform: "translateX(-45%) translateY(50%)",
         bottom: 0,
+
+        [`@media screen and (max-width: ${em(768)})`]: {
+            width: "50dvw",
+        },
     },
 
     popup4: {
@@ -188,6 +257,10 @@ const useStyles = createStyles((theme) => ({
         right: 0,
         top: "50%",
         transform: "translateX(50%) translateY(-35%)",
+
+        [`@media screen and (max-width: ${em(768)})`]: {
+            width: "32dvw",
+        },
     },
 
     popup5: {
@@ -195,6 +268,11 @@ const useStyles = createStyles((theme) => ({
         right: 0,
         top: "72%",
         transform: "translateX(60%) translateY(-35%)",
+
+        [`@media screen and (max-width: ${em(768)})`]: {
+            width: "30dvw",
+            transform: "translateX(45%) translateY(-55%)",
+        },
     },
 
     popup6: {
@@ -202,5 +280,10 @@ const useStyles = createStyles((theme) => ({
         right: 0,
         top: "35%",
         transform: "translateX(50%) translateY(-35%)",
+
+        [`@media screen and (max-width: ${em(768)})`]: {
+            width: "27dvw",
+            transform: "translateX(50%) translateY(-25%)",
+        },
     },
 }));

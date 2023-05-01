@@ -1,5 +1,5 @@
 import React from "react";
-import { createStyles, Title, Text, rem, Box, Flex } from "@mantine/core";
+import { createStyles, Title, Text, rem, Box, Flex, em } from "@mantine/core";
 
 import { _2ColumnLayout } from "../layouts/_2ColumnLayout";
 import testimonialIllustration from "../../assets/images/young-indian-manager.png";
@@ -47,6 +47,23 @@ const useStyles = createStyles((theme) => ({
 
     testimonialTitle: {
         fontSize: "2.5rem",
+
+        [`@media screen and (max-width: ${em(1120)})`]: {
+            fontSize: rem(35),
+        },
+
+        [`@media screen and (max-width: ${em(768)})`]: {
+            fontSize: rem(32),
+            textAlign: "center",
+        },
+
+        [`@media screen and (max-width: ${em(480)})`]: {
+            fontSize: rem(30),
+        },
+
+        [`@media screen and (max-width: ${em(350)})`]: {
+            fontSize: rem(28),
+        },
     },
 
     testimonialText: {
@@ -54,6 +71,19 @@ const useStyles = createStyles((theme) => ({
         marginBlockStart: "1.75rem",
         marginBlockEnd: "1.25rem",
         maxWidth: "40ch",
+
+        [`@media screen and (max-width: ${em(768)})`]: {
+            textAlign: "center",
+        },
+
+        [`@media screen and (max-width: ${em(480)})`]: {
+            fontSize: rem(15),
+            marginBlockStart: "1.35rem",
+        },
+
+        [`@media screen and (max-width: ${em(320)})`]: {
+            marginBlockStart: "1rem",
+        },
     },
 
     testimonialIllustration: {},
@@ -63,10 +93,22 @@ const useStyles = createStyles((theme) => ({
         placeItems: "center",
         marginInlineStart: "auto",
         position: "relative",
+
+        [`@media screen and (max-width: ${em(480)})`]: {
+            marginBlockStart: "-3rem",
+        },
     },
 
     testimonialIllustrationImage: {
         height: "30rem",
         zIndex: -1,
+
+        [`@media screen and (max-width: ${em(768)})`]: {
+            height: "25rem",
+        },
+
+        [`@media screen and (max-width: ${em(480)})`]: {
+            height: "20rem",
+        },
     },
 }));

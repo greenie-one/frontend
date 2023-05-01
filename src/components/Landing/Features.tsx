@@ -162,6 +162,10 @@ const useStyles = createStyles((theme) => ({
         gridTemplateRows: "repeat(8, 4rem)",
         gap: "1rem",
         zIndex: -1,
+
+        [`@media screen and (max-width: ${em(992)})`]: {
+            display: "block",
+        },
     },
 
     featuresCard: {
@@ -169,12 +173,29 @@ const useStyles = createStyles((theme) => ({
         borderRadius: "1rem",
         position: "relative",
 
+        [`@media screen and (max-width: ${em(992)})`]: {
+            marginBlock: "1.5rem",
+        },
+
+        [`@media screen and (max-width: ${em(540)})`]: {
+            minHeight: rem(260),
+        },
+
+        [`@media screen and (max-width: ${em(480)})`]: {
+            padding: "1.5rem",
+        },
+
         ":nth-of-type(1)": {
             gridColumn: "1/4",
             gridRow: "1/5",
+            marginBlock: 0,
 
             [`& .${getStylesRef("featuresCardText")}`]: {
                 maxWidth: "30ch",
+
+                [`@media screen and (max-width: ${em(480)})`]: {
+                    maxWidth: "100%",
+                },
             },
         },
 
@@ -194,6 +215,10 @@ const useStyles = createStyles((theme) => ({
 
             [`& .${getStylesRef("featuresCardText")}`]: {
                 maxWidth: "25ch",
+
+                [`@media screen and (max-width: ${em(480)})`]: {
+                    maxWidth: "100%",
+                },
             },
         },
     },
@@ -209,6 +234,26 @@ const useStyles = createStyles((theme) => ({
         ":nth-of-type(4)": {
             maxWidth: "20ch",
         },
+
+        [`@media screen and (max-width: ${em(1120)})`]: {
+            fontSize: "2rem",
+        },
+
+        [`@media screen and (max-width: ${em(768)})`]: {
+            fontSize: "1.75rem",
+        },
+
+        [`@media screen and (max-width: ${em(540)})`]: {
+            fontSize: "1.5rem",
+        },
+
+        [`@media screen and (max-width: ${em(480)})`]: {
+            fontSize: "1.35rem",
+        },
+
+        [`@media screen and (max-width: ${em(350)})`]: {
+            fontSize: "1.25rem",
+        },
     },
 
     featuresCardText: {
@@ -217,6 +262,16 @@ const useStyles = createStyles((theme) => ({
         fontSize: "0.9rem",
         maxWidth: "20ch",
         marginBlockStart: "1rem",
+
+        [`@media screen and (max-width: ${em(480)})`]: {
+            fontSize: "0.85rem",
+            marginBlockStart: "0.5rem",
+            maxWidth: "100%",
+        },
+
+        [`@media screen and (max-width: ${em(350)})`]: {
+            fontSize: "0.825rem",
+        },
     },
 
     featuresCardIllustration: {
@@ -226,9 +281,17 @@ const useStyles = createStyles((theme) => ({
 
     featuresCardIllustrationSmall: {
         display: "none",
+
+        [`@media screen and (max-width: ${em(992)})`]: {
+            display: "block",
+        },
     },
 
-    featuresCardIllustrationLarge: {},
+    featuresCardIllustrationLarge: {
+        [`@media screen and (max-width: ${em(992)})`]: {
+            display: "none",
+        },
+    },
 
     manyMore: {
         gridColumn: "3/6",
@@ -242,5 +305,15 @@ const useStyles = createStyles((theme) => ({
         color: "#17A672",
         fontWeight: 700,
         fontSize: "1.75rem",
+
+        [`@media screen and (max-width: ${em(640)})`]: {
+            fontSize: "1.6rem",
+            borderRadius: "0.75rem",
+        },
+
+        [`@media screen and (max-width: ${em(480)})`]: {
+            fontSize: "1.35rem",
+            borderRadius: "0.5rem",
+        },
     },
 }));

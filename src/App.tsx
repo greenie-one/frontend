@@ -6,7 +6,7 @@ import { Landing } from "./pages/Landing";
 import { Navbar } from "./components/common/Navbar";
 import { Footer } from "./components/common/Footer";
 
-import { validRoutes } from "./constants/ValidRoutes";
+import { validRoutes } from "./utils/constants/ValidRoutes";
 
 const App = () => {
     const { pathname } = useLocation();

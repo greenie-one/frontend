@@ -1,4 +1,4 @@
-import { Box, createStyles } from "@mantine/core";
+import { Box, createStyles, em } from "@mantine/core";
 import React from "react";
 
 type _2ColumnLayoutProps = {
@@ -20,5 +20,9 @@ const useStyles = createStyles((theme) => ({
         display: "grid",
         gridTemplateColumns: "1fr 1fr",
         gap: "3rem",
+
+        [`@media screen and (max-width: ${em(1280)})`]: {
+            gridTemplateColumns: "1fr",
+        },
     },
 }));
