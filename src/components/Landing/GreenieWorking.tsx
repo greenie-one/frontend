@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { createStyles, Title, Text, Box, rem, keyframes } from "@mantine/core";
+import {
+    createStyles,
+    Title,
+    Text,
+    Box,
+    em,
+    rem,
+    keyframes,
+} from "@mantine/core";
 import { randomId } from "@mantine/hooks";
 import { LandingSectionHeading } from "./SectionHeading";
 import { Button } from "../common/Button";
@@ -35,21 +43,19 @@ const WorkingsCard: React.FC<WorkingsCardPropsType> = ({
 
     return (
         <Box sx={{ backgroundColor: cardBg }} className={classes.workingsCard}>
-            <Box>
-                <Title
-                    sx={{ color: titleColor }}
-                    order={2}
-                    className={classes.workingsCardTitle}
-                >
-                    {title}
-                </Title>
-                <Text
-                    sx={{ color: textColor }}
-                    className={classes.workingsCardText}
-                >
-                    {text}
-                </Text>
-            </Box>
+            <Title
+                sx={{ color: titleColor }}
+                order={2}
+                className={classes.workingsCardTitle}
+            >
+                {title}
+            </Title>
+            <Text
+                sx={{ color: textColor }}
+                className={classes.workingsCardText}
+            >
+                {text}
+            </Text>
             <span className={classes.workingIllustration}>
                 <img src={illustration} alt="illustration" className={""} />
             </span>
@@ -167,6 +173,21 @@ const useStyles = createStyles((theme) => ({
         alignItems: "center",
         justifyContent: "center",
         gap: "2rem",
+
+        [`@media screen and (max-width: ${em(992)})`]: {
+            columnGap: "4rem",
+            rowGap: "1rem",
+            display: "grid",
+            gridTemplateColumns: "max-content max-content",
+        },
+
+        [`@media screen and (max-width: ${em(480)})`]: {
+            columnGap: "2rem",
+        },
+
+        [`@media screen and (max-width: ${em(480)})`]: {
+            columnGap: "0.5rem",
+        },
     },
 
     workingsBtn: {
@@ -176,6 +197,36 @@ const useStyles = createStyles((theme) => ({
             border: "1px solid #17A672",
             color: "#17A672",
             transition: "border-color 100ms linear, color 100ms linear",
+        },
+
+        ":nth-of-type(1)": {
+            [`@media screen and (max-width: ${em(992)})`]: {
+                marginInlineEnd: "auto",
+            },
+        },
+
+        ":nth-of-type(2)": {
+            [`@media screen and (max-width: ${em(992)})`]: {
+                marginInlineStart: "auto",
+            },
+        },
+
+        ":nth-of-type(3)": {
+            [`@media screen and (max-width: ${em(992)})`]: {
+                marginInlineEnd: "auto",
+            },
+        },
+
+        ":nth-of-type(4)": {
+            [`@media screen and (max-width: ${em(992)})`]: {
+                marginInlineStart: "auto",
+            },
+        },
+
+        [`@media screen and (max-width: ${em(480)})`]: {
+            paddingInline: "0.75rem !important",
+            paddingBlock: "0.5rem !important",
+            fontSize: rem(12.5),
         },
     },
 
@@ -201,6 +252,24 @@ const useStyles = createStyles((theme) => ({
         animation: `${slideUp} 500ms ease`,
         display: "grid",
         gridTemplateColumns: "2fr 1fr",
+        gridTemplateRows: "max-content max-content",
+        gap: "1rem",
+
+        [`@media screen and (max-width: ${em(992)})`]: {
+            padding: "2rem",
+            borderRadius: "1.33rem",
+        },
+
+        [`@media screen and (max-width: ${em(640)})`]: {
+            padding: "1.5rem",
+            borderRadius: "1rem",
+        },
+
+        [`@media screen and (max-width: ${em(480)})`]: {
+            padding: "1.25rem",
+            rowGap: "0.5rem",
+            columnGap: "1rem",
+        },
 
         ":nth-of-type(1)": {
             width: "85%",
@@ -223,21 +292,56 @@ const useStyles = createStyles((theme) => ({
     },
 
     workingsCardTitle: {
-        fontSize: "2.2rem",
+        fontSize: "2.25dvw",
         lineHeight: "1.1",
         maxWidth: "17ch",
+        gridColumn: "1/2",
+
+        [`@media screen and (max-width: ${em(768)})`]: {
+            fontSize: rem(18),
+        },
+
+        [`@media screen and (max-width: ${em(480)})`]: {
+            gridColumn: "1/3",
+            maxWidth: "100%",
+        },
     },
 
     workingsCardText: {
         fontSize: "0.9rem",
         maxWidth: "40ch",
-        marginBlockStart: "1rem",
+        gridColumn: "1/2",
+
+        [`@media screen and (max-width: ${em(768)})`]: {
+            fontSize: "0.875rem",
+            lineHeight: "1.3",
+        },
+
+        [`@media screen and (max-width: ${em(540)})`]: {
+            fontSize: "0.85rem",
+        },
+
+        [`@media screen and (max-width: ${em(414)})`]: {
+            fontSize: "0.8rem",
+        },
     },
 
     workingIllustration: {
         display: "grid",
         placeItems: "center",
         aspectRatio: "1",
-        width: rem(220),
+        width: "15dvw",
+        alignSelf: "center",
+        gridColumn: "2/3",
+        gridRow: "1/3",
+
+        [`@media screen and (max-width: ${em(768)})`]: {
+            width: rem(120),
+        },
+
+        [`@media screen and (max-width: ${em(480)})`]: {
+            gridRow: "2/3",
+            width: rem(90),
+        },
     },
 }));

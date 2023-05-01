@@ -142,10 +142,6 @@ const useStyles = createStyles((theme) => ({
         background:
             "linear-gradient(180deg, #ffffff 0%, #edfff9 44.79%, #ffffff 89.07%, #d7fff0 100%)",
         backgroundSize: "100dvw 100dvh",
-
-        [`@media screen and (max-width: ${em(768)})`]: {
-            background: "transparent",
-        },
     },
 
     header: {
@@ -165,7 +161,6 @@ const useStyles = createStyles((theme) => ({
             borderRadius: 0,
             marginBlockStart: 0,
             boxShadow: "none",
-            backgroundColor: "transparent",
         },
     },
 
@@ -241,8 +236,8 @@ const useStyles = createStyles((theme) => ({
 
     tryBtn: {
         color: "white",
-        backgroundColor: "#17A672",
-        borderColor: "#17A672",
+        backgroundColor: "#17A672 !important",
+        borderColor: "#17A672 !important",
     },
 
     menuBtn: {

@@ -1,4 +1,4 @@
-import { createStyles, Box, Text, rem } from "@mantine/core";
+import { createStyles, Box, Text, em, rem } from "@mantine/core";
 
 import OwlCarousel from "react-owl-carousel";
 
@@ -43,54 +43,54 @@ const testimonials = [
         name: "John Doe",
         designation: "Founder and CEO, Greenie",
     },
-    {
-        statement:
-            "Greenie: Simplifying background verifications, rewarding hassle-free process. Be in control. Streamline with ease.",
-        name: "John Doe",
-        designation: "Founder and CEO, Greenie",
-    },
-    {
-        statement:
-            "Greenie: Simplifying background verifications, rewarding hassle-free process. Be in control. Streamline with ease.",
-        name: "John Doe",
-        designation: "Founder and CEO, Greenie",
-    },
-    {
-        statement:
-            "Greenie: Simplifying background verifications, rewarding hassle-free process. Be in control. Streamline with ease.",
-        name: "John Doe",
-        designation: "Founder and CEO, Greenie",
-    },
-    {
-        statement:
-            "Greenie: Simplifying background verifications, rewarding hassle-free process. Be in control. Streamline with ease.",
-        name: "John Doe",
-        designation: "Founder and CEO, Greenie",
-    },
-    {
-        statement:
-            "Greenie: Simplifying background verifications, rewarding hassle-free process. Be in control. Streamline with ease.",
-        name: "John Doe",
-        designation: "Founder and CEO, Greenie",
-    },
-    {
-        statement:
-            "Greenie: Simplifying background verifications, rewarding hassle-free process. Be in control. Streamline with ease.",
-        name: "John Doe",
-        designation: "Founder and CEO, Greenie",
-    },
-    {
-        statement:
-            "Greenie: Simplifying background verifications, rewarding hassle-free process. Be in control. Streamline with ease.",
-        name: "John Doe",
-        designation: "Founder and CEO, Greenie",
-    },
-    {
-        statement:
-            "Greenie: Simplifying background verifications, rewarding hassle-free process. Be in control. Streamline with ease.",
-        name: "John Doe",
-        designation: "Founder and CEO, Greenie",
-    },
+    // {
+    //     statement:
+    //         "Greenie: Simplifying background verifications, rewarding hassle-free process. Be in control. Streamline with ease.",
+    //     name: "John Doe",
+    //     designation: "Founder and CEO, Greenie",
+    // },
+    // {
+    //     statement:
+    //         "Greenie: Simplifying background verifications, rewarding hassle-free process. Be in control. Streamline with ease.",
+    //     name: "John Doe",
+    //     designation: "Founder and CEO, Greenie",
+    // },
+    // {
+    //     statement:
+    //         "Greenie: Simplifying background verifications, rewarding hassle-free process. Be in control. Streamline with ease.",
+    //     name: "John Doe",
+    //     designation: "Founder and CEO, Greenie",
+    // },
+    // {
+    //     statement:
+    //         "Greenie: Simplifying background verifications, rewarding hassle-free process. Be in control. Streamline with ease.",
+    //     name: "John Doe",
+    //     designation: "Founder and CEO, Greenie",
+    // },
+    // {
+    //     statement:
+    //         "Greenie: Simplifying background verifications, rewarding hassle-free process. Be in control. Streamline with ease.",
+    //     name: "John Doe",
+    //     designation: "Founder and CEO, Greenie",
+    // },
+    // {
+    //     statement:
+    //         "Greenie: Simplifying background verifications, rewarding hassle-free process. Be in control. Streamline with ease.",
+    //     name: "John Doe",
+    //     designation: "Founder and CEO, Greenie",
+    // },
+    // {
+    //     statement:
+    //         "Greenie: Simplifying background verifications, rewarding hassle-free process. Be in control. Streamline with ease.",
+    //     name: "John Doe",
+    //     designation: "Founder and CEO, Greenie",
+    // },
+    // {
+    //     statement:
+    //         "Greenie: Simplifying background verifications, rewarding hassle-free process. Be in control. Streamline with ease.",
+    //     name: "John Doe",
+    //     designation: "Founder and CEO, Greenie",
+    // },
 ];
 
 export const Landing = () => {
@@ -98,25 +98,21 @@ export const Landing = () => {
 
     const options = {
         loop: true,
-        center: false,
-        items: 3,
-        margin: -150,
+        center: true,
+        items: 1,
+        margin: 10,
         autoplay: true,
         dots: false,
         autoplayTimeout: 5000,
         smartSpeed: 450,
         nav: false,
         responsive: {
-            0: {
-                items: 1,
-            },
-
             640: {
                 items: 2,
             },
 
             992: {
-                items: 2,
+                items: 3,
             },
         },
     };
@@ -162,9 +158,13 @@ const useStyles = createStyles((theme) => ({
     testimonialCarouselSection: {
         height: "14rem",
         backgroundColor: "#17A672",
-        paddingInlineStart: "var(--app-padding-inline)",
+        paddingInline: "2rem",
         position: "relative",
         zIndex: -1,
+
+        [`@media screen and (max-width: ${em(480)})`]: {
+            height: "10rem",
+        },
     },
 
     testimonialCarouselContainer: {
@@ -173,6 +173,10 @@ const useStyles = createStyles((theme) => ({
         borderTopLeftRadius: "15px",
         borderBottomLeftRadius: "15px",
         overflow: "hidden",
+
+        [`@media screen and (max-width: ${em(480)})`]: {
+            transform: "translateY(-60%)",
+        },
     },
 
     testimonialCard: {
@@ -180,21 +184,37 @@ const useStyles = createStyles((theme) => ({
         boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.15)",
         padding: "1.5rem",
         borderRadius: "15px",
-        width: "30rem",
+        width: `min(100%, 30rem)`,
+
+        [`@media screen and (max-width: ${em(480)})`]: {
+            padding: "1rem",
+        },
     },
 
     testimonialStatement: {
         fontSize: rem(16),
         lineHeight: 1.4,
+
+        [`@media screen and (max-width: ${em(480)})`]: {
+            fontSize: rem(15),
+        },
     },
 
     name: {
         fontSize: rem(14.5),
         fontWeight: 600,
         marginBlockStart: "1.25rem",
+
+        [`@media screen and (max-width: ${em(480)})`]: {
+            fontSize: rem(13.5),
+        },
     },
 
     designation: {
         fontSize: rem(12),
+
+        [`@media screen and (max-width: ${em(480)})`]: {
+            fontSize: rem(11.5),
+        },
     },
 }));

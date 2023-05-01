@@ -1,5 +1,5 @@
 import React from "react";
-import { createStyles, Title, Text, rem, Box, Flex } from "@mantine/core";
+import { createStyles, Title, Text, rem, Box, Flex, em } from "@mantine/core";
 import { MdVerified } from "react-icons/md";
 
 import { _2ColumnLayout } from "../layouts/_2ColumnLayout";
@@ -28,10 +28,10 @@ export const LandingHiring: React.FC = (): JSX.Element => {
                             <span className={classes.verifiedText}>
                                 Verified
                             </span>
+                            <span className={classes.capIconContainer}>
+                                <img src={cap} alt="cap" className={""} />
+                            </span>
                         </Flex>
-                        <span className={classes.capIconContainer}>
-                            <img src={cap} alt="cap" className={""} />
-                        </span>
                     </Title>
                     <Text className={classes.hiringText}>
                         Streamlining background checks with State-of-the-Art
@@ -70,6 +70,22 @@ const useStyles = createStyles((theme) => ({
         fontSize: "2.5rem",
         position: "relative",
         zIndex: -1,
+
+        [`@media screen and (max-width: ${em(1120)})`]: {
+            fontSize: rem(35),
+        },
+
+        [`@media screen and (max-width: ${em(768)})`]: {
+            fontSize: rem(32),
+        },
+
+        [`@media screen and (max-width: ${em(480)})`]: {
+            fontSize: rem(26),
+        },
+
+        [`@media screen and (max-width: ${em(350)})`]: {
+            fontSize: rem(26),
+        },
     },
 
     verifiedTextContainer: {
@@ -78,8 +94,27 @@ const useStyles = createStyles((theme) => ({
         gap: "0.15rem",
         position: "absolute",
         top: 0,
-        left: "50%",
-        transform: "translateX(-100%) translateY(-85%)",
+        left: "7rem",
+        transform: "translateY(-80%)",
+
+        [`@media screen and (max-width: ${em(1120)})`]: {
+            fontSize: "1.6rem",
+            left: "6.25rem",
+        },
+
+        [`@media screen and (max-width: ${em(768)})`]: {
+            fontSize: "1.4rem",
+            left: "5.75rem",
+        },
+
+        [`@media screen and (max-width: ${em(480)})`]: {
+            fontSize: "1.3rem",
+            left: "4.5rem",
+        },
+
+        [`@media screen and (max-width: ${em(350)})`]: {
+            fontSize: "1.25rem",
+        },
     },
 
     verified: {
@@ -95,7 +130,25 @@ const useStyles = createStyles((theme) => ({
         width: rem(20),
         position: "absolute",
         top: 0,
-        transform: "translateX(2.125rem) translateY(2.6rem)",
+        left: "50%",
+        transform: "translateX(-50%) translateY(4.75rem)",
+
+        [`@media screen and (max-width: ${em(1120)})`]: {
+            transform: "translateX(-50%) translateY(4.5rem)",
+        },
+
+        [`@media screen and (max-width: ${em(540)})`]: {
+            transform: "translateX(-50%) translateY(4rem)",
+        },
+
+        [`@media screen and (max-width: ${em(480)})`]: {
+            width: rem(17.5),
+            transform: "translateX(-50%) translateY(3.25rem)",
+        },
+
+        [`@media screen and (max-width: ${em(350)})`]: {
+            width: rem(15),
+        },
     },
 
     hiringText: {
@@ -103,6 +156,15 @@ const useStyles = createStyles((theme) => ({
         marginBlockStart: "1.75rem",
         marginBlockEnd: "1.25rem",
         maxWidth: "40ch",
+
+        [`@media screen and (max-width: ${em(480)})`]: {
+            fontSize: rem(15),
+            marginBlockStart: "1.35rem",
+        },
+
+        [`@media screen and (max-width: ${em(320)})`]: {
+            marginBlockStart: "1rem",
+        },
     },
 
     hiringIllustration: {
