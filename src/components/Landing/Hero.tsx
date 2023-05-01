@@ -54,15 +54,19 @@ export const LandingHero = () => {
             <_2ColumnLayout>
                 <Box className={classes.heroContentContainer}>
                     <Title order={1} className={classes.heroTitle}>
-                        Unlocking the Future of Background Verification
+                        Verified Profiles At A Click Of A Button
                     </Title>
                     <Text className={classes.heroText}>
-                        Streamlining background checks with State-of-the-Art
-                        technology redefining trust in the verification industry
+                        Get Complete Background Verification Done In 100
+                        Seconds. Network, Collaborate and Hire With Trust
                     </Text>
                     <Box className={classes.heroActionBtn}>
-                        <Button variant={"fill"} outline={true} classNames={""}>
-                            Try For Free
+                        <Button
+                            variant={"fill"}
+                            outline={true}
+                            classNames={classes.tryForFree}
+                        >
+                            Try Greenie
                         </Button>
                         {/* <Button
                             variant={"outline"}
@@ -166,7 +170,7 @@ const useStyles = createStyles((theme) => ({
     },
 
     heroText: {
-        fontSize: "0.9rem",
+        fontSize: "0.95rem",
         marginBlockStart: "1.75rem",
         marginBlockEnd: "1.25rem",
 
@@ -191,6 +195,10 @@ const useStyles = createStyles((theme) => ({
         [`@media screen and (max-width: ${em(1280)})`]: {
             justifyContent: "center",
         },
+    },
+
+    tryForFree: {
+        fontSize: rem(15),
     },
 
     heroIllustration: {

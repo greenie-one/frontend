@@ -34,11 +34,9 @@ export const LandingHiring: React.FC = (): JSX.Element => {
                         </Flex>
                     </Title>
                     <Text className={classes.hiringText}>
-                        Streamlining background checks with State-of-the-Art
-                        technology redefining trust in the verification
-                        industry, streamlining background checks with
-                        State-of-the-Art technology redefining trust in the
-                        verification industry
+                        Greenie Brings Speed And Trust Into Hiring, Allowing
+                        Your HR Team's To Get Verification Reports Instantly
+                        Without Waiting For Weeks.
                     </Text>
                 </Box>
                 <Box className={classes.hiringIllustration}>

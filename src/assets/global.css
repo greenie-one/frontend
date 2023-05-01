@@ -214,6 +214,11 @@ header {
     bottom: 0;
 }
 
+.owl-stage {
+    display: flex;
+    align-items: stretch;
+}
+
 @media screen and (max-width: 30em) {
     html,
     html:focus-within {

@@ -24,8 +24,10 @@ const TestimonialCard: React.FC<TestimonialCardPropsType> = ({
     return (
         <Box className={classes.testimonialCard}>
             <Text className={classes.testimonialStatement}>"{statement}"</Text>
-            <Text className={classes.name}>{name}</Text>
-            <Text className={classes.designation}>{designation}</Text>
+            <Box className={classes.testimonialCardName}>
+                <Text className={classes.name}>{name}</Text>
+                <Text className={classes.designation}>{designation}</Text>
+            </Box>
         </Box>
     );
 };
@@ -33,64 +35,40 @@ const TestimonialCard: React.FC<TestimonialCardPropsType> = ({
 const testimonials = [
     {
         statement:
-            "Greenie: Simplifying background verifications, rewarding hassle-free process. Be in control. Streamline with ease.",
-        name: "John Doe",
-        designation: "Founder and CEO, Greenie",
+            "We've been blown away by how easy Greenie has made our hirirng process. From Background checks to contract managemenet, their platform streamlines everything and ensures that we're always making informed decisions",
+        name: "Rahul Kaushik",
+        designation: "",
     },
     {
         statement:
-            "Greenie: Simplifying background verifications, rewarding hassle-free process. Be in control. Streamline with ease.",
-        name: "John Doe",
-        designation: "Founder and CEO, Greenie",
+            "As a small business owner, I was always worried about the risks involved in hiring, Greenie changed everything for us.We are more confident now to bring in new members in our team.",
+        name: "Sahil Gupte",
+        designation: "",
     },
-    // {
-    //     statement:
-    //         "Greenie: Simplifying background verifications, rewarding hassle-free process. Be in control. Streamline with ease.",
-    //     name: "John Doe",
-    //     designation: "Founder and CEO, Greenie",
-    // },
-    // {
-    //     statement:
-    //         "Greenie: Simplifying background verifications, rewarding hassle-free process. Be in control. Streamline with ease.",
-    //     name: "John Doe",
-    //     designation: "Founder and CEO, Greenie",
-    // },
-    // {
-    //     statement:
-    //         "Greenie: Simplifying background verifications, rewarding hassle-free process. Be in control. Streamline with ease.",
-    //     name: "John Doe",
-    //     designation: "Founder and CEO, Greenie",
-    // },
-    // {
-    //     statement:
-    //         "Greenie: Simplifying background verifications, rewarding hassle-free process. Be in control. Streamline with ease.",
-    //     name: "John Doe",
-    //     designation: "Founder and CEO, Greenie",
-    // },
-    // {
-    //     statement:
-    //         "Greenie: Simplifying background verifications, rewarding hassle-free process. Be in control. Streamline with ease.",
-    //     name: "John Doe",
-    //     designation: "Founder and CEO, Greenie",
-    // },
-    // {
-    //     statement:
-    //         "Greenie: Simplifying background verifications, rewarding hassle-free process. Be in control. Streamline with ease.",
-    //     name: "John Doe",
-    //     designation: "Founder and CEO, Greenie",
-    // },
-    // {
-    //     statement:
-    //         "Greenie: Simplifying background verifications, rewarding hassle-free process. Be in control. Streamline with ease.",
-    //     name: "John Doe",
-    //     designation: "Founder and CEO, Greenie",
-    // },
-    // {
-    //     statement:
-    //         "Greenie: Simplifying background verifications, rewarding hassle-free process. Be in control. Streamline with ease.",
-    //     name: "John Doe",
-    //     designation: "Founder and CEO, Greenie",
-    // },
+    {
+        statement:
+            "Greenie has been an absolute game changer for our HR team. Thier platform is intutive, easy to use and incredeibly effective.",
+        name: "Swanand Wagh",
+        designation: "",
+    },
+    {
+        statement:
+            "Greenie has completely transformed hiring process for my company. The platform is easy to use and provides peace of mind that our new hires have been completely vetted.",
+        name: "Ratnesh Jain",
+        designation: "",
+    },
+    {
+        statement:
+            "I was skeptical about using Greenie, but after giving it a try, I was blown away by how fast and accurate the verification process was.",
+        name: "Bobby Kumar",
+        designation: "",
+    },
+    {
+        statement:
+            "I feel powerful using Greenie. It gives me so much control over my data and personal information. I can store and share all my professional documents, thanks to Doc Depot. ",
+        name: "Tanvi Tomar",
+        designation: "",
+    },
 ];
 
 export const Landing = () => {
@@ -185,6 +163,10 @@ const useStyles = createStyles((theme) => ({
         padding: "1.5rem",
         borderRadius: "15px",
         width: `min(100%, 30rem)`,
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
 
         [`@media screen and (max-width: ${em(480)})`]: {
             padding: "1rem",
@@ -192,18 +174,21 @@ const useStyles = createStyles((theme) => ({
     },
 
     testimonialStatement: {
-        fontSize: rem(16),
-        lineHeight: 1.4,
+        fontSize: rem(15),
+        lineHeight: 1.45,
 
         [`@media screen and (max-width: ${em(480)})`]: {
-            fontSize: rem(15),
+            fontSize: rem(14),
         },
     },
 
+    testimonialCardName: {
+        marginBlockStart: "1.3rem",
+    },
+
     name: {
-        fontSize: rem(14.5),
+        fontSize: rem(15),
         fontWeight: 600,
-        marginBlockStart: "1.25rem",
 
         [`@media screen and (max-width: ${em(480)})`]: {
             fontSize: rem(13.5),

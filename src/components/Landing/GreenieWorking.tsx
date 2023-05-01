@@ -67,36 +67,36 @@ const workingsCardContent = [
     {
         id: randomId(),
         cardBg: "#D8FFF1",
-        title: "Create greenie account in less than 10 secs.",
+        title: "Creating A Greenie Account Is Easier that Boiling An Egg.",
         titleColor: "#17A672",
-        text: "It is very simple and easy to create your greenie account.",
+        text: "Instantly Create A Verified Greenie Account With Adhaar .",
         textColor: "#191819",
         illustration: workingIllustration1,
     },
     {
         id: randomId(),
         cardBg: "#A1FFDD",
-        title: "Verify all your documents only once.",
+        title: "Upload & Verify Documents Without Getting Reminder Calls.",
         titleColor: "#17A672",
-        text: "Verify all your documents and get a unique Greenie ID that will save all your documents in a repository. Upload your documents and forget about it.",
+        text: "Securly Upload And Verify Important Documents On Greenie's Doc Depot.",
         textColor: "#191819",
         illustration: workingIllustration2,
     },
     {
         id: randomId(),
         cardBg: "#4BE4AD",
-        title: "Go ahead and share your Greenie ID.",
+        title: "Verify With Peers.",
         titleColor: "#018454",
-        text: "Share your Greenie ID your recruiters, your organisations or anywhere you would want to verify your documents and background.",
+        text: "Collaborate With Your Previous Companies Or Collegues Seamlesly And Keep All Verificaitions Organized.",
         textColor: "#191819",
         illustration: workingIllustration3,
     },
     {
         id: randomId(),
         cardBg: "#17A672",
-        title: "Take control of your background verification",
+        title: "Own And Share Your Verification Report.",
         titleColor: "#A1FFDD",
-        text: "You have all control to grant access to any of the documents that you uploaded online. Recruiters you request you to reveal only the documents to verify. You control your background verification and track it live.",
+        text: "Share Your Verified Documents With Anyone, Anywhere, Anytime. Keep Your Greenie ID Handy For Quick And Easy Sharing.",
         textColor: "#FFFFFF",
         illustration: workingIllustration4,
     },
@@ -110,17 +110,15 @@ export const LandingGreenieWorkings = () => {
     return (
         <section className={`${classes.root} section`}>
             <LandingSectionHeading
-                heading={"How Greenie works"}
-                subheading={
-                    "Streamlining background checks with State-of-the-Art technology redefining trust in the verification industry"
-                }
+                heading={"How Greenie Works"}
+                subheading={""}
             />
             <Box className={classes.workingsBtnContainer}>
                 {[
                     "Create Greenie Account",
                     "Verify Documents",
-                    "Share Your ID",
-                    "Accept Request",
+                    "Send or Receive Request",
+                    " Share ID",
                 ].map((text, id) => {
                     return (
                         <Button
@@ -165,7 +163,7 @@ const useStyles = createStyles((theme) => ({
         display: "flex",
         flexDirection: "column",
         alignItems: "stretch",
-        gap: "2.5rem",
+        gap: "2rem",
     },
 
     workingsBtnContainer: {
@@ -192,6 +190,7 @@ const useStyles = createStyles((theme) => ({
 
     workingsBtn: {
         transition: "border-color 100ms linear, color 150ms linear",
+        fontSize: rem(14.5),
 
         ":hover": {
             border: "1px solid #17A672",
