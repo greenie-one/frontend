@@ -51,15 +51,27 @@ export const Footer: React.FC = (): JSX.Element => {
                             className={classes.footerSocialLinks}
                             gap="md"
                         >
-                            <span className={classes.socialLinkIcons}>
+                            {/* <span className={classes.socialLinkIcons}>
                                 <MdOutlineFacebook />
-                            </span>
-                            <span className={classes.socialLinkIcons}>
-                                <BsInstagram />
-                            </span>
-                            <span className={classes.socialLinkIcons}>
-                                <FiLinkedin />
-                            </span>
+                            </span> */}
+                            <a
+                                href="https://instagram.com/greenie.one?igshid=ZDdkNTZiNTM="
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                <span className={classes.socialLinkIcons}>
+                                    <BsInstagram />
+                                </span>
+                            </a>
+                            <a
+                                href="https://www.linkedin.com/company/gogreenie/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                <span className={classes.socialLinkIcons}>
+                                    <FiLinkedin />
+                                </span>
+                            </a>
                         </Flex>
                     </Box>
                     <Box className={classes.gridLeftContainer}>
@@ -78,12 +90,20 @@ export const Footer: React.FC = (): JSX.Element => {
                                 placeholder="Your Email"
                                 className={classes.formInput}
                             />
+
+                            <textarea
+                                name="message"
+                                id="message"
+                                rows={6}
+                                className={`${classes.formInput} ${classes.messageInput}`}
+                                placeholder="Your Message..."
+                            ></textarea>
                             <Button
                                 variant="fill"
                                 classNames={classes.formSubmitBtn}
                                 outline={true}
                             >
-                                Try For Free
+                                Get In Touch
                             </Button>
                         </form>
                     </Box>
@@ -145,8 +165,8 @@ const useStyles = createStyles((theme) => ({
 
     footerGridContainer: {
         display: "grid",
-        gridTemplateColumns: "2fr 1fr",
-        gap: "2.5rem",
+        gridTemplateColumns: "1.8fr 1.2fr",
+        gap: "4rem",
         alignItems: "start",
 
         [`@media screen and (max-width: ${em(992)})`]: {
@@ -272,6 +292,7 @@ const useStyles = createStyles((theme) => ({
         alignItems: "flex-start",
         marginInlineStart: "auto",
         gap: "1rem",
+        width: "100%",
 
         [`@media screen and (max-width: ${em(992)})`]: {
             marginInlineEnd: "auto",
@@ -283,7 +304,6 @@ const useStyles = createStyles((theme) => ({
 
         [`@media screen and (max-width: ${em(350)})`]: {
             width: "100%",
-            gap: "0.6rem",
         },
     },
 
@@ -294,6 +314,7 @@ const useStyles = createStyles((theme) => ({
         paddingBlock: "0.9rem",
         color: "#FFFFFF",
         fontSize: rem(14),
+        width: "100%",
 
         "::placeholder": {
             color: "#FFFFFF",
@@ -312,9 +333,16 @@ const useStyles = createStyles((theme) => ({
         },
     },
 
+    messageInput: {
+        borderRadius: "16px",
+        outline: "none",
+        border: 0,
+    },
+
     formSubmitBtn: {
+        fontSize: rem(15),
         [`@media screen and (max-width: ${em(992)})`]: {
-            marginInlineStart: "auto",
+            fontSize: rem(14),
         },
     },
 

@@ -53,7 +53,7 @@ export const Navbar = () => {
                         outline={true}
                         classNames={classes.tryBtn}
                     >
-                        Try For Free
+                        Try Greenie
                     </Button>
                 </Group>
                 {!opened ? (

@@ -13,12 +13,12 @@ export const LandingTestimonials: React.FC = (): JSX.Element => {
                 <_2ColumnLayout>
                     <Box className={classes.testimonialContent}>
                         <Title order={1} className={classes.testimonialTitle}>
-                            What people say about Greenie
+                            Happy Greenie Users
                         </Title>
                         <Text className={classes.testimonialText}>
-                            Over 5000 people share their success stories about
-                            how they optimised their hiring processes with
-                            greenie.
+                            Over 100 people have used our beta version and share
+                            their success stories of using Greenie and
+                            optimizing their hiring process.
                         </Text>
                     </Box>
                     <Box className={classes.testimonialIllustration}>

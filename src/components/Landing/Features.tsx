@@ -75,9 +75,9 @@ const featuresCardContent = [
     {
         id: randomId(),
         cardBg: "#17A672",
-        title: "Instantly verify all documents at one place.",
+        title: '"Doc Depot" Your Professional Document Locker.',
         titleColor: "#FFFFFF",
-        text: "Streamlining background checks with State-of-the-Art technology redefining trust in the verification industry",
+        text: "Your Data Is Safe With Us, We Have Locked It Up With Blockchain Encryption And Handed You The Keys.",
         textColor: "#FFFFFF",
         illustrationSmall: documentVerified,
         illustrationLarge: documentVerified,
@@ -85,9 +85,9 @@ const featuresCardContent = [
     {
         id: randomId(),
         cardBg: "#47DAA4",
-        title: "Improve turn around time.",
+        title: "Speedy Onboarding.",
         titleColor: "#FFFFFF",
-        text: "Streamlining background checks with State-of-the-Art technology redefining trust in the verification industry",
+        text: "Greenie Provides HR's With 100% Verified Candidates Using State-Of-The Art Technology. Just Crack Interview, Finalize Salary And Join.",
         textColor: "#FFFFFF",
         illustrationSmall: clock,
         illustrationLarge: clock,
@@ -95,9 +95,9 @@ const featuresCardContent = [
     {
         id: randomId(),
         cardBg: "#85D1B5",
-        title: "Live tracking.",
+        title: " Create, Upload and Share Documents.",
         titleColor: "#FFFFFF",
-        text: "Streamlining background checks with State-of-the-Art technology redefining trust in the verification industry",
+        text: "Greenie's Contract Creation Tool Creates Rock Solid Contracts Or Upload An Existing Contract For Seamless Sharing.",
         textColor: "#FFFFFF",
         illustrationSmall: liveTracking,
         illustrationLarge: liveTracking,
@@ -105,9 +105,9 @@ const featuresCardContent = [
     {
         id: randomId(),
         cardBg: "#A0E2E1",
-        title: "Control over data.",
+        title: "Instantly Verify All Documents At Once.",
         titleColor: "#310805",
-        text: "Streamlining background checks with State-of-the-Art technology redefining trust in the verification industry",
+        text: " Verify Identity, Income, Experience And Skills Under 100 Seconds.",
         textColor: "#191819",
         illustrationSmall: dataControllMobile,
         illustrationLarge: dataControll,
@@ -120,10 +120,8 @@ export const LandingFeatures = () => {
     return (
         <section className={`${classes.root} section`}>
             <LandingSectionHeading
-                heading={"It is super simple, with Greenie"}
-                subheading={
-                    "Streamlining background checks with State-of-the-Art technology redefining trust in the verification industry"
-                }
+                heading={"It's Super Simple With Greenie"}
+                subheading={""}
             />
             <Box className={classes.featureGrid}>
                 {featuresCardContent.map((cardContent, id) => {
@@ -159,7 +157,7 @@ const useStyles = createStyles((theme) => ({
         marginBlockStart: "0.5rem",
         display: "grid",
         gridTemplateColumns: "repeat(5, 1fr)",
-        gridTemplateRows: "repeat(8, 4rem)",
+        gridTemplateRows: "repeat(8, 5rem)",
         gap: "1rem",
         zIndex: -1,
 
@@ -178,7 +176,7 @@ const useStyles = createStyles((theme) => ({
         },
 
         [`@media screen and (max-width: ${em(540)})`]: {
-            minHeight: rem(260),
+            minHeight: rem(300),
         },
 
         [`@media screen and (max-width: ${em(480)})`]: {
@@ -224,7 +222,7 @@ const useStyles = createStyles((theme) => ({
     },
 
     featuresCardTitle: {
-        fontSize: "2.2rem",
+        fontSize: "2rem",
         lineHeight: "1.1",
 
         ":nth-of-type(1)": {
@@ -236,11 +234,11 @@ const useStyles = createStyles((theme) => ({
         },
 
         [`@media screen and (max-width: ${em(1120)})`]: {
-            fontSize: "2rem",
+            fontSize: "1.8rem",
         },
 
         [`@media screen and (max-width: ${em(768)})`]: {
-            fontSize: "1.75rem",
+            fontSize: "1.65rem",
         },
 
         [`@media screen and (max-width: ${em(540)})`]: {
@@ -265,7 +263,7 @@ const useStyles = createStyles((theme) => ({
 
         [`@media screen and (max-width: ${em(480)})`]: {
             fontSize: "0.85rem",
-            marginBlockStart: "0.5rem",
+            marginBlockStart: "0.75rem",
             maxWidth: "100%",
         },
 
