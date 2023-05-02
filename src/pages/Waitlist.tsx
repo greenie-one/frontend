@@ -12,10 +12,15 @@ import {
 import { useForm, isEmail, isNotEmpty } from "@mantine/form";
 import { MdVerified } from "react-icons/md";
 import waitlist_img from "../assets/images/waitlist/waitlist_img.png";
+import useApi from "../utils/hooks/useApi";
+// @ts-ignore
+import ApiList from "../assets/api/ApiList";
 
-export const Waitlist = (): JSX.Element => {
+export const Waitlist = () => {
   const { classes } = useStyles();
   const { classes: inputClasses } = inputStyles();
+
+  const { sendRequest } = useApi();
 
   const waitlistForm = useForm({
     initialValues: {
@@ -24,6 +29,12 @@ export const Waitlist = (): JSX.Element => {
       email: "",
       phone: "",
     },
+
+    transformValues: (values) => ({
+      name: `${values.firstName} ${values.lastName}`,
+      email: values.email,
+      phone: values.phone,
+    }),
 
     validate: {
       firstName: isNotEmpty("Name cannot be empty"),
@@ -35,6 +46,14 @@ export const Waitlist = (): JSX.Element => {
           : "Invalid phone number",
     },
   });
+
+  const handleWaitlistSubmit = () => {
+    sendRequest(
+      `${ApiList.waitlist}`,
+      "POST",
+      waitlistForm.getTransformedValues()
+    );
+  };
 
   return (
     <>
@@ -50,9 +69,7 @@ export const Waitlist = (): JSX.Element => {
             Join the waitlist
           </Title>
 
-          <form
-            onSubmit={waitlistForm.onSubmit((values) => console.log(values))}
-          >
+          <form onSubmit={waitlistForm.onSubmit(handleWaitlistSubmit)}>
             <Box className={classes.nameInput}>
               <TextInput
                 label="First Name"
