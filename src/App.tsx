@@ -9,20 +9,20 @@ import { Footer } from "./components/common/Footer";
 import { validRoutes } from "./utils/constants/ValidRoutes";
 
 const App = () => {
-    const { pathname } = useLocation();
+  const { pathname } = useLocation();
 
-    return (
-        <>
-            <MantineProvider withGlobalStyles withNormalizeCSS>
-                {validRoutes.includes(pathname) ? <Navbar /> : null}
-                <Routes>
-                    <Route path="/" element={<Landing />} />
-                    <Route path="*" element={<PageNotFound />} />
-                </Routes>
-                {validRoutes.includes(pathname) ? <Footer /> : null}
-            </MantineProvider>
-        </>
-    );
+  return (
+    <>
+      <MantineProvider withGlobalStyles withNormalizeCSS>
+        {validRoutes.includes(pathname) ? <Navbar /> : null}
+        <Routes>
+          <Route path="/" element={<Landing />} />
+          <Route path="*" element={<PageNotFound />} />
+        </Routes>
+        {validRoutes.includes(pathname) ? <Footer /> : null}
+      </MantineProvider>
+    </>
+  );
 };
 
 export default App;
