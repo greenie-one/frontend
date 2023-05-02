@@ -1,5 +1,5 @@
 import { Box, Tabs, createStyles, rem } from "@mantine/core";
-import { Signup } from "./components/Signup";
+import { Signup } from "./components/Signup/Signup";
 import Login from "./components/Login";
 
 export const Auth = () => {

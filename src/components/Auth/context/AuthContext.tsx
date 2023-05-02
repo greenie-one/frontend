@@ -9,13 +9,9 @@ type signUpFormType = {
   emailPhone: string;
   password: string;
   confirmPassword: string;
-  firstName: string;
-  lastName: string;
-  describeYourself: string[];
 };
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
-
 export const useAuthContext = () => useContext(AuthContext);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -26,9 +22,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       emailPhone: "",
       password: "",
       confirmPassword: "",
-      firstName: "",
-      lastName: "",
-      describeYourself: [],
     },
 
     validate: {
