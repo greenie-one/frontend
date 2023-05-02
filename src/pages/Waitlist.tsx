@@ -3,8 +3,8 @@ import {
   TextInput,
   createStyles,
   rem,
+  em,
   Button,
-  Group,
   Title,
   Text,
   Image,
@@ -53,7 +53,7 @@ export const Waitlist = (): JSX.Element => {
           <form
             onSubmit={waitlistForm.onSubmit((values) => console.log(values))}
           >
-            <Group grow>
+            <Box className={classes.nameInput}>
               <TextInput
                 label="First Name"
                 classNames={inputClasses}
@@ -64,7 +64,7 @@ export const Waitlist = (): JSX.Element => {
                 classNames={inputClasses}
                 {...waitlistForm.getInputProps("lastName")}
               />
-            </Group>
+            </Box>
             <TextInput
               label="Email Address"
               classNames={inputClasses}
@@ -87,6 +87,7 @@ export const Waitlist = (): JSX.Element => {
           withPlaceholder
           src={waitlist_img}
           alt="waitlist illustration"
+          className={classes.waitlist_img}
         />
       </Box>
     </>
@@ -98,6 +99,14 @@ const useStyles = createStyles((theme) => ({
     display: "grid",
     gridTemplateColumns: "1fr 1fr",
     placeItems: "center",
+
+    [`@media screen and (max-width: ${em(480)})`]: {
+      height: "100dvh",
+      overflow: "hidden",
+      gridTemplateColumns: "1fr",
+      gridTemplateRows: "1fr 1fr",
+      padding: "0 2.5rem",
+    },
   },
 
   waitlist_left: {
@@ -106,6 +115,31 @@ const useStyles = createStyles((theme) => ({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
+
+    [`@media screen and (max-width: ${em(480)})`]: {
+      width: "100%",
+      margin: "3rem 0",
+      height: "fit-content",
+      alignItems: "stretch",
+    },
+  },
+
+  waitlist_img: {
+    [`@media screen and (max-width: ${em(480)})`]: {
+      position: "relative",
+      top: "-3.5rem",
+    },
+  },
+
+  nameInput: {
+    display: "flex",
+    gap: "1rem",
+
+    [`@media screen and (max-width: ${em(480)})`]: {
+      flexDirection: "column",
+      width: "100% !important",
+      gap: 0,
+    },
   },
 
   logo: {

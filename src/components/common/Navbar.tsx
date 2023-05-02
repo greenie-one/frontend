@@ -49,7 +49,7 @@ export const Navbar = () => {
         </nav>
         <Group className={classes.headerBtnsContainer}>
           <Button variant={"fill"} outline={true} classNames={classes.tryBtn}>
-            Try Greenie
+            Join Waitlist
           </Button>
         </Group>
         {!opened ? (

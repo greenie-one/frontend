@@ -66,7 +66,7 @@ export const LandingHero = () => {
               outline={true}
               classNames={classes.tryForFree}
             >
-              Try Greenie
+              Join Waitlist
             </Button>
             {/* <Button
                             variant={"outline"}
