@@ -7,9 +7,9 @@ import "owl.carousel/dist/assets/owl.carousel.css";
 import "owl.carousel/dist/assets/owl.theme.default.css";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-    <BrowserRouter>
-        <GlobalContextProvider>
-            <App />
-        </GlobalContextProvider>
-    </BrowserRouter>
+  <BrowserRouter>
+    <GlobalContextProvider>
+      <App />
+    </GlobalContextProvider>
+  </BrowserRouter>
 );

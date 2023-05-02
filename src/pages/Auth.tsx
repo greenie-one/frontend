@@ -1,15 +1,15 @@
 import { createStyles } from "@mantine/core";
 
 export const Authentication = (): JSX.Element => {
-    const { classes } = useStyles();
+  const { classes } = useStyles();
 
-    return (
-        <>
-            <div className={classes.root}></div>
-        </>
-    );
+  return (
+    <>
+      <div className={classes.root}></div>
+    </>
+  );
 };
 
 const useStyles = createStyles((theme) => ({
-    root: {},
+  root: {},
 }));
