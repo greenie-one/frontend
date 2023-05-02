@@ -44,6 +44,7 @@ export const Form = () => {
 const inputStyles = createStyles((theme) => ({
   root: {
     position: "relative",
+    marginBottom: rem(16),
   },
 
   input: {

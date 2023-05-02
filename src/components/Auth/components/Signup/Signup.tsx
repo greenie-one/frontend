@@ -18,5 +18,7 @@ export const Signup = () => {
 };
 
 const useStyles = createStyles((theme) => ({
-  root: {},
+  root: {
+    marginTop: "2rem",
+  },
 }));
