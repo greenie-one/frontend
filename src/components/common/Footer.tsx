@@ -1,21 +1,11 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import {
-  createStyles,
-  List,
-  Title,
-  Text,
-  em,
-  rem,
-  Box,
-  Flex,
-  TextInput,
-} from "@mantine/core";
-import { BsInstagram } from "react-icons/bs";
-import { FiLinkedin } from "react-icons/fi";
-import { MdOutlineFacebook, MdVerified } from "react-icons/md";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { createStyles, List, Title, Text, em, rem, Box, Flex, TextInput } from '@mantine/core';
+import { BsInstagram } from 'react-icons/bs';
+import { FiLinkedin } from 'react-icons/fi';
+import { MdOutlineFacebook, MdVerified } from 'react-icons/md';
 
-import { Button } from "./Button";
+import { Button } from './Button';
 
 export const Footer: React.FC = (): JSX.Element => {
   const { classes } = useStyles();
@@ -25,19 +15,19 @@ export const Footer: React.FC = (): JSX.Element => {
       <footer className={classes.footer}>
         <Box className={classes.footerGridContainer}>
           <Box className={classes.gridLeftContainer}>
-            <Link to={"/"}>
+            <Link to={'/'}>
               <Flex
                 justify="center"
                 align="center"
                 direction="row"
                 className={classes.footerHeading}
-                gap={"sm"}
+                gap={'sm'}
               >
-                <span className={""}>We</span>
+                <span className={''}>We</span>
                 <span className={classes.verified}>
                   <MdVerified />
                 </span>
-                <span className={""}>Greenie</span>
+                <span className={''}>Greenie</span>
               </Flex>
             </Link>
             <Title order={1} className={classes.footerTagline}>
@@ -97,11 +87,7 @@ export const Footer: React.FC = (): JSX.Element => {
                 className={`${classes.formInput} ${classes.messageInput}`}
                 placeholder="Your Message..."
               ></textarea>
-              <Button
-                variant="fill"
-                classNames={classes.formSubmitBtn}
-                outline={true}
-              >
+              <Button variant="fill" classNames={classes.formSubmitBtn} outline={true}>
                 Get In Touch
               </Button>
             </form>
@@ -111,12 +97,12 @@ export const Footer: React.FC = (): JSX.Element => {
           <span className={classes.footerBottomLogoContainer}>
             <Flex
               justify="center"
-              align={{ base: "center", md: "flex-start" }}
-              direction={{ base: "row", md: "column" }}
+              align={{ base: 'center', md: 'flex-start' }}
+              direction={{ base: 'row', md: 'column' }}
               className={classes.footerBottomLogo}
-              gap={{ base: "0.5rem" }}
+              gap={{ base: '0.5rem' }}
             >
-              <Link to={"/"}>
+              <Link to={'/'}>
                 <span className={classes.greenie}>Greenie</span>
                 <span className={classes.verifiedBottom}>
                   <MdVerified />
@@ -148,39 +134,39 @@ export const Footer: React.FC = (): JSX.Element => {
 
 const useStyles = createStyles((theme) => ({
   root: {
-    backgroundColor: "#191819",
-    color: "#FFFFFF",
+    backgroundColor: '#191819',
+    color: '#FFFFFF',
   },
 
   footer: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "2rem",
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '2rem',
   },
 
   footerGridContainer: {
-    display: "grid",
-    gridTemplateColumns: "1.8fr 1.2fr",
-    gap: "4rem",
-    alignItems: "start",
+    display: 'grid',
+    gridTemplateColumns: '1.8fr 1.2fr',
+    gap: '4rem',
+    alignItems: 'start',
 
     [`@media screen and (max-width: ${em(992)})`]: {
-      gridTemplateColumns: "1fr",
+      gridTemplateColumns: '1fr',
     },
   },
 
   gridLeftContainer: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "flex-start",
-    gap: "1.5rem",
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    gap: '1.5rem',
 
     [`@media screen and (max-width: ${em(1280)})`]: {
       gap: rem(20),
     },
 
     [`@media screen and (max-width: ${em(992)})`]: {
-      alignItems: "center",
+      alignItems: 'center',
     },
 
     [`@media screen and (max-width: ${em(480)})`]: {
@@ -207,7 +193,7 @@ const useStyles = createStyles((theme) => ({
 
   verified: {
     fontSize: rem(30),
-    color: "#9FE870",
+    color: '#9FE870',
 
     [`@media screen and (max-width: ${em(1280)})`]: {
       fontSize: rem(26),
@@ -220,18 +206,18 @@ const useStyles = createStyles((theme) => ({
 
   footerTagline: {
     fontWeight: 600,
-    lineHeight: "1.1",
+    lineHeight: '1.1',
     fontSize: rem(34),
-    letterSpacing: "0.01em",
-    color: "#8E8E8E",
-    maxWidth: "30ch",
+    letterSpacing: '0.01em',
+    color: '#8E8E8E',
+    maxWidth: '30ch',
 
     [`@media screen and (max-width: ${em(1280)})`]: {
       fontSize: rem(30),
     },
 
     [`@media screen and (max-width: ${em(992)})`]: {
-      textAlign: "center",
+      textAlign: 'center',
     },
 
     [`@media screen and (max-width: ${em(768)})`]: {
@@ -244,32 +230,32 @@ const useStyles = createStyles((theme) => ({
   },
 
   footerSocialLinks: {
-    marginBlockStart: "1.5rem",
+    marginBlockStart: '1.5rem',
 
     [`@media screen and (max-width: ${em(1280)})`]: {
-      marginBlockStart: "1.2rem",
+      marginBlockStart: '1.2rem',
     },
 
     [`@media screen and (max-width: ${em(768)})`]: {
-      marginBlockStart: "1rem",
+      marginBlockStart: '1rem',
     },
 
     [`@media screen and (max-width: ${em(768)})`]: {
-      marginBlockStart: "0.5rem",
+      marginBlockStart: '0.5rem',
     },
   },
 
   socialLinkIcons: {
-    fontSize: "1.5rem",
-    display: "grid",
-    placeItems: "center",
-    padding: "0.6rem",
-    border: "1px solid #656565",
-    borderRadius: "10px",
-    color: "rgba(255, 255, 255, 0.8)",
-    background: "linear-gradient(180deg, #FFFFFF 0%, #898989 100%);",
-    WebkitBackgroundClip: "text",
-    WebkitTextFillColor: "transparent",
+    fontSize: '1.5rem',
+    display: 'grid',
+    placeItems: 'center',
+    padding: '0.6rem',
+    border: '1px solid #656565',
+    borderRadius: '10px',
+    color: 'rgba(255, 255, 255, 0.8)',
+    background: 'linear-gradient(180deg, #FFFFFF 0%, #898989 100%);',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
 
     [`@media screen and (max-width: ${em(1280)})`]: {
       fontSize: rem(20),
@@ -277,42 +263,42 @@ const useStyles = createStyles((theme) => ({
 
     [`@media screen and (max-width: ${em(768)})`]: {
       fontSize: rem(16),
-      padding: "0.5rem",
+      padding: '0.5rem',
     },
   },
 
   form: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "flex-start",
-    marginInlineStart: "auto",
-    gap: "1rem",
-    width: "100%",
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    marginInlineStart: 'auto',
+    gap: '1rem',
+    width: '100%',
 
     [`@media screen and (max-width: ${em(992)})`]: {
-      marginInlineEnd: "auto",
+      marginInlineEnd: 'auto',
     },
 
     [`@media screen and (max-width: ${em(480)})`]: {
-      gap: "0.75rem",
+      gap: '0.75rem',
     },
 
     [`@media screen and (max-width: ${em(350)})`]: {
-      width: "100%",
+      width: '100%',
     },
   },
 
   formInput: {
-    backgroundColor: "#2B2B2B",
-    borderRadius: "3rem",
-    paddingInline: "1.35rem",
-    paddingBlock: "0.9rem",
-    color: "#FFFFFF",
+    backgroundColor: '#2B2B2B',
+    borderRadius: '3rem',
+    paddingInline: '1.35rem',
+    paddingBlock: '0.9rem',
+    color: '#FFFFFF',
     fontSize: rem(14),
-    width: "100%",
+    width: '100%',
 
-    "::placeholder": {
-      color: "#FFFFFF",
+    '::placeholder': {
+      color: '#FFFFFF',
     },
 
     [`@media screen and (max-width: ${em(992)})`]: {
@@ -320,17 +306,17 @@ const useStyles = createStyles((theme) => ({
     },
 
     [`@media screen and (max-width: ${em(640)})`]: {
-      paddingBlock: "0.8rem",
+      paddingBlock: '0.8rem',
     },
 
     [`@media screen and (max-width: ${em(992)})`]: {
-      width: "100%",
+      width: '100%',
     },
   },
 
   messageInput: {
-    borderRadius: "16px",
-    outline: "none",
+    borderRadius: '16px',
+    outline: 'none',
     border: 0,
   },
 
@@ -342,37 +328,37 @@ const useStyles = createStyles((theme) => ({
   },
 
   footerBottom: {
-    display: "flex",
-    alignItems: "flex-end",
-    justifyContent: "space-between",
+    display: 'flex',
+    alignItems: 'flex-end',
+    justifyContent: 'space-between',
     fontSize: rem(13),
 
     [`@media screen and (max-width: ${em(992)})`]: {
-      display: "grid",
-      gridTemplateColumns: "auto auto",
-      gap: "1rem",
-      placeItems: "center",
+      display: 'grid',
+      gridTemplateColumns: 'auto auto',
+      gap: '1rem',
+      placeItems: 'center',
     },
 
     [`@media screen and (max-width: ${em(768)})`]: {
-      gridTemplateColumns: "1fr",
+      gridTemplateColumns: '1fr',
     },
   },
 
   footerBottomLogoContainer: {
     [`@media screen and (max-width: ${em(992)})`]: {
-      marginInlineStart: "auto",
+      marginInlineStart: 'auto',
     },
 
     [`@media screen and (max-width: ${em(768)})`]: {
-      marginInlineEnd: "auto",
+      marginInlineEnd: 'auto',
     },
   },
 
   footerBottomLogo: {
     [`@media screen and (max-width: ${em(540)})`]: {
-      flexDirection: "column",
-      gap: "0",
+      flexDirection: 'column',
+      gap: '0',
     },
   },
 
@@ -383,53 +369,53 @@ const useStyles = createStyles((theme) => ({
 
   verifiedBottom: {
     fontSize: rem(17),
-    color: "#9FE870",
-    marginInlineStart: "0.25rem",
-    display: "inline-grid",
-    placeItems: "center",
-    transform: "translateY(2px)",
+    color: '#9FE870',
+    marginInlineStart: '0.25rem',
+    display: 'inline-grid',
+    placeItems: 'center',
+    transform: 'translateY(2px)',
   },
 
   madeInIndiaText: {
     [`@media screen and (max-width: ${em(992)})`]: {
-      marginInlineEnd: "auto",
+      marginInlineEnd: 'auto',
     },
 
     [`@media screen and (max-width: ${em(768)})`]: {
-      marginInlineStart: "auto",
+      marginInlineStart: 'auto',
     },
   },
 
   navOptionsList: {
-    display: "flex",
-    gap: "1rem",
-    alignItems: "center",
+    display: 'flex',
+    gap: '1rem',
+    alignItems: 'center',
     paddingInline: rem(20),
-    color: "#FFFFFF",
+    color: '#FFFFFF',
     fontSize: rem(13),
 
     [`@media screen and (max-width: ${em(992)})`]: {
-      width: "100%",
-      gridColumn: "1/-1",
-      gridRow: "1/span 1",
-      justifyContent: "flex-start",
+      width: '100%',
+      gridColumn: '1/-1',
+      gridRow: '1/span 1',
+      justifyContent: 'flex-start',
       paddingInlineStart: rem(4),
     },
 
     [`@media screen and (max-width: ${em(768)})`]: {
-      justifyContent: "center",
+      justifyContent: 'center',
       paddingInline: rem(20),
     },
   },
 
   navOptionsListItems: {
-    cursor: "pointer",
-    transition: "color 150ms linear",
-    position: "relative",
+    cursor: 'pointer',
+    transition: 'color 150ms linear',
+    position: 'relative',
 
-    ":hover": {
-      color: "#9FE870",
-      transition: "color 150ms linear",
+    ':hover': {
+      color: '#9FE870',
+      transition: 'color 150ms linear',
     },
   },
 }));

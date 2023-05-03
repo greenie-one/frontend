@@ -1,6 +1,6 @@
-import { Box, Tabs, createStyles, rem } from "@mantine/core";
-import { Signup } from "./components/Signup/Signup";
-import Login from "./components/Login";
+import { Box, Tabs, createStyles, rem } from '@mantine/core';
+import { Signup } from './components/Signup/Signup';
+import Login from './components/Login';
 
 export const Auth = () => {
   const { classes } = useStyles();
@@ -31,14 +31,14 @@ export const Auth = () => {
 
 const useStyles = createStyles((theme) => ({
   root: {
-    display: "grid",
-    gridTemplateColumns: "1fr 1fr",
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr',
   },
   auth_right: {
-    height: "100dvh",
-    paddingTop: "15rem",
-    display: "flex",
-    justifyContent: "center",
+    height: '100dvh',
+    paddingTop: '15rem',
+    display: 'flex',
+    justifyContent: 'center',
   },
   auth_left: {},
 }));

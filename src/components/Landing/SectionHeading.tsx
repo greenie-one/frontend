@@ -1,4 +1,4 @@
-import { createStyles, Title, Text, em, rem, Box, Image } from "@mantine/core";
+import { createStyles, Title, Text, em, rem, Box, Image } from '@mantine/core';
 
 type LandingSectionHeadingProps = {
   heading: string;
@@ -25,11 +25,11 @@ export const LandingSectionHeading: React.FC<LandingSectionHeadingProps> = ({
 
 const useStyles = createStyles((theme) => ({
   root: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    textAlign: "center",
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
   },
 
   sectionHeading: {
@@ -53,13 +53,13 @@ const useStyles = createStyles((theme) => ({
   },
 
   sectionSubHeading: {
-    fontSize: "0.9rem",
-    maxWidth: "55ch",
-    marginBlockStart: "1rem",
+    fontSize: '0.9rem',
+    maxWidth: '55ch',
+    marginBlockStart: '1rem',
 
     [`@media screen and (max-width: ${em(480)})`]: {
-      fontSize: "0.875rem",
-      marginBlockStart: "0.75rem",
+      fontSize: '0.875rem',
+      marginBlockStart: '0.75rem',
     },
   },
 }));

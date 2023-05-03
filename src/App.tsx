@@ -1,13 +1,13 @@
-import { Routes, Route, useLocation } from "react-router-dom";
-import { MantineProvider } from "@mantine/core";
+import { Routes, Route, useLocation } from 'react-router-dom';
+import { MantineProvider } from '@mantine/core';
 
-import { PageNotFound } from "./pages/PageNotFound";
-import { Navbar } from "./components/common/Navbar";
-import { Footer } from "./components/common/Footer";
-import { Landing } from "./pages/Landing";
-import { AuthPage } from "./pages/AuthPage";
+import { PageNotFound } from './pages/PageNotFound';
+import { Navbar } from './components/common/Navbar';
+import { Footer } from './components/common/Footer';
+import { Landing } from './pages/Landing';
+import { AuthPage } from './pages/AuthPage';
 
-import { validRoutes } from "./utils/constants/ValidRoutes";
+import { validRoutes } from './utils/constants/ValidRoutes';
 
 const App = () => {
   const { pathname } = useLocation();

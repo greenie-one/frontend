@@ -1,21 +1,13 @@
-import React, { useState } from "react";
-import {
-  createStyles,
-  Title,
-  Text,
-  Box,
-  em,
-  rem,
-  keyframes,
-} from "@mantine/core";
-import { randomId } from "@mantine/hooks";
-import { LandingSectionHeading } from "./SectionHeading";
-import { Button } from "../common/Button";
+import React, { useState } from 'react';
+import { createStyles, Title, Text, Box, em, rem, keyframes } from '@mantine/core';
+import { randomId } from '@mantine/hooks';
+import { LandingSectionHeading } from './SectionHeading';
+import { Button } from '../common/Button';
 
-import workingIllustration1 from "../../assets/images/account-circle.png";
-import workingIllustration2 from "../../assets/images/demography-1.png";
-import workingIllustration3 from "../../assets/images/demography-2.png";
-import workingIllustration4 from "../../assets/images/demography-3.png";
+import workingIllustration1 from '../../assets/images/account-circle.png';
+import workingIllustration2 from '../../assets/images/demography-1.png';
+import workingIllustration3 from '../../assets/images/demography-2.png';
+import workingIllustration4 from '../../assets/images/demography-3.png';
 
 type WorkingsCardPropsType = {
   cardBg: string;
@@ -27,8 +19,8 @@ type WorkingsCardPropsType = {
 };
 
 const slideUp = keyframes({
-  from: { translate: "0 25%" },
-  to: { translate: "0 0" },
+  from: { translate: '0 25%' },
+  to: { translate: '0 0' },
 });
 
 const WorkingsCard: React.FC<WorkingsCardPropsType> = ({
@@ -43,18 +35,14 @@ const WorkingsCard: React.FC<WorkingsCardPropsType> = ({
 
   return (
     <Box sx={{ backgroundColor: cardBg }} className={classes.workingsCard}>
-      <Title
-        sx={{ color: titleColor }}
-        order={2}
-        className={classes.workingsCardTitle}
-      >
+      <Title sx={{ color: titleColor }} order={2} className={classes.workingsCardTitle}>
         {title}
       </Title>
       <Text sx={{ color: textColor }} className={classes.workingsCardText}>
         {text}
       </Text>
       <span className={classes.workingIllustration}>
-        <img src={illustration} alt="illustration" className={""} />
+        <img src={illustration} alt="illustration" className={''} />
       </span>
     </Box>
   );
@@ -63,38 +51,38 @@ const WorkingsCard: React.FC<WorkingsCardPropsType> = ({
 const workingsCardContent = [
   {
     id: randomId(),
-    cardBg: "#D8FFF1",
-    title: "Creating A Greenie Account Is Easier that Boiling An Egg.",
-    titleColor: "#17A672",
-    text: "Instantly Create A Verified Greenie Account With Adhaar .",
-    textColor: "#191819",
+    cardBg: '#D8FFF1',
+    title: 'Creating A Greenie Account Is Easier that Boiling An Egg.',
+    titleColor: '#17A672',
+    text: 'Instantly Create A Verified Greenie Account With Adhaar .',
+    textColor: '#191819',
     illustration: workingIllustration1,
   },
   {
     id: randomId(),
-    cardBg: "#A1FFDD",
-    title: "Upload & Verify Documents Without Getting Reminder Calls.",
-    titleColor: "#17A672",
+    cardBg: '#A1FFDD',
+    title: 'Upload & Verify Documents Without Getting Reminder Calls.',
+    titleColor: '#17A672',
     text: "Securly Upload And Verify Important Documents On Greenie's Doc Depot.",
-    textColor: "#191819",
+    textColor: '#191819',
     illustration: workingIllustration2,
   },
   {
     id: randomId(),
-    cardBg: "#4BE4AD",
-    title: "Verify With Peers.",
-    titleColor: "#018454",
-    text: "Collaborate With Your Previous Companies Or Collegues Seamlesly And Keep All Verificaitions Organized.",
-    textColor: "#191819",
+    cardBg: '#4BE4AD',
+    title: 'Verify With Peers.',
+    titleColor: '#018454',
+    text: 'Collaborate With Your Previous Companies Or Collegues Seamlesly And Keep All Verificaitions Organized.',
+    textColor: '#191819',
     illustration: workingIllustration3,
   },
   {
     id: randomId(),
-    cardBg: "#17A672",
-    title: "Own And Share Your Verification Report.",
-    titleColor: "#A1FFDD",
-    text: "Share Your Verified Documents With Anyone, Anywhere, Anytime. Keep Your Greenie ID Handy For Quick And Easy Sharing.",
-    textColor: "#FFFFFF",
+    cardBg: '#17A672',
+    title: 'Own And Share Your Verification Report.',
+    titleColor: '#A1FFDD',
+    text: 'Share Your Verified Documents With Anyone, Anywhere, Anytime. Keep Your Greenie ID Handy For Quick And Easy Sharing.',
+    textColor: '#FFFFFF',
     illustration: workingIllustration4,
   },
 ];
@@ -106,28 +94,25 @@ export const LandingGreenieWorkings = () => {
 
   return (
     <section className={`${classes.root} section`}>
-      <LandingSectionHeading heading={"How Greenie Works"} subheading={""} />
+      <LandingSectionHeading heading={'How Greenie Works'} subheading={''} />
       <Box className={classes.workingsBtnContainer}>
-        {[
-          "Create Greenie Account",
-          "Verify Documents",
-          "Send or Receive Request",
-          " Share ID",
-        ].map((text, id) => {
-          return (
-            <Button
-              key={id}
-              variant={"outline"}
-              classNames={`${classes.workingsBtn} ${
-                activeWorkingBtn === id ? classes.activeWorkingBtn : ""
-              }`}
-              outline={activeWorkingBtn === id}
-              onClick={() => setActiveWorkingBtn(id)}
-            >
-              {text}
-            </Button>
-          );
-        })}
+        {['Create Greenie Account', 'Verify Documents', 'Send or Receive Request', ' Share ID'].map(
+          (text, id) => {
+            return (
+              <Button
+                key={id}
+                variant={'outline'}
+                classNames={`${classes.workingsBtn} ${
+                  activeWorkingBtn === id ? classes.activeWorkingBtn : ''
+                }`}
+                outline={activeWorkingBtn === id}
+                onClick={() => setActiveWorkingBtn(id)}
+              >
+                {text}
+              </Button>
+            );
+          }
+        )}
       </Box>
       <Box className={classes.workingCardsContainer}>
         {workingsCardContent.map((cardContent, id) => {
@@ -152,186 +137,186 @@ export const LandingGreenieWorkings = () => {
 
 const useStyles = createStyles((theme) => ({
   root: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "stretch",
-    gap: "2rem",
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    gap: '2rem',
   },
 
   workingsBtnContainer: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: "2rem",
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '2rem',
 
     [`@media screen and (max-width: ${em(992)})`]: {
-      columnGap: "4rem",
-      rowGap: "1rem",
-      display: "grid",
-      gridTemplateColumns: "max-content max-content",
+      columnGap: '4rem',
+      rowGap: '1rem',
+      display: 'grid',
+      gridTemplateColumns: 'max-content max-content',
     },
 
     [`@media screen and (max-width: ${em(480)})`]: {
-      columnGap: "2rem",
+      columnGap: '2rem',
     },
 
     [`@media screen and (max-width: ${em(480)})`]: {
-      columnGap: "0.5rem",
+      columnGap: '0.5rem',
     },
   },
 
   workingsBtn: {
-    transition: "border-color 100ms linear, color 150ms linear",
+    transition: 'border-color 100ms linear, color 150ms linear',
     fontSize: rem(14.5),
 
-    ":hover": {
-      border: "1px solid #17A672",
-      color: "#17A672",
-      transition: "border-color 100ms linear, color 100ms linear",
+    ':hover': {
+      border: '1px solid #17A672',
+      color: '#17A672',
+      transition: 'border-color 100ms linear, color 100ms linear',
     },
 
-    ":nth-of-type(1)": {
+    ':nth-of-type(1)': {
       [`@media screen and (max-width: ${em(992)})`]: {
-        marginInlineEnd: "auto",
+        marginInlineEnd: 'auto',
       },
     },
 
-    ":nth-of-type(2)": {
+    ':nth-of-type(2)': {
       [`@media screen and (max-width: ${em(992)})`]: {
-        marginInlineStart: "auto",
+        marginInlineStart: 'auto',
       },
     },
 
-    ":nth-of-type(3)": {
+    ':nth-of-type(3)': {
       [`@media screen and (max-width: ${em(992)})`]: {
-        marginInlineEnd: "auto",
+        marginInlineEnd: 'auto',
       },
     },
 
-    ":nth-of-type(4)": {
+    ':nth-of-type(4)': {
       [`@media screen and (max-width: ${em(992)})`]: {
-        marginInlineStart: "auto",
+        marginInlineStart: 'auto',
       },
     },
 
     [`@media screen and (max-width: ${em(480)})`]: {
-      paddingInline: "0.75rem !important",
-      paddingBlock: "0.5rem !important",
+      paddingInline: '0.75rem !important',
+      paddingBlock: '0.5rem !important',
       fontSize: rem(12.5),
     },
   },
 
   activeWorkingBtn: {
-    border: "1px solid #17A672",
-    color: "#17A672",
+    border: '1px solid #17A672',
+    color: '#17A672',
   },
 
   workingCardsContainer: {
-    display: "grid",
-    gridTemplateColumns: "1fr",
-    gridAutoRows: "1fr",
-    marginBlockStart: "1rem",
+    display: 'grid',
+    gridTemplateColumns: '1fr',
+    gridAutoRows: '1fr',
+    marginBlockStart: '1rem',
   },
 
   workingsCard: {
-    padding: "3rem",
-    borderRadius: "2rem",
-    marginInline: "auto",
-    gridRow: "1/2",
-    gridColumn: "1/2",
+    padding: '3rem',
+    borderRadius: '2rem',
+    marginInline: 'auto',
+    gridRow: '1/2',
+    gridColumn: '1/2',
     zIndex: -1,
     animation: `${slideUp} 500ms ease`,
-    display: "grid",
-    gridTemplateColumns: "2fr 1fr",
-    gridTemplateRows: "max-content max-content",
-    gap: "1rem",
+    display: 'grid',
+    gridTemplateColumns: '2fr 1fr',
+    gridTemplateRows: 'max-content max-content',
+    gap: '1rem',
 
     [`@media screen and (max-width: ${em(992)})`]: {
-      padding: "2rem",
-      borderRadius: "1.33rem",
+      padding: '2rem',
+      borderRadius: '1.33rem',
     },
 
     [`@media screen and (max-width: ${em(640)})`]: {
-      padding: "1.5rem",
-      borderRadius: "1rem",
+      padding: '1.5rem',
+      borderRadius: '1rem',
     },
 
     [`@media screen and (max-width: ${em(480)})`]: {
-      padding: "1.25rem",
-      rowGap: "0.5rem",
-      columnGap: "1rem",
+      padding: '1.25rem',
+      rowGap: '0.5rem',
+      columnGap: '1rem',
     },
 
-    ":nth-of-type(1)": {
-      width: "85%",
+    ':nth-of-type(1)': {
+      width: '85%',
     },
 
-    ":nth-of-type(2)": {
-      width: "90%",
-      transform: "translateY(10%)",
+    ':nth-of-type(2)': {
+      width: '90%',
+      transform: 'translateY(10%)',
     },
 
-    ":nth-of-type(3)": {
-      width: "95%",
-      transform: "translateY(20%)",
+    ':nth-of-type(3)': {
+      width: '95%',
+      transform: 'translateY(20%)',
     },
 
-    ":nth-of-type(4)": {
-      width: "100%",
-      transform: "translateY(30%)",
+    ':nth-of-type(4)': {
+      width: '100%',
+      transform: 'translateY(30%)',
     },
   },
 
   workingsCardTitle: {
-    fontSize: "2.25dvw",
-    lineHeight: "1.1",
-    maxWidth: "17ch",
-    gridColumn: "1/2",
+    fontSize: '2.25dvw',
+    lineHeight: '1.1',
+    maxWidth: '17ch',
+    gridColumn: '1/2',
 
     [`@media screen and (max-width: ${em(768)})`]: {
       fontSize: rem(18),
     },
 
     [`@media screen and (max-width: ${em(480)})`]: {
-      gridColumn: "1/3",
-      maxWidth: "100%",
+      gridColumn: '1/3',
+      maxWidth: '100%',
     },
   },
 
   workingsCardText: {
-    fontSize: "0.9rem",
-    maxWidth: "40ch",
-    gridColumn: "1/2",
+    fontSize: '0.9rem',
+    maxWidth: '40ch',
+    gridColumn: '1/2',
 
     [`@media screen and (max-width: ${em(768)})`]: {
-      fontSize: "0.875rem",
-      lineHeight: "1.3",
+      fontSize: '0.875rem',
+      lineHeight: '1.3',
     },
 
     [`@media screen and (max-width: ${em(540)})`]: {
-      fontSize: "0.85rem",
+      fontSize: '0.85rem',
     },
 
     [`@media screen and (max-width: ${em(414)})`]: {
-      fontSize: "0.8rem",
+      fontSize: '0.8rem',
     },
   },
 
   workingIllustration: {
-    display: "grid",
-    placeItems: "center",
-    aspectRatio: "1",
-    width: "15dvw",
-    alignSelf: "center",
-    gridColumn: "2/3",
-    gridRow: "1/3",
+    display: 'grid',
+    placeItems: 'center',
+    aspectRatio: '1',
+    width: '15dvw',
+    alignSelf: 'center',
+    gridColumn: '2/3',
+    gridRow: '1/3',
 
     [`@media screen and (max-width: ${em(768)})`]: {
       width: rem(120),
     },
 
     [`@media screen and (max-width: ${em(480)})`]: {
-      gridRow: "2/3",
+      gridRow: '2/3',
       width: rem(90),
     },
   },

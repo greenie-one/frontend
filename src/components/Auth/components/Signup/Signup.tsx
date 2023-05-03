@@ -1,6 +1,6 @@
-import { Box, createStyles } from "@mantine/core";
-import { useAuthContext } from "../../context/AuthContext";
-import { Form } from "./Form";
+import { Box, createStyles } from '@mantine/core';
+import { useAuthContext } from '../../context/AuthContext';
+import { Form } from './Form';
 
 export const Signup = () => {
   const { classes } = useStyles();
@@ -19,6 +19,6 @@ export const Signup = () => {
 
 const useStyles = createStyles((theme) => ({
   root: {
-    marginTop: "2rem",
+    marginTop: '2rem',
   },
 }));

@@ -1,13 +1,5 @@
-import {
-  Box,
-  TextInput,
-  PasswordInput,
-  createStyles,
-  rem,
-  Text,
-  Button,
-} from "@mantine/core";
-import { useAuthContext } from "../../context/AuthContext";
+import { Box, TextInput, PasswordInput, createStyles, rem, Text, Button } from '@mantine/core';
+import { useAuthContext } from '../../context/AuthContext';
 
 export const Form = () => {
   const { classes: inputClasses } = inputStyles();
@@ -18,17 +10,17 @@ export const Form = () => {
       <TextInput
         label="Email or Phone number"
         classNames={inputClasses}
-        {...signupForm.getInputProps("emailPhone")}
+        {...signupForm.getInputProps('emailPhone')}
       />
       <PasswordInput
         label="Create Password"
         classNames={inputClasses}
-        {...signupForm.getInputProps("password")}
+        {...signupForm.getInputProps('password')}
       />
       <PasswordInput
         label="Confirm Password"
         classNames={inputClasses}
-        {...signupForm.getInputProps("confirmPassword")}
+        {...signupForm.getInputProps('confirmPassword')}
       />
       <Text fz="md">
         By creating an account, you agree to our <u>Terms of Service</u> and
@@ -43,7 +35,7 @@ export const Form = () => {
 
 const inputStyles = createStyles((theme) => ({
   root: {
-    position: "relative",
+    position: 'relative',
     marginBottom: rem(16),
   },
 
@@ -59,8 +51,8 @@ const inputStyles = createStyles((theme) => ({
   },
 
   label: {
-    position: "absolute",
-    pointerEvents: "none",
+    position: 'absolute',
+    pointerEvents: 'none',
     fontSize: theme.fontSizes.xs,
     paddingLeft: theme.spacing.sm,
     paddingTop: `calc(${theme.spacing.sm} / 2)`,

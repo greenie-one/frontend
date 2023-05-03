@@ -1,27 +1,19 @@
-import { useEffect, useState } from "react";
-import {
-  createStyles,
-  Title,
-  Text,
-  rem,
-  Box,
-  keyframes,
-  em,
-} from "@mantine/core";
-import { _2ColumnLayout } from "../layouts/_2ColumnLayout";
-import { Button } from "../common/Button";
+import { useEffect, useState } from 'react';
+import { createStyles, Title, Text, rem, Box, keyframes, em } from '@mantine/core';
+import { _2ColumnLayout } from '../layouts/_2ColumnLayout';
+import { Button } from '../common/Button';
 
-import girlCheckingPhone from "../../assets/images/girl-checking-phone.png";
-import popup1 from "../../assets/images/popup-illustration-1.svg";
-import popup2 from "../../assets/images/popup-illustration-2.svg";
-import popup3 from "../../assets/images/popup-illustration-3.svg";
-import popup4 from "../../assets/images/popup-illustration-4.svg";
-import popup5 from "../../assets/images/popup-illustration-5.svg";
-import popup6 from "../../assets/images/popup-illustration-6.svg";
+import girlCheckingPhone from '../../assets/images/girl-checking-phone.png';
+import popup1 from '../../assets/images/popup-illustration-1.svg';
+import popup2 from '../../assets/images/popup-illustration-2.svg';
+import popup3 from '../../assets/images/popup-illustration-3.svg';
+import popup4 from '../../assets/images/popup-illustration-4.svg';
+import popup5 from '../../assets/images/popup-illustration-5.svg';
+import popup6 from '../../assets/images/popup-illustration-6.svg';
 
 const popupAnimation = keyframes({
-  from: { scale: "0.25" },
-  to: { scale: "1" },
+  from: { scale: '0.25' },
+  to: { scale: '1' },
 });
 
 export const LandingHero = () => {
@@ -57,15 +49,11 @@ export const LandingHero = () => {
             Verified Profiles At A Click Of A Button
           </Title>
           <Text className={classes.heroText}>
-            Get Complete Background Verification Done In 100 Seconds. Network,
-            Collaborate and Hire With Trust
+            Get Complete Background Verification Done In 100 Seconds. Network, Collaborate and Hire
+            With Trust
           </Text>
           <Box className={classes.heroActionBtn}>
-            <Button
-              variant={"fill"}
-              outline={true}
-              classNames={classes.tryForFree}
-            >
+            <Button variant={'fill'} outline={true} classNames={classes.tryForFree}>
               Try Greenie
             </Button>
             {/* <Button
@@ -79,11 +67,7 @@ export const LandingHero = () => {
         </Box>
         <Box className={classes.heroIllustration}>
           <span className={classes.girlImageContainer}>
-            <img
-              src={girlCheckingPhone}
-              alt="girlCheckingPhone"
-              className={""}
-            />
+            <img src={girlCheckingPhone} alt="girlCheckingPhone" className={''} />
             {popupNo >= 4 ? (
               <span className={`${classes.popups} ${classes.popup1}`}>
                 <img src={popup1} alt="popup1" />
@@ -123,65 +107,65 @@ export const LandingHero = () => {
 
 const useStyles = createStyles((theme) => ({
   root: {
-    alignItems: "start",
+    alignItems: 'start',
   },
 
   heroContentContainer: {
-    paddingBlockStart: "1rem",
-    marginBlockStart: "2rem",
+    paddingBlockStart: '1rem',
+    marginBlockStart: '2rem',
 
     [`@media screen and (max-width: ${em(1280)})`]: {
-      gridRow: "2/3",
+      gridRow: '2/3',
     },
   },
 
   heroTitle: {
-    fontSize: "2.5rem",
+    fontSize: '2.5rem',
 
     [`@media screen and (max-width: ${em(1280)})`]: {
-      textAlign: "center",
-      maxWidth: "25ch",
-      marginInline: "auto",
+      textAlign: 'center',
+      maxWidth: '25ch',
+      marginInline: 'auto',
     },
 
     [`@media screen and (max-width: ${em(768)})`]: {
-      fontSize: "2rem",
+      fontSize: '2rem',
     },
 
     [`@media screen and (max-width: ${em(540)})`]: {
-      fontSize: "1.75rem",
+      fontSize: '1.75rem',
     },
 
     [`@media screen and (max-width: ${em(414)})`]: {
-      fontSize: "1.5rem",
+      fontSize: '1.5rem',
     },
   },
 
   heroText: {
-    fontSize: "0.95rem",
-    marginBlockStart: "1.75rem",
-    marginBlockEnd: "1.25rem",
+    fontSize: '0.95rem',
+    marginBlockStart: '1.75rem',
+    marginBlockEnd: '1.25rem',
 
     [`@media screen and (max-width: ${em(1280)})`]: {
-      textAlign: "center",
-      marginInline: "auto",
+      textAlign: 'center',
+      marginInline: 'auto',
     },
 
     [`@media screen and (max-width: ${em(768)})`]: {
-      marginBlockStart: "1.25rem",
+      marginBlockStart: '1.25rem',
     },
 
     [`@media screen and (max-width: ${em(540)})`]: {
-      marginBlockStart: "1rem",
+      marginBlockStart: '1rem',
     },
   },
 
   heroActionBtn: {
-    display: "flex",
-    gap: "1rem",
+    display: 'flex',
+    gap: '1rem',
 
     [`@media screen and (max-width: ${em(1280)})`]: {
-      justifyContent: "center",
+      justifyContent: 'center',
     },
   },
 
@@ -193,93 +177,93 @@ const useStyles = createStyles((theme) => ({
     zIndex: -1,
 
     [`@media screen and (max-width: ${em(1280)})`]: {
-      gridRow: "1/2",
+      gridRow: '1/2',
     },
   },
 
   girlImageContainer: {
-    aspectRatio: "1",
-    width: "80%",
-    display: "grid",
-    placeItems: "center",
-    marginInlineStart: "auto",
-    position: "relative",
+    aspectRatio: '1',
+    width: '80%',
+    display: 'grid',
+    placeItems: 'center',
+    marginInlineStart: 'auto',
+    position: 'relative',
 
     [`@media screen and (max-width: ${em(1280)})`]: {
       width: `min(80%, ${rem(450)})`,
-      marginInlineEnd: "auto",
+      marginInlineEnd: 'auto',
     },
   },
 
   popups: {
-    position: "absolute",
+    position: 'absolute',
     animation: `${popupAnimation} 200ms ease-in-out`,
-    transformOrigin: "center",
+    transformOrigin: 'center',
   },
 
   popup1: {
     width: rem(300),
-    transform: "translateX(-40%) translateY(-50%)",
+    transform: 'translateX(-40%) translateY(-50%)',
     top: 0,
     left: 0,
 
     [`@media screen and (max-width: ${em(768)})`]: {
-      width: "35dvw",
+      width: '35dvw',
     },
   },
 
   popup2: {
     width: rem(280),
-    transform: "translateX(-68.5%) translateY(-25%)",
+    transform: 'translateX(-68.5%) translateY(-25%)',
     bottom: 0,
 
     [`@media screen and (max-width: ${em(768)})`]: {
-      width: "40dvw",
+      width: '40dvw',
     },
   },
 
   popup3: {
     width: rem(350),
-    transform: "translateX(-45%) translateY(50%)",
+    transform: 'translateX(-45%) translateY(50%)',
     bottom: 0,
 
     [`@media screen and (max-width: ${em(768)})`]: {
-      width: "50dvw",
+      width: '50dvw',
     },
   },
 
   popup4: {
     width: rem(225),
     right: 0,
-    top: "50%",
-    transform: "translateX(50%) translateY(-35%)",
+    top: '50%',
+    transform: 'translateX(50%) translateY(-35%)',
 
     [`@media screen and (max-width: ${em(768)})`]: {
-      width: "32dvw",
+      width: '32dvw',
     },
   },
 
   popup5: {
     width: rem(180),
     right: 0,
-    top: "72%",
-    transform: "translateX(60%) translateY(-35%)",
+    top: '72%',
+    transform: 'translateX(60%) translateY(-35%)',
 
     [`@media screen and (max-width: ${em(768)})`]: {
-      width: "30dvw",
-      transform: "translateX(45%) translateY(-55%)",
+      width: '30dvw',
+      transform: 'translateX(45%) translateY(-55%)',
     },
   },
 
   popup6: {
     width: rem(180),
     right: 0,
-    top: "35%",
-    transform: "translateX(50%) translateY(-35%)",
+    top: '35%',
+    transform: 'translateX(50%) translateY(-35%)',
 
     [`@media screen and (max-width: ${em(768)})`]: {
-      width: "27dvw",
-      transform: "translateX(50%) translateY(-25%)",
+      width: '27dvw',
+      transform: 'translateX(50%) translateY(-25%)',
     },
   },
 }));
