@@ -1,16 +1,20 @@
+import { useNavigate } from 'react-router-dom';
 import { Box, TextInput, createStyles, rem, em, Button, Title, Text, Image } from '@mantine/core';
 import { useForm, isEmail, isNotEmpty } from '@mantine/form';
-import { MdVerified } from 'react-icons/md';
-import waitlist_img from '../assets/images/waitlist/waitlist_img.png';
+import { notifications } from '@mantine/notifications';
 import useApi from '../utils/hooks/useApi';
 import ApiList from '../assets/api/ApiList';
+import waitlist_img from '../assets/images/waitlist/waitlist_img.png';
+import { MdVerified } from 'react-icons/md';
+import { BsCheckLg } from 'react-icons/bs';
 import { Navbar } from '../components/common/Navbar';
 
 export const Waitlist = () => {
+  const navigate = useNavigate();
+  const { isLoading, sendRequest } = useApi();
+
   const { classes } = useStyles();
   const { classes: inputClasses } = inputStyles();
-
-  const { sendRequest } = useApi();
 
   const waitlistForm = useForm({
     initialValues: {
@@ -30,12 +34,30 @@ export const Waitlist = () => {
       firstName: isNotEmpty('Name cannot be empty'),
       lastName: isNotEmpty('Name cannot be empty'),
       email: isEmail('Invalid email'),
-      phone: (value) => (/^(\+?\d{1,3}[- ]?)?\d{10}$/.test(value) ? null : 'Invalid phone number'),
+      // phone: (value) => (/^(\+?\d{1,3}[- ]?)?\d{10}$/.test(value) ? null : 'Invalid phone number'),
     },
   });
 
   const handleWaitlistSubmit = () => {
-    sendRequest(`${ApiList.waitlist}`, 'POST', waitlistForm.getTransformedValues());
+    waitlistForm.reset();
+
+    sendRequest(`${ApiList.waitlist}`, 'POST', waitlistForm.getTransformedValues()).then((res) => {
+      notifications.show({
+        title: !res ? 'Sending...' : 'Success',
+        message: !res
+          ? 'Please Wait, Adding you to the waitlist...'
+          : 'You have been added to the waitlist! Please check your email for confirmation.',
+        color: !res ? 'blue' : 'green',
+        icon: res ? <BsCheckLg /> : null,
+        loading: Boolean(res),
+      });
+    });
+
+    // if (!isLoading) {
+    //   setTimeout(() => {
+    //     navigate('/');
+    //   }, 1000);
+    // }
   };
 
   return (
@@ -58,17 +80,20 @@ export const Waitlist = () => {
           <form onSubmit={waitlistForm.onSubmit(handleWaitlistSubmit)}>
             <Box className={classes.nameInput}>
               <TextInput
+                withAsterisk
                 label="First Name"
                 classNames={inputClasses}
                 {...waitlistForm.getInputProps('firstName')}
               />
               <TextInput
+                withAsterisk
                 label="Last Name"
                 classNames={inputClasses}
                 {...waitlistForm.getInputProps('lastName')}
               />
             </Box>
             <TextInput
+              withAsterisk
               label="Email Address"
               classNames={inputClasses}
               {...waitlistForm.getInputProps('email')}
@@ -76,6 +101,7 @@ export const Waitlist = () => {
             <TextInput
               label="Phone Number"
               classNames={inputClasses}
+              placeholder="optional"
               {...waitlistForm.getInputProps('phone')}
             />
 
