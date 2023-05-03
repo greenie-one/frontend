@@ -1,1 +1,1 @@
-export const validRoutes = ["/"];
+export const validRoutes = ['/'];

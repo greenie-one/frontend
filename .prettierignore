@@ -1,0 +1,11 @@
+.vscode-test/
+out/
+test-fixtures/
+node_modules
+build
+dist
+coverage
+*.log
+*.lock
+*.md
+assets

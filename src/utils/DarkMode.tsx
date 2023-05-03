@@ -1,6 +1,6 @@
-import { useMantineColorScheme, ActionIcon, Group } from "@mantine/core";
-import { TbMoonStars } from "react-icons/tb";
-import { BiSun } from "react-icons/bi";
+import { useMantineColorScheme, ActionIcon, Group } from '@mantine/core';
+import { TbMoonStars } from 'react-icons/tb';
+import { BiSun } from 'react-icons/bi';
 
 export function DarkMode() {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
@@ -13,20 +13,11 @@ export function DarkMode() {
         size="lg"
         sx={(theme) => ({
           backgroundColor:
-            theme.colorScheme === "dark"
-              ? theme.colors.dark[6]
-              : theme.colors.gray[0],
-          color:
-            theme.colorScheme === "dark"
-              ? theme.colors.yellow[4]
-              : theme.colors.blue[6],
+            theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
+          color: theme.colorScheme === 'dark' ? theme.colors.yellow[4] : theme.colors.blue[6],
         })}
       >
-        {colorScheme === "dark" ? (
-          <BiSun size="1.2rem" />
-        ) : (
-          <TbMoonStars size="1.2rem" />
-        )}
+        {colorScheme === 'dark' ? <BiSun size="1.2rem" /> : <TbMoonStars size="1.2rem" />}
       </ActionIcon>
     </Group>
   );

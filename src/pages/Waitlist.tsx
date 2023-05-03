@@ -1,20 +1,9 @@
-import {
-  Box,
-  TextInput,
-  createStyles,
-  rem,
-  em,
-  Button,
-  Title,
-  Text,
-  Image,
-} from "@mantine/core";
-import { useForm, isEmail, isNotEmpty } from "@mantine/form";
-import { MdVerified } from "react-icons/md";
-import waitlist_img from "../assets/images/waitlist/waitlist_img.png";
-import useApi from "../utils/hooks/useApi";
-// @ts-ignore
-import ApiList from "../assets/api/ApiList";
+import { Box, TextInput, createStyles, rem, em, Button, Title, Text, Image } from '@mantine/core';
+import { useForm, isEmail, isNotEmpty } from '@mantine/form';
+import { MdVerified } from 'react-icons/md';
+import waitlist_img from '../assets/images/waitlist/waitlist_img.png';
+import useApi from '../utils/hooks/useApi';
+import ApiList from '../assets/api/ApiList';
 
 export const Waitlist = () => {
   const { classes } = useStyles();
@@ -24,10 +13,10 @@ export const Waitlist = () => {
 
   const waitlistForm = useForm({
     initialValues: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      phone: "",
+      firstName: '',
+      lastName: '',
+      email: '',
+      phone: '',
     },
 
     transformValues: (values) => ({
@@ -37,22 +26,15 @@ export const Waitlist = () => {
     }),
 
     validate: {
-      firstName: isNotEmpty("Name cannot be empty"),
-      lastName: isNotEmpty("Name cannot be empty"),
-      email: isEmail("Invalid email"),
-      phone: (value) =>
-        /^(\+?\d{1,3}[- ]?)?\d{10}$/.test(value)
-          ? null
-          : "Invalid phone number",
+      firstName: isNotEmpty('Name cannot be empty'),
+      lastName: isNotEmpty('Name cannot be empty'),
+      email: isEmail('Invalid email'),
+      phone: (value) => (/^(\+?\d{1,3}[- ]?)?\d{10}$/.test(value) ? null : 'Invalid phone number'),
     },
   });
 
   const handleWaitlistSubmit = () => {
-    sendRequest(
-      `${ApiList.waitlist}`,
-      "POST",
-      waitlistForm.getTransformedValues()
-    );
+    sendRequest(`${ApiList.waitlist}`, 'POST', waitlistForm.getTransformedValues());
   };
 
   return (
@@ -74,23 +56,23 @@ export const Waitlist = () => {
               <TextInput
                 label="First Name"
                 classNames={inputClasses}
-                {...waitlistForm.getInputProps("firstName")}
+                {...waitlistForm.getInputProps('firstName')}
               />
               <TextInput
                 label="Last Name"
                 classNames={inputClasses}
-                {...waitlistForm.getInputProps("lastName")}
+                {...waitlistForm.getInputProps('lastName')}
               />
             </Box>
             <TextInput
               label="Email Address"
               classNames={inputClasses}
-              {...waitlistForm.getInputProps("email")}
+              {...waitlistForm.getInputProps('email')}
             />
             <TextInput
               label="Phone Number"
               classNames={inputClasses}
-              {...waitlistForm.getInputProps("phone")}
+              {...waitlistForm.getInputProps('phone')}
             />
 
             <Button fullWidth size="md" type="submit" radius="xl" color="teal">
@@ -113,55 +95,55 @@ export const Waitlist = () => {
 
 const useStyles = createStyles((theme) => ({
   root: {
-    display: "grid",
-    gridTemplateColumns: "1fr 1fr",
-    placeItems: "center",
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr',
+    placeItems: 'center',
 
     [`@media screen and (max-width: ${em(480)})`]: {
-      height: "100dvh",
-      overflow: "hidden",
-      gridTemplateColumns: "1fr",
-      gridTemplateRows: "1fr 1fr",
-      padding: "0 2.5rem",
+      height: '100dvh',
+      overflow: 'hidden',
+      gridTemplateColumns: '1fr',
+      gridTemplateRows: '1fr 1fr',
+      padding: '0 2.5rem',
     },
   },
 
   waitlist_left: {
-    height: "100dvh",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
+    height: '100dvh',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
 
     [`@media screen and (max-width: ${em(480)})`]: {
-      width: "100%",
-      margin: "3rem 0",
-      height: "fit-content",
-      alignItems: "stretch",
+      width: '100%',
+      margin: '3rem 0',
+      height: 'fit-content',
+      alignItems: 'stretch',
     },
   },
 
   waitlist_img: {
     [`@media screen and (max-width: ${em(480)})`]: {
-      position: "relative",
-      top: "-3.5rem",
+      position: 'relative',
+      top: '-3.5rem',
     },
   },
 
   nameInput: {
-    display: "flex",
-    gap: "1rem",
+    display: 'flex',
+    gap: '1rem',
 
     [`@media screen and (max-width: ${em(480)})`]: {
-      flexDirection: "column",
-      width: "100% !important",
+      flexDirection: 'column',
+      width: '100% !important',
       gap: 0,
     },
   },
 
   logo: {
-    display: "flex",
-    alignItems: "start",
+    display: 'flex',
+    alignItems: 'start',
   },
 
   greenie: {
@@ -171,14 +153,14 @@ const useStyles = createStyles((theme) => ({
 
   verified: {
     fontSize: rem(20),
-    color: "#9FE870",
-    marginInlineStart: "0.25rem",
+    color: '#9FE870',
+    marginInlineStart: '0.25rem',
   },
 }));
 
 const inputStyles = createStyles((theme) => ({
   root: {
-    position: "relative",
+    position: 'relative',
     marginBottom: rem(16),
   },
 
@@ -188,8 +170,8 @@ const inputStyles = createStyles((theme) => ({
   },
 
   label: {
-    position: "absolute",
-    pointerEvents: "none",
+    position: 'absolute',
+    pointerEvents: 'none',
     fontSize: theme.fontSizes.xs,
     paddingLeft: theme.spacing.sm,
     paddingTop: `calc(${theme.spacing.sm} / 2)`,
