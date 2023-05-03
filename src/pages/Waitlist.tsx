@@ -4,6 +4,7 @@ import { MdVerified } from 'react-icons/md';
 import waitlist_img from '../assets/images/waitlist/waitlist_img.png';
 import useApi from '../utils/hooks/useApi';
 import ApiList from '../assets/api/ApiList';
+import { Navbar } from '../components/common/Navbar';
 
 export const Waitlist = () => {
   const { classes } = useStyles();
@@ -39,6 +40,9 @@ export const Waitlist = () => {
 
   return (
     <>
+      <div className={classes.headerContainer}>
+        <Navbar />
+      </div>
       <Box className={classes.root}>
         <Box className={classes.waitlist_left}>
           <Text className={classes.logo}>
@@ -47,7 +51,7 @@ export const Waitlist = () => {
               <MdVerified />
             </span>
           </Text>
-          <Title order={1} mb="xl">
+          <Title order={1} mb="xl" className={classes.pageTitle}>
             Join the waitlist
           </Title>
 
@@ -94,6 +98,14 @@ export const Waitlist = () => {
 };
 
 const useStyles = createStyles((theme) => ({
+  headerContainer: {
+    display: 'none',
+
+    [`@media screen and (max-width: ${em(480)})`]: {
+      display: "block",
+    },
+  },
+
   root: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
@@ -105,6 +117,7 @@ const useStyles = createStyles((theme) => ({
       gridTemplateColumns: '1fr',
       gridTemplateRows: '1fr 1fr',
       padding: '0 2.5rem',
+      paddingBlockStart: rem(25),
     },
   },
 
@@ -123,10 +136,16 @@ const useStyles = createStyles((theme) => ({
     },
   },
 
+  pageTitle: {
+    [`@media screen and (max-width: ${em(480)})`]: {
+      textAlign: "center",
+    },
+  },
+
   waitlist_img: {
     [`@media screen and (max-width: ${em(480)})`]: {
       position: 'relative',
-      top: '-3.5rem',
+      top: '-2rem',
     },
   },
 
@@ -144,6 +163,10 @@ const useStyles = createStyles((theme) => ({
   logo: {
     display: 'flex',
     alignItems: 'start',
+
+    [`@media screen and (max-width: ${em(480)})`]: {
+      display: "none",
+    },
   },
 
   greenie: {
@@ -162,11 +185,19 @@ const inputStyles = createStyles((theme) => ({
   root: {
     position: 'relative',
     marginBottom: rem(16),
+
+    [`@media screen and (max-width: ${em(480)})`]: {
+      marginBottom: rem(12),
+    },
   },
 
   input: {
     height: rem(54),
     paddingTop: rem(18),
+
+    [`@media screen and (max-width: ${em(480)})`]: {
+      height: rem(48),
+    },
   },
 
   label: {
@@ -176,5 +207,10 @@ const inputStyles = createStyles((theme) => ({
     paddingLeft: theme.spacing.sm,
     paddingTop: `calc(${theme.spacing.sm} / 2)`,
     zIndex: 1,
+
+    [`@media screen and (max-width: ${em(480)})`]: {
+      paddingTop: `calc(${theme.spacing.sm} / 3.5)`,
+      fontSize: `calc(${theme.fontSizes.xs} * 0.95)`,
+    },
   },
 }));
