@@ -7,6 +7,5 @@ dist
 coverage
 *.log
 *.lock
-*.json
 *.md
-assets/
+assets
