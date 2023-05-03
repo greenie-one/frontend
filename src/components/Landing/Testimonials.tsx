@@ -46,6 +46,7 @@ const useStyles = createStyles((theme) => ({
 
   testimonialTitle: {
     fontSize: '2.5rem',
+    fontFamily: "Gilroy-bold !important",
 
     [`@media screen and (max-width: ${em(1120)})`]: {
       fontSize: rem(35),

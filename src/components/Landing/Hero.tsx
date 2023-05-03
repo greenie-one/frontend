@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { createStyles, Title, Text, rem, Box, keyframes, em } from '@mantine/core';
 import { _2ColumnLayout } from '../layouts/_2ColumnLayout';
@@ -53,16 +54,11 @@ export const LandingHero = () => {
             With Trust
           </Text>
           <Box className={classes.heroActionBtn}>
-            <Button variant={'fill'} outline={true} classNames={classes.tryForFree}>
-              Try Greenie
-            </Button>
-            {/* <Button
-                            variant={"outline"}
-                            outline={true}
-                            classNames={""}
-                        >
-                            Signup
-                        </Button> */}
+            <Link to="/waitlist">
+              <Button variant={'fill'} outline={true} classNames={classes.tryForFree}>
+                Join Waitlist
+              </Button>
+            </Link>
           </Box>
         </Box>
         <Box className={classes.heroIllustration}>
@@ -120,7 +116,9 @@ const useStyles = createStyles((theme) => ({
   },
 
   heroTitle: {
-    fontSize: '2.5rem',
+    fontSize: '2.75rem',
+    fontFamily: "Gilroy-bold !important",
+    maxWidth: "15ch",
 
     [`@media screen and (max-width: ${em(1280)})`]: {
       textAlign: 'center',

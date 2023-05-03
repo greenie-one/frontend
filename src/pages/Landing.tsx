@@ -80,7 +80,7 @@ export const Landing = () => {
     items: 1,
     margin: 10,
     autoplay: true,
-    dots: false,
+    dots: true,
     autoplayTimeout: 5000,
     smartSpeed: 450,
     nav: false,

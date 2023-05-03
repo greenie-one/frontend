@@ -30,9 +30,11 @@ export const Navbar = () => {
           </List>
         </nav>
         <Group className={classes.headerBtnsContainer}>
-          <Button variant={'fill'} outline={true} classNames={classes.tryBtn}>
-            Try Greenie
-          </Button>
+          <Link to="/waitlist">
+            <Button variant={'fill'} outline={true} classNames={classes.tryBtn}>
+              Join Waitlist
+            </Button>
+          </Link>
         </Group>
         {!opened ? (
           <span className={classes.menuBtn}>
