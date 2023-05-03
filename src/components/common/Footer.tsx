@@ -23,11 +23,11 @@ export const Footer: React.FC = (): JSX.Element => {
                 className={classes.footerHeading}
                 gap={'sm'}
               >
-                <span className={''}>We</span>
+                <span className={classes.footerHeadingTexts}>We</span>
                 <span className={classes.verified}>
                   <MdVerified />
                 </span>
-                <span className={''}>Greenie</span>
+                <span className={classes.footerHeadingTexts}>Greenie</span>
               </Flex>
             </Link>
             <Title order={1} className={classes.footerTagline}>
@@ -191,6 +191,10 @@ const useStyles = createStyles((theme) => ({
     },
   },
 
+  footerHeadingTexts: {
+    fontFamily: "Gilroy-bold !important",
+  },
+
   verified: {
     fontSize: rem(30),
     color: '#9FE870',
@@ -211,6 +215,7 @@ const useStyles = createStyles((theme) => ({
     letterSpacing: '0.01em',
     color: '#8E8E8E',
     maxWidth: '30ch',
+    fontFamily: "Gilroy-bold !important",
 
     [`@media screen and (max-width: ${em(1280)})`]: {
       fontSize: rem(30),
@@ -365,6 +370,7 @@ const useStyles = createStyles((theme) => ({
   greenie: {
     fontSize: rem(20),
     fontWeight: 600,
+    fontFamily: "Gilroy-bold !important",
   },
 
   verifiedBottom: {

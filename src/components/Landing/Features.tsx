@@ -206,6 +206,7 @@ const useStyles = createStyles((theme) => ({
   featuresCardTitle: {
     fontSize: '2rem',
     lineHeight: '1.1',
+    fontFamily: "Gilroy-bold !important",
 
     ':nth-of-type(1)': {
       maxWidth: '20ch',
@@ -274,6 +275,7 @@ const useStyles = createStyles((theme) => ({
   },
 
   manyMore: {
+    fontFamily: "Gilroy-bold !important",
     gridColumn: '3/6',
     gridRow: '8/9',
     paddingInline: '2rem',
@@ -284,7 +286,7 @@ const useStyles = createStyles((theme) => ({
     backgroundColor: '#FFFFFF',
     color: '#17A672',
     fontWeight: 700,
-    fontSize: '1.75rem',
+    fontSize: '2rem',
 
     [`@media screen and (max-width: ${em(640)})`]: {
       fontSize: '1.6rem',

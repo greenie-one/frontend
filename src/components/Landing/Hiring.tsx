@@ -59,6 +59,7 @@ const useStyles = createStyles((theme) => ({
 
   hiringTitle: {
     fontSize: '2.5rem',
+    fontFamily: "Gilroy-bold !important",
     position: 'relative',
     zIndex: -1,
 
@@ -113,7 +114,9 @@ const useStyles = createStyles((theme) => ({
     zIndex: -1,
   },
 
-  verifiedText: {},
+  verifiedText: {
+    fontFamily: "Gilroy-bold !important",
+  },
 
   capIconContainer: {
     display: 'inline-grid',

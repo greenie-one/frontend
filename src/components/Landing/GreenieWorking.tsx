@@ -96,7 +96,7 @@ export const LandingGreenieWorkings = () => {
     <section className={`${classes.root} section`}>
       <LandingSectionHeading heading={'How Greenie Works'} subheading={''} />
       <Box className={classes.workingsBtnContainer}>
-        {['Create Greenie Account', 'Verify Documents', 'Send or Receive Request', ' Share ID'].map(
+        {['1. Create Greenie Account', '2. Verify Documents', '3. Send or Receive Request', '4. Share ID'].map(
           (text, id) => {
             return (
               <Button
@@ -272,6 +272,7 @@ const useStyles = createStyles((theme) => ({
     lineHeight: '1.1',
     maxWidth: '17ch',
     gridColumn: '1/2',
+    fontFamily: "Gilroy-bold !important",
 
     [`@media screen and (max-width: ${em(768)})`]: {
       fontSize: rem(18),
