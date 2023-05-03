@@ -9,7 +9,9 @@ const GlobalContext = createContext<GlobalContextType>({} as GlobalContextType);
 
 export const useGlobalContext = () => useContext(GlobalContext);
 
-export const GlobalContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const GlobalContextProvider: React.FC<{
+  children: React.ReactNode;
+}> = ({ children }) => {
   const [forceRender, setForceRender] = useState<boolean>(true);
 
   return (
