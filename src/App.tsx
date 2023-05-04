@@ -1,23 +1,34 @@
-import { Routes, Route } from "react-router-dom";
-import { MantineProvider } from "@mantine/core";
-import { PageNotFound } from "./pages/PageNotFound";
-import { Landing } from "./pages/Landing";
-import { Navbar } from "./components/common/Navbar";
-import { Footer } from "./components/common/Footer";
+import { Routes, Route, useLocation } from 'react-router-dom';
+import { MantineProvider } from '@mantine/core';
+import { Notifications } from '@mantine/notifications';
+
+import { PageNotFound } from './pages/PageNotFound';
+import { Navbar } from './components/common/Navbar';
+import { Footer } from './components/common/Footer';
+import { Landing } from './pages/Landing';
+import { AuthPage } from './pages/AuthPage';
+import { Waitlist } from './pages/Waitlist';
+
+import { validRoutes } from './utils/constants/ValidRoutes';
 
 const App = () => {
-    return (
-        <>
-            <MantineProvider withGlobalStyles withNormalizeCSS>
-                <Navbar />
-                <Routes>
-                    <Route path="/" element={<Landing />} />
-                    <Route path="*" element={<PageNotFound />} />
-                </Routes>
-                <Footer />
-            </MantineProvider>
-        </>
-    );
+  const { pathname } = useLocation();
+
+  return (
+    <>
+      <MantineProvider withGlobalStyles withNormalizeCSS>
+        <Notifications position="top-center" />
+        {validRoutes.includes(pathname) ? <Navbar /> : null}
+        <Routes>
+          <Route path="/" element={<Landing />} />
+          <Route path="/auth" element={<AuthPage />} />
+          <Route path="/waitlist" element={<Waitlist />} />
+          <Route path="*" element={<PageNotFound />} />
+        </Routes>
+        {validRoutes.includes(pathname) ? <Footer /> : null}
+      </MantineProvider>
+    </>
+  );
 };
 
 export default App;
