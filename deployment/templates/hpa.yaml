@@ -2,14 +2,14 @@
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "greenie-mvp-frontend-dev.fullname" . }}
+  name: {{ include "greenie-mvp-frontend.fullname" . }}
   labels:
-    {{- include "greenie-mvp-frontend-dev.labels" . | nindent 4 }}
+    {{- include "greenie-mvp-frontend.labels" . | nindent 4 }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ include "greenie-mvp-frontend-dev.fullname" . }}
+    name: {{ include "greenie-mvp-frontend.fullname" . }}
   minReplicas: {{ .Values.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.autoscaling.maxReplicas }}
   metrics:
