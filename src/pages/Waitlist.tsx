@@ -2,16 +2,17 @@ import { useNavigate } from 'react-router-dom';
 import { Box, TextInput, createStyles, rem, em, Button, Title, Text, Image } from '@mantine/core';
 import { useForm, isEmail, isNotEmpty } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
+import { Navbar } from '../components/common/Navbar';
 import useApi from '../utils/hooks/useApi';
 import ApiList from '../assets/api/ApiList';
 import waitlist_img from '../assets/images/waitlist/waitlist_img.png';
 import { MdVerified } from 'react-icons/md';
 import { BsCheckLg } from 'react-icons/bs';
-import { Navbar } from '../components/common/Navbar';
+import { FaExclamation } from 'react-icons/fa';
 
 export const Waitlist = () => {
   const navigate = useNavigate();
-  const { isLoading, sendRequest } = useApi();
+  const { error, isLoading, sendRequest } = useApi();
 
   const { classes } = useStyles();
   const { classes: inputClasses } = inputStyles();
@@ -41,23 +42,43 @@ export const Waitlist = () => {
   const handleWaitlistSubmit = () => {
     waitlistForm.reset();
 
-    sendRequest(`${ApiList.waitlist}`, 'POST', waitlistForm.getTransformedValues()).then((res) => {
-      notifications.show({
-        title: !res ? 'Sending...' : 'Success',
-        message: !res
-          ? 'Please Wait, Adding you to the waitlist...'
-          : 'You have been added to the waitlist! Please check your email for confirmation.',
-        color: !res ? 'blue' : 'green',
-        icon: res ? <BsCheckLg /> : null,
-        loading: Boolean(res),
+    sendRequest(`${ApiList.waitlist}`, 'POST', waitlistForm.getTransformedValues())
+      .then((res: any) => {
+        console.log(res.message);
+        if (res.message === 'added to waitlist') {
+          notifications.show({
+            title: isLoading ? 'Sending...' : 'Success !',
+            message: isLoading
+              ? 'Please wait while we add you to the waitlist.'
+              : 'You have been added to the waitlist! We will notify you when we launch.',
+            autoClose: 2200,
+            color: isLoading ? 'blue' : 'teal',
+            icon: !isLoading && <BsCheckLg />,
+            loading: isLoading,
+          });
+        }
+      })
+      .catch((err) => {
+        if (err) {
+          notifications.show({
+            title: isLoading ? 'Sending...' : 'Email already in waitlist',
+            message: isLoading
+              ? 'Please wait while we add you to the waitlist.'
+              : 'Please check your email for more information.',
+            autoClose: 2200,
+            color: isLoading ? 'blue' : 'orange',
+            icon: !isLoading && <FaExclamation />,
+            loading: isLoading,
+          });
+        }
+      })
+      .finally(() => {
+        if (!isLoading) {
+          setTimeout(() => {
+            navigate('/');
+          }, 2200);
+        }
       });
-    });
-
-    // if (!isLoading) {
-    //   setTimeout(() => {
-    //     navigate('/');
-    //   }, 1000);
-    // }
   };
 
   return (
@@ -128,7 +149,7 @@ const useStyles = createStyles((theme) => ({
     display: 'none',
 
     [`@media screen and (max-width: ${em(480)})`]: {
-      display: "block",
+      display: 'block',
     },
   },
 
@@ -164,7 +185,7 @@ const useStyles = createStyles((theme) => ({
 
   pageTitle: {
     [`@media screen and (max-width: ${em(480)})`]: {
-      textAlign: "center",
+      textAlign: 'center',
     },
   },
 
@@ -191,7 +212,7 @@ const useStyles = createStyles((theme) => ({
     alignItems: 'start',
 
     [`@media screen and (max-width: ${em(480)})`]: {
-      display: "none",
+      display: 'none',
     },
   },
 
