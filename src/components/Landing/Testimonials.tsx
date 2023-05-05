@@ -16,8 +16,7 @@ export const LandingTestimonials: React.FC = (): JSX.Element => {
               Happy Greenie Users
             </Title>
             <Text className={classes.testimonialText}>
-              Over 100 people have used our beta version and share their success stories of using
-              Greenie and optimizing their hiring process.
+              Select few users got a chance to test our beta version. They share their success stories of using Greenie and optimizing their hiring process.
             </Text>
           </Box>
           <Box className={classes.testimonialIllustration}>
@@ -46,7 +45,7 @@ const useStyles = createStyles((theme) => ({
 
   testimonialTitle: {
     fontSize: '2.5rem',
-    fontFamily: "Gilroy-bold !important",
+    
 
     [`@media screen and (max-width: ${em(1120)})`]: {
       fontSize: rem(35),

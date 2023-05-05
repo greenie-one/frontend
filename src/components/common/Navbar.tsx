@@ -32,7 +32,7 @@ export const Navbar = () => {
         <Group className={classes.headerBtnsContainer}>
           <Link to="/waitlist">
             <Button variant={'fill'} outline={true} classNames={classes.tryBtn}>
-              Join Waitlist
+              Join The Waitlist
             </Button>
           </Link>
         </Group>
