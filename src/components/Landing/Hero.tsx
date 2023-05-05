@@ -47,16 +47,15 @@ export const LandingHero = () => {
       <_2ColumnLayout>
         <Box className={classes.heroContentContainer}>
           <Title order={1} className={classes.heroTitle}>
-            Verified Profiles At A Click Of A Button
+            Create Verified Profiles In 100 Seconds
           </Title>
           <Text className={classes.heroText}>
-            Get Complete Background Verification Done In 100 Seconds. Network, Collaborate and Hire
-            With Trust
+            Greenie revolutionizes verification process with a Blockchain based all-in-one secure platform. Effortlessly manage documents, contracts, verifications and instill trust in networking and hiring.
           </Text>
           <Box className={classes.heroActionBtn}>
             <Link to="/waitlist">
               <Button variant={'fill'} outline={true} classNames={classes.tryForFree}>
-                Join Waitlist
+                Join The Waitlist
               </Button>
             </Link>
           </Box>
@@ -116,9 +115,7 @@ const useStyles = createStyles((theme) => ({
   },
 
   heroTitle: {
-    fontSize: '2.75rem',
-    fontFamily: "Gilroy-bold !important",
-    maxWidth: "15ch",
+    fontSize: '2.5rem',
 
     [`@media screen and (max-width: ${em(1280)})`]: {
       textAlign: 'center',

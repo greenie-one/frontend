@@ -32,8 +32,7 @@ export const LandingHiring: React.FC = (): JSX.Element => {
             </Flex>
           </Title>
           <Text className={classes.hiringText}>
-            Greenie Brings Speed And Trust Into Hiring, Allowing Your HR Team's To Get Verification
-            Reports Instantly Without Waiting For Weeks.
+            Greenie's mission is to instill trust in the hiring process by verifying both candidates and companies. Our platform creates value for companies by allowing HR teams to access verification reports instantly, eliminating weeks of waiting. Simultaneously, we empower candidates by giving them total control over their personal data, democratizing verifications for all
           </Text>
         </Box>
         <Box className={classes.hiringIllustration}>
@@ -59,9 +58,15 @@ const useStyles = createStyles((theme) => ({
 
   hiringTitle: {
     fontSize: '2.5rem',
-    fontFamily: "Gilroy-bold !important",
+    // width: "max-content",
+    
     position: 'relative',
     zIndex: -1,
+
+    // [`@media screen and (max-width: ${em(1280)})`]: {
+    //   textAlign: "center",
+    //   marginInline: "auto",
+    // },
 
     [`@media screen and (max-width: ${em(1120)})`]: {
       fontSize: rem(35),
@@ -73,6 +78,7 @@ const useStyles = createStyles((theme) => ({
 
     [`@media screen and (max-width: ${em(480)})`]: {
       fontSize: rem(26),
+      // width: "auto",
     },
 
     [`@media screen and (max-width: ${em(350)})`]: {
@@ -104,6 +110,11 @@ const useStyles = createStyles((theme) => ({
       left: '4.5rem',
     },
 
+    // [`@media screen and (max-width: ${em(426)})`]: {
+    //   fontSize: '1.3rem',
+    //   left: `calc(32% - 0dvw)`,
+    // },
+
     [`@media screen and (max-width: ${em(350)})`]: {
       fontSize: '1.25rem',
     },
@@ -115,7 +126,7 @@ const useStyles = createStyles((theme) => ({
   },
 
   verifiedText: {
-    fontFamily: "Gilroy-bold !important",
+    
   },
 
   capIconContainer: {
@@ -140,6 +151,11 @@ const useStyles = createStyles((theme) => ({
       transform: 'translateX(-50%) translateY(3.25rem)',
     },
 
+    [`@media screen and (max-width: ${em(426)})`]: {
+      width: rem(16),
+      transform: 'translateX(-50%) translateY(3rem)',
+    },
+
     [`@media screen and (max-width: ${em(350)})`]: {
       width: rem(15),
     },
@@ -150,6 +166,12 @@ const useStyles = createStyles((theme) => ({
     marginBlockStart: '1.75rem',
     marginBlockEnd: '1.25rem',
     maxWidth: '40ch',
+
+    [`@media screen and (max-width: ${em(1280)})`]: {
+      textAlign: "center",
+      marginInline: "auto",
+      maxWidth: '80ch',
+    },
 
     [`@media screen and (max-width: ${em(480)})`]: {
       fontSize: rem(15),

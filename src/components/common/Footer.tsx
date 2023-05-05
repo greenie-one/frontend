@@ -192,7 +192,7 @@ const useStyles = createStyles((theme) => ({
   },
 
   footerHeadingTexts: {
-    fontFamily: "Gilroy-bold !important",
+    
   },
 
   verified: {
@@ -215,7 +215,7 @@ const useStyles = createStyles((theme) => ({
     letterSpacing: '0.01em',
     color: '#8E8E8E',
     maxWidth: '30ch',
-    fontFamily: "Gilroy-bold !important",
+    
 
     [`@media screen and (max-width: ${em(1280)})`]: {
       fontSize: rem(30),
@@ -370,7 +370,7 @@ const useStyles = createStyles((theme) => ({
   greenie: {
     fontSize: rem(20),
     fontWeight: 600,
-    fontFamily: "Gilroy-bold !important",
+    
   },
 
   verifiedBottom: {
