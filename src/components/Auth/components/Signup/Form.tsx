@@ -1,5 +1,6 @@
-import { Box, TextInput, PasswordInput, createStyles, rem, Text, Button } from '@mantine/core';
+import { TextInput, PasswordInput, createStyles, rem, Text, Button, Divider } from '@mantine/core';
 import { useAuthContext } from '../../context/AuthContext';
+import { Link } from 'react-router-dom';
 
 export const Form = () => {
   const { classes: inputClasses } = inputStyles();
@@ -22,13 +23,23 @@ export const Form = () => {
         classNames={inputClasses}
         {...signupForm.getInputProps('confirmPassword')}
       />
-      <Text fz="md">
-        By creating an account, you agree to our <u>Terms of Service</u> and
+      <Text fz={{ sm: 'sm', md: 'md' }} mb={'md'}>
+        By creating an account, you agree to our <u>Terms of Service</u> and{' '}
         <u>Privacy & Cookie Statement</u>.
       </Text>
-      <Button type="submit" radius="xl" color="teal">
+      <Button type="submit" fullWidth radius="xl" color="teal">
         Agree & Join
       </Button>
+      <Divider my="lg" label="Or better yet" fw={700} fz={'xl'} labelPosition="center" />
+      <Button radius="xl" variant="default" fullWidth>
+        Continue with Google
+      </Button>
+      <Text ta={'center'} mt={'sm'}>
+        Aleady on Greenie?{' '}
+        <u>
+          <Link to={'/'}>Log In</Link>
+        </u>
+      </Text>
     </>
   );
 };
@@ -58,4 +69,10 @@ const inputStyles = createStyles((theme) => ({
     paddingTop: `calc(${theme.spacing.sm} / 2)`,
     zIndex: 1,
   },
+
+  Button: {
+    margin: '2rem 0',
+  },
+
+  termsAndConditionsText: {},
 }));

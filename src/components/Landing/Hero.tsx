@@ -1,16 +1,16 @@
-import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { createStyles, Title, Text, rem, Box, keyframes, em } from '@mantine/core';
 import { _2ColumnLayout } from '../layouts/_2ColumnLayout';
 import { Button } from '../common/Button';
 
-import girlCheckingPhone from '../../assets/images/girl-checking-phone.png';
-import popup1 from '../../assets/images/popup-illustration-1.svg';
-import popup2 from '../../assets/images/popup-illustration-2.svg';
-import popup3 from '../../assets/images/popup-illustration-3.svg';
-import popup4 from '../../assets/images/popup-illustration-4.svg';
-import popup5 from '../../assets/images/popup-illustration-5.svg';
-import popup6 from '../../assets/images/popup-illustration-6.svg';
+import girlCheckingPhone from '../../assets/images/Landing/girl-checking-phone.png';
+import popup1 from '../../assets/images/Landing/popup-illustration-1.svg';
+import popup2 from '../../assets/images/Landing/popup-illustration-2.svg';
+import popup3 from '../../assets/images/Landing/popup-illustration-3.svg';
+import popup4 from '../../assets/images/Landing/popup-illustration-4.svg';
+import popup5 from '../../assets/images/Landing/popup-illustration-5.svg';
+import popup6 from '../../assets/images/Landing/popup-illustration-6.svg';
 
 const popupAnimation = keyframes({
   from: { scale: '0.25' },
@@ -50,7 +50,9 @@ export const LandingHero = () => {
             Create Verified Profiles In 100 Seconds
           </Title>
           <Text className={classes.heroText}>
-            Greenie revolutionizes verification process with a Blockchain based all-in-one secure platform. Effortlessly manage documents, contracts, verifications and instill trust in networking and hiring.
+            Greenie revolutionizes verification process with a Blockchain based all-in-one secure
+            platform. Effortlessly manage documents, contracts, verifications and instill trust in
+            networking and hiring.
           </Text>
           <Box className={classes.heroActionBtn}>
             <Link to="/waitlist">
@@ -168,7 +170,7 @@ const useStyles = createStyles((theme) => ({
     fontSize: rem(15),
     backgroundColor: '#17A672 !important',
     borderColor: '#17A672 !important',
-    color: "white !important",
+    color: 'white !important',
   },
 
   heroIllustration: {
