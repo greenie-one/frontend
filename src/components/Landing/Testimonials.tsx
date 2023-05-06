@@ -2,7 +2,7 @@ import React from 'react';
 import { createStyles, Title, Text, rem, Box, Flex, em } from '@mantine/core';
 
 import { _2ColumnLayout } from '../layouts/_2ColumnLayout';
-import testimonialIllustration from '../../assets/images/young-indian-manager.png';
+import testimonialIllustration from '../../assets/images/Landing/young-indian-manager.png';
 
 export const LandingTestimonials: React.FC = (): JSX.Element => {
   const { classes } = useStyles();
@@ -16,7 +16,8 @@ export const LandingTestimonials: React.FC = (): JSX.Element => {
               Happy Greenie Users
             </Title>
             <Text className={classes.testimonialText}>
-              Select few users got a chance to test our beta version. They share their success stories of using Greenie and optimizing their hiring process.
+              Select few users got a chance to test our beta version. They share their success
+              stories of using Greenie and optimizing their hiring process.
             </Text>
           </Box>
           <Box className={classes.testimonialIllustration}>
@@ -45,7 +46,6 @@ const useStyles = createStyles((theme) => ({
 
   testimonialTitle: {
     fontSize: '2.5rem',
-    
 
     [`@media screen and (max-width: ${em(1120)})`]: {
       fontSize: rem(35),
