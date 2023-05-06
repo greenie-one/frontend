@@ -3,11 +3,11 @@ import { createStyles, getStylesRef, Title, Text, em, rem, Box } from '@mantine/
 import { randomId } from '@mantine/hooks';
 import { LandingSectionHeading } from './SectionHeading';
 
-import documentVerified from '../../assets/images/document-verified.svg';
-import clock from '../../assets/images/clock.svg';
-import liveTracking from '../../assets/images/live-tracking.svg';
-import dataControll from '../../assets/images/data-controll.svg';
-import dataControllMobile from '../../assets/images/data-controll-mobile.svg';
+import documentVerified from '../../assets/images/Landing/document-verified.svg';
+import clock from '../../assets/images/Landing/clock.svg';
+import liveTracking from '../../assets/images/Landing/live-tracking.svg';
+import dataControll from '../../assets/images/Landing/data-controll.svg';
+import dataControllMobile from '../../assets/images/Landing/data-controll-mobile.svg';
 
 type FeaturesCardPropsType = {
   id: string;
@@ -92,7 +92,7 @@ const featuresCardContent = [
     cardBg: '#A0E2E1',
     title: 'Instant Verification Of Documents',
     titleColor: '#310805',
-    text: 'Subheading - Greeni\'s cutting edge automation enables verifying identity, address, employment, salary, experience and skills under 100 seconds',
+    text: "Subheading - Greeni's cutting edge automation enables verifying identity, address, employment, salary, experience and skills under 100 seconds",
     textColor: '#191819',
     illustrationSmall: dataControllMobile,
     illustrationLarge: dataControll,
@@ -103,8 +103,8 @@ export const LandingFeatures = () => {
   const { classes } = useStyles();
 
   return (
-    <section id='features' className={`${classes.root} section`}>
-      <LandingSectionHeading heading={"Thanos Level Features Of Greenie"} subheading={''} />
+    <section id="features" className={`${classes.root} section`}>
+      <LandingSectionHeading heading={'Thanos Level Features Of Greenie'} subheading={''} />
       <Box className={classes.featureGrid}>
         {featuresCardContent.map((cardContent, id) => {
           return (
@@ -206,7 +206,6 @@ const useStyles = createStyles((theme) => ({
   featuresCardTitle: {
     fontSize: '2rem',
     lineHeight: '1.1',
-    
 
     ':nth-of-type(1)': {
       maxWidth: '20ch',
@@ -275,7 +274,6 @@ const useStyles = createStyles((theme) => ({
   },
 
   manyMore: {
-    
     gridColumn: '3/6',
     gridRow: '8/9',
     paddingInline: '2rem',

@@ -1,11 +1,8 @@
-import React from 'react';
 import { createStyles, Title, Text, rem, Box, Flex, em } from '@mantine/core';
-import { MdVerified } from 'react-icons/md';
-
 import { _2ColumnLayout } from '../layouts/_2ColumnLayout';
-
-import cap from '../../assets/images/cap.svg';
-import hiringDocuments from '../../assets/images/hiring-documents.png';
+import hiringDocuments from '../../assets/images/Landing/hiring-documents.png';
+import cap from '../../assets/images/Landing/cap.svg';
+import { MdVerified } from 'react-icons/md';
 
 export const LandingHiring: React.FC = (): JSX.Element => {
   const { classes } = useStyles();
@@ -32,7 +29,11 @@ export const LandingHiring: React.FC = (): JSX.Element => {
             </Flex>
           </Title>
           <Text className={classes.hiringText}>
-            Greenie's mission is to instill trust in the hiring process by verifying both candidates and companies. Our platform creates value for companies by allowing HR teams to access verification reports instantly, eliminating weeks of waiting. Simultaneously, we empower candidates by giving them total control over their personal data, democratizing verifications for all
+            Greenie's mission is to instill trust in the hiring process by verifying both candidates
+            and companies. Our platform creates value for companies by allowing HR teams to access
+            verification reports instantly, eliminating weeks of waiting. Simultaneously, we empower
+            candidates by giving them total control over their personal data, democratizing
+            verifications for all
           </Text>
         </Box>
         <Box className={classes.hiringIllustration}>
@@ -59,7 +60,7 @@ const useStyles = createStyles((theme) => ({
   hiringTitle: {
     fontSize: '2.5rem',
     // width: "max-content",
-    
+
     position: 'relative',
     zIndex: -1,
 
@@ -125,9 +126,7 @@ const useStyles = createStyles((theme) => ({
     zIndex: -1,
   },
 
-  verifiedText: {
-    
-  },
+  verifiedText: {},
 
   capIconContainer: {
     display: 'inline-grid',
@@ -168,8 +167,8 @@ const useStyles = createStyles((theme) => ({
     maxWidth: '40ch',
 
     [`@media screen and (max-width: ${em(1280)})`]: {
-      textAlign: "center",
-      marginInline: "auto",
+      textAlign: 'center',
+      marginInline: 'auto',
       maxWidth: '80ch',
     },
 
