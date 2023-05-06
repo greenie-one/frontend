@@ -166,6 +166,9 @@ const useStyles = createStyles((theme) => ({
 
   tryForFree: {
     fontSize: rem(15),
+    backgroundColor: '#17A672 !important',
+    borderColor: '#17A672 !important',
+    color: "white !important",
   },
 
   heroIllustration: {
