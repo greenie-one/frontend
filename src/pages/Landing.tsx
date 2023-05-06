@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { createStyles, Box, Text, em, rem } from '@mantine/core';
 
 import OwlCarousel from 'react-owl-carousel';
@@ -19,7 +21,19 @@ const TestimonialCard: React.FC<TestimonialCardPropsType> = ({
   name,
   designation,
 }): JSX.Element => {
+  const location = useLocation();
   const { classes } = useStyles();
+
+  useEffect(() => {
+    if (location.hash) {
+      let elem = document.getElementById(location.hash.slice(1))
+      if (elem) {
+        elem.scrollIntoView({behavior: "smooth"})
+      }
+    } else {
+      window.scrollTo({top:0,left:0, behavior: "smooth"})
+    }
+  }, [location])
 
   return (
     <Box className={classes.testimonialCard}>

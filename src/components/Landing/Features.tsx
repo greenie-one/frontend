@@ -103,7 +103,7 @@ export const LandingFeatures = () => {
   const { classes } = useStyles();
 
   return (
-    <section className={`${classes.root} section`}>
+    <section id='features' className={`${classes.root} section`}>
       <LandingSectionHeading heading={"Thanos Level Features Of Greenie"} subheading={''} />
       <Box className={classes.featureGrid}>
         {featuresCardContent.map((cardContent, id) => {

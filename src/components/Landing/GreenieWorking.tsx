@@ -52,7 +52,7 @@ const workingsCardContent = [
   {
     id: randomId(),
     cardBg: '#D8FFF1',
-    title: 'Creating a greenie account is easier that boiling an egg.',
+    title: 'Creating a greenie account is easier than boiling an egg.',
     titleColor: '#17A672',
     text: 'Instantly create an account with email ID. Verify it using Adhaar, Pan or a Driving License. Get a unique Greenie ID.  You are Sorted.',
     textColor: '#191819',
