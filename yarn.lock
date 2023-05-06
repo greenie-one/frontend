@@ -429,7 +429,14 @@
     "@jridgewell/resolve-uri" "3.1.0"
     "@jridgewell/sourcemap-codec" "1.4.14"
 
-"@mantine/core@^6.0.6", "@mantine/core@6.0.6":
+"@mantine/carousel@^6.0.10":
+  "integrity" "sha512-zYYNnGhsU8vXM37fyDg6jFmmPviE/yK5LfEn40VdAn0cLalELRrrgEvn4wp1u6N9rikp5TlHL6szH0zfJunomA=="
+  "resolved" "https://registry.npmjs.org/@mantine/carousel/-/carousel-6.0.10.tgz"
+  "version" "6.0.10"
+  dependencies:
+    "@mantine/utils" "6.0.10"
+
+"@mantine/core@^6.0.6", "@mantine/core@6.0.10", "@mantine/core@6.0.6":
   "integrity" "sha512-0DtwlNcHEb6d8/qtoYCFHc/at+8w1sg3TUWh+cdFFiykZqpRrXBRoGGfbElN5RHtQqAVg4BXC0jDSHpz6CjPHw=="
   "resolved" "https://registry.npmjs.org/@mantine/core/-/core-6.0.6.tgz"
   "version" "6.0.6"
@@ -464,7 +471,7 @@
     "fast-deep-equal" "^3.1.3"
     "klona" "^2.0.5"
 
-"@mantine/hooks@^6.0.6", "@mantine/hooks@6.0.6":
+"@mantine/hooks@^6.0.6", "@mantine/hooks@6.0.10", "@mantine/hooks@6.0.6":
   "integrity" "sha512-yGqGIZVgvL33XL+4UbP/BcvH/R5SKJYfrNcKIQY+SZ4y3CP05Q/p0BpjcLUJowKbD+xHaqXnMxE8yGf9KWAZig=="
   "resolved" "https://registry.npmjs.org/@mantine/hooks/-/hooks-6.0.6.tgz"
   "version" "6.0.6"
@@ -505,6 +512,11 @@
   dependencies:
     "clsx" "1.1.1"
     "csstype" "3.0.9"
+
+"@mantine/utils@6.0.10":
+  "integrity" "sha512-Lo4VUn3+/kqhdjSoPzUFbxXEjMxj5vS4pqRjKRGtJsTwHiMFNcm8u4cIESzMBAEsoaBrI1dGE4WttwOJhjUaSw=="
+  "resolved" "https://registry.npmjs.org/@mantine/utils/-/utils-6.0.10.tgz"
+  "version" "6.0.10"
 
 "@mantine/utils@6.0.6":
   "integrity" "sha512-Pd+ZTJ3maXb1zihZzHpo00XLwcKEg+ZGLPFG5vg/YafLDDWIhgV6snTFVKsPb2cunVjOwzbKcvlmCHXBe97mTQ=="
@@ -921,6 +933,29 @@
   "resolved" "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.4.348.tgz"
   "version" "1.4.348"
 
+"embla-carousel-autoplay@^8.0.0-rc03":
+  "integrity" "sha512-AEMoMAsOG5mpL2TidI6CfbfS9MSF0oQFoyy69s77HZVkTs2jmkP4TFxjsplFX0URjYsvsTL0jc67MMacrpP2jw=="
+  "resolved" "https://registry.npmjs.org/embla-carousel-autoplay/-/embla-carousel-autoplay-8.0.0-rc03.tgz"
+  "version" "8.0.0-rc03"
+
+"embla-carousel-react@^7.0.0", "embla-carousel-react@^8.0.0-rc03":
+  "integrity" "sha512-PxxBdAUlUgPXqeoO7JRuG2l/axXBzSxjz6eYRw3ifzGW0maIBWkdVB5lLC8JSFmCDXI8R3ZaQuL5d7KFvJOkBw=="
+  "resolved" "https://registry.npmjs.org/embla-carousel-react/-/embla-carousel-react-8.0.0-rc03.tgz"
+  "version" "8.0.0-rc03"
+  dependencies:
+    "embla-carousel" "8.0.0-rc03"
+    "embla-carousel-reactive-utils" "8.0.0-rc03"
+
+"embla-carousel-reactive-utils@8.0.0-rc03":
+  "integrity" "sha512-m2ZaxmG0MBs9nFsA3vEz0ZUNiwJaoJM8f//ENe8ODM/rEIiHkSQ1fN90k3k2NX9JemcllYGqz/bmE5cMYGXjJQ=="
+  "resolved" "https://registry.npmjs.org/embla-carousel-reactive-utils/-/embla-carousel-reactive-utils-8.0.0-rc03.tgz"
+  "version" "8.0.0-rc03"
+
+"embla-carousel@8.0.0-rc03":
+  "integrity" "sha512-2goVwmTYZdGFcRejbYJlaC/iWDPv/VAsASE60uLQYLSKpuQRTxq/huu548OozLsH/2uSelVszvmzfinZnnk/iw=="
+  "resolved" "https://registry.npmjs.org/embla-carousel/-/embla-carousel-8.0.0-rc03.tgz"
+  "version" "8.0.0-rc03"
+
 "error-ex@^1.3.1":
   "integrity" "sha512-7dFHNmqeFSEt2ZBsCriorKnn3Z2pj+fd9kmI6QoWw4//DL+icEBfc0U7qJCisqrTsKTjw4fNFy2pW9OqStD84g=="
   "resolved" "https://registry.npmjs.org/error-ex/-/error-ex-1.3.2.tgz"
@@ -1303,11 +1338,6 @@
   "resolved" "https://registry.npmjs.org/isexe/-/isexe-2.0.0.tgz"
   "version" "2.0.0"
 
-"jquery@>=1.8.3":
-  "integrity" "sha512-v28EW9DWDFpzcD9O5iyJXg3R3+q+mET5JhnjJzQUZMHOv67bpSIHq81GEYpPNZHG+XXHsfSme3nxp/hndKEcsQ=="
-  "resolved" "https://registry.npmjs.org/jquery/-/jquery-3.6.4.tgz"
-  "version" "3.6.4"
-
 "js-sdsl@^4.1.4":
   "integrity" "sha512-FfVSdx6pJ41Oa+CF7RDaFmTnCaFhua+SNYQX74riGOpl96x+2jQCqEfQ2bnXu/5DPCqlRuiqyvTJM0Qjz26IVg=="
   "resolved" "https://registry.npmjs.org/js-sdsl/-/js-sdsl-4.4.0.tgz"
@@ -1464,13 +1494,6 @@
     "type-check" "^0.4.0"
     "word-wrap" "^1.2.3"
 
-"owl.carousel@~2.3.4":
-  "integrity" "sha512-JaDss9+feAvEW8KZppPSpllfposEzQiW+Ytt/Xm5t/3CTJ7YVmkh6RkWixoA2yXk2boIwedYxOvrrppIGzru9A=="
-  "resolved" "https://registry.npmjs.org/owl.carousel/-/owl.carousel-2.3.4.tgz"
-  "version" "2.3.4"
-  dependencies:
-    "jquery" ">=1.8.3"
-
 "p-limit@^3.0.2":
   "integrity" "sha512-TYOanM3wGwNGsZN2cVTYPArw454xnXj5qmWF1bEoAc4+cU/ol7GVh7odevjp1FNHduHc3KZMcFduxU5Xc6uJRQ=="
   "resolved" "https://registry.npmjs.org/p-limit/-/p-limit-3.1.0.tgz"
@@ -1583,16 +1606,6 @@
     "loose-envify" "^1.1.0"
     "scheduler" "^0.23.0"
 
-"react-dom@16.14.0":
-  "integrity" "sha512-1gCeQXDLoIqMgqD3IO2Ah9bnf0w9kzhwN5q4FGnHZ67hBm9yePzB5JJAIQCc8x3pFnNlwFq4RidZggNAAkzWWw=="
-  "resolved" "https://registry.npmjs.org/react-dom/-/react-dom-16.14.0.tgz"
-  "version" "16.14.0"
-  dependencies:
-    "loose-envify" "^1.1.0"
-    "object-assign" "^4.1.1"
-    "prop-types" "^15.6.2"
-    "scheduler" "^0.19.1"
-
 "react-dropzone@14.2.3":
   "integrity" "sha512-O3om8I+PkFKbxCukfIR3QAGftYXDZfOE2N1mr/7qebQJHs7U+/RSL/9xomJNpRg9kM5h9soQSdf0Gc7OHF5Fug=="
   "resolved" "https://registry.npmjs.org/react-dropzone/-/react-dropzone-14.2.3.tgz"
@@ -1611,15 +1624,6 @@
   "integrity" "sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ=="
   "resolved" "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz"
   "version" "16.13.1"
-
-"react-owl-carousel@^2.3.3":
-  "integrity" "sha512-B4TI2EDDtp7IDM8CWzl5Rh/17p1NfMW/QBIbkC18CkiMGCbO9ztY+vAPTN60tp+63V9v/oLqArLjkiQtDGqj/A=="
-  "resolved" "https://registry.npmjs.org/react-owl-carousel/-/react-owl-carousel-2.3.3.tgz"
-  "version" "2.3.3"
-  dependencies:
-    "owl.carousel" "~2.3.4"
-    "react" "16.14.0"
-    "react-dom" "16.14.0"
 
 "react-refresh@^0.14.0":
   "integrity" "sha512-wViHqhAd8OHeLS/IRMJjTSDHF3U9eWi62F/MledQGPdJGDhodXJ9PBLNGr6WWL7qlH12Mt3TyTpbS+hGXMjCzQ=="
@@ -1688,21 +1692,12 @@
     "loose-envify" "^1.4.0"
     "prop-types" "^15.6.2"
 
-"react@*", "react@^16.8 || ^17.0 || ^18.0", "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^18.2.0", "react@>= 16.8 || 18.0.0", "react@>=16.6.0", "react@>=16.8", "react@>=16.8.0":
+"react@*", "react@^16.8 || ^17.0 || ^18.0", "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^16.8.0 || ^17.0.1 || ^18.0.0", "react@^18.2.0", "react@>= 16.8 || 18.0.0", "react@>=16.6.0", "react@>=16.8", "react@>=16.8.0":
   "integrity" "sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ=="
   "resolved" "https://registry.npmjs.org/react/-/react-18.2.0.tgz"
   "version" "18.2.0"
   dependencies:
     "loose-envify" "^1.1.0"
-
-"react@^16.14.0", "react@16.14.0":
-  "integrity" "sha512-0X2CImDkJGApiAlcf0ODKIneSwBPhqJawOa5wCtKbu7ZECrmS26NvtSILynQ66cgkT/RJ4LidJOc3bUESwmU8g=="
-  "resolved" "https://registry.npmjs.org/react/-/react-16.14.0.tgz"
-  "version" "16.14.0"
-  dependencies:
-    "loose-envify" "^1.1.0"
-    "object-assign" "^4.1.1"
-    "prop-types" "^15.6.2"
 
 "regenerator-runtime@^0.13.11":
   "integrity" "sha512-kY1AZVr2Ra+t+piVaJ4gxaFaReZVH40AKNo7UCX6W+dEwBo/2oZJzqfuN1qLq1oL45o56cPaTXELwrTh8Fpggg=="
@@ -1748,14 +1743,6 @@
   "version" "1.2.0"
   dependencies:
     "queue-microtask" "^1.2.2"
-
-"scheduler@^0.19.1":
-  "integrity" "sha512-n/zwRWRYSUj0/3g/otKDRPMh6qv2SYMWNq85IEa8iZyAv8od9zDYpGSnpBEjNgcMNq6Scbu5KfIPxNF72R/2EA=="
-  "resolved" "https://registry.npmjs.org/scheduler/-/scheduler-0.19.1.tgz"
-  "version" "0.19.1"
-  dependencies:
-    "loose-envify" "^1.1.0"
-    "object-assign" "^4.1.1"
 
 "scheduler@^0.23.0":
   "integrity" "sha512-CtuThmgHNg7zIZWAXi3AsyIzA3n4xx7aNyjwC2VJldO2LMVDhFK+63xGqq6CsJH4rTAt6/M+N4GhZiDYPx9eUw=="

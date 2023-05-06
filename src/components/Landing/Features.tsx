@@ -155,6 +155,7 @@ const useStyles = createStyles((theme) => ({
 
     [`@media screen and (max-width: ${em(992)})`]: {
       marginBlock: '1.5rem',
+      minHeight: rem(260),
     },
 
     [`@media screen and (max-width: ${em(540)})`]: {
@@ -196,6 +197,10 @@ const useStyles = createStyles((theme) => ({
       [`& .${getStylesRef('featuresCardText')}`]: {
         maxWidth: '25ch',
 
+        [`@media screen and (max-width: ${em(992)})`]: {
+          maxWidth: '30ch',
+        },
+
         [`@media screen and (max-width: ${em(480)})`]: {
           maxWidth: '100%',
         },
@@ -209,10 +214,18 @@ const useStyles = createStyles((theme) => ({
 
     ':nth-of-type(1)': {
       maxWidth: '20ch',
+
+      [`@media screen and (max-width: ${em(992)})`]: {
+        maxWidth: '30ch',
+      },
     },
 
     ':nth-of-type(4)': {
       maxWidth: '20ch',
+
+      [`@media screen and (max-width: ${em(992)})`]: {
+        maxWidth: '30ch',
+      },
     },
 
     [`@media screen and (max-width: ${em(1120)})`]: {
@@ -242,6 +255,10 @@ const useStyles = createStyles((theme) => ({
     fontSize: '0.9rem',
     maxWidth: '20ch',
     marginBlockStart: '1rem',
+
+    [`@media screen and (max-width: ${em(992)})`]: {
+      maxWidth: '30ch',
+    },
 
     [`@media screen and (max-width: ${em(480)})`]: {
       fontSize: '0.85rem',

@@ -120,20 +120,24 @@ export const Footer: React.FC = (): JSX.Element => {
             </Flex>
           </span>
           <Text className={classes.madeInIndiaText}>Made In India</Text>
-          {/* <List className={classes.navOptionsList}>
-                        <List.Item className={classes.navOptionsListItems}>
-                            Learn
-                        </List.Item>
-                        <List.Item className={classes.navOptionsListItems}>
-                            Pricing
-                        </List.Item>
-                        <List.Item className={classes.navOptionsListItems}>
-                            About Us
-                        </List.Item>
-                        <List.Item className={classes.navOptionsListItems}>
-                            Career
-                        </List.Item>
-                    </List> */}
+          <List className={classes.navOptionsList}>
+              <Link to="/#features">
+                <List.Item className={classes.navOptionsListItems}>
+                    Features
+                </List.Item>
+              </Link>
+              <Link to="/waitlist">
+                <List.Item className={classes.navOptionsListItems}>
+                    Pricing
+                </List.Item>
+              </Link>
+              {/* <List.Item className={classes.navOptionsListItems}>
+                  About Us
+              </List.Item>
+              <List.Item className={classes.navOptionsListItems}>
+                  Career
+              </List.Item> */}
+          </List>
         </Box>
       </footer>
     </Box>
