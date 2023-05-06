@@ -60,9 +60,9 @@ const featuresCardContent = [
   {
     id: randomId(),
     cardBg: '#17A672',
-    title: '"Doc Depot" Your Professional Document Locker.',
+    title: 'Professional Profiles',
     titleColor: '#FFFFFF',
-    text: 'Your Data Is Safe With Us, We Have Locked It Up With Blockchain Encryption And Handed You The Keys.',
+    text: 'Greenie verifies all candidate profiles, providing HR with dependable information prior to the interview. HR can then simply conduct interviews, negotiate salary and onboard candidates',
     textColor: '#FFFFFF',
     illustrationSmall: documentVerified,
     illustrationLarge: documentVerified,
@@ -70,9 +70,9 @@ const featuresCardContent = [
   {
     id: randomId(),
     cardBg: '#47DAA4',
-    title: 'Speedy Onboarding.',
+    title: 'Doc-Depot',
     titleColor: '#FFFFFF',
-    text: "Greenie Provides HR's With 100% Verified Candidates Using State-Of-The Art Technology. Just Crack Interview, Finalize Salary And Join.",
+    text: "Upload,maintain and share all professional documents on Greenie's blockchain encrypted document locker and be in control of your data. ",
     textColor: '#FFFFFF',
     illustrationSmall: clock,
     illustrationLarge: clock,
@@ -80,9 +80,9 @@ const featuresCardContent = [
   {
     id: randomId(),
     cardBg: '#85D1B5',
-    title: ' Create, Upload and Share Documents.',
+    title: 'Contract Management Tool',
     titleColor: '#FFFFFF',
-    text: "Greenie's Contract Creation Tool Creates Rock Solid Contracts Or Upload An Existing Contract For Seamless Sharing.",
+    text: "Enhance your team's productivity by using Greenie's in-built Contract Management Tool enabling you to effortlessly create robust contracts or upload and modify existing ones.",
     textColor: '#FFFFFF',
     illustrationSmall: liveTracking,
     illustrationLarge: liveTracking,
@@ -90,9 +90,9 @@ const featuresCardContent = [
   {
     id: randomId(),
     cardBg: '#A0E2E1',
-    title: 'Instantly Verify All Documents At Once.',
+    title: 'Instant Verification Of Documents',
     titleColor: '#310805',
-    text: ' Verify Identity, Income, Experience And Skills Under 100 Seconds.',
+    text: 'Subheading - Greeni\'s cutting edge automation enables verifying identity, address, employment, salary, experience and skills under 100 seconds',
     textColor: '#191819',
     illustrationSmall: dataControllMobile,
     illustrationLarge: dataControll,
@@ -103,8 +103,8 @@ export const LandingFeatures = () => {
   const { classes } = useStyles();
 
   return (
-    <section className={`${classes.root} section`}>
-      <LandingSectionHeading heading={"It's Super Simple With Greenie"} subheading={''} />
+    <section id='features' className={`${classes.root} section`}>
+      <LandingSectionHeading heading={"Thanos Level Features Of Greenie"} subheading={''} />
       <Box className={classes.featureGrid}>
         {featuresCardContent.map((cardContent, id) => {
           return (
@@ -206,7 +206,7 @@ const useStyles = createStyles((theme) => ({
   featuresCardTitle: {
     fontSize: '2rem',
     lineHeight: '1.1',
-    fontFamily: "Gilroy-bold !important",
+    
 
     ':nth-of-type(1)': {
       maxWidth: '20ch',
@@ -275,7 +275,7 @@ const useStyles = createStyles((theme) => ({
   },
 
   manyMore: {
-    fontFamily: "Gilroy-bold !important",
+    
     gridColumn: '3/6',
     gridRow: '8/9',
     paddingInline: '2rem',
