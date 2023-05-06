@@ -42,6 +42,13 @@ const useStyles = createStyles((theme) => ({
 
   testimonialContent: {
     marginBlockStart: '4rem',
+
+    [`@media screen and (max-width: ${em(1280)})`]: {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      flexDirection: "column",
+    },
   },
 
   testimonialTitle: {
@@ -69,7 +76,11 @@ const useStyles = createStyles((theme) => ({
     fontSize: rem(17),
     marginBlockStart: '1.75rem',
     marginBlockEnd: '1.25rem',
-    maxWidth: '40ch',
+    maxWidth: '50ch',
+
+    [`@media screen and (max-width: ${em(1280)})`]: {
+      textAlign: "center",
+    },
 
     [`@media screen and (max-width: ${em(768)})`]: {
       textAlign: 'center',

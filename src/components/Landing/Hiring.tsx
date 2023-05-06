@@ -59,15 +59,15 @@ const useStyles = createStyles((theme) => ({
 
   hiringTitle: {
     fontSize: '2.5rem',
-    // width: "max-content",
 
     position: 'relative',
     zIndex: -1,
 
-    // [`@media screen and (max-width: ${em(1280)})`]: {
-    //   textAlign: "center",
-    //   marginInline: "auto",
-    // },
+    [`@media screen and (max-width: ${em(1280)})`]: {
+      width: "max-content",
+      textAlign: "center",
+      marginInline: "auto",
+    },
 
     [`@media screen and (max-width: ${em(1120)})`]: {
       fontSize: rem(35),
@@ -77,12 +77,16 @@ const useStyles = createStyles((theme) => ({
       fontSize: rem(32),
     },
 
+    [`@media screen and (max-width: ${em(540)})`]: {
+      width: "18ch",
+    },
+
     [`@media screen and (max-width: ${em(480)})`]: {
       fontSize: rem(26),
-      // width: "auto",
     },
 
     [`@media screen and (max-width: ${em(350)})`]: {
+      width: "16ch",
       fontSize: rem(26),
     },
   },
@@ -106,18 +110,18 @@ const useStyles = createStyles((theme) => ({
       left: '5.75rem',
     },
 
-    [`@media screen and (max-width: ${em(480)})`]: {
-      fontSize: '1.3rem',
-      left: '4.5rem',
+    [`@media screen and (max-width: ${em(540)})`]: {
+      left: "5.85rem",
     },
 
-    // [`@media screen and (max-width: ${em(426)})`]: {
-    //   fontSize: '1.3rem',
-    //   left: `calc(32% - 0dvw)`,
-    // },
+    [`@media screen and (max-width: ${em(480)})`]: {
+      fontSize: '1.3rem',
+    },
+
 
     [`@media screen and (max-width: ${em(350)})`]: {
       fontSize: '1.25rem',
+      left: "4.85rem",
     },
   },
 
