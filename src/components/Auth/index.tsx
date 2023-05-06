@@ -1,10 +1,8 @@
-import { Title, Text, Box, Tabs, createStyles, rem, em, Flex } from '@mantine/core';
-import { Navbar } from '../common/Navbar';
+import { Box, Tabs, createStyles, rem, em } from '@mantine/core';
 import { Signup } from './components/Signup/Signup';
-import { Login } from './components/Login';
-import { Link } from 'react-router-dom';
-import { MdVerified } from 'react-icons/md';
-import { Image } from '@mantine/core';
+import { Login } from './components/Login/Login';
+import { Navbar } from '../common/Navbar';
+import { AuthInfo } from './components/AuthInfo';
 
 export const Auth = () => {
   const { classes } = useStyles();
@@ -17,34 +15,7 @@ export const Auth = () => {
 
       <Box className={classes.root}>
         <Box className={classes.auth_left}>
-          <Flex direction="row" align="flex-start" justify="start">
-            <Link to={'/'}>
-              <span className={classes.greenie}>Greenie</span>
-              <span className={classes.verified}>
-                <MdVerified />
-              </span>
-            </Link>
-          </Flex>
-          <Title className={classes.authLeftHeading}>
-            Welcome to Greenie, your professional community{' '}
-          </Title>
-          <Text className={classes.authLeftText}>
-            Our background verification app delivers reliable and comprehensive screening solutions,
-            enabling you to make informed decisions with confidence. Trust and safety are guaranteed
-            with our accurate and efficient background checks.
-          </Text>
-          <Box className={classes.authLeftTestimonial}>
-            <Text className={classes.testimonialHeading}>
-              Trust and safety are guaranteed with our accurate and efficient background checks.
-            </Text>
-            <Box className={classes.testimonial}>
-              <Box className={classes.testimonialImage}></Box>
-              <Box className={classes.testimonialTextBox}>
-                <Text>Arthur Morgan</Text>
-                <Text>@arthurmorgan</Text>
-              </Box>
-            </Box>
-          </Box>
+          <AuthInfo />
         </Box>
         <Box className={classes.auth_right}>
           <Tabs defaultValue="signup">
