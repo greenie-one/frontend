@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { createStyles, Title, Text, rem, Box, keyframes, em } from '@mantine/core';
 import { _2ColumnLayout } from '../layouts/_2ColumnLayout';
@@ -46,23 +47,17 @@ export const LandingHero = () => {
       <_2ColumnLayout>
         <Box className={classes.heroContentContainer}>
           <Title order={1} className={classes.heroTitle}>
-            Verified Profiles At A Click Of A Button
+            Create Verified Profiles In 100 Seconds
           </Title>
           <Text className={classes.heroText}>
-            Get Complete Background Verification Done In 100 Seconds. Network, Collaborate and Hire
-            With Trust
+            Greenie revolutionizes verification process with a Blockchain based all-in-one secure platform. Effortlessly manage documents, contracts, verifications and instill trust in networking and hiring.
           </Text>
           <Box className={classes.heroActionBtn}>
-            <Button variant={'fill'} outline={true} classNames={classes.tryForFree}>
-              Try Greenie
-            </Button>
-            {/* <Button
-                            variant={"outline"}
-                            outline={true}
-                            classNames={""}
-                        >
-                            Signup
-                        </Button> */}
+            <Link to="/waitlist">
+              <Button variant={'fill'} outline={true} classNames={classes.tryForFree}>
+                Join The Waitlist
+              </Button>
+            </Link>
           </Box>
         </Box>
         <Box className={classes.heroIllustration}>
@@ -171,6 +166,9 @@ const useStyles = createStyles((theme) => ({
 
   tryForFree: {
     fontSize: rem(15),
+    backgroundColor: '#17A672 !important',
+    borderColor: '#17A672 !important',
+    color: "white !important",
   },
 
   heroIllustration: {

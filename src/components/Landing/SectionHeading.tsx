@@ -34,6 +34,7 @@ const useStyles = createStyles((theme) => ({
 
   sectionHeading: {
     fontSize: rem(45),
+    
 
     [`@media screen and (max-width: ${em(1120)})`]: {
       fontSize: rem(40),

@@ -1,3 +1,9 @@
+@font-face {
+  font-family: "Gilroy-bold";
+  font-style: normal;
+  src: url("./fonts/Gilroy-Bold.ttf") format("truetype");
+}
+
 :root {
   --color-black: 0, 0%, 0%; /* #000000 */
   --color-white: 0, 0%, 100%; /* #FFFFFF */

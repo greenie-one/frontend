@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { createStyles, List, Title, Text, em, rem, Box, Flex, TextInput } from '@mantine/core';
 import { BsInstagram } from 'react-icons/bs';
 import { FiLinkedin } from 'react-icons/fi';
-import { MdOutlineFacebook, MdVerified } from 'react-icons/md';
+import { MdOutlineMail, MdOutlineFacebook, MdVerified } from 'react-icons/md';
 
 import { Button } from './Button';
 
@@ -23,11 +23,11 @@ export const Footer: React.FC = (): JSX.Element => {
                 className={classes.footerHeading}
                 gap={'sm'}
               >
-                <span className={''}>We</span>
+                <span className={classes.footerHeadingTexts}>We</span>
                 <span className={classes.verified}>
                   <MdVerified />
                 </span>
-                <span className={''}>Greenie</span>
+                <span className={classes.footerHeadingTexts}>Greenie</span>
               </Flex>
             </Link>
             <Title order={1} className={classes.footerTagline}>
@@ -61,10 +61,18 @@ export const Footer: React.FC = (): JSX.Element => {
                   <FiLinkedin />
                 </span>
               </a>
+              <a href="mailto:office@greenie.one"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span className={classes.socialLinkIcons}>
+                  <MdOutlineMail />
+                </span>
+              </a>
             </Flex>
           </Box>
           <Box className={classes.gridLeftContainer}>
-            <form className={classes.form}>
+            {/* <form className={classes.form}>
               <input
                 type="text"
                 name="name"
@@ -90,7 +98,7 @@ export const Footer: React.FC = (): JSX.Element => {
               <Button variant="fill" classNames={classes.formSubmitBtn} outline={true}>
                 Get In Touch
               </Button>
-            </form>
+            </form> */}
           </Box>
         </Box>
         <Box className={classes.footerBottom}>
@@ -191,6 +199,10 @@ const useStyles = createStyles((theme) => ({
     },
   },
 
+  footerHeadingTexts: {
+    
+  },
+
   verified: {
     fontSize: rem(30),
     color: '#9FE870',
@@ -211,6 +223,7 @@ const useStyles = createStyles((theme) => ({
     letterSpacing: '0.01em',
     color: '#8E8E8E',
     maxWidth: '30ch',
+    
 
     [`@media screen and (max-width: ${em(1280)})`]: {
       fontSize: rem(30),
@@ -365,6 +378,7 @@ const useStyles = createStyles((theme) => ({
   greenie: {
     fontSize: rem(20),
     fontWeight: 600,
+    
   },
 
   verifiedBottom: {

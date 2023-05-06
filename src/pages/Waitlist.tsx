@@ -1,15 +1,21 @@
+import { useNavigate } from 'react-router-dom';
 import { Box, TextInput, createStyles, rem, em, Button, Title, Text, Image } from '@mantine/core';
 import { useForm, isEmail, isNotEmpty } from '@mantine/form';
-import { MdVerified } from 'react-icons/md';
-import waitlist_img from '../assets/images/waitlist/waitlist_img.png';
+import { notifications } from '@mantine/notifications';
+import { Navbar } from '../components/common/Navbar';
 import useApi from '../utils/hooks/useApi';
 import ApiList from '../assets/api/ApiList';
+import waitlist_img from '../assets/images/waitlist/waitlist_img.png';
+import { MdVerified } from 'react-icons/md';
+import { BsCheckLg } from 'react-icons/bs';
+import { FaExclamation } from 'react-icons/fa';
 
 export const Waitlist = () => {
+  const navigate = useNavigate();
+  const { error, isLoading, sendRequest } = useApi();
+
   const { classes } = useStyles();
   const { classes: inputClasses } = inputStyles();
-
-  const { sendRequest } = useApi();
 
   const waitlistForm = useForm({
     initialValues: {
@@ -29,16 +35,57 @@ export const Waitlist = () => {
       firstName: isNotEmpty('Name cannot be empty'),
       lastName: isNotEmpty('Name cannot be empty'),
       email: isEmail('Invalid email'),
-      phone: (value) => (/^(\+?\d{1,3}[- ]?)?\d{10}$/.test(value) ? null : 'Invalid phone number'),
+      // phone: (value) => (/^(\+?\d{1,3}[- ]?)?\d{10}$/.test(value) ? null : 'Invalid phone number'),
     },
   });
 
   const handleWaitlistSubmit = () => {
-    sendRequest(`${ApiList.waitlist}`, 'POST', waitlistForm.getTransformedValues());
+    waitlistForm.reset();
+
+    sendRequest(`${ApiList.waitlist}`, 'POST', waitlistForm.getTransformedValues())
+      .then((res: any) => {
+        console.log(res.message);
+        if (res.message === 'added to waitlist') {
+          notifications.show({
+            title: isLoading ? 'Sending...' : 'Success !',
+            message: isLoading
+              ? 'Please wait while we add you to the waitlist.'
+              : 'You have been added to the waitlist! We will notify you when we launch.',
+            autoClose: 2200,
+            color: isLoading ? 'blue' : 'teal',
+            icon: !isLoading && <BsCheckLg />,
+            loading: isLoading,
+          });
+        }
+      })
+      .catch((err) => {
+        if (err) {
+          notifications.show({
+            title: isLoading ? 'Sending...' : 'Email already in waitlist',
+            message: isLoading
+              ? 'Please wait while we add you to the waitlist.'
+              : 'Please check your email for more information.',
+            autoClose: 2200,
+            color: isLoading ? 'blue' : 'orange',
+            icon: !isLoading && <FaExclamation />,
+            loading: isLoading,
+          });
+        }
+      })
+      .finally(() => {
+        if (!isLoading) {
+          setTimeout(() => {
+            navigate('/');
+          }, 2200);
+        }
+      });
   };
 
   return (
     <>
+      <div className={classes.headerContainer}>
+        <Navbar />
+      </div>
       <Box className={classes.root}>
         <Box className={classes.waitlist_left}>
           <Text className={classes.logo}>
@@ -47,24 +94,27 @@ export const Waitlist = () => {
               <MdVerified />
             </span>
           </Text>
-          <Title order={1} mb="xl">
+          <Title order={1} mb="xl" className={classes.pageTitle}>
             Join the waitlist
           </Title>
 
           <form onSubmit={waitlistForm.onSubmit(handleWaitlistSubmit)}>
             <Box className={classes.nameInput}>
               <TextInput
+                withAsterisk
                 label="First Name"
                 classNames={inputClasses}
                 {...waitlistForm.getInputProps('firstName')}
               />
               <TextInput
+                withAsterisk
                 label="Last Name"
                 classNames={inputClasses}
                 {...waitlistForm.getInputProps('lastName')}
               />
             </Box>
             <TextInput
+              withAsterisk
               label="Email Address"
               classNames={inputClasses}
               {...waitlistForm.getInputProps('email')}
@@ -72,6 +122,7 @@ export const Waitlist = () => {
             <TextInput
               label="Phone Number"
               classNames={inputClasses}
+              placeholder="optional"
               {...waitlistForm.getInputProps('phone')}
             />
 
@@ -94,6 +145,14 @@ export const Waitlist = () => {
 };
 
 const useStyles = createStyles((theme) => ({
+  headerContainer: {
+    display: 'none',
+
+    [`@media screen and (max-width: ${em(480)})`]: {
+      display: 'block',
+    },
+  },
+
   root: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
@@ -105,6 +164,7 @@ const useStyles = createStyles((theme) => ({
       gridTemplateColumns: '1fr',
       gridTemplateRows: '1fr 1fr',
       padding: '0 2.5rem',
+      paddingBlockStart: rem(25),
     },
   },
 
@@ -123,10 +183,16 @@ const useStyles = createStyles((theme) => ({
     },
   },
 
+  pageTitle: {
+    [`@media screen and (max-width: ${em(480)})`]: {
+      textAlign: 'center',
+    },
+  },
+
   waitlist_img: {
     [`@media screen and (max-width: ${em(480)})`]: {
       position: 'relative',
-      top: '-3.5rem',
+      top: '-2rem',
     },
   },
 
@@ -144,6 +210,10 @@ const useStyles = createStyles((theme) => ({
   logo: {
     display: 'flex',
     alignItems: 'start',
+
+    [`@media screen and (max-width: ${em(480)})`]: {
+      display: 'none',
+    },
   },
 
   greenie: {
@@ -162,11 +232,19 @@ const inputStyles = createStyles((theme) => ({
   root: {
     position: 'relative',
     marginBottom: rem(16),
+
+    [`@media screen and (max-width: ${em(480)})`]: {
+      marginBottom: rem(12),
+    },
   },
 
   input: {
     height: rem(54),
     paddingTop: rem(18),
+
+    [`@media screen and (max-width: ${em(480)})`]: {
+      height: rem(48),
+    },
   },
 
   label: {
@@ -176,5 +254,10 @@ const inputStyles = createStyles((theme) => ({
     paddingLeft: theme.spacing.sm,
     paddingTop: `calc(${theme.spacing.sm} / 2)`,
     zIndex: 1,
+
+    [`@media screen and (max-width: ${em(480)})`]: {
+      paddingTop: `calc(${theme.spacing.sm} / 3.5)`,
+      fontSize: `calc(${theme.fontSizes.xs} * 0.95)`,
+    },
   },
 }));
