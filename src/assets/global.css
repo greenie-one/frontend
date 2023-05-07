@@ -15,7 +15,7 @@
   --app-bg-gradient: linear-gradient(
     180deg,
     hsl(0, 0%, 100%) 0%,
-    #edfff9 44.79%,
+    #edfff9 44.79%, 
     hsl(0, 0%, 100%) 89.07%,
     #d7fff0 100%
   );
@@ -182,7 +182,7 @@ header {
 
 .page {
   padding-inline: var(--app-padding-inline);
-  padding-block-start: calc(var(--page-padding-block) + 4rem);
+  padding-block-start: calc(var(--page-padding-block));
   padding-block-end: var(--page-padding-block);
 }
 
@@ -217,22 +217,22 @@ header {
 }
 
 .landingFeaturesIllustration0 {
-  width: 12.5rem;
+  width: 19rem;
   bottom: 0;
 }
 
 .landingFeaturesIllustration1 {
-  width: 9.375rem;
-  bottom: 1rem;
+  width: 9rem;
+  bottom: 0rem;
 }
 
 .landingFeaturesIllustration2 {
-  width: 9.375rem;
-  bottom: 1rem;
+  width: 18rem;
+  bottom:-1.5rem;
 }
 
 .landingFeaturesIllustration3 {
-  width: 21.25rem;
+  width: 20rem;
   right: 0;
   bottom: 0;
 }
