@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@emotion/react": "^11.10.6",
-    "@mantine/carousel": "^6.0.10",
+    "@mantine/carousel": "6.0.6",
     "@mantine/core": "^6.0.6",
     "@mantine/dates": "^6.0.6",
     "@mantine/dropzone": "^6.0.6",
@@ -25,6 +25,7 @@
     "dayjs": "^1.11.7",
     "embla-carousel-autoplay": "^8.0.0-rc03",
     "embla-carousel-react": "^8.0.0-rc03",
+    "framer-motion": "^10.12.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.8.0",
