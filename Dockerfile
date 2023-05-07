@@ -2,14 +2,17 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-COPY package.json package-lock.json ./
-RUN npm install
+COPY package.json yarn.lock ./
+RUN yarn install
 
 COPY . ./
 
-RUN npm run build
+RUN yarn build
+RUN yarn build
 
-RUN npm install serve -g
+RUN yarn global add serve
+RUN yarn global add serve
 
 EXPOSE 3000
-CMD ["npm", "run", "serve"]
+CMD ["yarn", "serve"]
+CMD ["yarn", "serve"]
