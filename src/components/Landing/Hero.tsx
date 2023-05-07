@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import { createStyles, Title, Text, rem, Box, keyframes, em } from '@mantine/core';
 import { _2ColumnLayout } from '../layouts/_2ColumnLayout';
 import { Button } from '../common/Button';
+import { motion } from 'framer-motion';
+import { useAnimate, stagger, useInView } from 'framer-motion';
 
 import girlCheckingPhone from '../../assets/images/girl-checking-phone.png';
 import popup1 from '../../assets/images/popup-illustration-1.svg';
@@ -20,6 +22,8 @@ const popupAnimation = keyframes({
 export const LandingHero = () => {
   const { classes } = useStyles();
   const [popupNo, setPopupNo] = useState<number>(-1);
+  const [scope, animate] = useAnimate();
+  const isInView = useInView(scope);
 
   const activatePopups = () => {
     let activePopup = 0;
@@ -36,11 +40,18 @@ export const LandingHero = () => {
   };
 
   useEffect(() => {
-    const activatePopupTimeout = setTimeout(() => {
-      activatePopups();
-      clearTimeout(activatePopupTimeout);
-    }, 150);
-  }, []);
+    // const activatePopupTimeout = setTimeout(() => {
+    //   activatePopups();
+    //   clearTimeout(activatePopupTimeout);
+    // }, 150);
+    if (isInView) {
+      animate(
+        'span',
+        { opacity: [0, 1] },
+        { type: 'spring', delay: stagger(0.5)}
+      );
+    }
+  }, [isInView]);
 
   return (
     <section className={`${classes.root} section`}>
@@ -62,9 +73,32 @@ export const LandingHero = () => {
           </Box>
         </Box>
         <Box className={classes.heroIllustration}>
-          <span className={classes.girlImageContainer}>
-            <img src={girlCheckingPhone} alt="girlCheckingPhone" className={''} />
-            {popupNo >= 4 ? (
+          <span className={classes.girlImageContainer} ref={scope}>
+            <motion.img
+              src={girlCheckingPhone}
+              alt="girlCheckingPhone"
+              className={''}
+            />
+            <span className={`${classes.popups} ${classes.popup5}`}>
+              <img src={popup5} alt="popup5" />
+            </span>
+            <span className={`${classes.popups} ${classes.popup4}`}>
+              <img src={popup4} alt="popup4" />
+            </span>
+            <span className={`${classes.popups} ${classes.popup6}`}>
+              <img src={popup6} alt="popup6" />
+            </span>
+            <span className={`${classes.popups} ${classes.popup2}`}>
+              <img src={popup2} alt="popup2" />
+            </span>
+            <span className={`${classes.popups} ${classes.popup3}`}>
+              <img src={popup3} alt="popup3" />
+            </span>
+            <span className={`${classes.popups} ${classes.popup1}`}>
+              <img src={popup1} alt="popup1" />
+            </span>
+
+            {/* {popupNo >= 4 ? (
               <span className={`${classes.popups} ${classes.popup1}`}>
                 <img src={popup1} alt="popup1" />
               </span>
@@ -93,7 +127,7 @@ export const LandingHero = () => {
               <span className={`${classes.popups} ${classes.popup6}`}>
                 <img src={popup6} alt="popup6" />
               </span>
-            ) : null}
+            ) : null} */}
           </span>
         </Box>
       </_2ColumnLayout>
@@ -117,8 +151,10 @@ const useStyles = createStyles((theme) => ({
 
   heroTitle: {
     fontSize: '2.75rem',
-    fontFamily: "Gilroy-bold !important",
-    maxWidth: "15ch",
+    // fontFamily: "Gilroy-bold !important",
+    fontFamily: 'Manrope !important',
+    fontWeight: 800,
+    maxWidth: '15ch',
 
     [`@media screen and (max-width: ${em(1280)})`]: {
       textAlign: 'center',
@@ -195,8 +231,8 @@ const useStyles = createStyles((theme) => ({
 
   popups: {
     position: 'absolute',
-    animation: `${popupAnimation} 200ms ease-in-out`,
-    transformOrigin: 'center',
+    // animation: `${popupAnimation} 200ms ease-in-out`,
+    transformOrigin: 'center'
   },
 
   popup1: {
