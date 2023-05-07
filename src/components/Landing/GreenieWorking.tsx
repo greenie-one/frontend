@@ -4,10 +4,10 @@ import { randomId } from '@mantine/hooks';
 import { LandingSectionHeading } from './SectionHeading';
 import { Button } from '../common/Button';
 
-import workingIllustration1 from '../../assets/images/account-circle.png';
-import workingIllustration2 from '../../assets/images/demography-1.png';
-import workingIllustration3 from '../../assets/images/demography-2.png';
-import workingIllustration4 from '../../assets/images/demography-3.png';
+import workingIllustration1 from '../../assets/images/Landing/account-circle.png';
+import workingIllustration2 from '../../assets/images/Landing/demography-1.png';
+import workingIllustration3 from '../../assets/images/Landing/demography-2.png';
+import workingIllustration4 from '../../assets/images/Landing/demography-3.png';
 
 type WorkingsCardPropsType = {
   cardBg: string;
@@ -63,7 +63,7 @@ const workingsCardContent = [
     cardBg: '#A1FFDD',
     title: 'Upload & verify documents without getting reminder calls',
     titleColor: '#17A672',
-    text: "Securely Upload documents on Doc-Depot and verify them using Greene\'s unique automation in real time.",
+    text: "Securely Upload documents on Doc-Depot and verify them using Greene's unique automation in real time.",
     textColor: '#191819',
     illustration: workingIllustration2,
   },
@@ -72,7 +72,7 @@ const workingsCardContent = [
     cardBg: '#4BE4AD',
     title: 'Verify With Peers.',
     titleColor: '#018454',
-    text: 'Take a Skill Test or verify skills by seamlessly collaborating with ex-HR\'s, colleagues or line managers and keep all verifications organized through Greenie\'s unique interface',
+    text: "Take a Skill Test or verify skills by seamlessly collaborating with ex-HR's, colleagues or line managers and keep all verifications organized through Greenie's unique interface",
     textColor: '#191819',
     illustration: workingIllustration3,
   },
@@ -96,23 +96,26 @@ export const LandingGreenieWorkings = () => {
     <section className={`${classes.root} section`}>
       <LandingSectionHeading heading={'The Greenie Journey'} subheading={''} />
       <Box className={classes.workingsBtnContainer}>
-        {['1. Create Greenie Account', '2. Verify Documents', '3. Send or Receive Request', '4. Share ID'].map(
-          (text, id) => {
-            return (
-              <Button
-                key={id}
-                variant={'outline'}
-                classNames={`${classes.workingsBtn} ${
-                  activeWorkingBtn === id ? classes.activeWorkingBtn : ''
-                }`}
-                outline={activeWorkingBtn === id}
-                onClick={() => setActiveWorkingBtn(id)}
-              >
-                {text}
-              </Button>
-            );
-          }
-        )}
+        {[
+          '1. Create Greenie Account',
+          '2. Verify Documents',
+          '3. Send or Receive Request',
+          '4. Share ID',
+        ].map((text, id) => {
+          return (
+            <Button
+              key={id}
+              variant={'outline'}
+              classNames={`${classes.workingsBtn} ${
+                activeWorkingBtn === id ? classes.activeWorkingBtn : ''
+              }`}
+              outline={activeWorkingBtn === id}
+              onClick={() => setActiveWorkingBtn(id)}
+            >
+              {text}
+            </Button>
+          );
+        })}
       </Box>
       <Box className={classes.workingCardsContainer}>
         {workingsCardContent.map((cardContent, id) => {
@@ -272,7 +275,6 @@ const useStyles = createStyles((theme) => ({
     lineHeight: '1.1',
     maxWidth: '17ch',
     gridColumn: '1/2',
-    
 
     [`@media screen and (max-width: ${em(768)})`]: {
       fontSize: rem(18),

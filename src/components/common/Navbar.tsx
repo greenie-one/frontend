@@ -97,6 +97,7 @@ const useStyles = createStyles((theme) => ({
     bottom: 'auto',
     background: 'linear-gradient(180deg, #ffffff 0%, #edfff9 44.79%, #ffffff 89.07%, #d7fff0 100%)',
     backgroundSize: '100dvw 100dvh',
+    zIndex: 10,
   },
 
   header: {

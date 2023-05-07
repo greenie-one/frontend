@@ -1,16 +1,18 @@
-import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { createStyles, Title, Text, rem, Box, keyframes, em } from '@mantine/core';
 import { _2ColumnLayout } from '../layouts/_2ColumnLayout';
 import { Button } from '../common/Button';
+import { motion } from 'framer-motion';
+import { useAnimate, stagger, useInView } from 'framer-motion';
 
-import girlCheckingPhone from '../../assets/images/girl-checking-phone.png';
-import popup1 from '../../assets/images/popup-illustration-1.svg';
-import popup2 from '../../assets/images/popup-illustration-2.svg';
-import popup3 from '../../assets/images/popup-illustration-3.svg';
-import popup4 from '../../assets/images/popup-illustration-4.svg';
-import popup5 from '../../assets/images/popup-illustration-5.svg';
-import popup6 from '../../assets/images/popup-illustration-6.svg';
+import girlCheckingPhone from '../../assets/images/Landing/girl-checking-phone.png';
+import popup1 from '../../assets/images/Landing/popup-illustration-1.svg';
+import popup2 from '../../assets/images/Landing/popup-illustration-2.svg';
+import popup3 from '../../assets/images/Landing/popup-illustration-3.svg';
+import popup4 from '../../assets/images/Landing/popup-illustration-4.svg';
+import popup5 from '../../assets/images/Landing/popup-illustration-5.svg';
+import popup6 from '../../assets/images/Landing/popup-illustration-6.svg';
 
 const popupAnimation = keyframes({
   from: { scale: '0.25' },
@@ -20,6 +22,8 @@ const popupAnimation = keyframes({
 export const LandingHero = () => {
   const { classes } = useStyles();
   const [popupNo, setPopupNo] = useState<number>(-1);
+  const [scope, animate] = useAnimate();
+  const isInView = useInView(scope);
 
   const activatePopups = () => {
     let activePopup = 0;
@@ -36,11 +40,18 @@ export const LandingHero = () => {
   };
 
   useEffect(() => {
-    const activatePopupTimeout = setTimeout(() => {
-      activatePopups();
-      clearTimeout(activatePopupTimeout);
-    }, 150);
-  }, []);
+    // const activatePopupTimeout = setTimeout(() => {
+    //   activatePopups();
+    //   clearTimeout(activatePopupTimeout);
+    // }, 150);
+    if (isInView) {
+      animate(
+        'span',
+        { opacity: [0, 1] },
+        { type: 'spring', delay: stagger(0.5)}
+      );
+    }
+  }, [isInView]);
 
   return (
     <section className={`${classes.root} section`}>
@@ -50,7 +61,9 @@ export const LandingHero = () => {
             Create Verified Profiles In 100 Seconds
           </Title>
           <Text className={classes.heroText}>
-            Greenie revolutionizes verification process with a Blockchain based all-in-one secure platform. Effortlessly manage documents, contracts, verifications and instill trust in networking and hiring.
+            Greenie revolutionizes verification process with a Blockchain based all-in-one secure
+            platform. Effortlessly manage documents, contracts, verifications and instill trust in
+            networking and hiring.
           </Text>
           <Box className={classes.heroActionBtn}>
             <Link to="/waitlist">
@@ -61,9 +74,32 @@ export const LandingHero = () => {
           </Box>
         </Box>
         <Box className={classes.heroIllustration}>
-          <span className={classes.girlImageContainer}>
-            <img src={girlCheckingPhone} alt="girlCheckingPhone" className={''} />
-            {popupNo >= 4 ? (
+          <span className={classes.girlImageContainer} ref={scope}>
+            <motion.img
+              src={girlCheckingPhone}
+              alt="girlCheckingPhone"
+              className={''}
+            />
+            <span className={`${classes.popups} ${classes.popup5}`}>
+              <img src={popup5} alt="popup5" />
+            </span>
+            <span className={`${classes.popups} ${classes.popup4}`}>
+              <img src={popup4} alt="popup4" />
+            </span>
+            <span className={`${classes.popups} ${classes.popup6}`}>
+              <img src={popup6} alt="popup6" />
+            </span>
+            <span className={`${classes.popups} ${classes.popup2}`}>
+              <img src={popup2} alt="popup2" />
+            </span>
+            <span className={`${classes.popups} ${classes.popup3}`}>
+              <img src={popup3} alt="popup3" />
+            </span>
+            <span className={`${classes.popups} ${classes.popup1}`}>
+              <img src={popup1} alt="popup1" />
+            </span>
+
+            {/* {popupNo >= 4 ? (
               <span className={`${classes.popups} ${classes.popup1}`}>
                 <img src={popup1} alt="popup1" />
               </span>
@@ -92,7 +128,7 @@ export const LandingHero = () => {
               <span className={`${classes.popups} ${classes.popup6}`}>
                 <img src={popup6} alt="popup6" />
               </span>
-            ) : null}
+            ) : null} */}
           </span>
         </Box>
       </_2ColumnLayout>
@@ -168,7 +204,7 @@ const useStyles = createStyles((theme) => ({
     fontSize: rem(15),
     backgroundColor: '#17A672 !important',
     borderColor: '#17A672 !important',
-    color: "white !important",
+    color: 'white !important',
   },
 
   heroIllustration: {
@@ -195,8 +231,8 @@ const useStyles = createStyles((theme) => ({
 
   popups: {
     position: 'absolute',
-    animation: `${popupAnimation} 200ms ease-in-out`,
-    transformOrigin: 'center',
+    // animation: `${popupAnimation} 200ms ease-in-out`,
+    transformOrigin: 'center'
   },
 
   popup1: {

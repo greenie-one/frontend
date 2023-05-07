@@ -203,6 +203,19 @@ header {
   border: none !important;
 }
 
+.mantine-Carousel-controls {
+  padding: 0;
+}
+
+.mantine-Carousel-indicators {
+  bottom: -1rem;
+  z-index: 1000;
+}
+
+.mantine-Carousel-indicator {
+  background-color: red;
+}
+
 .landingFeaturesIllustration0 {
   width: 12.5rem;
   bottom: 0;
@@ -337,16 +350,17 @@ header {
   }
 
   .landingFeaturesIllustration1 {
-    width: 9.375rem;
+    width: 10rem;
   }
 
   .landingFeaturesIllustration2 {
-    width: 9.375rem;
+    width: 11rem;
   }
 
   .landingFeaturesIllustration3 {
-    width: 17.5rem;
+    width: 20rem;
     right: 2rem;
+    bottom: 1rem;
   }
 
   .landingFeaturesIllustration3 img {
@@ -361,19 +375,21 @@ header {
   }
 
   .landingFeaturesIllustration0 {
-    width: 8rem;
+    width: 10rem;
+    bottom: 2rem;
   }
 
   .landingFeaturesIllustration1 {
-    width: 6rem;
+    bottom: 2rem;
   }
 
   .landingFeaturesIllustration2 {
-    width: 6rem;
+    width: 10rem;
+    bottom: 2rem;
   }
 
   .landingFeaturesIllustration3 {
-    width: 12.5rem;
+    width: 16rem;
   }
 }
 
@@ -387,6 +403,25 @@ header {
   .page {
     padding-block-start: calc(var(--page-padding-block) + 3rem);
   }
+
+  .landingFeaturesIllustration0 {
+    width: 9rem;
+    bottom: 2rem;
+  }
+
+  .landingFeaturesIllustration1 {
+    width: 8rem;
+    bottom: 2rem;
+  }
+
+  .landingFeaturesIllustration2 {
+    width: 8rem;
+    bottom: 2rem;
+  }
+
+  .landingFeaturesIllustration3 {
+    width: 14rem;
+  }
 }
 
 @media screen and (max-width: 33.75em) {
@@ -399,5 +434,37 @@ header {
 @media screen and (max-width: 30rem) {
   .landingFeaturesIllustration3 {
     bottom: 0.5rem;
+  }
+
+  .landingFeaturesIllustration0 {
+    width: 7.5rem;
+    bottom: 1rem;
+  }
+
+  .landingFeaturesIllustration1 {
+    bottom: 1rem;
+  }
+
+  .landingFeaturesIllustration2 {
+    bottom: 1rem;
+  }
+}
+
+@media screen and (max-width: 21.875rem) {
+  .landingFeaturesIllustration3 {
+    bottom: 0.5rem;
+  }
+
+  .landingFeaturesIllustration0 {
+    width: 6rem;
+    bottom: 1rem;
+  }
+
+  .landingFeaturesIllustration1 {
+    width: 7rem;
+  }
+
+  .landingFeaturesIllustration2 {
+    width: 6rem;
   }
 }
