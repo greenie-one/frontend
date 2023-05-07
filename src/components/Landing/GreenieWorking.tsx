@@ -4,10 +4,10 @@ import { randomId } from '@mantine/hooks';
 import { LandingSectionHeading } from './SectionHeading';
 import { Button } from '../common/Button';
 
-import workingIllustration1 from '../../assets/images/account-circle.png';
-import workingIllustration2 from '../../assets/images/demography-1.png';
-import workingIllustration3 from '../../assets/images/demography-2.png';
-import workingIllustration4 from '../../assets/images/demography-3.png';
+import workingIllustration1 from '../../assets/images/Landing/account-circle.png';
+import workingIllustration2 from '../../assets/images/Landing/demography-1.png';
+import workingIllustration3 from '../../assets/images/Landing/demography-2.png';
+import workingIllustration4 from '../../assets/images/Landing/demography-3.png';
 
 type WorkingsCardPropsType = {
   cardBg: string;
@@ -52,18 +52,18 @@ const workingsCardContent = [
   {
     id: randomId(),
     cardBg: '#D8FFF1',
-    title: 'Creating A Greenie Account Is Easier that Boiling An Egg.',
+    title: 'Creating a greenie account is easier than boiling an egg.',
     titleColor: '#17A672',
-    text: 'Instantly Create A Verified Greenie Account With Adhaar .',
+    text: 'Instantly create an account with email ID. Verify it using Adhaar, Pan or a Driving License. Get a unique Greenie ID.  You are Sorted.',
     textColor: '#191819',
     illustration: workingIllustration1,
   },
   {
     id: randomId(),
     cardBg: '#A1FFDD',
-    title: 'Upload & Verify Documents Without Getting Reminder Calls.',
+    title: 'Upload & verify documents without getting reminder calls',
     titleColor: '#17A672',
-    text: "Securly Upload And Verify Important Documents On Greenie's Doc Depot.",
+    text: "Securely Upload documents on Doc-Depot and verify them using Greene's unique automation in real time.",
     textColor: '#191819',
     illustration: workingIllustration2,
   },
@@ -72,7 +72,7 @@ const workingsCardContent = [
     cardBg: '#4BE4AD',
     title: 'Verify With Peers.',
     titleColor: '#018454',
-    text: 'Collaborate With Your Previous Companies Or Collegues Seamlesly And Keep All Verificaitions Organized.',
+    text: "Take a Skill Test or verify skills by seamlessly collaborating with ex-HR's, colleagues or line managers and keep all verifications organized through Greenie's unique interface",
     textColor: '#191819',
     illustration: workingIllustration3,
   },
@@ -81,7 +81,7 @@ const workingsCardContent = [
     cardBg: '#17A672',
     title: 'Own And Share Your Verification Report.',
     titleColor: '#A1FFDD',
-    text: 'Share Your Verified Documents With Anyone, Anywhere, Anytime. Keep Your Greenie ID Handy For Quick And Easy Sharing.',
+    text: 'Share your verified documents with anyone, anywhere and anytime. Keep your Greenie ID handy for quick and easy sharing',
     textColor: '#FFFFFF',
     illustration: workingIllustration4,
   },
@@ -94,25 +94,28 @@ export const LandingGreenieWorkings = () => {
 
   return (
     <section className={`${classes.root} section`}>
-      <LandingSectionHeading heading={'How Greenie Works'} subheading={''} />
+      <LandingSectionHeading heading={'The Greenie Journey'} subheading={''} />
       <Box className={classes.workingsBtnContainer}>
-        {['1. Create Greenie Account', '2. Verify Documents', '3. Send or Receive Request', '4. Share ID'].map(
-          (text, id) => {
-            return (
-              <Button
-                key={id}
-                variant={'outline'}
-                classNames={`${classes.workingsBtn} ${
-                  activeWorkingBtn === id ? classes.activeWorkingBtn : ''
-                }`}
-                outline={activeWorkingBtn === id}
-                onClick={() => setActiveWorkingBtn(id)}
-              >
-                {text}
-              </Button>
-            );
-          }
-        )}
+        {[
+          '1. Create Greenie Account',
+          '2. Verify Documents',
+          '3. Send or Receive Request',
+          '4. Share ID',
+        ].map((text, id) => {
+          return (
+            <Button
+              key={id}
+              variant={'outline'}
+              classNames={`${classes.workingsBtn} ${
+                activeWorkingBtn === id ? classes.activeWorkingBtn : ''
+              }`}
+              outline={activeWorkingBtn === id}
+              onClick={() => setActiveWorkingBtn(id)}
+            >
+              {text}
+            </Button>
+          );
+        })}
       </Box>
       <Box className={classes.workingCardsContainer}>
         {workingsCardContent.map((cardContent, id) => {
@@ -272,7 +275,6 @@ const useStyles = createStyles((theme) => ({
     lineHeight: '1.1',
     maxWidth: '17ch',
     gridColumn: '1/2',
-    fontFamily: "Gilroy-bold !important",
 
     [`@media screen and (max-width: ${em(768)})`]: {
       fontSize: rem(18),

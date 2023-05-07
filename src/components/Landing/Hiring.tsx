@@ -1,11 +1,8 @@
-import React from 'react';
 import { createStyles, Title, Text, rem, Box, Flex, em } from '@mantine/core';
-import { MdVerified } from 'react-icons/md';
-
 import { _2ColumnLayout } from '../layouts/_2ColumnLayout';
-
-import cap from '../../assets/images/cap.svg';
-import hiringDocuments from '../../assets/images/hiring-documents.png';
+import hiringDocuments from '../../assets/images/Landing/hiring-documents.png';
+import cap from '../../assets/images/Landing/cap.svg';
+import { MdVerified } from 'react-icons/md';
 
 export const LandingHiring: React.FC = (): JSX.Element => {
   const { classes } = useStyles();
@@ -32,8 +29,11 @@ export const LandingHiring: React.FC = (): JSX.Element => {
             </Flex>
           </Title>
           <Text className={classes.hiringText}>
-            Greenie Brings Speed And Trust Into Hiring, Allowing Your HR Team's To Get Verification
-            Reports Instantly Without Waiting For Weeks.
+            Greenie's mission is to instill trust in the hiring process by verifying both candidates
+            and companies. Our platform creates value for companies by allowing HR teams to access
+            verification reports instantly, eliminating weeks of waiting. Simultaneously, we empower
+            candidates by giving them total control over their personal data, democratizing
+            verifications for all
           </Text>
         </Box>
         <Box className={classes.hiringIllustration}>
@@ -59,9 +59,15 @@ const useStyles = createStyles((theme) => ({
 
   hiringTitle: {
     fontSize: '2.5rem',
-    fontFamily: "Gilroy-bold !important",
+
     position: 'relative',
     zIndex: -1,
+
+    [`@media screen and (max-width: ${em(1280)})`]: {
+      width: "max-content",
+      textAlign: "center",
+      marginInline: "auto",
+    },
 
     [`@media screen and (max-width: ${em(1120)})`]: {
       fontSize: rem(35),
@@ -71,11 +77,16 @@ const useStyles = createStyles((theme) => ({
       fontSize: rem(32),
     },
 
+    [`@media screen and (max-width: ${em(540)})`]: {
+      width: "18ch",
+    },
+
     [`@media screen and (max-width: ${em(480)})`]: {
       fontSize: rem(26),
     },
 
     [`@media screen and (max-width: ${em(350)})`]: {
+      width: "16ch",
       fontSize: rem(26),
     },
   },
@@ -99,13 +110,18 @@ const useStyles = createStyles((theme) => ({
       left: '5.75rem',
     },
 
+    [`@media screen and (max-width: ${em(540)})`]: {
+      left: "5.85rem",
+    },
+
     [`@media screen and (max-width: ${em(480)})`]: {
       fontSize: '1.3rem',
-      left: '4.5rem',
     },
+
 
     [`@media screen and (max-width: ${em(350)})`]: {
       fontSize: '1.25rem',
+      left: "4.85rem",
     },
   },
 
@@ -114,9 +130,7 @@ const useStyles = createStyles((theme) => ({
     zIndex: -1,
   },
 
-  verifiedText: {
-    fontFamily: "Gilroy-bold !important",
-  },
+  verifiedText: {},
 
   capIconContainer: {
     display: 'inline-grid',
@@ -140,6 +154,11 @@ const useStyles = createStyles((theme) => ({
       transform: 'translateX(-50%) translateY(3.25rem)',
     },
 
+    [`@media screen and (max-width: ${em(426)})`]: {
+      width: rem(16),
+      transform: 'translateX(-50%) translateY(3rem)',
+    },
+
     [`@media screen and (max-width: ${em(350)})`]: {
       width: rem(15),
     },
@@ -150,6 +169,12 @@ const useStyles = createStyles((theme) => ({
     marginBlockStart: '1.75rem',
     marginBlockEnd: '1.25rem',
     maxWidth: '40ch',
+
+    [`@media screen and (max-width: ${em(1280)})`]: {
+      textAlign: 'center',
+      marginInline: 'auto',
+      maxWidth: '80ch',
+    },
 
     [`@media screen and (max-width: ${em(480)})`]: {
       fontSize: rem(15),

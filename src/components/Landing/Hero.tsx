@@ -1,18 +1,18 @@
-import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { createStyles, Title, Text, rem, Box, keyframes, em } from '@mantine/core';
 import { _2ColumnLayout } from '../layouts/_2ColumnLayout';
 import { Button } from '../common/Button';
 import { motion } from 'framer-motion';
 import { useAnimate, stagger, useInView } from 'framer-motion';
 
-import girlCheckingPhone from '../../assets/images/girl-checking-phone.png';
-import popup1 from '../../assets/images/popup-illustration-1.svg';
-import popup2 from '../../assets/images/popup-illustration-2.svg';
-import popup3 from '../../assets/images/popup-illustration-3.svg';
-import popup4 from '../../assets/images/popup-illustration-4.svg';
-import popup5 from '../../assets/images/popup-illustration-5.svg';
-import popup6 from '../../assets/images/popup-illustration-6.svg';
+import girlCheckingPhone from '../../assets/images/Landing/girl-checking-phone.png';
+import popup1 from '../../assets/images/Landing/popup-illustration-1.svg';
+import popup2 from '../../assets/images/Landing/popup-illustration-2.svg';
+import popup3 from '../../assets/images/Landing/popup-illustration-3.svg';
+import popup4 from '../../assets/images/Landing/popup-illustration-4.svg';
+import popup5 from '../../assets/images/Landing/popup-illustration-5.svg';
+import popup6 from '../../assets/images/Landing/popup-illustration-6.svg';
 
 const popupAnimation = keyframes({
   from: { scale: '0.25' },
@@ -58,16 +58,17 @@ export const LandingHero = () => {
       <_2ColumnLayout>
         <Box className={classes.heroContentContainer}>
           <Title order={1} className={classes.heroTitle}>
-            Verified Profiles At A Click Of A Button
+            Create Verified Profiles In 100 Seconds
           </Title>
           <Text className={classes.heroText}>
-            Get Complete Background Verification Done In 100 Seconds. Network, Collaborate and Hire
-            With Trust
+            Greenie revolutionizes verification process with a Blockchain based all-in-one secure
+            platform. Effortlessly manage documents, contracts, verifications and instill trust in
+            networking and hiring.
           </Text>
           <Box className={classes.heroActionBtn}>
             <Link to="/waitlist">
               <Button variant={'fill'} outline={true} classNames={classes.tryForFree}>
-                Join Waitlist
+                Join The Waitlist
               </Button>
             </Link>
           </Box>
@@ -150,11 +151,7 @@ const useStyles = createStyles((theme) => ({
   },
 
   heroTitle: {
-    fontSize: '2.75rem',
-    // fontFamily: "Gilroy-bold !important",
-    fontFamily: 'Manrope !important',
-    fontWeight: 800,
-    maxWidth: '15ch',
+    fontSize: '2.5rem',
 
     [`@media screen and (max-width: ${em(1280)})`]: {
       textAlign: 'center',
@@ -205,6 +202,9 @@ const useStyles = createStyles((theme) => ({
 
   tryForFree: {
     fontSize: rem(15),
+    backgroundColor: '#17A672 !important',
+    borderColor: '#17A672 !important',
+    color: 'white !important',
   },
 
   heroIllustration: {

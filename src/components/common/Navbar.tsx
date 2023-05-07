@@ -25,14 +25,18 @@ export const Navbar = () => {
         </Flex>
         <nav className={classes.navOptionsContainer}>
           <List className={classes.navOptionsList}>
-            <List.Item className={classes.navOptionsListItems}>Features</List.Item>
-            <List.Item className={classes.navOptionsListItems}>Pricing</List.Item>
+            <Link to="/#features">
+              <List.Item className={classes.navOptionsListItems}>Features</List.Item>
+            </Link>
+            <Link to="/waitlist">
+              <List.Item className={classes.navOptionsListItems}>Pricing</List.Item>
+            </Link>
           </List>
         </nav>
         <Group className={classes.headerBtnsContainer}>
           <Link to="/waitlist">
             <Button variant={'fill'} outline={true} classNames={classes.tryBtn}>
-              Join Waitlist
+              Join The Waitlist
             </Button>
           </Link>
         </Group>
@@ -65,17 +69,19 @@ export const Navbar = () => {
               </span>
             </Flex>
             <List className={classes.mobileNavOptionsList}>
-              <List.Item className={classes.mobileNavOptionsListItems}>Features</List.Item>
-              <List.Item className={classes.mobileNavOptionsListItems}>Pricing</List.Item>
-              <List.Item className={classes.mobileNavOptionsListItems}>About Us</List.Item>
+              <Link to="/#features" onClick={close}>
+                <List.Item className={classes.mobileNavOptionsListItems}>Features</List.Item>
+              </Link>
+              <Link to="/waitlist" onClick={close}>
+                <List.Item className={classes.mobileNavOptionsListItems}>Pricing</List.Item>
+              </Link>
             </List>
             <Group className={classes.mobileHeaderBtnsContainer}>
-              <Button variant={'fill'} outline={true} classNames={classes.mobileTryBtn}>
-                Try For Free
-              </Button>
-              <Button variant={'outline'} outline={true} classNames={classes.exploreBtn}>
-                Explore
-              </Button>
+              <Link to="/waitlist" onClick={close}>
+                <Button variant={'fill'} outline={true} classNames={classes.mobileTryBtn}>
+                  Join The Waitlist
+                </Button>
+              </Link>
             </Group>
           </nav>
         </Drawer>
@@ -91,6 +97,7 @@ const useStyles = createStyles((theme) => ({
     bottom: 'auto',
     background: 'linear-gradient(180deg, #ffffff 0%, #edfff9 44.79%, #ffffff 89.07%, #d7fff0 100%)',
     backgroundSize: '100dvw 100dvh',
+    zIndex: 10,
   },
 
   header: {
@@ -281,11 +288,14 @@ const useStyles = createStyles((theme) => ({
   },
 
   mobileTryBtn: {
-    color: '#000000',
-    fontSize: rem(14),
+    color: '#FFFFFF',
+    fontSize: rem(16),
+
+    backgroundColor: '#17A672 !important',
+    borderColor: '#17A672 !important',
 
     [`@media screen and (max-width: ${em(480)})`]: {
-      fontSize: rem(13),
+      fontSize: rem(14),
     },
   },
 
