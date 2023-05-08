@@ -3,6 +3,7 @@ import { _2ColumnLayout } from '../layouts/_2ColumnLayout';
 import hiringDocuments from '../../assets/images/Landing/hiring-documents.png';
 import cap from '../../assets/images/Landing/cap.svg';
 import { MdVerified } from 'react-icons/md';
+import {motion} from "framer-motion";
 
 export const LandingHiring: React.FC = (): JSX.Element => {
   const { classes } = useStyles();
@@ -22,7 +23,7 @@ export const LandingHiring: React.FC = (): JSX.Element => {
               <span className={classes.verified}>
                 <MdVerified />
               </span>
-              <span className={classes.verifiedText}>Verified</span>
+              <motion.span animate={{translateY: [-100,0]}} className={classes.verifiedText}>Verified</motion.span>
               <span className={classes.capIconContainer}>
                 <img src={cap} alt="cap" className={''} />
               </span>

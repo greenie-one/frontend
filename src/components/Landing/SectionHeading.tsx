@@ -29,12 +29,13 @@ const useStyles = createStyles((theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    textAlign: 'center',
+    textAlign: 'center'
   },
 
   sectionHeading: {
-    fontSize: rem(45),
-    
+    fontSize: rem(35),
+    fontWeight:800,
+    marginTop:"2rem",
 
     [`@media screen and (max-width: ${em(1120)})`]: {
       fontSize: rem(40),

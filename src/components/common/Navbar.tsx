@@ -1,24 +1,29 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { useDisclosure } from '@mantine/hooks';
 import { createStyles, Drawer, List, Group, em, rem, Box, Flex } from '@mantine/core';
 
 import { MdOutlineMenuOpen, MdVerified, MdOutlineClose } from 'react-icons/md';
-
+import {motion,useScroll} from "framer-motion";
 import { Button } from './Button';
 
 export const Navbar = () => {
   const { classes } = useStyles();
-  const [opened, { open, close }] = useDisclosure(false);
+  const [ opened, { open, close }] = useDisclosure(false);
+  const { scrollY } = useScroll()
+
+  useEffect(()=>{
+    console.log(scrollY)
+  },[scrollY])
 
   return (
     <Box className={`${classes.root} app-padding-inline`}>
-      <header className={classes.header}>
+      <motion.header className={classes.header}>
         <Flex justify="center" align="center" direction="row" className={classes.logo}>
           <Link to={'/'}>
             <span className={classes.greenie}>Greenie</span>
-            <span className={classes.verified}>
+            <span className={classes.verified} >
               <MdVerified />
             </span>
           </Link>
@@ -53,16 +58,18 @@ export const Navbar = () => {
         >
           <nav className={classes.mobileNavOptionsContainer}>
             <Flex
-              justify="space-between"
-              align="center"
-              direction="row"
+              justify="center"
+              align="start"
+              direction="row" 
               className={classes.mobileLogo}
             >
               <Link to={'/'}>
-                <span className={`${classes.greenie} ${classes.mobileGreenie}`}>Greenie</span>
-                <span className={`${classes.verified} ${classes.mobileVerified}`}>
-                  <MdVerified />
-                </span>
+                
+                  <span className={`${classes.greenie} ${classes.mobileGreenie}`}>Greenie</span>
+                  <span className={`${classes.verified} ${classes.mobileVerified}`}>
+                    <MdVerified />
+                  </span>
+             
               </Link>
               <span className={classes.menuCloseBtn}>
                 <MdOutlineClose role="button" onClick={close} />
@@ -85,31 +92,31 @@ export const Navbar = () => {
             </Group>
           </nav>
         </Drawer>
-      </header>
+      </motion.header>
     </Box>
   );
 };
 
 const useStyles = createStyles((theme) => ({
   root: {
-    position: 'fixed',
+    position: 'relative',
     inset: 0,
     bottom: 'auto',
-    background: 'linear-gradient(180deg, #ffffff 0%, #edfff9 44.79%, #ffffff 89.07%, #d7fff0 100%)',
+    //background: 'linear-gradient(180deg, #ffffff 0%, #edfff9 44.79%, #ffffff 89.07%, #d7fff0 100%)',
     backgroundSize: '100dvw 100dvh',
     zIndex: 10,
   },
 
   header: {
-    marginBlockStart: rem(20),
-    backgroundColor: '#FFFFFF',
-    boxShadow: '0px 4px 34px rgba(0, 0, 0, 0.15)',
+    // marginBlockStart: rem(1),
+    //boxShadow: '0px 4px 34px rgba(0, 0, 0, 0.15)',
     display: 'flex',
     justifyContent: 'space-between',
     gap: '2rem',
     paddingBlock: '1rem',
-    paddingInline: '1.6rem',
-    borderRadius: '5rem',
+    //paddingInline: '1.6rem',
+    //borderRadius: '5rem',
+    backgroundColor:'transparent',
 
     [`@media screen and (max-width: ${em(768)})`]: {
       paddingBlock: '1rem',
@@ -121,15 +128,15 @@ const useStyles = createStyles((theme) => ({
   },
 
   logo: {
-    paddingInline: rem(10),
+    
   },
 
   greenie: {
-    fontSize: rem(22.5),
+    fontSize: rem(20),
     fontWeight: 700,
 
     [`@media screen and (max-width: ${em(768)})`]: {
-      fontSize: rem(20),
+      fontSize: rem(15),
     },
   },
 
@@ -137,6 +144,8 @@ const useStyles = createStyles((theme) => ({
     fontSize: rem(20),
     color: '#9FE870',
     marginInlineStart: '0.25rem',
+    position: "absolute",
+    top: "1rem",
   },
 
   navOptionsContainer: {
@@ -191,9 +200,9 @@ const useStyles = createStyles((theme) => ({
   },
 
   tryBtn: {
-    color: 'white',
-    backgroundColor: '#17A672 !important',
-    borderColor: '#17A672 !important',
+    backgroundColor: '#8cf078 !important',
+    borderColor: '#8cf078 !important',
+    color: 'black !important',
   },
 
   menuBtn: {
