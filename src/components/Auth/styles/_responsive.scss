@@ -1,0 +1,23 @@
+@media screen and (min-width: 375px) {
+  .authRightContainer {
+    min-width: 360px;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .authRightContainer {
+    min-width: 456px;
+  }
+
+  .skill {
+    font-size: 0.65rem;
+    border: 2px solid #d1d4db;
+    border-radius: 16px;
+    padding: 0.15rem 0.5rem;
+
+    &.active {
+      border: 1px solid #17a672;
+      color: #17a672;
+    }
+  }
+}

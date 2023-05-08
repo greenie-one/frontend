@@ -3,9 +3,23 @@ import { Signup } from './components/Signup/Signup';
 import { Login } from './components/Login/Login';
 import { Navbar } from '../common/Navbar';
 import { AuthInfo } from './components/AuthInfo';
+import { useAuthContext } from './context/AuthContext';
+import Profile from './components/Signup/Profile';
+import OTPTab from './components/Signup/OTPTab';
+import ForgotPassword from './components/Login/ForgotPassword';
+import LoginWithOTP from './components/Login/LoginWithOTP';
 
 export const Auth = () => {
   const { classes } = useStyles();
+  const {
+    signUpSteps,
+    isEmail,
+    isPhoneNumber,
+    inputValue,
+    loginSteps,
+    resetPasswordStep,
+    loginWithOTPSteps,
+  } = useAuthContext();
 
   return (
     <>
@@ -18,19 +32,26 @@ export const Auth = () => {
           <AuthInfo />
         </Box>
         <Box className={classes.auth_right}>
-          <Tabs defaultValue="signup">
-            <Tabs.List position="center">
-              <Tabs.Tab value="signup">Create new account</Tabs.Tab>
-              <Tabs.Tab value="login"> Log in </Tabs.Tab>
-            </Tabs.List>
+          {signUpSteps < 3 && loginSteps < 3 && resetPasswordStep < 1 && (
+            <Tabs defaultValue="signup">
+              <Tabs.List position="center">
+                <Tabs.Tab value="signup">Create new account</Tabs.Tab>
+                <Tabs.Tab value="login"> Log in </Tabs.Tab>
+              </Tabs.List>
 
-            <Tabs.Panel value="signup">
-              <Signup />
-            </Tabs.Panel>
-            <Tabs.Panel value="login">
-              <Login />
-            </Tabs.Panel>
-          </Tabs>
+              <Tabs.Panel value="signup">
+                <Signup />
+              </Tabs.Panel>
+              <Tabs.Panel value="login">
+                <Login />
+              </Tabs.Panel>
+            </Tabs>
+          )}
+          {(signUpSteps === 3 && isEmail(inputValue) && <Profile />) ||
+            (signUpSteps === 3 && isPhoneNumber(inputValue) && <OTPTab />) ||
+            (signUpSteps === 4 && isPhoneNumber(inputValue) && <Profile />) ||
+            (resetPasswordStep > 0 && <ForgotPassword />) ||
+            (loginWithOTPSteps > 0 && <LoginWithOTP />)}
         </Box>
       </Box>
     </>

@@ -1,0 +1,58 @@
+.disbledInput {
+  position: relative;
+  span {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 0.6rem;
+    font-weight: 600;
+    color: #697082;
+    background-color: #f3f3f3;
+    padding: 0.25rem 0.5rem;
+    border-radius: 1rem;
+    cursor: pointer;
+  }
+}
+
+.otpInput {
+  display: block;
+  width: 100%;
+  padding: 0.75rem;
+  letter-spacing: 1em;
+  border: 1px solid #d1d4db;
+  border-radius: 2px;
+  background-color: #ffffff;
+  position: relative;
+}
+
+.skills-box {
+  display: flex;
+  flex-direction: column;
+  margin-top: 0.5rem;
+}
+
+.skill-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0.25rem 0;
+}
+
+.skill {
+  color: #697082;
+  font-size: 0.55rem;
+  border: 2px solid #d1d4db;
+  border-radius: 16px;
+  padding: 0.15rem 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+
+  &.active {
+    border: 1px solid #17a672;
+    color: #17a672;
+  }
+}
+
+@import '_responsive';

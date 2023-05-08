@@ -1,6 +1,7 @@
 import { Title, Text, Box, createStyles, rem, em, Flex } from '@mantine/core';
 import { Link } from 'react-router-dom';
 import { MdVerified } from 'react-icons/md';
+import testimonialImg from '../assets/testimonialImg.png';
 
 export const AuthInfo = () => {
   const { classes } = useStyles();
@@ -28,7 +29,9 @@ export const AuthInfo = () => {
           Trust and safety are guaranteed with our accurate and efficient background checks.
         </Text>
         <Box className={classes.testimonial}>
-          <Box className={classes.testimonialImage}></Box>
+          <Box className={classes.testimonialImage}>
+            <img src={testimonialImg} alt="testimonial img" />
+          </Box>
           <Box className={classes.testimonialTextBox}>
             <Text>Arthur Morgan</Text>
             <Text>@arthurmorgan</Text>
@@ -110,7 +113,6 @@ const useStyles = createStyles((theme) => ({
     marginBottom: '1rem',
   },
   testimonialImage: {
-    border: '2px solid black',
     borderRadius: rem(20),
     height: '89px',
     width: '85px',
