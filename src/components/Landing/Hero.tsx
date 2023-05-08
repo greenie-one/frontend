@@ -40,15 +40,11 @@ export const LandingHero = () => {
   };
 
   useEffect(() => {
-    // const activatePopupTimeout = setTimeout(() => {
-    //   activatePopups();
-    //   clearTimeout(activatePopupTimeout);
-    // }, 150);
     if (isInView) {
       animate(
         'span',
         { scale:[0,1], transformOrigin:"top left" },
-        { type: 'spring', bounce:0.6, bounceStiffness:400, duration:1.5}
+        { type: 'spring', bounce:0.4, bounceStiffness:400, duration:1.5}
       );
     }
   }, [isInView]);
@@ -58,11 +54,11 @@ export const LandingHero = () => {
       <_2ColumnLayout>
         <Box className={classes.heroContentContainer}>
           <Title order={1} className={classes.heroTitle}>
-            <span className={classes.highlight}>Unlocking</span> <br/>the future of <br/> background verification
+            <span className={classes.highlight}>Unlocking</span> <br/>The Future Of <br/> Background Verification
           </Title>
           <Text className={classes.heroText}>
             Greenie revolutionizes verification process with a Blockchain based all-in-one secure
-            platform. Effortlessly manage documents, contracts, verifications and instill trust in
+            platform. <br/>Effortlessly manage documents, contracts, verifications and instill trust in
             networking and hiring.
           </Text>
           <Box className={classes.heroActionBtn}>
@@ -95,40 +91,9 @@ export const LandingHero = () => {
             <motion.span initial={{ translateX:'-45%',  translateY:'50%'}} className={`${classes.popups} ${classes.popup3}`}>
               <img src={popup3} alt="popup3" />
             </motion.span>
-            <motion.span initial={{ translateX:"-40%",  translateY:"-50%" }}className={`${classes.popups} ${classes.popup1}`}>
+            <motion.span initial={{ translateX:"-32%",  translateY:"-50%" }}className={`${classes.popups} ${classes.popup1}`}>
               <img src={popup1} alt="popup1" />
             </motion.span>
-
-            {/* {popupNo >= 4 ? (
-              <span className={`${classes.popups} ${classes.popup1}`}>
-                <img src={popup1} alt="popup1" />
-              </span>
-            ) : null}
-            {popupNo >= 3 ? (
-              <span className={`${classes.popups} ${classes.popup2}`}>
-                <img src={popup2} alt="popup2" />
-              </span>
-            ) : null}
-            {popupNo >= 2 ? (
-              <span className={`${classes.popups} ${classes.popup3}`}>
-                <img src={popup3} alt="popup3" />
-              </span>
-            ) : null}
-            {popupNo >= 0 ? (
-              <span className={`${classes.popups} ${classes.popup4}`}>
-                <img src={popup4} alt="popup4" />
-              </span>
-            ) : null}
-            {popupNo >= 1 ? (
-              <span className={`${classes.popups} ${classes.popup5}`}>
-                <img src={popup5} alt="popup5" />
-              </span>
-            ) : null}
-            {popupNo >= 0 ? (
-              <span className={`${classes.popups} ${classes.popup6}`}>
-                <img src={popup6} alt="popup6" />
-              </span>
-            ) : null} */}
           </span>
         </Box>
       </_2ColumnLayout>
@@ -244,13 +209,13 @@ const useStyles = createStyles((theme) => ({
   },
 
   popup1: {
-    width: rem(300),
+    width: rem(230),
     transform: 'translateX(-40%) translateY(-50%)',
     top: 0,
     left: 0,
 
     [`@media screen and (max-width: ${em(768)})`]: {
-      width: '45dvw'
+      width: '40dvw'
     },
   },
 

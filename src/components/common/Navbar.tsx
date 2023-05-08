@@ -1,25 +1,37 @@
-import { useEffect, useState } from 'react';
+import { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
 import { useDisclosure } from '@mantine/hooks';
 import { createStyles, Drawer, List, Group, em, rem, Box, Flex } from '@mantine/core';
 
 import { MdOutlineMenuOpen, MdVerified, MdOutlineClose } from 'react-icons/md';
-import {motion,useScroll} from "framer-motion";
+import {motion,useMotionValueEvent, useScroll} from "framer-motion";
 import { Button } from './Button';
 
 export const Navbar = () => {
   const { classes } = useStyles();
   const [ opened, { open, close }] = useDisclosure(false);
-  const { scrollY } = useScroll()
+  const ref = useRef(null);
+  const {scrollY} = useScroll();
+  const [scrollPos, setScrollPos] = useState(0);
 
-  useEffect(()=>{
-    console.log(scrollY)
-  },[scrollY])
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    setScrollPos(scrollY.get())
+  })
+ 
 
   return (
-    <Box className={`${classes.root} app-padding-inline`}>
-      <motion.header className={classes.header}>
+    <Box  className={`${classes.root} app-padding-inline`} style={{
+      boxShadow: scrollPos > 400 ? '0px 4px 34px rgba(0, 0, 0, 0.15)' : '',
+      paddingInline: scrollPos > 400 ?  '2rem': '',
+      borderRadius: scrollPos > 400 ? '5rem' : '',
+      position: scrollPos > 400 ? 'fixed':'relative',
+      top: scrollPos > 400 ? 0: '',
+      margin: scrollPos > 400 ? "1rem 8rem": '',
+      backgroundColor:"white",
+      transition: "all 0.3s ease"
+    }}>
+      <motion.header className={classes.header} >
         <Flex justify="center" align="center" direction="row" className={classes.logo}>
           <Link to={'/'}>
             <span className={classes.greenie}>Greenie</span>
@@ -58,8 +70,8 @@ export const Navbar = () => {
         >
           <nav className={classes.mobileNavOptionsContainer}>
             <Flex
-              justify="center"
-              align="start"
+              justify="space-between"
+              align="center"
               direction="row" 
               className={classes.mobileLogo}
             >
@@ -146,6 +158,10 @@ const useStyles = createStyles((theme) => ({
     marginInlineStart: '0.25rem',
     position: "absolute",
     top: "1rem",
+
+    [`@media screen and (max-width: ${em(768)})`]: {
+      fontSize: rem(16),
+    },
   },
 
   navOptionsContainer: {

@@ -59,11 +59,11 @@ const FeaturesCard: React.FC<FeaturesCardPropsType> = ({
 const featuresCardContent = [
   {
     id: randomId(),
-    cardBg: '#A0E2E1',
+    cardBg: '#17A672',
     title: 'Instant Verification Of Documents',
-    titleColor: '#310805',
     text: "Greeni's cutting edge automation enables verifying identity, address, employment, salary, experience and skills under 100 seconds",
-    textColor: '#191819',
+    textColor: '#FFFFFF',
+    titleColor: '#FFFFFF',
     illustrationSmall: dataControllMobile,
     illustrationLarge: dataControll,
   },
@@ -79,7 +79,7 @@ const featuresCardContent = [
   },
   {
     id: randomId(),
-    cardBg: '#17A672',
+    cardBg: '#85D1B5',
     title: 'Professional Profiles',
     titleColor: '#FFFFFF',
     text: 'Greenie verifies all candidate profiles, providing HR with dependable information prior to the interview. HR can then simply conduct interviews, negotiate salary and onboard candidates',
@@ -89,13 +89,13 @@ const featuresCardContent = [
   },
   {
     id: randomId(),
-    cardBg: '#85D1B5',
     title: 'Contract Management Tool',
-    titleColor: '#FFFFFF',
     text: "Enhance your team's productivity by using Greenie's in-built Contract Management Tool enabling you to effortlessly create robust contracts or upload and modify existing ones.",
-    textColor: '#FFFFFF',
     illustrationSmall: liveTracking,
     illustrationLarge: liveTracking,
+    cardBg: '#A0E2E1',
+    titleColor: '#310805',
+    textColor: '#191819',
   }
 ];
 
@@ -139,7 +139,7 @@ const useStyles = createStyles((theme) => ({
     marginBlockStart: '0.5rem',
     display: 'grid',
     gridTemplateColumns: 'repeat(5, 1fr)',
-    gridTemplateRows: 'repeat(8, 5rem)',
+    gridTemplateRows: 'repeat(7, 5rem)',
     gap: '1rem',
     zIndex: -1,
 
