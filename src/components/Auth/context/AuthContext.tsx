@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
-import { useForm, UseFormReturnType } from '@mantine/form';
+import { useForm, UseFormReturnType, isEmail } from '@mantine/form';
 
 type AuthContextType = {
   signupForm: UseFormReturnType<signUpFormType>;
@@ -17,7 +17,6 @@ type AuthContextType = {
   nextLoginWithOTPStep: () => void;
   prevLoginWithOTPStep: () => void;
   setLoginSteps: (value: number) => void;
-  isEmail: (input: string) => boolean;
   isPhoneNumber: (input: string) => boolean;
   inputValue: string;
   setInputValue: (value: string) => void;
@@ -69,30 +68,37 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const nextSignUpStep = () => {
     setSignUpSteps(signUpSteps + 1);
   };
+
   const prevSingUpStep = () => {
     if (signUpSteps !== 1) {
       setSignUpSteps(signUpSteps - 1);
     }
   };
+
   const nextLoginStep = () => {
     setLoginSteps(loginSteps + 1);
   };
+
   const prevLoginStep = () => {
     if (loginSteps !== 1) {
       setLoginSteps(loginSteps - 1);
     }
   };
+
   const nextResetPasswordStep = () => {
     setResetPasswordStep(resetPasswordStep + 1);
   };
+
   const prevResetPasswordStep = () => {
     if (resetPasswordStep !== 0) {
       setResetPasswordStep(resetPasswordStep - 1);
     }
   };
+
   const nextLoginWithOTPStep = () => {
     setLoginWithOTPSteps(loginWithOTPSteps + 1);
   };
+
   const prevLoginWithOTPStep = () => {
     if (loginWithOTPSteps !== 0) {
       setLoginWithOTPSteps(loginWithOTPSteps - 1);
@@ -101,26 +107,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const handleSignUp = () => {
     if (!inputValue) {
-      alert('Please fill all the fields');
+      alert('Please fill all the fields'); // replace with notifications
     } else {
       if (isEmail(inputValue) || isPhoneNumber(inputValue)) {
         nextSignUpStep();
       }
     }
   };
+
   const handleLogIn = () => {
     if (!inputValue) {
-      alert('Please fill all the fields');
+      alert('Please fill all the fields'); // replace with notifications
     } else {
       if (isEmail(inputValue) || isPhoneNumber(inputValue)) {
         nextLoginStep();
       }
     }
-  };
-
-  const isEmail = (input: string): boolean => {
-    const pattern = /\S+@\S+\.\S+/;
-    return pattern.test(input);
   };
 
   const isPhoneNumber = (input: string): boolean => {
@@ -145,7 +147,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         prevSingUpStep,
         nextLoginStep,
         prevLoginStep,
-        isEmail,
         isPhoneNumber,
         inputValue,
         setInputValue,

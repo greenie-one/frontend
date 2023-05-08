@@ -1,4 +1,5 @@
 import { TextInput, createStyles, rem, Text, Button, Divider, Box } from '@mantine/core';
+import { isEmail } from '@mantine/form';
 import { useAuthContext } from '../../context/AuthContext';
 import { Link } from 'react-router-dom';
 import GoogleButton from '../GoogleButton';
@@ -11,7 +12,6 @@ const CreateAccount = () => {
     signupForm,
     signUpSteps,
     prevSingUpStep,
-    isEmail,
     isPhoneNumber,
     handleSignUp,
     inputValue,
