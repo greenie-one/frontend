@@ -18,8 +18,6 @@ type AuthContextType = {
   prevLoginWithOTPStep: () => void;
   setLoginSteps: (value: number) => void;
   isPhoneNumber: (input: string) => boolean;
-  inputValue: string;
-  setInputValue: (value: string) => void;
   handleSignUp: () => void;
   handleLogIn: () => void;
 };
@@ -63,7 +61,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loginSteps, setLoginSteps] = useState(1);
   const [resetPasswordStep, setResetPasswordStep] = useState(0);
   const [loginWithOTPSteps, setLoginWithOTPSteps] = useState(0);
-  const [inputValue, setInputValue] = useState('');
 
   const nextSignUpStep = () => {
     setSignUpSteps(signUpSteps + 1);
@@ -106,23 +103,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const handleSignUp = () => {
-    if (!inputValue) {
-      alert('Please fill all the fields'); // replace with notifications
-    } else {
-      if (isPhoneNumber(inputValue)) {
-        nextSignUpStep();
-      }
-    }
+    nextSignUpStep();
   };
 
   const handleLogIn = () => {
-    if (!inputValue) {
-      alert('Please fill all the fields'); // replace with notifications
-    } else {
-      if (isPhoneNumber(inputValue)) {
-        nextLoginStep();
-      }
-    }
+    nextLoginStep();
   };
 
   const isPhoneNumber = (input: string): boolean => {
@@ -148,8 +133,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         nextLoginStep,
         prevLoginStep,
         isPhoneNumber,
-        inputValue,
-        setInputValue,
         handleSignUp,
         handleLogIn,
         setLoginSteps,

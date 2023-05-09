@@ -1,4 +1,5 @@
 import { TextInput, createStyles, em, rem, Text, Button, Box, Flex } from '@mantine/core';
+import { isEmail } from '@mantine/form';
 import { useAuthContext } from '../../context/AuthContext';
 import { BsArrowLeft } from 'react-icons/bs';
 import '../../styles/global.scss';
@@ -11,9 +12,6 @@ const ForgotPassword = () => {
     resetPasswordStep,
     nextResetPasswordStep,
     prevResetPasswordStep,
-    setInputValue,
-    inputValue,
-    isEmail,
     isPhoneNumber,
   } = useAuthContext();
 
@@ -23,16 +21,11 @@ const ForgotPassword = () => {
   };
 
   const handleChange = () => {
-    setInputValue('');
     prevResetPasswordStep();
   };
 
   const handleNextStep = () => {
-    if (!inputValue) {
-      alert('Please fill all the details');
-    } else {
-      nextResetPasswordStep();
-    }
+    nextResetPasswordStep();
   };
 
   return (
@@ -50,8 +43,7 @@ const ForgotPassword = () => {
           </Text>
           <TextInput
             label="Email or Phone number or greenie ID"
-            {...loginForm.getInputProps('emailPhoneGreenieId').value}
-            onChange={(e) => setInputValue(e.target.value)}
+            {...loginForm.getInputProps('emailPhoneGreenieId')}
             classNames={inputClasses}
           />
           <Button
@@ -76,24 +68,25 @@ const ForgotPassword = () => {
             p={'sm'}
             style={{ border: '1px solid #D1D4DB', borderRadius: '2px', background: '#FFFFFF' }}
           >
-            {inputValue}
+            {loginForm.values.emailPhoneGreenieId}
             <span className="changeBtn" onClick={handleChange}>
               Change
             </span>
           </Text>
-          {!isEmail(inputValue) && !isPhoneNumber(inputValue) && (
-            <Text fw={'bold'} fz={'xs'} my={'lg'}>
-              A one-time passowrd (OTP) will be sent to your registered phone number for
-              verification
-            </Text>
-          )}
-          {isEmail(inputValue) && (
+          {!isEmail(loginForm.values.emailPhoneGreenieId) &&
+            !isPhoneNumber(loginForm.values.emailPhoneGreenieId) && (
+              <Text fw={'bold'} fz={'xs'} my={'lg'}>
+                A one-time passowrd (OTP) will be sent to your registered phone number for
+                verification
+              </Text>
+            )}
+          {isEmail(loginForm.values.emailPhoneGreenieId) && (
             <Text fw={'bold'} fz={'xs'} my={'lg'}>
               A one-time passowrd (OTP) will be sent to your registered email address for
               verification
             </Text>
           )}
-          {isPhoneNumber(inputValue) && (
+          {isPhoneNumber(loginForm.values.emailPhoneGreenieId) && (
             <Text fw={'bold'} fz={'xs'} my={'lg'}>
               A one-time passowrd (OTP) will be sent to your registered phone number for
               verification
@@ -113,21 +106,22 @@ const ForgotPassword = () => {
 
       {resetPasswordStep === 3 && (
         <Box>
-          {isEmail(inputValue) && (
+          {isEmail(loginForm.values.emailPhoneGreenieId) && (
             <Text fw={'bold'} fz={'xs'} my={'lg'}>
               Enter the one-time passowrd sent to your email address
             </Text>
           )}
-          {isPhoneNumber(inputValue) && (
+          {isPhoneNumber(loginForm.values.emailPhoneGreenieId) && (
             <Text fw={'bold'} fz={'xs'} my={'lg'}>
               Enter the one-time passowrd sent to your phone number
             </Text>
           )}
-          {!isEmail(inputValue) && !isPhoneNumber(inputValue) && (
-            <Text fw={'bold'} fz={'xs'} my={'lg'}>
-              Enter the one-time passowrd sent to your phone number
-            </Text>
-          )}
+          {!isEmail(loginForm.values.emailPhoneGreenieId) &&
+            !isPhoneNumber(loginForm.values.emailPhoneGreenieId) && (
+              <Text fw={'bold'} fz={'xs'} my={'lg'}>
+                Enter the one-time passowrd sent to your phone number
+              </Text>
+            )}
           <input className="otpInput" maxLength={4} type="text" pattern="[0-9]{4}" />
           <Text fw={'light'} fz={'xs'} my={'md'}>
             Resend{' '}

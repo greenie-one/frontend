@@ -19,7 +19,6 @@ const Form = () => {
   const {
     loginForm,
     loginSteps,
-    setInputValue,
     handleLogIn,
     nextResetPasswordStep,
     nextLoginStep,
@@ -29,7 +28,6 @@ const Form = () => {
   const handleForgotPassowrd = () => {
     nextResetPasswordStep();
     nextLoginStep();
-    setInputValue('');
   };
 
   const handleLoginWithOTP = () => {
@@ -44,8 +42,7 @@ const Form = () => {
             label="Email or Phone number"
             style={{ borderRadius: '1rem' }}
             classNames={inputClasses}
-            {...loginForm.getInputProps('emailPhoneGreenieId').value}
-            onChange={(e) => setInputValue(e.target.value)}
+            {...loginForm.getInputProps('emailPhoneGreenieId')}
           />
         )}
         {loginSteps === 2 && (

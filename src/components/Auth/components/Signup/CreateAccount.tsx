@@ -6,15 +6,7 @@ import SignUpWithEmail from './SignUpWithEmail';
 import '../../styles/global.scss';
 
 const CreateAccount = () => {
-  const {
-    signupForm,
-    signUpSteps,
-    prevSingUpStep,
-    isPhoneNumber,
-    handleSignUp,
-    inputValue,
-    setInputValue,
-  } = useAuthContext();
+  const { signupForm, signUpSteps, prevSingUpStep, isPhoneNumber, handleSignUp } = useAuthContext();
 
   const { classes: inputClasses } = inputStyles();
 
@@ -25,27 +17,27 @@ const CreateAccount = () => {
           label="Email or Phone number"
           classNames={inputClasses}
           {...signupForm.getInputProps('emailPhone')}
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
         />
       )}
 
       {signUpSteps === 2 && (
         <Text className="disbledInput">
-          {inputValue}
+          {signupForm.values.emailPhone}
           <span className="changeBtn" onClick={() => prevSingUpStep()}>
             Change
           </span>
         </Text>
       )}
-      {signUpSteps === 2 && isEmail(inputValue) && <SignUpWithEmail />}
+      {signUpSteps === 2 && isEmail() && <SignUpWithEmail />}
 
       <Text className="tearms-condition">
         By creating an account, you agree to our <u>Terms of Service</u> and{' '}
         <u>Privacy & Cookie Statement</u>.
       </Text>
       <Button className="primaryBtn" onClick={handleSignUp}>
-        {signUpSteps === 2 && isPhoneNumber(inputValue) ? 'Send OTP' : 'Agree & Join'}
+        {signUpSteps === 2 && isPhoneNumber(signupForm.values.emailPhone)
+          ? 'Send OTP'
+          : 'Agree & Join'}
       </Button>
       <Divider label="Or better yet" className="divider" labelPosition="center" />
       <GoogleButton />

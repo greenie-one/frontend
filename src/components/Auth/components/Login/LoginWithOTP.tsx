@@ -1,4 +1,5 @@
 import { TextInput, em, createStyles, rem, Text, Button, Box, Flex } from '@mantine/core';
+import { isEmail } from '@mantine/form';
 import { useAuthContext } from '../../context/AuthContext';
 import { BsArrowLeft } from 'react-icons/bs';
 import '../../styles/InputStyles.scss';
@@ -6,15 +7,13 @@ import '../../styles/InputStyles.scss';
 const LoginWithOTP = () => {
   const { classes: inputClasses } = inputStyles();
   const {
+    loginForm,
     loginSteps,
     loginWithOTPSteps,
     nextLoginWithOTPStep,
     prevLoginWithOTPStep,
     nextLoginStep,
     prevLoginStep,
-    inputValue,
-    setInputValue,
-    isEmail,
     isPhoneNumber,
     setLoginSteps,
   } = useAuthContext();
@@ -22,7 +21,6 @@ const LoginWithOTP = () => {
   const handleClick = () => {
     prevLoginWithOTPStep();
     setLoginSteps(1);
-    setInputValue('');
   };
 
   return (
@@ -43,24 +41,25 @@ const LoginWithOTP = () => {
             p={'sm'}
             style={{ border: '1px solid #D1D4DB', borderRadius: '2px', background: '#FFFFFF' }}
           >
-            {inputValue}
+            {loginForm.values.emailPhoneGreenieId}
             <span className="changeBtn" onClick={handleClick}>
               Change
             </span>
           </Text>
-          {!isEmail(inputValue) && !isPhoneNumber(inputValue) && (
-            <Text fw={'bold'} fz={'xs'} my={'lg'}>
-              A one-time passowrd (OTP) will be sent to your registered phone number for
-              verification
-            </Text>
-          )}
-          {isEmail(inputValue) && (
+          {!isEmail(loginForm.values.emailPhoneGreenieId) &&
+            !isPhoneNumber(loginForm.values.emailPhoneGreenieId) && (
+              <Text fw={'bold'} fz={'xs'} my={'lg'}>
+                A one-time passowrd (OTP) will be sent to your registered phone number for
+                verification
+              </Text>
+            )}
+          {isEmail(loginForm.values.emailPhoneGreenieId) && (
             <Text fw={'bold'} fz={'xs'} my={'lg'}>
               A one-time passowrd (OTP) will be sent to your registered email address for
               verification
             </Text>
           )}
-          {isPhoneNumber(inputValue) && (
+          {isPhoneNumber(loginForm.values.emailPhoneGreenieId) && (
             <Text fw={'bold'} fz={'xs'} my={'lg'}>
               A one-time passowrd (OTP) will be sent to your registered phone number for
               verification

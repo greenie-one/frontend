@@ -1,4 +1,5 @@
 import { Box, Tabs, createStyles, rem, em } from '@mantine/core';
+import { isEmail } from '@mantine/form';
 import { Signup } from './components/Signup/Signup';
 import { Login } from './components/Login/Login';
 import { Navbar } from '../common/Navbar';
@@ -13,10 +14,9 @@ import './styles/global.scss';
 export const Auth = () => {
   const { classes } = useStyles();
   const {
+    signupForm,
     signUpSteps,
-    isEmail,
     isPhoneNumber,
-    inputValue,
     loginSteps,
     resetPasswordStep,
     loginWithOTPSteps,
@@ -53,9 +53,9 @@ export const Auth = () => {
                 </Tabs.Panel>
               </Tabs>
             )}
-            {(signUpSteps === 3 && isEmail(inputValue) && <Profile />) ||
-              (signUpSteps === 3 && isPhoneNumber(inputValue) && <OTPTab />) ||
-              (signUpSteps === 4 && isPhoneNumber(inputValue) && <Profile />) ||
+            {(signUpSteps === 3 && isEmail() && <Profile />) ||
+              (signUpSteps === 3 && isPhoneNumber(signupForm.values.emailPhone) && <OTPTab />) ||
+              (signUpSteps === 4 && isPhoneNumber(signupForm.values.emailPhone) && <Profile />) ||
               (resetPasswordStep > 0 && <ForgotPassword />) ||
               (loginWithOTPSteps > 0 && <LoginWithOTP />)}
           </Box>
