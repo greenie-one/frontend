@@ -10,7 +10,7 @@ import girlCheckingPhone from '../../assets/images/Landing/girl-checking-phone.p
 import popup1 from '../../assets/images/Landing/popup-illustration-1.svg';
 import popup2 from '../../assets/images/Landing/popup-illustration-2.svg';
 import popup3 from '../../assets/images/Landing/popup-illustration-3.svg';
-import popup4 from '../../assets/images/Landing/popup-illustration-4.svg';
+import popup4 from '../../assets/images/Landing/upload-documents-hero.svg';
 import popup5 from '../../assets/images/Landing/popup-illustration-5.svg';
 import popup6 from '../../assets/images/Landing/popup-illustration-6.svg';
 
@@ -57,9 +57,7 @@ export const LandingHero = () => {
             <span className={classes.highlight}>Unlocking</span> <br/>The Future Of <br/> Background Verification
           </Title>
           <Text className={classes.heroText}>
-            Greenie revolutionizes verification process with a Blockchain based all-in-one secure
-            platform. <br/>Effortlessly manage documents, contracts, verifications and instill trust in
-            networking and hiring.
+          Experience verifications, document storage, contract creation, sharing of verification reports on our secure encrypted platform.
           </Text>
           <Box className={classes.heroActionBtn}>
             <Link to="/waitlist">
@@ -85,7 +83,7 @@ export const LandingHero = () => {
             <motion.span initial={{ translateX:"50%",  translateY:"-45%" }} className={`${classes.popups} ${classes.popup6}`}>
               <img src={popup6} alt="popup6" />
             </motion.span>
-            <motion.span initial={{ translateX:'-68.5%',  translateY:'-25%' }} className={`${classes.popups} ${classes.popup2}`}>
+            <motion.span initial={{ translateX:'-65%',  translateY:'-25%' }} className={`${classes.popups} ${classes.popup2}`}>
               <img src={popup2} alt="popup2" />
             </motion.span>
             <motion.span initial={{ translateX:'-45%',  translateY:'50%'}} className={`${classes.popups} ${classes.popup3}`}>
@@ -120,10 +118,14 @@ const useStyles = createStyles((theme) => ({
   },
 
   heroTitle: {
-    fontSize: '2.5rem',
+    fontSize: '3rem',
     fontWeight: 800,
     width:"18ch",
-    marginTop:"-1rem",
+
+
+    [`@media screen and (max-width: ${em(1340)})`]: {
+      fontSize: '2.6rem',
+    },
 
     [`@media screen and (max-width: ${em(1280)})`]: {
       textAlign: 'center',
@@ -131,16 +133,21 @@ const useStyles = createStyles((theme) => ({
       marginInline: 'auto',
     },
 
+
     [`@media screen and (max-width: ${em(768)})`]: {
-      fontSize: '2rem',
+      fontSize: '2.5rem',
     },
 
     [`@media screen and (max-width: ${em(540)})`]: {
-      fontSize: '1.75rem',
+      fontSize: '2 rem',
     },
 
     [`@media screen and (max-width: ${em(414)})`]: {
       fontSize: '1.5rem',
+    },
+
+    [`@media screen and (max-width: ${em(425)})`]: {
+      fontSize: '1.7rem',
     },
   },
 
@@ -148,7 +155,8 @@ const useStyles = createStyles((theme) => ({
     fontSize: '0.85rem',
     marginBlockStart: '1.2rem',
     marginBlockEnd: '1.25rem',
-    width:"45ch",
+    maxWidth:"45ch",
+    width:"100%",
 
     [`@media screen and (max-width: ${em(1280)})`]: {
       textAlign: 'center',
@@ -161,6 +169,10 @@ const useStyles = createStyles((theme) => ({
 
     [`@media screen and (max-width: ${em(540)})`]: {
       marginBlockStart: '1rem',
+    },
+
+    [`@media screen and (max-width: ${em(425)})`]: {
+      fontSize: '0.825rem',
     },
   },
 
@@ -209,7 +221,7 @@ const useStyles = createStyles((theme) => ({
   },
 
   popup1: {
-    width: rem(230),
+    width: rem(270),
     transform: 'translateX(-40%) translateY(-50%)',
     top: 0,
     left: 0,

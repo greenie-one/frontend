@@ -10,7 +10,7 @@ import { LandingFeatures } from '../components/Landing/Features';
 import { LandingGreenieWorkings } from '../components/Landing/GreenieWorking';
 import { LandingHiring } from '../components/Landing/Hiring';
 import { LandingTestimonials } from '../components/Landing/Testimonials';
-
+import {FaChevronUp} from "react-icons/fa";
 
 type TestimonialCardPropsType = {
   statement: string;
@@ -99,7 +99,7 @@ export const Landing = () => {
         <Transition transition="slide-up" mounted={scroll.y > 0}>
           {(transitionStyles) => (
             <Button className={classes.affix} style={transitionStyles} onClick={() => scrollTo({ y: 0 })}>
-              Scroll to top
+              <FaChevronUp size="2rem"/>
             </Button>
           )}
         </Transition>
@@ -154,8 +154,15 @@ const useStyles = createStyles((theme) => ({
   },
 
   affix:{
-    borderRadius: rem(30),
-    backgroundColor: '#17A672'
+    borderRadius: "50%",
+    backgroundColor: '#17A672',
+    width:"4rem",
+    height:"4rem",
+
+    [`@media screen and (max-width: ${em(1024)})`]: {
+      width:"3.5rem",
+      height:"3.5rem",
+    },
   },
 
   testimonialCarouselSection: {

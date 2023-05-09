@@ -22,14 +22,14 @@ export const Navbar = () => {
 
   return (
     <Box  className={`${classes.root} app-padding-inline`} style={{
-      boxShadow: scrollPos > 400 ? '0px 4px 34px rgba(0, 0, 0, 0.15)' : '',
-      paddingInline: scrollPos > 400 ?  '2rem': '',
-      borderRadius: scrollPos > 400 ? '5rem' : '',
-      position: scrollPos > 400 ? 'fixed':'relative',
-      top: scrollPos > 400 ? 0: '',
-      margin: scrollPos > 400 ? "1rem 8rem": '',
+      boxShadow: scrollPos > 600 ? '0px 4px 34px rgba(0, 0, 0, 0.15)' : '',
+      paddingInline: scrollPos > 600 ?  '2rem': '',
+      borderRadius: scrollPos > 600 ? '5rem' : '',
+      position: scrollPos > 600 ? 'fixed':'relative',
+      top: scrollPos > 600 ? 0: '',
+      margin: scrollPos > 600  ? "1rem 8rem": '',
       backgroundColor:"white",
-      transition: "all 0.3s ease"
+      transition: "all 0.5s ease"
     }}>
       <motion.header className={classes.header} >
         <Flex justify="center" align="center" direction="row" className={classes.logo}>
