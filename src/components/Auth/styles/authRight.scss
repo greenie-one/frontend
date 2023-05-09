@@ -1,0 +1,155 @@
+.authRight {
+  width: 100%;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+
+  .authRightContainer {
+    width: 456px;
+  }
+
+  .tabList {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+
+    .tabBtn {
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 27px;
+      &:hover {
+        background: transparent;
+      }
+    }
+  }
+
+  .tearms-condition {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 27px;
+    color: $dark;
+    margin-bottom: 24px;
+    cursor: pointer;
+  }
+
+  .divider {
+    width: 385px;
+    margin: 0 auto 24px auto;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 27px;
+    color: $black;
+  }
+
+  .tabTopBox {
+    text-align: left;
+    align-items: center;
+    margin-bottom: 40px;
+    cursor: pointer;
+
+    .tabHeading {
+      font-family: $inter;
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 27px;
+      margin-left: 13px;
+    }
+  }
+
+  .steps {
+    font-family: $inter;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 27px;
+    margin-bottom: 28px;
+  }
+
+  .profileText {
+    font-family: $inter;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 27px;
+    margin-bottom: 28px;
+    color: $black;
+  }
+
+  .profileTextBold {
+    font-family: $inter;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 27px;
+    margin-bottom: 28px;
+    color: $black;
+  }
+
+  .skills-box {
+    display: flex;
+    flex-direction: column;
+    margin-top: 0.5rem;
+  }
+
+  .skill-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0.25rem 0;
+  }
+
+  .skill {
+    color: #697082;
+    font-size: 0.55rem;
+    border: 2px solid #d1d4db;
+    border-radius: 16px;
+    padding: 0.15rem 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+
+    &.active {
+      border: 1px solid #17a672;
+      color: #17a672;
+    }
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .authRight {
+    // max-width: 313px;
+    margin: 0 auto;
+
+    .authRightContainer {
+      max-width: 313px;
+
+      .tearms-condition {
+        font-size: 10px;
+        line-height: 18px;
+        color: $dark;
+        margin-bottom: 16px;
+        cursor: pointer;
+      }
+
+      .divider {
+        width: 257px;
+        margin: 0 auto 16px auto;
+        font-weight: 600;
+        font-size: 10px;
+        line-height: 18px;
+        color: $black;
+      }
+
+      .profileText {
+        font-size: 10px;
+        line-height: 18px;
+        margin-bottom: 18px;
+      }
+      .profileTextBold {
+        font-size: 10px;
+        line-height: 18px;
+        margin-bottom: 18px;
+      }
+    }
+  }
+}

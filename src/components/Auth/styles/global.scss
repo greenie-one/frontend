@@ -1,0 +1,74 @@
+@import '_variables';
+
+.primaryBtn {
+  font-family: $inter;
+  background: $green;
+  border-radius: 34px;
+  padding: 12px 36px;
+  width: 458px;
+  height: 51px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 27px;
+  color: $white;
+  margin-bottom: 24px;
+
+  &:hover {
+    opacity: 0.9;
+    background: $green;
+  }
+}
+
+.secondaryBtn {
+  background: $white;
+  border: 1px solid $black;
+  border-radius: 34px;
+  padding: 12px 36px;
+  width: 458px;
+  height: 51px;
+  color: $black;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 27px;
+  span {
+    img {
+      width: 20px;
+      margin-right: 4px;
+    }
+  }
+
+  &:hover {
+    background: transparent;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .primaryBtn {
+    width: 312px;
+    height: 34px;
+    padding: 8px 24px;
+    border-radius: 23px;
+    font-size: 10px;
+    line-height: 18px;
+    margin-inline: auto;
+  }
+
+  .secondaryBtn {
+    width: 312px;
+    height: 34px;
+    padding: 8px 24px;
+    border-radius: 23px;
+    font-size: 10px;
+    line-height: 18px;
+    margin-inline: auto;
+
+    span {
+      img {
+        width: 14px;
+        margin-right: 4px;
+      }
+    }
+  }
+}
+
+@import 'authRight', 'authInfo', 'InputStyles';

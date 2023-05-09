@@ -109,7 +109,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (!inputValue) {
       alert('Please fill all the fields'); // replace with notifications
     } else {
-      if (isEmail(inputValue) || isPhoneNumber(inputValue)) {
+      if (isPhoneNumber(inputValue)) {
         nextSignUpStep();
       }
     }
@@ -119,7 +119,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (!inputValue) {
       alert('Please fill all the fields'); // replace with notifications
     } else {
-      if (isEmail(inputValue) || isPhoneNumber(inputValue)) {
+      if (isPhoneNumber(inputValue)) {
         nextLoginStep();
       }
     }
