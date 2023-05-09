@@ -3,9 +3,10 @@ import { _2ColumnLayout } from '../layouts/_2ColumnLayout';
 import hiringDocuments from '../../assets/images/Landing/hiring-documents.png';
 import cap from '../../assets/images/Landing/cap.svg';
 import { MdVerified } from 'react-icons/md';
-import {motion} from "framer-motion";
+import { motion } from "framer-motion";
 import { useAnimate, useTransform , useInView } from 'framer-motion';
 import { useEffect } from 'react';
+
 
 export const LandingHiring: React.FC = (): JSX.Element => {
   const { classes } = useStyles();
@@ -16,8 +17,8 @@ export const LandingHiring: React.FC = (): JSX.Element => {
     if (isInView) {
       animate(
         scope.current,
-        { y:[30,0], opacity:[0,1]},
-        { type: 'spring', bounce:0.6, bounceStiffness:100, duration:0.8}
+        { y:[20,0], opacity:[0,1]},
+        { type: 'spring', bounce:0.8, bounceStiffness:200, duration:1.5, delay:0.2}
       );
     }
   }, [isInView]);
@@ -34,10 +35,10 @@ export const LandingHiring: React.FC = (): JSX.Element => {
               direction="row"
               className={classes.verifiedTextContainer}
             >
-              <motion.span initial={{y:50}} animate={{y:0}} transition={{ duration:0.5}} className={classes.verified}>
+              <motion.span className={classes.verified}>
                 <MdVerified />
               </motion.span>
-              <span ref={scope} className={classes.verifiedText}>Verified</span>
+              <span  ref={scope} className={classes.verifiedText}>Verified</span>
               <span className={classes.capIconContainer}>
                 <img src={cap} alt="cap" className={'verifiedIcon'} />
               </span>

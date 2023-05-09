@@ -100,7 +100,7 @@ export const LandingGreenieWorkings = () => {
           '1. Create Greenie Account',
           '2. Verify Documents',
           '3. Send or Receive Request',
-          '4. Share ID',
+          '4. Share Greenie ID',
         ].map((text, id) => {
           return (
             <Button
