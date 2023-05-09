@@ -12,13 +12,13 @@
   --color-lime-green: 110 80% 71%; /* #8CF078 */
   --color-black-bold: 300, 2%, 10%; /* #191819 */
 
-  --app-bg-gradient: linear-gradient(
+  /* --app-bg-gradient: linear-gradient(
     180deg,
     hsl(0, 0%, 100%) 0%,
     #edfff9 44.79%, 
     hsl(0, 0%, 100%) 89.07%,
     #d7fff0 100%
-  );
+  ); */
 
   --app-line-height: 1.3;
 

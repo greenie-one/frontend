@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { BsFillCheckCircleFill } from 'react-icons/bs';
-import '../../styles/InputStyles.scss';
+import '../../styles/global.scss';
 
 interface ButtonProps {
   label: string;

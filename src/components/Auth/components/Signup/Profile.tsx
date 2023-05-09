@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { TextInput, createStyles, rem, Text, Button, Stepper, Box, Flex } from '@mantine/core';
+import { TextInput, createStyles, rem, Text, Button, Stepper, Box, Flex, em } from '@mantine/core';
 import { useAuthContext } from '../../context/AuthContext';
 import IntroButton from './IntroButton';
 import { BsArrowLeft } from 'react-icons/bs';
 import linkedInLogo from '../../assets/linkedIn-logo.png';
+import '../../styles/global.scss';
 const skillSetOne = ['Team Player', 'Energetic', 'Optimistic', 'Self Initiator', 'hardworking'];
 
 const skillSetTwo = ['Prodigy', 'Lone Wolf', 'Micro Planner', 'Jack of all trade'];
@@ -27,29 +28,23 @@ const Profile = () => {
     }
   };
   return (
-    <Box className="authRightContainer">
-      <Flex direction={'row'} align={'center'} mb={'sm'} onClick={handleGoBack}>
-        <BsArrowLeft size={'15px'} />
-        <Text fw={'bold'} fz={'xs'} ml={'xs'} style={{ cursor: 'pointer' }}>
-          Go Back
-        </Text>
+    <Box>
+      <Flex className="tabTopBox" onClick={handleGoBack}>
+        <BsArrowLeft size={'16px'} />
+        <Text className="tabHeading">Go Back</Text>
       </Flex>
-      <Stepper active={active} size="xs" color="#8CF078" mb={'sm'}>
+      <Stepper active={active} size="xs" color="#8CF078">
         <Stepper.Step>
-          <Text mb={'lg'} fz={'xs'}>
-            {`Steps ${active + 1}`}/3
-          </Text>
-          <Text fs={'sm'} my={'lg'}>
-            What should we call you?
-          </Text>
+          <Text className="steps">{`Steps ${active + 1}`}/3</Text>
+          <Text className="profileText">What should we call you?</Text>
           <TextInput label="First Name" classNames={inputClasses} />
           <TextInput label="Last Name" classNames={inputClasses} />
-          <Button fullWidth radius="xl" color="teal" onClick={nextStep}>
+          <Button className="primaryBtn" onClick={nextStep}>
             Continue
           </Button>
         </Stepper.Step>
         <Stepper.Step>
-          <Text fz={'xs'}>{`Steps ${active + 1}`}/3</Text>
+          <Text className="steps">{`Steps ${active + 1}`}/3</Text>
           <Box
             my={'lg'}
             style={{
@@ -59,7 +54,7 @@ const Profile = () => {
               borderRadius: '1rem',
             }}
           ></Box>
-          <Text fw={'600'} fz={'xs'} align="center">
+          <Text className="profiletext" align="center">
             Help us create a better experience for you
           </Text>
           <Button fullWidth radius="xl" my={'lg'} fw={'600'} variant="default" onClick={nextStep}>
@@ -80,9 +75,8 @@ const Profile = () => {
           </Text>
         </Stepper.Step>
         <Stepper.Step>
-          <Text fz={'xs'}>{`Steps ${active + 1}`}/3</Text>
+          <Text className="steps">{`Steps ${active + 1}`}/3</Text>
           <Box
-            my={'lg'}
             mx={'auto'}
             style={{
               width: '100px',
@@ -91,7 +85,7 @@ const Profile = () => {
               borderRadius: '1rem',
             }}
           ></Box>
-          <Text fw={'600'} fz={'xs'} align="center">
+          <Text className="profileText" align="center">
             Introduce yourself in 3 words
           </Text>
           <Box className="skills-box">
@@ -122,12 +116,30 @@ export default Profile;
 const inputStyles = createStyles((theme) => ({
   root: {
     position: 'relative',
-    marginBottom: rem(16),
+    marginBottom: '16px',
   },
 
   input: {
-    height: rem(54),
-    paddingTop: rem(18),
+    width: '458px',
+    height: '68px',
+    paddingTop: '18px',
+    fontSize: '16px',
+    fontWeight: 500,
+    borderRadius: '8px',
+    border: '1px solid #D1D4DB',
+    lineHeight: '19px',
+    letterSpacing: '-0.02em',
+    color: '#697082',
+
+    [`@media screen and (max-width: ${em(1024)})`]: {
+      width: '310px',
+      height: '46px',
+      borderRadius: '6px',
+      fontSize: '10px',
+      lineHeight: '12px',
+      border: '5px solid black',
+      margin: '0 auto',
+    },
   },
 
   // for password field
@@ -139,14 +151,18 @@ const inputStyles = createStyles((theme) => ({
   label: {
     position: 'absolute',
     pointerEvents: 'none',
-    fontSize: theme.fontSizes.xs,
-    paddingLeft: theme.spacing.sm,
-    paddingTop: `calc(${theme.spacing.sm} / 2)`,
+    fontSize: '12px',
+    paddingLeft: '14px',
+    paddingTop: '7px',
+    lineHeight: '14.52px',
+    letterSpacing: '-0.02em',
     zIndex: 1,
-    color: '#4C4C4C',
-  },
+    color: '#697082',
 
-  Button: {
-    margin: '2rem 0',
+    [`@media screen and (max-width: ${em(1024)})`]: {
+      fontSize: '8px',
+      lineHeight: '10px',
+      paddingLeft: '11.54px',
+    },
   },
 }));

@@ -1,7 +1,7 @@
-import { TextInput, createStyles, rem, Text, Button, Box, Flex } from '@mantine/core';
+import { TextInput, createStyles, em, rem, Text, Button, Box, Flex } from '@mantine/core';
 import { useAuthContext } from '../../context/AuthContext';
 import { BsArrowLeft } from 'react-icons/bs';
-import '../../styles/InputStyles.scss';
+import '../../styles/global.scss';
 
 const ForgotPassword = () => {
   const { classes: inputClasses } = inputStyles();
@@ -149,12 +149,29 @@ export default ForgotPassword;
 const inputStyles = createStyles((theme) => ({
   root: {
     position: 'relative',
-    marginBottom: rem(16),
+    marginBottom: '16px',
   },
 
   input: {
-    height: rem(54),
-    paddingTop: rem(18),
+    width: '458px',
+    height: '68px',
+    paddingTop: '18px',
+    fontSize: '16px',
+    fontWeight: 500,
+    borderRadius: '8px',
+    border: '1px solid #D1D4DB',
+    lineHeight: '19px',
+    letterSpacing: '-0.02em',
+    color: '#697082',
+
+    [`@media screen and (max-width: ${em(1024)})`]: {
+      width: '310px',
+      height: '46px',
+      borderRadius: '6px',
+      fontSize: '10px',
+      lineHeight: '12px',
+      margin: '0 auto',
+    },
   },
 
   // for password field
@@ -166,14 +183,17 @@ const inputStyles = createStyles((theme) => ({
   label: {
     position: 'absolute',
     pointerEvents: 'none',
-    fontSize: theme.fontSizes.xs,
-    paddingLeft: theme.spacing.sm,
-    paddingTop: `calc(${theme.spacing.sm} / 2)`,
+    fontSize: '12px',
+    paddingLeft: '14px',
+    paddingTop: '7px',
+    lineHeight: '14.52px',
+    letterSpacing: '-0.02em',
     zIndex: 1,
-    color: '#4C4C4C',
-  },
+    color: '#697082',
 
-  Button: {
-    margin: '2rem 0',
+    [`@media screen and (max-width: ${em(1024)})`]: {
+      fontSize: '8px',
+      lineHeight: '10px',
+    },
   },
 }));
