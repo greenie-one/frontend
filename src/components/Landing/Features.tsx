@@ -3,11 +3,11 @@ import { createStyles, getStylesRef, Title, Text, em, rem, Box } from '@mantine/
 import { randomId } from '@mantine/hooks';
 import { LandingSectionHeading } from './SectionHeading';
 
-import documentVerified from '../../assets/images/Landing/document-verified.svg';
-import clock from '../../assets/images/Landing/clock.svg';
-import liveTracking from '../../assets/images/Landing/live-tracking.svg';
-import dataControll from '../../assets/images/Landing/data-controll.svg';
-import dataControllMobile from '../../assets/images/Landing/data-controll-mobile.svg';
+import documentVerified from '../../assets/images/Landing/professional-profiles.svg';
+import docdepot from '../../assets/images/Landing/doc-deoptsvg.svg';
+import liveTracking from '../../assets/images/Landing/data-controll.svg';
+import dataControll from '../../assets/images/Landing/instant-verification.svg';
+import dataControllMobile from '../../assets/images/Landing/instant-verification.svg';
 
 type FeaturesCardPropsType = {
   id: string;
@@ -60,6 +60,26 @@ const featuresCardContent = [
   {
     id: randomId(),
     cardBg: '#17A672',
+    title: 'Instant Verification Of Documents',
+    text: "Greeni's cutting edge automation enables verifying identity, address, employment, salary, experience and skills under 100 seconds",
+    textColor: '#FFFFFF',
+    titleColor: '#FFFFFF',
+    illustrationSmall: dataControllMobile,
+    illustrationLarge: dataControll,
+  },
+  {
+    id: randomId(),
+    cardBg: '#47DAA4',
+    title: 'Doc-Depot',
+    titleColor: '#FFFFFF',
+    text: "Upload, maintain and share all professional documents on Greenie's blockchain encrypted document locker and be in control of your data. ",
+    textColor: '#FFFFFF',
+    illustrationSmall: docdepot,
+    illustrationLarge: docdepot,
+  },
+  {
+    id: randomId(),
+    cardBg: '#85D1B5',
     title: 'Professional Profiles',
     titleColor: '#FFFFFF',
     text: 'Greenie verifies all candidate profiles, providing HR with dependable information prior to the interview. HR can then simply conduct interviews, negotiate salary and onboard candidates',
@@ -69,34 +89,14 @@ const featuresCardContent = [
   },
   {
     id: randomId(),
-    cardBg: '#47DAA4',
-    title: 'Doc-Depot',
-    titleColor: '#FFFFFF',
-    text: "Upload,maintain and share all professional documents on Greenie's blockchain encrypted document locker and be in control of your data. ",
-    textColor: '#FFFFFF',
-    illustrationSmall: clock,
-    illustrationLarge: clock,
-  },
-  {
-    id: randomId(),
-    cardBg: '#85D1B5',
     title: 'Contract Management Tool',
-    titleColor: '#FFFFFF',
     text: "Enhance your team's productivity by using Greenie's in-built Contract Management Tool enabling you to effortlessly create robust contracts or upload and modify existing ones.",
-    textColor: '#FFFFFF',
     illustrationSmall: liveTracking,
     illustrationLarge: liveTracking,
-  },
-  {
-    id: randomId(),
     cardBg: '#A0E2E1',
-    title: 'Instant Verification Of Documents',
     titleColor: '#310805',
-    text: "Subheading - Greeni's cutting edge automation enables verifying identity, address, employment, salary, experience and skills under 100 seconds",
     textColor: '#191819',
-    illustrationSmall: dataControllMobile,
-    illustrationLarge: dataControll,
-  },
+  }
 ];
 
 export const LandingFeatures = () => {
@@ -132,14 +132,14 @@ const useStyles = createStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'stretch',
-    gap: '3rem',
+    gap: '0rem',
   },
 
   featureGrid: {
     marginBlockStart: '0.5rem',
     display: 'grid',
     gridTemplateColumns: 'repeat(5, 1fr)',
-    gridTemplateRows: 'repeat(8, 5rem)',
+    gridTemplateRows: 'repeat(7, 5rem)',
     gap: '1rem',
     zIndex: -1,
 
@@ -168,11 +168,11 @@ const useStyles = createStyles((theme) => ({
 
     ':nth-of-type(1)': {
       gridColumn: '1/4',
-      gridRow: '1/5',
-      marginBlock: 0,
+      gridRow: '1/4',
+      marginBlock: 0, 
 
       [`& .${getStylesRef('featuresCardText')}`]: {
-        maxWidth: '30ch',
+        maxWidth: '25ch !important',
 
         [`@media screen and (max-width: ${em(480)})`]: {
           maxWidth: '100%',
@@ -182,17 +182,17 @@ const useStyles = createStyles((theme) => ({
 
     ':nth-of-type(2)': {
       gridColumn: '4/6',
-      gridRow: '1/5',
+      gridRow: '1/4',
     },
 
     ':nth-of-type(3)': {
       gridColumn: '1/3',
-      gridRow: '5/9',
+      gridRow: '4/8',
     },
 
     ':nth-of-type(4)': {
       gridColumn: '3/6',
-      gridRow: '5/8',
+      gridRow: '4/7',
 
       [`& .${getStylesRef('featuresCardText')}`]: {
         maxWidth: '25ch',
@@ -209,7 +209,7 @@ const useStyles = createStyles((theme) => ({
   },
 
   featuresCardTitle: {
-    fontSize: '2rem',
+    fontSize: '1.6rem',
     lineHeight: '1.1',
 
     ':nth-of-type(1)': {
@@ -253,8 +253,9 @@ const useStyles = createStyles((theme) => ({
     ref: getStylesRef('featuresCardText'),
 
     fontSize: '0.9rem',
-    maxWidth: '20ch',
+    maxWidth: '45ch !important',
     marginBlockStart: '1rem',
+ 
 
     [`@media screen and (max-width: ${em(992)})`]: {
       maxWidth: '30ch',
@@ -292,7 +293,7 @@ const useStyles = createStyles((theme) => ({
 
   manyMore: {
     gridColumn: '3/6',
-    gridRow: '8/9',
+    gridRow: '7/8',
     paddingInline: '2rem',
     display: 'grid',
     placeItems: 'center',
@@ -301,7 +302,7 @@ const useStyles = createStyles((theme) => ({
     backgroundColor: '#FFFFFF',
     color: '#17A672',
     fontWeight: 700,
-    fontSize: '2rem',
+    fontSize: '1.5rem',
 
     [`@media screen and (max-width: ${em(640)})`]: {
       fontSize: '1.6rem',

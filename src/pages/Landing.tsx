@@ -3,12 +3,14 @@ import { useLocation } from 'react-router-dom';
 import { createStyles, Box, Text, em, rem } from '@mantine/core';
 import Autoplay from 'embla-carousel-autoplay';
 import { Carousel } from '@mantine/carousel';
-
+import { useWindowScroll } from '@mantine/hooks';
+import { Affix, Button, Transition } from '@mantine/core';
 import { LandingHero } from '../components/Landing/Hero';
 import { LandingFeatures } from '../components/Landing/Features';
 import { LandingGreenieWorkings } from '../components/Landing/GreenieWorking';
 import { LandingHiring } from '../components/Landing/Hiring';
 import { LandingTestimonials } from '../components/Landing/Testimonials';
+import {FaChevronUp} from "react-icons/fa";
 
 type TestimonialCardPropsType = {
   statement: string;
@@ -87,10 +89,21 @@ const testimonials = [
 
 export const Landing = () => {
   const { classes } = useStyles();
-  const autoplay = useRef(Autoplay({ delay: 5000 }));
+  const autoplay = useRef(Autoplay({ delay: 2500 }));
+  const [scroll, scrollTo] = useWindowScroll();
+  const bodyRef = useRef(null);
 
   return (
-    <>
+    <div ref={bodyRef} >
+      <Affix position={{ bottom: rem(20), right: rem(20) }}>
+        <Transition transition="slide-up" mounted={scroll.y > 0}>
+          {(transitionStyles) => (
+            <Button className={classes.affix} style={transitionStyles} onClick={() => scrollTo({ y: 0 })}>
+              <FaChevronUp size="2rem"/>
+            </Button>
+          )}
+        </Transition>
+      </Affix>
       <div className={`${classes.root} page`}>
         <LandingHero />
         <LandingFeatures />
@@ -131,13 +144,25 @@ export const Landing = () => {
           </Carousel>
         </Box>
       </section>
-    </>
+    </div>
   );
 };
 
 const useStyles = createStyles((theme) => ({
   root: {
     paddingBlockEnd: '0 !important',
+  },
+
+  affix:{
+    borderRadius: "50%",
+    backgroundColor: '#17A672',
+    width:"4rem",
+    height:"4rem",
+
+    [`@media screen and (max-width: ${em(1024)})`]: {
+      width:"3.5rem",
+      height:"3.5rem",
+    },
   },
 
   testimonialCarouselSection: {

@@ -4,13 +4,13 @@ import { createStyles, Title, Text, rem, Box, keyframes, em } from '@mantine/cor
 import { _2ColumnLayout } from '../layouts/_2ColumnLayout';
 import { Button } from '../common/Button';
 import { motion } from 'framer-motion';
-import { useAnimate, stagger, useInView } from 'framer-motion';
+import { useAnimate, useTransform , useInView } from 'framer-motion';
 
 import girlCheckingPhone from '../../assets/images/Landing/girl-checking-phone.png';
 import popup1 from '../../assets/images/Landing/popup-illustration-1.svg';
 import popup2 from '../../assets/images/Landing/popup-illustration-2.svg';
 import popup3 from '../../assets/images/Landing/popup-illustration-3.svg';
-import popup4 from '../../assets/images/Landing/popup-illustration-4.svg';
+import popup4 from '../../assets/images/Landing/upload-documents-hero.svg';
 import popup5 from '../../assets/images/Landing/popup-illustration-5.svg';
 import popup6 from '../../assets/images/Landing/popup-illustration-6.svg';
 
@@ -40,30 +40,24 @@ export const LandingHero = () => {
   };
 
   useEffect(() => {
-    // const activatePopupTimeout = setTimeout(() => {
-    //   activatePopups();
-    //   clearTimeout(activatePopupTimeout);
-    // }, 150);
     if (isInView) {
       animate(
         'span',
-        { opacity: [0, 1] },
-        { type: 'spring', delay: stagger(0.5)}
+        { scale:[0,1], transformOrigin:"top left" },
+        { type: 'spring', bounce:0.4, bounceStiffness:400, duration:1.5}
       );
     }
   }, [isInView]);
 
   return (
-    <section className={`${classes.root} section`}>
+    <section className={`${classes.root}`}>
       <_2ColumnLayout>
         <Box className={classes.heroContentContainer}>
           <Title order={1} className={classes.heroTitle}>
-            Create Verified Profiles In 100 Seconds
+            <span className={classes.highlight}>Unlocking</span> <br/>The Future Of <br/> Background Verification
           </Title>
           <Text className={classes.heroText}>
-            Greenie revolutionizes verification process with a Blockchain based all-in-one secure
-            platform. Effortlessly manage documents, contracts, verifications and instill trust in
-            networking and hiring.
+          Experience verifications, document storage, contract creation, sharing of verification reports on our secure encrypted platform.
           </Text>
           <Box className={classes.heroActionBtn}>
             <Link to="/waitlist">
@@ -80,55 +74,24 @@ export const LandingHero = () => {
               alt="girlCheckingPhone"
               className={''}
             />
-            <span className={`${classes.popups} ${classes.popup5}`}>
+            <motion.span initial={{ translateX:"45%",  translateY:"-20%" }} className={`${classes.popups} ${classes.popup5}`}>
               <img src={popup5} alt="popup5" />
-            </span>
-            <span className={`${classes.popups} ${classes.popup4}`}>
+            </motion.span>
+            <motion.span initial={{ translateX:"50%",  translateY:"-35%" }} className={`${classes.popups} ${classes.popup4}`}>
               <img src={popup4} alt="popup4" />
-            </span>
-            <span className={`${classes.popups} ${classes.popup6}`}>
+            </motion.span>
+            <motion.span initial={{ translateX:"50%",  translateY:"-45%" }} className={`${classes.popups} ${classes.popup6}`}>
               <img src={popup6} alt="popup6" />
-            </span>
-            <span className={`${classes.popups} ${classes.popup2}`}>
+            </motion.span>
+            <motion.span initial={{ translateX:'-65%',  translateY:'-25%' }} className={`${classes.popups} ${classes.popup2}`}>
               <img src={popup2} alt="popup2" />
-            </span>
-            <span className={`${classes.popups} ${classes.popup3}`}>
+            </motion.span>
+            <motion.span initial={{ translateX:'-45%',  translateY:'50%'}} className={`${classes.popups} ${classes.popup3}`}>
               <img src={popup3} alt="popup3" />
-            </span>
-            <span className={`${classes.popups} ${classes.popup1}`}>
+            </motion.span>
+            <motion.span initial={{ translateX:"-32%",  translateY:"-50%" }}className={`${classes.popups} ${classes.popup1}`}>
               <img src={popup1} alt="popup1" />
-            </span>
-
-            {/* {popupNo >= 4 ? (
-              <span className={`${classes.popups} ${classes.popup1}`}>
-                <img src={popup1} alt="popup1" />
-              </span>
-            ) : null}
-            {popupNo >= 3 ? (
-              <span className={`${classes.popups} ${classes.popup2}`}>
-                <img src={popup2} alt="popup2" />
-              </span>
-            ) : null}
-            {popupNo >= 2 ? (
-              <span className={`${classes.popups} ${classes.popup3}`}>
-                <img src={popup3} alt="popup3" />
-              </span>
-            ) : null}
-            {popupNo >= 0 ? (
-              <span className={`${classes.popups} ${classes.popup4}`}>
-                <img src={popup4} alt="popup4" />
-              </span>
-            ) : null}
-            {popupNo >= 1 ? (
-              <span className={`${classes.popups} ${classes.popup5}`}>
-                <img src={popup5} alt="popup5" />
-              </span>
-            ) : null}
-            {popupNo >= 0 ? (
-              <span className={`${classes.popups} ${classes.popup6}`}>
-                <img src={popup6} alt="popup6" />
-              </span>
-            ) : null} */}
+            </motion.span>
           </span>
         </Box>
       </_2ColumnLayout>
@@ -141,9 +104,13 @@ const useStyles = createStyles((theme) => ({
     alignItems: 'start',
   },
 
+  highlight: {
+    color: "#8cf078"
+  },
+
   heroContentContainer: {
     paddingBlockStart: '1rem',
-    marginBlockStart: '2rem',
+    //marginBlockStart: '2rem',
 
     [`@media screen and (max-width: ${em(1280)})`]: {
       gridRow: '2/3',
@@ -151,7 +118,14 @@ const useStyles = createStyles((theme) => ({
   },
 
   heroTitle: {
-    fontSize: '2.5rem',
+    fontSize: '3rem',
+    fontWeight: 800,
+    width:"18ch",
+
+
+    [`@media screen and (max-width: ${em(1340)})`]: {
+      fontSize: '2.6rem',
+    },
 
     [`@media screen and (max-width: ${em(1280)})`]: {
       textAlign: 'center',
@@ -159,23 +133,30 @@ const useStyles = createStyles((theme) => ({
       marginInline: 'auto',
     },
 
+
     [`@media screen and (max-width: ${em(768)})`]: {
-      fontSize: '2rem',
+      fontSize: '2.5rem',
     },
 
     [`@media screen and (max-width: ${em(540)})`]: {
-      fontSize: '1.75rem',
+      fontSize: '2 rem',
     },
 
     [`@media screen and (max-width: ${em(414)})`]: {
       fontSize: '1.5rem',
     },
+
+    [`@media screen and (max-width: ${em(425)})`]: {
+      fontSize: '1.7rem',
+    },
   },
 
   heroText: {
-    fontSize: '0.95rem',
-    marginBlockStart: '1.75rem',
+    fontSize: '0.85rem',
+    marginBlockStart: '1.2rem',
     marginBlockEnd: '1.25rem',
+    maxWidth:"45ch",
+    width:"100%",
 
     [`@media screen and (max-width: ${em(1280)})`]: {
       textAlign: 'center',
@@ -189,6 +170,10 @@ const useStyles = createStyles((theme) => ({
     [`@media screen and (max-width: ${em(540)})`]: {
       marginBlockStart: '1rem',
     },
+
+    [`@media screen and (max-width: ${em(425)})`]: {
+      fontSize: '0.825rem',
+    },
   },
 
   heroActionBtn: {
@@ -201,10 +186,10 @@ const useStyles = createStyles((theme) => ({
   },
 
   tryForFree: {
-    fontSize: rem(15),
-    backgroundColor: '#17A672 !important',
-    borderColor: '#17A672 !important',
-    color: 'white !important',
+    fontSize: rem(18),
+    backgroundColor: '#8cf078 !important',
+    borderColor: '#8cf078 !important',
+    color: 'black !important',
   },
 
   heroIllustration: {
@@ -236,13 +221,13 @@ const useStyles = createStyles((theme) => ({
   },
 
   popup1: {
-    width: rem(300),
+    width: rem(270),
     transform: 'translateX(-40%) translateY(-50%)',
     top: 0,
     left: 0,
 
     [`@media screen and (max-width: ${em(768)})`]: {
-      width: '35dvw',
+      width: '40dvw'
     },
   },
 

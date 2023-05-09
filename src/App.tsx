@@ -1,7 +1,7 @@
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { MantineProvider } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
-
+import { useRef } from 'react';
 import { PageNotFound } from './pages/PageNotFound';
 import { Navbar } from './components/common/Navbar';
 import { Footer } from './components/common/Footer';
@@ -18,7 +18,7 @@ const App = () => {
     <>
       <MantineProvider withGlobalStyles withNormalizeCSS>
         <Notifications position="top-center" />
-        {validRoutes.includes(pathname) ? <Navbar /> : null}
+        {validRoutes.includes(pathname) ? <Navbar/> : null}
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/auth" element={<AuthPage />} />
