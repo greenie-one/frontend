@@ -4,11 +4,11 @@ import { BsArrowLeft } from 'react-icons/bs';
 import '../../styles/global.scss';
 
 const OTPTab = () => {
-  const { prevSingUpStep, nextSignUpStep } = useAuthContext();
+  const { dispatch } = useAuthContext();
 
   return (
     <Box style={{ width: '456px' }}>
-      <Flex className="tabTopBox" onClick={() => prevSingUpStep()}>
+      <Flex className="tabTopBox" onClick={() => dispatch({ type: 'PREVSIGNUPSTEP' })}>
         <BsArrowLeft size={'15px'} />
         <Text className="tabHeading">Reset Password</Text>
       </Flex>
@@ -20,7 +20,7 @@ const OTPTab = () => {
           after 30s
         </Text>
       </Text>
-      <Button className="primaryBtn" onClick={nextSignUpStep}>
+      <Button className="primaryBtn" onClick={() => dispatch({ type: 'NEXTSIGNUPSTEP' })}>
         Verify
       </Button>
     </Box>

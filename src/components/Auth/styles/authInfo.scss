@@ -1,8 +1,9 @@
 @import '_variables';
 .authInfo {
   width: 100%;
-  height: 100%;
-  margin: 30px 0px 30px 30px;
+  height: 964px;
+  height: calc(100vh - 60px);
+  margin: 30px 0px 0px 30px;
   background: $green;
   border-radius: 20px;
   .logo {
@@ -35,6 +36,7 @@
 
   .authInfoHeading {
     margin-left: 78px;
+    width: 80%;
     font-size: 64px;
     line-height: 75px;
     letter-spacing: -0.02em;
@@ -66,7 +68,6 @@
     align-items: flex-start;
     gap: 23px;
     margin-left: 78px;
-    margin-bottom: 40px;
 
     .testimonialImageBox {
       display: flex;
@@ -120,17 +121,15 @@
   }
 }
 
-@media screen and (max-width: 1024px) {
-  .greenie {
-    display: none;
-  }
+@media screen and (max-width: 1280px) {
 }
 
-@media screen and (max-width: 1024px) {
+@media screen and (max-width: 768px) {
   .authInfo {
     background: $white;
     margin: 0;
     padding: 28px;
+    height: 100%;
     .logo,
     .authInfoTestimonialBox,
     .authInfoText {
@@ -143,6 +142,8 @@
       line-height: 35px;
       letter-spacing: -0.02em;
       margin: 0;
+      width: 350px;
+      margin: 0 auto;
     }
   }
 }

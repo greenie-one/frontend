@@ -1,73 +1,81 @@
-import { TextInput, em, createStyles, rem, Text, Button, Box, Flex } from '@mantine/core';
+import { Text, Button, Box, Flex } from '@mantine/core';
 import { useAuthContext } from '../../context/AuthContext';
 import { BsArrowLeft } from 'react-icons/bs';
-import '../../styles/InputStyles.scss';
+import '../../styles/global.scss';
 
 const LoginWithOTP = () => {
-  const { classes: inputClasses } = inputStyles();
-  const {
-    loginSteps,
-    loginWithOTPSteps,
-    nextLoginWithOTPStep,
-    prevLoginWithOTPStep,
-    nextLoginStep,
-    prevLoginStep,
-    inputValue,
-    setInputValue,
-    isEmail,
-    isPhoneNumber,
-    setLoginSteps,
-  } = useAuthContext();
+  const { state, dispatch, isPhoneNumber, loginForm, isEmail } = useAuthContext();
 
   const handleClick = () => {
-    prevLoginWithOTPStep();
-    setLoginSteps(1);
-    setInputValue('');
+    dispatch({ type: 'PREVLOGINWITHOTPSTEP' });
+    dispatch({ type: 'RESETLOGINSTEP' });
   };
 
   return (
     <Box className="authRightContainer">
-      <Flex direction={'row'} align={'center'} mb={'sm'} onClick={handleClick}>
+      <Flex direction={'row'} className="tabTopBox" onClick={handleClick}>
         <BsArrowLeft size={'15px'} />
-        <Text fw={'bold'} fz={'xs'} ml={'xs'} style={{ cursor: 'pointer' }}>
-          Login using OTP
-        </Text>
+        <Text className="tabHeading">Login using OTP</Text>
       </Flex>
-      {loginWithOTPSteps === 1 && (
+      {state.loginWithOTPStep === 1 && (
         <Box>
-          <Text
-            fz={'sm'}
-            mb={'md'}
-            color="4C4C4C"
-            className="disbledInput"
-            p={'sm'}
-            style={{ border: '1px solid #D1D4DB', borderRadius: '2px', background: '#FFFFFF' }}
-          >
-            {inputValue}
+          <Text className="disbledInput">
+            {loginForm.values.emailPhoneGreenieId}
             <span className="changeBtn" onClick={handleClick}>
               Change
             </span>
           </Text>
-          {!isEmail(inputValue) && !isPhoneNumber(inputValue) && (
-            <Text fw={'bold'} fz={'xs'} my={'lg'}>
-              A one-time passowrd (OTP) will be sent to your registered phone number for
-              verification
-            </Text>
-          )}
-          {isEmail(inputValue) && (
-            <Text fw={'bold'} fz={'xs'} my={'lg'}>
+          {!isEmail(loginForm.values.emailPhoneGreenieId) &&
+            !isPhoneNumber(loginForm.values.emailPhoneGreenieId) && (
+              <Text className="profileTextBold">
+                A one-time passowrd (OTP) will be sent to your registered phone number for
+                verification
+              </Text>
+            )}
+          {isEmail(loginForm.values.emailPhoneGreenieId) && (
+            <Text className="profileTextBold">
               A one-time passowrd (OTP) will be sent to your registered email address for
               verification
             </Text>
           )}
-          {isPhoneNumber(inputValue) && (
-            <Text fw={'bold'} fz={'xs'} my={'lg'}>
+          {isPhoneNumber(loginForm.values.emailPhoneGreenieId) && (
+            <Text className="profileTextBold">
               A one-time passowrd (OTP) will be sent to your registered phone number for
               verification
             </Text>
           )}
-          <Button fullWidth radius="xl" color="teal" style={{ margin: '1rem 0' }}>
+          <Button onClick={() => dispatch({ type: 'NEXTLOGINWITHOTPSTEP' })} className="primaryBtn">
             Send OTP
+          </Button>
+        </Box>
+      )}
+      {state.loginWithOTPStep == 2 && (
+        <Box>
+          {isEmail(loginForm.values.emailPhoneGreenieId) && (
+            <Text className="profileTextBold">
+              Enter the one-time passowrd sent to your email address
+            </Text>
+          )}
+          {isPhoneNumber(loginForm.values.emailPhoneGreenieId) && (
+            <Text className="profileTextBold">
+              Enter the one-time passowrd sent to your phone number
+            </Text>
+          )}
+          {!isEmail(loginForm.values.emailPhoneGreenieId) &&
+            !isPhoneNumber(loginForm.values.emailPhoneGreenieId) && (
+              <Text className="profileTextBold">
+                Enter the one-time passowrd sent to your phone number
+              </Text>
+            )}
+          <input className="otpInput" maxLength={4} type="text" pattern="[0-9]{4}" />
+          <Text fw={'light'} fz={'xs'} my={'md'}>
+            Resend{' '}
+            <Text fw={'600'} span>
+              after 30s
+            </Text>
+          </Text>
+          <Button fullWidth radius="xl" color="teal">
+            Verify
           </Button>
         </Box>
       )}
@@ -76,55 +84,3 @@ const LoginWithOTP = () => {
 };
 
 export default LoginWithOTP;
-
-const inputStyles = createStyles((theme) => ({
-  root: {
-    position: 'relative',
-    marginBottom: '16px',
-  },
-
-  input: {
-    width: '458px',
-    height: '68px',
-    paddingTop: '18px',
-    fontSize: '16px',
-    fontWeight: 500,
-    borderRadius: '8px',
-    border: '1px solid #D1D4DB',
-    lineHeight: '19px',
-    letterSpacing: '-0.02em',
-    color: '#697082',
-
-    [`@media screen and (max-width: ${em(1024)})`]: {
-      width: '310px',
-      height: '46px',
-      borderRadius: '6px',
-      fontSize: '10px',
-      lineHeight: '12px',
-      margin: '0 auto',
-    },
-  },
-
-  // for password field
-  innerInput: {
-    height: rem(54),
-    paddingTop: rem(18),
-  },
-
-  label: {
-    position: 'absolute',
-    pointerEvents: 'none',
-    fontSize: '12px',
-    paddingLeft: '14px',
-    paddingTop: '7px',
-    lineHeight: '14.52px',
-    letterSpacing: '-0.02em',
-    zIndex: 1,
-    color: '#697082',
-
-    [`@media screen and (max-width: ${em(1024)})`]: {
-      fontSize: '8px',
-      lineHeight: '10px',
-    },
-  },
-}));
