@@ -16,7 +16,7 @@ import '../../styles/global.scss';
 
 const Form = () => {
   const { classes: inputClasses } = inputStyles();
-  const { loginForm, state, dispatch, isEmail, isPhoneNumber } = useAuthContext();
+  const { loginForm, state, dispatch, isValidEmail, isPhoneNumber } = useAuthContext();
 
   const handleForgotPassowrd = () => {
     dispatch({ type: 'NEXTRESETPASSWRDSTEP' });
@@ -24,7 +24,7 @@ const Form = () => {
   };
 
   const handleLogin = () => {
-    if (isEmail(loginForm.values.emailPhoneGreenieId)) {
+    if (isValidEmail(loginForm.values.emailPhoneGreenieId)) {
       dispatch({ type: 'NEXTLOGINSTEP' });
     }
     if (isPhoneNumber(loginForm.values.emailPhoneGreenieId)) {
@@ -57,7 +57,7 @@ const Form = () => {
             </Text>
           </Box>
         )}
-        {state.loginStep === 2 && isEmail(loginForm.values.emailPhoneGreenieId) && (
+        {state.loginStep === 2 && isValidEmail(loginForm.values.emailPhoneGreenieId) && (
           <Box>
             <PasswordInput
               label="Enter Password"

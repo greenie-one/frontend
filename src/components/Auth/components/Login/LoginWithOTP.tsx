@@ -4,7 +4,7 @@ import { BsArrowLeft } from 'react-icons/bs';
 import '../../styles/global.scss';
 
 const LoginWithOTP = () => {
-  const { state, dispatch, isPhoneNumber, loginForm, isEmail } = useAuthContext();
+  const { state, dispatch, isPhoneNumber, loginForm, isValidEmail } = useAuthContext();
 
   const handleClick = () => {
     dispatch({ type: 'PREVLOGINWITHOTPSTEP' });
@@ -25,14 +25,14 @@ const LoginWithOTP = () => {
               Change
             </span>
           </Text>
-          {!isEmail(loginForm.values.emailPhoneGreenieId) &&
+          {!isValidEmail(loginForm.values.emailPhoneGreenieId) &&
             !isPhoneNumber(loginForm.values.emailPhoneGreenieId) && (
               <Text className="profileTextBold">
                 A one-time passowrd (OTP) will be sent to your registered phone number for
                 verification
               </Text>
             )}
-          {isEmail(loginForm.values.emailPhoneGreenieId) && (
+          {isValidEmail(loginForm.values.emailPhoneGreenieId) && (
             <Text className="profileTextBold">
               A one-time passowrd (OTP) will be sent to your registered email address for
               verification
@@ -51,7 +51,7 @@ const LoginWithOTP = () => {
       )}
       {state.loginWithOTPStep == 2 && (
         <Box>
-          {isEmail(loginForm.values.emailPhoneGreenieId) && (
+          {isValidEmail(loginForm.values.emailPhoneGreenieId) && (
             <Text className="profileTextBold">
               Enter the one-time passowrd sent to your email address
             </Text>
@@ -61,7 +61,7 @@ const LoginWithOTP = () => {
               Enter the one-time passowrd sent to your phone number
             </Text>
           )}
-          {!isEmail(loginForm.values.emailPhoneGreenieId) &&
+          {!isValidEmail(loginForm.values.emailPhoneGreenieId) &&
             !isPhoneNumber(loginForm.values.emailPhoneGreenieId) && (
               <Text className="profileTextBold">
                 Enter the one-time passowrd sent to your phone number

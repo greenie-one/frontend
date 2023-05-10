@@ -5,7 +5,7 @@ import SignUpWithEmail from './SignUpWithEmail';
 import '../../styles/global.scss';
 
 const CreateAccount = () => {
-  const { signupForm, state, dispatch, isPhoneNumber, isEmail } = useAuthContext();
+  const { signupForm, state, dispatch, isPhoneNumber, isValidEmail } = useAuthContext();
   const { signUpStep } = state;
 
   const { classes: inputClasses } = inputStyles();
@@ -28,7 +28,7 @@ const CreateAccount = () => {
           </span>
         </Text>
       )}
-      {signUpStep === 2 && isEmail(signupForm.values.emailPhone) && <SignUpWithEmail />}
+      {signUpStep === 2 && isValidEmail(signupForm.values.emailPhone) && <SignUpWithEmail />}
 
       <Text className="tearms-condition">
         By creating an account, you agree to our <u>Terms of Service</u> and{' '}

@@ -12,7 +12,7 @@ import './styles/global.scss';
 
 export const Auth = () => {
   const { classes } = useStyles();
-  const { isPhoneNumber, state, signupForm, isEmail, loginForm } = useAuthContext();
+  const { isPhoneNumber, state, signupForm, isValidEmail, loginForm } = useAuthContext();
   const { signUpStep, loginStep, loginWithOTPStep, resetPasswordStep } = state;
 
   return (
@@ -46,7 +46,7 @@ export const Auth = () => {
                 </Tabs.Panel>
               </Tabs>
             )}
-            {(signUpStep === 3 && isEmail(signupForm.values.emailPhone) && <Profile />) ||
+            {(signUpStep === 3 && isValidEmail(signupForm.values.emailPhone) && <Profile />) ||
               (signUpStep === 3 && isPhoneNumber(signupForm.values.emailPhone) && <OTPTab />) ||
               (loginStep === 2 && isPhoneNumber(loginForm.values.emailPhoneGreenieId) && (
                 <LoginWithOTP />

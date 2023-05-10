@@ -6,7 +6,7 @@ import '../../styles/global.scss';
 
 const ForgotPassword = () => {
   const { classes: inputClasses } = inputStyles();
-  const { loginForm, state, dispatch, isPhoneNumber, isEmail } = useAuthContext();
+  const { loginForm, state, dispatch, isPhoneNumber, isValidEmail } = useAuthContext();
 
   const handleClick = () => {
     dispatch({ type: 'PREVRESETPASSWORDSTEP' });
@@ -54,14 +54,14 @@ const ForgotPassword = () => {
               Change
             </span>
           </Text>
-          {!isEmail(loginForm.values.emailPhoneGreenieId) &&
+          {!isValidEmail(loginForm.values.emailPhoneGreenieId) &&
             !isPhoneNumber(loginForm.values.emailPhoneGreenieId) && (
               <Text className="profileTextBold">
                 A one-time passowrd (OTP) will be sent to your registered phone number for
                 verification
               </Text>
             )}
-          {isEmail(loginForm.values.emailPhoneGreenieId) && (
+          {isValidEmail(loginForm.values.emailPhoneGreenieId) && (
             <Text className="profileTextBold">
               A one-time passowrd (OTP) will be sent to your registered email address for
               verification
@@ -81,7 +81,7 @@ const ForgotPassword = () => {
 
       {state.resetPasswordStep === 3 && (
         <Box>
-          {isEmail(loginForm.values.emailPhoneGreenieId) && (
+          {isValidEmail(loginForm.values.emailPhoneGreenieId) && (
             <Text className="profileTextBold">
               Enter the one-time passowrd sent to your email address
             </Text>
@@ -91,7 +91,7 @@ const ForgotPassword = () => {
               Enter the one-time passowrd sent to your phone number
             </Text>
           )}
-          {!isEmail(loginForm.values.emailPhoneGreenieId) &&
+          {!isValidEmail(loginForm.values.emailPhoneGreenieId) &&
             !isPhoneNumber(loginForm.values.emailPhoneGreenieId) && (
               <Text className="profileTextBold">
                 Enter the one-time passowrd sent to your phone number

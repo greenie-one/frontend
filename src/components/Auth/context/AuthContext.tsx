@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useReducer } from 'react';
-import { useForm, UseFormReturnType, isEmail } from '@mantine/form';
+import { useForm, UseFormReturnType } from '@mantine/form';
 
 type AuthContextType = {
   signupForm: UseFormReturnType<signUpFormType>;
@@ -7,7 +7,7 @@ type AuthContextType = {
   state: CounterState;
   dispatch: React.Dispatch<CounterAction>;
   isPhoneNumber: (input: string) => boolean;
-  isEmail: (input: string) => boolean;
+  isValidEmail: (input: string) => boolean;
 };
 
 type signUpFormType = {
@@ -98,7 +98,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     loginWithOTPStep: 0,
   });
 
-  const isEmail = (input: string): boolean => {
+  const isValidEmail = (input: string): boolean => {
     const Pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return Pattern.test(input);
   };
@@ -116,7 +116,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         state,
         dispatch,
         isPhoneNumber,
-        isEmail,
+        isValidEmail,
       }}
     >
       {children}
