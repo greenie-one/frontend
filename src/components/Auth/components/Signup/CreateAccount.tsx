@@ -1,4 +1,3 @@
-import { isEmail } from '@mantine/form';
 import { TextInput, createStyles, em, rem, Text, Button, Divider, Box } from '@mantine/core';
 import { useAuthContext } from '../../context/AuthContext';
 import GoogleButton from '../GoogleButton';
@@ -6,13 +5,14 @@ import SignUpWithEmail from './SignUpWithEmail';
 import '../../styles/global.scss';
 
 const CreateAccount = () => {
-  const { signupForm, signUpSteps, prevSingUpStep, isPhoneNumber, handleSignUp } = useAuthContext();
+  const { signupForm, state, dispatch, isPhoneNumber, isEmail } = useAuthContext();
+  const { signUpStep } = state;
 
   const { classes: inputClasses } = inputStyles();
 
   return (
     <>
-      {signUpSteps === 1 && (
+      {signUpStep === 1 && (
         <TextInput
           label="Email or Phone number"
           classNames={inputClasses}
@@ -20,22 +20,22 @@ const CreateAccount = () => {
         />
       )}
 
-      {signUpSteps === 2 && (
+      {signUpStep === 2 && (
         <Text className="disbledInput">
           {signupForm.values.emailPhone}
-          <span className="changeBtn" onClick={() => prevSingUpStep()}>
+          <span className="changeBtn" onClick={() => dispatch({ type: 'PREVSIGNUPSTEP' })}>
             Change
           </span>
         </Text>
       )}
-      {signUpSteps === 2 && isEmail() && <SignUpWithEmail />}
+      {signUpStep === 2 && isEmail(signupForm.values.emailPhone) && <SignUpWithEmail />}
 
       <Text className="tearms-condition">
         By creating an account, you agree to our <u>Terms of Service</u> and{' '}
         <u>Privacy & Cookie Statement</u>.
       </Text>
-      <Button className="primaryBtn" onClick={handleSignUp}>
-        {signUpSteps === 2 && isPhoneNumber(signupForm.values.emailPhone)
+      <Button className="primaryBtn" onClick={() => dispatch({ type: 'NEXTSIGNUPSTEP' })}>
+        {signUpStep === 2 && isPhoneNumber(signupForm.values.emailPhone)
           ? 'Send OTP'
           : 'Agree & Join'}
       </Button>

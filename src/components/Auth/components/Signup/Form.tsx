@@ -4,7 +4,7 @@ import CreateAccount from './CreateAccount';
 import '../../styles/global.scss';
 
 export const Form = () => {
-  const { signUpSteps } = useAuthContext();
+  const { state } = useAuthContext();
 
-  return <>{signUpSteps < 3 && <CreateAccount />}</>;
+  return <>{state.signUpStep < 3 && <CreateAccount />}</>;
 };

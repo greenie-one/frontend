@@ -16,77 +16,74 @@ import '../../styles/global.scss';
 
 const Form = () => {
   const { classes: inputClasses } = inputStyles();
-  const {
-    loginForm,
-    loginSteps,
-    handleLogIn,
-    nextResetPasswordStep,
-    nextLoginStep,
-    nextLoginWithOTPStep,
-  } = useAuthContext();
+  const { loginForm, state, dispatch, isEmail, isPhoneNumber } = useAuthContext();
 
   const handleForgotPassowrd = () => {
-    nextResetPasswordStep();
-    nextLoginStep();
+    dispatch({ type: 'NEXTRESETPASSWRDSTEP' });
+    dispatch({ type: 'NEXTLOGINSTEP' });
+  };
+
+  const handleLogin = () => {
+    if (isEmail(loginForm.values.emailPhoneGreenieId)) {
+      dispatch({ type: 'NEXTLOGINSTEP' });
+    }
+    if (isPhoneNumber(loginForm.values.emailPhoneGreenieId)) {
+      handleLoginWithOTP();
+    }
   };
 
   const handleLoginWithOTP = () => {
-    nextLoginWithOTPStep();
-    nextLoginStep();
+    dispatch({ type: 'NEXTLOGINWITHOTPSTEP' });
+    dispatch({ type: 'NEXTLOGINSTEP' });
+  };
+
+  const handleClick = () => {
+    dispatch({ type: 'RESETLOGINSTEP' });
   };
   return (
     <>
       <Box>
-        {loginSteps === 1 && (
-          <TextInput
-            label="Email or Phone number"
-            style={{ borderRadius: '1rem' }}
-            classNames={inputClasses}
-            {...loginForm.getInputProps('emailPhoneGreenieId')}
-          />
-        )}
-        {loginSteps === 2 && (
-          <PasswordInput
-            label="Enter Password"
-            classNames={inputClasses}
-            {...loginForm.getInputProps('password')}
-          />
-        )}
-        {loginSteps === 2 && (
-          <Flex direction={'row'} align={'center'} justify={'space-between'} mt={'6px'}>
-            <Text
-              fz="xs"
-              fw={700}
-              td="underline"
-              style={{ cursor: 'pointer' }}
-              onClick={handleLoginWithOTP}
-            >
-              Login using OTP
+        {state.loginStep === 1 && (
+          <Box>
+            <TextInput
+              label="Email or Phone number"
+              style={{ borderRadius: '1rem' }}
+              classNames={inputClasses}
+              {...loginForm.getInputProps('emailPhoneGreenieId')}
+            />
+            <Text className="tearms-condition">
+              By creating an account, you agree to our <u>Terms of Service</u> and{' '}
+              <u>Privacy & Cookie Statement</u>.
             </Text>
-            <Text
-              fz="xs"
-              fw={700}
-              td="underline"
-              style={{ cursor: 'pointer' }}
-              onClick={handleForgotPassowrd}
-            >
-              Forgot password?
-            </Text>
-          </Flex>
+          </Box>
         )}
-
-        <Button
-          type="submit"
-          fullWidth
-          radius="xl"
-          color="teal"
-          style={{ margin: '1rem 0' }}
-          onClick={handleLogIn}
-        >
-          {loginSteps === 1 ? 'Continue' : 'Login'}
-        </Button>
-        <Divider my="lg" label="Or better yet" fw={700} fz={'xl'} labelPosition="center" />
-        <GoogleButton />
+        {state.loginStep === 2 && isEmail(loginForm.values.emailPhoneGreenieId) && (
+          <Box>
+            <PasswordInput
+              label="Enter Password"
+              classNames={inputClasses}
+              {...loginForm.getInputProps('password')}
+            />
+            <Flex direction={'row'} align={'center'} justify={'space-between'} mt={'6px'}>
+              <Text className="loginLink" onClick={handleLoginWithOTP}>
+                Login using OTP
+              </Text>
+              <Text className="loginLink" onClick={handleForgotPassowrd}>
+                Forgot password?
+              </Text>
+            </Flex>
+          </Box>
+        )}
+        {state.loginStep < 3 && (
+          <Box>
+            {' '}
+            <Button type="submit" className="primaryBtn" onClick={handleLogin}>
+              {state.loginStep === 1 ? 'Continue' : 'Login'}
+            </Button>
+            <Divider label="Or better yet" className="divider" labelPosition="center" />
+            <GoogleButton />
+          </Box>
+        )}
       </Box>
     </>
   );

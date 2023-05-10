@@ -1,18 +1,25 @@
 import { useState } from 'react';
-import { TextInput, createStyles, rem, Text, Button, Stepper, Box, Flex, em } from '@mantine/core';
+import { TextInput, createStyles, rem, Text, Button, Box, Flex, em, Chip } from '@mantine/core';
 import { useAuthContext } from '../../context/AuthContext';
-import IntroButton from './IntroButton';
 import { BsArrowLeft } from 'react-icons/bs';
 import linkedInLogo from '../../assets/linkedIn-logo.png';
 import '../../styles/global.scss';
-const skillSetOne = ['Team Player', 'Energetic', 'Optimistic', 'Self Initiator', 'hardworking'];
-
-const skillSetTwo = ['Prodigy', 'Lone Wolf', 'Micro Planner', 'Jack of all trade'];
+const skillSetOne = [
+  'Team Player',
+  'Energetic',
+  'Optimistic',
+  'Self Initiator',
+  'hardworking',
+  'Prodigy',
+  'Lone Wolf',
+  'Micro Planner',
+  'Jack of all trade',
+];
 
 const Profile = () => {
   const { classes: inputClasses } = inputStyles();
-  const [active, setActive] = useState(0);
-  const { prevSingUpStep } = useAuthContext();
+  const [active, setActive] = useState(1);
+  const { dispatch } = useAuthContext();
 
   const nextStep = () => {
     setActive((current) => (current < 4 ? current + 1 : current));
@@ -21,47 +28,60 @@ const Profile = () => {
   const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
 
   const handleGoBack = () => {
-    if (active === 0) {
-      prevSingUpStep();
+    if (active === 1) {
+      dispatch({ type: 'PREVSIGNUPSTEP' });
     } else {
       prevStep();
     }
   };
+
   return (
     <Box>
       <Flex className="tabTopBox" onClick={handleGoBack}>
         <BsArrowLeft size={'16px'} />
         <Text className="tabHeading">Go Back</Text>
       </Flex>
-      <Stepper active={active} size="xs" color="#8CF078">
-        <Stepper.Step>
-          <Text className="steps">{`Steps ${active + 1}`}/3</Text>
+      <Box className="progress-bar-wrapper">
+        <Box className="progress-bar" bg={'#9fe870'}></Box>
+        <Box
+          className="progress-bar"
+          bg={active === 2 || active === 3 ? '#9fe870' : '#F3F3F3'}
+        ></Box>
+        <Box className="progress-bar" bg={active === 3 ? '#9fe870' : '#F3F3F3'}></Box>
+      </Box>
+
+      {active === 1 && (
+        <Box>
+          <Text className="steps">{`Steps ${active}`}/3</Text>
           <Text className="profileText">What should we call you?</Text>
           <TextInput label="First Name" classNames={inputClasses} />
           <TextInput label="Last Name" classNames={inputClasses} />
           <Button className="primaryBtn" onClick={nextStep}>
             Continue
           </Button>
-        </Stepper.Step>
-        <Stepper.Step>
-          <Text className="steps">{`Steps ${active + 1}`}/3</Text>
+        </Box>
+      )}
+
+      {active === 2 && (
+        <Box>
+          <Text className="steps">{`Steps ${active}`}/3</Text>
           <Box
             my={'lg'}
             style={{
               width: '100%',
-              height: '100px',
+              height: '147px',
               backgroundColor: '#F3F3F3',
               borderRadius: '1rem',
             }}
           ></Box>
-          <Text className="profiletext" align="center">
+          <Text className="profileText" align="center">
             Help us create a better experience for you
           </Text>
-          <Button fullWidth radius="xl" my={'lg'} fw={'600'} variant="default" onClick={nextStep}>
+          <Button className="secondaryBtn" onClick={nextStep}>
             Connect your{' '}
-            <span style={{ width: '22px', marginInline: '0.15rem' }}>
+            <span>
               <img src={linkedInLogo} alt="linkedIn logo" />
-            </span>{' '}
+            </span>
             LinkedIn Account
           </Button>
           <Text
@@ -73,16 +93,20 @@ const Profile = () => {
           >
             Skip for now
           </Text>
-        </Stepper.Step>
-        <Stepper.Step>
-          <Text className="steps">{`Steps ${active + 1}`}/3</Text>
+        </Box>
+      )}
+
+      {active === 3 && (
+        <Box>
+          <Text className="steps">{`Steps ${active}`}/3</Text>
           <Box
             mx={'auto'}
             style={{
-              width: '100px',
-              height: '100px',
+              width: '148px',
+              height: '148px',
               backgroundColor: '#F3F3F3',
-              borderRadius: '1rem',
+              borderRadius: '20px',
+              marginBottom: '16px',
             }}
           ></Box>
           <Text className="profileText" align="center">
@@ -91,22 +115,18 @@ const Profile = () => {
           <Box className="skills-box">
             <Box className="skill-wrapper">
               {skillSetOne.map((skill) => (
-                <IntroButton key={skill} label={skill} />
-              ))}
-            </Box>
-
-            <Box className="skill-wrapper">
-              {skillSetTwo.map((skill) => (
-                <IntroButton key={skill} label={skill} />
+                <Chip key={skill} variant="filled" color="teal" size={'xs'}>
+                  {skill}
+                </Chip>
               ))}
             </Box>
           </Box>
 
-          <Button fullWidth radius="xl" my={'lg'} fw={'500'} variant="default" onClick={nextStep}>
+          <Button className="secondaryBtn" onClick={nextStep}>
             Take me to my Greenie Profile
           </Button>
-        </Stepper.Step>
-      </Stepper>
+        </Box>
+      )}
     </Box>
   );
 };
@@ -137,7 +157,6 @@ const inputStyles = createStyles((theme) => ({
       borderRadius: '6px',
       fontSize: '10px',
       lineHeight: '12px',
-      border: '5px solid black',
       margin: '0 auto',
     },
   },

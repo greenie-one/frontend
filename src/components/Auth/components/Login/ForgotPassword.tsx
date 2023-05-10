@@ -1,71 +1,52 @@
 import { TextInput, createStyles, em, rem, Text, Button, Box, Flex } from '@mantine/core';
-import { isEmail } from '@mantine/form';
+
 import { useAuthContext } from '../../context/AuthContext';
 import { BsArrowLeft } from 'react-icons/bs';
 import '../../styles/global.scss';
 
 const ForgotPassword = () => {
   const { classes: inputClasses } = inputStyles();
-  const {
-    loginForm,
-    prevLoginStep,
-    resetPasswordStep,
-    nextResetPasswordStep,
-    prevResetPasswordStep,
-    isPhoneNumber,
-  } = useAuthContext();
+  const { loginForm, state, dispatch, isPhoneNumber, isEmail } = useAuthContext();
 
   const handleClick = () => {
-    prevResetPasswordStep();
-    prevLoginStep();
+    dispatch({ type: 'PREVRESETPASSWORDSTEP' });
+    dispatch({ type: 'RESETLOGINSTEP' });
   };
 
   const handleChange = () => {
-    prevResetPasswordStep();
+    dispatch({ type: 'PREVRESETPASSWORDSTEP' });
   };
 
   const handleNextStep = () => {
-    nextResetPasswordStep();
+    dispatch({ type: 'NEXTRESETPASSWRDSTEP' });
   };
 
   return (
     <Box className="authRightContainer">
-      <Flex direction={'row'} align={'center'} mb={'sm'} onClick={handleClick}>
+      <Flex direction={'row'} className="tabTopBox" onClick={handleClick}>
         <BsArrowLeft size={'15px'} />
-        <Text fw={'bold'} fz={'xs'} ml={'xs'} style={{ cursor: 'pointer' }}>
-          {resetPasswordStep === 1 ? 'Forgot Password' : 'Reset Passowrd'}
+        <Text className="tabHeading">
+          {state.resetPasswordStep === 1 ? 'Forgot Password' : 'Reset Passowrd'}
         </Text>
       </Flex>
-      {resetPasswordStep === 1 && (
+      {state.resetPasswordStep === 1 && (
         <Box>
-          <Text fw={'bold'} fz={'xs'} my={'lg'}>
-            Help us identify your Greenie account for you.
-          </Text>
+          <Text className="profileTextBold">Help us identify your Greenie account for you.</Text>
           <TextInput
             label="Email or Phone number or greenie ID"
             {...loginForm.getInputProps('emailPhoneGreenieId')}
             classNames={inputClasses}
           />
-          <Button
-            fullWidth
-            radius="xl"
-            color="teal"
-            style={{ margin: '1rem 0' }}
-            onClick={handleNextStep}
-          >
+          <Button className="primaryBtn" onClick={handleNextStep}>
             Continue
           </Button>
         </Box>
       )}
 
-      {resetPasswordStep === 2 && (
+      {state.resetPasswordStep === 2 && (
         <Box>
           <Text
-            fz={'sm'}
-            mb={'md'}
-            color="4C4C4C"
             className="disbledInput"
-            p={'sm'}
             style={{ border: '1px solid #D1D4DB', borderRadius: '2px', background: '#FFFFFF' }}
           >
             {loginForm.values.emailPhoneGreenieId}
@@ -75,50 +56,44 @@ const ForgotPassword = () => {
           </Text>
           {!isEmail(loginForm.values.emailPhoneGreenieId) &&
             !isPhoneNumber(loginForm.values.emailPhoneGreenieId) && (
-              <Text fw={'bold'} fz={'xs'} my={'lg'}>
+              <Text className="profileTextBold">
                 A one-time passowrd (OTP) will be sent to your registered phone number for
                 verification
               </Text>
             )}
           {isEmail(loginForm.values.emailPhoneGreenieId) && (
-            <Text fw={'bold'} fz={'xs'} my={'lg'}>
+            <Text className="profileTextBold">
               A one-time passowrd (OTP) will be sent to your registered email address for
               verification
             </Text>
           )}
           {isPhoneNumber(loginForm.values.emailPhoneGreenieId) && (
-            <Text fw={'bold'} fz={'xs'} my={'lg'}>
+            <Text className="profileTextBold">
               A one-time passowrd (OTP) will be sent to your registered phone number for
               verification
             </Text>
           )}
-          <Button
-            fullWidth
-            radius="xl"
-            color="teal"
-            style={{ margin: '1rem 0' }}
-            onClick={handleNextStep}
-          >
+          <Button className="primaryBtn" onClick={handleNextStep}>
             Send OTP
           </Button>
         </Box>
       )}
 
-      {resetPasswordStep === 3 && (
+      {state.resetPasswordStep === 3 && (
         <Box>
           {isEmail(loginForm.values.emailPhoneGreenieId) && (
-            <Text fw={'bold'} fz={'xs'} my={'lg'}>
+            <Text className="profileTextBold">
               Enter the one-time passowrd sent to your email address
             </Text>
           )}
           {isPhoneNumber(loginForm.values.emailPhoneGreenieId) && (
-            <Text fw={'bold'} fz={'xs'} my={'lg'}>
+            <Text className="profileTextBold">
               Enter the one-time passowrd sent to your phone number
             </Text>
           )}
           {!isEmail(loginForm.values.emailPhoneGreenieId) &&
             !isPhoneNumber(loginForm.values.emailPhoneGreenieId) && (
-              <Text fw={'bold'} fz={'xs'} my={'lg'}>
+              <Text className="profileTextBold">
                 Enter the one-time passowrd sent to your phone number
               </Text>
             )}
