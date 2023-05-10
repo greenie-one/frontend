@@ -10,6 +10,22 @@ const CreateAccount = () => {
 
   const { classes: inputClasses } = inputStyles();
 
+  const nextSignUpStep = () => {
+    if (signUpStep === 1 && !signupForm.validateField('emailPhone').hasError) {
+      signupForm.clearErrors();
+      dispatch({ type: 'NEXTSIGNUPSTEP' });
+    }
+
+    if (
+      signUpStep === 2 &&
+      !signupForm.validateField('password').hasError &&
+      !signupForm.validateField('confirmPassword').hasError
+    ) {
+      signupForm.clearErrors();
+      dispatch({ type: 'NEXTSIGNUPSTEP' });
+    }
+  };
+
   return (
     <>
       {signUpStep === 1 && (
@@ -34,7 +50,7 @@ const CreateAccount = () => {
         By creating an account, you agree to our <u>Terms of Service</u> and{' '}
         <u>Privacy & Cookie Statement</u>.
       </Text>
-      <Button className="primaryBtn" onClick={() => dispatch({ type: 'NEXTSIGNUPSTEP' })}>
+      <Button className="primaryBtn" onClick={nextSignUpStep}>
         {signUpStep === 2 && isPhoneNumber(signupForm.values.emailPhone)
           ? 'Send OTP'
           : 'Agree & Join'}

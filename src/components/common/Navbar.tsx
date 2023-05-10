@@ -13,10 +13,6 @@ export const Navbar = () => {
   const [ opened, { open, close }] = useDisclosure(false);
   const { scrollY } = useScroll()
 
-  useEffect(()=>{
-    console.log(scrollY)
-  },[scrollY])
-
   return (
     <Box className={`${classes.root} app-padding-inline`}>
       <motion.header className={classes.header}>

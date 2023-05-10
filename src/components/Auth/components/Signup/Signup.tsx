@@ -9,7 +9,7 @@ export const Signup = () => {
   return (
     <>
       <Box className={classes.root}>
-        <form onSubmit={signupForm.onSubmit((values) => console.log(values))}>
+        <form>
           <Form />
         </form>
       </Box>

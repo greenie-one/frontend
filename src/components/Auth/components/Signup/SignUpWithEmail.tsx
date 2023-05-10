@@ -3,6 +3,7 @@ import { useAuthContext } from '../../context/AuthContext';
 const SignUpWithEmail = () => {
   const { classes: inputClasses } = inputStyles();
   const { signupForm } = useAuthContext();
+
   return (
     <>
       <PasswordInput
