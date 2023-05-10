@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useReducer } from 'react';
-import { useForm, UseFormReturnType, isNotEmpty, matchesField, isEmail } from '@mantine/form';
+import { useForm, UseFormReturnType, isNotEmpty, matchesField, hasLength } from '@mantine/form';
 
 type AuthContextType = {
   signupForm: UseFormReturnType<signUpFormType>;
@@ -54,23 +54,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     },
 
     validate: {
-      emailPhone: isEmail('Invalid Email ID'),
+      emailPhone: (value) => {
+        if (value.trim().length === 0) {
+          return 'Email or Phone Number cannot be empty';
+        }
+        if (/^[+]?[\d ]+$/.test(value.trim())) {
+          if (!/^(\+?\d{1,3}[- ]?)?\d{10}$/.test(value.trim())) {
+            return 'Invalid Phone Number';
+          }
+        } else {
+          if (!/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value.trim())) {
+            return 'Invalid Email';
+          }
+        }
+      },
       password: isNotEmpty('Password cannot be empty'),
       confirmPassword: matchesField('password', 'Passwords are not the same'),
+      otp: hasLength(6, 'OTP must be 6 digits'),
     },
-
-    // validate: (values): any => {
-    //   return {
-    //     emailPhone:
-    //       isNotEmpty('Field cannot be empty') ||
-    //       isEmail('Invalid Email ID') ||
-    //       isPhoneNumber(values.emailPhone),
-    //     password: isNotEmpty('Password cannot be empty'),
-    //     confirmPassword:
-    //       isNotEmpty('Password cannot be empty') ||
-    //       matchesField('password', 'Passwords are not the same'),
-    //   };
-    // },
   });
 
   const loginForm = useForm<loginFormType>({
