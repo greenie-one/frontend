@@ -10,7 +10,7 @@ COPY . ./
 RUN yarn build
 
 FROM alpine:3.18.0
-COPY --from=build /app/dist /app
+COPY --from=build /app/dist /app/dist
 COPY lighttpd.conf /app
 
 RUN apk add lighttpd
