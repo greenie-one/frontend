@@ -1,4 +1,4 @@
-FROM node:18-alpine
+FROM node:alpine3.17 as build
 
 WORKDIR /app
 
@@ -8,11 +8,14 @@ RUN yarn install
 COPY . ./
 
 RUN yarn build
-RUN yarn build
 
-RUN yarn global add serve
-RUN yarn global add serve
+FROM alpine:3.18.0
+COPY --from=build /app/dist /app
+COPY lighttpd.conf /app
+
+RUN apk add lighttpd
 
 EXPOSE 3000
-CMD ["yarn", "serve"]
-CMD ["yarn", "serve"]
+WORKDIR /app
+
+CMD ["lighttpd", "-D", "-f", "lighttpd.conf"]
