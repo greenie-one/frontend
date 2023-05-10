@@ -15,6 +15,8 @@ COPY lighttpd.conf /app
 
 RUN apk add lighttpd
 
+RUN mkdir -R /tmp/lighttpd/compress/
+
 EXPOSE 3000
 WORKDIR /app
 
