@@ -1,14 +1,16 @@
 import { Box, Tabs, createStyles, em } from '@mantine/core';
-import { Signup } from './components/Signup/Signup';
 import { Login } from './components/Login/Login';
 import { Navbar } from '../common/Navbar';
 import { AuthInfo } from './components/AuthInfo';
 import { useAuthContext } from './context/AuthContext';
-import Profile from './components/Signup/Profile';
-import OTPTab from './components/Signup/OTPTab';
 import ForgotPassword from './components/Login/ForgotPassword';
 import LoginWithOTP from './components/Login/LoginWithOTP';
 import './styles/global.scss';
+import SignUpStepOne from './components/Signup/SignUpStepOne';
+import SignUpStepTwo from './components/Signup/SignUpStepTwo';
+import SignUpStepThree from './components/Signup/SignUpStepThree';
+import SignUpStepFour from './components/Signup/SignUpStepFour';
+import SignUpStepFive from './components/Signup/SignUpStepFive';
 
 export const Auth = () => {
   const { classes } = useStyles();
@@ -27,33 +29,33 @@ export const Auth = () => {
         </Box>
         <Box className="authRight">
           <Box className="authRightContainer">
-            {signUpStep < 3 && loginStep < 3 && resetPasswordStep < 1 && loginWithOTPStep < 1 && (
-              <Tabs defaultValue="signup" color="dark">
+            <Tabs defaultValue="signup" color="dark">
+              {signUpStep === 3 && isPhoneNumber(signupForm.values.emailPhone) ? (
+                <Box></Box>
+              ) : signUpStep < 4 ? (
                 <Tabs.List className="tabList" position="center">
                   <Tabs.Tab className="tabBtn" value="signup">
                     Create new account
                   </Tabs.Tab>
                   <Tabs.Tab className="tabBtn" value="login">
-                    Log in
+                    Log in {loginStep}
                   </Tabs.Tab>
                 </Tabs.List>
+              ) : (
+                <Box></Box>
+              )}
 
-                <Tabs.Panel value="signup">
-                  <Signup />
-                </Tabs.Panel>
-                <Tabs.Panel value="login">
-                  <Login />
-                </Tabs.Panel>
-              </Tabs>
-            )}
-            {(signUpStep === 3 && isValidEmail(signupForm.values.emailPhone) && <Profile />) ||
-              (signUpStep === 3 && isPhoneNumber(signupForm.values.emailPhone) && <OTPTab />) ||
-              (loginStep === 2 && isPhoneNumber(loginForm.values.emailPhoneGreenieId) && (
-                <LoginWithOTP />
-              )) ||
-              (signUpStep === 4 && isPhoneNumber(signupForm.values.emailPhone) && <Profile />) ||
-              (resetPasswordStep > 0 && <ForgotPassword />) ||
-              (loginWithOTPStep > 0 && <LoginWithOTP />)}
+              <Tabs.Panel value="signup">
+                {signUpStep === 1 && <SignUpStepOne />}
+                {signUpStep === 2 && <SignUpStepTwo />}
+                {signUpStep === 3 && <SignUpStepThree />}
+                {signUpStep === 4 && <SignUpStepFour />}
+                {signUpStep === 5 && <SignUpStepFive />}
+              </Tabs.Panel>
+              <Tabs.Panel value="login">
+                <Login />
+              </Tabs.Panel>
+            </Tabs>
           </Box>
         </Box>
       </Box>
