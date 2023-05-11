@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useReducer } from 'react';
+import React, { createContext, useContext, useReducer } from 'react';
 import { useForm, UseFormReturnType, isNotEmpty, matchesField, hasLength } from '@mantine/form';
 
 type AuthContextType = {
@@ -59,16 +59,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           return 'Email or Phone Number cannot be empty';
         }
         if (/^[+]?[\d ]+$/.test(value.trim())) {
-          if (!/^(\+?\d{1,3}[- ]?)?\d{10}$/.test(value.trim())) {
+          if (!isPhoneNumber(value)) {
             return 'Invalid Phone Number';
           }
         } else {
-          if (!/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value.trim())) {
+          if (!isValidEmail(value)) {
             return 'Invalid Email';
           }
         }
       },
-      password: isNotEmpty('Password cannot be empty'),
+      password: hasLength({ min: 9, max: 72 }, 'Password must have at least 9 characters'),
       confirmPassword: matchesField('password', 'Passwords are not the same'),
       otp: hasLength(6, 'OTP must be 6 digits'),
     },
@@ -116,13 +116,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   });
 
   const isValidEmail = (input: string): boolean => {
-    const Pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return Pattern.test(input);
+    const Pattern = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+    return Pattern.test(input.trim());
   };
 
   const isPhoneNumber = (input: string): boolean => {
     const pattern = /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/;
-    return pattern.test(input);
+    return pattern.test(input.trim());
   };
 
   return (

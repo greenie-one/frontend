@@ -1,6 +1,6 @@
 import { useAuthContext } from '../../context/AuthContext';
-import '../../styles/global.scss';
 import Profile from './Profile';
+import '../../styles/global.scss';
 
 const SignUpStepFive = () => {
   const { signupForm, state, isValidEmail } = useAuthContext();

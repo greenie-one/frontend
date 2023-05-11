@@ -8,6 +8,7 @@ const SignUpStepThree = () => {
   const { signupForm, state, dispatch, isPhoneNumber, isValidEmail } = useAuthContext();
   const { signUpStep } = state;
   const { classes: inputClasses } = inputStyles();
+
   return (
     <>
       {(signUpStep === 3 && isValidEmail(signupForm.values.emailPhone) && (

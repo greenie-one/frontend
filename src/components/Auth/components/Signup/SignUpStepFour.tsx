@@ -1,8 +1,8 @@
 import { Text, Button, Flex, Box } from '@mantine/core';
 import { useAuthContext } from '../../context/AuthContext';
+import Profile from './Profile';
 import { BsArrowLeft } from 'react-icons/bs';
 import '../../styles/global.scss';
-import Profile from './Profile';
 
 const SignUpStepFour = () => {
   const { signupForm, state, dispatch, isPhoneNumber, isValidEmail } = useAuthContext();

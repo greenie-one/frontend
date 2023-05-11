@@ -7,6 +7,20 @@ const SignUpStepTwo = () => {
   const { signupForm, state, dispatch, isPhoneNumber, isValidEmail } = useAuthContext();
   const { signUpStep } = state;
   const { classes: inputClasses } = inputStyles();
+
+  const nextSignUpStep = () => {
+    if (
+      signUpStep === 2 &&
+      !signupForm.validateField('password').hasError &&
+      !signupForm.validateField('confirmPassword').hasError
+    ) {
+      signupForm.clearErrors();
+      // API CALL
+
+      dispatch({ type: 'NEXTSIGNUPSTEP' });
+    }
+  };
+
   return (
     <>
       {(signUpStep === 2 && isValidEmail(signupForm.values.emailPhone) && (
@@ -32,7 +46,7 @@ const SignUpStepTwo = () => {
             By creating an account, you agree to our <u>Terms of Service</u> and{' '}
             <u>Privacy & Cookie Statement</u>.
           </Text>
-          <Button onClick={() => dispatch({ type: 'NEXTSIGNUPSTEP' })} className="primaryBtn">
+          <Button onClick={nextSignUpStep} className="primaryBtn">
             Agree & Join
           </Button>
           <Divider label="Or better yet" className="divider" labelPosition="center" />

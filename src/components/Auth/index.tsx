@@ -3,19 +3,19 @@ import { Login } from './components/Login/Login';
 import { Navbar } from '../common/Navbar';
 import { AuthInfo } from './components/AuthInfo';
 import { useAuthContext } from './context/AuthContext';
-import ForgotPassword from './components/Login/ForgotPassword';
-import LoginWithOTP from './components/Login/LoginWithOTP';
-import './styles/global.scss';
+
 import SignUpStepOne from './components/Signup/SignUpStepOne';
 import SignUpStepTwo from './components/Signup/SignUpStepTwo';
 import SignUpStepThree from './components/Signup/SignUpStepThree';
 import SignUpStepFour from './components/Signup/SignUpStepFour';
 import SignUpStepFive from './components/Signup/SignUpStepFive';
+import './styles/global.scss';
 
 export const Auth = () => {
   const { classes } = useStyles();
-  const { isPhoneNumber, state, signupForm, isValidEmail, loginForm } = useAuthContext();
-  const { signUpStep, loginStep, loginWithOTPStep, resetPasswordStep } = state;
+
+  const { isPhoneNumber, state, signupForm } = useAuthContext();
+  const { signUpStep, loginStep } = state;
 
   return (
     <>
@@ -46,11 +46,13 @@ export const Auth = () => {
               )}
 
               <Tabs.Panel value="signup">
-                {signUpStep === 1 && <SignUpStepOne />}
-                {signUpStep === 2 && <SignUpStepTwo />}
-                {signUpStep === 3 && <SignUpStepThree />}
-                {signUpStep === 4 && <SignUpStepFour />}
-                {signUpStep === 5 && <SignUpStepFive />}
+                <form>
+                  {signUpStep === 1 && <SignUpStepOne />}
+                  {signUpStep === 2 && <SignUpStepTwo />}
+                  {signUpStep === 3 && <SignUpStepThree />}
+                  {signUpStep === 4 && <SignUpStepFour />}
+                  {signUpStep === 5 && <SignUpStepFive />}
+                </form>
               </Tabs.Panel>
               <Tabs.Panel value="login">
                 <Login />
