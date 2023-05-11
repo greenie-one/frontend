@@ -120,7 +120,11 @@ const useStyles = createStyles((theme) => ({
   heroTitle: {
     fontSize: '3rem',
     fontWeight: 800,
-    width:"18ch",
+
+    [`@media screen and (max-width: ${em(1440)})`]: {
+      fontSize: '2.6rem',
+      width:"18ch"
+    },
 
 
     [`@media screen and (max-width: ${em(1340)})`]: {
@@ -148,6 +152,10 @@ const useStyles = createStyles((theme) => ({
 
     [`@media screen and (max-width: ${em(425)})`]: {
       fontSize: '1.7rem',
+    },
+
+    [`@media screen and (max-width: ${em(320)})`]: {
+      fontSize: '1.5rem',
     },
   },
 
@@ -194,6 +202,7 @@ const useStyles = createStyles((theme) => ({
 
   heroIllustration: {
     zIndex: -1,
+    width:"98%",
 
     [`@media screen and (max-width: ${em(1280)})`]: {
       gridRow: '1/2',

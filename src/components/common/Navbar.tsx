@@ -23,7 +23,8 @@ export const Navbar = () => {
   return (
     <Box  className={`${classes.root} app-padding-inline`} style={{
       boxShadow: scrollPos > 600 ? '0px 4px 34px rgba(0, 0, 0, 0.15)' : '',
-      paddingInline: scrollPos > 600 ?  '2rem': '',
+      paddingLeft: scrollPos > 600 ?  '2rem': '',
+      paddingRight: scrollPos > 600 ?  '2rem': '',
       borderRadius: scrollPos > 600 ? '5rem' : '',
       position: scrollPos > 600 ? 'fixed':'relative',
       top: scrollPos > 600 ? 0: '',
