@@ -7,8 +7,13 @@ const LoginWithOTP = () => {
   const { state, dispatch, isPhoneNumber, loginForm, isValidEmail } = useAuthContext();
 
   const handleClick = () => {
-    dispatch({ type: 'PREVLOGINWITHOTPSTEP' });
-    dispatch({ type: 'RESETLOGINSTEP' });
+    if (state.loginWithOTPStep === 2) {
+      dispatch({ type: 'PREVLOGINWITHOTPSTEP' });
+    }
+    if (state.loginWithOTPStep === 1) {
+      dispatch({ type: 'PREVLOGINWITHOTPSTEP' });
+      dispatch({ type: 'RESETLOGINSTEP' });
+    }
   };
 
   return (
@@ -38,12 +43,6 @@ const LoginWithOTP = () => {
               verification
             </Text>
           )}
-          {isPhoneNumber(loginForm.values.emailPhoneGreenieId) && (
-            <Text className="profileTextBold">
-              A one-time passowrd (OTP) will be sent to your registered phone number for
-              verification
-            </Text>
-          )}
           <Button onClick={() => dispatch({ type: 'NEXTLOGINWITHOTPSTEP' })} className="primaryBtn">
             Send OTP
           </Button>
@@ -54,11 +53,6 @@ const LoginWithOTP = () => {
           {isValidEmail(loginForm.values.emailPhoneGreenieId) && (
             <Text className="profileTextBold">
               Enter the one-time passowrd sent to your email address
-            </Text>
-          )}
-          {isPhoneNumber(loginForm.values.emailPhoneGreenieId) && (
-            <Text className="profileTextBold">
-              Enter the one-time passowrd sent to your phone number
             </Text>
           )}
           {!isValidEmail(loginForm.values.emailPhoneGreenieId) &&
@@ -74,9 +68,7 @@ const LoginWithOTP = () => {
               after 30s
             </Text>
           </Text>
-          <Button fullWidth radius="xl" color="teal">
-            Verify
-          </Button>
+          <Button className="primaryBtn">Verify</Button>
         </Box>
       )}
     </Box>

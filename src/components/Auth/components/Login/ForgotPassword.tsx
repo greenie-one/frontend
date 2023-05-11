@@ -9,8 +9,12 @@ const ForgotPassword = () => {
   const { loginForm, state, dispatch, isPhoneNumber, isValidEmail } = useAuthContext();
 
   const handleClick = () => {
-    dispatch({ type: 'PREVRESETPASSWORDSTEP' });
-    dispatch({ type: 'RESETLOGINSTEP' });
+    if (state.resetPasswordStep === 1) {
+      dispatch({ type: 'PREVRESETPASSWORDSTEP' });
+      dispatch({ type: 'RESETLOGINSTEP' });
+    } else {
+      dispatch({ type: 'PREVRESETPASSWORDSTEP' });
+    }
   };
 
   const handleChange = () => {
@@ -33,7 +37,7 @@ const ForgotPassword = () => {
         <Box>
           <Text className="profileTextBold">Help us identify your Greenie account for you.</Text>
           <TextInput
-            label="Email or Phone number or greenie ID"
+            label="Email or greenie ID"
             {...loginForm.getInputProps('emailPhoneGreenieId')}
             classNames={inputClasses}
           />
@@ -104,7 +108,7 @@ const ForgotPassword = () => {
               after 30s
             </Text>
           </Text>
-          <Button fullWidth radius="xl" color="teal">
+          <Button className="primaryBtn" fullWidth radius="xl" color="teal">
             Verify
           </Button>
         </Box>

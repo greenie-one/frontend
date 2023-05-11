@@ -1,35 +1,27 @@
-import { TextInput, createStyles, em, rem, Text, Button, Divider, Box } from '@mantine/core';
+import { TextInput, createStyles, rem, Text, Button, Divider, Box, em } from '@mantine/core';
 import { useAuthContext } from '../../context/AuthContext';
 import GoogleButton from '../GoogleButton';
 import '../../styles/global.scss';
 
-const SignUpStepOne = () => {
-  const { signupForm, state, dispatch } = useAuthContext();
-  const { signUpStep } = state;
+const LoginStepOne = () => {
   const { classes: inputClasses } = inputStyles();
-
-  const nextSignUpStep = () => {
-    if (signUpStep === 1 && !signupForm.validateField('emailPhone').hasError) {
-      signupForm.clearErrors();
-      dispatch({ type: 'NEXTSIGNUPSTEP' });
-    }
-  };
-
+  const { loginForm, state, dispatch } = useAuthContext();
   return (
     <>
-      {signUpStep === 1 && (
+      {state.loginStep === 1 && (
         <Box>
           <TextInput
             label="Email or Phone number"
+            style={{ borderRadius: '1rem' }}
             classNames={inputClasses}
-            {...signupForm.getInputProps('emailPhone')}
+            {...loginForm.getInputProps('emailPhoneGreenieId')}
           />
           <Text className="tearms-condition">
-            By creating an account, you agree to our <u>Terms of Service</u> and{' '}
+            By continuing with your account, you agree to our <u>Terms of Service</u> and{' '}
             <u>Privacy & Cookie Statement</u>.
           </Text>
-          <Button onClick={nextSignUpStep} className="primaryBtn">
-            Agree & Join
+          <Button onClick={() => dispatch({ type: 'NEXTLOGINSTEP' })} className="primaryBtn">
+            Continue
           </Button>
           <Divider label="Or better yet" className="divider" labelPosition="center" />
           <GoogleButton />
@@ -39,7 +31,7 @@ const SignUpStepOne = () => {
   );
 };
 
-export default SignUpStepOne;
+export default LoginStepOne;
 
 const inputStyles = createStyles((theme) => ({
   root: {

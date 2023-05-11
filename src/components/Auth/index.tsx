@@ -7,15 +7,19 @@ import { useAuthContext } from './context/AuthContext';
 import SignUpStepOne from './components/Signup/SignUpStepOne';
 import SignUpStepTwo from './components/Signup/SignUpStepTwo';
 import SignUpStepThree from './components/Signup/SignUpStepThree';
-import SignUpStepFour from './components/Signup/SignUpStepFour';
-import SignUpStepFive from './components/Signup/SignUpStepFive';
 import './styles/global.scss';
+import Profile from './components/Signup/Profile';
+import LoginStepOne from './components/Login/LoginStepOne';
+import LoginStepTwo from './components/Login/LoginStepTwo';
+import LoginStepThree from './components/Login/LoginStepThree';
+import LoginWithOTP from './components/Login/LoginWithOTP';
+import ForgotPassword from './components/Login/ForgotPassword';
 
 export const Auth = () => {
   const { classes } = useStyles();
 
-  const { isPhoneNumber, state, signupForm } = useAuthContext();
-  const { signUpStep, loginStep } = state;
+  const { isPhoneNumber, state, loginForm } = useAuthContext();
+  const { signUpStep, loginStep, loginWithOTPStep, resetPasswordStep } = state;
 
   return (
     <>
@@ -30,17 +34,20 @@ export const Auth = () => {
         <Box className="authRight">
           <Box className="authRightContainer">
             <Tabs defaultValue="signup" color="dark">
-              {signUpStep === 3 && isPhoneNumber(signupForm.values.emailPhone) ? (
-                <Box></Box>
-              ) : signUpStep < 4 ? (
-                <Tabs.List className="tabList" position="center">
-                  <Tabs.Tab className="tabBtn" value="signup">
-                    Create new account
-                  </Tabs.Tab>
-                  <Tabs.Tab className="tabBtn" value="login">
-                    Log in {loginStep}
-                  </Tabs.Tab>
-                </Tabs.List>
+              {loginStep === 2 && isPhoneNumber(loginForm.values.emailPhoneGreenieId)}
+              {signUpStep < 3 && loginStep < 3 ? (
+                loginStep === 2 && isPhoneNumber(loginForm.values.emailPhoneGreenieId) ? (
+                  <Box></Box>
+                ) : (
+                  <Tabs.List className="tabList" position="center">
+                    <Tabs.Tab className="tabBtn" value="signup">
+                      Create new account
+                    </Tabs.Tab>
+                    <Tabs.Tab className="tabBtn" value="login">
+                      Log in
+                    </Tabs.Tab>
+                  </Tabs.List>
+                )
               ) : (
                 <Box></Box>
               )}
@@ -50,14 +57,16 @@ export const Auth = () => {
                   {signUpStep === 1 && <SignUpStepOne />}
                   {signUpStep === 2 && <SignUpStepTwo />}
                   {signUpStep === 3 && <SignUpStepThree />}
-                  {signUpStep === 4 && <SignUpStepFour />}
-                  {signUpStep === 5 && <SignUpStepFive />}
+                  {signUpStep === 4 && <Profile />}
                 </form>
               </Tabs.Panel>
               <Tabs.Panel value="login">
-                <Login />
+                {loginStep === 1 && <LoginStepOne />} {loginStep === 2 && <LoginStepTwo />}{' '}
+                {loginStep === 3 && <LoginStepThree />}
               </Tabs.Panel>
             </Tabs>
+            {loginWithOTPStep > 0 && <LoginWithOTP />}
+            {resetPasswordStep > 0 && <ForgotPassword />}
           </Box>
         </Box>
       </Box>

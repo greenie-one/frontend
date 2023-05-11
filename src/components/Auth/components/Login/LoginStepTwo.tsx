@@ -1,5 +1,4 @@
 import {
-  TextInput,
   createStyles,
   rem,
   Text,
@@ -13,8 +12,9 @@ import {
 import { useAuthContext } from '../../context/AuthContext';
 import GoogleButton from '../GoogleButton';
 import '../../styles/global.scss';
+import { BsArrowLeft } from 'react-icons/bs';
 
-const Form = () => {
+const LoginStepTwo = () => {
   const { classes: inputClasses } = inputStyles();
   const { loginForm, state, dispatch, isValidEmail, isPhoneNumber } = useAuthContext();
 
@@ -23,38 +23,63 @@ const Form = () => {
     dispatch({ type: 'NEXTLOGINSTEP' });
   };
 
-  const handleLogin = () => {
-    if (isValidEmail(loginForm.values.emailPhoneGreenieId)) {
-      dispatch({ type: 'NEXTLOGINSTEP' });
-    }
-    if (isPhoneNumber(loginForm.values.emailPhoneGreenieId)) {
-      handleLoginWithOTP();
-    }
-  };
-
   const handleLoginWithOTP = () => {
     dispatch({ type: 'NEXTLOGINWITHOTPSTEP' });
     dispatch({ type: 'NEXTLOGINSTEP' });
   };
 
+  const handleClick = () => {
+    dispatch({ type: 'RESETLOGINSTEP' });
+  };
   return (
     <>
-      <Box>
-        {state.loginStep === 1 && (
-          <Box>
-            <TextInput
-              label="Email or Phone number"
-              style={{ borderRadius: '1rem' }}
-              classNames={inputClasses}
-              {...loginForm.getInputProps('emailPhoneGreenieId')}
-            />
-            <Text className="tearms-condition">
-              By creating an account, you agree to our <u>Terms of Service</u> and{' '}
-              <u>Privacy & Cookie Statement</u>.
+      {state.loginStep === 2 && isValidEmail(loginForm.values.emailPhoneGreenieId) && (
+        <Box>
+          <PasswordInput
+            label="Enter Password"
+            classNames={inputClasses}
+            {...loginForm.getInputProps('password')}
+          />
+          <Flex direction={'row'} align={'center'} justify={'space-between'} mt={'6px'}>
+            <Text className="loginLink" onClick={handleLoginWithOTP}>
+              Login using OTP
             </Text>
-          </Box>
-        )}
-        {state.loginStep === 2 && isValidEmail(loginForm.values.emailPhoneGreenieId) && (
+            <Text className="loginLink" onClick={handleForgotPassowrd}>
+              Forgot password?
+            </Text>
+          </Flex>
+          <Button className="primaryBtn">Login</Button>
+          <Divider label="Or better yet" className="divider" labelPosition="center" />
+          <GoogleButton />
+        </Box>
+      )}
+      {state.loginStep === 2 && isPhoneNumber(loginForm.values.emailPhoneGreenieId) && (
+        <Box>
+          <Flex
+            direction={'row'}
+            className="tabTopBox"
+            onClick={() => dispatch({ type: 'PREVLOGINSTEP' })}
+          >
+            <BsArrowLeft size={'15px'} />
+            <Text className="tabHeading">Login using OTP</Text>
+          </Flex>
+          <Text className="disbledInput">
+            {loginForm.values.emailPhoneGreenieId}
+            <span className="changeBtn" onClick={handleClick}>
+              Change
+            </span>
+          </Text>
+          <Text className="profileTextBold">
+            A one-time passowrd (OTP) will be sent to your registered phone number for verification
+          </Text>
+          <Button onClick={() => dispatch({ type: 'NEXTLOGINSTEP' })} className="primaryBtn">
+            Send OTP
+          </Button>
+        </Box>
+      )}
+      {state.loginStep === 2 &&
+        !isPhoneNumber(loginForm.values.emailPhoneGreenieId) &&
+        !isValidEmail(loginForm.values.emailPhoneGreenieId) && (
           <Box>
             <PasswordInput
               label="Enter Password"
@@ -69,29 +94,22 @@ const Form = () => {
                 Forgot password?
               </Text>
             </Flex>
-          </Box>
-        )}
-        {state.loginStep < 3 && (
-          <Box>
-            {' '}
-            <Button type="submit" className="primaryBtn" onClick={handleLogin}>
-              {state.loginStep === 1 ? 'Continue' : 'Login'}
-            </Button>
+            <Button className="primaryBtn">Login</Button>
             <Divider label="Or better yet" className="divider" labelPosition="center" />
             <GoogleButton />
           </Box>
         )}
-      </Box>
     </>
   );
 };
 
-export default Form;
+export default LoginStepTwo;
 
 const inputStyles = createStyles((theme) => ({
   root: {
     position: 'relative',
-    marginBottom: '16px',
+    marginBottom: '24px',
+    marginTop: '24px',
   },
 
   input: {
