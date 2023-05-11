@@ -17,7 +17,7 @@ const LoginStepOne = () => {
             {...loginForm.getInputProps('emailPhoneGreenieId')}
           />
           <Text className="tearms-condition">
-            By continuing with your account, you agree to our <u>Terms of Service</u> and{' '}
+            By continuing with your account, you agree to our <u>Terms of Service</u> and
             <u>Privacy & Cookie Statement</u>.
           </Text>
           <Button onClick={() => dispatch({ type: 'NEXTLOGINSTEP' })} className="primaryBtn">

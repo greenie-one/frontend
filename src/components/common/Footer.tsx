@@ -61,10 +61,7 @@ export const Footer: React.FC = (): JSX.Element => {
                   <FiLinkedin />
                 </span>
               </a>
-              <a href="mailto:office@greenie.one"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <a href="mailto:office@greenie.one" target="_blank" rel="noopener noreferrer">
                 <span className={classes.socialLinkIcons}>
                   <MdOutlineMail />
                 </span>
@@ -121,17 +118,13 @@ export const Footer: React.FC = (): JSX.Element => {
           </span>
           <Text className={classes.madeInIndiaText}>Made In India</Text>
           <List className={classes.navOptionsList}>
-              <Link to="/#features">
-                <List.Item className={classes.navOptionsListItems}>
-                    Features
-                </List.Item>
-              </Link>
-              <Link to="/waitlist">
-                <List.Item className={classes.navOptionsListItems}>
-                    Pricing
-                </List.Item>
-              </Link>
-              {/* <List.Item className={classes.navOptionsListItems}>
+            <Link to="/#features">
+              <List.Item className={classes.navOptionsListItems}>Features</List.Item>
+            </Link>
+            <Link to="/waitlist">
+              <List.Item className={classes.navOptionsListItems}>Pricing</List.Item>
+            </Link>
+            {/* <List.Item className={classes.navOptionsListItems}>
                   About Us
               </List.Item>
               <List.Item className={classes.navOptionsListItems}>
@@ -203,9 +196,7 @@ const useStyles = createStyles((theme) => ({
     },
   },
 
-  footerHeadingTexts: {
-    
-  },
+  footerHeadingTexts: {},
 
   verified: {
     fontSize: rem(30),
@@ -227,7 +218,6 @@ const useStyles = createStyles((theme) => ({
     letterSpacing: '0.01em',
     color: '#8E8E8E',
     maxWidth: '30ch',
-    
 
     [`@media screen and (max-width: ${em(1280)})`]: {
       fontSize: rem(30),
@@ -382,7 +372,6 @@ const useStyles = createStyles((theme) => ({
   greenie: {
     fontSize: rem(20),
     fontWeight: 600,
-    
   },
 
   verifiedBottom: {

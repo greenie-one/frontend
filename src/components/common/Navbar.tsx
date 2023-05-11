@@ -5,13 +5,13 @@ import { useDisclosure } from '@mantine/hooks';
 import { createStyles, Drawer, List, Group, em, rem, Box, Flex } from '@mantine/core';
 
 import { MdOutlineMenuOpen, MdVerified, MdOutlineClose } from 'react-icons/md';
-import {motion,useScroll} from "framer-motion";
+import { motion, useScroll } from 'framer-motion';
 import { Button } from './Button';
 
 export const Navbar = () => {
   const { classes } = useStyles();
-  const [ opened, { open, close }] = useDisclosure(false);
-  const { scrollY } = useScroll()
+  const [opened, { open, close }] = useDisclosure(false);
+  const { scrollY } = useScroll();
 
   return (
     <Box className={`${classes.root} app-padding-inline`}>
@@ -19,7 +19,7 @@ export const Navbar = () => {
         <Flex justify="center" align="center" direction="row" className={classes.logo}>
           <Link to={'/'}>
             <span className={classes.greenie}>Greenie</span>
-            <span className={classes.verified} >
+            <span className={classes.verified}>
               <MdVerified />
             </span>
           </Link>
@@ -53,19 +53,12 @@ export const Navbar = () => {
           overlayProps={{ opacity: 0, blur: 0 }}
         >
           <nav className={classes.mobileNavOptionsContainer}>
-            <Flex
-              justify="center"
-              align="start"
-              direction="row" 
-              className={classes.mobileLogo}
-            >
+            <Flex justify="center" align="start" direction="row" className={classes.mobileLogo}>
               <Link to={'/'}>
-                
-                  <span className={`${classes.greenie} ${classes.mobileGreenie}`}>Greenie</span>
-                  <span className={`${classes.verified} ${classes.mobileVerified}`}>
-                    <MdVerified />
-                  </span>
-             
+                <span className={`${classes.greenie} ${classes.mobileGreenie}`}>Greenie</span>
+                <span className={`${classes.verified} ${classes.mobileVerified}`}>
+                  <MdVerified />
+                </span>
               </Link>
               <span className={classes.menuCloseBtn}>
                 <MdOutlineClose role="button" onClick={close} />
@@ -112,7 +105,7 @@ const useStyles = createStyles((theme) => ({
     paddingBlock: '1rem',
     //paddingInline: '1.6rem',
     //borderRadius: '5rem',
-    backgroundColor:'transparent',
+    backgroundColor: 'transparent',
 
     [`@media screen and (max-width: ${em(768)})`]: {
       paddingBlock: '1rem',
@@ -123,9 +116,7 @@ const useStyles = createStyles((theme) => ({
     },
   },
 
-  logo: {
-    
-  },
+  logo: {},
 
   greenie: {
     fontSize: rem(20),
@@ -140,8 +131,8 @@ const useStyles = createStyles((theme) => ({
     fontSize: rem(20),
     color: '#9FE870',
     marginInlineStart: '0.25rem',
-    position: "absolute",
-    top: "1rem",
+    position: 'absolute',
+    top: '1rem',
   },
 
   navOptionsContainer: {

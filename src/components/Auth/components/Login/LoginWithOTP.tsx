@@ -63,7 +63,7 @@ const LoginWithOTP = () => {
             )}
           <input className="otpInput" maxLength={4} type="text" pattern="[0-9]{4}" />
           <Text fw={'light'} fz={'xs'} my={'md'}>
-            Resend{' '}
+            Resend
             <Text fw={'600'} span>
               after 30s
             </Text>

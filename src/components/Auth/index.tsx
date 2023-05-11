@@ -61,7 +61,7 @@ export const Auth = () => {
                 </form>
               </Tabs.Panel>
               <Tabs.Panel value="login">
-                {loginStep === 1 && <LoginStepOne />} {loginStep === 2 && <LoginStepTwo />}{' '}
+                {loginStep === 1 && <LoginStepOne />} {loginStep === 2 && <LoginStepTwo />}
                 {loginStep === 3 && <LoginStepThree />}
               </Tabs.Panel>
             </Tabs>

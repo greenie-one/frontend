@@ -3,7 +3,7 @@ import { _2ColumnLayout } from '../layouts/_2ColumnLayout';
 import hiringDocuments from '../../assets/images/Landing/hiring-documents.png';
 import cap from '../../assets/images/Landing/cap.svg';
 import { MdVerified } from 'react-icons/md';
-import {motion} from "framer-motion";
+import { motion } from 'framer-motion';
 
 export const LandingHiring: React.FC = (): JSX.Element => {
   const { classes } = useStyles();
@@ -23,7 +23,9 @@ export const LandingHiring: React.FC = (): JSX.Element => {
               <span className={classes.verified}>
                 <MdVerified />
               </span>
-              <motion.span animate={{translateY: [-100,0]}} className={classes.verifiedText}>Verified</motion.span>
+              <motion.span animate={{ translateY: [-100, 0] }} className={classes.verifiedText}>
+                Verified
+              </motion.span>
               <span className={classes.capIconContainer}>
                 <img src={cap} alt="cap" className={''} />
               </span>
@@ -65,9 +67,9 @@ const useStyles = createStyles((theme) => ({
     zIndex: -1,
 
     [`@media screen and (max-width: ${em(1280)})`]: {
-      width: "max-content",
-      textAlign: "center",
-      marginInline: "auto",
+      width: 'max-content',
+      textAlign: 'center',
+      marginInline: 'auto',
     },
 
     [`@media screen and (max-width: ${em(1120)})`]: {
@@ -79,7 +81,7 @@ const useStyles = createStyles((theme) => ({
     },
 
     [`@media screen and (max-width: ${em(540)})`]: {
-      width: "18ch",
+      width: '18ch',
     },
 
     [`@media screen and (max-width: ${em(480)})`]: {
@@ -87,7 +89,7 @@ const useStyles = createStyles((theme) => ({
     },
 
     [`@media screen and (max-width: ${em(350)})`]: {
-      width: "16ch",
+      width: '16ch',
       fontSize: rem(26),
     },
   },
@@ -112,17 +114,16 @@ const useStyles = createStyles((theme) => ({
     },
 
     [`@media screen and (max-width: ${em(540)})`]: {
-      left: "5.85rem",
+      left: '5.85rem',
     },
 
     [`@media screen and (max-width: ${em(480)})`]: {
       fontSize: '1.3rem',
     },
 
-
     [`@media screen and (max-width: ${em(350)})`]: {
       fontSize: '1.25rem',
-      left: "4.85rem",
+      left: '4.85rem',
     },
   },
 

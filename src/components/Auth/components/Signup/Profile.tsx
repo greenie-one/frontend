@@ -79,7 +79,7 @@ const Profile = () => {
             Help us create a better experience for you
           </Text>
           <Button className="secondaryBtn" onClick={nextStep}>
-            Connect your{' '}
+            Connect your
             <span>
               <img src={linkedInLogo} alt="linkedIn logo" />
             </span>

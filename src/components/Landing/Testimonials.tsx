@@ -44,10 +44,10 @@ const useStyles = createStyles((theme) => ({
     marginBlockStart: '4rem',
 
     [`@media screen and (max-width: ${em(1280)})`]: {
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      flexDirection: "column",
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      flexDirection: 'column',
     },
   },
 
@@ -79,7 +79,7 @@ const useStyles = createStyles((theme) => ({
     maxWidth: '50ch',
 
     [`@media screen and (max-width: ${em(1280)})`]: {
-      textAlign: "center",
+      textAlign: 'center',
     },
 
     [`@media screen and (max-width: ${em(768)})`]: {

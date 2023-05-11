@@ -49,7 +49,7 @@ const Form = () => {
               {...loginForm.getInputProps('emailPhoneGreenieId')}
             />
             <Text className="tearms-condition">
-              By creating an account, you agree to our <u>Terms of Service</u> and{' '}
+              By creating an account, you agree to our <u>Terms of Service</u> and
               <u>Privacy & Cookie Statement</u>.
             </Text>
           </Box>
@@ -73,7 +73,6 @@ const Form = () => {
         )}
         {state.loginStep < 3 && (
           <Box>
-            {' '}
             <Button type="submit" className="primaryBtn" onClick={handleLogin}>
               {state.loginStep === 1 ? 'Continue' : 'Login'}
             </Button>

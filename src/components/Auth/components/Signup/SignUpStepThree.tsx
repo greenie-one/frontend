@@ -1,4 +1,4 @@
-import { createStyles, em, rem, Text, Button, Flex, Box } from '@mantine/core';
+import { TextInput, Text, Button, Flex, Box } from '@mantine/core';
 import { BsArrowLeft } from 'react-icons/bs';
 import { useAuthContext } from '../../context/AuthContext';
 import '../../styles/global.scss';
@@ -6,6 +6,14 @@ import '../../styles/global.scss';
 const SignUpStepThree = () => {
   const { signupForm, state, dispatch, isPhoneNumber, isValidEmail } = useAuthContext();
   const { signUpStep } = state;
+
+  const VerifyOTP = () => {
+    if (signUpStep === 3 && !signupForm.validateField('otp').hasError) {
+      // API CALL
+
+      dispatch({ type: 'NEXTSIGNUPSTEP' });
+    }
+  };
 
   return (
     <>
@@ -18,14 +26,19 @@ const SignUpStepThree = () => {
           <Text className="profileTextBold">
             Enter the one-time password sent to your email address
           </Text>
-          <input className="otpInput" maxLength={4} type="text" pattern="[0-9]{4}" />
+          <TextInput
+            maxLength={6}
+            pattern="[0-9]{4}"
+            className="otpInput"
+            {...signupForm.getInputProps('otp')}
+          />
           <Text fw={'light'} fz={'xs'} my={'md'}>
-            Resend{' '}
+            Resend
             <Text fw={'600'} span>
               after 30s
             </Text>
           </Text>
-          <Button className="primaryBtn" onClick={() => dispatch({ type: 'NEXTSIGNUPSTEP' })}>
+          <Button className="primaryBtn" onClick={VerifyOTP}>
             Verify
           </Button>
         </Box>
@@ -39,14 +52,19 @@ const SignUpStepThree = () => {
             <Text className="profileTextBold">
               Enter the one-time password sent to your phone number
             </Text>
-            <input className="otpInput" maxLength={4} type="text" pattern="[0-9]{4}" />
+            <TextInput
+              maxLength={6}
+              pattern="[0-9]{4}"
+              className="otpInput"
+              {...signupForm.getInputProps('otp')}
+            />
             <Text fw={'light'} fz={'xs'} my={'md'}>
-              Resend{' '}
+              Resend
               <Text fw={'600'} span>
                 after 30s
               </Text>
             </Text>
-            <Button className="primaryBtn" onClick={() => dispatch({ type: 'NEXTSIGNUPSTEP' })}>
+            <Button className="primaryBtn" onClick={VerifyOTP}>
               Verify
             </Button>
           </Box>

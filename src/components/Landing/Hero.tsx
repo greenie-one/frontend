@@ -4,7 +4,7 @@ import { createStyles, Title, Text, rem, Box, keyframes, em } from '@mantine/cor
 import { _2ColumnLayout } from '../layouts/_2ColumnLayout';
 import { Button } from '../common/Button';
 import { motion } from 'framer-motion';
-import { useAnimate, useTransform , useInView } from 'framer-motion';
+import { useAnimate, useTransform, useInView } from 'framer-motion';
 
 import girlCheckingPhone from '../../assets/images/Landing/girl-checking-phone.png';
 import popup1 from '../../assets/images/Landing/popup-illustration-1.svg';
@@ -47,8 +47,8 @@ export const LandingHero = () => {
     if (isInView) {
       animate(
         'span',
-        { scale:[0,1], transformOrigin:"top left" },
-        { type: 'spring', bounce:0.6, bounceStiffness:400, duration:1.5}
+        { scale: [0, 1], transformOrigin: 'top left' },
+        { type: 'spring', bounce: 0.6, bounceStiffness: 400, duration: 1.5 }
       );
     }
   }, [isInView]);
@@ -58,7 +58,8 @@ export const LandingHero = () => {
       <_2ColumnLayout>
         <Box className={classes.heroContentContainer}>
           <Title order={1} className={classes.heroTitle}>
-            <span className={classes.highlight}>Unlocking</span> <br/>the future of <br/> background verification
+            <span className={classes.highlight}>Unlocking</span> <br />
+            the future of <br /> background verification
           </Title>
           <Text className={classes.heroText}>
             Greenie revolutionizes verification process with a Blockchain based all-in-one secure
@@ -75,27 +76,41 @@ export const LandingHero = () => {
         </Box>
         <Box className={classes.heroIllustration}>
           <span className={classes.girlImageContainer} ref={scope}>
-            <motion.img
-              src={girlCheckingPhone}
-              alt="girlCheckingPhone"
-              className={''}
-            />
-            <motion.span initial={{ translateX:"45%",  translateY:"-20%" }} className={`${classes.popups} ${classes.popup5}`}>
+            <motion.img src={girlCheckingPhone} alt="girlCheckingPhone" className={''} />
+            <motion.span
+              initial={{ translateX: '45%', translateY: '-20%' }}
+              className={`${classes.popups} ${classes.popup5}`}
+            >
               <img src={popup5} alt="popup5" />
             </motion.span>
-            <motion.span initial={{ translateX:"50%",  translateY:"-35%" }} className={`${classes.popups} ${classes.popup4}`}>
+            <motion.span
+              initial={{ translateX: '50%', translateY: '-35%' }}
+              className={`${classes.popups} ${classes.popup4}`}
+            >
               <img src={popup4} alt="popup4" />
             </motion.span>
-            <motion.span initial={{ translateX:"50%",  translateY:"-45%" }} className={`${classes.popups} ${classes.popup6}`}>
+            <motion.span
+              initial={{ translateX: '50%', translateY: '-45%' }}
+              className={`${classes.popups} ${classes.popup6}`}
+            >
               <img src={popup6} alt="popup6" />
             </motion.span>
-            <motion.span initial={{ translateX:'-68.5%',  translateY:'-25%' }} className={`${classes.popups} ${classes.popup2}`}>
+            <motion.span
+              initial={{ translateX: '-68.5%', translateY: '-25%' }}
+              className={`${classes.popups} ${classes.popup2}`}
+            >
               <img src={popup2} alt="popup2" />
             </motion.span>
-            <motion.span initial={{ translateX:'-45%',  translateY:'50%'}} className={`${classes.popups} ${classes.popup3}`}>
+            <motion.span
+              initial={{ translateX: '-45%', translateY: '50%' }}
+              className={`${classes.popups} ${classes.popup3}`}
+            >
               <img src={popup3} alt="popup3" />
             </motion.span>
-            <motion.span initial={{ translateX:"-40%",  translateY:"-50%" }}className={`${classes.popups} ${classes.popup1}`}>
+            <motion.span
+              initial={{ translateX: '-40%', translateY: '-50%' }}
+              className={`${classes.popups} ${classes.popup1}`}
+            >
               <img src={popup1} alt="popup1" />
             </motion.span>
 
@@ -142,7 +157,7 @@ const useStyles = createStyles((theme) => ({
   },
 
   highlight: {
-    color: "#8cf078"
+    color: '#8cf078',
   },
 
   heroContentContainer: {
@@ -157,8 +172,8 @@ const useStyles = createStyles((theme) => ({
   heroTitle: {
     fontSize: '2.5rem',
     fontWeight: 800,
-    width:"18ch",
-    marginTop:"-1rem",
+    width: '18ch',
+    marginTop: '-1rem',
 
     [`@media screen and (max-width: ${em(1280)})`]: {
       textAlign: 'center',
@@ -183,7 +198,7 @@ const useStyles = createStyles((theme) => ({
     fontSize: '0.85rem',
     marginBlockStart: '1.2rem',
     marginBlockEnd: '1.25rem',
-    width:"45ch",
+    width: '45ch',
 
     [`@media screen and (max-width: ${em(1280)})`]: {
       textAlign: 'center',
@@ -240,7 +255,7 @@ const useStyles = createStyles((theme) => ({
   popups: {
     position: 'absolute',
     // animation: `${popupAnimation} 200ms ease-in-out`,
-    transformOrigin: 'center'
+    transformOrigin: 'center',
   },
 
   popup1: {
@@ -250,7 +265,7 @@ const useStyles = createStyles((theme) => ({
     left: 0,
 
     [`@media screen and (max-width: ${em(768)})`]: {
-      width: '45dvw'
+      width: '45dvw',
     },
   },
 

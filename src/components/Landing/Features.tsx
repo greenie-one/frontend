@@ -96,7 +96,7 @@ const featuresCardContent = [
     textColor: '#FFFFFF',
     illustrationSmall: liveTracking,
     illustrationLarge: liveTracking,
-  }
+  },
 ];
 
 export const LandingFeatures = () => {
@@ -169,7 +169,7 @@ const useStyles = createStyles((theme) => ({
     ':nth-of-type(1)': {
       gridColumn: '1/4',
       gridRow: '1/4',
-      marginBlock: 0, 
+      marginBlock: 0,
 
       [`& .${getStylesRef('featuresCardText')}`]: {
         maxWidth: '25ch !important',
@@ -255,7 +255,6 @@ const useStyles = createStyles((theme) => ({
     fontSize: '0.9rem',
     maxWidth: '45ch !important',
     marginBlockStart: '1rem',
- 
 
     [`@media screen and (max-width: ${em(992)})`]: {
       maxWidth: '30ch',

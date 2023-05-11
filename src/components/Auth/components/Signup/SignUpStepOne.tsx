@@ -8,7 +8,7 @@ const SignUpStepOne = () => {
   const { signUpStep } = state;
   const { classes: inputClasses } = inputStyles();
 
-  const nextSignUpStep = () => {
+  const SignupStep1 = () => {
     if (signUpStep === 1 && !signupForm.validateField('emailPhone').hasError) {
       signupForm.clearErrors();
       dispatch({ type: 'NEXTSIGNUPSTEP' });
@@ -25,10 +25,10 @@ const SignUpStepOne = () => {
             {...signupForm.getInputProps('emailPhone')}
           />
           <Text className="tearms-condition">
-            By creating an account, you agree to our <u>Terms of Service</u> and{' '}
+            By creating an account, you agree to our <u>Terms of Service</u> and
             <u>Privacy & Cookie Statement</u>.
           </Text>
-          <Button onClick={nextSignUpStep} className="primaryBtn">
+          <Button onClick={SignupStep1} className="primaryBtn">
             Agree & Join
           </Button>
           <Divider label="Or better yet" className="divider" labelPosition="center" />

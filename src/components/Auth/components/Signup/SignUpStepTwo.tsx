@@ -8,7 +8,7 @@ const SignUpStepTwo = () => {
   const { signUpStep } = state;
   const { classes: inputClasses } = inputStyles();
 
-  const nextSignUpStep = () => {
+  const EmailSignupStep = () => {
     if (
       signUpStep === 2 &&
       !signupForm.validateField('password').hasError &&
@@ -43,10 +43,10 @@ const SignUpStepTwo = () => {
             {...signupForm.getInputProps('confirmPassword')}
           />
           <Text className="tearms-condition">
-            By creating an account, you agree to our <u>Terms of Service</u> and{' '}
+            By creating an account, you agree to our <u>Terms of Service</u> and
             <u>Privacy & Cookie Statement</u>.
           </Text>
-          <Button onClick={nextSignUpStep} className="primaryBtn">
+          <Button onClick={EmailSignupStep} className="primaryBtn">
             Agree & Join
           </Button>
           <Divider label="Or better yet" className="divider" labelPosition="center" />
@@ -62,7 +62,7 @@ const SignUpStepTwo = () => {
               </span>
             </Text>
             <Text className="tearms-condition">
-              By creating an account, you agree to our <u>Terms of Service</u> and{' '}
+              By creating an account, you agree to our <u>Terms of Service</u> and
               <u>Privacy & Cookie Statement</u>.
             </Text>
             <Button onClick={() => dispatch({ type: 'NEXTSIGNUPSTEP' })} className="primaryBtn">
