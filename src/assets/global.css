@@ -469,3 +469,26 @@ header {
     width: 6rem;
   }
 }
+
+
+@media screen and (max-width: 20rem) {
+  .landingFeaturesIllustration3 {
+    bottom:0rem;
+    width:12rem;
+  }
+
+  .landingFeaturesIllustration0 {
+    width: 11rem;
+    bottom:0rem;
+    right:2rem;
+  }
+
+  .landingFeaturesIllustration1 {
+    width: 7rem;
+  }
+
+  .landingFeaturesIllustration2 {
+    width: 11rem;
+    bottom:0rem;
+  }
+}
