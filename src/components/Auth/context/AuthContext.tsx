@@ -19,7 +19,8 @@ type signUpFormType = {
 
 type loginFormType = {
   emailPhoneGreenieId: string;
-  password: string;
+  password?: string;
+  otp?: string;
 };
 
 interface CounterState {
@@ -54,20 +55,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     },
 
     validate: {
-      emailPhone: (value) => {
-        if (value.trim().length === 0) {
-          return 'Email or Phone Number cannot be empty';
-        }
-        if (/^[+]?[\d ]+$/.test(value.trim())) {
-          if (!isPhoneNumber(value)) {
-            return 'Invalid Phone Number';
-          }
-        } else {
-          if (!isValidEmail(value)) {
-            return 'Invalid Email';
-          }
-        }
-      },
+      emailPhone: (value) => emailPhoneValidateRules(value),
       password: hasLength({ min: 9, max: 72 }, 'Password must have at least 9 characters'),
       confirmPassword: matchesField('password', 'Passwords are not the same'),
       otp: hasLength(6, 'OTP must be 6 digits'),
@@ -78,8 +66,40 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     initialValues: {
       emailPhoneGreenieId: '',
       password: '',
+      otp: '',
+    },
+
+    validate: {
+      emailPhoneGreenieId: (value) => emailPhoneValidateRules(value),
+      password: hasLength({ min: 9, max: 72 }, 'Password must have at least 9 characters'),
+      otp: hasLength(6, 'OTP must be 6 digits'),
     },
   });
+
+  const emailPhoneValidateRules = (value: string) => {
+    if (value.trim().length === 0) {
+      return 'Email or Phone Number cannot be empty';
+    }
+    if (/^[+]?[\d ]+$/.test(value.trim())) {
+      if (!isPhoneNumber(value)) {
+        return 'Invalid Phone Number';
+      }
+    } else {
+      if (!isValidEmail(value)) {
+        return 'Invalid Email';
+      }
+    }
+  };
+
+  const isValidEmail = (input: string): boolean => {
+    const Pattern = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+    return Pattern.test(input.trim());
+  };
+
+  const isPhoneNumber = (input: string): boolean => {
+    const pattern = /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/;
+    return pattern.test(input.trim());
+  };
 
   function stepsReducer(state: CounterState, action: CounterAction): CounterState {
     switch (action.type) {
@@ -114,16 +134,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     resetPasswordStep: 0,
     loginWithOTPStep: 0,
   });
-
-  const isValidEmail = (input: string): boolean => {
-    const Pattern = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
-    return Pattern.test(input.trim());
-  };
-
-  const isPhoneNumber = (input: string): boolean => {
-    const pattern = /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/;
-    return pattern.test(input.trim());
-  };
 
   return (
     <AuthContext.Provider

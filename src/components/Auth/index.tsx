@@ -1,19 +1,20 @@
 import { Box, Tabs, createStyles, em } from '@mantine/core';
-import { Login } from './components/Login/Login';
+import { useAuthContext } from './context/AuthContext';
 import { Navbar } from '../common/Navbar';
 import { AuthInfo } from './components/AuthInfo';
-import { useAuthContext } from './context/AuthContext';
 
 import SignUpStepOne from './components/Signup/SignUpStepOne';
 import SignUpStepTwo from './components/Signup/SignUpStepTwo';
 import SignUpStepThree from './components/Signup/SignUpStepThree';
-import './styles/global.scss';
-import Profile from './components/Signup/Profile';
+
 import LoginStepOne from './components/Login/LoginStepOne';
 import LoginStepTwo from './components/Login/LoginStepTwo';
 import LoginStepThree from './components/Login/LoginStepThree';
 import LoginWithOTP from './components/Login/LoginWithOTP';
+
+import Profile from './components/Signup/Profile';
 import ForgotPassword from './components/Login/ForgotPassword';
+import './styles/global.scss';
 
 export const Auth = () => {
   const { classes } = useStyles();
@@ -61,7 +62,8 @@ export const Auth = () => {
                 </form>
               </Tabs.Panel>
               <Tabs.Panel value="login">
-                {loginStep === 1 && <LoginStepOne />} {loginStep === 2 && <LoginStepTwo />}
+                {loginStep === 1 && <LoginStepOne />}
+                {loginStep === 2 && <LoginStepTwo />}
                 {loginStep === 3 && <LoginStepThree />}
               </Tabs.Panel>
             </Tabs>
