@@ -83,10 +83,11 @@ const useStyles = createStyles((theme) => ({
     alignItems: 'center',
     justifyContent: 'space-between',
     height: '100vh',
-    [`@media screen and (max-width: ${em(768)})`]: {
+    [`@media screen and (max-width: ${em(1024)})`]: {
       flexDirection: 'column',
       alignItems: 'flex-start',
       justifyContent: 'flex-start',
+      height: '90vh',
     },
   },
 

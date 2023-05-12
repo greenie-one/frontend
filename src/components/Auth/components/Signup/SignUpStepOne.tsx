@@ -25,7 +25,7 @@ const SignUpStepOne = () => {
             {...signupForm.getInputProps('emailPhone')}
           />
           <Text className="tearms-condition">
-            By creating an account, you agree to our <u>Terms of Service</u> and
+            By creating an account, you agree to our <u>Terms of Service</u> and{' '}
             <u>Privacy & Cookie Statement</u>.
           </Text>
           <Button onClick={SignupStep1} className="primaryBtn">
@@ -70,10 +70,13 @@ const inputStyles = createStyles((theme) => ({
     },
   },
 
-  // for password field
   innerInput: {
     height: rem(54),
-    paddingTop: rem(8),
+    paddingTop: rem(28),
+
+    [`@media screen and (max-width: ${em(1024)})`]: {
+      paddingTop: rem(8),
+    },
   },
 
   label: {

@@ -120,10 +120,13 @@ const inputStyles = createStyles((theme) => ({
     },
   },
 
-  // for password field
   innerInput: {
     height: rem(54),
-    paddingTop: rem(8),
+    paddingTop: rem(28),
+
+    [`@media screen and (max-width: ${em(1024)})`]: {
+      paddingTop: rem(8),
+    },
   },
 
   label: {
