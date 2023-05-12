@@ -26,21 +26,10 @@
   }
 }
 
-.otpInput {
-  display: block;
-  width: 458px;
-  height: 68px;
-  background: $white;
-  border: 1px solid $lightGray;
-  border-radius: 8px;
-  padding: 0.75rem;
-  letter-spacing: 1em;
-}
-
 @media screen and (max-width: 1024px) {
   .disbledInput {
     position: relative;
-    width: 310px;
+    width: 350px;
     height: 46px;
     background: $white;
     border: 1px solid $lightGray;
@@ -52,23 +41,15 @@
       position: absolute;
       top: 13px;
       right: 20px;
-      font-size: 8px;
+      font-size: 10px;
       font-weight: 600;
       line-height: 18px;
       color: $gray;
       background-color: #f3f3f3;
-      padding: 0px 10px;
+      padding: 2px 10px;
       gap: 10px;
       border-radius: 40px;
       cursor: pointer;
     }
-  }
-
-  .otpInput {
-    width: 310px;
-    height: 46px;
-    border-radius: 6px;
-    padding: 0.75rem;
-    font-size: 14px;
   }
 }

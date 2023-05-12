@@ -44,7 +44,6 @@ const Form = () => {
           <Box>
             <TextInput
               label="Email or Phone number"
-              style={{ borderRadius: '1rem' }}
               classNames={inputClasses}
               {...loginForm.getInputProps('emailPhoneGreenieId')}
             />
@@ -90,7 +89,8 @@ export default Form;
 const inputStyles = createStyles((theme) => ({
   root: {
     position: 'relative',
-    marginBottom: '16px',
+    marginBottom: '24px',
+    marginTop: '24px',
   },
 
   input: {
@@ -106,7 +106,7 @@ const inputStyles = createStyles((theme) => ({
     color: '#697082',
 
     [`@media screen and (max-width: ${em(1024)})`]: {
-      width: '310px',
+      width: '350px',
       height: '46px',
       borderRadius: '6px',
       fontSize: '10px',
@@ -118,7 +118,7 @@ const inputStyles = createStyles((theme) => ({
   // for password field
   innerInput: {
     height: rem(54),
-    paddingTop: rem(18),
+    paddingTop: rem(8),
   },
 
   label: {
@@ -133,8 +133,9 @@ const inputStyles = createStyles((theme) => ({
     color: '#697082',
 
     [`@media screen and (max-width: ${em(1024)})`]: {
-      fontSize: '8px',
+      fontSize: '10px',
       lineHeight: '10px',
+      paddingTop: '8px',
     },
   },
 }));

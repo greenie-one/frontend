@@ -1,11 +1,11 @@
-import { Text, Button, Box, Flex } from '@mantine/core';
+import { Text, Button, Box, Flex, em, TextInput, createStyles } from '@mantine/core';
 import { useAuthContext } from '../../context/AuthContext';
 import { BsArrowLeft } from 'react-icons/bs';
 import '../../styles/global.scss';
 
 const LoginWithOTP = () => {
   const { state, dispatch, isPhoneNumber, loginForm, isValidEmail } = useAuthContext();
-
+  const { classes: inputClasses } = inputStyles();
   const handleClick = () => {
     if (state.loginWithOTPStep === 2) {
       dispatch({ type: 'PREVLOGINWITHOTPSTEP' });
@@ -61,7 +61,12 @@ const LoginWithOTP = () => {
                 Enter the one-time passowrd sent to your phone number
               </Text>
             )}
-          <input className="otpInput" maxLength={4} type="text" pattern="[0-9]{4}" />
+          <TextInput
+            classNames={inputClasses}
+            maxLength={6}
+            pattern="[0-9]{4}"
+            {...loginForm.getInputProps('otp')}
+          />
           <Text fw={'light'} fz={'xs'} my={'md'}>
             Resend
             <Text fw={'600'} span>
@@ -76,3 +81,32 @@ const LoginWithOTP = () => {
 };
 
 export default LoginWithOTP;
+
+const inputStyles = createStyles((theme) => ({
+  root: {
+    position: 'relative',
+    marginBottom: '24px',
+    marginTop: '24px',
+  },
+
+  input: {
+    width: '458px',
+    height: '68px',
+    fontSize: '16px',
+    fontWeight: 500,
+    borderRadius: '8px',
+    border: '1px solid #D1D4DB',
+    lineHeight: '19px',
+    letterSpacing: '24px',
+    color: '#697082',
+
+    [`@media screen and (max-width: ${em(1024)})`]: {
+      width: '350px',
+      height: '46px',
+      borderRadius: '6px',
+      fontSize: '12px',
+      lineHeight: '12px',
+      margin: '0 auto',
+    },
+  },
+}));

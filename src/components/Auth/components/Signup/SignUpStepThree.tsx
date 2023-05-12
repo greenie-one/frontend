@@ -1,4 +1,4 @@
-import { TextInput, Text, Button, Flex, Box } from '@mantine/core';
+import { TextInput, createStyles, rem, em, Text, Button, Flex, Box } from '@mantine/core';
 import { BsArrowLeft } from 'react-icons/bs';
 import { useAuthContext } from '../../context/AuthContext';
 import '../../styles/global.scss';
@@ -6,6 +6,7 @@ import '../../styles/global.scss';
 const SignUpStepThree = () => {
   const { signupForm, state, dispatch, isPhoneNumber, isValidEmail } = useAuthContext();
   const { signUpStep } = state;
+  const { classes: inputClasses } = inputStyles();
 
   const VerifyOTP = () => {
     if (signUpStep === 3 && !signupForm.validateField('otp').hasError) {
@@ -27,9 +28,9 @@ const SignUpStepThree = () => {
             Enter the one-time password sent to your email address
           </Text>
           <TextInput
+            classNames={inputClasses}
             maxLength={6}
             pattern="[0-9]{4}"
-            className="otpInput"
             {...signupForm.getInputProps('otp')}
           />
           <Text fw={'light'} fz={'xs'} my={'md'}>
@@ -53,9 +54,9 @@ const SignUpStepThree = () => {
               Enter the one-time password sent to your phone number
             </Text>
             <TextInput
+              classNames={inputClasses}
               maxLength={6}
               pattern="[0-9]{4}"
-              className="otpInput"
               {...signupForm.getInputProps('otp')}
             />
             <Text fw={'light'} fz={'xs'} my={'md'}>
@@ -74,3 +75,32 @@ const SignUpStepThree = () => {
 };
 
 export default SignUpStepThree;
+
+const inputStyles = createStyles((theme) => ({
+  root: {
+    position: 'relative',
+    marginBottom: '24px',
+    marginTop: '24px',
+  },
+
+  input: {
+    width: '458px',
+    height: '68px',
+    fontSize: '16px',
+    fontWeight: 500,
+    borderRadius: '8px',
+    border: '1px solid #D1D4DB',
+    lineHeight: '19px',
+    letterSpacing: '24px',
+    color: '#697082',
+
+    [`@media screen and (max-width: ${em(1024)})`]: {
+      width: '350px',
+      height: '46px',
+      borderRadius: '6px',
+      fontSize: '14px',
+      lineHeight: '12px',
+      margin: '0 auto',
+    },
+  },
+}));

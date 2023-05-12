@@ -61,7 +61,7 @@ const inputStyles = createStyles((theme) => ({
     color: '#697082',
 
     [`@media screen and (max-width: ${em(1024)})`]: {
-      width: '310px',
+      width: '350px',
       height: '46px',
       borderRadius: '6px',
       fontSize: '10px',
@@ -73,7 +73,7 @@ const inputStyles = createStyles((theme) => ({
   // for password field
   innerInput: {
     height: rem(54),
-    paddingTop: rem(18),
+    paddingTop: rem(8),
   },
 
   label: {
@@ -88,8 +88,9 @@ const inputStyles = createStyles((theme) => ({
     color: '#697082',
 
     [`@media screen and (max-width: ${em(1024)})`]: {
-      fontSize: '8px',
+      fontSize: '10px',
       lineHeight: '10px',
+      paddingTop: '8px',
     },
   },
 }));

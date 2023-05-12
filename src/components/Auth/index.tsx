@@ -78,11 +78,15 @@ export const Auth = () => {
 
 const useStyles = createStyles((theme) => ({
   root: {
-    display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     height: '100vh',
-    [`@media screen and (max-width: ${em(1024)})`]: {
-      gridTemplateColumns: '1fr',
+    [`@media screen and (max-width: ${em(768)})`]: {
+      flexDirection: 'column',
+      alignItems: 'flex-start',
+      justifyContent: 'flex-start',
     },
   },
 

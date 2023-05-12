@@ -3,6 +3,7 @@ import { TextInput, createStyles, em, rem, Text, Button, Box, Flex } from '@mant
 import { useAuthContext } from '../../context/AuthContext';
 import { BsArrowLeft } from 'react-icons/bs';
 import '../../styles/global.scss';
+import ForgotPassowrdStepThree from './ForgotPassowrdStepThree';
 
 const ForgotPassword = () => {
   const { classes: inputClasses } = inputStyles();
@@ -83,36 +84,7 @@ const ForgotPassword = () => {
         </Box>
       )}
 
-      {state.resetPasswordStep === 3 && (
-        <Box>
-          {isValidEmail(loginForm.values.emailPhoneGreenieId) && (
-            <Text className="profileTextBold">
-              Enter the one-time passowrd sent to your email address
-            </Text>
-          )}
-          {isPhoneNumber(loginForm.values.emailPhoneGreenieId) && (
-            <Text className="profileTextBold">
-              Enter the one-time passowrd sent to your phone number
-            </Text>
-          )}
-          {!isValidEmail(loginForm.values.emailPhoneGreenieId) &&
-            !isPhoneNumber(loginForm.values.emailPhoneGreenieId) && (
-              <Text className="profileTextBold">
-                Enter the one-time passowrd sent to your phone number
-              </Text>
-            )}
-          <input className="otpInput" maxLength={4} type="text" pattern="[0-9]{4}" />
-          <Text fw={'light'} fz={'xs'} my={'md'}>
-            Resend
-            <Text fw={'600'} span>
-              after 30s
-            </Text>
-          </Text>
-          <Button className="primaryBtn" fullWidth radius="xl" color="teal">
-            Verify
-          </Button>
-        </Box>
-      )}
+      {state.resetPasswordStep === 3 && <ForgotPassowrdStepThree />}
     </Box>
   );
 };
@@ -122,7 +94,8 @@ export default ForgotPassword;
 const inputStyles = createStyles((theme) => ({
   root: {
     position: 'relative',
-    marginBottom: '16px',
+    marginBottom: '24px',
+    marginTop: '24px',
   },
 
   input: {
@@ -138,7 +111,7 @@ const inputStyles = createStyles((theme) => ({
     color: '#697082',
 
     [`@media screen and (max-width: ${em(1024)})`]: {
-      width: '310px',
+      width: '350px',
       height: '46px',
       borderRadius: '6px',
       fontSize: '10px',
@@ -150,7 +123,7 @@ const inputStyles = createStyles((theme) => ({
   // for password field
   innerInput: {
     height: rem(54),
-    paddingTop: rem(18),
+    paddingTop: rem(8),
   },
 
   label: {
@@ -165,8 +138,9 @@ const inputStyles = createStyles((theme) => ({
     color: '#697082',
 
     [`@media screen and (max-width: ${em(1024)})`]: {
-      fontSize: '8px',
+      fontSize: '10px',
       lineHeight: '10px',
+      paddingTop: '8px',
     },
   },
 }));
