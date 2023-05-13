@@ -4,6 +4,7 @@ import { useForm, UseFormReturnType, isNotEmpty, matchesField, hasLength } from 
 type AuthContextType = {
   signupForm: UseFormReturnType<signUpFormType>;
   loginForm: UseFormReturnType<loginFormType>;
+  profileForm: UseFormReturnType<ProfileFormType>;
   state: CounterState;
   dispatch: React.Dispatch<CounterAction>;
   isPhoneNumber: (input: string) => boolean;
@@ -21,6 +22,12 @@ type loginFormType = {
   emailPhoneGreenieId: string;
   password?: string;
   otp?: string;
+};
+
+type ProfileFormType = {
+  firstName: string;
+  lastName: string;
+  description: string[];
 };
 
 interface CounterState {
@@ -73,6 +80,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       emailPhoneGreenieId: (value) => emailPhoneValidateRules(value),
       password: hasLength({ min: 9, max: 72 }, 'Password must have at least 9 characters'),
       otp: hasLength(6, 'OTP must be 6 digits'),
+    },
+  });
+
+  const profileForm = useForm<ProfileFormType>({
+    initialValues: {
+      firstName: '',
+      lastName: '',
+      description: [],
+    },
+
+    validate: {
+      firstName: isNotEmpty('First Name cannot be empty'),
+      lastName: isNotEmpty('Last Name cannot be empty'),
     },
   });
 
@@ -140,6 +160,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       value={{
         signupForm,
         loginForm,
+        profileForm,
         state,
         dispatch,
         isPhoneNumber,

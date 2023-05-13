@@ -1,5 +1,16 @@
 import { useState } from 'react';
-import { TextInput, createStyles, rem, Text, Button, Box, Flex, em, Chip } from '@mantine/core';
+import {
+  TextInput,
+  createStyles,
+  rem,
+  Text,
+  Button,
+  Box,
+  Flex,
+  em,
+  Chip,
+  Group,
+} from '@mantine/core';
 import { useAuthContext } from '../../context/AuthContext';
 import { BsArrowLeft } from 'react-icons/bs';
 import linkedInLogo from '../../assets/linkedIn-logo.png';
@@ -19,20 +30,37 @@ const skillSetOne = [
 
 const Profile = () => {
   const { classes: inputClasses } = inputStyles();
-  const [active, setActive] = useState(1);
-  const { dispatch } = useAuthContext();
+  const { profileForm, dispatch } = useAuthContext();
 
-  const nextStep = () => {
-    setActive((current) => (current < 4 ? current + 1 : current));
-  };
+  const [active, setActive] = useState(1);
 
   const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
-
   const handleGoBack = () => {
     if (active === 1) {
       dispatch({ type: 'PREVSIGNUPSTEP' });
     } else {
       prevStep();
+    }
+  };
+
+  const nextStep = () => {
+    if (
+      active === 1 &&
+      !profileForm.validateField('firstName').hasError &&
+      !profileForm.validateField('lastName').hasError
+    ) {
+      profileForm.clearErrors();
+      setActive((current) => (current < 4 ? current + 1 : current));
+    }
+
+    if (active === 2) {
+      setActive((current) => (current < 4 ? current + 1 : current));
+    }
+  };
+
+  const submitProfile = () => {
+    if (active === 3) {
+      // api call
     }
   };
 
@@ -55,8 +83,16 @@ const Profile = () => {
         <Box>
           <Text className="steps">{`Steps ${active}`}/3</Text>
           <Text className="profileText">What should we call you?</Text>
-          <TextInput label="First Name" classNames={inputClasses} />
-          <TextInput label="Last Name" classNames={inputClasses} />
+          <TextInput
+            label="First Name"
+            classNames={inputClasses}
+            {...profileForm.getInputProps('firstName')}
+          />
+          <TextInput
+            label="Last Name"
+            classNames={inputClasses}
+            {...profileForm.getInputProps('lastName')}
+          />
           <Button className="primaryBtn" onClick={nextStep}>
             Continue
           </Button>
@@ -75,9 +111,11 @@ const Profile = () => {
               borderRadius: '1rem',
             }}
           ></Box>
+
           <Text className="profileText" align="center">
             Help us create a better experience for you
           </Text>
+
           <Button className="secondaryBtn" onClick={nextStep}>
             Connect your
             <span>
@@ -85,6 +123,7 @@ const Profile = () => {
             </span>
             LinkedIn Account
           </Button>
+
           <Text
             fz={'xs'}
             align="center"
@@ -110,20 +149,34 @@ const Profile = () => {
               marginBottom: '16px',
             }}
           ></Box>
+
           <Text className="profileText" align="center">
             Introduce yourself in 3 words
           </Text>
+
           <Box className="skills-box">
-            <Box className="skill-wrapper">
-              {skillSetOne.map((skill) => (
-                <Chip key={skill} variant="filled" color="teal" size={'xs'}>
-                  {skill}
-                </Chip>
-              ))}
-            </Box>
+            <Chip.Group multiple {...profileForm.getInputProps('description')}>
+              <Group className="skill-wrapper">
+                {skillSetOne.map((skill) => (
+                  <Chip
+                    key={skill}
+                    value={skill}
+                    variant="filled"
+                    color="teal"
+                    size={'xs'}
+                    disabled={
+                      profileForm.values.description.length === 3 &&
+                      !profileForm.values.description.includes(skill)
+                    }
+                  >
+                    {skill}
+                  </Chip>
+                ))}
+              </Group>
+            </Chip.Group>
           </Box>
 
-          <Button className="secondaryBtn" onClick={nextStep}>
+          <Button className="secondaryBtn" onClick={submitProfile}>
             Take me to my Greenie Profile
           </Button>
         </Box>
