@@ -1,9 +1,9 @@
 import { TextInput, createStyles, em, rem, Text, Button, Box, Flex } from '@mantine/core';
-
 import { useAuthContext } from '../../context/AuthContext';
+
+import ForgotPassowrdStepThree from './ForgotPassowrdStepThree';
 import { BsArrowLeft } from 'react-icons/bs';
 import '../../styles/global.scss';
-import ForgotPassowrdStepThree from './ForgotPassowrdStepThree';
 
 const ForgotPassword = () => {
   const { classes: inputClasses } = inputStyles();

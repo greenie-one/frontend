@@ -1,11 +1,19 @@
 import { Text, Button, Flex, Box, TextInput, createStyles, em } from '@mantine/core';
 import { useAuthContext } from '../../context/AuthContext';
-import '../../styles/global.scss';
+
 import { BsArrowLeft } from 'react-icons/bs';
+import '../../styles/global.scss';
 
 const LoginStepThree = () => {
   const { loginForm, state, dispatch, isPhoneNumber } = useAuthContext();
   const { classes: inputClasses } = inputStyles();
+
+  const handleLogin = () => {
+    if (!loginForm.validateField('otp').hasError) {
+      // login api call
+    }
+  };
+
   return (
     <>
       {state.loginStep === 3 &&
@@ -35,7 +43,9 @@ const LoginStepThree = () => {
                 after 30s
               </Text>
             </Text>
-            <Button className="primaryBtn">Verify</Button>
+            <Button className="primaryBtn" onClick={handleLogin}>
+              Verify & Login
+            </Button>
           </Box>
         )}
     </>

@@ -10,9 +10,10 @@ import {
   em,
 } from '@mantine/core';
 import { useAuthContext } from '../../context/AuthContext';
+
 import GoogleButton from '../GoogleButton';
-import '../../styles/global.scss';
 import { BsArrowLeft } from 'react-icons/bs';
+import '../../styles/global.scss';
 
 const LoginStepTwo = () => {
   const { classes: inputClasses } = inputStyles();
@@ -23,14 +24,16 @@ const LoginStepTwo = () => {
     dispatch({ type: 'NEXTLOGINSTEP' });
   };
 
-  const handleLoginWithOTP = () => {
-    dispatch({ type: 'NEXTLOGINWITHOTPSTEP' });
-    dispatch({ type: 'NEXTLOGINSTEP' });
-  };
-
-  const handleClick = () => {
+  const handleChangeButton = () => {
     dispatch({ type: 'RESETLOGINSTEP' });
   };
+
+  const handleLogin = () => {
+    if (!loginForm.validateField('password').hasError) {
+      // login api call
+    }
+  };
+
   return (
     <>
       {state.loginStep === 2 && isValidEmail(loginForm.values.emailPhoneGreenieId) && (
@@ -41,18 +44,21 @@ const LoginStepTwo = () => {
             {...loginForm.getInputProps('password')}
           />
           <Flex direction={'row'} align={'center'} justify={'space-between'} mt={'6px'}>
-            <Text className="loginLink" onClick={handleLoginWithOTP}>
-              Login using OTP
+            <Text className="loginLink" onClick={() => dispatch({ type: 'PREVLOGINSTEP' })}>
+              Login using Phone Number
             </Text>
             <Text className="loginLink" onClick={handleForgotPassowrd}>
               Forgot password?
             </Text>
           </Flex>
-          <Button className="primaryBtn">Login</Button>
+          <Button className="primaryBtn" onClick={handleLogin}>
+            Login
+          </Button>
           <Divider label="Or better yet" className="divider" labelPosition="center" />
           <GoogleButton />
         </Box>
       )}
+
       {state.loginStep === 2 && isPhoneNumber(loginForm.values.emailPhoneGreenieId) && (
         <Box>
           <Flex
@@ -65,7 +71,7 @@ const LoginStepTwo = () => {
           </Flex>
           <Text className="disbledInput">
             {loginForm.values.emailPhoneGreenieId}
-            <span className="changeBtn" onClick={handleClick}>
+            <span className="changeBtn" onClick={handleChangeButton}>
               Change
             </span>
           </Text>
@@ -77,7 +83,8 @@ const LoginStepTwo = () => {
           </Button>
         </Box>
       )}
-      {state.loginStep === 2 &&
+
+      {/* {state.loginStep === 2 &&
         !isPhoneNumber(loginForm.values.emailPhoneGreenieId) &&
         !isValidEmail(loginForm.values.emailPhoneGreenieId) && (
           <Box>
@@ -88,7 +95,7 @@ const LoginStepTwo = () => {
             />
             <Flex direction={'row'} align={'center'} justify={'space-between'} mt={'6px'}>
               <Text className="loginLink" onClick={handleLoginWithOTP}>
-                Login using OTP
+                Login using Phone Number
               </Text>
               <Text className="loginLink" onClick={handleForgotPassowrd}>
                 Forgot password?
@@ -98,7 +105,7 @@ const LoginStepTwo = () => {
             <Divider label="Or better yet" className="divider" labelPosition="center" />
             <GoogleButton />
           </Box>
-        )}
+        )} */}
     </>
   );
 };
