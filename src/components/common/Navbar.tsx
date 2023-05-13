@@ -23,7 +23,8 @@ export const Navbar = () => {
   return (
     <Box  className={`${classes.root} app-padding-inline`} style={{
       boxShadow: scrollPos > 600 ? '0px 4px 34px rgba(0, 0, 0, 0.15)' : '',
-      paddingInline: scrollPos > 600 ?  '2rem': '',
+      paddingLeft: scrollPos > 600 ?  '2rem': '',
+      paddingRight: scrollPos > 600 ?  '2rem': '',
       borderRadius: scrollPos > 600 ? '5rem' : '',
       position: scrollPos > 600 ? 'fixed':'relative',
       top: scrollPos > 600 ? 0: '',
@@ -35,7 +36,7 @@ export const Navbar = () => {
         <Flex justify="center" align="center" direction="row" className={classes.logo}>
           <Link to={'/'}>
             <span className={classes.greenie}>Greenie</span>
-            <span className={classes.verified} >
+            <span className={classes.verified}>
               <MdVerified />
             </span>
           </Link>
@@ -76,12 +77,10 @@ export const Navbar = () => {
               className={classes.mobileLogo}
             >
               <Link to={'/'}>
-                
-                  <span className={`${classes.greenie} ${classes.mobileGreenie}`}>Greenie</span>
-                  <span className={`${classes.verified} ${classes.mobileVerified}`}>
-                    <MdVerified />
-                  </span>
-             
+                <span className={`${classes.greenie} ${classes.mobileGreenie}`}>Greenie</span>
+                <span className={`${classes.verified} ${classes.mobileVerified}`}>
+                  <MdVerified />
+                </span>
               </Link>
               <span className={classes.menuCloseBtn}>
                 <MdOutlineClose role="button" onClick={close} />
@@ -128,7 +127,7 @@ const useStyles = createStyles((theme) => ({
     paddingBlock: '1rem',
     //paddingInline: '1.6rem',
     //borderRadius: '5rem',
-    backgroundColor:'transparent',
+    backgroundColor: 'transparent',
 
     [`@media screen and (max-width: ${em(768)})`]: {
       paddingBlock: '1rem',
@@ -139,9 +138,7 @@ const useStyles = createStyles((theme) => ({
     },
   },
 
-  logo: {
-    
-  },
+  logo: {},
 
   greenie: {
     fontSize: rem(20),

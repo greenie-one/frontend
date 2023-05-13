@@ -157,7 +157,7 @@ const useStyles = createStyles((theme) => ({
       columnGap: '4rem',
       rowGap: '1rem',
       display: 'grid',
-      gridTemplateColumns: 'max-content max-content',
+      gridTemplateColumns: '1fr 1fr',
     },
 
     [`@media screen and (max-width: ${em(480)})`]: {

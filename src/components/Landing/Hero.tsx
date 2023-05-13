@@ -4,7 +4,7 @@ import { createStyles, Title, Text, rem, Box, keyframes, em } from '@mantine/cor
 import { _2ColumnLayout } from '../layouts/_2ColumnLayout';
 import { Button } from '../common/Button';
 import { motion } from 'framer-motion';
-import { useAnimate, useTransform , useInView } from 'framer-motion';
+import { useAnimate, useTransform, useInView } from 'framer-motion';
 
 import girlCheckingPhone from '../../assets/images/Landing/girl-checking-phone.png';
 import popup1 from '../../assets/images/Landing/popup-illustration-1.svg';
@@ -69,24 +69,32 @@ export const LandingHero = () => {
         </Box>
         <Box className={classes.heroIllustration}>
           <span className={classes.girlImageContainer} ref={scope}>
-            <motion.img
-              src={girlCheckingPhone}
-              alt="girlCheckingPhone"
-              className={''}
-            />
-            <motion.span initial={{ translateX:"45%",  translateY:"-20%" }} className={`${classes.popups} ${classes.popup5}`}>
+            <motion.img src={girlCheckingPhone} alt="girlCheckingPhone" className={''} />
+            <motion.span
+              initial={{ translateX: '45%', translateY: '-20%' }}
+              className={`${classes.popups} ${classes.popup5}`}
+            >
               <img src={popup5} alt="popup5" />
             </motion.span>
-            <motion.span initial={{ translateX:"50%",  translateY:"-35%" }} className={`${classes.popups} ${classes.popup4}`}>
+            <motion.span
+              initial={{ translateX: '50%', translateY: '-35%' }}
+              className={`${classes.popups} ${classes.popup4}`}
+            >
               <img src={popup4} alt="popup4" />
             </motion.span>
-            <motion.span initial={{ translateX:"50%",  translateY:"-45%" }} className={`${classes.popups} ${classes.popup6}`}>
+            <motion.span
+              initial={{ translateX: '50%', translateY: '-45%' }}
+              className={`${classes.popups} ${classes.popup6}`}
+            >
               <img src={popup6} alt="popup6" />
             </motion.span>
             <motion.span initial={{ translateX:'-65%',  translateY:'-25%' }} className={`${classes.popups} ${classes.popup2}`}>
               <img src={popup2} alt="popup2" />
             </motion.span>
-            <motion.span initial={{ translateX:'-45%',  translateY:'50%'}} className={`${classes.popups} ${classes.popup3}`}>
+            <motion.span
+              initial={{ translateX: '-45%', translateY: '50%' }}
+              className={`${classes.popups} ${classes.popup3}`}
+            >
               <img src={popup3} alt="popup3" />
             </motion.span>
             <motion.span initial={{ translateX:"-32%",  translateY:"-50%" }}className={`${classes.popups} ${classes.popup1}`}>
@@ -105,7 +113,7 @@ const useStyles = createStyles((theme) => ({
   },
 
   highlight: {
-    color: "#8cf078"
+    color: '#8cf078',
   },
 
   heroContentContainer: {
@@ -120,7 +128,11 @@ const useStyles = createStyles((theme) => ({
   heroTitle: {
     fontSize: '3rem',
     fontWeight: 800,
-    width:"18ch",
+
+    [`@media screen and (max-width: ${em(1440)})`]: {
+      fontSize: '2.6rem',
+      width:"18ch"
+    },
 
 
     [`@media screen and (max-width: ${em(1340)})`]: {
@@ -148,6 +160,10 @@ const useStyles = createStyles((theme) => ({
 
     [`@media screen and (max-width: ${em(425)})`]: {
       fontSize: '1.7rem',
+    },
+
+    [`@media screen and (max-width: ${em(320)})`]: {
+      fontSize: '1.5rem',
     },
   },
 
@@ -194,6 +210,7 @@ const useStyles = createStyles((theme) => ({
 
   heroIllustration: {
     zIndex: -1,
+    width:"98%",
 
     [`@media screen and (max-width: ${em(1280)})`]: {
       gridRow: '1/2',
@@ -217,7 +234,7 @@ const useStyles = createStyles((theme) => ({
   popups: {
     position: 'absolute',
     // animation: `${popupAnimation} 200ms ease-in-out`,
-    transformOrigin: 'center'
+    transformOrigin: 'center',
   },
 
   popup1: {
