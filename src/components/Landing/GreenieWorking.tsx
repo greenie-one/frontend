@@ -52,7 +52,7 @@ const workingsCardContent = [
   {
     id: randomId(),
     cardBg: '#D8FFF1',
-    title: 'Creating a greenie account is easier than boiling an egg.',
+    title: 'Creating a Greenie account is easier than boiling an egg.',
     titleColor: '#17A672',
     text: 'Instantly create an account with email ID. Verify it using Adhaar, Pan or a Driving License. Get a unique Greenie ID.  You are Sorted.',
     textColor: '#191819',
@@ -100,7 +100,7 @@ export const LandingGreenieWorkings = () => {
           '1. Create Greenie Account',
           '2. Verify Documents',
           '3. Send or Receive Request',
-          '4. Share ID',
+          '4. Share Greenie ID',
         ].map((text, id) => {
           return (
             <Button
@@ -144,6 +144,7 @@ const useStyles = createStyles((theme) => ({
     flexDirection: 'column',
     alignItems: 'stretch',
     gap: '2rem',
+    paddingTop:"0rem"
   },
 
   workingsBtnContainer: {
@@ -156,7 +157,7 @@ const useStyles = createStyles((theme) => ({
       columnGap: '4rem',
       rowGap: '1rem',
       display: 'grid',
-      gridTemplateColumns: 'max-content max-content',
+      gridTemplateColumns: '1fr 1fr',
     },
 
     [`@media screen and (max-width: ${em(480)})`]: {
@@ -171,10 +172,13 @@ const useStyles = createStyles((theme) => ({
   workingsBtn: {
     transition: 'border-color 100ms linear, color 150ms linear',
     fontSize: rem(14.5),
+    backgroundColor: 'transparent',
+    border: '1px solid #17A672',
+    color:"#17A672",
 
     ':hover': {
-      border: '1px solid #17A672',
-      color: '#17A672',
+      backgroundColor: '#17A672',
+      color: 'white',
       transition: 'border-color 100ms linear, color 100ms linear',
     },
 
@@ -210,8 +214,8 @@ const useStyles = createStyles((theme) => ({
   },
 
   activeWorkingBtn: {
-    border: '1px solid #17A672',
-    color: '#17A672',
+    backgroundColor: '#17A672',
+    color: 'white',
   },
 
   workingCardsContainer: {

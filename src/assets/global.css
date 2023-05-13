@@ -44,12 +44,13 @@ html,
 html:focus-within {
   scroll-behavior: smooth;
   font-size: 100%;
+  overflow-x: hidden;
 }
 
 body {
   min-height: 100dvh;
   width: 100%;
-  font-size: 0.938rem;
+  font-size: 0.938rem;  
   font-weight: 400;
   display: block;
   text-rendering: optimizeSpeed;
@@ -192,6 +193,7 @@ header {
 
 .section {
   padding-block: var(--section-padding-block);
+  padding-bottom: 0rem;
 }
 
 .mantine-Drawer-content {
@@ -217,13 +219,13 @@ header {
 }
 
 .landingFeaturesIllustration0 {
-  width: 19rem;
+  width: 19rem; 
   bottom: 0;
 }
 
 .landingFeaturesIllustration1 {
-  width: 9rem;
-  bottom: 0rem;
+  width: 7rem;
+  bottom: 1rem;
 }
 
 .landingFeaturesIllustration2 {
@@ -328,7 +330,7 @@ header {
   }
 
   .landingFeaturesIllustration0 {
-    width: 8rem;
+    width: 14rem;
   }
 
   .landingFeaturesIllustration1 {
@@ -336,7 +338,7 @@ header {
   }
 
   .landingFeaturesIllustration2 {
-    width: 6rem;
+    width: 14rem;
   }
 
   .landingFeaturesIllustration3 {
@@ -346,21 +348,20 @@ header {
 
 @media screen and (max-width: 62em) {
   .landingFeaturesIllustration0 {
-    width: 12.5rem;
+    width: 17rem;
   }
 
   .landingFeaturesIllustration1 {
-    width: 10rem;
+    width: 8rem;
   }
 
   .landingFeaturesIllustration2 {
-    width: 11rem;
+    width: 13rem;
   }
 
   .landingFeaturesIllustration3 {
-    width: 20rem;
+    width: 15rem;
     right: 2rem;
-    bottom: 1rem;
   }
 
   .landingFeaturesIllustration3 img {
@@ -375,17 +376,15 @@ header {
   }
 
   .landingFeaturesIllustration0 {
-    width: 10rem;
-    bottom: 2rem;
+    width: 18rem;
   }
 
   .landingFeaturesIllustration1 {
-    bottom: 2rem;
+    bottom: 1rem;
   }
 
   .landingFeaturesIllustration2 {
-    width: 10rem;
-    bottom: 2rem;
+    width: 14rem;
   }
 
   .landingFeaturesIllustration3 {
@@ -433,12 +432,13 @@ header {
 
 @media screen and (max-width: 30rem) {
   .landingFeaturesIllustration3 {
-    bottom: 0.5rem;
+    bottom: 0rem;
+    width: 15rem;
   }
 
   .landingFeaturesIllustration0 {
-    width: 7.5rem;
-    bottom: 1rem;
+    width: 12rem;
+    bottom: 0rem;
   }
 
   .landingFeaturesIllustration1 {
@@ -446,7 +446,8 @@ header {
   }
 
   .landingFeaturesIllustration2 {
-    bottom: 1rem;
+    width:12rem;
+    bottom: 0rem;
   }
 }
 
@@ -466,5 +467,28 @@ header {
 
   .landingFeaturesIllustration2 {
     width: 6rem;
+  }
+}
+
+
+@media screen and (max-width: 20rem) {
+  .landingFeaturesIllustration3 {
+    bottom:0rem;
+    width:12rem;
+  }
+
+  .landingFeaturesIllustration0 {
+    width: 11rem;
+    bottom:0rem;
+    right:2rem;
+  }
+
+  .landingFeaturesIllustration1 {
+    width: 7rem;
+  }
+
+  .landingFeaturesIllustration2 {
+    width: 11rem;
+    bottom:0rem;
   }
 }
