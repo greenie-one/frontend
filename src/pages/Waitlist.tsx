@@ -12,7 +12,7 @@ import { FaExclamation } from 'react-icons/fa';
 
 export const Waitlist = () => {
   const navigate = useNavigate();
-  const { error, isLoading, sendRequest } = useApi();
+  const { isLoading, sendRequest } = useApi();
 
   const { classes } = useStyles();
   const { classes: inputClasses } = inputStyles();
@@ -35,7 +35,6 @@ export const Waitlist = () => {
       firstName: isNotEmpty('Name cannot be empty'),
       lastName: isNotEmpty('Name cannot be empty'),
       email: isEmail('Invalid email'),
-      // phone: (value) => (/^(\+?\d{1,3}[- ]?)?\d{10}$/.test(value) ? null : 'Invalid phone number'),
     },
   });
 
