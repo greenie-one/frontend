@@ -36,7 +36,7 @@ export const Navbar = () => {
         <Flex justify="center" align="center" direction="row" className={classes.logo}>
           <Link to={'/'}>
             <span className={classes.greenie}>Greenie</span>
-            <span className={classes.verified} >
+            <span className={classes.verified}>
               <MdVerified />
             </span>
           </Link>
@@ -77,12 +77,10 @@ export const Navbar = () => {
               className={classes.mobileLogo}
             >
               <Link to={'/'}>
-                
-                  <span className={`${classes.greenie} ${classes.mobileGreenie}`}>Greenie</span>
-                  <span className={`${classes.verified} ${classes.mobileVerified}`}>
-                    <MdVerified />
-                  </span>
-             
+                <span className={`${classes.greenie} ${classes.mobileGreenie}`}>Greenie</span>
+                <span className={`${classes.verified} ${classes.mobileVerified}`}>
+                  <MdVerified />
+                </span>
               </Link>
               <span className={classes.menuCloseBtn}>
                 <MdOutlineClose role="button" onClick={close} />
@@ -129,7 +127,7 @@ const useStyles = createStyles((theme) => ({
     paddingBlock: '1rem',
     //paddingInline: '1.6rem',
     //borderRadius: '5rem',
-    backgroundColor:'transparent',
+    backgroundColor: 'transparent',
 
     [`@media screen and (max-width: ${em(768)})`]: {
       paddingBlock: '1rem',
@@ -140,9 +138,7 @@ const useStyles = createStyles((theme) => ({
     },
   },
 
-  logo: {
-    
-  },
+  logo: {},
 
   greenie: {
     fontSize: rem(20),

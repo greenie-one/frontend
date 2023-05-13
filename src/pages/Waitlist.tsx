@@ -44,7 +44,6 @@ export const Waitlist = () => {
 
     sendRequest(`${ApiList.waitlist}`, 'POST', waitlistForm.getTransformedValues())
       .then((res: any) => {
-        console.log(res.message);
         if (res.message === 'added to waitlist') {
           notifications.show({
             title: isLoading ? 'Sending...' : 'Success !',
