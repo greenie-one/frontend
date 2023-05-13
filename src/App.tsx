@@ -8,6 +8,7 @@ import { Footer } from './components/common/Footer';
 import { Landing } from './pages/Landing';
 import { AuthPage } from './pages/AuthPage';
 import { Waitlist } from './pages/Waitlist';
+import { ProfilePage } from './pages/ProfilePage';
 
 import { validRoutes } from './utils/constants/ValidRoutes';
 
@@ -18,11 +19,12 @@ const App = () => {
     <>
       <MantineProvider withGlobalStyles withNormalizeCSS>
         <Notifications position="top-center" />
-        {validRoutes.includes(pathname) ? <Navbar/> : null}
+        {validRoutes.includes(pathname) ? <Navbar /> : null}
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/waitlist" element={<Waitlist />} />
+          <Route path="/profile" element={<ProfilePage />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
         {validRoutes.includes(pathname) ? <Footer /> : null}
