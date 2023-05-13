@@ -2,6 +2,8 @@ import { TextInput, createStyles, rem, Text, Button, Divider, Box, em } from '@m
 import { useAuthContext } from '../../context/AuthContext';
 import GoogleButton from '../GoogleButton';
 import '../../styles/global.scss';
+import TermsAndConditions from '../../assets/terms_and_conditions-greenie.pdf';
+import PrivacyPolicy from '../../assets/Privacy Policy-Greenie.pdf';
 
 const LoginStepOne = () => {
   const { classes: inputClasses } = inputStyles();
@@ -17,8 +19,16 @@ const LoginStepOne = () => {
             {...loginForm.getInputProps('emailPhoneGreenieId')}
           />
           <Text className="tearms-condition">
-            By continuing with your account, you agree to our <u>Terms of Service</u> and
-            <u>Privacy & Cookie Statement</u>.
+            By continuing with your account, you agree to our{' '}
+            <a href={TermsAndConditions} download={'Terms and Conditions'}>
+              Terms of Service
+            </a>{' '}
+            and
+            <a href={PrivacyPolicy} download={'Privacy Policy'}>
+              {' '}
+              Privacy & Cookie Statement
+            </a>
+            .
           </Text>
           <Button onClick={() => dispatch({ type: 'NEXTLOGINSTEP' })} className="primaryBtn">
             Continue

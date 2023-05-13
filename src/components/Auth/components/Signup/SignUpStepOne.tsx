@@ -2,6 +2,8 @@ import { TextInput, createStyles, em, rem, Text, Button, Divider, Box } from '@m
 import { useAuthContext } from '../../context/AuthContext';
 import GoogleButton from '../GoogleButton';
 import '../../styles/global.scss';
+import TermsAndConditions from '../../assets/terms_and_conditions-greenie.pdf';
+import PrivacyPolicy from '../../assets/Privacy Policy-Greenie.pdf';
 
 const SignUpStepOne = () => {
   const { signupForm, state, dispatch } = useAuthContext();
@@ -25,8 +27,15 @@ const SignUpStepOne = () => {
             {...signupForm.getInputProps('emailPhone')}
           />
           <Text className="tearms-condition">
-            By creating an account, you agree to our <u>Terms of Service</u> and{' '}
-            <u>Privacy & Cookie Statement</u>.
+            By creating an account, you agree to our{' '}
+            <a href={TermsAndConditions} download={'Tearms and Conditions'}>
+              Terms of Service
+            </a>{' '}
+            and{' '}
+            <a href={PrivacyPolicy} download={'Privacy Policy'}>
+              Privacy & Cookie Statement
+            </a>
+            .
           </Text>
           <Button onClick={SignupStep1} className="primaryBtn">
             Agree & Join
