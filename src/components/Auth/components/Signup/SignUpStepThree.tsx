@@ -1,19 +1,55 @@
+import { useEffect } from 'react';
 import { TextInput, createStyles, rem, em, Text, Button, Flex, Box } from '@mantine/core';
+import { useLocalStorage } from '@mantine/hooks';
+import { notifications } from '@mantine/notifications';
 import { useAuthContext } from '../../context/AuthContext';
 
+import useApi from '../../../../utils/hooks/useApi';
+import ApiList from '../../../../assets/api/ApiList';
+
+import { FaExclamation } from 'react-icons/fa';
 import { BsArrowLeft } from 'react-icons/bs';
+import { BsCheckLg } from 'react-icons/bs';
 import '../../styles/global.scss';
+import axios from 'axios';
+
+interface CustomError extends Error {
+  code: string;
+}
 
 const SignUpStepThree = () => {
-  const { signupForm, state, dispatch, isPhoneNumber, isValidEmail } = useAuthContext();
-  const { signUpStep } = state;
+  const { signupForm, state, dispatch, isPhoneNumber, isValidEmail, validationId } =
+    useAuthContext();
   const { classes: inputClasses } = inputStyles();
+  const { signUpStep } = state;
 
-  const VerifyOTP = () => {
+  const { error, isLoading, sendRequest } = useApi();
+
+  const [authTokens, setAuthTokens] = useLocalStorage({ key: 'auth-tokens' });
+
+  const VerifyOTP = async () => {
     if (signUpStep === 3 && !signupForm.validateField('otp').hasError) {
-      // API CALL
+      signupForm.clearErrors();
 
-      dispatch({ type: 'NEXTSIGNUPSTEP' });
+      try {
+        const res = await axios.post(ApiList.validateOtp, {
+          validationId,
+          otp: signupForm.values.otp,
+        });
+
+        console.log(res);
+        setAuthTokens(res.data);
+      } catch (err: any) {
+        if (err.response?.data?.code === 'GR0004') {
+          notifications.show({
+            title: 'Error !',
+            message: 'The OTP you entered is incorrect. Please try again.',
+            autoClose: 2200,
+            color: 'red',
+            icon: <FaExclamation />,
+          });
+        }
+      }
     }
   };
 

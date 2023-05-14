@@ -10,11 +10,12 @@ import PrivacyPolicy from '../../assets/Privacy Policy-Greenie.pdf';
 import '../../styles/global.scss';
 
 const SignUpStepTwo = () => {
-  const { signupForm, state, dispatch, isPhoneNumber, isValidEmail } = useAuthContext();
+  const { signupForm, state, dispatch, isPhoneNumber, isValidEmail, setValidationId } =
+    useAuthContext();
   const { classes: inputClasses } = inputStyles();
   const { signUpStep } = state;
 
-  const { isLoading, sendRequest } = useApi();
+  const { error, sendRequest } = useApi();
 
   const EmailSignupStep = () => {
     if (
@@ -24,11 +25,19 @@ const SignUpStepTwo = () => {
     ) {
       signupForm.clearErrors();
 
-      sendRequest(`${ApiList.signup}`, 'POST', signupForm.values).then((res) => {
-        console.log(res);
-      });
+      // sendRequest(`${ApiList.signup}`, 'POST', {
+      //   email: signupForm.values.emailPhone,
+      //   password: signupForm.values.password,
+      // })
+      //   .then((res: any) => {
+      //     console.log(res);
+      //     setValidationId(res?.validationId);
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //   });
 
-      // dispatch({ type: 'NEXTSIGNUPSTEP' });
+      dispatch({ type: 'NEXTSIGNUPSTEP' });
     }
   };
 

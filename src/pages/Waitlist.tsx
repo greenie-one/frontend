@@ -18,7 +18,7 @@ export const Waitlist = () => {
   const { classes: inputClasses } = inputStyles();
 
   const { isLoading, sendRequest } = useApi();
-  
+
   const waitlistForm = useForm({
     initialValues: {
       firstName: '',

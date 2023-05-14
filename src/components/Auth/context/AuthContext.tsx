@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useReducer } from 'react';
+import React, { createContext, useContext, useReducer, useState } from 'react';
 import { useForm, UseFormReturnType, isNotEmpty, matchesField, hasLength } from '@mantine/form';
 
 type signUpFormType = {
@@ -49,12 +49,17 @@ type AuthContextType = {
 
   isPhoneNumber: (input: string) => boolean;
   isValidEmail: (input: string) => boolean;
+
+  validationId: string;
+  setValidationId: React.Dispatch<React.SetStateAction<string>>;
 };
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 export const useAuthContext = () => useContext(AuthContext);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [validationId, setValidationId] = useState<string>('');
+
   const signupForm = useForm<signUpFormType>({
     initialValues: {
       emailPhone: '',
@@ -168,6 +173,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         dispatch,
         isPhoneNumber,
         isValidEmail,
+        validationId,
+        setValidationId,
       }}
     >
       {children}
