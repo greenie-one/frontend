@@ -1,6 +1,7 @@
 import { TextInput, createStyles, rem, em, Text, Button, Flex, Box } from '@mantine/core';
-import { BsArrowLeft } from 'react-icons/bs';
 import { useAuthContext } from '../../context/AuthContext';
+
+import { BsArrowLeft } from 'react-icons/bs';
 import '../../styles/global.scss';
 
 const SignUpStepThree = () => {

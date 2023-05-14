@@ -1,16 +1,6 @@
 import React, { createContext, useContext, useReducer } from 'react';
 import { useForm, UseFormReturnType, isNotEmpty, matchesField, hasLength } from '@mantine/form';
 
-type AuthContextType = {
-  signupForm: UseFormReturnType<signUpFormType>;
-  loginForm: UseFormReturnType<loginFormType>;
-  profileForm: UseFormReturnType<ProfileFormType>;
-  state: CounterState;
-  dispatch: React.Dispatch<CounterAction>;
-  isPhoneNumber: (input: string) => boolean;
-  isValidEmail: (input: string) => boolean;
-};
-
 type signUpFormType = {
   emailPhone: string;
   password?: string;
@@ -48,6 +38,18 @@ type CounterAction =
   | { type: 'PREVRESETPASSWORDSTEP' }
   | { type: 'NEXTLOGINWITHOTPSTEP' }
   | { type: 'PREVLOGINWITHOTPSTEP' };
+
+type AuthContextType = {
+  signupForm: UseFormReturnType<signUpFormType>;
+  loginForm: UseFormReturnType<loginFormType>;
+  profileForm: UseFormReturnType<ProfileFormType>;
+
+  state: CounterState;
+  dispatch: React.Dispatch<CounterAction>;
+
+  isPhoneNumber: (input: string) => boolean;
+  isValidEmail: (input: string) => boolean;
+};
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 export const useAuthContext = () => useContext(AuthContext);
@@ -100,6 +102,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (value.trim().length === 0) {
       return 'Email or Phone Number cannot be empty';
     }
+
     if (/^[+]?[\d ]+$/.test(value.trim())) {
       if (!isPhoneNumber(value)) {
         return 'Invalid Phone Number';

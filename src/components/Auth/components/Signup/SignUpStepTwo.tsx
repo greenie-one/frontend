@@ -1,14 +1,20 @@
 import { createStyles, em, rem, Text, Button, Divider, PasswordInput, Box } from '@mantine/core';
 import { useAuthContext } from '../../context/AuthContext';
+
+import useApi from '../../../../utils/hooks/useApi';
+import ApiList from '../../../../assets/api/ApiList';
+
 import GoogleButton from '../GoogleButton';
-import '../../styles/global.scss';
 import TermsAndConditions from '../../assets/terms_and_conditions-greenie.pdf';
 import PrivacyPolicy from '../../assets/Privacy Policy-Greenie.pdf';
+import '../../styles/global.scss';
 
 const SignUpStepTwo = () => {
   const { signupForm, state, dispatch, isPhoneNumber, isValidEmail } = useAuthContext();
-  const { signUpStep } = state;
   const { classes: inputClasses } = inputStyles();
+  const { signUpStep } = state;
+
+  const { isLoading, sendRequest } = useApi();
 
   const EmailSignupStep = () => {
     if (
@@ -17,9 +23,12 @@ const SignUpStepTwo = () => {
       !signupForm.validateField('confirmPassword').hasError
     ) {
       signupForm.clearErrors();
-      // API CALL
 
-      dispatch({ type: 'NEXTSIGNUPSTEP' });
+      sendRequest(`${ApiList.signup}`, 'POST', signupForm.values).then((res) => {
+        console.log(res);
+      });
+
+      // dispatch({ type: 'NEXTSIGNUPSTEP' });
     }
   };
 

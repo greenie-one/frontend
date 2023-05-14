@@ -12,6 +12,7 @@ import {
   Group,
 } from '@mantine/core';
 import { useAuthContext } from '../../context/AuthContext';
+
 import { BsArrowLeft } from 'react-icons/bs';
 import linkedInLogo from '../../assets/linkedIn-logo.png';
 import '../../styles/global.scss';

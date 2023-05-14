@@ -2,9 +2,11 @@ import { useNavigate } from 'react-router-dom';
 import { Box, TextInput, createStyles, rem, em, Button, Title, Text, Image } from '@mantine/core';
 import { useForm, isEmail, isNotEmpty } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
-import { Navbar } from '../components/common/Navbar';
+
 import useApi from '../utils/hooks/useApi';
 import ApiList from '../assets/api/ApiList';
+
+import { Navbar } from '../components/common/Navbar';
 import waitlist_img from '../assets/images/waitlist/waitlist_img.png';
 import { MdVerified } from 'react-icons/md';
 import { BsCheckLg } from 'react-icons/bs';
@@ -12,11 +14,11 @@ import { FaExclamation } from 'react-icons/fa';
 
 export const Waitlist = () => {
   const navigate = useNavigate();
-  const { isLoading, sendRequest } = useApi();
-
   const { classes } = useStyles();
   const { classes: inputClasses } = inputStyles();
 
+  const { isLoading, sendRequest } = useApi();
+  
   const waitlistForm = useForm({
     initialValues: {
       firstName: '',
@@ -64,7 +66,7 @@ export const Waitlist = () => {
               ? 'Please wait while we add you to the waitlist.'
               : 'Please check your email for more information.',
             autoClose: 2200,
-            color: isLoading ? 'blue' : 'orange',
+            color: isLoading ? 'blue' : 'red',
             icon: !isLoading && <FaExclamation />,
             loading: isLoading,
           });
@@ -81,9 +83,9 @@ export const Waitlist = () => {
 
   return (
     <>
-      <div className={classes.headerContainer}>
+      <Box className={classes.headerContainer}>
         <Navbar />
-      </div>
+      </Box>
       <Box className={classes.root}>
         <Box className={classes.waitlist_left}>
           <Text className={classes.logo}>
