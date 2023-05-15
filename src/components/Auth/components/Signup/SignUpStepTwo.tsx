@@ -88,6 +88,68 @@ const SignUpStepTwo = () => {
     }
   };
 
+  const MobileSignupStep = async () => {
+    if (isLoading) {
+      return Promise.resolve(null);
+    }
+
+    if (signUpStep === 2) {
+      signupForm.clearErrors();
+      setIsLoading(true);
+
+      try {
+        notifications.show({
+          id: 'load-data',
+          title: 'Sending...',
+          message: 'Please wait while we send you an OTP.',
+          loading: true,
+          autoClose: false,
+          withCloseButton: false,
+          sx: { borderRadius: em(8) },
+        });
+
+        const res = await axios.post(ApiList.signup, {
+          mobileNumber: signupForm.values.emailPhone,
+        });
+
+        if (res.data) {
+          setValidationId(res.data?.validationId);
+          setTimeout(() => {
+            notifications.update({
+              id: 'load-data',
+              title: 'Success !',
+              message: 'An OTP has been sent to your email.',
+              autoClose: 2200,
+              withCloseButton: false,
+              color: 'teal',
+              icon: <BsCheckLg />,
+              sx: { borderRadius: em(8) },
+            });
+          }, 1100);
+
+          dispatch({ type: 'NEXTSIGNUPSTEP' });
+        }
+      } catch (err: any) {
+        console.log(err.response?.data);
+        if (err.response?.data?.code === 'GR0003') {
+          notifications.update({
+            id: 'load-data',
+            title: 'Error !',
+            message:
+              'This mobile number is already registered. Please try again with a different mobile number.',
+            autoClose: 2200,
+            withCloseButton: false,
+            color: 'red',
+            icon: <FaExclamation />,
+            sx: { borderRadius: em(8) },
+          });
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    }
+  };
+
   return (
     <>
       {(signUpStep === 2 && isValidEmail(signupForm.values.emailPhone) && (
@@ -139,7 +201,7 @@ const SignUpStepTwo = () => {
               By creating an account, you agree to our <u>Terms of Service</u> and
               <u>Privacy & Cookie Statement</u>.
             </Text>
-            <Button onClick={() => dispatch({ type: 'NEXTSIGNUPSTEP' })} className="primaryBtn">
+            <Button onClick={MobileSignupStep} className="primaryBtn">
               Send OTP
             </Button>
             <Divider label="Or better yet" className="divider" labelPosition="center" />
