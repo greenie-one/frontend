@@ -1,0 +1,85 @@
+.bio-section {
+  text-align: center;
+
+  .bio-name {
+    font-size: 32px;
+    line-height: 38px;
+    letter-spacing: -0.02em;
+    color: $dark;
+    font-weight: 600;
+    margin-bottom: 24px;
+  }
+  .chips {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 52px;
+  }
+  .bio-section-wrapper {
+    text-align: left;
+    width: 70%;
+    margin: 0 auto;
+    margin-bottom: 44px;
+    display: flex;
+
+    .level {
+      border-right: 2px solid $lightGray;
+      padding-right: 29px;
+      .level-heading {
+        font-weight: 400;
+        font-size: 18px;
+        line-height: 30px;
+        color: $gray;
+        margin-bottom: 6px;
+      }
+
+      .level-wrapper {
+        .level-img {
+          width: 30px;
+          height: 30px;
+          &:not(:last-child) {
+            margin-right: 14px;
+          }
+        }
+      }
+    }
+
+    .medal-wrapper {
+      padding: 0px 29px;
+      display: flex;
+      align-items: center;
+      border-right: 2px solid $lightGray;
+      .medal-icon {
+        border-radius: 50%;
+        padding: 8px 12px;
+        background-color: $bgGreen;
+      }
+    }
+    .greenie-id {
+      background: $green;
+      box-shadow: 0px -26px 144px rgba(0, 0, 0, 0.05);
+      border-radius: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-left: 29px;
+      .greenie-id-icon {
+        border: 2px solid $bgGreen;
+        background-color: $bgGreen;
+      }
+      .greenie-id-heading {
+      }
+      .id {
+      }
+    }
+  }
+  .bio-text {
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 30px;
+    color: $gray;
+    width: 75%;
+    margin: 0 auto;
+    margin-bottom: 16px;
+  }
+}

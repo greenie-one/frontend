@@ -1,0 +1,22 @@
+@import '_variables';
+
+.profile-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  .cover-photo {
+    height: 316px;
+    background: $bgGreen;
+    border-radius: 50px;
+    width: 94%;
+    max-width: 960px;
+  }
+  .profile-photo {
+    width: 241px;
+    height: 240px;
+    border: 8px solid #ffffff;
+    border-radius: 50%;
+    margin-top: -190px;
+  }
+}

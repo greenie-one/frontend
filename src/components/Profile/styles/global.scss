@@ -1,0 +1,128 @@
+@import '_variables';
+
+body {
+  background-color: $offWhite;
+  .container {
+    width: 94%;
+    max-width: 960px;
+    background: $white;
+    border-radius: 16.0603px;
+    margin: 23px auto;
+    padding: 26px;
+    display: flex;
+    flex-direction: column;
+    border: 2px solid black;
+
+    .heading {
+      font-weight: 600;
+      font-size: 20px;
+      line-height: 24px;
+      letter-spacing: -0.02em;
+      color: $black;
+      margin-bottom: 5px;
+    }
+    .subheading {
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 19px;
+      letter-spacing: -0.02em;
+      color: $gray;
+    }
+
+    .no-data-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 101px;
+      margin-bottom: 240px;
+      img {
+        width: 344px;
+        height: 253px;
+      }
+    }
+  }
+}
+
+.verify-id-no-data-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 83px auto 155px auto;
+
+  .verify-id-text {
+    text-align: center;
+    margin-left: 58px;
+    .text-heading {
+      font-size: 22px;
+      line-height: 26px;
+      letter-spacing: -0.02em;
+      color: $gray;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+    .text-subheading {
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 19px;
+      letter-spacing: -0.02em;
+      color: $gray;
+      margin-bottom: 5px;
+    }
+  }
+}
+
+.verify-data-no-data-card-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .hidden-card {
+    box-shadow: 0px 3.87283px 39.8348px rgba(0, 0, 0, 0.11);
+    border-radius: 12.1481px;
+    background-color: $white;
+    width: 101px;
+    height: 95px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.4;
+    .card-img {
+      width: 44px;
+      height: 44px;
+      margin-bottom: 8px;
+    }
+    .card-text {
+      color: $dark;
+      font-size: 10.1058px;
+      line-height: 12px;
+      letter-spacing: -0.02em;
+      font-weight: 600;
+    }
+  }
+  .card {
+    box-shadow: 0px 4.95769px 50.9933px rgba(0, 0, 0, 0.11);
+    border-radius: 15.551px;
+    background-color: $white;
+    width: 129.66px;
+    height: 121.74px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    .card-img {
+      width: 57.2px;
+      height: 56.96px;
+      margin-bottom: 11px;
+    }
+    .card-text {
+      color: $dark;
+      font-size: 12.9367px;
+      line-height: 15px;
+      letter-spacing: -0.02em;
+      font-weight: 600;
+    }
+  }
+}
+
+@import '_profile';
+@import '_bioSection';
