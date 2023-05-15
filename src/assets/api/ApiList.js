@@ -6,6 +6,7 @@ const ApiList = {
   refreshToken: `${BASE_URL}/refresh?refreshToken=`,
   validateOtp: `${BASE_URL}/validateOTP`,
   login: `${BASE_URL}/login`,
+  createProfile: `${BASE_URL}/profiles/create`,
 };
 
 export default ApiList;

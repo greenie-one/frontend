@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import {
   TextInput,
   createStyles,
@@ -11,9 +13,14 @@ import {
   Chip,
   Group,
 } from '@mantine/core';
+import { useLocalStorage } from '@mantine/hooks';
+import { notifications } from '@mantine/notifications';
 import { useAuthContext } from '../../context/AuthContext';
+import ApiList from '../../../../assets/api/ApiList';
 
+import { FaExclamation } from 'react-icons/fa';
 import { BsArrowLeft } from 'react-icons/bs';
+import { BsCheckLg } from 'react-icons/bs';
 import linkedInLogo from '../../assets/linkedIn-logo.png';
 import '../../styles/global.scss';
 
@@ -30,10 +37,13 @@ const skillSetOne = [
 ];
 
 const Profile = () => {
+  const navigate = useNavigate();
   const { classes: inputClasses } = inputStyles();
   const { profileForm, dispatch } = useAuthContext();
 
   const [active, setActive] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const [authTokens, setAuthTokens] = useLocalStorage({ key: 'auth-tokens' });
 
   const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
   const handleGoBack = () => {
@@ -59,9 +69,67 @@ const Profile = () => {
     }
   };
 
-  const submitProfile = () => {
+  const submitProfile = async () => {
+    if (isLoading) {
+      return Promise.resolve(null);
+    }
+
     if (active === 3) {
-      // api call
+      setIsLoading(true);
+      profileForm.clearErrors();
+
+      try {
+        notifications.show({
+          id: 'load-data',
+          title: 'Adding Profile Details...',
+          message: 'Please wait while we add your profile details.',
+          loading: true,
+          autoClose: false,
+          withCloseButton: false,
+          sx: { borderRadius: em(8) },
+        });
+
+        const res = await axios.post(ApiList.createProfile, profileForm.values, {
+          headers: {
+            Authorization: `Bearer ${(authTokens as any)?.accessToken}`,
+          },
+        });
+
+        if (res.data) {
+          setTimeout(() => {
+            notifications.update({
+              id: 'load-data',
+              title: 'Success !',
+              message: 'Your profile details have been added successfully.',
+              autoClose: 2200,
+              withCloseButton: false,
+              color: 'teal',
+              icon: <BsCheckLg />,
+              sx: { borderRadius: em(8) },
+            });
+          }, 1100);
+
+          navigate('/profile');
+        }
+      } catch (err: any) {
+        console.log(err);
+        if (err.response?.data?.code === 'GR0001') {
+          setTimeout(() => {
+            notifications.update({
+              id: 'load-data',
+              title: 'Error !',
+              message: 'Something went wrong. Please try again later.',
+              autoClose: 2200,
+              withCloseButton: false,
+              color: 'red',
+              icon: <FaExclamation />,
+              sx: { borderRadius: em(8) },
+            });
+          }, 1100);
+        }
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
@@ -156,7 +224,7 @@ const Profile = () => {
           </Text>
 
           <Box className="skills-box">
-            <Chip.Group multiple {...profileForm.getInputProps('description')}>
+            <Chip.Group multiple {...profileForm.getInputProps('descriptionTags')}>
               <Group className="skill-wrapper">
                 {skillSetOne.map((skill) => (
                   <Chip
@@ -166,8 +234,8 @@ const Profile = () => {
                     color="teal"
                     size={'xs'}
                     disabled={
-                      profileForm.values.description.length === 3 &&
-                      !profileForm.values.description.includes(skill)
+                      profileForm.values.descriptionTags.length === 3 &&
+                      !profileForm.values.descriptionTags.includes(skill)
                     }
                   >
                     {skill}
@@ -177,7 +245,11 @@ const Profile = () => {
             </Chip.Group>
           </Box>
 
-          <Button className="secondaryBtn" onClick={submitProfile}>
+          <Button
+            className="secondaryBtn"
+            onClick={submitProfile}
+            disabled={profileForm.values.descriptionTags.length !== 3}
+          >
             Take me to my Greenie Profile
           </Button>
         </Box>

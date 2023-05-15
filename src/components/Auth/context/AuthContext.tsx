@@ -17,7 +17,7 @@ type loginFormType = {
 type ProfileFormType = {
   firstName: string;
   lastName: string;
-  description: string[];
+  descriptionTags: string[];
 };
 
 interface CounterState {
@@ -94,7 +94,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     initialValues: {
       firstName: '',
       lastName: '',
-      description: [],
+      descriptionTags: [],
     },
 
     validate: {
