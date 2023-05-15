@@ -112,20 +112,17 @@ const Profile = () => {
           navigate('/profile');
         }
       } catch (err: any) {
-        console.log(err);
         if (err.response?.data?.code === 'GR0001') {
-          setTimeout(() => {
-            notifications.update({
-              id: 'load-data',
-              title: 'Error !',
-              message: 'Something went wrong. Please try again later.',
-              autoClose: 2200,
-              withCloseButton: false,
-              color: 'red',
-              icon: <FaExclamation />,
-              sx: { borderRadius: em(8) },
-            });
-          }, 1100);
+          notifications.update({
+            id: 'load-data',
+            title: 'Error !',
+            message: 'Something went wrong. Please try again later.',
+            autoClose: 2200,
+            withCloseButton: false,
+            color: 'red',
+            icon: <FaExclamation />,
+            sx: { borderRadius: em(8) },
+          });
         }
       } finally {
         setIsLoading(false);

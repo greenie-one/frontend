@@ -71,18 +71,16 @@ const SignUpStepTwo = () => {
           signupForm.setFieldValue('password', '');
           signupForm.setFieldValue('confirmPassword', '');
 
-          setTimeout(() => {
-            notifications.update({
-              id: 'load-data',
-              title: 'Error !',
-              message: 'This email is already registered. Please try again with a different email.',
-              autoClose: 2200,
-              withCloseButton: false,
-              color: 'red',
-              icon: <FaExclamation />,
-              sx: { borderRadius: em(8) },
-            });
-          }, 1100);
+          notifications.update({
+            id: 'load-data',
+            title: 'Error !',
+            message: 'This email is already registered. Please try again with a different email.',
+            autoClose: 2200,
+            withCloseButton: false,
+            color: 'red',
+            icon: <FaExclamation />,
+            sx: { borderRadius: em(8) },
+          });
         }
       } finally {
         setIsLoading(false);

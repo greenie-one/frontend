@@ -65,18 +65,16 @@ const SignUpStepThree = () => {
         }
       } catch (err: any) {
         if (err.response?.data?.code === 'GR0004') {
-          setTimeout(() => {
-            notifications.update({
-              id: 'load-data',
-              title: 'Error !',
-              message: 'The OTP you entered is incorrect. Please try again.',
-              autoClose: 2200,
-              withCloseButton: false,
-              color: 'red',
-              icon: <FaExclamation />,
-              sx: { borderRadius: em(8) },
-            });
-          }, 1100);
+          notifications.update({
+            id: 'load-data',
+            title: 'Error !',
+            message: 'The OTP you entered is incorrect. Please try again.',
+            autoClose: 2200,
+            withCloseButton: false,
+            color: 'red',
+            icon: <FaExclamation />,
+            sx: { borderRadius: em(8) },
+          });
         }
       } finally {
         setIsLoading(false);
