@@ -1,13 +1,21 @@
 import { TextInput, createStyles, rem, Text, Button, Divider, Box, em } from '@mantine/core';
 import { useAuthContext } from '../../context/AuthContext';
+
 import GoogleButton from '../GoogleButton';
-import '../../styles/global.scss';
 import TermsAndConditions from '../../assets/terms_and_conditions-greenie.pdf';
 import PrivacyPolicy from '../../assets/Privacy Policy-Greenie.pdf';
+import '../../styles/global.scss';
 
 const LoginStepOne = () => {
   const { classes: inputClasses } = inputStyles();
   const { loginForm, state, dispatch } = useAuthContext();
+
+  const loginStep = () => {
+    if (state.loginStep === 1 && !loginForm.validateField('emailPhoneGreenieId').hasError) {
+      dispatch({ type: 'NEXTLOGINSTEP' });
+    }
+  };
+
   return (
     <>
       {state.loginStep === 1 && (
@@ -30,7 +38,7 @@ const LoginStepOne = () => {
             </a>
             .
           </Text>
-          <Button onClick={() => dispatch({ type: 'NEXTLOGINSTEP' })} className="primaryBtn">
+          <Button onClick={loginStep} className="primaryBtn">
             Continue
           </Button>
           <Divider label="Or better yet" className="divider" labelPosition="center" />

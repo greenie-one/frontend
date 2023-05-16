@@ -1,7 +1,26 @@
 import { useState } from 'react';
-import { TextInput, createStyles, rem, Text, Button, Box, Flex, em, Chip } from '@mantine/core';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import {
+  TextInput,
+  createStyles,
+  rem,
+  Text,
+  Button,
+  Box,
+  Flex,
+  em,
+  Chip,
+  Group,
+} from '@mantine/core';
+import { useLocalStorage } from '@mantine/hooks';
+import { notifications } from '@mantine/notifications';
 import { useAuthContext } from '../../context/AuthContext';
+import ApiList from '../../../../assets/api/ApiList';
+
+import { FaExclamation } from 'react-icons/fa';
 import { BsArrowLeft } from 'react-icons/bs';
+import { BsCheckLg } from 'react-icons/bs';
 import linkedInLogo from '../../assets/linkedIn-logo.png';
 import '../../styles/global.scss';
 
@@ -18,16 +37,15 @@ const skillSetOne = [
 ];
 
 const Profile = () => {
+  const navigate = useNavigate();
   const { classes: inputClasses } = inputStyles();
-  const [active, setActive] = useState(1);
-  const { dispatch } = useAuthContext();
+  const { profileForm, dispatch } = useAuthContext();
 
-  const nextStep = () => {
-    setActive((current) => (current < 4 ? current + 1 : current));
-  };
+  const [active, setActive] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const [authTokens, setAuthTokens] = useLocalStorage({ key: 'auth-tokens' });
 
   const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
-
   const handleGoBack = () => {
     if (active === 1) {
       dispatch({ type: 'PREVSIGNUPSTEP' });
@@ -36,27 +54,115 @@ const Profile = () => {
     }
   };
 
+  const nextStep = () => {
+    if (
+      active === 1 &&
+      !profileForm.validateField('firstName').hasError &&
+      !profileForm.validateField('lastName').hasError
+    ) {
+      profileForm.clearErrors();
+      setActive((current) => (current < 4 ? current + 1 : current));
+    }
+
+    if (active === 2) {
+      setActive((current) => (current < 4 ? current + 1 : current));
+    }
+  };
+
+  const submitProfile = async () => {
+    if (isLoading) {
+      return Promise.resolve(null);
+    }
+
+    if (active === 3) {
+      setIsLoading(true);
+      profileForm.clearErrors();
+
+      try {
+        notifications.show({
+          id: 'load-data',
+          title: 'Adding Profile Details...',
+          message: 'Please wait while we add your profile details.',
+          loading: true,
+          autoClose: false,
+          withCloseButton: false,
+          sx: { borderRadius: em(8) },
+        });
+
+        const res = await axios.post(ApiList.createProfile, profileForm.values, {
+          headers: {
+            Authorization: `Bearer ${(authTokens as any)?.accessToken}`,
+          },
+        });
+
+        if (res.data) {
+          setTimeout(() => {
+            notifications.update({
+              id: 'load-data',
+              title: 'Success !',
+              message: 'Your profile details have been added successfully.',
+              autoClose: 2200,
+              withCloseButton: false,
+              color: 'teal',
+              icon: <BsCheckLg />,
+              sx: { borderRadius: em(8) },
+            });
+          }, 1100);
+
+          navigate('/profile');
+        }
+      } catch (err: any) {
+        if (err.response?.data?.code === 'GR0001') {
+          notifications.update({
+            id: 'load-data',
+            title: 'Error !',
+            message: 'Something went wrong. Please try again later.',
+            autoClose: 2200,
+            withCloseButton: false,
+            color: 'red',
+            icon: <FaExclamation />,
+            sx: { borderRadius: em(8) },
+          });
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    }
+  };
+
   return (
     <Box>
-      <Flex className="tabTopBox" onClick={handleGoBack}>
-        <BsArrowLeft size={'16px'} />
-        <Text className="tabHeading">Go Back</Text>
-      </Flex>
-      <Box className="progress-bar-wrapper">
-        <Box className="progress-bar" bg={'#9fe870'}></Box>
-        <Box
-          className="progress-bar"
-          bg={active === 2 || active === 3 ? '#9fe870' : '#F3F3F3'}
-        ></Box>
-        <Box className="progress-bar" bg={active === 3 ? '#9fe870' : '#F3F3F3'}></Box>
-      </Box>
+      {active !== 1 && (
+        <>
+          <Flex className="tabTopBox" onClick={handleGoBack}>
+            <BsArrowLeft size={'16px'} />
+            <Text className="tabHeading">Go Back</Text>
+          </Flex>
+          <Box className="progress-bar-wrapper">
+            <Box className="progress-bar" bg={'#9fe870'}></Box>
+            <Box
+              className="progress-bar"
+              bg={active === 2 || active === 3 ? '#9fe870' : '#F3F3F3'}
+            ></Box>
+            <Box className="progress-bar" bg={active === 3 ? '#9fe870' : '#F3F3F3'}></Box>
+          </Box>
+        </>
+      )}
 
       {active === 1 && (
         <Box>
           <Text className="steps">{`Steps ${active}`}/3</Text>
           <Text className="profileText">What should we call you?</Text>
-          <TextInput label="First Name" classNames={inputClasses} />
-          <TextInput label="Last Name" classNames={inputClasses} />
+          <TextInput
+            label="First Name"
+            classNames={inputClasses}
+            {...profileForm.getInputProps('firstName')}
+          />
+          <TextInput
+            label="Last Name"
+            classNames={inputClasses}
+            {...profileForm.getInputProps('lastName')}
+          />
           <Button className="primaryBtn" onClick={nextStep}>
             Continue
           </Button>
@@ -75,9 +181,11 @@ const Profile = () => {
               borderRadius: '1rem',
             }}
           ></Box>
+
           <Text className="profileText" align="center">
             Help us create a better experience for you
           </Text>
+
           <Button className="secondaryBtn" onClick={nextStep}>
             Connect your
             <span>
@@ -85,6 +193,7 @@ const Profile = () => {
             </span>
             LinkedIn Account
           </Button>
+
           <Text
             fz={'xs'}
             align="center"
@@ -110,20 +219,38 @@ const Profile = () => {
               marginBottom: '16px',
             }}
           ></Box>
+
           <Text className="profileText" align="center">
             Introduce yourself in 3 words
           </Text>
+
           <Box className="skills-box">
-            <Box className="skill-wrapper">
-              {skillSetOne.map((skill) => (
-                <Chip key={skill} variant="filled" color="teal" size={'xs'}>
-                  {skill}
-                </Chip>
-              ))}
-            </Box>
+            <Chip.Group multiple {...profileForm.getInputProps('descriptionTags')}>
+              <Group className="skill-wrapper">
+                {skillSetOne.map((skill) => (
+                  <Chip
+                    key={skill}
+                    value={skill}
+                    variant="filled"
+                    color="teal"
+                    size={'xs'}
+                    disabled={
+                      profileForm.values.descriptionTags.length === 3 &&
+                      !profileForm.values.descriptionTags.includes(skill)
+                    }
+                  >
+                    {skill}
+                  </Chip>
+                ))}
+              </Group>
+            </Chip.Group>
           </Box>
 
-          <Button className="secondaryBtn" onClick={nextStep}>
+          <Button
+            className="secondaryBtn"
+            onClick={submitProfile}
+            disabled={profileForm.values.descriptionTags.length !== 3}
+          >
             Take me to my Greenie Profile
           </Button>
         </Box>

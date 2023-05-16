@@ -1,6 +1,7 @@
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { GlobalContextProvider } from './context/GlobalContext';
+
 import App from './App';
 import './assets/global.css';
 

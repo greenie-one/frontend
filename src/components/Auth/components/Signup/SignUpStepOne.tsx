@@ -1,18 +1,22 @@
 import { TextInput, createStyles, em, rem, Text, Button, Divider, Box } from '@mantine/core';
 import { useAuthContext } from '../../context/AuthContext';
+
 import GoogleButton from '../GoogleButton';
-import '../../styles/global.scss';
 import TermsAndConditions from '../../assets/terms_and_conditions-greenie.pdf';
 import PrivacyPolicy from '../../assets/Privacy Policy-Greenie.pdf';
+import '../../styles/global.scss';
 
 const SignUpStepOne = () => {
   const { signupForm, state, dispatch } = useAuthContext();
-  const { signUpStep } = state;
   const { classes: inputClasses } = inputStyles();
+  const { signUpStep } = state;
 
   const SignupStep1 = () => {
     if (signUpStep === 1 && !signupForm.validateField('emailPhone').hasError) {
       signupForm.clearErrors();
+      signupForm.setFieldValue('password', '');
+      signupForm.setFieldValue('confirmPassword', '');
+
       dispatch({ type: 'NEXTSIGNUPSTEP' });
     }
   };
