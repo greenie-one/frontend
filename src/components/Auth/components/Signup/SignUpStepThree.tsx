@@ -19,7 +19,7 @@ const SignUpStepThree = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [authTokens, setAuthTokens] = useLocalStorage({ key: 'auth-tokens' });
-  const [secondsRemaining, setSecondsRemaining] = useState<number>(30);
+  const [secondsRemaining, setSecondsRemaining] = useState<number>(60);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -101,7 +101,7 @@ const SignUpStepThree = () => {
         <Box>
           <Flex className="tabTopBox" onClick={() => dispatch({ type: 'PREVSIGNUPSTEP' })}>
             <BsArrowLeft size={'15px'} />
-            <Text className="tabHeading">Reset Password</Text>
+            <Text className="tabHeading">Change Password</Text>
           </Flex>
           <Text className="profileTextBold">
             Enter the one-time password sent to your email address
@@ -113,7 +113,7 @@ const SignUpStepThree = () => {
             {...signupForm.getInputProps('otp')}
           />
           {secondsRemaining === 0 ? (
-            <Button className="resendLink" variant="subtle" color="gray">
+            <Button className="resendLink" variant="subtle" color="gray" compact>
               Resend
             </Button>
           ) : (
@@ -133,7 +133,7 @@ const SignUpStepThree = () => {
           <Box>
             <Flex className="tabTopBox" onClick={() => dispatch({ type: 'PREVSIGNUPSTEP' })}>
               <BsArrowLeft size={'15px'} />
-              <Text className="tabHeading">Reset Password</Text>
+              <Text className="tabHeading">Change Password</Text>
             </Flex>
             <Text className="profileTextBold">
               Enter the one-time password sent to your phone number
@@ -145,7 +145,7 @@ const SignUpStepThree = () => {
               {...signupForm.getInputProps('otp')}
             />
             {secondsRemaining === 0 ? (
-              <Button className="resendLink" variant="subtle" color="gray">
+              <Button className="resendLink" variant="subtle" color="gray" compact>
                 Resend
               </Button>
             ) : (

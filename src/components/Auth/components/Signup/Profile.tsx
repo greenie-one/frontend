@@ -132,18 +132,22 @@ const Profile = () => {
 
   return (
     <Box>
-      <Flex className="tabTopBox" onClick={handleGoBack}>
-        <BsArrowLeft size={'16px'} />
-        <Text className="tabHeading">Go Back</Text>
-      </Flex>
-      <Box className="progress-bar-wrapper">
-        <Box className="progress-bar" bg={'#9fe870'}></Box>
-        <Box
-          className="progress-bar"
-          bg={active === 2 || active === 3 ? '#9fe870' : '#F3F3F3'}
-        ></Box>
-        <Box className="progress-bar" bg={active === 3 ? '#9fe870' : '#F3F3F3'}></Box>
-      </Box>
+      {active !== 1 && (
+        <>
+          <Flex className="tabTopBox" onClick={handleGoBack}>
+            <BsArrowLeft size={'16px'} />
+            <Text className="tabHeading">Go Back</Text>
+          </Flex>
+          <Box className="progress-bar-wrapper">
+            <Box className="progress-bar" bg={'#9fe870'}></Box>
+            <Box
+              className="progress-bar"
+              bg={active === 2 || active === 3 ? '#9fe870' : '#F3F3F3'}
+            ></Box>
+            <Box className="progress-bar" bg={active === 3 ? '#9fe870' : '#F3F3F3'}></Box>
+          </Box>
+        </>
+      )}
 
       {active === 1 && (
         <Box>
