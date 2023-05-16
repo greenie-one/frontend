@@ -1,5 +1,6 @@
 .solutions {
-  margin-block: 150px;
+  margin-top: 150px;
+  margin-bottom: 50px;
   .solutions-wrapper {
     margin-top: 96px;
 
@@ -30,7 +31,11 @@
           font-size: 24px;
           line-height: 34px;
           color: #000000;
-          margin-left: 10px;
+        }
+
+        .icon {
+          margin-right: 10px;
+          min-width: 22px;
         }
       }
 
@@ -38,7 +43,7 @@
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         grid-template-rows: repeat(3, 1fr);
-        gap: 14px;
+        gap: 26px;
         width: 45%;
         background-image: url(../../../assets/images/Landing/solutionsBg.png);
         background-position: center;
@@ -54,7 +59,7 @@
           display: flex;
           align-items: center;
           justify-content: center;
-          padding-block: 28px;
+          padding-block: 26px;
 
           &:first-child {
             grid-column-start: 1;
@@ -63,7 +68,7 @@
             grid-row-end: 3;
 
             img {
-              width: 120px;
+              width: 140px;
             }
           }
 
@@ -74,7 +79,7 @@
             grid-row-end: 4;
 
             img {
-              width: 120px;
+              width: 140px;
             }
           }
         }
