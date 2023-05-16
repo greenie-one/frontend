@@ -61,6 +61,17 @@
   }
 }
 
+.resendLink {
+  font-weight: 600;
+  font-size: 12px;
+  text-decoration-line: underline;
+  padding: 0;
+
+  &:hover {
+    background: transparent;
+  }
+}
+
 @media screen and (max-width: 1024px) {
   .primaryBtn {
     height: 34px;

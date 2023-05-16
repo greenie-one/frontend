@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { TextInput, createStyles, rem, em, Text, Button, Flex, Box } from '@mantine/core';
 import { useLocalStorage } from '@mantine/hooks';
@@ -19,6 +19,19 @@ const SignUpStepThree = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [authTokens, setAuthTokens] = useLocalStorage({ key: 'auth-tokens' });
+  const [secondsRemaining, setSecondsRemaining] = useState<number>(30);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setSecondsRemaining((prevSecondsRemaining) => prevSecondsRemaining - 1);
+    }, 1000);
+
+    if (secondsRemaining === 0) {
+      clearInterval(timer);
+    }
+
+    return () => clearInterval(timer);
+  }, [secondsRemaining]);
 
   const VerifyOTP = async () => {
     if (isLoading) {
@@ -99,12 +112,18 @@ const SignUpStepThree = () => {
             pattern="[0-9]{4}"
             {...signupForm.getInputProps('otp')}
           />
-          <Text fw={'light'} fz={'xs'} my={'md'}>
-            Resend
-            <Text fw={'600'} span>
-              after 30s
+          {secondsRemaining === 0 ? (
+            <Button className="resendLink" variant="subtle" color="gray">
+              Resend
+            </Button>
+          ) : (
+            <Text fw={'light'} fz={'xs'} my={'md'}>
+              Resend{' '}
+              <Text fw={'600'} span>
+                after {secondsRemaining}s
+              </Text>
             </Text>
-          </Text>
+          )}
           <Button className="primaryBtn" onClick={VerifyOTP}>
             Verify
           </Button>
@@ -125,12 +144,18 @@ const SignUpStepThree = () => {
               pattern="[0-9]{4}"
               {...signupForm.getInputProps('otp')}
             />
-            <Text fw={'light'} fz={'xs'} my={'md'}>
-              Resend
-              <Text fw={'600'} span>
-                after 30s
+            {secondsRemaining === 0 ? (
+              <Button className="resendLink" variant="subtle" color="gray">
+                Resend
+              </Button>
+            ) : (
+              <Text fw={'light'} fz={'xs'} my={'md'}>
+                Resend{' '}
+                <Text fw={'600'} span>
+                  after {secondsRemaining}s
+                </Text>
               </Text>
-            </Text>
+            )}
             <Button className="primaryBtn" onClick={VerifyOTP}>
               Verify
             </Button>
