@@ -39,7 +39,7 @@ export const LandingSolutions = () => {
             <Title className="heading">For Enterprises</Title>
             {forEnterPrice.map((text) => (
               <Box key={text} className="text-wrapper">
-                <MdVerified size={'22px'} color="#9FE870" />
+                <MdVerified size={'22px'} className="icon" color="#9FE870" />
                 <Text className="text">{text}</Text>
               </Box>
             ))}
@@ -64,7 +64,7 @@ export const LandingSolutions = () => {
             <Title className="heading">For Candidates</Title>
             {forCandidates.map((text) => (
               <Box key={text} className="text-wrapper">
-                <MdVerified size={'22px'} color="#9FE870" />
+                <MdVerified size={'22px'} className="icon" color="#9FE870" />
                 <Text className="text">{text}</Text>
               </Box>
             ))}
