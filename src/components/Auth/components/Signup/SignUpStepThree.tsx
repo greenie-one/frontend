@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { TextInput, createStyles, rem, em, Text, Button, Flex, Box } from '@mantine/core';
+import { TextInput, createStyles, em, Text, Button, Flex, Box } from '@mantine/core';
 import { useLocalStorage } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { useAuthContext } from '../../context/AuthContext';

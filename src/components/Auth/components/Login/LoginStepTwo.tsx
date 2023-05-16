@@ -1,3 +1,6 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import {
   createStyles,
   rem,
@@ -9,15 +12,22 @@ import {
   Box,
   em,
 } from '@mantine/core';
+import { notifications } from '@mantine/notifications';
 import { useAuthContext } from '../../context/AuthContext';
+import ApiList from '../../../../assets/api/ApiList';
 
 import GoogleButton from '../GoogleButton';
+import { FaExclamation } from 'react-icons/fa';
 import { BsArrowLeft } from 'react-icons/bs';
+import { BsCheckLg } from 'react-icons/bs';
 import '../../styles/global.scss';
 
 const LoginStepTwo = () => {
+  const navigate = useNavigate();
   const { classes: inputClasses } = inputStyles();
   const { loginForm, state, dispatch, isValidEmail, isPhoneNumber } = useAuthContext();
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleForgotPassowrd = () => {
     dispatch({ type: 'NEXTRESETPASSWRDSTEP' });
@@ -28,9 +38,79 @@ const LoginStepTwo = () => {
     dispatch({ type: 'RESETLOGINSTEP' });
   };
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
+    if (isLoading) {
+      return Promise.resolve(null);
+    }
+
     if (!loginForm.validateField('password').hasError) {
-      // login api call
+      loginForm.clearErrors();
+      setIsLoading(true);
+
+      try {
+        notifications.show({
+          id: 'load-data',
+          title: 'Loading...',
+          message: 'Please wait while we log you in...',
+          loading: true,
+          autoClose: false,
+          withCloseButton: false,
+          sx: { borderRadius: em(8) },
+        });
+
+        const res = await axios.post(ApiList.login, {
+          email: loginForm.values.emailPhoneGreenieId,
+          password: loginForm.values.password,
+        });
+
+        if (res.data) {
+          setTimeout(() => {
+            notifications.update({
+              id: 'load-data',
+              title: 'Success !',
+              message: 'You have been logged in successfully.',
+              autoClose: 2200,
+              withCloseButton: false,
+              color: 'teal',
+              icon: <BsCheckLg />,
+              sx: { borderRadius: em(8) },
+            });
+          }, 1100);
+
+          navigate('/profile');
+        }
+      } catch (err: any) {
+        if (err.response?.data?.code === 'GR0011') {
+          loginForm.setFieldValue('password', '');
+
+          notifications.update({
+            id: 'load-data',
+            title: 'Error !',
+            message: 'Invalid Credentials. Please try again.',
+            autoClose: 2200,
+            withCloseButton: false,
+            color: 'red',
+            icon: <FaExclamation />,
+            sx: { borderRadius: em(8) },
+          });
+        }
+        if (err.response?.data?.code === 'GR0008') {
+          loginForm.setFieldValue('password', '');
+
+          notifications.update({
+            id: 'load-data',
+            title: 'Error !',
+            message: 'User not found. Please create an account first.',
+            autoClose: 2200,
+            withCloseButton: false,
+            color: 'red',
+            icon: <FaExclamation />,
+            sx: { borderRadius: em(8) },
+          });
+        }
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
