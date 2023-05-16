@@ -118,7 +118,7 @@ const SignUpStepTwo = () => {
             notifications.update({
               id: 'load-data',
               title: 'Success !',
-              message: 'An OTP has been sent to your email.',
+              message: 'An OTP has been sent to your mobile number.',
               autoClose: 2200,
               withCloseButton: false,
               color: 'teal',
