@@ -1,5 +1,13 @@
 .bio-section {
   text-align: center;
+  margin-top: -2rem;
+  z-index: 10;
+
+  .left-section {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
 
   .bio-name {
     font-size: 32px;
@@ -17,14 +25,21 @@
   }
   .bio-section-wrapper {
     text-align: left;
-    width: 70%;
+    width: 75%;
     margin: 0 auto;
     margin-bottom: 44px;
     display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .border-left {
+      background-color: $lightGray;
+      width: 2px;
+      height: 69px;
+    }
 
     .level {
-      border-right: 2px solid $lightGray;
-      padding-right: 29px;
+      padding-right: 25px;
       .level-heading {
         font-weight: 400;
         font-size: 18px;
@@ -48,11 +63,25 @@
       padding: 0px 29px;
       display: flex;
       align-items: center;
-      border-right: 2px solid $lightGray;
       .medal-icon {
         border-radius: 50%;
         padding: 8px 12px;
         background-color: $bgGreen;
+      }
+      .medal-text-box {
+        margin-left: 7.5px;
+        .top-text {
+          color: $gray;
+          font-weight: 400;
+          font-size: 18px;
+          line-height: 30px;
+        }
+        .percentage {
+          color: $gray;
+          font-weight: 600;
+          font-size: 32px;
+          line-height: 30px;
+        }
       }
     }
     .greenie-id {
@@ -61,15 +90,41 @@
       border-radius: 45px;
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: flex-start;
       margin-left: 29px;
-      .greenie-id-icon {
-        border: 2px solid $bgGreen;
+      padding: 10px;
+      width: 30%;
+      height: 50px;
+
+      .icon-box {
         background-color: $bgGreen;
+        border-radius: 50%;
+        margin-right: 10px;
+        .greenie-id-icon {
+          padding: 7.5px;
+        }
       }
+
       .greenie-id-heading {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 15px;
+        color: #ffffff;
+        padding-bottom: 2px;
       }
       .id {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 20px;
+        line-height: 20px;
+        /* identical to box height, or 100% */
+
+        text-align: center;
+
+        color: #ffffff;
       }
     }
   }

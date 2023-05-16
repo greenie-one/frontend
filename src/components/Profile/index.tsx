@@ -8,7 +8,7 @@ import { VerificationIDSection } from './sections/VerificationIDSection';
 
 export const Profile = () => {
   return (
-    <>
+    <main className="profile">
       <Navbar />
       <ProfilePhotos />
       <BioSection />
@@ -16,6 +16,6 @@ export const Profile = () => {
       <Experience />
       <ResidentialInfo />
       <SkillsSection />
-    </>
+    </main>
   );
 };
