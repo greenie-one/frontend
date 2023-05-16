@@ -1,0 +1,89 @@
+.solutions {
+  margin-block: 150px;
+  .solutions-wrapper {
+    margin-top: 96px;
+
+    .solutions-box {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+
+      .text-box {
+        width: 50%;
+      }
+
+      .heading {
+        font-weight: 700;
+        font-size: 1.6rem;
+        line-height: 1.1;
+        letter-spacing: -0.02em;
+        color: #17a672;
+        margin-bottom: 27px;
+      }
+      .text-wrapper {
+        margin-bottom: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        .text {
+          font-weight: 600;
+          font-size: 0.9rem;
+          line-height: 18px;
+          color: #000000;
+          margin-left: 10px;
+        }
+      }
+
+      .cards-wrapper {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(3, 1fr);
+        gap: 14px;
+        width: 45%;
+        background-image: url(../../../assets/images/Landing/solutionsBg.png);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 60%;
+
+        .card {
+          background: #ffffff;
+          box-shadow: 0px 4.90466px 29.4279px rgba(0, 0, 0, 0.15);
+          border-radius: 25px;
+          width: 100%;
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding-block: 8px;
+
+          &:first-child {
+            grid-column-start: 1;
+            grid-column-end: 2;
+            grid-row-start: 1;
+            grid-row-end: 3;
+
+            img {
+              width: 100px;
+            }
+          }
+
+          &:nth-child(3) {
+            grid-column-start: 2;
+            grid-column-end: 3;
+            grid-row-start: 2;
+            grid-row-end: 4;
+
+            img {
+              width: 100px;
+            }
+          }
+        }
+      }
+
+      &:nth-child(2) {
+        flex-direction: row-reverse;
+        margin-top: 54px;
+      }
+    }
+  }
+}
