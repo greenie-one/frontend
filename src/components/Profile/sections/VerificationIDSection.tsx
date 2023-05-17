@@ -4,23 +4,26 @@ import '../styles/global.scss';
 import { MdVerified } from 'react-icons/md';
 import { VerificationIDCard } from '../components/VerificationIDCard';
 import { VerifyIdNoData } from '../components/VerifyIdNoData';
-import { Link } from 'react-router-dom';
+import AadharCard from '../assets/sampleAadhar.png';
+import PanCard from '../assets/samplePanCard.png';
 
 export const VerificationIDSection = () => {
   const [data, setData] = useState([
     {
       id: 1,
-      document: 'Aadhar Card',
-      verified: false,
+      documentName: 'Aadhar Card',
+      documentImg: AadharCard,
+      isVerified: true,
     },
     {
       id: 2,
-      document: 'Aadhar Card',
-      verified: false,
+      documentName: 'Pan Card',
+      documentImg: PanCard,
+      isVerified: true,
     },
   ]);
   return (
-    <Box className="container">
+    <section className="verificationId-section  container">
       <Text className="heading">Verification ID ({data.length})</Text>
       <Text className="subheading">All government IDs, personal verification IDs etc.</Text>
 
@@ -36,14 +39,18 @@ export const VerificationIDSection = () => {
           </Box>
         </Box>
       ) : (
-        <Box>
-          {data.map((i) => (
-            <Box className="cards-wrapper" key={i.id}>
-              <VerificationIDCard />
+        <Box className="cards-wrapper">
+          {data.map(({ id, documentName, documentImg, isVerified }) => (
+            <Box key={id}>
+              <VerificationIDCard
+                documentName={documentName}
+                documentImg={documentImg}
+                isVerified={isVerified}
+              />
             </Box>
           ))}
         </Box>
       )}
-    </Box>
+    </section>
   );
 };

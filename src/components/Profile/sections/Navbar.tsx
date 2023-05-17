@@ -12,7 +12,7 @@ export const Navbar = () => {
       <nav className="navbar">
         <Link to={'/'} className="logo">
           <span className="greenie">Greenie</span>
-          <span className="verified">
+          <span className="nav-verified">
             <MdVerified size={'22px'} color="#9fe870" />
           </span>
         </Link>
