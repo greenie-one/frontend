@@ -29,7 +29,7 @@ const skillSetOne = [
   'Energetic',
   'Optimistic',
   'Self Initiator',
-  'hardworking',
+  'Hardworking',
   'Prodigy',
   'Lone Wolf',
   'Micro Planner',
