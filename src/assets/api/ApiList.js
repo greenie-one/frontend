@@ -7,6 +7,7 @@ const ApiList = {
   validateOtp: `${BASE_URL}/validateOTP`,
   login: `${BASE_URL}/login`,
   createProfile: `${BASE_URL}/profiles/create`,
+  googleAuth: `${BASE_URL}/oauth/google/redirect`,
 };
 
 export default ApiList;
