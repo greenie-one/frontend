@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, KeyboardEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -31,7 +31,13 @@ const LoginStepTwo = () => {
 
   const [isLoading, setIsLoading] = useState(false);
 
+  const handleLoginWithPhoneNo = () => {
+    loginForm.setFieldValue('emailPhoneGreenieId', '');
+    dispatch({ type: 'PREVLOGINSTEP' });
+  };
+
   const handleForgotPassowrd = () => {
+    loginForm.setFieldValue('emailPhoneGreenieId', '');
     dispatch({ type: 'NEXTRESETPASSWRDSTEP' });
     dispatch({ type: 'NEXTLOGINSTEP' });
   };
@@ -40,7 +46,8 @@ const LoginStepTwo = () => {
     dispatch({ type: 'RESETLOGINSTEP' });
   };
 
-  const handleEmailLogin = async () => {
+  const handleEmailLogin = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
     if (isLoading) {
       return Promise.resolve(null);
     }
@@ -200,14 +207,14 @@ const LoginStepTwo = () => {
             {...loginForm.getInputProps('password')}
           />
           <Flex direction={'row'} align={'center'} justify={'space-between'} mt={'6px'}>
-            <Text className="loginLink" onClick={() => dispatch({ type: 'PREVLOGINSTEP' })}>
+            <Text className="loginLink" onClick={handleLoginWithPhoneNo}>
               Login using Phone Number
             </Text>
             <Text className="loginLink" onClick={handleForgotPassowrd}>
               Forgot password?
             </Text>
           </Flex>
-          <Button className="primaryBtn" onClick={handleEmailLogin}>
+          <Button type="submit" className="primaryBtn" onClick={handleEmailLogin}>
             Login
           </Button>
           <Divider label="Or better yet" className="divider" labelPosition="center" />
@@ -234,7 +241,7 @@ const LoginStepTwo = () => {
           <Text className="profileTextBold">
             A one-time passowrd (OTP) will be sent to your registered phone number for verification
           </Text>
-          <Button onClick={sendLoginOTP} className="primaryBtn">
+          <Button type="submit" onClick={sendLoginOTP} className="primaryBtn">
             Send OTP
           </Button>
         </Box>

@@ -1,7 +1,5 @@
 import { Title, Text, Box, createStyles, rem, em } from '@mantine/core';
-import { Link } from 'react-router-dom';
-
-import { MdVerified } from 'react-icons/md';
+import greenieLogo from '../assets/greenieLogo.png';
 import testimonialImg from '../assets/testimonialImg.png';
 import '../styles/authInfo.scss';
 
@@ -11,12 +9,7 @@ export const AuthInfo = () => {
   return (
     <>
       <div className="logo">
-        <Link to={'/'}>
-          <span className="greenie">Greenie</span>
-          <span>
-            <MdVerified className="verified" />
-          </span>
-        </Link>
+        <img src={greenieLogo} alt="greenie-logo" />
       </div>
 
       <Title className="authInfoHeading">Welcome to Greenie, your professional community </Title>

@@ -45,7 +45,11 @@ const LoginWithOTP = () => {
               verification
             </Text>
           )}
-          <Button onClick={() => dispatch({ type: 'NEXTLOGINWITHOTPSTEP' })} className="primaryBtn">
+          <Button
+            type="submit"
+            onClick={() => dispatch({ type: 'NEXTLOGINWITHOTPSTEP' })}
+            className="primaryBtn"
+          >
             Send OTP
           </Button>
         </Box>
@@ -75,7 +79,9 @@ const LoginWithOTP = () => {
               after 30s
             </Text>
           </Text>
-          <Button className="primaryBtn">Verify</Button>
+          <Button type="submit" className="primaryBtn">
+            Verify
+          </Button>
         </Box>
       )}
     </Box>
