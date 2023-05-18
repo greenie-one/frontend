@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import {
@@ -44,6 +44,8 @@ const Profile = () => {
   const [active, setActive] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [authTokens, setAuthTokens] = useLocalStorage({ key: 'auth-tokens' });
+  const firstNameRef = useRef<HTMLInputElement>(null);
+  const lastNameRef = useRef<HTMLInputElement>(null);
 
   const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
   const handleGoBack = () => {
@@ -152,18 +154,20 @@ const Profile = () => {
       {active === 1 && (
         <Box>
           <Text className="steps">{`Steps ${active}`}/3</Text>
-          <Text className="profileText">What should we call you?</Text>
+          <Text className="profileText">Enter Name As Per Aadhar Card</Text>
           <TextInput
             label="First Name"
             classNames={inputClasses}
             {...profileForm.getInputProps('firstName')}
+            ref={firstNameRef}
           />
           <TextInput
             label="Last Name"
             classNames={inputClasses}
             {...profileForm.getInputProps('lastName')}
+            ref={lastNameRef}
           />
-          <Button className="primaryBtn" onClick={nextStep}>
+          <Button type="submit" className="primaryBtn" onClick={nextStep}>
             Continue
           </Button>
         </Box>
@@ -249,6 +253,7 @@ const Profile = () => {
           <Button
             className="secondaryBtn"
             onClick={submitProfile}
+            type="submit"
             disabled={profileForm.values.descriptionTags.length !== 3}
           >
             Take me to my Greenie Profile

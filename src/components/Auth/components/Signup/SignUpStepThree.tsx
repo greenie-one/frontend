@@ -124,7 +124,7 @@ const SignUpStepThree = () => {
               </Text>
             </Text>
           )}
-          <Button className="primaryBtn" onClick={VerifyOTP}>
+          <Button type="submit" className="primaryBtn" onClick={VerifyOTP}>
             Verify
           </Button>
         </Box>
@@ -156,7 +156,7 @@ const SignUpStepThree = () => {
                 </Text>
               </Text>
             )}
-            <Button className="primaryBtn" onClick={VerifyOTP}>
+            <Button type="submit" className="primaryBtn" onClick={VerifyOTP}>
               Verify
             </Button>
           </Box>

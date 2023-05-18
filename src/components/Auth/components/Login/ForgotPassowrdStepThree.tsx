@@ -36,7 +36,7 @@ const ForgotPassowrdStepThree = () => {
           after 30s
         </Text>
       </Text>
-      <Button className="primaryBtn" fullWidth radius="xl" color="teal">
+      <Button type="submit" className="primaryBtn" fullWidth radius="xl" color="teal">
         Verify
       </Button>
     </Box>

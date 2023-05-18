@@ -1,6 +1,6 @@
 import { TextInput, createStyles, em, rem, Text, Button, Box, Flex } from '@mantine/core';
 import { useAuthContext } from '../../context/AuthContext';
-
+import { KeyboardEvent } from 'react';
 import ForgotPassowrdStepThree from './ForgotPassowrdStepThree';
 import { BsArrowLeft } from 'react-icons/bs';
 import '../../styles/global.scss';
@@ -25,6 +25,8 @@ const ForgotPassword = () => {
   const handleNextStep = () => {
     dispatch({ type: 'NEXTRESETPASSWRDSTEP' });
   };
+
+  const handleKeyPressNextStep = (event: KeyboardEvent<HTMLInputElement>): void => {};
 
   return (
     <Box className="authRightContainer">

@@ -1,6 +1,6 @@
 import { TextInput, createStyles, em, rem, Text, Button, Divider, Box } from '@mantine/core';
 import { useAuthContext } from '../../context/AuthContext';
-
+import { KeyboardEvent } from 'react';
 import GoogleButton from '../GoogleButton';
 import TermsAndConditions from '../../assets/terms_and_conditions-greenie.pdf';
 import PrivacyPolicy from '../../assets/Privacy Policy-Greenie.pdf';
@@ -41,7 +41,7 @@ const SignUpStepOne = () => {
             </a>
             .
           </Text>
-          <Button onClick={SignupStep1} className="primaryBtn">
+          <Button type="submit" onClick={SignupStep1} className="primaryBtn">
             Agree & Join
           </Button>
           <Divider label="Or better yet" className="divider" labelPosition="center" />
