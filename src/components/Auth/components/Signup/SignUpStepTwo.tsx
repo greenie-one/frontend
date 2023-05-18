@@ -19,7 +19,8 @@ const SignUpStepTwo = () => {
   const { signUpStep } = state;
   const [isLoading, setIsLoading] = useState(false);
 
-  const EmailSignupStep = async () => {
+  const EmailSignupStep = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
     if (isLoading) {
       return Promise.resolve(null);
     }
@@ -87,7 +88,8 @@ const SignUpStepTwo = () => {
     }
   };
 
-  const MobileSignupStep = async () => {
+  const MobileSignupStep = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
     if (isLoading) {
       return Promise.resolve(null);
     }

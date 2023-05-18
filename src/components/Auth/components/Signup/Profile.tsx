@@ -22,18 +22,21 @@ import { FaExclamation } from 'react-icons/fa';
 import { BsArrowLeft } from 'react-icons/bs';
 import { BsCheckLg } from 'react-icons/bs';
 import linkedInLogo from '../../assets/linkedIn-logo.png';
+import linkedInGreenieLogo from '../../assets/linkedInGreenieLogo.png';
+import profileIllustration from '../../assets/profileillustration.png';
 import '../../styles/global.scss';
 
 const skillSetOne = [
-  'Team Player',
+  'Lone Wolf',
+
   'Energetic',
-  'Optimistic',
+  'Prodigy',
   'Self Initiator',
   'Hardworking',
-  'Prodigy',
-  'Lone Wolf',
+  'Optimistic',
+  'Team Player',
   'Micro Planner',
-  'Jack of all trade',
+  'Jack of All',
 ];
 
 const Profile = () => {
@@ -56,7 +59,10 @@ const Profile = () => {
     }
   };
 
-  const nextStep = () => {
+  const nextStep = (
+    event: React.MouseEvent<HTMLButtonElement> | React.MouseEvent<HTMLDivElement>
+  ) => {
+    event.preventDefault();
     if (
       active === 1 &&
       !profileForm.validateField('firstName').hasError &&
@@ -71,7 +77,8 @@ const Profile = () => {
     }
   };
 
-  const submitProfile = async () => {
+  const submitProfile = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
     if (isLoading) {
       return Promise.resolve(null);
     }
@@ -134,20 +141,20 @@ const Profile = () => {
 
   return (
     <Box>
+      <Box className="progress-bar-wrapper">
+        <Box className="progress-bar" bg={'#9fe870'}></Box>
+        <Box
+          className="progress-bar"
+          bg={active === 2 || active === 3 ? '#9fe870' : '#F3F3F3'}
+        ></Box>
+        <Box className="progress-bar" bg={active === 3 ? '#9fe870' : '#F3F3F3'}></Box>
+      </Box>
       {active !== 1 && (
         <>
           <Flex className="tabTopBox" onClick={handleGoBack}>
             <BsArrowLeft size={'16px'} />
             <Text className="tabHeading">Go Back</Text>
           </Flex>
-          <Box className="progress-bar-wrapper">
-            <Box className="progress-bar" bg={'#9fe870'}></Box>
-            <Box
-              className="progress-bar"
-              bg={active === 2 || active === 3 ? '#9fe870' : '#F3F3F3'}
-            ></Box>
-            <Box className="progress-bar" bg={active === 3 ? '#9fe870' : '#F3F3F3'}></Box>
-          </Box>
         </>
       )}
 
@@ -176,15 +183,8 @@ const Profile = () => {
       {active === 2 && (
         <Box>
           <Text className="steps">{`Steps ${active}`}/3</Text>
-          <Box
-            my={'lg'}
-            style={{
-              width: '100%',
-              height: '147px',
-              backgroundColor: '#F3F3F3',
-              borderRadius: '1rem',
-            }}
-          ></Box>
+
+          <img className="linkedInimg" src={linkedInGreenieLogo} alt="" />
 
           <Text className="profileText" align="center">
             Help us create a better experience for you
@@ -202,7 +202,7 @@ const Profile = () => {
             fz={'xs'}
             align="center"
             color="#4C4C4C"
-            onClick={nextStep}
+            onClick={(e) => nextStep(e)}
             style={{ cursor: 'pointer' }}
           >
             Skip for now
@@ -213,16 +213,9 @@ const Profile = () => {
       {active === 3 && (
         <Box>
           <Text className="steps">{`Steps ${active}`}/3</Text>
-          <Box
-            mx={'auto'}
-            style={{
-              width: '148px',
-              height: '148px',
-              backgroundColor: '#F3F3F3',
-              borderRadius: '20px',
-              marginBottom: '16px',
-            }}
-          ></Box>
+          <Box className="profile-box">
+            <img className="profileIllustration" src={profileIllustration} alt="" />
+          </Box>
 
           <Text className="profileText" align="center">
             Introduce yourself in 3 words

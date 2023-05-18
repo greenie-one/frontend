@@ -33,7 +33,8 @@ const SignUpStepThree = () => {
     return () => clearInterval(timer);
   }, [secondsRemaining]);
 
-  const VerifyOTP = async () => {
+  const VerifyOTP = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
     if (isLoading) {
       return Promise.resolve(null);
     }

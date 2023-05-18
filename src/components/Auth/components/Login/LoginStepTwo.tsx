@@ -32,12 +32,12 @@ const LoginStepTwo = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleLoginWithPhoneNo = () => {
-    loginForm.values.emailPhoneGreenieId = '';
+    loginForm.setFieldValue('emailPhoneGreenieId', '');
     dispatch({ type: 'PREVLOGINSTEP' });
   };
 
   const handleForgotPassowrd = () => {
-    loginForm.values.emailPhoneGreenieId = '';
+    loginForm.setFieldValue('emailPhoneGreenieId', '');
     dispatch({ type: 'NEXTRESETPASSWRDSTEP' });
     dispatch({ type: 'NEXTLOGINSTEP' });
   };
@@ -46,7 +46,8 @@ const LoginStepTwo = () => {
     dispatch({ type: 'RESETLOGINSTEP' });
   };
 
-  const handleEmailLogin = async () => {
+  const handleEmailLogin = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
     if (isLoading) {
       return Promise.resolve(null);
     }

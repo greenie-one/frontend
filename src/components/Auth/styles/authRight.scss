@@ -95,6 +95,20 @@
     cursor: pointer;
   }
 
+  .linkedInimg {
+    margin-top: -2rem;
+  }
+
+  .profile-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .profileIllustration {
+    margin-bottom: 2rem;
+  }
+
   .skills-box {
     display: flex;
     flex-direction: column;
@@ -107,8 +121,8 @@
   .skill-wrapper {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    column-gap: 8px;
-    row-gap: 8px;
+    column-gap: 12px;
+    row-gap: 12px;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 24px;

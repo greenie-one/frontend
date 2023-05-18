@@ -44,7 +44,7 @@ const ForgotPassword = () => {
             {...loginForm.getInputProps('emailPhoneGreenieId')}
             classNames={inputClasses}
           />
-          <Button className="primaryBtn" onClick={handleNextStep}>
+          <Button type="submit" className="primaryBtn" onClick={handleNextStep}>
             Continue
           </Button>
         </Box>
@@ -80,7 +80,7 @@ const ForgotPassword = () => {
               verification
             </Text>
           )}
-          <Button className="primaryBtn" onClick={handleNextStep}>
+          <Button type="submit" className="primaryBtn" onClick={handleNextStep}>
             Send OTP
           </Button>
         </Box>
