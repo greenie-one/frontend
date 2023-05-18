@@ -18,7 +18,7 @@ const App = () => {
   return (
     <>
       <MantineProvider withGlobalStyles withNormalizeCSS>
-        <Notifications position="top-center" />
+        <Notifications position="top-right" zIndex={999} />
         {validRoutes.includes(pathname) ? <Navbar /> : null}
         <Routes>
           <Route path="/" element={<Landing />} />

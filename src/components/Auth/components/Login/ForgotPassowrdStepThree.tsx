@@ -4,7 +4,7 @@ import '../../styles/global.scss';
 
 const ForgotPassowrdStepThree = () => {
   const { classes: inputClasses } = inputStyles();
-  const { loginForm, state, dispatch, isPhoneNumber, isValidEmail } = useAuthContext();
+  const { loginForm, isPhoneNumber, isValidEmail } = useAuthContext();
 
   return (
     <Box>

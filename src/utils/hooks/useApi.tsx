@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback } from 'react';
-import axios, { CancelTokenSource } from 'axios';
+import { useState, useCallback } from 'react';
+import axios from 'axios';
 
 type useApiProps<T> = {
   isLoading: boolean;
@@ -9,48 +9,39 @@ type useApiProps<T> = {
 
 const useApi = <T,>(): useApiProps<T> => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<Error | null>(null);
-  const [cancelToken, setCancelToken] = useState<CancelTokenSource | null>(null);
+  const [error, setError] = useState<any>(null);
+  const [isSendingRequest, setIsSendingRequest] = useState<boolean>(false);
 
-  useEffect(() => {
-    return () => {
-      if (cancelToken) {
-        cancelToken.cancel();
+  const sendRequest = useCallback(
+    async (url: string, method: string, data?: T, headers?: any) => {
+      if (isSendingRequest) {
+        return Promise.resolve(null);
       }
-    };
-  }, [cancelToken]);
 
-  const sendRequest = useCallback(async (url: string, method: string, data?: T, headers?: any) => {
-    setIsLoading(true);
-    setError(null);
+      setIsSendingRequest(true);
+      setIsLoading(true);
+      setError(null);
 
-    if (cancelToken) {
-      cancelToken.cancel();
-    }
+      try {
+        const res = await axios({
+          method,
+          url,
+          data,
+          headers: {
+            ...headers,
+          },
+        });
 
-    const newCancelToken = axios.CancelToken.source();
-    setCancelToken(newCancelToken);
-
-    try {
-      const res = await axios({
-        method,
-        url,
-        data,
-        headers: {
-          ...headers,
-          cancelToken: newCancelToken.token,
-        },
-      });
-
-      return res.data;
-    } catch (err: any) {
-      if (!axios.isCancel(err)) {
-        setError(err);
+        return res.data;
+      } catch (err: any) {
+        setError(err.response?.data);
+      } finally {
+        setIsSendingRequest(false);
+        setIsLoading(false);
       }
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+    },
+    [isSendingRequest]
+  );
 
   return { isLoading, error, sendRequest };
 };
