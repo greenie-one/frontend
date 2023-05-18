@@ -1,14 +1,5 @@
-import React, { createContext, useContext, useReducer } from 'react';
+import React, { createContext, useContext, useReducer, useState } from 'react';
 import { useForm, UseFormReturnType, isNotEmpty, matchesField, hasLength } from '@mantine/form';
-
-type AuthContextType = {
-  signupForm: UseFormReturnType<signUpFormType>;
-  loginForm: UseFormReturnType<loginFormType>;
-  state: CounterState;
-  dispatch: React.Dispatch<CounterAction>;
-  isPhoneNumber: (input: string) => boolean;
-  isValidEmail: (input: string) => boolean;
-};
 
 type signUpFormType = {
   emailPhone: string;
@@ -21,6 +12,12 @@ type loginFormType = {
   emailPhoneGreenieId: string;
   password?: string;
   otp?: string;
+};
+
+type ProfileFormType = {
+  firstName: string;
+  lastName: string;
+  descriptionTags: string[];
 };
 
 interface CounterState {
@@ -42,10 +39,27 @@ type CounterAction =
   | { type: 'NEXTLOGINWITHOTPSTEP' }
   | { type: 'PREVLOGINWITHOTPSTEP' };
 
+type AuthContextType = {
+  signupForm: UseFormReturnType<signUpFormType>;
+  loginForm: UseFormReturnType<loginFormType>;
+  profileForm: UseFormReturnType<ProfileFormType>;
+
+  state: CounterState;
+  dispatch: React.Dispatch<CounterAction>;
+
+  isPhoneNumber: (input: string) => boolean;
+  isValidEmail: (input: string) => boolean;
+
+  validationId: string;
+  setValidationId: React.Dispatch<React.SetStateAction<string>>;
+};
+
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 export const useAuthContext = () => useContext(AuthContext);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [validationId, setValidationId] = useState<string>('');
+
   const signupForm = useForm<signUpFormType>({
     initialValues: {
       emailPhone: '',
@@ -76,10 +90,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     },
   });
 
+  const profileForm = useForm<ProfileFormType>({
+    initialValues: {
+      firstName: '',
+      lastName: '',
+      descriptionTags: [],
+    },
+
+    validate: {
+      firstName: isNotEmpty('First Name cannot be empty'),
+      lastName: isNotEmpty('Last Name cannot be empty'),
+    },
+  });
+
   const emailPhoneValidateRules = (value: string) => {
     if (value.trim().length === 0) {
       return 'Email or Phone Number cannot be empty';
     }
+
     if (/^[+]?[\d ]+$/.test(value.trim())) {
       if (!isPhoneNumber(value)) {
         return 'Invalid Phone Number';
@@ -97,7 +125,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const isPhoneNumber = (input: string): boolean => {
-    const pattern = /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/;
+    const pattern = /^(\+\d{1,2}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/;
     return pattern.test(input.trim());
   };
 
@@ -140,10 +168,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       value={{
         signupForm,
         loginForm,
+        profileForm,
         state,
         dispatch,
         isPhoneNumber,
         isValidEmail,
+        validationId,
+        setValidationId,
       }}
     >
       {children}
