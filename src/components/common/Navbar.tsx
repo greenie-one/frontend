@@ -28,9 +28,9 @@ export const Navbar = () => {
       borderRadius: scrollPos > 600 ? '5rem' : '',
       position: scrollPos > 600 ? 'fixed':'relative',
       top: scrollPos > 600 ? 0: '',
-      margin: scrollPos > 600  ? "1rem 8rem": '',
+      margin: scrollPos > 600  ? "1rem 5rem 0rem 5rem": '',
       backgroundColor:"white",
-      transition: "all 0.5s ease"
+      transition: "all 0.5s ease",
     }}>
       <motion.header className={classes.header} >
         <Flex justify="center" align="center" direction="row" className={classes.logo}>
