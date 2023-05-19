@@ -15,7 +15,7 @@ export const SkillsCard: React.FC<CardProps> = ({ skill, percentage, isVerified 
           size={80}
           sections={[{ value: percentage, color: '#8CF078' }]}
           roundCaps
-          thickness={8}
+          thickness={6}
           label={<Center>{percentage}</Center>}
         />
         <Box>

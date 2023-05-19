@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Text, Box, Button } from '@mantine/core';
 import { Carousel } from '@mantine/carousel';
 import '../styles/global.scss';
@@ -8,6 +8,24 @@ import { Link } from 'react-router-dom';
 import { MdOutlineEdit } from 'react-icons/md';
 
 export const SkillsSection = () => {
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setScreenWidth(window.innerWidth);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  const slidesToScroll = (): number => {
+    if (screenWidth > 990) {
+      return 0;
+    }
+    return 1;
+  };
   const [data, setData] = useState([
     {
       id: 1,
@@ -59,7 +77,7 @@ export const SkillsSection = () => {
           slideSize="33.33%"
           slideGap={24}
           loop={false}
-          slidesToScroll={1}
+          slidesToScroll={slidesToScroll()}
           align="start"
           styles={{ control: { opacity: 0 } }}
           breakpoints={[

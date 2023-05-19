@@ -1,22 +1,45 @@
 import { Box, Text, Chip, Group } from '@mantine/core';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import level from '../assets/level.png';
 import levelFilled from '../assets/levelFilled.png';
 import medal from '../assets/medal.png';
 import { FaRegCopy } from 'react-icons/fa';
 import copyIcon from '../assets/content_copy.png';
+import { MdVerified } from 'react-icons/md';
 
 export const BioSection = () => {
   const [userLevel, setUserLevel] = useState(0);
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setScreenWidth(window.innerWidth);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  const chipSize = (): string => {
+    if (screenWidth > 768) {
+      return 'sm';
+    }
+    return 'xs';
+  };
   return (
     <section className="bio-section container">
-      <Text className="bio-name">John Marston</Text>
+      <Box className="bio-name-box">
+        <Text className="bio-name">John Marston</Text>
+        <MdVerified className="name-verified" size={'20px'} />
+      </Box>
+
       <Box className="chips">
         <Chip.Group>
           <Group>
-            <Chip>Energetic</Chip>
-            <Chip>Team Player</Chip>
-            <Chip>Optimistic</Chip>
+            <Chip size={chipSize()}>Energetic</Chip>
+            <Chip size={chipSize()}>Team Player</Chip>
+            <Chip size={chipSize()}>Optimistic</Chip>
           </Group>
         </Chip.Group>
       </Box>
@@ -68,21 +91,22 @@ export const BioSection = () => {
           <Box className="medal-wrapper">
             <img className="medal-icon" src={medal} alt="Medal Icon" />
             <Box className="medal-text-box">
-              <Text className="top-text">--</Text>
-              <Text className="percentage">_</Text>
+              <Text className="top-text">Among Top</Text>
+              <Text className="percentage">2%</Text>
             </Box>
           </Box>
         </Box>
-
         <Box className="border-left"></Box>
-        <Box className="greenie-id">
-          <Box className="icon-box">
-            <img src={copyIcon} alt="copy" className="greenie-id-icon" />
-          </Box>
+        <Box className="right-section">
+          <Box className="greenie-id">
+            <Box className="icon-box">
+              <img src={copyIcon} alt="copy" className="greenie-id-icon" />
+            </Box>
 
-          <Box>
-            <Text className="greenie-id-heading">Share Greenie ID </Text>
-            <Text className="id">GRN788209</Text>
+            <Box>
+              <Text className="greenie-id-heading">Share Greenie ID </Text>
+              <Text className="id">GRN788209</Text>
+            </Box>
           </Box>
         </Box>
       </Box>

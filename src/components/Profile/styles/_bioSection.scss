@@ -1,22 +1,27 @@
 .bio-section {
   text-align: center;
   margin-top: -2rem;
-  z-index: 10;
+  z-index: 2;
 
-  .left-section {
+  .bio-name-box {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
+    margin-bottom: 24px;
+    .bio-name {
+      font-family: 'Gilroy-Bold' !important;
+      font-size: 32px;
+      line-height: 38px;
+      letter-spacing: -0.02em;
+      color: $dark;
+      font-weight: 600;
+    }
+    .name-verified {
+      margin-left: 8px;
+      color: #9fe870;
+    }
   }
 
-  .bio-name {
-    font-size: 32px;
-    line-height: 38px;
-    letter-spacing: -0.02em;
-    color: $dark;
-    font-weight: 600;
-    margin-bottom: 24px;
-  }
   .chips {
     display: flex;
     align-items: center;
@@ -32,58 +37,66 @@
     align-items: center;
     justify-content: space-between;
 
+    .left-section {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+
+      .level {
+        padding-right: 22px;
+        .level-heading {
+          font-weight: 400;
+          font-size: 18px;
+          line-height: 30px;
+          color: $gray;
+          margin-bottom: 6px;
+        }
+
+        .level-wrapper {
+          display: flex;
+          .level-img {
+            width: 28px;
+            height: 28px;
+            &:not(:last-child) {
+              margin-right: 10px;
+            }
+          }
+        }
+      }
+
+      .medal-wrapper {
+        padding: 0px 29px;
+        display: flex;
+        align-items: center;
+        .medal-icon {
+          border-radius: 50%;
+          padding: 8px 12px;
+          background-color: $bgGreen;
+        }
+        .medal-text-box {
+          margin-left: 7.5px;
+          .top-text {
+            color: $gray;
+            font-weight: 400;
+            font-size: 13px;
+            line-height: 30px;
+          }
+          .percentage {
+            color: $gray;
+            font-weight: 600;
+            font-size: 32px;
+            line-height: 30px;
+          }
+        }
+      }
+    }
+
     .border-left {
       background-color: $lightGray;
       width: 2px;
       height: 69px;
     }
 
-    .level {
-      padding-right: 25px;
-      .level-heading {
-        font-weight: 400;
-        font-size: 18px;
-        line-height: 30px;
-        color: $gray;
-        margin-bottom: 6px;
-      }
-
-      .level-wrapper {
-        .level-img {
-          width: 30px;
-          height: 30px;
-          &:not(:last-child) {
-            margin-right: 14px;
-          }
-        }
-      }
-    }
-
-    .medal-wrapper {
-      padding: 0px 29px;
-      display: flex;
-      align-items: center;
-      .medal-icon {
-        border-radius: 50%;
-        padding: 8px 12px;
-        background-color: $bgGreen;
-      }
-      .medal-text-box {
-        margin-left: 7.5px;
-        .top-text {
-          color: $gray;
-          font-weight: 400;
-          font-size: 18px;
-          line-height: 30px;
-        }
-        .percentage {
-          color: $gray;
-          font-weight: 600;
-          font-size: 32px;
-          line-height: 30px;
-        }
-      }
-    }
     .greenie-id {
       background: $green;
       box-shadow: 0px -26px 144px rgba(0, 0, 0, 0.05);
@@ -93,7 +106,7 @@
       justify-content: flex-start;
       margin-left: 9px;
       padding: 10px;
-      width: 40%;
+      width: 100%;
       height: 50px;
 
       .icon-box {
@@ -120,11 +133,8 @@
         font-weight: 700;
         font-size: 20px;
         line-height: 20px;
-        /* identical to box height, or 100% */
-
         text-align: center;
-
-        color: #ffffff;
+        color: $white;
       }
     }
   }
@@ -136,5 +146,132 @@
     width: 75%;
     margin: 0 auto;
     margin-bottom: 16px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .bio-section {
+    .bio-name-box {
+      .bio-name {
+        font-size: 20px;
+        line-height: 23px;
+        letter-spacing: -0.02em;
+      }
+    }
+
+    .bio-section-wrapper {
+      flex-direction: column;
+      width: 100%;
+      margin: 0 0;
+      margin-bottom: 24px;
+
+      .left-section {
+        width: 100%;
+        justify-content: center;
+
+        .level {
+          text-align: center;
+          padding-right: 0;
+
+          .level-heading {
+            font-size: 10.9223px;
+            line-height: 18px;
+          }
+          .level-wrapper {
+            width: 100%;
+
+            .level-img {
+              width: 25px;
+              height: 25px;
+              &:not(:last-child) {
+                margin-right: 6px;
+              }
+            }
+          }
+        }
+
+        .medal-wrapper {
+          width: 25%;
+          padding: 0px 8px;
+          justify-content: center;
+
+          .medal-text-box {
+            .top-text {
+              font-size: 10px;
+              line-height: 16px;
+            }
+            .percentage {
+              font-size: 18px;
+              line-height: 16px;
+            }
+          }
+        }
+      }
+
+      .greenie-id {
+        margin-left: 0px;
+        height: 40px;
+        width: 50%;
+        margin: 0 auto;
+
+        .icon-box {
+          background-color: $bgGreen;
+          border-radius: 50%;
+          margin-right: 10px;
+          .greenie-id-icon {
+            padding: 4.5px;
+          }
+        }
+        .greenie-id-heading {
+          font-size: 8px;
+          line-height: 14px;
+        }
+        .id {
+          font-size: 14px;
+          line-height: 11px;
+        }
+      }
+    }
+
+    .right-section {
+      margin-top: 2rem;
+      width: 50%;
+    }
+
+    .bio-text,
+    .border-left {
+      display: none;
+    }
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .bio-section {
+    .bio-section-wrapper {
+      .left-section {
+        .medal-wrapper {
+          width: 30%;
+        }
+      }
+
+      .greenie-id {
+        width: 70%;
+      }
+    }
+  }
+}
+@media screen and (max-width: 440px) {
+  .bio-section {
+    .bio-section-wrapper {
+      .left-section {
+        .medal-wrapper {
+          width: 50%;
+        }
+      }
+
+      .greenie-id {
+        width: 100%;
+      }
+    }
   }
 }

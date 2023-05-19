@@ -5,13 +5,13 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  z-index: 0;
   .cover-photo {
     height: 316px;
     background: $bgGreen;
     border-radius: 50px;
     width: 94%;
     max-width: 960px;
+    z-index: 0;
   }
   .profile-photo {
     width: 241px;
@@ -19,6 +19,6 @@
     border: 8px solid #ffffff;
     border-radius: 50%;
     margin-top: -190px;
-    z-index: 0;
+    z-index: 1;
   }
 }
