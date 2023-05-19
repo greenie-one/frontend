@@ -1,6 +1,6 @@
 .navbar {
   background-color: $white;
-  padding: 28px;
+  padding: 18px 28px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -20,8 +20,11 @@
       margin-right: 5px;
     }
     .nav-verified {
-      margin-top: 5px;
+      margin-top: 3px;
     }
+  }
+  .search {
+    margin-left: -5rem;
   }
 
   .right-section {
@@ -42,11 +45,12 @@
   .navbar {
     .logo {
       .greenie {
-        font-size: 32px;
+        font-size: 26px;
         line-height: 38px;
         letter-spacing: -0.02em;
       }
     }
+
     .right-section {
       .profile-picture {
         margin-left: 50px;

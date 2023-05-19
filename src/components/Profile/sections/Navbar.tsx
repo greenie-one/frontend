@@ -16,10 +16,10 @@ export const Navbar = () => {
         <Link to={'/'} className="logo">
           <span className="greenie">Greenie</span>
           <span className="nav-verified">
-            <MdVerified size={'22px'} color="#9fe870" />
+            <MdVerified size={'20px'} color="#9fe870" />
           </span>
         </Link>
-        <Box>
+        <Box className="search">
           <TextInput classNames={inputClasses} placeholder="Search" icon={<GoSearch />} />
         </Box>
         <Box className="right-section">
