@@ -8,8 +8,8 @@ import { Footer } from './components/common/Footer';
 import { Landing } from './pages/Landing';
 import { AuthPage } from './pages/AuthPage';
 import { Waitlist } from './pages/Waitlist';
+import { GoogleAuthRedirect } from './components/Auth/components/Google/GoogleAuthRedirect';
 import { ProfilePage } from './pages/ProfilePage';
-
 import { validRoutes } from './utils/constants/ValidRoutes';
 
 const App = () => {
@@ -24,6 +24,7 @@ const App = () => {
           <Route path="/" element={<Landing />} />
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/waitlist" element={<Waitlist />} />
+          <Route path="/oauth/google/callback" element={<GoogleAuthRedirect />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>

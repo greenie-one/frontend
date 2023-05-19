@@ -17,7 +17,7 @@ import { notifications } from '@mantine/notifications';
 import { useAuthContext } from '../../context/AuthContext';
 import ApiList from '../../../../assets/api/ApiList';
 
-import GoogleButton from '../GoogleButton';
+import GoogleButton from '../Google/GoogleButton';
 import { FaExclamation } from 'react-icons/fa';
 import { BsArrowLeft } from 'react-icons/bs';
 import { BsCheckLg } from 'react-icons/bs';
