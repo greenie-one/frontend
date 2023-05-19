@@ -13,6 +13,11 @@
       width: 70%;
     }
 
+    @media (max-width: 280px) {
+      font-size: 1.7rem;
+      width: 90%;
+    }
+
     .highlight{
       color: #8cf078
     }
@@ -27,7 +32,8 @@
       justify-content: space-between;
 
       @media (max-width: 425px) {
-        flex-direction: column-reverse;
+        flex-direction: column;
+        gap: 2rem;
       }
 
       .heading {
@@ -46,6 +52,10 @@
 
         @media (max-width: 375px) {
           padding-top: 3rem;
+        }
+
+        @media (max-width: 280px) {
+          font-size: 1.75rem;
         }
       }
 
@@ -71,6 +81,10 @@
           }
 
           @media (max-width: 768px) {
+            font-size: 0.9rem;
+          }
+
+          @media (max-width: 280px) {
             font-size: 0.9rem;
           }
         }
@@ -117,6 +131,11 @@
           grid-template-rows: repeat(3, 80px);
         }
 
+        @media (max-width: 320px) {
+          grid-template-columns: repeat(2, 100px);
+          grid-template-rows: repeat(3, 70px);
+        }
+
         .card {
           background: #ffffff;
           box-shadow: 0px 4.90466px 29.4279px rgba(0, 0, 0, 0.15);
@@ -132,6 +151,9 @@
             @media (max-width: 768px) {
               width: 35%;
             }
+            @media (max-width: 320px) {
+              width: 35%;
+            }
           }
 
           &:first-child {
@@ -144,6 +166,9 @@
               width: 75px;
               @media (max-width: 768px) {
                 width: 45%;
+              }
+              @media (max-width: 320px) {
+                width: 35%;
               }
             }
           }
@@ -159,6 +184,9 @@
               @media (max-width: 768px) {
                 width: 45%;
               }
+              @media (max-width: 320px) {
+                width: 35%;
+              }
             }
           }
         }
@@ -169,9 +197,10 @@
         margin-top: 10vh;
 
         @media (max-width: 425px) {
-          flex-direction: column-reverse;
+          flex-direction: column;
           margin-top: 5vh;
         }
+      
       }
     }
   }
