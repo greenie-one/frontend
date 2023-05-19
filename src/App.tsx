@@ -9,6 +9,8 @@ import { Landing } from './pages/Landing';
 import { AuthPage } from './pages/AuthPage';
 import { Waitlist } from './pages/Waitlist';
 import { ProfilePage } from './pages/ProfilePage';
+import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage';
+import { TearmsAndConditionsPage } from './pages/TearmsAndConditionsPage';
 
 import { validRoutes } from './utils/constants/ValidRoutes';
 
@@ -25,6 +27,8 @@ const App = () => {
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/waitlist" element={<Waitlist />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/privacy" element={<PrivacyPolicyPage />} />
+          <Route path="/tos" element={<TearmsAndConditionsPage />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
         {validRoutes.includes(pathname) ? <Footer /> : null}
