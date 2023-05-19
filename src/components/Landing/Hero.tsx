@@ -165,6 +165,10 @@ const useStyles = createStyles((theme) => ({
     [`@media screen and (max-width: ${em(320)})`]: {
       fontSize: '1.5rem',
     },
+
+    [`@media screen and (max-width: ${em(280)})`]: {
+      fontSize: '1.3rem',
+    },
   },
 
   heroText: {
@@ -189,6 +193,9 @@ const useStyles = createStyles((theme) => ({
 
     [`@media screen and (max-width: ${em(425)})`]: {
       fontSize: '0.825rem',
+    },
+    [`@media screen and (max-width: ${em(280)})`]: {
+      fontSize: '0.7rem',
     },
   },
 
