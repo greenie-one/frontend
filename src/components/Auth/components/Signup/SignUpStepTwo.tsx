@@ -5,7 +5,7 @@ import { notifications } from '@mantine/notifications';
 import { useAuthContext } from '../../context/AuthContext';
 import ApiList from '../../../../assets/api/ApiList';
 
-import GoogleButton from '../GoogleButton';
+import GoogleButton from '../Google/GoogleButton';
 import TermsAndConditions from '../../assets/terms_and_conditions-greenie.pdf';
 import PrivacyPolicy from '../../assets/Privacy Policy-Greenie.pdf';
 import { FaExclamation } from 'react-icons/fa';
