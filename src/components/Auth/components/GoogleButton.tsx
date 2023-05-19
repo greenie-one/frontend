@@ -1,5 +1,4 @@
-import React from 'react';
-import { Button, Flex, Text } from '@mantine/core';
+import { Button } from '@mantine/core';
 import GoogleLogo from '../assets/g-logo.png';
 import '../styles/global.scss';
 

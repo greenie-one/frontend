@@ -1,23 +1,152 @@
+import { useState } from 'react';
+import axios from 'axios';
 import { createStyles, em, rem, Text, Button, Divider, PasswordInput, Box } from '@mantine/core';
+import { notifications } from '@mantine/notifications';
 import { useAuthContext } from '../../context/AuthContext';
+import ApiList from '../../../../assets/api/ApiList';
+
 import GoogleButton from '../GoogleButton';
+import TermsAndConditions from '../../assets/terms_and_conditions-greenie.pdf';
+import PrivacyPolicy from '../../assets/Privacy Policy-Greenie.pdf';
+import { FaExclamation } from 'react-icons/fa';
+import { BsCheckLg } from 'react-icons/bs';
 import '../../styles/global.scss';
 
 const SignUpStepTwo = () => {
-  const { signupForm, state, dispatch, isPhoneNumber, isValidEmail } = useAuthContext();
-  const { signUpStep } = state;
+  const { signupForm, state, dispatch, isPhoneNumber, isValidEmail, setValidationId } =
+    useAuthContext();
   const { classes: inputClasses } = inputStyles();
+  const { signUpStep } = state;
 
-  const EmailSignupStep = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const EmailSignupStep = async () => {
+    if (isLoading) {
+      return Promise.resolve(null);
+    }
+
     if (
       signUpStep === 2 &&
       !signupForm.validateField('password').hasError &&
       !signupForm.validateField('confirmPassword').hasError
     ) {
       signupForm.clearErrors();
-      // API CALL
+      setIsLoading(true);
 
-      dispatch({ type: 'NEXTSIGNUPSTEP' });
+      try {
+        notifications.show({
+          id: 'load-data',
+          title: 'Sending...',
+          message: 'Please wait while we send you an OTP.',
+          loading: true,
+          autoClose: false,
+          withCloseButton: false,
+          sx: { borderRadius: em(8) },
+        });
+
+        const res = await axios.post(ApiList.signup, {
+          email: signupForm.values.emailPhone,
+          password: signupForm.values.password,
+        });
+
+        if (res.data) {
+          setValidationId(res.data?.validationId);
+          setTimeout(() => {
+            notifications.update({
+              id: 'load-data',
+              title: 'Success !',
+              message: 'An OTP has been sent to your email.',
+              autoClose: 2200,
+              withCloseButton: false,
+              color: 'teal',
+              icon: <BsCheckLg />,
+              sx: { borderRadius: em(8) },
+            });
+          }, 1100);
+
+          dispatch({ type: 'NEXTSIGNUPSTEP' });
+        }
+      } catch (err: any) {
+        if (err.response?.data?.code === 'GR0003') {
+          signupForm.setFieldValue('password', '');
+          signupForm.setFieldValue('confirmPassword', '');
+
+          notifications.update({
+            id: 'load-data',
+            title: 'Error !',
+            message: 'This email is already registered. Please try again with a different email.',
+            autoClose: 2200,
+            withCloseButton: false,
+            color: 'red',
+            icon: <FaExclamation />,
+            sx: { borderRadius: em(8) },
+          });
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    }
+  };
+
+  const MobileSignupStep = async () => {
+    if (isLoading) {
+      return Promise.resolve(null);
+    }
+
+    if (signUpStep === 2) {
+      signupForm.clearErrors();
+      setIsLoading(true);
+
+      try {
+        notifications.show({
+          id: 'load-data',
+          title: 'Sending...',
+          message: 'Please wait while we send you an OTP.',
+          loading: true,
+          autoClose: false,
+          withCloseButton: false,
+          sx: { borderRadius: em(8) },
+        });
+
+        const res = await axios.post(ApiList.signup, {
+          mobileNumber: signupForm.values.emailPhone,
+        });
+
+        if (res.data) {
+          setValidationId(res.data?.validationId);
+          setTimeout(() => {
+            notifications.update({
+              id: 'load-data',
+              title: 'Success !',
+              message: 'An OTP has been sent to your mobile number.',
+              autoClose: 2200,
+              withCloseButton: false,
+              color: 'teal',
+              icon: <BsCheckLg />,
+              sx: { borderRadius: em(8) },
+            });
+          }, 1100);
+
+          dispatch({ type: 'NEXTSIGNUPSTEP' });
+        }
+      } catch (err: any) {
+        console.log(err.response?.data);
+        if (err.response?.data?.code === 'GR0003') {
+          notifications.update({
+            id: 'load-data',
+            title: 'Error !',
+            message:
+              'This mobile number is already registered. Please try again with a different mobile number.',
+            autoClose: 2200,
+            withCloseButton: false,
+            color: 'red',
+            icon: <FaExclamation />,
+            sx: { borderRadius: em(8) },
+          });
+        }
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
@@ -43,8 +172,15 @@ const SignUpStepTwo = () => {
             {...signupForm.getInputProps('confirmPassword')}
           />
           <Text className="tearms-condition">
-            By creating an account, you agree to our <u>Terms of Service</u> and
-            <u>Privacy & Cookie Statement</u>.
+            By creating an account, you agree to our{' '}
+            <a href={TermsAndConditions} download={'Tearms and Conditions'}>
+              Terms of Service
+            </a>{' '}
+            and{' '}
+            <a href={PrivacyPolicy} download={'Privacy Policy'}>
+              Privacy & Cookie Statement
+            </a>
+            .
           </Text>
           <Button onClick={EmailSignupStep} className="primaryBtn">
             Agree & Join
@@ -65,7 +201,7 @@ const SignUpStepTwo = () => {
               By creating an account, you agree to our <u>Terms of Service</u> and
               <u>Privacy & Cookie Statement</u>.
             </Text>
-            <Button onClick={() => dispatch({ type: 'NEXTSIGNUPSTEP' })} className="primaryBtn">
+            <Button onClick={MobileSignupStep} className="primaryBtn">
               Send OTP
             </Button>
             <Divider label="Or better yet" className="divider" labelPosition="center" />

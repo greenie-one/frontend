@@ -1,16 +1,22 @@
 import { TextInput, createStyles, em, rem, Text, Button, Divider, Box } from '@mantine/core';
 import { useAuthContext } from '../../context/AuthContext';
+
 import GoogleButton from '../GoogleButton';
+import TermsAndConditions from '../../assets/terms_and_conditions-greenie.pdf';
+import PrivacyPolicy from '../../assets/Privacy Policy-Greenie.pdf';
 import '../../styles/global.scss';
 
 const SignUpStepOne = () => {
   const { signupForm, state, dispatch } = useAuthContext();
-  const { signUpStep } = state;
   const { classes: inputClasses } = inputStyles();
+  const { signUpStep } = state;
 
   const SignupStep1 = () => {
     if (signUpStep === 1 && !signupForm.validateField('emailPhone').hasError) {
       signupForm.clearErrors();
+      signupForm.setFieldValue('password', '');
+      signupForm.setFieldValue('confirmPassword', '');
+
       dispatch({ type: 'NEXTSIGNUPSTEP' });
     }
   };
@@ -25,8 +31,15 @@ const SignUpStepOne = () => {
             {...signupForm.getInputProps('emailPhone')}
           />
           <Text className="tearms-condition">
-            By creating an account, you agree to our <u>Terms of Service</u> and{' '}
-            <u>Privacy & Cookie Statement</u>.
+            By creating an account, you agree to our{' '}
+            <a href={TermsAndConditions} download={'Tearms and Conditions'}>
+              Terms of Service
+            </a>{' '}
+            and{' '}
+            <a href={PrivacyPolicy} download={'Privacy Policy'}>
+              Privacy & Cookie Statement
+            </a>
+            .
           </Text>
           <Button onClick={SignupStep1} className="primaryBtn">
             Agree & Join
