@@ -5,20 +5,8 @@ import { GoSearch } from 'react-icons/go';
 import { AiOutlineBell, AiFillCaretDown } from 'react-icons/ai';
 import JohnMarston from '../assets/johnMarston.png';
 import { useDisclosure } from '@mantine/hooks';
-import { useState, useEffect } from 'react';
 
 export const Navbar = () => {
-  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setScreenWidth(window.innerWidth);
-    };
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
   const { classes } = useStyles();
   const { classes: inputClasses } = inputStyles();
   const [opened, { open, close }] = useDisclosure(false);
