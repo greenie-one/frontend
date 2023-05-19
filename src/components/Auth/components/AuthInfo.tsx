@@ -1,6 +1,5 @@
-import { Title, Text, Box, createStyles, rem, em, Flex } from '@mantine/core';
-import { Link } from 'react-router-dom';
-import { MdVerified } from 'react-icons/md';
+import { Title, Text, Box, createStyles, rem, em } from '@mantine/core';
+import greenieLogo from '../assets/greenieLogo.png';
 import testimonialImg from '../assets/testimonialImg.png';
 import '../styles/authInfo.scss';
 
@@ -10,19 +9,16 @@ export const AuthInfo = () => {
   return (
     <>
       <div className="logo">
-        <Link to={'/'}>
-          <span className="greenie">Greenie</span>
-          <span>
-            <MdVerified className="verified" />
-          </span>
-        </Link>
+        <img src={greenieLogo} alt="greenie-logo" />
       </div>
+
       <Title className="authInfoHeading">Welcome to Greenie, your professional community </Title>
       <Text className="authInfoText">
         Our background verification app delivers reliable and comprehensive screening solutions,
         enabling you to make informed decisions with confidence. Trust and safety are guaranteed
         with our accurate and efficient background checks.
       </Text>
+
       <Box className="authInfoTestimonialBox">
         <Text className="testimonialHeading">
           Trust and safety are guaranteed with our accurate and efficient background checks.

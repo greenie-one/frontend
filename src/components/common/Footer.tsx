@@ -147,7 +147,7 @@ const useStyles = createStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     gap: '2rem',
-    paddingBottom:"2rem"
+    paddingBottom: '2rem',
   },
 
   footerGridContainer: {

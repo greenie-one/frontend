@@ -79,6 +79,12 @@ const useStyles = createStyles((theme) => ({
     position: 'relative',
     zIndex: -1,
 
+    [`@media screen and (max-width: ${em(1440)})`]: {
+      width: "max-content",
+      textAlign: "left",
+      marginInline: "auto",
+    },
+
     [`@media screen and (max-width: ${em(1280)})`]: {
       width: 'max-content',
       textAlign: 'center',
@@ -104,6 +110,10 @@ const useStyles = createStyles((theme) => ({
     [`@media screen and (max-width: ${em(350)})`]: {
       width: '16ch',
       fontSize: rem(26),
+    },
+    [`@media screen and (max-width: ${em(280)})`]: {
+      width: "16ch",
+      fontSize: rem(24),
     },
   },
 
@@ -138,6 +148,7 @@ const useStyles = createStyles((theme) => ({
       fontSize: '1.25rem',
       left: '4.85rem',
     },
+
   },
 
   verified: {
@@ -185,6 +196,10 @@ const useStyles = createStyles((theme) => ({
     marginBlockEnd: '1.25rem',
     maxWidth: '40ch',
 
+    [`@media screen and (max-width: ${em(1440)})`]: {
+      textAlign: "left"
+    },
+
     [`@media screen and (max-width: ${em(1280)})`]: {
       textAlign: 'center',
       marginInline: 'auto',
@@ -198,6 +213,10 @@ const useStyles = createStyles((theme) => ({
 
     [`@media screen and (max-width: ${em(320)})`]: {
       marginBlockStart: '1rem',
+    },
+    [`@media screen and (max-width: ${em(280)})`]: {
+      width: "30ch",
+      fontSize: rem(13),
     },
   },
 

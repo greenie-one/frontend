@@ -1,11 +1,13 @@
 import { Text, Button, Box, Flex, em, TextInput, createStyles } from '@mantine/core';
 import { useAuthContext } from '../../context/AuthContext';
+
 import { BsArrowLeft } from 'react-icons/bs';
 import '../../styles/global.scss';
 
 const LoginWithOTP = () => {
   const { state, dispatch, isPhoneNumber, loginForm, isValidEmail } = useAuthContext();
   const { classes: inputClasses } = inputStyles();
+
   const handleClick = () => {
     if (state.loginWithOTPStep === 2) {
       dispatch({ type: 'PREVLOGINWITHOTPSTEP' });
@@ -43,7 +45,11 @@ const LoginWithOTP = () => {
               verification
             </Text>
           )}
-          <Button onClick={() => dispatch({ type: 'NEXTLOGINWITHOTPSTEP' })} className="primaryBtn">
+          <Button
+            type="submit"
+            onClick={() => dispatch({ type: 'NEXTLOGINWITHOTPSTEP' })}
+            className="primaryBtn"
+          >
             Send OTP
           </Button>
         </Box>
@@ -73,7 +79,9 @@ const LoginWithOTP = () => {
               after 30s
             </Text>
           </Text>
-          <Button className="primaryBtn">Verify</Button>
+          <Button type="submit" className="primaryBtn">
+            Verify
+          </Button>
         </Box>
       )}
     </Box>
