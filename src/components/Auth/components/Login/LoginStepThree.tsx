@@ -14,7 +14,8 @@ import '../../styles/global.scss';
 
 const LoginStepThree = () => {
   const navigate = useNavigate();
-  const { loginForm, state, dispatch, isPhoneNumber, validationId, resendOtp } = useAuthContext();
+  const { loginForm, state, dispatch, isPhoneNumber, validationId, resendOtp, setForceRender } =
+    useAuthContext();
   const { classes: inputClasses } = inputStyles();
 
   const [secondsRemaining, setSecondsRemaining] = useState<number>(60);
@@ -55,6 +56,7 @@ const LoginStepThree = () => {
         });
 
         if (res.data) {
+          setForceRender((prev) => !prev);
           setTimeout(() => {
             notifications.update({
               id: 'load-data',
@@ -67,8 +69,6 @@ const LoginStepThree = () => {
               sx: { borderRadius: em(8) },
             });
           }, 1100);
-
-          navigate('/profile');
         }
       } catch (err: any) {
         loginForm.setFieldValue('otp', '');

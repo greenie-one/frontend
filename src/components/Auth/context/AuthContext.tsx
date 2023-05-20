@@ -69,6 +69,9 @@ type AuthContextType = {
   setValidationId: React.Dispatch<React.SetStateAction<string>>;
 
   resendOtp: () => Promise<void | null>;
+
+  forceRender: boolean;
+  setForceRender: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
@@ -76,8 +79,10 @@ export const useAuthContext = () => useContext(AuthContext);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const navigate = useNavigate();
+
   const [validationId, setValidationId] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [forceRender, setForceRender] = useState<boolean>(false);
 
   const signupForm = useForm<signUpFormType>({
     initialValues: {
@@ -223,29 +228,29 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const [authTokens, setAuthTokens] = useLocalStorage<AuthTokens>({ key: 'auth-tokens' });
-  // useEffect(() => {
-  //   const getMyProfile = async () => {
-  //     try {
-  //       const res = await axios.get(ApiList.getMyProfile, {
-  //         headers: {
-  //           Authorization: `Bearer ${authTokens?.accessToken}`,
-  //         },
-  //       });
-  //       console.log(res.data);
+  const getMyProfile = async () => {
+    try {
+      const res = await axios.get(ApiList.getMyProfile, {
+        headers: {
+          Authorization: `Bearer ${authTokens?.accessToken}`,
+        },
+      });
+      console.log(res.data);
 
-  //       if (res.data && authTokens?.accessToken) {
-  //         navigate('/profile');
-  //       }
-  //     } catch (err: any) {
-  //       if (err.response?.data?.code === 'GR0009') {
-  //         // show create profile form
-  //         navigate('/wailist');
-  //       }
-  //     }
-  //   };
+      if (res.data && authTokens?.accessToken) {
+        navigate('/profile');
+      }
+    } catch (err: any) {
+      if (err.response?.data?.code === 'GR0009') {
+        // show create profile form
+        navigate('/wailist');
+      }
+    }
+  };
 
-  //   if (authTokens?.accessToken) getMyProfile();
-  // }, [authTokens]);
+  useEffect(() => {
+    getMyProfile();
+  }, [authTokens, forceRender]);
 
   return (
     <AuthContext.Provider
@@ -260,6 +265,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         validationId,
         setValidationId,
         resendOtp,
+        forceRender,
+        setForceRender,
       }}
     >
       {children}

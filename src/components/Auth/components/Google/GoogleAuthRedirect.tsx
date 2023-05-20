@@ -19,7 +19,6 @@ export const GoogleAuthRedirect = () => {
         axios
           .get(`${ApiList.googleCallback}`, { params: { code: code } })
           .then((res) => {
-            console.log(res.data);
             setAuthTokens(res.data);
           })
           .catch((err) => {

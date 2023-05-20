@@ -27,8 +27,15 @@ import '../../styles/global.scss';
 const LoginStepTwo = () => {
   const navigate = useNavigate();
   const { classes: inputClasses } = inputStyles();
-  const { loginForm, state, dispatch, isValidEmail, isPhoneNumber, setValidationId } =
-    useAuthContext();
+  const {
+    loginForm,
+    state,
+    dispatch,
+    isValidEmail,
+    isPhoneNumber,
+    setValidationId,
+    setForceRender,
+  } = useAuthContext();
 
   const [authTokens, setAuthTokens] = useLocalStorage({ key: 'auth-tokens' });
   const [isLoading, setIsLoading] = useState(false);
@@ -83,6 +90,7 @@ const LoginStepTwo = () => {
 
           if (resp.data) {
             setAuthTokens(resp.data);
+            setForceRender((prev) => !prev);
 
             setTimeout(() => {
               notifications.update({
@@ -96,8 +104,6 @@ const LoginStepTwo = () => {
                 sx: { borderRadius: em(8) },
               });
             }, 1100);
-
-            navigate('/profile');
           }
         }
       } catch (err: any) {
