@@ -13,6 +13,7 @@ import {
   Box,
   em,
 } from '@mantine/core';
+import { useLocalStorage } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { useAuthContext } from '../../context/AuthContext';
 import ApiList from '../../../../assets/api/ApiList';
@@ -29,6 +30,7 @@ const LoginStepTwo = () => {
   const { loginForm, state, dispatch, isValidEmail, isPhoneNumber, setValidationId } =
     useAuthContext();
 
+  const [authTokens, setAuthTokens] = useLocalStorage({ key: 'auth-tokens' });
   const [isLoading, setIsLoading] = useState(false);
 
   const handleLoginWithPhoneNo = () => {
@@ -73,20 +75,30 @@ const LoginStepTwo = () => {
         });
 
         if (res.data) {
-          setTimeout(() => {
-            notifications.update({
-              id: 'load-data',
-              title: 'Success !',
-              message: 'You have been logged in successfully.',
-              autoClose: 2200,
-              withCloseButton: false,
-              color: 'teal',
-              icon: <BsCheckLg />,
-              sx: { borderRadius: em(8) },
-            });
-          }, 1100);
+          setValidationId(res.data?.validationId);
+          const resp = await axios.post(ApiList.validateOtp, {
+            validationId: res.data?.validationId,
+            otp: '123456',
+          });
 
-          navigate('/profile');
+          if (resp.data) {
+            setAuthTokens(resp.data);
+
+            setTimeout(() => {
+              notifications.update({
+                id: 'load-data',
+                title: 'Success !',
+                message: 'You have been logged in successfully.',
+                autoClose: 2200,
+                withCloseButton: false,
+                color: 'teal',
+                icon: <BsCheckLg />,
+                sx: { borderRadius: em(8) },
+              });
+            }, 1100);
+
+            navigate('/profile');
+          }
         }
       } catch (err: any) {
         if (err.response?.data?.code === 'GR0011') {
@@ -125,7 +137,8 @@ const LoginStepTwo = () => {
     }
   };
 
-  const sendLoginOTP = async () => {
+  const sendLoginOTP = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
     if (isLoading) {
       return Promise.resolve(null);
     }

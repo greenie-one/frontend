@@ -12,7 +12,7 @@ import { BsCheckLg } from 'react-icons/bs';
 import '../../styles/global.scss';
 
 const SignUpStepThree = () => {
-  const { signupForm, state, dispatch, isPhoneNumber, isValidEmail, validationId } =
+  const { signupForm, state, dispatch, isPhoneNumber, isValidEmail, validationId, resendOtp } =
     useAuthContext();
   const { classes: inputClasses } = inputStyles();
   const { signUpStep } = state;
@@ -113,8 +113,15 @@ const SignUpStepThree = () => {
             pattern="[0-9]{4}"
             {...signupForm.getInputProps('otp')}
           />
+
           {secondsRemaining === 0 ? (
-            <Button className="resendLink" variant="subtle" color="gray" compact>
+            <Button
+              compact
+              color="gray"
+              variant="subtle"
+              onClick={resendOtp}
+              className="resendLink"
+            >
               Resend
             </Button>
           ) : (
@@ -125,6 +132,7 @@ const SignUpStepThree = () => {
               </Text>
             </Text>
           )}
+
           <Button type="submit" className="primaryBtn" onClick={VerifyOTP}>
             Verify
           </Button>
@@ -145,8 +153,15 @@ const SignUpStepThree = () => {
               pattern="[0-9]{4}"
               {...signupForm.getInputProps('otp')}
             />
+
             {secondsRemaining === 0 ? (
-              <Button className="resendLink" variant="subtle" color="gray" compact>
+              <Button
+                compact
+                color="gray"
+                variant="subtle"
+                onClick={resendOtp}
+                className="resendLink"
+              >
                 Resend
               </Button>
             ) : (
@@ -157,6 +172,7 @@ const SignUpStepThree = () => {
                 </Text>
               </Text>
             )}
+
             <Button type="submit" className="primaryBtn" onClick={VerifyOTP}>
               Verify
             </Button>

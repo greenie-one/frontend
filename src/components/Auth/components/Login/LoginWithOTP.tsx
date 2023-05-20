@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Text, Button, Box, Flex, em, TextInput, createStyles } from '@mantine/core';
 import { useAuthContext } from '../../context/AuthContext';
 
@@ -5,8 +6,22 @@ import { BsArrowLeft } from 'react-icons/bs';
 import '../../styles/global.scss';
 
 const LoginWithOTP = () => {
-  const { state, dispatch, isPhoneNumber, loginForm, isValidEmail } = useAuthContext();
+  const { state, dispatch, isPhoneNumber, loginForm, isValidEmail, resendOtp } = useAuthContext();
   const { classes: inputClasses } = inputStyles();
+
+  const [secondsRemaining, setSecondsRemaining] = useState<number>(60);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setSecondsRemaining((prevSecondsRemaining) => prevSecondsRemaining - 1);
+    }, 1000);
+
+    if (secondsRemaining === 0) {
+      clearInterval(timer);
+    }
+
+    return () => clearInterval(timer);
+  }, [secondsRemaining]);
 
   const handleClick = () => {
     if (state.loginWithOTPStep === 2) {
@@ -24,6 +39,7 @@ const LoginWithOTP = () => {
         <BsArrowLeft size={'15px'} />
         <Text className="tabHeading">Login using OTP</Text>
       </Flex>
+
       {state.loginWithOTPStep === 1 && (
         <Box>
           <Text className="disbledInput">
@@ -54,6 +70,7 @@ const LoginWithOTP = () => {
           </Button>
         </Box>
       )}
+
       {state.loginWithOTPStep == 2 && (
         <Box>
           {isValidEmail(loginForm.values.emailPhoneGreenieId) && (
@@ -73,12 +90,26 @@ const LoginWithOTP = () => {
             pattern="[0-9]{4}"
             {...loginForm.getInputProps('otp')}
           />
-          <Text fw={'light'} fz={'xs'} my={'md'}>
-            Resend
-            <Text fw={'600'} span>
-              after 30s
+
+          {secondsRemaining === 0 ? (
+            <Button
+              compact
+              color="gray"
+              variant="subtle"
+              onClick={resendOtp}
+              className="resendLink"
+            >
+              Resend
+            </Button>
+          ) : (
+            <Text fw={'light'} fz={'xs'} my={'md'}>
+              Resend{' '}
+              <Text fw={'600'} span>
+                after {secondsRemaining}s
+              </Text>
             </Text>
-          </Text>
+          )}
+
           <Button type="submit" className="primaryBtn">
             Verify
           </Button>

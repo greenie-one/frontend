@@ -14,7 +14,7 @@ import '../../styles/global.scss';
 
 const LoginStepThree = () => {
   const navigate = useNavigate();
-  const { loginForm, state, dispatch, isPhoneNumber, validationId } = useAuthContext();
+  const { loginForm, state, dispatch, isPhoneNumber, validationId, resendOtp } = useAuthContext();
   const { classes: inputClasses } = inputStyles();
 
   const [secondsRemaining, setSecondsRemaining] = useState<number>(60);
@@ -126,12 +126,26 @@ const LoginStepThree = () => {
               pattern="[0-9]{4}"
               {...loginForm.getInputProps('otp')}
             />
-            <Text fw={'light'} fz={'xs'} my={'md'}>
-              Resend
-              <Text fw={'600'} span>
-                after {secondsRemaining}s
+
+            {secondsRemaining === 0 ? (
+              <Button
+                compact
+                color="gray"
+                variant="subtle"
+                onClick={resendOtp}
+                className="resendLink"
+              >
+                Resend
+              </Button>
+            ) : (
+              <Text fw={'light'} fz={'xs'} my={'md'}>
+                Resend{' '}
+                <Text fw={'600'} span>
+                  after {secondsRemaining}s
+                </Text>
               </Text>
-            </Text>
+            )}
+
             <Button type="submit" className="primaryBtn" onClick={handleMobileLogin}>
               Verify & Login
             </Button>
