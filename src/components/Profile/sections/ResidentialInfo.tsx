@@ -65,7 +65,7 @@ export const ResidentialInfo = () => {
           loop={false}
           slidesToScroll={screenSize ? 0 : 1}
           align="start"
-          styles={{ control: { opacity: 0 } }}
+          styles={{ control: { display: 'none' } }}
           breakpoints={[
             { maxWidth: 'xs', slideSize: '80%' },
             { maxWidth: 'md', slideSize: '50%' },
