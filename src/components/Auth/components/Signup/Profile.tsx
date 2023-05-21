@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import {
@@ -22,18 +22,21 @@ import { FaExclamation } from 'react-icons/fa';
 import { BsArrowLeft } from 'react-icons/bs';
 import { BsCheckLg } from 'react-icons/bs';
 import linkedInLogo from '../../assets/linkedIn-logo.png';
+import linkedInGreenieLogo from '../../assets/linkedInGreenieLogo.png';
+import profileIllustration from '../../assets/profileillustration.png';
 import '../../styles/global.scss';
 
 const skillSetOne = [
-  'Team Player',
-  'Energetic',
-  'Optimistic',
-  'Self Initiator',
-  'hardworking',
-  'Prodigy',
   'Lone Wolf',
+
+  'Energetic',
+  'Prodigy',
+  'Self Initiator',
+  'Hardworking',
+  'Optimistic',
+  'Team Player',
   'Micro Planner',
-  'Jack of all trade',
+  'Jack of All',
 ];
 
 const Profile = () => {
@@ -44,6 +47,8 @@ const Profile = () => {
   const [active, setActive] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [authTokens, setAuthTokens] = useLocalStorage({ key: 'auth-tokens' });
+  const firstNameRef = useRef<HTMLInputElement>(null);
+  const lastNameRef = useRef<HTMLInputElement>(null);
 
   const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
   const handleGoBack = () => {
@@ -54,7 +59,10 @@ const Profile = () => {
     }
   };
 
-  const nextStep = () => {
+  const nextStep = (
+    event: React.MouseEvent<HTMLButtonElement> | React.MouseEvent<HTMLDivElement>
+  ) => {
+    event.preventDefault();
     if (
       active === 1 &&
       !profileForm.validateField('firstName').hasError &&
@@ -69,7 +77,8 @@ const Profile = () => {
     }
   };
 
-  const submitProfile = async () => {
+  const submitProfile = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
     if (isLoading) {
       return Promise.resolve(null);
     }
@@ -132,38 +141,40 @@ const Profile = () => {
 
   return (
     <Box>
+      <Box className="progress-bar-wrapper">
+        <Box className="progress-bar" bg={'#9fe870'}></Box>
+        <Box
+          className="progress-bar"
+          bg={active === 2 || active === 3 ? '#9fe870' : '#F3F3F3'}
+        ></Box>
+        <Box className="progress-bar" bg={active === 3 ? '#9fe870' : '#F3F3F3'}></Box>
+      </Box>
       {active !== 1 && (
         <>
           <Flex className="tabTopBox" onClick={handleGoBack}>
             <BsArrowLeft size={'16px'} />
             <Text className="tabHeading">Go Back</Text>
           </Flex>
-          <Box className="progress-bar-wrapper">
-            <Box className="progress-bar" bg={'#9fe870'}></Box>
-            <Box
-              className="progress-bar"
-              bg={active === 2 || active === 3 ? '#9fe870' : '#F3F3F3'}
-            ></Box>
-            <Box className="progress-bar" bg={active === 3 ? '#9fe870' : '#F3F3F3'}></Box>
-          </Box>
         </>
       )}
 
       {active === 1 && (
         <Box>
           <Text className="steps">{`Steps ${active}`}/3</Text>
-          <Text className="profileText">What should we call you?</Text>
+          <Text className="profileText">Enter Name As Per Aadhar Card</Text>
           <TextInput
             label="First Name"
             classNames={inputClasses}
             {...profileForm.getInputProps('firstName')}
+            ref={firstNameRef}
           />
           <TextInput
             label="Last Name"
             classNames={inputClasses}
             {...profileForm.getInputProps('lastName')}
+            ref={lastNameRef}
           />
-          <Button className="primaryBtn" onClick={nextStep}>
+          <Button type="submit" className="primaryBtn" onClick={nextStep}>
             Continue
           </Button>
         </Box>
@@ -172,15 +183,8 @@ const Profile = () => {
       {active === 2 && (
         <Box>
           <Text className="steps">{`Steps ${active}`}/3</Text>
-          <Box
-            my={'lg'}
-            style={{
-              width: '100%',
-              height: '147px',
-              backgroundColor: '#F3F3F3',
-              borderRadius: '1rem',
-            }}
-          ></Box>
+
+          <img className="linkedInimg" src={linkedInGreenieLogo} alt="" />
 
           <Text className="profileText" align="center">
             Help us create a better experience for you
@@ -198,7 +202,7 @@ const Profile = () => {
             fz={'xs'}
             align="center"
             color="#4C4C4C"
-            onClick={nextStep}
+            onClick={(e) => nextStep(e)}
             style={{ cursor: 'pointer' }}
           >
             Skip for now
@@ -209,16 +213,9 @@ const Profile = () => {
       {active === 3 && (
         <Box>
           <Text className="steps">{`Steps ${active}`}/3</Text>
-          <Box
-            mx={'auto'}
-            style={{
-              width: '148px',
-              height: '148px',
-              backgroundColor: '#F3F3F3',
-              borderRadius: '20px',
-              marginBottom: '16px',
-            }}
-          ></Box>
+          <Box className="profile-box">
+            <img className="profileIllustration" src={profileIllustration} alt="" />
+          </Box>
 
           <Text className="profileText" align="center">
             Introduce yourself in 3 words
@@ -249,6 +246,7 @@ const Profile = () => {
           <Button
             className="secondaryBtn"
             onClick={submitProfile}
+            type="submit"
             disabled={profileForm.values.descriptionTags.length !== 3}
           >
             Take me to my Greenie Profile

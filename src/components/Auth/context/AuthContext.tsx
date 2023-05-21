@@ -1,5 +1,12 @@
-import React, { createContext, useContext, useReducer, useState } from 'react';
+import React, { createContext, useContext, useEffect, useReducer, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useForm, UseFormReturnType, isNotEmpty, matchesField, hasLength } from '@mantine/form';
+import { useLocalStorage } from '@mantine/hooks';
+
+type AuthTokens = {
+  accessToken: string;
+  refreshToken: string;
+};
 
 type signUpFormType = {
   emailPhone: string;
@@ -58,6 +65,7 @@ const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 export const useAuthContext = () => useContext(AuthContext);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const navigate = useNavigate();
   const [validationId, setValidationId] = useState<string>('');
 
   const signupForm = useForm<signUpFormType>({
@@ -162,6 +170,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     resetPasswordStep: 0,
     loginWithOTPStep: 0,
   });
+
+  const [authTokens, setAuthTokens] = useLocalStorage<AuthTokens>({ key: 'auth-tokens' });
+  useEffect(() => {
+    if (authTokens?.accessToken) {
+      navigate('/profile');
+    }
+  }, [authTokens]);
 
   return (
     <AuthContext.Provider
