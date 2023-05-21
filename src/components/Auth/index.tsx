@@ -59,14 +59,17 @@ export const Auth = () => {
               </Tabs.Panel>
 
               <Tabs.Panel value="login">
-                {loginStep === 1 && <LoginStepOne />}
-                {loginStep === 2 && <LoginStepTwo />}
-                {loginStep === 3 && <LoginStepThree />}
+                <form>
+                  {loginStep === 1 && <LoginStepOne />}
+                  {loginStep === 2 && <LoginStepTwo />}
+                  {loginStep === 3 && <LoginStepThree />}
+                </form>
               </Tabs.Panel>
             </Tabs>
-
-            {loginWithOTPStep > 0 && <LoginWithOTP />}
-            {resetPasswordStep > 0 && <ForgotPassword />}
+            <form>
+              {loginWithOTPStep > 0 && <LoginWithOTP />}
+              {resetPasswordStep > 0 && <ForgotPassword />}
+            </form>
           </Box>
         </Box>
       </Box>

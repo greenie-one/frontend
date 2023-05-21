@@ -5,7 +5,7 @@ import { notifications } from '@mantine/notifications';
 import { useAuthContext } from '../../context/AuthContext';
 import ApiList from '../../../../assets/api/ApiList';
 
-import GoogleButton from '../GoogleButton';
+import GoogleButton from '../Google/GoogleButton';
 import TermsAndConditions from '../../assets/terms_and_conditions-greenie.pdf';
 import PrivacyPolicy from '../../assets/Privacy Policy-Greenie.pdf';
 import { FaExclamation } from 'react-icons/fa';
@@ -17,10 +17,10 @@ const SignUpStepTwo = () => {
     useAuthContext();
   const { classes: inputClasses } = inputStyles();
   const { signUpStep } = state;
-
   const [isLoading, setIsLoading] = useState(false);
 
-  const EmailSignupStep = async () => {
+  const EmailSignupStep = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
     if (isLoading) {
       return Promise.resolve(null);
     }
@@ -88,7 +88,8 @@ const SignUpStepTwo = () => {
     }
   };
 
-  const MobileSignupStep = async () => {
+  const MobileSignupStep = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
     if (isLoading) {
       return Promise.resolve(null);
     }
@@ -182,7 +183,7 @@ const SignUpStepTwo = () => {
             </a>
             .
           </Text>
-          <Button onClick={EmailSignupStep} className="primaryBtn">
+          <Button type="submit" onClick={EmailSignupStep} className="primaryBtn">
             Agree & Join
           </Button>
           <Divider label="Or better yet" className="divider" labelPosition="center" />
@@ -190,7 +191,7 @@ const SignUpStepTwo = () => {
         </Box>
       )) ||
         (signUpStep === 2 && isPhoneNumber(signupForm.values.emailPhone) && (
-          <Box>
+          <Box id="disbaled-input-screen">
             <Text className="disbledInput">
               {signupForm.values.emailPhone}
               <span className="changeBtn" onClick={() => dispatch({ type: 'PREVSIGNUPSTEP' })}>
@@ -198,10 +199,10 @@ const SignUpStepTwo = () => {
               </span>
             </Text>
             <Text className="tearms-condition">
-              By creating an account, you agree to our <u>Terms of Service</u> and
+              By creating an account, you agree to our <u>Terms of Service</u> and{' '}
               <u>Privacy & Cookie Statement</u>.
             </Text>
-            <Button onClick={MobileSignupStep} className="primaryBtn">
+            <Button type="submit" onClick={MobileSignupStep} className="primaryBtn">
               Send OTP
             </Button>
             <Divider label="Or better yet" className="divider" labelPosition="center" />

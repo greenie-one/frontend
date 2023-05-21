@@ -132,7 +132,7 @@ const LoginStepThree = () => {
                 after {secondsRemaining}s
               </Text>
             </Text>
-            <Button className="primaryBtn" onClick={handleMobileLogin}>
+            <Button type="submit" className="primaryBtn" onClick={handleMobileLogin}>
               Verify & Login
             </Button>
           </Box>
