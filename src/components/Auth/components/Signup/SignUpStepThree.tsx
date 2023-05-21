@@ -119,7 +119,7 @@ const SignUpStepThree = () => {
           <TextInput
             classNames={inputClasses}
             maxLength={6}
-            pattern="[0-9]{4}"
+            pattern="[0-9]{6}"
             {...signupForm.getInputProps('otp')}
           />
 
@@ -159,7 +159,7 @@ const SignUpStepThree = () => {
             <TextInput
               classNames={inputClasses}
               maxLength={6}
-              pattern="[0-9]{4}"
+              pattern="[0-9]{6}"
               {...signupForm.getInputProps('otp')}
             />
 

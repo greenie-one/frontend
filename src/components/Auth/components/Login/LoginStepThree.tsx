@@ -123,7 +123,7 @@ const LoginStepThree = () => {
             <TextInput
               classNames={inputClasses}
               maxLength={6}
-              pattern="[0-9]{4}"
+              pattern="[0-9]{6}"
               {...loginForm.getInputProps('otp')}
             />
 

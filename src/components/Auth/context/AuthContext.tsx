@@ -52,7 +52,8 @@ type CounterAction =
   | { type: 'NEXTRESETPASSWRDSTEP' }
   | { type: 'PREVRESETPASSWORDSTEP' }
   | { type: 'NEXTLOGINWITHOTPSTEP' }
-  | { type: 'PREVLOGINWITHOTPSTEP' };
+  | { type: 'PREVLOGINWITHOTPSTEP' }
+  | { type: 'CREATEPROFILE' };
 
 type AuthContextType = {
   signupForm: UseFormReturnType<signUpFormType>;
@@ -175,6 +176,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return { ...state, loginWithOTPStep: state.loginWithOTPStep + 1 };
       case 'PREVLOGINWITHOTPSTEP':
         return { ...state, loginWithOTPStep: state.loginWithOTPStep - 1 };
+      case 'CREATEPROFILE':
+        return { ...state, signUpStep: 4 };
       default:
         return state;
     }
@@ -235,15 +238,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           Authorization: `Bearer ${authTokens?.accessToken}`,
         },
       });
-      console.log(res.data);
 
       if (res.data && authTokens?.accessToken) {
         navigate('/profile');
       }
     } catch (err: any) {
       if (err.response?.data?.code === 'GR0009') {
-        // show create profile form
-        navigate('/wailist');
+        dispatch({ type: 'CREATEPROFILE' });
       }
     }
   };
