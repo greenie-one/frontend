@@ -107,8 +107,9 @@
       justify-content: flex-start;
       margin-left: 9px;
       padding: 10px;
-      width: 100%;
+      width: 200px;
       height: 50px;
+      cursor: pointer;
 
       .icon-box {
         background-color: $bgGreen;
@@ -134,7 +135,7 @@
         font-weight: 700;
         font-size: 20px;
         line-height: 20px;
-        text-align: center;
+        text-align: left;
         color: $white;
       }
     }
@@ -212,7 +213,7 @@
       .greenie-id {
         margin-left: 0px;
         height: 40px;
-        width: 50%;
+        width: 200px;
         margin: 0 auto;
 
         .icon-box {
@@ -253,10 +254,6 @@
         .medal-wrapper {
           width: 30%;
         }
-      }
-
-      .greenie-id {
-        width: 70%;
       }
     }
   }

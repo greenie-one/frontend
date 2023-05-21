@@ -1,32 +1,18 @@
-import { Box, Text, Chip, Group } from '@mantine/core';
-import { useState, useEffect } from 'react';
+import { Box, Text, Chip, Group, CopyButton } from '@mantine/core';
+import { useState } from 'react';
 import level from '../assets/level.png';
 import levelFilled from '../assets/levelFilled.png';
 import medal from '../assets/medal.png';
-import { FaRegCopy } from 'react-icons/fa';
 import copyIcon from '../assets/content_copy.png';
 import { MdVerified } from 'react-icons/md';
+import { useMediaQuery } from '@mantine/hooks';
+import { AiOutlineCheck } from 'react-icons/ai';
 
 export const BioSection = () => {
   const [userLevel, setUserLevel] = useState(0);
-  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+  const [greeneId, setGreenieId] = useState('GRN788209');
+  const screenSize = useMediaQuery('(min-width: 768px)');
 
-  useEffect(() => {
-    const handleResize = () => {
-      setScreenWidth(window.innerWidth);
-    };
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
-  const chipSize = (): string => {
-    if (screenWidth > 768) {
-      return 'sm';
-    }
-    return 'xs';
-  };
   return (
     <section className="bio-section container">
       <Box className="bio-name-box">
@@ -37,9 +23,9 @@ export const BioSection = () => {
       <Box className="chips">
         <Chip.Group>
           <Group>
-            <Chip size={chipSize()}>Energetic</Chip>
-            <Chip size={chipSize()}>Team Player</Chip>
-            <Chip size={chipSize()}>Optimistic</Chip>
+            <Chip size={screenSize ? 'sm' : 'xs'}>Energetic</Chip>
+            <Chip size={screenSize ? 'sm' : 'xs'}>Team Player</Chip>
+            <Chip size={screenSize ? 'sm' : 'xs'}>Optimistic</Chip>
           </Group>
         </Chip.Group>
       </Box>
@@ -98,16 +84,24 @@ export const BioSection = () => {
         </Box>
         <Box className="border-left"></Box>
         <Box className="right-section">
-          <Box className="greenie-id">
-            <Box className="icon-box">
-              <img src={copyIcon} alt="copy" className="greenie-id-icon" />
-            </Box>
+          <CopyButton value={greeneId} timeout={2000}>
+            {({ copied, copy }) => (
+              <Box className="greenie-id" onClick={copy}>
+                <Box className="icon-box">
+                  <img src={copyIcon} alt="copy" className="greenie-id-icon" />
+                </Box>
 
-            <Box>
-              <Text className="greenie-id-heading">Share Greenie ID </Text>
-              <Text className="id">GRN788209</Text>
-            </Box>
-          </Box>
+                <Box>
+                  <Text className="greenie-id-heading">Share Greenie ID </Text>
+                  {copied ? (
+                    <Text className="id">Copied</Text>
+                  ) : (
+                    <Text className="id">{greeneId}</Text>
+                  )}
+                </Box>
+              </Box>
+            )}
+          </CopyButton>
         </Box>
       </Box>
       <Text className="bio-text">

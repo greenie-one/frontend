@@ -6,26 +6,11 @@ import noData from '../assets/noData.png';
 import { SkillsCard } from '../components/SkillsCard';
 import { Link } from 'react-router-dom';
 import { MdOutlineEdit } from 'react-icons/md';
+import { useMediaQuery } from '@mantine/hooks';
 
 export const SkillsSection = () => {
-  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+  const screenSize = useMediaQuery('(min-width: 990px)');
 
-  useEffect(() => {
-    const handleResize = () => {
-      setScreenWidth(window.innerWidth);
-    };
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
-  const slidesToScroll = (): number => {
-    if (screenWidth > 990) {
-      return 0;
-    }
-    return 1;
-  };
   const [data, setData] = useState([
     {
       id: 1,
@@ -77,7 +62,7 @@ export const SkillsSection = () => {
           slideSize="33.33%"
           slideGap={24}
           loop={false}
-          slidesToScroll={slidesToScroll()}
+          slidesToScroll={screenSize ? 0 : 1}
           align="start"
           styles={{ control: { opacity: 0 } }}
           breakpoints={[
@@ -85,14 +70,10 @@ export const SkillsSection = () => {
             { maxWidth: 'md', slideSize: '50%' },
           ]}
         >
-          {data.map((skill, id) => {
+          {data.map(({ skill, percentage, isVerified }, id) => {
             return (
               <Carousel.Slide key={id}>
-                <SkillsCard
-                  skill={skill.skill}
-                  percentage={skill.percentage}
-                  isVerified={skill.isVerified}
-                />
+                <SkillsCard skill={skill} percentage={percentage} isVerified={isVerified} />
               </Carousel.Slide>
             );
           })}
