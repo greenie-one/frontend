@@ -8,8 +8,11 @@ import markC from '../assets/markC.png';
 import { MdOutlineEdit } from 'react-icons/md';
 import tscLogo from '../assets/tscLogo.png';
 import { Carousel } from '@mantine/carousel';
+import { useMediaQuery } from '@mantine/hooks';
 
 export const Experience = () => {
+  const screenSize = useMediaQuery('(min-width: 990px)');
+
   const [data, setData] = useState([
     {
       id: 1,
@@ -79,8 +82,7 @@ export const Experience = () => {
           withIndicators={false}
           slideSize="33.30%"
           slideGap={24}
-          loop={false}
-          slidesToScroll={1}
+          slidesToScroll={screenSize ? 0 : 1}
           align="start"
           styles={{ control: { opacity: 0 } }}
           breakpoints={[

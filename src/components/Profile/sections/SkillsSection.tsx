@@ -6,8 +6,11 @@ import noData from '../assets/noData.png';
 import { SkillsCard } from '../components/SkillsCard';
 import { Link } from 'react-router-dom';
 import { MdOutlineEdit } from 'react-icons/md';
+import { useMediaQuery } from '@mantine/hooks';
 
 export const SkillsSection = () => {
+  const screenSize = useMediaQuery('(min-width: 990px)');
+
   const [data, setData] = useState([
     {
       id: 1,
@@ -59,7 +62,7 @@ export const SkillsSection = () => {
           slideSize="33.33%"
           slideGap={24}
           loop={false}
-          slidesToScroll={1}
+          slidesToScroll={screenSize ? 0 : 1}
           align="start"
           styles={{ control: { opacity: 0 } }}
           breakpoints={[
@@ -67,14 +70,10 @@ export const SkillsSection = () => {
             { maxWidth: 'md', slideSize: '50%' },
           ]}
         >
-          {data.map((skill, id) => {
+          {data.map(({ skill, percentage, isVerified }, id) => {
             return (
               <Carousel.Slide key={id}>
-                <SkillsCard
-                  skill={skill.skill}
-                  percentage={skill.percentage}
-                  isVerified={skill.isVerified}
-                />
+                <SkillsCard skill={skill} percentage={percentage} isVerified={isVerified} />
               </Carousel.Slide>
             );
           })}
