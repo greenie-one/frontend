@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Text, Box, Button } from '@mantine/core';
 import '../styles/global.scss';
 import noData from '../assets/noData.png';

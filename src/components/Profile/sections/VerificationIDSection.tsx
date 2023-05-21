@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Text, Box } from '@mantine/core';
 import '../styles/global.scss';
-import { MdVerified } from 'react-icons/md';
 import { VerificationIDCard } from '../components/VerificationIDCard';
 import { VerifyIdNoData } from '../components/VerifyIdNoData';
 import AadharCard from '../assets/sampleAadhar.png';

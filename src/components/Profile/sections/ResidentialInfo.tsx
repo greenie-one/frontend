@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Text, Box, Button } from '@mantine/core';
 import { Carousel } from '@mantine/carousel';
 import { MdOutlineEdit } from 'react-icons/md';

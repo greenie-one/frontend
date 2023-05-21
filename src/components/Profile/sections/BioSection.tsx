@@ -6,7 +6,6 @@ import medal from '../assets/medal.png';
 import copyIcon from '../assets/content_copy.png';
 import { MdVerified } from 'react-icons/md';
 import { useMediaQuery } from '@mantine/hooks';
-import { AiOutlineCheck } from 'react-icons/ai';
 
 export const BioSection = () => {
   const [userLevel, setUserLevel] = useState(0);

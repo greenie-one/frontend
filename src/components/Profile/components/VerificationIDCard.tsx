@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Text, Box } from '@mantine/core';
 import { MdVerified } from 'react-icons/md';
 import '../styles/global.scss';
