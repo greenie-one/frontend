@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 import { Text, Button, Flex, Box, TextInput, createStyles, em } from '@mantine/core';
+import { useLocalStorage } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { useAuthContext } from '../../context/AuthContext';
 import ApiList from '../../../../assets/api/ApiList';
@@ -18,6 +19,7 @@ const LoginStepThree = () => {
     useAuthContext();
   const { classes: inputClasses } = inputStyles();
 
+  const [authTokens, setAuthTokens] = useLocalStorage({ key: 'auth-tokens' });
   const [secondsRemaining, setSecondsRemaining] = useState<number>(60);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -33,7 +35,8 @@ const LoginStepThree = () => {
     return () => clearInterval(timer);
   }, [secondsRemaining]);
 
-  const handleMobileLogin = async () => {
+  const handleMobileLogin = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
     if (isLoading) {
       return Promise.resolve(null);
     }
@@ -56,7 +59,8 @@ const LoginStepThree = () => {
         });
 
         if (res.data) {
-          setForceRender((prev) => !prev);
+          setAuthTokens(res.data);
+
           setTimeout(() => {
             notifications.update({
               id: 'load-data',
@@ -69,6 +73,8 @@ const LoginStepThree = () => {
               sx: { borderRadius: em(8) },
             });
           }, 1100);
+
+          setForceRender((prev) => !prev);
         }
       } catch (err: any) {
         loginForm.setFieldValue('otp', '');
