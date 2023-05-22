@@ -70,6 +70,7 @@ export const Auth = () => {
                 )}
               </Tabs.Panel>
             </Tabs>
+
             <form>{resetPasswordStep > 0 && <ForgotPassword />}</form>
           </Box>
         </Box>
