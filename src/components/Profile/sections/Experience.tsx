@@ -1,17 +1,19 @@
 import { useState } from 'react';
-import { Text, Box, Button } from '@mantine/core';
-import '../styles/global.scss';
+import { Text, Box, Button, Modal } from '@mantine/core';
 import noData from '../assets/noData.png';
-import { WorkExperienceCard } from '../components/WorkExperienceCard';
 import { Link } from 'react-router-dom';
 import markC from '../assets/markC.png';
 import { MdOutlineEdit } from 'react-icons/md';
 import tscLogo from '../assets/tscLogo.png';
 import { Carousel } from '@mantine/carousel';
-import { useMediaQuery } from '@mantine/hooks';
+import { useMediaQuery, useDisclosure } from '@mantine/hooks';
+import '../styles/global.scss';
+import { WorkExperienceCard } from '../components/WorkExperienceCard';
+import { WorkExperienceModal } from '../components/WorkExperienceModal';
 
 export const Experience = () => {
   const screenSize = useMediaQuery('(min-width: 990px)');
+  const [opened, { open, close }] = useDisclosure(false);
 
   const [data, setData] = useState([
     {
@@ -53,6 +55,15 @@ export const Experience = () => {
   ]);
   return (
     <section className="experience-section container">
+      <Modal
+        className="modal"
+        size="60%"
+        opened={opened}
+        onClose={close}
+        title="Add work experience"
+      >
+        <WorkExperienceModal />
+      </Modal>
       <Box className="header">
         <Box>
           <Text className="heading">{`Work Experience (${data.length})`}</Text>
@@ -63,7 +74,7 @@ export const Experience = () => {
             <Link className="link" to={'/'}>
               See all experiences
             </Link>
-            <Button leftIcon={<MdOutlineEdit />} className="edit-btn">
+            <Button leftIcon={<MdOutlineEdit />} onClick={open} className="edit-btn">
               Edit Section
             </Button>
           </Box>
