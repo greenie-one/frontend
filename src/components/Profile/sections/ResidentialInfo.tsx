@@ -11,6 +11,7 @@ import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 
 export const ResidentialInfo = () => {
   const screenSize = useMediaQuery('(min-width: 990px)');
+  const modalScreenSize = useMediaQuery('(min-width: 790px)');
   const [opened, { open, close }] = useDisclosure(false);
 
   const [data, setData] = useState([
@@ -37,7 +38,7 @@ export const ResidentialInfo = () => {
     <section className="residential-info container">
       <Modal
         className="modal"
-        size="60%"
+        size={modalScreenSize ? '60%' : '98%'}
         opened={opened}
         onClose={close}
         title="Add residential information"

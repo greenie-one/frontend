@@ -11,6 +11,7 @@ import { SkillModal } from '../components/SkillModal';
 
 export const SkillsSection = () => {
   const screenSize = useMediaQuery('(min-width: 990px)');
+  const modalScreenSize = useMediaQuery('(min-width: 790px)');
   const [opened, { open, close }] = useDisclosure(false);
 
   const [data, setData] = useState([
@@ -35,7 +36,13 @@ export const SkillsSection = () => {
   ]);
   return (
     <section className="skills-section container">
-      <Modal className="modal" size="60%" opened={opened} onClose={close} title="Add Skills">
+      <Modal
+        className="modal"
+        size={modalScreenSize ? '60%' : '98%'}
+        opened={opened}
+        onClose={close}
+        title="Add Skills"
+      >
         <SkillModal />
       </Modal>
       <Box className="header">

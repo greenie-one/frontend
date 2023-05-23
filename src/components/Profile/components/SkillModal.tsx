@@ -15,7 +15,7 @@ export const SkillModal = () => {
       <Box className="input-section border-bottom">
         <Title className="title">Skill name</Title>
         <TextInput
-          data-autoFocus
+          data-autofocus
           label="Eg. Frontend, Back"
           classNames={inputClasses}
           {...skillForm.getInputProps('skillName')}

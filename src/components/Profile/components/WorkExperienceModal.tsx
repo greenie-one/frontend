@@ -14,6 +14,7 @@ export const WorkExperienceModal = () => {
         <TextInput
           label="Job title"
           classNames={inputClasses}
+          data-autofocus
           {...workExperienceForm.getInputProps('jobTitle')}
         />
       </Box>

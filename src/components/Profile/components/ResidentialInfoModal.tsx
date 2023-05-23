@@ -58,7 +58,7 @@ export const ResidentialInfoModal = () => {
       <Box className="input-section">
         <Title className="title">Address Line 1</Title>
         <TextInput
-          data-autoFocus
+          data-autofocus
           label="Job title"
           classNames={inputClasses}
           {...residentialInfoForm.getInputProps('address.addressLineOne')}

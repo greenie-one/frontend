@@ -1,7 +1,8 @@
 .bio-section {
-  text-align: center;
   margin-top: -2rem;
   z-index: 2;
+  position: relative;
+  text-align: center;
 
   .bio-name-box {
     display: flex;

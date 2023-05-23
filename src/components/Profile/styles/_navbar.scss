@@ -6,6 +6,9 @@
   justify-content: space-between;
   box-shadow: 0px 4px 34px rgba(0, 0, 0, 0.1);
   margin-bottom: 46px;
+  position: fixed;
+  z-index: 10;
+  width: 100vw;
 
   .logo {
     display: flex;
