@@ -1,4 +1,5 @@
 import { Box, Title, TextInput, createStyles, em, rem, Select, Button } from '@mantine/core';
+import { useProfileContext } from '../context/ProfileContext';
 
 const expertise = [
   { value: 'amateur', label: 'Amature' },
@@ -8,19 +9,32 @@ const expertise = [
 
 export const SkillModal = () => {
   const { classes: inputClasses } = inputStyles();
+  const { skillForm } = useProfileContext();
   return (
     <form>
       <Box className="input-section border-bottom">
         <Title className="title">Skill name</Title>
-        <TextInput data-autoFocus label="Eg. Frontend, Back" classNames={inputClasses} />
+        <TextInput
+          data-autoFocus
+          label="Eg. Frontend, Back"
+          classNames={inputClasses}
+          {...skillForm.getInputProps('skillName')}
+        />
       </Box>
       <Box className="input-section border-bottom">
         <Title className="title">Expertise</Title>
-        <Select data={expertise} label="Select your expertise" classNames={inputClasses} />
+        <Select
+          data={expertise}
+          label="Select your expertise"
+          classNames={inputClasses}
+          {...skillForm.getInputProps('expertise')}
+        />
       </Box>
       <Box className="location-wrapper">
         <Box className="btn-wrapper">
-          <Button color="teal">Save</Button>
+          <Button color="teal" type="submit">
+            Save
+          </Button>
           <Button variant="default">Cancel</Button>
         </Box>
       </Box>

@@ -1,15 +1,21 @@
 import { Box, Title, TextInput, createStyles, em, rem, Select, Checkbox } from '@mantine/core';
 import { useState } from 'react';
+import { useProfileContext } from '../context/ProfileContext';
 
 import '../styles/global.scss';
 export const WorkExperienceModal = () => {
   const { classes: inputClasses } = inputStyles();
   const [checked, setChecked] = useState(false);
+  const { workExperienceForm } = useProfileContext();
   return (
     <form>
       <Box className="input-section border-bottom">
         <Title className="title">Job title</Title>
-        <TextInput label="Job title" classNames={inputClasses} />
+        <TextInput
+          label="Job title"
+          classNames={inputClasses}
+          {...workExperienceForm.getInputProps('jobTitle')}
+        />
       </Box>
       <Box className="input-section">
         <Title className="title">Company name</Title>
@@ -20,17 +26,26 @@ export const WorkExperienceModal = () => {
             { value: 'svelte', label: 'Svelte' },
             { value: 'vue', label: 'Vue' },
           ]}
+          {...workExperienceForm.getInputProps('companyName')}
           label="Search by company website"
           classNames={inputClasses}
         />
       </Box>
       <Box className="input-section">
         <Title className="title">Work email</Title>
-        <TextInput label="Official Email" classNames={inputClasses} />
+        <TextInput
+          label="Official Email"
+          classNames={inputClasses}
+          {...workExperienceForm.getInputProps('workEmail')}
+        />
       </Box>
       <Box className="input-section border-bottom">
         <Title className="title">Company ID</Title>
-        <TextInput label="Enter your unique company id" classNames={inputClasses} />
+        <TextInput
+          label="Enter your unique company id"
+          classNames={inputClasses}
+          {...workExperienceForm.getInputProps('companyId')}
+        />
       </Box>
       <Box className="input-section border-bottom">
         <Title className="title">Start Date</Title>
@@ -43,6 +58,7 @@ export const WorkExperienceModal = () => {
             ]}
             label="From month"
             classNames={inputClasses}
+            {...workExperienceForm.getInputProps('startDate.startMonth')}
           />
           <Select
             data={[
@@ -54,6 +70,7 @@ export const WorkExperienceModal = () => {
             ]}
             label="From year"
             classNames={inputClasses}
+            {...workExperienceForm.getInputProps('startDate.startYear')}
           />
         </Box>
       </Box>
@@ -69,6 +86,7 @@ export const WorkExperienceModal = () => {
               ]}
               label="From month"
               classNames={inputClasses}
+              {...workExperienceForm.getInputProps('endDate.endMonth')}
             />
             <Select
               disabled={checked}
@@ -81,6 +99,7 @@ export const WorkExperienceModal = () => {
               ]}
               label="From year"
               classNames={inputClasses}
+              {...workExperienceForm.getInputProps('endDate.endYear')}
             />
           </Box>
           <Checkbox
@@ -103,6 +122,7 @@ export const WorkExperienceModal = () => {
             ]}
             label="Mode of Work"
             classNames={inputClasses}
+            {...workExperienceForm.getInputProps('workType.modeOfWork')}
           />
           <Select
             data={[
@@ -113,6 +133,7 @@ export const WorkExperienceModal = () => {
             ]}
             label="Select work type"
             classNames={inputClasses}
+            {...workExperienceForm.getInputProps('workType.workType')}
           />
         </Box>
       </Box>

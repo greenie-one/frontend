@@ -11,6 +11,7 @@ import {
 } from '@mantine/core';
 import { useState } from 'react';
 import { IoLocationOutline } from 'react-icons/io5';
+import { useProfileContext } from '../context/ProfileContext';
 
 const states = [
   { value: 'andhra pradesh', label: 'Andhra Pradesh' },
@@ -45,53 +46,105 @@ const years = [
 export const ResidentialInfoModal = () => {
   const { classes: inputClasses } = inputStyles();
   const [checked, setChecked] = useState(false);
+  const { residentialInfoForm } = useProfileContext();
 
   const handleLocation = () => {
     // API To be used
     // should use navigator?
   };
+
   return (
     <form>
       <Box className="input-section">
         <Title className="title">Address Line 1</Title>
-        <TextInput data-autoFocus label="Job title" classNames={inputClasses} />
+        <TextInput
+          data-autoFocus
+          label="Job title"
+          classNames={inputClasses}
+          {...residentialInfoForm.getInputProps('address.addressLineOne')}
+        />
       </Box>
       <Box className="input-section ">
         <Title className="title">Address Line 2</Title>
-        <TextInput label="Job title" classNames={inputClasses} />
+        <TextInput
+          label="Job title"
+          classNames={inputClasses}
+          {...residentialInfoForm.getInputProps('address.addressLineTwo')}
+        />
       </Box>
       <Box className="input-section ">
         <Title className="title">Landmark</Title>
-        <TextInput label="Job title" classNames={inputClasses} />
+        <TextInput
+          label="Job title"
+          classNames={inputClasses}
+          {...residentialInfoForm.getInputProps('address.landmark')}
+        />
       </Box>
       <Box className="input-section ">
         <Title className="title">Pincode</Title>
-        <TextInput label="Job title" maxLength={6} pattern="[0-9]" classNames={inputClasses} />
+        <TextInput
+          label="Job title"
+          maxLength={6}
+          pattern="[0-9]"
+          classNames={inputClasses}
+          {...residentialInfoForm.getInputProps('pincode')}
+        />
       </Box>
       <Box className="input-section border-bottom">
         <Title className="title">State/Country</Title>
         <Box className="inner-input-section">
-          <Select data={states} label="Select state" classNames={inputClasses} />
-          <Select data={countries} label="Select country" classNames={inputClasses} />
+          <Select
+            data={states}
+            label="Select state"
+            classNames={inputClasses}
+            {...residentialInfoForm.getInputProps('stateCountry.state')}
+          />
+          <Select
+            data={countries}
+            label="Select country"
+            classNames={inputClasses}
+            {...residentialInfoForm.getInputProps('stateCountry.country')}
+          />
         </Box>
       </Box>
       <Box className="input-section">
         <Title className="title">Start Date</Title>
         <Box className="inner-input-section">
-          <Select data={months} label="From month" classNames={inputClasses} />
-          <Select data={years} label="From year" classNames={inputClasses} />
+          <Select
+            data={months}
+            label="From month"
+            classNames={inputClasses}
+            {...residentialInfoForm.getInputProps('startDate.startMonth')}
+          />
+          <Select
+            data={years}
+            label="From year"
+            classNames={inputClasses}
+            {...residentialInfoForm.getInputProps('startDate.startYear')}
+          />
         </Box>
       </Box>
       <Box className="input-section border-bottom">
         <Title className="title">End Date</Title>
         <Box className="inner-input-box">
           <Box className="inner-input-section">
-            <Select data={months} label="From month" classNames={inputClasses} />
-            <Select disabled={checked} data={years} label="From year" classNames={inputClasses} />
+            <Select
+              data={months}
+              label="From month"
+              classNames={inputClasses}
+              {...residentialInfoForm.getInputProps('endDate.endMonth')}
+            />
+            <Select
+              disabled={checked}
+              data={years}
+              label="From year"
+              classNames={inputClasses}
+              {...residentialInfoForm.getInputProps('endDate.endYear')}
+            />
           </Box>
           <Checkbox
             checked={checked}
-            onChange={(event) => setChecked(event.currentTarget.checked)}
+            onClick={() => setChecked(!checked)}
             className="checkbox"
             color="teal"
             label="I currently live here"
@@ -109,7 +162,9 @@ export const ResidentialInfoModal = () => {
         </Button>
         <Box className="map"></Box>
         <Box className="btn-wrapper">
-          <Button color="teal">Save</Button>
+          <Button color="teal" type="submit">
+            Save
+          </Button>
           <Button variant="default">Cancel</Button>
         </Box>
       </Box>
