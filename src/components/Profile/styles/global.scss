@@ -1,0 +1,236 @@
+@import '_variables';
+
+.profile {
+  background-color: $offWhite;
+  overflow-x: hidden;
+  z-index: 0;
+}
+.container {
+  width: 100%;
+  max-width: 960px;
+  background-color: $white;
+  border-radius: 16.0603px;
+  margin: 23px auto;
+  padding: 26px;
+  display: flex;
+  flex-direction: column;
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .header-links {
+      display: flex;
+      align-items: center;
+      margin-top: -20px;
+      .edit-btn {
+        padding: 8px 16px;
+        background: #ffffff;
+        border: 1px solid #d1d4db;
+        border-radius: 34px;
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 19px;
+        margin-left: 16px;
+        color: #697082;
+      }
+    }
+  }
+
+  .heading {
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
+    letter-spacing: -0.02em;
+    color: $black;
+    margin-bottom: 5px;
+  }
+  .subheading {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+    letter-spacing: -0.02em;
+    color: $gray;
+    margin-bottom: 24px;
+  }
+
+  .link {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 22px;
+    text-align: right;
+    letter-spacing: -0.02em;
+    text-decoration-line: underline;
+    color: $gray;
+  }
+
+  .no-data-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 101px;
+    margin-bottom: 120px;
+    img {
+      width: 344px;
+      height: 253px;
+    }
+  }
+}
+
+.verified {
+  font-weight: 500;
+  font-size: 12px;
+  color: $green;
+  height: 24px;
+  padding: 0px 8px;
+  background: $white;
+  border: 1px solid $green;
+  border-radius: 34px;
+
+  &:hover {
+    background: $white;
+  }
+}
+
+.see-all-btn {
+  background: #ffffff;
+  border: 1px solid #d1d4db;
+  border-radius: 34px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+  color: #697082;
+  width: 90px;
+  margin: 24px auto;
+  display: none;
+}
+
+.edit-btn {
+  padding: 8px 16px;
+  background: #ffffff;
+  border: 1px solid #d1d4db;
+  border-radius: 34px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+  margin-left: 16px;
+  color: #697082;
+
+  &:hover {
+    background: #ffffff;
+  }
+}
+
+.location-btn {
+  width: 100%;
+  max-width: 458px;
+  height: 51px;
+  border: 1px solid $dark;
+  border-radius: 34px;
+  margin: 0px auto;
+  margin-top: 19px;
+  border: 1px solid $dark;
+}
+
+.footer {
+  display: none;
+  background-color: $dark;
+  padding: 32px;
+
+  .left-box {
+    width: 50%;
+  }
+
+  .right-box {
+    width: 35%;
+  }
+
+  .footer-logo {
+    .text {
+      font-family: 'Gilroy-Bold' !important;
+      font-size: 24px;
+      line-height: 28px;
+      letter-spacing: -0.02em;
+    }
+    color: $white;
+    display: flex;
+    align-items: center;
+    margin-bottom: 3px;
+  }
+
+  .mission-text {
+    font-family: 'Gilroy-Bold' !important;
+    font-size: 24px;
+    line-height: 28px;
+    letter-spacing: -0.02em;
+    color: #8e8e8e;
+    width: 220px;
+    margin-bottom: 42px;
+  }
+
+  .copy-right {
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 12px;
+    letter-spacing: -0.02em;
+    color: #ffffff;
+  }
+
+  .footer-link {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 6px;
+    color: $white;
+    margin-bottom: 37px;
+  }
+
+  .footer-socials {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .footer-social-icon {
+    &:not(:first-child) {
+      margin-left: 20px;
+    }
+  }
+}
+
+@import '_cardStyles';
+@import '_modals';
+@import '_navbar';
+@import '_profile';
+@import '_bioSection';
+@import '_verificationId';
+
+@media screen and (max-width: 768px) {
+  .container {
+    .header {
+      .header-links {
+        display: none;
+      }
+    }
+  }
+
+  .see-all-btn {
+    display: block;
+  }
+
+  .footer {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+}
+
+@media screen and (max-width: 414px) {
+  .container {
+    .subheading {
+      font-size: 14px;
+    }
+  }
+}

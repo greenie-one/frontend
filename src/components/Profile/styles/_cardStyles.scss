@@ -1,0 +1,253 @@
+.verificationId-section {
+  .cards-wrapper {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 26px;
+    align-items: center;
+    justify-content: space-between;
+
+    .verificationIdCard {
+      .verificationIdImg {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 240px;
+        margin-bottom: 24px;
+        border-radius: 10px;
+        border: 1px solid $lightGray;
+        background: linear-gradient(
+          253.09deg,
+          rgba(217, 217, 217, 0.25) -7.53%,
+          rgba(217, 217, 217, 0) 97.04%
+        );
+        backdrop-filter: blur(25px);
+      }
+
+      .document-name {
+        font-weight: 600;
+        font-size: 20px;
+        line-height: 24px;
+        letter-spacing: -0.02em;
+        color: $gray;
+        margin-bottom: 5px;
+      }
+
+      .is-verified-box {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        .is-verified-text {
+          font-weight: 400;
+          font-size: 16px;
+          line-height: 19px;
+          letter-spacing: -0.02em;
+          color: $gray;
+          margin-right: 5px;
+        }
+      }
+    }
+  }
+}
+
+.experience-section {
+  .experience-card {
+    border: 1px solid $lighterGray;
+    padding: 16px;
+    text-align: center;
+    border-radius: 24px;
+    cursor: pointer;
+
+    .companyLogo {
+      height: 89px;
+      background: #f2f4f2;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .position {
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 19px;
+      letter-spacing: -0.02em;
+      color: $dark;
+      margin-bottom: 8px;
+    }
+    .companyName {
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 19px;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+      color: #a3a3a3;
+    }
+
+    .since-text {
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 15px;
+      letter-spacing: -0.02em;
+      margin-bottom: 3px;
+      color: #a3a3a3;
+    }
+    .tenure {
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 19px;
+      letter-spacing: -0.02em;
+      margin-bottom: 20px;
+      color: $gray;
+    }
+    .testimonial {
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 23px;
+      color: $gray;
+      margin-bottom: 20px;
+      padding: 0px 20px;
+    }
+
+    .verified {
+      margin-bottom: 24px;
+    }
+    .verifier-img {
+      width: 60px;
+      border-radius: 50%;
+      margin-bottom: 8px;
+    }
+    .verified-by {
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 15px;
+      letter-spacing: -0.02em;
+      color: #a3a3a3;
+      margin-bottom: 3px;
+    }
+    .verifier-name {
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 19px;
+      letter-spacing: -0.02em;
+      color: $dark;
+    }
+  }
+}
+
+.residential-info {
+  .residential-card {
+    border: 1px solid $lighterGray;
+    padding: 16px;
+    border-radius: 24px;
+    cursor: pointer;
+
+    .top-box {
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
+
+      .location {
+        width: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid $lighterGray;
+        padding: 12px;
+        border-radius: 50%;
+        margin-right: 12px;
+      }
+      .address {
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 19px;
+        letter-spacing: -0.02em;
+        color: $dark;
+        margin-bottom: 18px;
+        width: 160px;
+      }
+    }
+    .since-text {
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 15px;
+      letter-spacing: -0.02em;
+      margin-bottom: 3px;
+      color: #a3a3a3;
+    }
+    .tenure {
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 19px;
+      letter-spacing: -0.02em;
+      color: $gray;
+    }
+  }
+}
+
+.skills-section {
+  .skill-card {
+    border: 1px solid $lighterGray;
+    padding: 16px;
+    border-radius: 24px;
+    cursor: pointer;
+
+    .skill-img {
+      width: 100%;
+      height: 89px;
+      background: #f2f4f2;
+      border-radius: 8px;
+      margin-bottom: 18px;
+    }
+
+    .skill-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+
+      .skill {
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 19px;
+        letter-spacing: -0.02em;
+        color: $dark;
+        margin-bottom: 8px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .verificationId-section {
+    .cards-wrapper {
+      grid-template-columns: 1fr;
+      grid-template-rows: repeat(2, 1fr);
+
+      .verificationIdCard {
+        .is-verified-box {
+          margin-bottom: 34px;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 414px) {
+  .experience-section {
+    .experience-card {
+      .testimonial {
+        padding: 0px 4px;
+      }
+    }
+  }
+
+  .skills-section {
+    .skill-card {
+      .skill-wrapper {
+        .skill {
+          font-size: 13.8px;
+        }
+      }
+    }
+  }
+}

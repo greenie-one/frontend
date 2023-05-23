@@ -4,7 +4,7 @@ import '../../styles/global.scss';
 
 const ForgotPassowrdStepThree = () => {
   const { classes: inputClasses } = inputStyles();
-  const { loginForm, state, dispatch, isPhoneNumber, isValidEmail } = useAuthContext();
+  const { loginForm, isPhoneNumber, isValidEmail } = useAuthContext();
 
   return (
     <Box>
@@ -27,7 +27,7 @@ const ForgotPassowrdStepThree = () => {
       <TextInput
         classNames={inputClasses}
         maxLength={6}
-        pattern="[0-9]{4}"
+        pattern="[0-9]{6}"
         {...loginForm.getInputProps('otp')}
       />
       <Text fw={'light'} fz={'xs'} my={'md'}>
@@ -36,7 +36,7 @@ const ForgotPassowrdStepThree = () => {
           after 30s
         </Text>
       </Text>
-      <Button className="primaryBtn" fullWidth radius="xl" color="teal">
+      <Button type="submit" className="primaryBtn" fullWidth radius="xl" color="teal">
         Verify
       </Button>
     </Box>

@@ -28,8 +28,9 @@
     line-height: 27px;
     color: $dark;
     margin-bottom: 24px;
-    u {
+    a {
       cursor: pointer;
+      text-decoration: underline;
     }
   }
 
@@ -94,17 +95,34 @@
     cursor: pointer;
   }
 
+  .linkedInimg {
+    margin-top: -2rem;
+  }
+
+  .profile-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .profileIllustration {
+    margin-bottom: 2rem;
+  }
+
   .skills-box {
     display: flex;
     flex-direction: column;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
     margin-top: 8px;
   }
 
   .skill-wrapper {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    column-gap: 8px;
-    row-gap: 8px;
+    column-gap: 12px;
+    row-gap: 12px;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 24px;

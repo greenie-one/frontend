@@ -5,34 +5,36 @@ import { useDisclosure } from '@mantine/hooks';
 import { createStyles, Drawer, List, Group, em, rem, Box, Flex } from '@mantine/core';
 
 import { MdOutlineMenuOpen, MdVerified, MdOutlineClose } from 'react-icons/md';
-import {motion,useMotionValueEvent, useScroll} from "framer-motion";
+import { motion, useMotionValueEvent, useScroll } from 'framer-motion';
 import { Button } from './Button';
 
 export const Navbar = () => {
   const { classes } = useStyles();
-  const [ opened, { open, close }] = useDisclosure(false);
+  const [opened, { open, close }] = useDisclosure(false);
   const ref = useRef(null);
-  const {scrollY} = useScroll();
+  const { scrollY } = useScroll();
   const [scrollPos, setScrollPos] = useState(0);
 
-  useMotionValueEvent(scrollY, "change", (latest) => {
-    setScrollPos(scrollY.get())
-  })
- 
+  useMotionValueEvent(scrollY, 'change', (latest) => {
+    setScrollPos(scrollY.get());
+  });
 
   return (
-    <Box  className={`${classes.root} app-padding-inline`} style={{
-      boxShadow: scrollPos > 600 ? '0px 4px 34px rgba(0, 0, 0, 0.15)' : '',
-      paddingLeft: scrollPos > 600 ?  '2rem': '',
-      paddingRight: scrollPos > 600 ?  '2rem': '',
-      borderRadius: scrollPos > 600 ? '5rem' : '',
-      position: scrollPos > 600 ? 'fixed':'relative',
-      top: scrollPos > 600 ? 0: '',
-      margin: scrollPos > 600  ? "1rem 8rem": '',
-      backgroundColor:"white",
-      transition: "all 0.5s ease"
-    }}>
-      <motion.header className={classes.header} >
+    <Box
+      className={`${classes.root} app-padding-inline`}
+      style={{
+        boxShadow: scrollPos > 600 ? '0px 4px 34px rgba(0, 0, 0, 0.15)' : '',
+        paddingLeft: scrollPos > 600 ? '2rem' : '',
+        paddingRight: scrollPos > 600 ? '2rem' : '',
+        borderRadius: scrollPos > 600 ? '5rem' : '',
+        position: scrollPos > 600 ? 'fixed' : 'relative',
+        top: scrollPos > 600 ? 0 : '',
+        margin: scrollPos > 600 ? '1rem 8rem' : '',
+        backgroundColor: 'white',
+        transition: 'all 0.5s ease',
+      }}
+    >
+      <motion.header className={classes.header}>
         <Flex justify="center" align="center" direction="row" className={classes.logo}>
           <Link to={'/'}>
             <span className={classes.greenie}>Greenie</span>
@@ -73,7 +75,7 @@ export const Navbar = () => {
             <Flex
               justify="space-between"
               align="center"
-              direction="row" 
+              direction="row"
               className={classes.mobileLogo}
             >
               <Link to={'/'}>
@@ -153,8 +155,8 @@ const useStyles = createStyles((theme) => ({
     fontSize: rem(20),
     color: '#9FE870',
     marginInlineStart: '0.25rem',
-    position: "absolute",
-    top: "1rem",
+    position: 'absolute',
+    top: '1rem',
 
     [`@media screen and (max-width: ${em(768)})`]: {
       fontSize: rem(16),

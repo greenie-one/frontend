@@ -10,7 +10,6 @@ import SignUpStepThree from './components/Signup/SignUpStepThree';
 import LoginStepOne from './components/Login/LoginStepOne';
 import LoginStepTwo from './components/Login/LoginStepTwo';
 import LoginStepThree from './components/Login/LoginStepThree';
-import LoginWithOTP from './components/Login/LoginWithOTP';
 
 import Profile from './components/Signup/Profile';
 import ForgotPassword from './components/Login/ForgotPassword';
@@ -37,9 +36,7 @@ export const Auth = () => {
             <Tabs defaultValue="signup" color="dark">
               {loginStep === 2 && isPhoneNumber(loginForm.values.emailPhoneGreenieId)}
               {signUpStep < 3 && loginStep < 3 ? (
-                loginStep === 2 && isPhoneNumber(loginForm.values.emailPhoneGreenieId) ? (
-                  <Box></Box>
-                ) : (
+                loginStep === 2 && isPhoneNumber(loginForm.values.emailPhoneGreenieId) ? null : (
                   <Tabs.List className="tabList" position="center">
                     <Tabs.Tab className="tabBtn" value="signup">
                       Create new account
@@ -49,9 +46,7 @@ export const Auth = () => {
                     </Tabs.Tab>
                   </Tabs.List>
                 )
-              ) : (
-                <Box></Box>
-              )}
+              ) : null}
 
               <Tabs.Panel value="signup">
                 <form>
@@ -61,14 +56,22 @@ export const Auth = () => {
                   {signUpStep === 4 && <Profile />}
                 </form>
               </Tabs.Panel>
+
               <Tabs.Panel value="login">
-                {loginStep === 1 && <LoginStepOne />}
-                {loginStep === 2 && <LoginStepTwo />}
-                {loginStep === 3 && <LoginStepThree />}
+                {signUpStep !== 4 ? (
+                  <form>
+                    {loginStep === 1 && <LoginStepOne />}
+                    {loginStep === 2 && <LoginStepTwo />}
+                    {loginStep === 3 && <LoginStepThree />}
+                    {signUpStep === 4 && <Profile />}
+                  </form>
+                ) : (
+                  <form>{signUpStep === 4 && <Profile />}</form>
+                )}
               </Tabs.Panel>
             </Tabs>
-            {loginWithOTPStep > 0 && <LoginWithOTP />}
-            {resetPasswordStep > 0 && <ForgotPassword />}
+
+            <form>{resetPasswordStep > 0 && <ForgotPassword />}</form>
           </Box>
         </Box>
       </Box>
