@@ -1,6 +1,6 @@
 .navbar {
   background-color: $white;
-  padding: 28px;
+  padding: 18px 28px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -19,6 +19,12 @@
       color: #000000;
       margin-right: 5px;
     }
+    .nav-verified {
+      margin-top: 3px;
+    }
+  }
+  .search {
+    margin-left: -5rem;
   }
 
   .right-section {
@@ -31,6 +37,33 @@
       height: 40px;
       margin-left: 70px;
       margin-right: 12px;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .navbar {
+    .logo {
+      .greenie {
+        font-size: 26px;
+        line-height: 38px;
+        letter-spacing: -0.02em;
+      }
+    }
+
+    .right-section {
+      .profile-picture {
+        margin-left: 50px;
+      }
+    }
+  }
+}
+@media screen and (max-width: 414px) {
+  .navbar {
+    .right-section {
+      .profile-picture {
+        margin-left: 20px;
+      }
     }
   }
 }

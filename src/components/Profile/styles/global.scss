@@ -107,6 +107,22 @@
   display: none;
 }
 
+.edit-btn {
+  padding: 8px 16px;
+  background: #ffffff;
+  border: 1px solid #d1d4db;
+  border-radius: 34px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+  margin-left: 16px;
+  color: #697082;
+
+  &:hover {
+    background: #ffffff;
+  }
+}
+
 .footer {
   display: none;
   background-color: $dark;

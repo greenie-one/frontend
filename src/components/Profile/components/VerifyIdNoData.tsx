@@ -2,7 +2,6 @@ import { Text, Box } from '@mantine/core';
 import janeCooper from '../assets/janeCooper.png';
 import johnMarston from '../assets/johnMarston.png';
 import flyoMiles from '../assets/flyodMiles.png';
-import { MdVerified } from 'react-icons/md';
 
 export const VerifyIdNoData = () => {
   return (

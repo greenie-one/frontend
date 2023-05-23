@@ -6,8 +6,11 @@ import '../styles/global.scss';
 import noData from '../assets/noData.png';
 import { ResidentialInfoCard } from '../components/ResidentialInfoCard';
 import { Link } from 'react-router-dom';
+import { useMediaQuery } from '@mantine/hooks';
 
 export const ResidentialInfo = () => {
+  const screenSize = useMediaQuery('(min-width: 990px)');
+
   const [data, setData] = useState([
     {
       id: 1,
@@ -60,7 +63,7 @@ export const ResidentialInfo = () => {
           slideSize="33.30%"
           slideGap={24}
           loop={false}
-          slidesToScroll={1}
+          slidesToScroll={screenSize ? 0 : 1}
           align="start"
           styles={{ control: { opacity: 0 } }}
           breakpoints={[

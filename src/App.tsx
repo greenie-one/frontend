@@ -9,6 +9,8 @@ import { GoogleAuthRedirect } from './components/Auth/components/Google/GoogleAu
 import { ProfilePage } from './pages/ProfilePage';
 import { AuthVerificationLayout } from './utils/constants/AuthVerification';
 import { AppLayout } from './components/layouts/AppLayout';
+import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage';
+import { TearmsAndConditionsPage } from './pages/TearmsAndConditionsPage';
 
 const App = () => {
   return (
@@ -25,6 +27,8 @@ const App = () => {
             <Route element={<AuthVerificationLayout />}>
               <Route path="profile" element={<ProfilePage />} />
             </Route>
+            <Route path="privacy" element={<PrivacyPolicyPage />} />
+            <Route path="tos" element={<TearmsAndConditionsPage />} />
           </Route>
           <Route path="*" element={<PageNotFound />} />
         </Routes>
