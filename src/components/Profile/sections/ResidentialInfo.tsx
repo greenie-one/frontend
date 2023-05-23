@@ -1,15 +1,18 @@
 import { useState } from 'react';
-import { Text, Box, Button } from '@mantine/core';
+import { Text, Box, Button, Modal } from '@mantine/core';
 import { Carousel } from '@mantine/carousel';
 import { MdOutlineEdit } from 'react-icons/md';
 import '../styles/global.scss';
 import noData from '../assets/noData.png';
 import { ResidentialInfoCard } from '../components/ResidentialInfoCard';
+import { ResidentialInfoModal } from '../components/ResidentialInfoModal';
 import { Link } from 'react-router-dom';
-import { useMediaQuery } from '@mantine/hooks';
+import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 
 export const ResidentialInfo = () => {
   const screenSize = useMediaQuery('(min-width: 990px)');
+  const modalScreenSize = useMediaQuery('(min-width: 790px)');
+  const [opened, { open, close }] = useDisclosure(false);
 
   const [data, setData] = useState([
     {
@@ -33,6 +36,15 @@ export const ResidentialInfo = () => {
   ]);
   return (
     <section className="residential-info container">
+      <Modal
+        className="modal"
+        size={modalScreenSize ? '60%' : '98%'}
+        opened={opened}
+        onClose={close}
+        title="Add residential information"
+      >
+        <ResidentialInfoModal />
+      </Modal>
       <Box className="header">
         <Box>
           <Text className="heading">{`Residential Information (${data.length})`}</Text>
@@ -43,7 +55,7 @@ export const ResidentialInfo = () => {
             <Link className="link" to={'/'}>
               See all addresses
             </Link>
-            <Button leftIcon={<MdOutlineEdit />} className="edit-btn">
+            <Button leftIcon={<MdOutlineEdit />} onClick={open} className="edit-btn">
               Edit Section
             </Button>
           </Box>
@@ -65,7 +77,7 @@ export const ResidentialInfo = () => {
           loop={false}
           slidesToScroll={screenSize ? 0 : 1}
           align="start"
-          styles={{ control: { opacity: 0 } }}
+          styles={{ control: { display: 'none' } }}
           breakpoints={[
             { maxWidth: 'xs', slideSize: '80%' },
             { maxWidth: 'md', slideSize: '50%' },

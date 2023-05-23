@@ -1,15 +1,18 @@
 import { useState } from 'react';
-import { Text, Box, Button } from '@mantine/core';
+import { Text, Box, Button, Modal } from '@mantine/core';
 import { Carousel } from '@mantine/carousel';
 import '../styles/global.scss';
 import noData from '../assets/noData.png';
 import { SkillsCard } from '../components/SkillsCard';
 import { Link } from 'react-router-dom';
 import { MdOutlineEdit } from 'react-icons/md';
-import { useMediaQuery } from '@mantine/hooks';
+import { useMediaQuery, useDisclosure } from '@mantine/hooks';
+import { SkillModal } from '../components/SkillModal';
 
 export const SkillsSection = () => {
   const screenSize = useMediaQuery('(min-width: 990px)');
+  const modalScreenSize = useMediaQuery('(min-width: 790px)');
+  const [opened, { open, close }] = useDisclosure(false);
 
   const [data, setData] = useState([
     {
@@ -33,6 +36,15 @@ export const SkillsSection = () => {
   ]);
   return (
     <section className="skills-section container">
+      <Modal
+        className="modal"
+        size={modalScreenSize ? '60%' : '98%'}
+        opened={opened}
+        onClose={close}
+        title="Add Skills"
+      >
+        <SkillModal />
+      </Modal>
       <Box className="header">
         <Box>
           <Text className="heading">{`Skills (${data.length})`}</Text>
@@ -43,7 +55,7 @@ export const SkillsSection = () => {
             <Link className="link" to={'/'}>
               See all experiences
             </Link>
-            <Button leftIcon={<MdOutlineEdit />} className="edit-btn">
+            <Button leftIcon={<MdOutlineEdit />} onClick={open} className="edit-btn">
               Edit Section
             </Button>
           </Box>
@@ -64,7 +76,7 @@ export const SkillsSection = () => {
           loop={false}
           slidesToScroll={screenSize ? 0 : 1}
           align="start"
-          styles={{ control: { opacity: 0 } }}
+          styles={{ control: { display: 'none' } }}
           breakpoints={[
             { maxWidth: 'sm', slideSize: '80%' },
             { maxWidth: 'md', slideSize: '50%' },
