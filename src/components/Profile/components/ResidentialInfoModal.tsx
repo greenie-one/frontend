@@ -12,6 +12,9 @@ import {
 import { useState } from 'react';
 import { IoLocationOutline } from 'react-icons/io5';
 import { useProfileContext } from '../context/ProfileContext';
+import ApiList from '../../../assets/api/ApiList';
+import axios from 'axios';
+import { BsCheckLg } from 'react-icons/bs';
 
 const states = [
   { value: 'andhra pradesh', label: 'Andhra Pradesh' },
@@ -47,6 +50,35 @@ export const ResidentialInfoModal = () => {
   const { classes: inputClasses } = inputStyles();
   const [checked, setChecked] = useState(false);
   const { residentialInfoForm } = useProfileContext();
+
+  const AddResidentialInfo = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    if (
+      (!residentialInfoForm.validateField('address').hasError &&
+        !residentialInfoForm.validateField('pincode').hasError &&
+        !residentialInfoForm.validateField('stateCountry').hasError &&
+        !residentialInfoForm.validateField('startDate').hasError &&
+        !residentialInfoForm.validateField('endDate').hasError) ||
+      !residentialInfoForm.validateField('currentLocation').hasError
+    ) {
+      try {
+        residentialInfoForm.clearErrors();
+        const res = await axios.post(ApiList.postResidentialInfo, {
+          address_line_1: residentialInfoForm.values.address.addressLineOne,
+          address_line_2: residentialInfoForm.values.address.addressLineTwo,
+          landmark: residentialInfoForm.values.address.landmark,
+          pincode: residentialInfoForm.values.pincode,
+          state: residentialInfoForm.values.stateCountry.state,
+          country: residentialInfoForm.values.stateCountry.country,
+          start_date: residentialInfoForm.values.startDate.startYear,
+          end_date: residentialInfoForm.values.endDate.endYear,
+          use_id: '',
+        });
+      } catch (err: any) {
+        console.log(err.message);
+      }
+    }
+  };
 
   const handleLocation = () => {
     // API To be used
@@ -162,7 +194,7 @@ export const ResidentialInfoModal = () => {
         </Button>
         <Box className="map"></Box>
         <Box className="btn-wrapper">
-          <Button color="teal" type="submit">
+          <Button color="teal" type="submit" onClick={AddResidentialInfo}>
             Save
           </Button>
           <Button variant="default">Cancel</Button>

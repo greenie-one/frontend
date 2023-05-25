@@ -1,12 +1,74 @@
-import { Box, Title, TextInput, createStyles, em, rem, Select, Checkbox } from '@mantine/core';
+import {
+  Box,
+  Title,
+  TextInput,
+  createStyles,
+  em,
+  rem,
+  Select,
+  Checkbox,
+  Button,
+} from '@mantine/core';
 import { useState } from 'react';
+import { notifications } from '@mantine/notifications';
 import { useProfileContext } from '../context/ProfileContext';
-
+import ApiList from '../../../assets/api/ApiList';
+import axios from 'axios';
+import { BsCheckLg } from 'react-icons/bs';
 import '../styles/global.scss';
+
 export const WorkExperienceModal = () => {
   const { classes: inputClasses } = inputStyles();
   const [checked, setChecked] = useState(false);
   const { workExperienceForm } = useProfileContext();
+
+  const AddWorkExperience = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+
+    if (
+      !workExperienceForm.validateField('jobTitle').hasError &&
+      !workExperienceForm.validateField('companyName').hasError &&
+      !workExperienceForm.validateField('workEmail').hasError &&
+      !workExperienceForm.validateField('companyId').hasError &&
+      !workExperienceForm.validateField('startDate').hasError &&
+      !workExperienceForm.validateField('endDate').hasError
+    ) {
+      try {
+        workExperienceForm.clearErrors();
+        const res = await axios.post(ApiList.createProfile, {
+          designation: workExperienceForm.values.jobTitle,
+          companyName: workExperienceForm.values.companyName,
+          isVerified: false,
+          companyStartYear: workExperienceForm.values.startDate.startYear,
+          companyEndYear: workExperienceForm.values.endDate.endYear,
+        });
+
+        if (res.data) {
+          setTimeout(() => {
+            notifications.update({
+              id: 'load-state',
+              title: 'Sucess!',
+              message: 'Experience added successfully',
+              autoClose: 2200,
+              withCloseButton: false,
+              color: 'teal',
+              icon: <BsCheckLg />,
+              sx: { borderRadius: em(8) },
+            });
+          }, 1100);
+        }
+
+        workExperienceForm.setFieldValue('jobTitle', '');
+        workExperienceForm.setFieldValue('companyName', '');
+        workExperienceForm.setFieldValue('workEmail', '');
+        workExperienceForm.setFieldValue('companyId', '');
+        workExperienceForm.setFieldValue('startDate', { startMonth: '', startYear: '' });
+        workExperienceForm.setFieldValue('endDate', { endMonth: '', endYear: '' });
+      } catch (err: any) {
+        console.log(err.message);
+      }
+    }
+  };
   return (
     <form>
       <Box className="input-section border-bottom">
@@ -137,6 +199,12 @@ export const WorkExperienceModal = () => {
             {...workExperienceForm.getInputProps('workType.workType')}
           />
         </Box>
+      </Box>
+      <Box className="btn-wrapper">
+        <Button color="teal" type="submit" onClick={AddWorkExperience}>
+          Save
+        </Button>
+        <Button variant="default">Cancel</Button>
       </Box>
     </form>
   );

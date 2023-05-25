@@ -11,6 +11,14 @@ const ApiList = {
   googleAuth: `${BASE_URL}/oauth/google/redirect`,
   googleCallback: `${BASE_URL}/oauth/google/callback`,
   refreshToken: `${BASE_URL}/refresh`,
+  documents: `${BASE_URL}/documents/me`,
+  postDocuments: `${BASE_URL}/documents`,
+  workExperience: `${BASE_URL}/workExperience/me`,
+  postWorkExperience: `${BASE_URL}/workExperience/create`,
+  residentialInfo: `${BASE_URL}/residential_info/me`,
+  postResidentialInfo: `${BASE_URL}/residential_info`,
+  skill: `${BASE_URL}/skill/me`,
+  postSkill: `${BASE_URL}/skill/create`
 };
 
 export default ApiList;
