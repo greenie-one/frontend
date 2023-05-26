@@ -7,11 +7,11 @@ import AadharCard from '../assets/sampleAadhar.png';
 import PanCard from '../assets/samplePanCard.png';
 import { Link } from 'react-router-dom';
 import { MdOutlineEdit } from 'react-icons/md';
-import { WorkExperienceModal } from '../components/WorkExperienceModal';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
+import { DocumentsModal } from '../components/DocumentsModal';
 
 export const VerificationIDSection = () => {
-  const modalScreenSize = useMediaQuery('(min-width: 790px)');
+  const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
   const [data, setData] = useState([
     {
@@ -31,12 +31,13 @@ export const VerificationIDSection = () => {
     <section className="verificationId-section  container">
       <Modal
         className="modal"
-        size={modalScreenSize ? '60%' : '98%'}
+        size={'65%'}
+        fullScreen={isMobile}
         opened={opened}
         onClose={close}
         title="Add work experience"
       >
-        <WorkExperienceModal />
+        <DocumentsModal />
       </Modal>
       <Box className="header">
         <Box>

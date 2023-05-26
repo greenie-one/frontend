@@ -77,12 +77,14 @@ export const WorkExperienceModal = () => {
           label="Job title"
           classNames={inputClasses}
           data-autofocus
+          withAsterisk
           {...workExperienceForm.getInputProps('jobTitle')}
         />
       </Box>
       <Box className="input-section">
         <Title className="title">Company name</Title>
         <Select
+          withAsterisk
           data={[
             { value: 'react', label: 'React' },
             { value: 'ng', label: 'Angular' },
@@ -97,6 +99,7 @@ export const WorkExperienceModal = () => {
       <Box className="input-section">
         <Title className="title">Work email</Title>
         <TextInput
+          withAsterisk
           label="Official Email"
           classNames={inputClasses}
           {...workExperienceForm.getInputProps('workEmail')}
@@ -105,6 +108,7 @@ export const WorkExperienceModal = () => {
       <Box className="input-section border-bottom">
         <Title className="title">Company ID</Title>
         <TextInput
+          withAsterisk
           label="Enter your unique company id"
           classNames={inputClasses}
           {...workExperienceForm.getInputProps('companyId')}
@@ -114,6 +118,7 @@ export const WorkExperienceModal = () => {
         <Title className="title">Start Date</Title>
         <Box className="inner-input-section">
           <Select
+            withAsterisk
             data={[
               { value: 'january', label: 'January' },
               { value: 'january', label: 'January' },
@@ -124,6 +129,7 @@ export const WorkExperienceModal = () => {
             {...workExperienceForm.getInputProps('startDate.startMonth')}
           />
           <Select
+            withAsterisk
             data={[
               { value: '2023', label: '2023' },
               { value: '2023', label: '2023' },
@@ -142,6 +148,7 @@ export const WorkExperienceModal = () => {
         <Box className="inner-input-box">
           <Box className="inner-input-section">
             <Select
+              withAsterisk
               data={[
                 { value: 'january', label: 'January' },
                 { value: 'january', label: 'January' },
@@ -152,6 +159,7 @@ export const WorkExperienceModal = () => {
               {...workExperienceForm.getInputProps('endDate.endMonth')}
             />
             <Select
+              withAsterisk
               disabled={checked}
               data={[
                 { value: '2023', label: '2023' },
@@ -178,6 +186,7 @@ export const WorkExperienceModal = () => {
         <Title className="title">Work Type</Title>
         <Box className="inner-input-section">
           <Select
+            withAsterisk
             data={[
               { value: 'work from office', label: 'Work From Office' },
               { value: 'work from home', label: 'Work From Home' },
@@ -188,6 +197,7 @@ export const WorkExperienceModal = () => {
             {...workExperienceForm.getInputProps('workType.modeOfWork')}
           />
           <Select
+            withAsterisk
             data={[
               { value: 'full-time', label: 'Full-time' },
               { value: 'part-time', label: 'Part-time' },

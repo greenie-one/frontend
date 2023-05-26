@@ -1,35 +1,38 @@
 import { Box, Title, TextInput, createStyles, em, rem, Select, Button } from '@mantine/core';
 import { useProfileContext } from '../context/ProfileContext';
 
-const expertise = [
-  { value: 'amateur', label: 'Amature' },
-  { value: 'intermediate', label: 'intermediate' },
-  { value: 'expert', label: 'expert' },
+const documentsType = [
+  {
+    value: 'pan',
+    label: 'Pan Card',
+  },
+  { value: 'aadhar', label: 'Adhar Card' },
 ];
 
-export const SkillModal = () => {
+export const DocumentsModal = () => {
   const { classes: inputClasses } = inputStyles();
-  const { skillForm } = useProfileContext();
   return (
     <form>
       <Box className="input-section border-bottom">
-        <Title className="title">Skill name</Title>
+        <Title className="title">Your Name</Title>
+        <TextInput withAsterisk data-autofocus label="Enter your name" classNames={inputClasses} />
+      </Box>
+      <Box className="input-section">
+        <Title className="title">Select Document</Title>
+        <Select
+          withAsterisk
+          data={documentsType}
+          label="Select your document"
+          classNames={inputClasses}
+        />
+      </Box>
+      <Box className="input-section  border-bottom">
+        <Title className="title">Your Card Number</Title>
         <TextInput
           withAsterisk
           data-autofocus
-          label="Eg. Frontend, Back"
+          label="Enter your card number"
           classNames={inputClasses}
-          {...skillForm.getInputProps('skillName')}
-        />
-      </Box>
-      <Box className="input-section border-bottom">
-        <Title className="title">Expertise</Title>
-        <Select
-          withAsterisk
-          data={expertise}
-          label="Select your expertise"
-          classNames={inputClasses}
-          {...skillForm.getInputProps('expertise')}
         />
       </Box>
       <Box className="location-wrapper">

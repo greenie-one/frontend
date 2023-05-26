@@ -5,13 +5,13 @@ import { MdOutlineEdit } from 'react-icons/md';
 import '../styles/global.scss';
 import noData from '../assets/noData.png';
 import { ResidentialInfoCard } from '../components/ResidentialInfoCard';
-import { ResidentialInfoModal } from '../components/ResidentialInfoModal';
 import { Link } from 'react-router-dom';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
+import { ResidentialInfoModal } from '../components/ResidentialInfoModal';
 
 export const ResidentialInfo = () => {
   const screenSize = useMediaQuery('(min-width: 990px)');
-  const modalScreenSize = useMediaQuery('(min-width: 790px)');
+  const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
 
   const [data, setData] = useState([
@@ -38,7 +38,8 @@ export const ResidentialInfo = () => {
     <section className="residential-info container">
       <Modal
         className="modal"
-        size={modalScreenSize ? '60%' : '98%'}
+        size={'65%'}
+        fullScreen={isMobile}
         opened={opened}
         onClose={close}
         title="Add residential information"

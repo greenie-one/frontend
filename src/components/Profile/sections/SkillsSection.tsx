@@ -11,7 +11,7 @@ import { SkillModal } from '../components/SkillModal';
 
 export const SkillsSection = () => {
   const screenSize = useMediaQuery('(min-width: 990px)');
-  const modalScreenSize = useMediaQuery('(min-width: 790px)');
+  const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
 
   const [data, setData] = useState([
@@ -38,7 +38,8 @@ export const SkillsSection = () => {
     <section className="skills-section container">
       <Modal
         className="modal"
-        size={modalScreenSize ? '60%' : '98%'}
+        size={'65%'}
+        fullScreen={isMobile}
         opened={opened}
         onClose={close}
         title="Add Skills"

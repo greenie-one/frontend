@@ -14,7 +14,6 @@ import { IoLocationOutline } from 'react-icons/io5';
 import { useProfileContext } from '../context/ProfileContext';
 import ApiList from '../../../assets/api/ApiList';
 import axios from 'axios';
-import { BsCheckLg } from 'react-icons/bs';
 
 const states = [
   { value: 'andhra pradesh', label: 'Andhra Pradesh' },

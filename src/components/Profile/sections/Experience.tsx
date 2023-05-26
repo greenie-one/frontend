@@ -13,7 +13,7 @@ import { WorkExperienceModal } from '../components/WorkExperienceModal';
 
 export const Experience = () => {
   const screenSize = useMediaQuery('(min-width: 990px)');
-  const modalScreenSize = useMediaQuery('(min-width: 790px)');
+  const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
 
   const [data, setData] = useState([
@@ -58,7 +58,8 @@ export const Experience = () => {
     <section className="experience-section container">
       <Modal
         className="modal"
-        size={modalScreenSize ? '60%' : '98%'}
+        size={'65%'}
+        fullScreen={isMobile}
         opened={opened}
         onClose={close}
         title="Add work experience"

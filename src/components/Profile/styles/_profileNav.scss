@@ -1,0 +1,23 @@
+@import '_variables';
+
+.profileNav {
+  border-radius: 70px;
+  padding: 14px;
+  .profile-btn-wrapper {
+    width: 55%;
+    margin: 0 auto;
+    display: grid;
+    justify-content: space-between;
+    grid-template-columns: repeat(3, 30%);
+    .btn {
+      border: none;
+      color: $gray;
+      border-radius: 34px;
+    }
+    .active {
+      border: 1px solid $green;
+      border-radius: 34px;
+      color: $green;
+    }
+  }
+}

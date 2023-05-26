@@ -6,6 +6,7 @@ import { ProfilePhotos } from './sections/ProfilePhotos';
 import { ResidentialInfo } from './sections/ResidentialInfo';
 import { SkillsSection } from './sections/SkillsSection';
 import { VerificationIDSection } from './sections/VerificationIDSection';
+import { ProfileNav } from './components/ProfileNav';
 
 export const Profile = () => {
   return (
@@ -14,6 +15,7 @@ export const Profile = () => {
         <Navbar />
         <ProfilePhotos />
         <BioSection />
+        <ProfileNav />
         <VerificationIDSection />
         <Experience />
         <ResidentialInfo />
