@@ -131,7 +131,6 @@ const SignUpStepTwo = () => {
           dispatch({ type: 'NEXTSIGNUPSTEP' });
         }
       } catch (err: any) {
-        console.log(err.response?.data);
         if (err.response?.data?.code === 'GR0003') {
           notifications.update({
             id: 'load-data',
