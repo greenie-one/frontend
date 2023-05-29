@@ -1,30 +1,72 @@
 import { Box, Text, Chip, Group, CopyButton } from '@mantine/core';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import level from '../assets/level.png';
 import levelFilled from '../assets/levelFilled.png';
 import medal from '../assets/medal.png';
 import copyIcon from '../assets/content_copy.png';
 import { MdVerified } from 'react-icons/md';
 import { useMediaQuery } from '@mantine/hooks';
+import { useProfileContext } from '../context/ProfileContext';
+import axios from 'axios';
+import ApiList from '../../../assets/api/ApiList';
+import { useLocalStorage } from '@mantine/hooks';
+
+type AuthTokens = {
+  accessToken: string;
+  refreshToken: string;
+};
+
+interface UserProfile {
+  firstName: string;
+  lastName: string;
+  descriptionTags: string[];
+}
 
 export const BioSection = () => {
   const [userLevel, setUserLevel] = useState(0);
   const [greeneId, setGreenieId] = useState('GRN788209');
   const screenSize = useMediaQuery('(min-width: 768px)');
 
+  const [authTokens, setAuthTokens] = useLocalStorage<AuthTokens>({ key: 'auth-tokens' });
+
+  const [profileData, setProfileData] = useState<UserProfile | null>(null);
+
+  const getProfile = async () => {
+    try {
+      const res = await axios.get<UserProfile>(ApiList.getMyProfile, {
+        headers: {
+          Authorization: `Bearer ${authTokens?.accessToken}`,
+        },
+      });
+      if (res.data && authTokens?.accessToken) {
+        setProfileData(res.data);
+      }
+    } catch (err: any) {
+      console.log(err.message);
+    }
+  };
+
+  useEffect(() => {
+    getProfile();
+  }, []);
+
   return (
     <section className="bio-section container">
       <Box className="bio-name-box">
-        <Text className="bio-name">John Marston</Text>
+        <Text className="bio-name">
+          {profileData?.firstName} <span>{profileData?.lastName}</span>
+        </Text>
         <MdVerified className="name-verified" size={'20px'} />
       </Box>
 
       <Box className="chips">
         <Chip.Group>
           <Group>
-            <Chip size={screenSize ? 'sm' : 'xs'}>Energetic</Chip>
-            <Chip size={screenSize ? 'sm' : 'xs'}>Team Player</Chip>
-            <Chip size={screenSize ? 'sm' : 'xs'}>Optimistic</Chip>
+            {profileData?.descriptionTags.map((tag) => (
+              <Chip key={tag} size={screenSize ? 'sm' : 'xs'}>
+                {tag}
+              </Chip>
+            ))}
           </Group>
         </Chip.Group>
       </Box>

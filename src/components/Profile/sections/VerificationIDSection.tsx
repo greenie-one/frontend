@@ -1,32 +1,59 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Text, Box, Button, Modal } from '@mantine/core';
 import '../styles/global.scss';
 import { VerificationIDCard } from '../components/VerificationIDCard';
 import { VerifyIdNoData } from '../components/VerifyIdNoData';
-import AadharCard from '../assets/sampleAadhar.png';
-import PanCard from '../assets/samplePanCard.png';
 import { Link } from 'react-router-dom';
 import { MdOutlineEdit } from 'react-icons/md';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 import { DocumentsModal } from '../components/DocumentsModal';
+import { useProfileContext } from '../context/ProfileContext';
+import axios from 'axios';
+import ApiList from '../../../assets/api/ApiList';
+import { useLocalStorage } from '@mantine/hooks';
+
+type AuthTokens = {
+  accessToken: string;
+  refreshToken: string;
+};
+
+enum DocumentType {
+  AadharCard = 'Aadhar Card',
+  PanCard = 'Pan Card',
+}
+
+interface Document {
+  documentType: DocumentType;
+  documentNumber: string;
+  isVerified: boolean;
+}
 
 export const VerificationIDSection = () => {
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
-  const [data, setData] = useState([
-    {
-      id: 1,
-      documentName: 'Aadhar Card',
-      documentImg: AadharCard,
-      isVerified: true,
-    },
-    {
-      id: 2,
-      documentName: 'Pan Card',
-      documentImg: PanCard,
-      isVerified: true,
-    },
-  ]);
+  const [authTokens, setAuthTokens] = useLocalStorage<AuthTokens>({ key: 'auth-tokens' });
+
+  const [documentsData, setDocumentsData] = useState<Document[]>([]);
+
+  const getDocuments = async () => {
+    try {
+      const res = await axios.get(ApiList.documents, {
+        headers: {
+          Authorization: `Bearer ${authTokens?.accessToken}`,
+        },
+      });
+      if (res.data && authTokens?.accessToken) {
+        setDocumentsData(res.data);
+      }
+    } catch (err: any) {
+      console.log(err.message);
+    }
+  };
+
+  useEffect(() => {
+    getDocuments();
+  }, []);
+
   return (
     <section className="verificationId-section  container">
       <Modal
@@ -41,24 +68,24 @@ export const VerificationIDSection = () => {
       </Modal>
       <Box className="header">
         <Box>
-          <Text className="heading">{`Skills (${data.length})`}</Text>
+          <Text className="heading">{`Verification ID (${documentsData.length})`}</Text>
           <Text className="subheading">All government IDs, personal verification IDs etc.</Text>
         </Box>
-        {data.length > 0 ? (
-          <Box className="header-links">
+
+        <Box className="header-links">
+          {documentsData.length > 0 && (
             <Link className="link" to={'/'}>
               See all documents
             </Link>
-            <Button leftIcon={<MdOutlineEdit />} onClick={open} className="edit-btn">
-              Edit Section
-            </Button>
-          </Box>
-        ) : (
-          <Box></Box>
-        )}
+          )}
+
+          <Button leftIcon={<MdOutlineEdit />} onClick={open} className="edit-btn">
+            Edit Section
+          </Button>
+        </Box>
       </Box>
 
-      {data.length === 0 ? (
+      {documentsData.length === 0 ? (
         <Box className="verify-id-no-data-wrapper">
           <Box className="verify-id-img">
             <VerifyIdNoData />
@@ -71,12 +98,11 @@ export const VerificationIDSection = () => {
         </Box>
       ) : (
         <Box className="cards-wrapper">
-          {data.map(({ id, documentName, documentImg, isVerified }) => (
-            <Box key={id}>
+          {documentsData.map((document, index) => (
+            <Box key={index}>
               <VerificationIDCard
-                documentName={documentName}
-                documentImg={documentImg}
-                isVerified={isVerified}
+                documentName={document.documentType}
+                isVerified={document.isVerified}
               />
             </Box>
           ))}

@@ -1,7 +1,7 @@
-import { useState } from 'react';
 import { Text, Box, Button, Modal } from '@mantine/core';
 import noData from '../assets/noData.png';
 import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import markC from '../assets/markC.png';
 import { MdOutlineEdit } from 'react-icons/md';
 import tscLogo from '../assets/tscLogo.png';
@@ -10,11 +10,54 @@ import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 import '../styles/global.scss';
 import { WorkExperienceCard } from '../components/WorkExperienceCard';
 import { WorkExperienceModal } from '../components/WorkExperienceModal';
+import { useProfileContext } from '../context/ProfileContext';
+import axios from 'axios';
+import ApiList from '../../../assets/api/ApiList';
+import { useLocalStorage } from '@mantine/hooks';
+
+type AuthTokens = {
+  accessToken: string;
+  refreshToken: string;
+};
+
+interface WorkExperience {
+  image: string | null;
+  designation: string;
+  email: string;
+  companyName: string;
+  companyId: string;
+  isVerified: boolean;
+  description: string;
+  companyStartYear: string;
+  companyEndYear: string;
+  verifiedBy: string | null;
+}
 
 export const Experience = () => {
   const screenSize = useMediaQuery('(min-width: 990px)');
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
+  const [authTokens, setAuthTokens] = useLocalStorage<AuthTokens>({ key: 'auth-tokens' });
+  const [workExperienceData, setWorkExperienceData] = useState<WorkExperience[]>([]);
+
+  const getWorkExperience = async () => {
+    try {
+      const res = await axios.get(ApiList.workExperience, {
+        headers: {
+          Authorization: `Bearer ${authTokens?.accessToken}`,
+        },
+      });
+      if (res.data && authTokens?.accessToken) {
+        setWorkExperienceData(res.data);
+      }
+    } catch (err: any) {
+      console.log(err.message);
+    }
+  };
+
+  useEffect(() => {
+    getWorkExperience();
+  }, []);
 
   const [data, setData] = useState([
     {

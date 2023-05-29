@@ -13,8 +13,10 @@ type AuthTokens = {
 };
 
 type ProfileContextType = {
-  state: dataState;
-  dispatch: React.Dispatch<dataAction>;
+  activePageState: activePageState;
+  activePageDispatch: React.Dispatch<activePageAction>;
+  detailsState: detailsState;
+  detailsDispatch: React.Dispatch<detailsAction>;
   workExperienceForm: UseFormReturnType<workExperienceFormType>;
   residentialInfoForm: UseFormReturnType<residentialInfoFormType>;
   skillForm: UseFormReturnType<skillFormType>;
@@ -44,24 +46,32 @@ type skillFormType = {
   expertise: string;
 };
 
-interface dataState {
-  documents: Array<Object>;
-  workExperienceData: Array<Object>;
-  residentialInfoData: Array<Object>;
-  skillsData: Array<Object>;
+interface activePageState {
+  profilePage: boolean;
+  docDepot: boolean;
+  myVerification: boolean;
 }
 
-type dataAction =
-  | { type: 'SET_DOCUMENTS'; payload: Array<Object> }
-  | { type: 'SET_WORKEXPERIENCE'; payload: Array<Object> }
-  | { type: 'SET_RESIDENTIALINFO'; payload: Array<Object> }
-  | { type: 'SET_SKILLS'; payload: Array<Object> };
+type activePageAction =
+  | { type: 'SET_ACTIVE'; component: string }
+  | { type: 'SET_INACTIVE'; component: string };
+
+interface detailsState {
+  workExperience: boolean;
+  residentialInfo: boolean;
+  skills: boolean;
+}
+
+type detailsAction =
+  | { type: 'SET_ACTIVE'; component: string }
+  | { type: 'SET_INACTIVE'; component: string };
 
 const ProfileContext = createContext<ProfileContextType>({} as ProfileContextType);
 export const useProfileContext = () => useContext(ProfileContext);
 
 export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [forceRender, setForceRender] = useState<boolean>(false);
+
   //------------Forms-----------------
   const workExperienceForm = useForm<workExperienceFormType>({
     initialValues: {
@@ -120,72 +130,48 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
     },
   });
 
-  function dataReducer(state: dataState, action: dataAction): dataState {
+  function activePageReducer(state: activePageState, action: activePageAction): activePageState {
     switch (action.type) {
-      case 'SET_DOCUMENTS':
-        return { ...state, documents: action.payload };
-      case 'SET_WORKEXPERIENCE':
-        return { ...state, workExperienceData: action.payload };
-      case 'SET_RESIDENTIALINFO':
-        return { ...state, residentialInfoData: action.payload };
-      case 'SET_SKILLS':
-        return { ...state, skillsData: action.payload };
+      case 'SET_ACTIVE':
+        return { ...state, [action.component]: true };
+      case 'SET_INACTIVE':
+        return { ...state, [action.component]: false };
       default:
         return state;
     }
   }
 
-  const [state, dispatch] = useReducer(dataReducer, {
-    documents: [],
-    workExperienceData: [],
-    residentialInfoData: [],
-    skillsData: [],
+  const [activePageState, activePageDispatch] = useReducer(activePageReducer, {
+    profilePage: false,
+    docDepot: false,
+    myVerification: false,
+  });
+
+  function detailsReducer(state: detailsState, action: detailsAction): detailsState {
+    switch (action.type) {
+      case 'SET_ACTIVE':
+        return { ...state, [action.component]: true };
+      default:
+        return state;
+    }
+  }
+
+  const [detailsState, detailsDispatch] = useReducer(detailsReducer, {
+    workExperience: false,
+    residentialInfo: false,
+    skills: false,
   });
 
   const [authTokens, setAuthTokens] = useLocalStorage<AuthTokens>({ key: 'auth-tokens' });
-
-  const getDocuments = async () => {
-    try {
-      const res = await axios.get(ApiList.documents, {
-        headers: {
-          Authorization: `Bearer${authTokens?.accessToken}`,
-        },
-      });
-      if (res.data && authTokens?.accessToken) {
-        console.log(res.data);
-        // dispatch({ type: 'SET_DOCUMENTS', payload: res.data });
-      }
-    } catch (err: any) {
-      console.log(err.message);
-    }
-  };
-
-  const getWorkExperience = async () => {
-    try {
-      const res = await axios.get(ApiList.workExperience, {
-        headers: {
-          Authorization: `Bearer${authTokens?.accessToken}`,
-        },
-      });
-      if (res.data && authTokens?.accessToken) {
-        console.log(res.data);
-        // dispatch({ type: 'SET_WORKEXPERIENCE', payload: res.data });
-      }
-    } catch (err: any) {
-      console.log(err.message);
-    }
-  };
 
   const getResidentialInfo = async () => {
     try {
       const res = await axios.get(ApiList.residentialInfo, {
         headers: {
-          Authorization: `Bearer${authTokens?.accessToken}`,
+          Authorization: `Bearer ${authTokens?.accessToken}`,
         },
       });
       if (res.data && authTokens?.accessToken) {
-        console.log(res.data);
-        // dispatch({ type: 'SET_RESIDENTIALINFO', payload: res.data });
       }
     } catch (err: any) {
       console.log(err.message);
@@ -199,22 +185,19 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
         },
       });
       if (res.data && authTokens?.accessToken) {
-        console.log(res.data);
-        // dispatch({ type: 'SET_SKILLS', payload: res.data });
       }
     } catch (err: any) {
       console.log(err.message);
     }
   };
 
-  // useEffect(() => {
-  //   getWorkExperience();
-  // }, []);
   return (
     <ProfileContext.Provider
       value={{
-        state,
-        dispatch,
+        activePageState,
+        activePageDispatch,
+        detailsState,
+        detailsDispatch,
         workExperienceForm,
         residentialInfoForm,
         skillForm,
