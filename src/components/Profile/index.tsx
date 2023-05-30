@@ -7,7 +7,7 @@ import { ProfileSection } from './sections/ProfileSection';
 import { DocDepot } from './sections/DocDepot';
 import { MyVerifications } from './sections/MyVerifications';
 import { Box, Button } from '@mantine/core';
-import '../styles/global.scss';
+import './styles/global.scss';
 
 export const Profile = () => {
   const [activeButton, setActiveButton] = useState('profile');
