@@ -6,25 +6,31 @@ import medal from '../assets/medal.png';
 import copyIcon from '../assets/content_copy.png';
 import { MdVerified } from 'react-icons/md';
 import { useMediaQuery } from '@mantine/hooks';
+import { useProfileContext } from '../context/ProfileContext';
 
 export const BioSection = () => {
   const [userLevel, setUserLevel] = useState(0);
   const [greeneId, setGreenieId] = useState('GRN788209');
   const screenSize = useMediaQuery('(min-width: 768px)');
+  const { profileData } = useProfileContext();
 
   return (
     <section className="bio-section container">
       <Box className="bio-name-box">
-        <Text className="bio-name">John Marston</Text>
+        <Text className="bio-name">
+          {profileData?.firstName} <span>{profileData?.lastName}</span>
+        </Text>
         <MdVerified className="name-verified" size={'20px'} />
       </Box>
 
       <Box className="chips">
         <Chip.Group>
           <Group>
-            <Chip size={screenSize ? 'sm' : 'xs'}>Energetic</Chip>
-            <Chip size={screenSize ? 'sm' : 'xs'}>Team Player</Chip>
-            <Chip size={screenSize ? 'sm' : 'xs'}>Optimistic</Chip>
+            {profileData?.descriptionTags.map((tag) => (
+              <Chip key={tag} size={screenSize ? 'sm' : 'xs'}>
+                {tag}
+              </Chip>
+            ))}
           </Group>
         </Chip.Group>
       </Box>

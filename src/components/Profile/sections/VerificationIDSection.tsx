@@ -1,32 +1,42 @@
-import { useState } from 'react';
-import { Text, Box, Button, Modal } from '@mantine/core';
+import {
+  Text,
+  Box,
+  Button,
+  Modal,
+  Title,
+  TextInput,
+  createStyles,
+  em,
+  rem,
+  Select,
+} from '@mantine/core';
 import '../styles/global.scss';
 import { VerificationIDCard } from '../components/VerificationIDCard';
 import { VerifyIdNoData } from '../components/VerifyIdNoData';
-import AadharCard from '../assets/sampleAadhar.png';
-import PanCard from '../assets/samplePanCard.png';
 import { Link } from 'react-router-dom';
 import { MdOutlineEdit } from 'react-icons/md';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
-import { DocumentsModal } from '../components/DocumentsModal';
+import { useProfileContext } from '../context/ProfileContext';
+
+const documentsType = [
+  {
+    value: 'pan',
+    label: 'Pan Card',
+  },
+  { value: 'aadhar', label: 'Adhar Card' },
+];
 
 export const VerificationIDSection = () => {
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
-  const [data, setData] = useState([
-    {
-      id: 1,
-      documentName: 'Aadhar Card',
-      documentImg: AadharCard,
-      isVerified: true,
-    },
-    {
-      id: 2,
-      documentName: 'Pan Card',
-      documentImg: PanCard,
-      isVerified: true,
-    },
-  ]);
+  const { documentsData, addDocument } = useProfileContext();
+  const { classes: inputClasses } = inputStyles();
+
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    addDocument();
+  };
+
   return (
     <section className="verificationId-section  container">
       <Modal
@@ -37,28 +47,66 @@ export const VerificationIDSection = () => {
         onClose={close}
         title="Add work experience"
       >
-        <DocumentsModal />
+        <form onSubmit={handleSubmit}>
+          <Box className="input-section border-bottom">
+            <Title className="title">Your Name</Title>
+            <TextInput
+              withAsterisk
+              data-autofocus
+              label="Enter your name"
+              classNames={inputClasses}
+            />
+          </Box>
+          <Box className="input-section">
+            <Title className="title">Select Document</Title>
+            <Select
+              withAsterisk
+              data={documentsType}
+              label="Select your document"
+              classNames={inputClasses}
+            />
+          </Box>
+          <Box className="input-section  border-bottom">
+            <Title className="title">Your Card Number</Title>
+            <TextInput
+              withAsterisk
+              data-autofocus
+              label="Enter your card number"
+              classNames={inputClasses}
+            />
+          </Box>
+          <Box className="location-wrapper">
+            <Box className="btn-wrapper">
+              <Button color="teal" type="submit">
+                Save
+              </Button>
+              <Button variant="default" onClick={close}>
+                Cancel
+              </Button>
+            </Box>
+          </Box>
+        </form>
       </Modal>
       <Box className="header">
         <Box>
-          <Text className="heading">{`Skills (${data.length})`}</Text>
+          <Text className="heading">{`Verification ID (${documentsData.length})`}</Text>
           <Text className="subheading">All government IDs, personal verification IDs etc.</Text>
         </Box>
-        {data.length > 0 ? (
-          <Box className="header-links">
+
+        <Box className="header-links">
+          {documentsData.length > 0 && (
             <Link className="link" to={'/'}>
               See all documents
             </Link>
-            <Button leftIcon={<MdOutlineEdit />} onClick={open} className="edit-btn">
-              Edit Section
-            </Button>
-          </Box>
-        ) : (
-          <Box></Box>
-        )}
+          )}
+
+          <Button leftIcon={<MdOutlineEdit />} onClick={open} className="edit-btn">
+            Edit Section
+          </Button>
+        </Box>
       </Box>
 
-      {data.length === 0 ? (
+      {documentsData.length === 0 ? (
         <Box className="verify-id-no-data-wrapper">
           <Box className="verify-id-img">
             <VerifyIdNoData />
@@ -71,12 +119,11 @@ export const VerificationIDSection = () => {
         </Box>
       ) : (
         <Box className="cards-wrapper">
-          {data.map(({ id, documentName, documentImg, isVerified }) => (
-            <Box key={id}>
+          {documentsData.map((document, index) => (
+            <Box key={index}>
               <VerificationIDCard
-                documentName={documentName}
-                documentImg={documentImg}
-                isVerified={isVerified}
+                documentName={document.documentType}
+                isVerified={document.isVerified}
               />
             </Box>
           ))}
@@ -85,3 +132,58 @@ export const VerificationIDSection = () => {
     </section>
   );
 };
+
+const inputStyles = createStyles((theme) => ({
+  root: {
+    position: 'relative',
+    marginTop: '10px',
+    marginBottom: '10px',
+  },
+
+  input: {
+    height: '58px',
+    paddingTop: '18px',
+    fontSize: '16px',
+    fontWeight: 500,
+    borderRadius: '8px',
+    border: '1px solid #D1D4DB',
+    lineHeight: '19px',
+    letterSpacing: '-0.02em',
+    color: '#697082',
+
+    [`@media screen and (max-width: ${em(1024)})`]: {
+      height: '46px',
+      borderRadius: '6px',
+      fontSize: '10px',
+      lineHeight: '12px',
+      margin: '0 auto',
+    },
+  },
+
+  innerInput: {
+    height: rem(54),
+    paddingTop: rem(28),
+
+    [`@media screen and (max-width: ${em(1024)})`]: {
+      paddingTop: rem(8),
+    },
+  },
+
+  label: {
+    position: 'absolute',
+    pointerEvents: 'none',
+    fontSize: '12px',
+    paddingLeft: '14px',
+    paddingTop: '7px',
+    lineHeight: '14.52px',
+    letterSpacing: '-0.02em',
+    zIndex: 1,
+    color: '#697082',
+
+    [`@media screen and (max-width: ${em(1024)})`]: {
+      fontSize: '10px',
+      lineHeight: '10px',
+      paddingTop: '8px',
+    },
+  },
+}));
