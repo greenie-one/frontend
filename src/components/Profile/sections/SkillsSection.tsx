@@ -8,11 +8,13 @@ import { Link } from 'react-router-dom';
 import { MdOutlineEdit } from 'react-icons/md';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 import { SkillModal } from '../components/SkillModal';
+import { useProfileContext } from '../context/ProfileContext';
 
 export const SkillsSection = () => {
   const screenSize = useMediaQuery('(min-width: 990px)');
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
+  const { skillForm } = useProfileContext();
 
   const [data, setData] = useState([
     {
@@ -51,18 +53,17 @@ export const SkillsSection = () => {
           <Text className="heading">{`Skills (${data.length})`}</Text>
           <Text className="subheading">All government IDs, personal verification IDs etc.</Text>
         </Box>
-        {data.length > 0 ? (
-          <Box className="header-links">
+        <Box className="header-links">
+          {data.length > 0 && (
             <Link className="link" to={'/'}>
-              See all experiences
+              See all documents
             </Link>
-            <Button leftIcon={<MdOutlineEdit />} onClick={open} className="edit-btn">
-              Edit Section
-            </Button>
-          </Box>
-        ) : (
-          <Box></Box>
-        )}
+          )}
+
+          <Button leftIcon={<MdOutlineEdit />} onClick={open} className="edit-btn">
+            Edit Section
+          </Button>
+        </Box>
       </Box>
 
       {data.length === 0 ? (
@@ -92,7 +93,7 @@ export const SkillsSection = () => {
           })}
         </Carousel>
       )}
-      <Button className="see-all-btn">See All</Button>
+      {data.length > 0 && <Button className="see-all-btn">See All</Button>}
     </section>
   );
 };

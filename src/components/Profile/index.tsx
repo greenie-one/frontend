@@ -1,25 +1,47 @@
+import { useState } from 'react';
 import { Footer } from './sections/Footer';
 import { BioSection } from './sections/BioSection';
-import { Experience } from './sections/Experience';
 import { Navbar } from './sections/Navbar';
 import { ProfilePhotos } from './sections/ProfilePhotos';
-import { ResidentialInfo } from './sections/ResidentialInfo';
-import { SkillsSection } from './sections/SkillsSection';
-import { VerificationIDSection } from './sections/VerificationIDSection';
-import { ProfileNav } from './components/ProfileNav';
+import { ProfileSection } from './sections/ProfileSection';
+import { DocDepot } from './sections/DocDepot';
+import { MyVerifications } from './sections/MyVerifications';
+import { Box, Button } from '@mantine/core';
+import '../styles/global.scss';
 
 export const Profile = () => {
+  const [activeButton, setActiveButton] = useState('profile');
+
+  const handleButtonClick = (buttonId: string) => {
+    setActiveButton(buttonId);
+  };
+
   return (
     <>
-      <main className="profile">
+      <header>
         <Navbar />
+      </header>
+      <main className="profile">
         <ProfilePhotos />
         <BioSection />
-        <ProfileNav />
-        <VerificationIDSection />
-        <Experience />
-        <ResidentialInfo />
-        <SkillsSection />
+        <Box className="profile-btn-wrapper">
+          <Button variant="outline" className="btn" onClick={() => handleButtonClick('profile')}>
+            Profile
+          </Button>
+          <Button variant="outline" className="btn" onClick={() => handleButtonClick('doc depot')}>
+            Doc Depot
+          </Button>
+          <Button
+            variant="outline"
+            className="btn"
+            onClick={() => handleButtonClick('my verification')}
+          >
+            My Verification
+          </Button>
+        </Box>
+        {activeButton === 'profile' && <ProfileSection />}
+        {activeButton === 'doc depot' && <DocDepot />}
+        {activeButton === 'my verifications' && <MyVerifications />}
       </main>
       <Footer />
     </>

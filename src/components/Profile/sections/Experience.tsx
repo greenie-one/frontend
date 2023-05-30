@@ -1,102 +1,68 @@
-import { Text, Box, Button, Modal } from '@mantine/core';
+import { useState } from 'react';
+import {
+  Text,
+  Modal,
+  Box,
+  Title,
+  TextInput,
+  createStyles,
+  em,
+  rem,
+  Select,
+  Checkbox,
+  Button,
+} from '@mantine/core';
 import noData from '../assets/noData.png';
 import { Link } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import markC from '../assets/markC.png';
 import { MdOutlineEdit } from 'react-icons/md';
-import tscLogo from '../assets/tscLogo.png';
 import { Carousel } from '@mantine/carousel';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 import '../styles/global.scss';
 import { WorkExperienceCard } from '../components/WorkExperienceCard';
-import { WorkExperienceModal } from '../components/WorkExperienceModal';
 import { useProfileContext } from '../context/ProfileContext';
-import axios from 'axios';
-import ApiList from '../../../assets/api/ApiList';
-import { useLocalStorage } from '@mantine/hooks';
 
-type AuthTokens = {
-  accessToken: string;
-  refreshToken: string;
-};
-
-interface WorkExperience {
-  image: string | null;
-  designation: string;
-  email: string;
-  companyName: string;
-  companyId: string;
-  isVerified: boolean;
-  description: string;
-  companyStartYear: string;
-  companyEndYear: string;
-  verifiedBy: string | null;
-}
+const companyName = [
+  { value: 'react', label: 'React' },
+  { value: 'ng', label: 'Angular' },
+  { value: 'svelte', label: 'Svelte' },
+  { value: 'vue', label: 'Vue' },
+];
+const months = [
+  { value: 'january', label: 'January' },
+  { value: 'january', label: 'January' },
+  { value: 'january', label: 'January' },
+];
+const years = [
+  { value: '2023', label: '2023' },
+  { value: '2023', label: '2023' },
+  { value: '2023', label: '2023' },
+  { value: '2023', label: '2023' },
+  { value: '2023', label: '2023' },
+];
+const workType = [
+  { value: 'work from office', label: 'Work From Office' },
+  { value: 'work from home', label: 'Work From Home' },
+  { value: 'Hybrid', label: 'Hybrid' },
+];
+const modeOfWork = [
+  { value: 'full-time', label: 'Full-time' },
+  { value: 'part-time', label: 'Part-time' },
+  { value: 'internship', label: 'Intership' },
+  { value: 'contract', label: 'Contract' },
+];
 
 export const Experience = () => {
-  const screenSize = useMediaQuery('(min-width: 990px)');
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
-  const [authTokens, setAuthTokens] = useLocalStorage<AuthTokens>({ key: 'auth-tokens' });
-  const [workExperienceData, setWorkExperienceData] = useState<WorkExperience[]>([]);
+  const { workExperienceData, workExperienceForm, addWorkExperience } = useProfileContext();
+  const { classes: inputClasses } = inputStyles();
+  const [checked, setChecked] = useState(false);
 
-  const getWorkExperience = async () => {
-    try {
-      const res = await axios.get(ApiList.workExperience, {
-        headers: {
-          Authorization: `Bearer ${authTokens?.accessToken}`,
-        },
-      });
-      if (res.data && authTokens?.accessToken) {
-        setWorkExperienceData(res.data);
-      }
-    } catch (err: any) {
-      console.log(err.message);
-    }
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    addWorkExperience();
   };
 
-  useEffect(() => {
-    getWorkExperience();
-  }, []);
-
-  const [data, setData] = useState([
-    {
-      id: 1,
-      position: 'Software Engineering',
-      companyLogo: tscLogo,
-      companyName: 'Tata Consultancy Services',
-      isVerified: true,
-      tenure: '2017-2020(3y 4m)',
-      verifierName: 'Mark C.',
-      verifierImg: markC,
-      verifierTestimonial:
-        "Superb! I'm rather impressed by John's great mindset for a startup. I will follow his valuable advice for sure!! Thanks",
-    },
-    {
-      id: 2,
-      position: 'Software Engineering',
-      companyLogo: tscLogo,
-      companyName: 'Tata Consultancy Services',
-      isVerified: true,
-      tenure: '2017-2020(3y 4m)',
-      verifierName: 'Mark C.',
-      verifierImg: markC,
-      verifierTestimonial:
-        "Superb! I'm rather impressed by John's great mindset for a startup. I will follow his valuable advice for sure!! Thanks",
-    },
-    {
-      id: 3,
-      position: 'Software Engineering',
-      companyLogo: tscLogo,
-      companyName: 'Tata Consultancy Services',
-      isVerified: true,
-      tenure: '2017-2020(3y 4m)',
-      verifierName: 'Mark C.',
-      verifierImg: markC,
-      verifierTestimonial:
-        "Superb! I'm rather impressed by John's great mindset for a startup. I will follow his valuable advice for sure!! Thanks",
-    },
-  ]);
   return (
     <section className="experience-section container">
       <Modal
@@ -107,28 +73,141 @@ export const Experience = () => {
         onClose={close}
         title="Add work experience"
       >
-        <WorkExperienceModal />
+        <form onSubmit={handleSubmit}>
+          <Box className="input-section border-bottom">
+            <Title className="title">Job title</Title>
+            <TextInput
+              label="Job title"
+              classNames={inputClasses}
+              data-autofocus
+              withAsterisk
+              {...workExperienceForm.getInputProps('jobTitle')}
+            />
+          </Box>
+          <Box className="input-section">
+            <Title className="title">Company name</Title>
+            <Select
+              withAsterisk
+              data={companyName}
+              {...workExperienceForm.getInputProps('companyName')}
+              label="Search by company website"
+              classNames={inputClasses}
+            />
+          </Box>
+          <Box className="input-section">
+            <Title className="title">Work email</Title>
+            <TextInput
+              withAsterisk
+              label="Official Email"
+              classNames={inputClasses}
+              {...workExperienceForm.getInputProps('workEmail')}
+            />
+          </Box>
+          <Box className="input-section border-bottom">
+            <Title className="title">Company ID</Title>
+            <TextInput
+              withAsterisk
+              label="Enter your unique company id"
+              classNames={inputClasses}
+              {...workExperienceForm.getInputProps('companyId')}
+            />
+          </Box>
+          <Box className="input-section border-bottom">
+            <Title className="title">Start Date</Title>
+            <Box className="inner-input-section">
+              <Select
+                withAsterisk
+                data={months}
+                label="From month"
+                classNames={inputClasses}
+                {...workExperienceForm.getInputProps('startDate.startMonth')}
+              />
+              <Select
+                withAsterisk
+                data={years}
+                label="From year"
+                classNames={inputClasses}
+                {...workExperienceForm.getInputProps('startDate.startYear')}
+              />
+            </Box>
+          </Box>
+          <Box className="input-section border-bottom">
+            <Title className="title">End Date</Title>
+            <Box className="inner-input-box">
+              <Box className="inner-input-section">
+                <Select
+                  withAsterisk
+                  data={months}
+                  label="From month"
+                  classNames={inputClasses}
+                  {...workExperienceForm.getInputProps('endDate.endMonth')}
+                />
+                <Select
+                  withAsterisk
+                  disabled={checked}
+                  data={years}
+                  label="From year"
+                  classNames={inputClasses}
+                  {...workExperienceForm.getInputProps('endDate.endYear')}
+                />
+              </Box>
+              <Checkbox
+                checked={checked}
+                onChange={(event) => setChecked(event.currentTarget.checked)}
+                className="checkbox"
+                color="teal"
+                label="I currently work here"
+              />
+            </Box>
+          </Box>
+          <Box className="input-section border-bottom">
+            <Title className="title">Work Type</Title>
+            <Box className="inner-input-section">
+              <Select
+                withAsterisk
+                data={workType}
+                label="Mode of Work"
+                classNames={inputClasses}
+                {...workExperienceForm.getInputProps('workType.modeOfWork')}
+              />
+              <Select
+                withAsterisk
+                data={modeOfWork}
+                label="Select work type"
+                classNames={inputClasses}
+                {...workExperienceForm.getInputProps('workType.workType')}
+              />
+            </Box>
+          </Box>
+          <Box className="btn-wrapper">
+            <Button color="teal" type="submit">
+              Save
+            </Button>
+            <Button variant="default" onClick={close}>
+              Cancel
+            </Button>
+          </Box>
+        </form>
       </Modal>
       <Box className="header">
         <Box>
-          <Text className="heading">{`Work Experience (${data.length})`}</Text>
+          <Text className="heading">{`Work Experience (${workExperienceData.length})`}</Text>
           <Text className="subheading">All government IDs, personal verification IDs etc.</Text>
         </Box>
-        {data.length > 0 ? (
-          <Box className="header-links">
+        <Box className="header-links">
+          {workExperienceData.length > 0 && (
             <Link className="link" to={'/'}>
-              See all experiences
+              See all documents
             </Link>
-            <Button leftIcon={<MdOutlineEdit />} onClick={open} className="edit-btn">
-              Edit Section
-            </Button>
-          </Box>
-        ) : (
-          <Box></Box>
-        )}
+          )}
+
+          <Button leftIcon={<MdOutlineEdit />} onClick={open} className="edit-btn">
+            Edit Section
+          </Button>
+        </Box>
       </Box>
 
-      {data.length === 0 ? (
+      {workExperienceData.length === 0 ? (
         <Box className="no-data-wrapper">
           {' '}
           <img className="no-data" src={noData} alt="No data" />
@@ -138,7 +217,7 @@ export const Experience = () => {
           withIndicators={false}
           slideSize="33.30%"
           slideGap={24}
-          slidesToScroll={screenSize ? 0 : 1}
+          slidesToScroll={workExperienceData.length > 3 ? 1 : 0}
           align="start"
           styles={{ control: { display: 'none' } }}
           breakpoints={[
@@ -146,29 +225,29 @@ export const Experience = () => {
             { maxWidth: 'md', slideSize: '50%' },
           ]}
         >
-          {data.map(
-            ({
-              id,
-              position,
-              companyLogo,
-              companyName,
-              isVerified,
-              tenure,
-              verifierName,
-              verifierImg,
-              verifierTestimonial,
-            }) => {
+          {workExperienceData.map(
+            (
+              {
+                designation,
+                companyName,
+                companyStartYear,
+                companyEndYear,
+                isVerified,
+                verifiedBy,
+                description,
+              },
+              index
+            ) => {
               return (
-                <Carousel.Slide key={id}>
+                <Carousel.Slide key={index}>
                   <WorkExperienceCard
-                    position={position}
-                    companyLogo={companyLogo}
+                    position={designation}
                     companyName={companyName}
                     isVerified={isVerified}
-                    tenure={tenure}
-                    verifierName={verifierName}
-                    verifierImg={verifierImg}
-                    verifierTestimonial={verifierTestimonial}
+                    companyStartYear={companyStartYear}
+                    companyEndYear={companyEndYear}
+                    verifierName={verifiedBy}
+                    verifierTestimonial={description}
                   />
                 </Carousel.Slide>
               );
@@ -176,7 +255,62 @@ export const Experience = () => {
           )}
         </Carousel>
       )}
-      <Button className="see-all-btn">See All</Button>
+      {workExperienceData.length > 0 && <Button className="see-all-btn">See All</Button>}
     </section>
   );
 };
+
+const inputStyles = createStyles((theme) => ({
+  root: {
+    position: 'relative',
+    marginTop: '10px',
+    marginBottom: '10px',
+  },
+
+  input: {
+    height: '58px',
+    paddingTop: '18px',
+    fontSize: '16px',
+    fontWeight: 500,
+    borderRadius: '8px',
+    border: '1px solid #D1D4DB',
+    lineHeight: '19px',
+    letterSpacing: '-0.02em',
+    color: '#697082',
+
+    [`@media screen and (max-width: ${em(1024)})`]: {
+      height: '46px',
+      borderRadius: '6px',
+      fontSize: '10px',
+      lineHeight: '12px',
+      margin: '0 auto',
+    },
+  },
+
+  innerInput: {
+    height: rem(54),
+    paddingTop: rem(28),
+
+    [`@media screen and (max-width: ${em(1024)})`]: {
+      paddingTop: rem(8),
+    },
+  },
+
+  label: {
+    position: 'absolute',
+    pointerEvents: 'none',
+    fontSize: '12px',
+    paddingLeft: '14px',
+    paddingTop: '7px',
+    lineHeight: '14.52px',
+    letterSpacing: '-0.02em',
+    zIndex: 1,
+    color: '#697082',
+
+    [`@media screen and (max-width: ${em(1024)})`]: {
+      fontSize: '10px',
+      lineHeight: '10px',
+      paddingTop: '8px',
+    },
+  },
+}));

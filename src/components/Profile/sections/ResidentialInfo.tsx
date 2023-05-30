@@ -93,7 +93,7 @@ export const ResidentialInfo = () => {
           })}
         </Carousel>
       )}
-      <Button className="see-all-btn">See All</Button>
+      {data.length > 0 && <Button className="see-all-btn">See All</Button>}
     </section>
   );
 };
