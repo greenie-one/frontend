@@ -20,6 +20,7 @@ type ProfileContextType = {
   skillForm: UseFormReturnType<skillFormType>;
   forceRender: boolean;
   setForceRender: React.Dispatch<React.SetStateAction<boolean>>;
+  authTokens: AuthTokens;
 };
 type workExperienceFormType = {
   jobTitle: string;
@@ -191,16 +192,20 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
       console.log(err.message);
     }
   };
+
   const getSkills = async () => {
+    console.log('Auth token: ', authTokens);
+
     try {
       const res = await axios.get(ApiList.skill, {
         headers: {
           Authorization: `Bearer ${authTokens?.accessToken}`,
         },
       });
+
       if (res.data && authTokens?.accessToken) {
         console.log(res.data);
-        // dispatch({ type: 'SET_SKILLS', payload: res.data });
+        dispatch({ type: 'SET_SKILLS', payload: res.data });
       }
     } catch (err: any) {
       console.log(err.message);
@@ -208,8 +213,13 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
   };
 
   // useEffect(() => {
-  //   getWorkExperience();
+  //   const runGetRequests = async () => {
+  //     await getSkills();
+  //   };
+
+  //   runGetRequests();
   // }, []);
+
   return (
     <ProfileContext.Provider
       value={{
@@ -220,6 +230,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
         skillForm,
         forceRender,
         setForceRender,
+        authTokens,
       }}
     >
       {children}

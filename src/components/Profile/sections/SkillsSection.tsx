@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Text, Box, Button, Modal } from '@mantine/core';
 import { Carousel } from '@mantine/carousel';
 import '../styles/global.scss';
@@ -8,11 +8,46 @@ import { Link } from 'react-router-dom';
 import { MdOutlineEdit } from 'react-icons/md';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 import { SkillModal } from '../components/SkillModal';
+import { useProfileContext } from '../context/ProfileContext';
+import axios from 'axios';
+import ApiList from '../../../assets/api/ApiList';
+
+interface ISkillDataType {
+  createdAt: string;
+  designation: string;
+  isVerified: boolean;
+  skillRate: number;
+  updatedAt: string;
+  user: string;
+  __v: number;
+  _id: string;
+}
 
 export const SkillsSection = () => {
   const screenSize = useMediaQuery('(min-width: 990px)');
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
+
+  const [skillData, setSkillData] = useState<ISkillDataType[]>([]);
+
+  const { authTokens } = useProfileContext();
+
+  const getSkills = async () => {
+    try {
+      const res = await axios.get(ApiList.skill, {
+        headers: {
+          Authorization: `Bearer ${authTokens?.accessToken}`,
+        },
+      });
+
+      if (res.data && authTokens?.accessToken) {
+        console.log(res.data);
+        setSkillData(res.data);
+      }
+    } catch (err: any) {
+      console.log(err.message);
+    }
+  };
 
   const [data, setData] = useState([
     {
@@ -34,6 +69,14 @@ export const SkillsSection = () => {
       percentage: 78,
     },
   ]);
+
+  useEffect(() => {
+    const runGetSkills = async () => {
+      await getSkills();
+    };
+
+    runGetSkills();
+  }, []);
   return (
     <section className="skills-section container">
       <Modal
@@ -44,7 +87,7 @@ export const SkillsSection = () => {
         onClose={close}
         title="Add Skills"
       >
-        <SkillModal />
+        <SkillModal closeModal={close} />
       </Modal>
       <Box className="header">
         <Box>
@@ -65,7 +108,7 @@ export const SkillsSection = () => {
         )}
       </Box>
 
-      {data.length === 0 ? (
+      {skillData.length === 0 ? (
         <Box className="no-data-wrapper">
           <img className="no-data" src={noData} alt="No data" />
         </Box>
@@ -83,10 +126,14 @@ export const SkillsSection = () => {
             { maxWidth: 'md', slideSize: '50%' },
           ]}
         >
-          {data.map(({ skill, percentage, isVerified }, id) => {
+          {skillData.map((skill: any, id) => {
             return (
               <Carousel.Slide key={id}>
-                <SkillsCard skill={skill} percentage={percentage} isVerified={isVerified} />
+                <SkillsCard
+                  skill={skill.designation}
+                  percentage={skill.skillRate / 5}
+                  isVerified={skill.isVerified}
+                />
               </Carousel.Slide>
             );
           })}

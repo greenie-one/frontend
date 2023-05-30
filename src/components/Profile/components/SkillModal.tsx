@@ -1,5 +1,20 @@
+import React, { useState } from 'react';
+import { notifications } from '@mantine/notifications';
+import axios from 'axios';
+import { useLocalStorage } from '@mantine/hooks';
 import { Box, Title, TextInput, createStyles, em, rem, Select, Button } from '@mantine/core';
 import { useProfileContext } from '../context/ProfileContext';
+import ApiList from '../../../assets/api/ApiList';
+import { FaExclamation } from 'react-icons/fa';
+import { BsCheckLg } from 'react-icons/bs';
+
+type AuthTokens = {
+  accessToken: string;
+  refreshToken: string;
+};
+interface ISkillModalPropsType {
+  closeModal: () => void;
+}
 
 const expertise = [
   { value: 'amateur', label: 'Amature' },
@@ -7,9 +22,84 @@ const expertise = [
   { value: 'expert', label: 'expert' },
 ];
 
-export const SkillModal = () => {
+export const SkillModal: React.FC<ISkillModalPropsType> = ({ closeModal }): JSX.Element => {
   const { classes: inputClasses } = inputStyles();
   const { skillForm } = useProfileContext();
+  const [authTokens, setAuthTokens] = useLocalStorage<AuthTokens>({ key: 'auth-tokens' });
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const postSkill = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+
+    if (isLoading) {
+      return Promise.resolve(null);
+    }
+
+    skillForm.validateField('skillName');
+    if (skillForm.validateField('skillName').hasError) {
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      notifications.show({
+        id: 'load-data',
+        title: 'Please wait !',
+        message: 'We are adding your skill.',
+        loading: true,
+        autoClose: false,
+        withCloseButton: false,
+        color: 'teal',
+        sx: { borderRadius: em(8) },
+      });
+
+      const res = await axios.post(
+        ApiList.postSkill,
+        {
+          designation: skillForm.values.skillName,
+          isVerified: false,
+          skillRate: 0,
+          user: 'GRN788209',
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${authTokens?.accessToken}`,
+          },
+        }
+      );
+
+      if (res.data) {
+        console.log('Post skill data: ', res.data);
+
+        notifications.update({
+          id: 'load-data',
+          color: 'teal',
+          title: 'Success !',
+          message: 'New skill added to your profile.',
+          icon: <BsCheckLg />,
+          autoClose: 2000,
+        });
+
+        skillForm.setFieldValue('skillName', '');
+        skillForm.setFieldValue('expertise', '');
+        closeModal();
+      }
+    } catch (err: any) {
+      console.error('Error in posting skill: ', err);
+
+      notifications.update({
+        id: 'load-data',
+        color: 'teal',
+        title: 'Error !',
+        message: 'Something went wrong! Please check browser console for more info.',
+        icon: <FaExclamation />,
+        autoClose: 2000,
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <form>
       <Box className="input-section border-bottom">
@@ -17,7 +107,7 @@ export const SkillModal = () => {
         <TextInput
           withAsterisk
           data-autofocus
-          label="Eg. Frontend, Back"
+          label="Eg. Frontend, Backend"
           classNames={inputClasses}
           {...skillForm.getInputProps('skillName')}
         />
@@ -34,10 +124,12 @@ export const SkillModal = () => {
       </Box>
       <Box className="location-wrapper">
         <Box className="btn-wrapper">
-          <Button color="teal" type="submit">
+          <Button color="teal" type="submit" onClick={postSkill}>
             Save
           </Button>
-          <Button variant="default">Cancel</Button>
+          <Button type="button" variant="default" onClick={closeModal}>
+            Cancel
+          </Button>
         </Box>
       </Box>
     </form>

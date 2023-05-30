@@ -52,6 +52,9 @@ export const ResidentialInfoModal = () => {
 
   const AddResidentialInfo = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
+    // let validationResult = residentialInfoForm.validate();
+    // if (!validationResult) return;
+
     if (
       (!residentialInfoForm.validateField('address').hasError &&
         !residentialInfoForm.validateField('pincode').hasError &&
@@ -63,6 +66,7 @@ export const ResidentialInfoModal = () => {
       try {
         residentialInfoForm.clearErrors();
         const res = await axios.post(ApiList.postResidentialInfo, {
+          headers: {},
           address_line_1: residentialInfoForm.values.address.addressLineOne,
           address_line_2: residentialInfoForm.values.address.addressLineTwo,
           landmark: residentialInfoForm.values.address.landmark,
