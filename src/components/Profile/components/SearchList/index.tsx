@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Box, createStyles, em, rem } from '@mantine/core';
 import profileThumbnail from '../../assets/johnMarston.png';
 import { SearchResult } from './SearchListContent';
 import { NoResultContent } from './NoResultContent';
+import axios from 'axios';
+import ApiList from '../../../../assets/api/ApiList';
+import { useProfileContext } from '../../context/ProfileContext';
 
 const searchResults = [
   {
@@ -68,13 +71,59 @@ export const SearchList: React.FC<ISearchListPropsType> = ({
 }): JSX.Element => {
   const { classes } = useStyles();
 
+  const [profilesData, setProfilesData] = useState([]);
+  const [fetchingData, setFetchingData] = useState<boolean>(true);
+  const [error, setError] = useState<boolean>(false);
+
+  const { authTokens } = useProfileContext();
+
+  const fetchProfiles = useMemo(
+    () => async () => {
+      try {
+        const res = await axios.get(`${ApiList.searchProfile}${searchQuery}`, {
+          headers: {
+            Authorization: `Bearer ${authTokens?.accessToken}`,
+          },
+        });
+        console.log(res);
+
+        if (res.data) {
+          // @todo: Set Profile Data Array here...
+          console.log(res.data);
+          setError(false);
+        }
+      } catch (err: any) {
+        console.log('Error in searching profile: ', err);
+        setError(true);
+      } finally {
+        setFetchingData(false);
+      }
+    },
+    [searchQuery, authTokens]
+  );
+
+  useEffect(() => {
+    const runFetchProfile = async () => {
+      await fetchProfiles();
+    };
+
+    runFetchProfile();
+  }, [fetchProfiles]);
+
+  if (fetchingData) {
+    return <></>;
+  }
+  if (error) {
+    return <NoResultContent />;
+  }
+  if (profilesData && profilesData.length === 0) {
+    return <NoResultContent />;
+  }
+
   return (
-    <>
-      {/* <Box className={classes.searchListContainer}>
-        <SearchResult classes={classes} results={searchResults} />
-      </Box> */}
-      <NoResultContent />
-    </>
+    <Box className={classes.searchListContainer}>
+      <SearchResult classes={classes} results={profilesData} />
+    </Box>
   );
 };
 

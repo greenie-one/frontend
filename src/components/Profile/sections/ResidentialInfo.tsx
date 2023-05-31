@@ -17,7 +17,7 @@ export const ResidentialInfo = () => {
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
 
-  const [residentialInfoData, setResidentialInfoData] = useState<any[]>([]);
+  const [residentialInfoData, setResidentialInfoData] = useState([]);
   const { authTokens } = useProfileContext();
 
   const getResidentialInfo = async () => {
@@ -29,7 +29,7 @@ export const ResidentialInfo = () => {
       });
 
       if (res.data && authTokens?.accessToken) {
-        setResidentialInfoData(res.data);
+        setResidentialInfoData(res.data.residentialInfo);
       }
     } catch (err: any) {
       console.log(err.message);
