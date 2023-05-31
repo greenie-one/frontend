@@ -20,6 +20,7 @@ const ApiList = {
   resendOtp: `${BASE_URL}/resendOTP`,
   createProfile: `${BASE_URL}/profiles/create`,
   getMyProfile: `${BASE_URL}/profiles/me`,
+  search: `${BASE_URL}/`,
 };
 
 export default ApiList;

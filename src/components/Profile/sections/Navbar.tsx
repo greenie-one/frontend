@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react';
 import { Box, TextInput, createStyles, Flex, List, Drawer, em, rem } from '@mantine/core';
 import { Link } from 'react-router-dom';
 import { MdVerified, MdOutlineMenuOpen, MdOutlineClose } from 'react-icons/md';
@@ -5,11 +6,19 @@ import { GoSearch } from 'react-icons/go';
 import { AiOutlineBell, AiFillCaretDown } from 'react-icons/ai';
 import JohnMarston from '../assets/johnMarston.png';
 import { useDisclosure } from '@mantine/hooks';
+import { SearchList } from '../components/SearchList';
+import { useDebounce } from '../hooks/useDebounce';
 
 export const Navbar = () => {
   const { classes } = useStyles();
   const { classes: inputClasses } = inputStyles();
   const [opened, { open, close }] = useDisclosure(false);
+
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [showSearchList, setShowSearchList] = useState<boolean>(false);
+
+  let debouncedValue = useDebounce(searchQuery, 250);
+
   return (
     <header>
       <nav className="navbar">
@@ -19,8 +28,22 @@ export const Navbar = () => {
             <MdVerified size={'20px'} color="#9fe870" />
           </span>
         </Link>
-        <Box className="search">
-          <TextInput classNames={inputClasses} placeholder="Search" icon={<GoSearch />} />
+        <Box
+          className="search"
+          tabIndex={0}
+          onFocus={() => setShowSearchList(true)}
+          onBlur={() => setShowSearchList(false)}
+        >
+          <TextInput
+            classNames={inputClasses}
+            placeholder="Search"
+            icon={<GoSearch />}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            value={searchQuery}
+          />
+          {debouncedValue && showSearchList ? (
+            <SearchList searchQuery={debouncedValue} setShowSearchList={setShowSearchList} />
+          ) : null}
         </Box>
         <Box className="right-section">
           <AiOutlineBell size={'22px'} className="bell-icon" />
