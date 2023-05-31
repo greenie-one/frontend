@@ -22,22 +22,44 @@ import { WorkExperienceCard } from '../components/WorkExperienceCard';
 import { useProfileContext } from '../context/ProfileContext';
 
 const companyName = [
-  { value: 'react', label: 'React' },
-  { value: 'ng', label: 'Angular' },
-  { value: 'svelte', label: 'Svelte' },
-  { value: 'vue', label: 'Vue' },
+  { value: 'reliance_industries', label: 'Reliance Industries' },
+  { value: 'tata_consultancy_services', label: 'Tata Consultancy Services' },
+  { value: 'hindustan_unilever', label: 'Hindustan Unilever' },
+  { value: 'infosys', label: 'Infosys' },
+  { value: 'icici_bank', label: 'ICICI Bank' },
+  { value: 'hdfc_bank', label: 'HDFC Bank' },
+  { value: 'coal_india', label: 'Coal India' },
+  { value: 'bharti_airtel', label: 'Bharti Airtel' },
+  { value: 'wipro', label: 'Wipro' },
+  { value: 'mahindra_and_mahindra', label: 'Mahindra & Mahindra' },
 ];
 const months = [
   { value: 'january', label: 'January' },
-  { value: 'january', label: 'January' },
-  { value: 'january', label: 'January' },
+  { value: 'february', label: 'February' },
+  { value: 'march', label: 'March' },
+  { value: 'april', label: 'April' },
+  { value: 'may', label: 'May' },
+  { value: 'june', label: 'June' },
+  { value: 'july', label: 'July' },
+  { value: 'august', label: 'August' },
+  { value: 'september', label: 'September' },
+  { value: 'october', label: 'October' },
+  { value: 'november', label: 'November' },
+  { value: 'december', label: 'December' },
 ];
+
 const years = [
   { value: '2023', label: '2023' },
-  { value: '2023', label: '2023' },
-  { value: '2023', label: '2023' },
-  { value: '2023', label: '2023' },
-  { value: '2023', label: '2023' },
+  { value: '2022', label: '2022' },
+  { value: '2021', label: '2021' },
+  { value: '2020', label: '2020' },
+  { value: '2019', label: '2019' },
+  { value: '2018', label: '2018' },
+  { value: '2017', label: '2017' },
+  { value: '2016', label: '2016' },
+  { value: '2015', label: '2015' },
+  { value: '2014', label: '2014' },
+  { value: '2013', label: '2013' },
 ];
 const workType = [
   { value: 'work from office', label: 'Work From Office' },
@@ -217,7 +239,7 @@ export const Experience = () => {
           withIndicators={false}
           slideSize="33.30%"
           slideGap={24}
-          slidesToScroll={workExperienceData.length > 3 ? 1 : 0}
+          slidesToScroll={1}
           align="start"
           styles={{ control: { display: 'none' } }}
           breakpoints={[
@@ -230,8 +252,8 @@ export const Experience = () => {
               {
                 designation,
                 companyName,
-                companyStartYear,
-                companyEndYear,
+                companyStartDate,
+                companyEndDate,
                 isVerified,
                 verifiedBy,
                 description,
@@ -244,8 +266,8 @@ export const Experience = () => {
                     position={designation}
                     companyName={companyName}
                     isVerified={isVerified}
-                    companyStartYear={companyStartYear}
-                    companyEndYear={companyEndYear}
+                    companyStartYear={companyStartDate}
+                    companyEndYear={companyEndDate}
                     verifierName={verifiedBy}
                     verifierTestimonial={description}
                   />

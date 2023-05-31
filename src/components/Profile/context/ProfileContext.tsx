@@ -7,6 +7,7 @@ import axios from 'axios';
 import ApiList from '../../../assets/api/ApiList';
 import { notifications } from '@mantine/notifications';
 import { BsCheckLg } from 'react-icons/bs';
+import { FaExclamation } from 'react-icons/fa';
 
 // ----------------Types-------------------------
 
@@ -16,37 +17,37 @@ type AuthTokens = {
 };
 
 type ProfileContextType = {
-  profileData: UserProfile | null;
-  documentsData: Document[];
+  profileData: IUserProfile | null;
+  documentsData: IDocument[];
   addDocument: () => void;
-  workExperienceData: WorkExperience[];
+  workExperienceData: IWorkExperience[];
+  residentialInfoData: string[];
+  skillData: ISkillDataType[];
   addWorkExperience: () => void;
+  documentsForm: UseFormReturnType<documentsFormType>;
   workExperienceForm: UseFormReturnType<workExperienceFormType>;
   residentialInfoForm: UseFormReturnType<residentialInfoFormType>;
+  addResidentialInfo: () => void;
   skillForm: UseFormReturnType<skillFormType>;
+  addSkill: () => void;
   forceRender: boolean;
   setForceRender: React.Dispatch<React.SetStateAction<boolean>>;
   authTokens: AuthTokens;
 };
 
-enum DocumentType {
-  AadharCard = 'Aadhar Card',
-  PanCard = 'Pan Card',
-}
-
-interface Document {
-  documentType: DocumentType;
+interface IDocument {
+  documentType: string;
   documentNumber: string;
   isVerified: boolean;
 }
 
-interface UserProfile {
+interface IUserProfile {
   firstName: string;
   lastName: string;
   descriptionTags: string[];
 }
 
-interface WorkExperience {
+interface IWorkExperience {
   image: string | null;
   designation: string;
   email: string;
@@ -54,14 +55,25 @@ interface WorkExperience {
   companyId: string;
   isVerified: boolean;
   description: string;
-  companyStartYear: string;
-  companyEndYear: string;
+  companyStartDate: string;
+  companyEndDate: string;
   verifiedBy: string | null;
+}
+
+interface ISkillDataType {
+  createdAt: string;
+  designation: string;
+  isVerified: boolean;
+  skillRate: number;
+  updatedAt: string;
+  user: string;
+  __v: number;
+  _id: string;
 }
 
 type documentsFormType = {
   userName: string;
-  documentType: DocumentType | null;
+  documentType: string;
   aadharNumber: string;
   panNumber: string;
 };
@@ -101,7 +113,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const documentsForm = useForm<documentsFormType>({
     initialValues: {
       userName: '',
-      documentType: null,
+      documentType: '',
       aadharNumber: '',
       panNumber: '',
     },
@@ -173,15 +185,17 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   //------------------------------API CALLS----------------------------------------
 
-  const [authTokens, setAuthTokens] = useLocalStorage<AuthTokens>({ key: 'auth-tokens' });
+  // const [authTokens, setAuthTokens] = useLocalStorage<AuthTokens>({ key: 'auth-tokens' });
+  const authTokens = JSON.parse(localStorage.getItem('auth-tokens'));
+  const [isLoading, setIsLoading] = useState(false);
 
   //------------------------------PROFILE/BIO----------------------------------------
 
-  const [profileData, setProfileData] = useState<UserProfile | null>(null);
+  const [profileData, setProfileData] = useState<IUserProfile | null>(null);
 
   const getProfile = async () => {
     try {
-      const res = await axios.get<UserProfile>(ApiList.getMyProfile, {
+      const res = await axios.get<IUserProfile>(ApiList.getMyProfile, {
         headers: {
           Authorization: `Bearer ${authTokens?.accessToken}`,
         },
@@ -196,7 +210,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   //------------------------------DOCUMENTS----------------------------------------
 
-  const [documentsData, setDocumentsData] = useState<Document[]>([]);
+  const [documentsData, setDocumentsData] = useState<IDocument[]>([]);
 
   const getDocuments = async () => {
     try {
@@ -206,7 +220,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
         },
       });
       if (res.data && authTokens?.accessToken) {
-        setDocumentsData(res.data);
+        setDocumentsData(res.data.documents);
       }
     } catch (err: any) {
       console.log(err.message);
@@ -214,22 +228,32 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
   };
 
   const addDocument = async () => {
+    if (isLoading) {
+      return Promise.resolve(null);
+    }
     if (
       !documentsForm.validateField('userName').hasError &&
       !documentsForm.validateField('documentType').hasError
     ) {
       if (
-        documentsForm.values.documentType === 'Aadhar Card' &&
+        documentsForm.values.documentType === 'aadhar' &&
         !documentsForm.validateField('aadharNumber').hasError
       ) {
         try {
+          setIsLoading(true);
           documentsForm.clearErrors();
-          const res = await axios.post(ApiList.postDocuments, {
-            userName: documentsForm.values.userName,
-            document_type: documentsForm.values.documentType,
-            document_number: documentsForm.values.aadharNumber,
-          });
-
+          const res = await axios.post(
+            ApiList.postDocuments,
+            {
+              document_type: documentsForm.values.documentType,
+              document_number: documentsForm.values.aadharNumber,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${authTokens?.accessToken}`,
+              },
+            }
+          );
           if (res.data) {
             setTimeout(() => {
               notifications.update({
@@ -246,19 +270,28 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
           }
         } catch (error: any) {
           console.log(error.message);
+        } finally {
+          setIsLoading(false);
         }
       }
       if (
-        documentsForm.values.documentType === 'Pan Card' &&
+        documentsForm.values.documentType === 'pan' &&
         !documentsForm.validateField('panNumber').hasError
       ) {
         try {
           documentsForm.clearErrors();
-          const res = await axios.post(ApiList.postDocuments, {
-            userName: documentsForm.values.userName,
-            document_type: documentsForm.values.documentType,
-            document_number: documentsForm.values.panNumber,
-          });
+          const res = await axios.post(
+            ApiList.postDocuments,
+            {
+              document_type: documentsForm.values.documentType,
+              document_number: documentsForm.values.panNumber,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${authTokens?.accessToken}`,
+              },
+            }
+          );
 
           if (res.data) {
             setTimeout(() => {
@@ -283,7 +316,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   //------------------------------WORK EXPERIENCE----------------------------------------
 
-  const [workExperienceData, setWorkExperienceData] = useState<WorkExperience[]>([]);
+  const [workExperienceData, setWorkExperienceData] = useState<IWorkExperience[]>([]);
 
   const getWorkExperience = async () => {
     try {
@@ -293,7 +326,6 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
         },
       });
       if (res.data && authTokens?.accessToken) {
-        console.log(res.data);
         setWorkExperienceData(res.data);
       }
     } catch (err: any) {
@@ -302,6 +334,9 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
   };
 
   const addWorkExperience = async () => {
+    if (isLoading) {
+      return Promise.resolve(null);
+    }
     if (
       !workExperienceForm.validateField('jobTitle').hasError &&
       !workExperienceForm.validateField('companyName').hasError &&
@@ -311,14 +346,28 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
       !workExperienceForm.validateField('endDate').hasError
     ) {
       try {
+        setIsLoading(true);
         workExperienceForm.clearErrors();
-        const res = await axios.post(ApiList.postWorkExperience, {
-          designation: workExperienceForm.values.jobTitle,
-          companyName: workExperienceForm.values.companyName,
-          isVerified: false,
-          companyStartYear: workExperienceForm.values.startDate.startYear,
-          companyEndYear: workExperienceForm.values.endDate.endYear,
-        });
+        const res = await axios.post(
+          ApiList.postWorkExperience,
+          {
+            designation: workExperienceForm.values.jobTitle,
+            email: workExperienceForm.values.workEmail,
+            workMode: workExperienceForm.values.workType.modeOfWork,
+            workType: workExperienceForm.values.workType.workType,
+            companyName: workExperienceForm.values.companyName,
+            companyId: workExperienceForm.values.companyId,
+            isVerified: false,
+            companyStartDate: workExperienceForm.values.startDate.startYear,
+            companyEndDate: workExperienceForm.values.endDate.endYear,
+            user: 'GRN788209',
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${authTokens?.accessToken}`,
+            },
+          }
+        );
 
         if (res.data) {
           setTimeout(() => {
@@ -344,12 +393,15 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
         getWorkExperience();
       } catch (err: any) {
         console.log(err.message);
+      } finally {
+        setIsLoading(false);
       }
     }
   };
 
   //------------------------------RESIDENTIAL INFO----------------------------------------
 
+  const [residentialInfoData, setResidentialInfoData] = useState([]);
   const getResidentialInfo = async () => {
     try {
       const res = await axios.get(ApiList.residentialInfo, {
@@ -357,17 +409,108 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
           Authorization: `Bearer ${authTokens?.accessToken}`,
         },
       });
+
       if (res.data && authTokens?.accessToken) {
+        setResidentialInfoData(res.data.residentialInfo);
       }
     } catch (err: any) {
       console.log(err.message);
     }
   };
 
-  //------------------------------SKILLS----------------------------------------
-  const getSkills = async () => {
-    console.log('Auth token: ', authTokens);
+  const validateFormFields = (requiredField: string[]) => {
+    const listLength = requiredField.length;
 
+    for (let i = 0; i < listLength; i++) {
+      residentialInfoForm.validateField(requiredField[i]);
+    }
+
+    for (let i = 0; i < listLength; i++) {
+      if (residentialInfoForm.validateField(requiredField[i]).hasError) return false;
+    }
+
+    return true;
+  };
+
+  const addResidentialInfo = async () => {
+    if (isLoading) {
+      return Promise.resolve(null);
+    }
+
+    const requiredField = [
+      'address',
+      'pincode',
+      'stateCountry',
+      'startDate',
+      'endDate',
+      'currentLocation',
+    ];
+
+    if (!validateFormFields(requiredField)) return;
+
+    const requestData = {
+      address_line_1: residentialInfoForm.values.address.addressLineOne,
+      address_line_2: residentialInfoForm.values.address.addressLineTwo,
+      landmark: residentialInfoForm.values.address.landmark,
+      pincode: residentialInfoForm.values.pincode,
+      state: residentialInfoForm.values.stateCountry.state,
+      country: residentialInfoForm.values.stateCountry.country,
+      start_date: residentialInfoForm.values.startDate.startYear,
+      end_date: residentialInfoForm.values.endDate.endYear,
+      user: 'GRN788209',
+    };
+
+    try {
+      residentialInfoForm.clearErrors();
+
+      notifications.show({
+        id: 'load-data',
+        title: 'Please wait !',
+        message: 'We are updating your residential information.',
+        loading: true,
+        autoClose: false,
+        withCloseButton: false,
+        color: 'teal',
+        sx: { borderRadius: em(8) },
+      });
+
+      const res = await axios.post(ApiList.postResidentialInfo, requestData, {
+        headers: {
+          Authorization: `Bearer ${authTokens?.accessToken}`,
+        },
+      });
+
+      if (res.data) {
+        notifications.update({
+          id: 'load-data',
+          color: 'teal',
+          title: 'Success !',
+          message: 'Residential information updated successfully.',
+          icon: <BsCheckLg />,
+          autoClose: 2000,
+        });
+      }
+      getResidentialInfo();
+    } catch (err: any) {
+      console.error('Error in posting residential information: ', err);
+
+      notifications.update({
+        id: 'load-data',
+        color: 'teal',
+        title: 'Error !',
+        message: 'Something went wrong! Please check browser console for more info.',
+        icon: <FaExclamation />,
+        autoClose: 2000,
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  //------------------------------SKILLS----------------------------------------
+
+  const [skillData, setSkillData] = useState<ISkillDataType[]>([]);
+  const getSkills = async () => {
     try {
       const res = await axios.get(ApiList.skill, {
         headers: {
@@ -376,11 +519,78 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
       });
 
       if (res.data && authTokens?.accessToken) {
-        console.log(res.data);
-        // dispatch({ type: 'SET_SKILLS', payload: res.data });
+        setSkillData(res.data);
       }
     } catch (err: any) {
       console.log(err.message);
+    }
+  };
+
+  const addSkill = async () => {
+    if (isLoading) {
+      return Promise.resolve(null);
+    }
+
+    skillForm.validateField('skillName');
+    if (skillForm.validateField('skillName').hasError) {
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      notifications.show({
+        id: 'load-data',
+        title: 'Please wait !',
+        message: 'We are adding your skill.',
+        loading: true,
+        autoClose: false,
+        withCloseButton: false,
+        color: 'teal',
+        sx: { borderRadius: em(8) },
+      });
+
+      const res = await axios.post(
+        ApiList.postSkill,
+        {
+          designation: skillForm.values.skillName,
+          isVerified: false,
+          skillRate: 0,
+          user: 'GRN788209',
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${authTokens?.accessToken}`,
+          },
+        }
+      );
+
+      if (res.data) {
+        notifications.update({
+          id: 'load-data',
+          color: 'teal',
+          title: 'Success !',
+          message: 'New skill added to your profile.',
+          icon: <BsCheckLg />,
+          autoClose: 2000,
+        });
+
+        skillForm.setFieldValue('skillName', '');
+        skillForm.setFieldValue('expertise', '');
+      }
+    } catch (err: any) {
+      console.error('Error in posting skill: ', err);
+
+      notifications.update({
+        id: 'load-data',
+        color: 'teal',
+        title: 'Error !',
+        message: 'Something went wrong! Please check browser console for more info.',
+        icon: <FaExclamation />,
+        autoClose: 2000,
+      });
+      getSkills();
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -388,6 +598,8 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
     getProfile();
     getDocuments();
     getWorkExperience();
+    getSkills();
+    getResidentialInfo();
   }, []);
 
   return (
@@ -395,9 +607,14 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
       value={{
         profileData,
         documentsData,
-        addDocument,
         workExperienceData,
+        residentialInfoData,
+        skillData,
+        addDocument,
         addWorkExperience,
+        addResidentialInfo,
+        addSkill,
+        documentsForm,
         workExperienceForm,
         residentialInfoForm,
         skillForm,

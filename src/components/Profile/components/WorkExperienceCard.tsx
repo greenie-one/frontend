@@ -37,15 +37,19 @@ export const WorkExperienceCard: React.FC<CardProps> = ({
       <Box className="tenure-box">
         <Text className="since-text">Since</Text>
         <Text className="tenure">
-          {companyStartYear}-{companyEndYear}
+          {companyStartYear.substring(0, 4)}-{companyEndYear.substring(0, 4)}
         </Text>
       </Box>
-      <Text className="testimonial">{verifierTestimonial}</Text>
-      <Box className="verifier">
-        <Box className="verifier-img"></Box>
-        <Text className="verified-by">Verified by</Text>
-        <Text className="verifier-name">{verifierName}</Text>
-      </Box>
+      {isVerified && (
+        <Box>
+          <Text className="testimonial">{verifierTestimonial}</Text>
+          <Box className="verifier">
+            <Box className="verifier-img"></Box>
+            <Text className="verified-by">Verified by</Text>
+            <Text className="verifier-name">{verifierName}</Text>
+          </Box>
+        </Box>
+      )}
     </Box>
   );
 };
