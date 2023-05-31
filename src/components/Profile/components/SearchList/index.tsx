@@ -85,11 +85,10 @@ export const SearchList: React.FC<ISearchListPropsType> = ({
             Authorization: `Bearer ${authTokens?.accessToken}`,
           },
         });
-        console.log(res);
 
         if (res.data) {
-          // @todo: Set Profile Data Array here...
           console.log(res.data);
+          setProfilesData(res.data);
           setError(false);
         }
       } catch (err: any) {
