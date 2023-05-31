@@ -27,7 +27,6 @@ export const SkillsSection = () => {
   const screenSize = useMediaQuery('(min-width: 990px)');
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
-  const { skillForm } = useProfileContext();
 
   const [skillData, setSkillData] = useState<ISkillDataType[]>([]);
 
@@ -42,7 +41,6 @@ export const SkillsSection = () => {
       });
 
       if (res.data && authTokens?.accessToken) {
-        console.log(res.data);
         setSkillData(res.data);
       }
     } catch (err: any) {
@@ -50,34 +48,14 @@ export const SkillsSection = () => {
     }
   };
 
-  const [data, setData] = useState([
-    {
-      id: 1,
-      skill: 'Software Engineering',
-      isVerified: true,
-      percentage: 78,
-    },
-    {
-      id: 2,
-      skill: 'Software Engineering',
-      isVerified: true,
-      percentage: 78,
-    },
-    {
-      id: 3,
-      skill: 'Software Engineering',
-      isVerified: true,
-      percentage: 78,
-    },
-  ]);
-
   useEffect(() => {
     const runGetSkills = async () => {
       await getSkills();
     };
 
     runGetSkills();
-  }, []);
+  }, [authTokens]);
+
   return (
     <section className="skills-section container">
       <Modal
@@ -88,15 +66,15 @@ export const SkillsSection = () => {
         onClose={close}
         title="Add Skills"
       >
-        <SkillModal closeModal={close} />
+        <SkillModal closeModal={close} getSkillsFn={getSkills} />
       </Modal>
       <Box className="header">
         <Box>
-          <Text className="heading">{`Skills (${data.length})`}</Text>
+          <Text className="heading">{`Skills (${skillData.length})`}</Text>
           <Text className="subheading">All government IDs, personal verification IDs etc.</Text>
         </Box>
         <Box className="header-links">
-          {data.length > 0 && (
+          {skillData.length > 0 && (
             <Link className="link" to={'/'}>
               See all documents
             </Link>
@@ -139,7 +117,7 @@ export const SkillsSection = () => {
           })}
         </Carousel>
       )}
-      {data.length > 0 && <Button className="see-all-btn">See All</Button>}
+      {skillData.length > 0 && <Button className="see-all-btn">See All</Button>}
     </section>
   );
 };

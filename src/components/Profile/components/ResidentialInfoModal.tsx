@@ -9,11 +9,14 @@ import {
   Checkbox,
   Button,
 } from '@mantine/core';
+import { notifications } from '@mantine/notifications';
 import { useState } from 'react';
 import { IoLocationOutline } from 'react-icons/io5';
 import { useProfileContext } from '../context/ProfileContext';
 import ApiList from '../../../assets/api/ApiList';
 import axios from 'axios';
+import { FaExclamation } from 'react-icons/fa';
+import { BsCheckLg } from 'react-icons/bs';
 
 const states = [
   { value: 'andhra pradesh', label: 'Andhra Pradesh' },
@@ -45,47 +48,116 @@ const years = [
   { value: '2023', label: '2023' },
 ];
 
-export const ResidentialInfoModal = () => {
+interface IResidentialInfoModalPropsType {
+  closeModal: () => void;
+  getResidentialInfoFn: () => Promise<void>;
+}
+
+export const ResidentialInfoModal: React.FC<IResidentialInfoModalPropsType> = ({
+  closeModal,
+  getResidentialInfoFn,
+}) => {
   const { classes: inputClasses } = inputStyles();
   const [checked, setChecked] = useState(false);
-  const { residentialInfoForm } = useProfileContext();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { residentialInfoForm, authTokens } = useProfileContext();
+
+  const validateFormFields = (requiredField: string[]) => {
+    const listLength = requiredField.length;
+
+    for (let i = 0; i < listLength; i++) {
+      residentialInfoForm.validateField(requiredField[i]);
+    }
+
+    for (let i = 0; i < listLength; i++) {
+      if (residentialInfoForm.validateField(requiredField[i]).hasError) return false;
+    }
+
+    return true;
+  };
 
   const AddResidentialInfo = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    // let validationResult = residentialInfoForm.validate();
-    // if (!validationResult) return;
 
-    if (
-      (!residentialInfoForm.validateField('address').hasError &&
-        !residentialInfoForm.validateField('pincode').hasError &&
-        !residentialInfoForm.validateField('stateCountry').hasError &&
-        !residentialInfoForm.validateField('startDate').hasError &&
-        !residentialInfoForm.validateField('endDate').hasError) ||
-      !residentialInfoForm.validateField('currentLocation').hasError
-    ) {
-      try {
-        residentialInfoForm.clearErrors();
-        const res = await axios.post(ApiList.postResidentialInfo, {
-          headers: {},
-          address_line_1: residentialInfoForm.values.address.addressLineOne,
-          address_line_2: residentialInfoForm.values.address.addressLineTwo,
-          landmark: residentialInfoForm.values.address.landmark,
-          pincode: residentialInfoForm.values.pincode,
-          state: residentialInfoForm.values.stateCountry.state,
-          country: residentialInfoForm.values.stateCountry.country,
-          start_date: residentialInfoForm.values.startDate.startYear,
-          end_date: residentialInfoForm.values.endDate.endYear,
-          use_id: '',
+    if (isLoading) {
+      return Promise.resolve(null);
+    }
+
+    const requiredField = [
+      'address',
+      'pincode',
+      'stateCountry',
+      'startDate',
+      'endDate',
+      'currentLocation',
+    ];
+
+    if (!validateFormFields(requiredField)) return;
+
+    const requestData = {
+      address_line_1: residentialInfoForm.values.address.addressLineOne,
+      address_line_2: residentialInfoForm.values.address.addressLineTwo,
+      landmark: residentialInfoForm.values.address.landmark,
+      pincode: residentialInfoForm.values.pincode,
+      state: residentialInfoForm.values.stateCountry.state,
+      country: residentialInfoForm.values.stateCountry.country,
+      start_date: residentialInfoForm.values.startDate.startYear,
+      end_date: residentialInfoForm.values.endDate.endYear,
+      user: 'GRN788209',
+    };
+
+    try {
+      residentialInfoForm.clearErrors();
+
+      notifications.show({
+        id: 'load-data',
+        title: 'Please wait !',
+        message: 'We are updating your residential information.',
+        loading: true,
+        autoClose: false,
+        withCloseButton: false,
+        color: 'teal',
+        sx: { borderRadius: em(8) },
+      });
+
+      const res = await axios.post(ApiList.postResidentialInfo, requestData, {
+        headers: {
+          Authorization: `Bearer ${authTokens?.accessToken}`,
+        },
+      });
+
+      if (res.data) {
+        await getResidentialInfoFn();
+
+        notifications.update({
+          id: 'load-data',
+          color: 'teal',
+          title: 'Success !',
+          message: 'Residential information updated successfully.',
+          icon: <BsCheckLg />,
+          autoClose: 2000,
         });
-      } catch (err: any) {
-        console.log(err.message);
+
+        closeModal();
       }
+    } catch (err: any) {
+      console.error('Error in posting residential information: ', err);
+
+      notifications.update({
+        id: 'load-data',
+        color: 'teal',
+        title: 'Error !',
+        message: 'Something went wrong! Please check browser console for more info.',
+        icon: <FaExclamation />,
+        autoClose: 2000,
+      });
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleLocation = () => {
-    // API To be used
-    // should use navigator?
+    // @todo: API to be used. should use navigator?
   };
 
   return (
@@ -200,7 +272,9 @@ export const ResidentialInfoModal = () => {
           <Button color="teal" type="submit" onClick={AddResidentialInfo}>
             Save
           </Button>
-          <Button variant="default">Cancel</Button>
+          <Button variant="default" onClick={closeModal}>
+            Cancel
+          </Button>
         </Box>
       </Box>
     </form>

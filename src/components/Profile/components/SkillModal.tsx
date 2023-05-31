@@ -14,15 +14,19 @@ type AuthTokens = {
 };
 interface ISkillModalPropsType {
   closeModal: () => void;
+  getSkillsFn: () => Promise<void>;
 }
 
 const expertise = [
   { value: 'amateur', label: 'Amature' },
-  { value: 'intermediate', label: 'intermediate' },
-  { value: 'expert', label: 'expert' },
+  { value: 'intermediate', label: 'Intermediate' },
+  { value: 'expert', label: 'Expert' },
 ];
 
-export const SkillModal: React.FC<ISkillModalPropsType> = ({ closeModal }): JSX.Element => {
+export const SkillModal: React.FC<ISkillModalPropsType> = ({
+  closeModal,
+  getSkillsFn,
+}): JSX.Element => {
   const { classes: inputClasses } = inputStyles();
   const { skillForm } = useProfileContext();
   const [authTokens, setAuthTokens] = useLocalStorage<AuthTokens>({ key: 'auth-tokens' });
@@ -69,7 +73,7 @@ export const SkillModal: React.FC<ISkillModalPropsType> = ({ closeModal }): JSX.
       );
 
       if (res.data) {
-        console.log('Post skill data: ', res.data);
+        await getSkillsFn();
 
         notifications.update({
           id: 'load-data',

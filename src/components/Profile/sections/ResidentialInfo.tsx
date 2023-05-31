@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Text, Box, Button, Modal } from '@mantine/core';
 import { Carousel } from '@mantine/carousel';
 import { MdOutlineEdit } from 'react-icons/md';
@@ -8,32 +8,42 @@ import { ResidentialInfoCard } from '../components/ResidentialInfoCard';
 import { Link } from 'react-router-dom';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 import { ResidentialInfoModal } from '../components/ResidentialInfoModal';
+import { useProfileContext } from '../context/ProfileContext';
+import axios from 'axios';
+import ApiList from '../../../assets/api/ApiList';
 
 export const ResidentialInfo = () => {
   const screenSize = useMediaQuery('(min-width: 990px)');
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
 
-  const [data, setData] = useState([
-    {
-      id: 1,
-      address: '1901 Thornridge Cir. Shiloh, Hawaii 81063',
-      tenure: '2017-2020(3y 4m)',
-      isVerified: true,
-    },
-    {
-      id: 2,
-      address: '1901 Thornridge Cir. Shiloh, Hawaii 81063',
-      tenure: '2017-2020(3y 4m)',
-      isVerified: true,
-    },
-    {
-      id: 3,
-      address: '1901 Thornridge Cir. Shiloh, Hawaii 81063',
-      tenure: '2017-2020(3y 4m)',
-      isVerified: true,
-    },
-  ]);
+  const [residentialInfoData, setResidentialInfoData] = useState<any[]>([]);
+  const { authTokens } = useProfileContext();
+
+  const getResidentialInfo = async () => {
+    try {
+      const res = await axios.get(ApiList.residentialInfo, {
+        headers: {
+          Authorization: `Bearer ${authTokens?.accessToken}`,
+        },
+      });
+
+      if (res.data && authTokens?.accessToken) {
+        setResidentialInfoData(res.data);
+      }
+    } catch (err: any) {
+      console.log(err.message);
+    }
+  };
+
+  useEffect(() => {
+    const runGetResidentialInfo = async () => {
+      await getResidentialInfo();
+    };
+
+    runGetResidentialInfo();
+  }, [authTokens]);
+
   return (
     <section className="residential-info container">
       <Modal
@@ -44,14 +54,14 @@ export const ResidentialInfo = () => {
         onClose={close}
         title="Add residential information"
       >
-        <ResidentialInfoModal />
+        <ResidentialInfoModal closeModal={close} getResidentialInfoFn={getResidentialInfo} />
       </Modal>
       <Box className="header">
         <Box>
-          <Text className="heading">{`Residential Information (${data.length})`}</Text>
+          <Text className="heading">{`Residential Information (${residentialInfoData.length})`}</Text>
           <Text className="subheading">All government IDs, personal verification IDs etc.</Text>
         </Box>
-        {data.length > 0 ? (
+        {residentialInfoData.length > 0 ? (
           <Box className="header-links">
             <Link className="link" to={'/'}>
               See all addresses
@@ -65,7 +75,7 @@ export const ResidentialInfo = () => {
         )}
       </Box>
 
-      {data.length === 0 ? (
+      {residentialInfoData.length === 0 ? (
         <Box className="no-data-wrapper">
           {' '}
           <img className="no-data" src={noData} alt="No data" />
@@ -84,7 +94,7 @@ export const ResidentialInfo = () => {
             { maxWidth: 'md', slideSize: '50%' },
           ]}
         >
-          {data.map(({ id, address, tenure, isVerified }) => {
+          {residentialInfoData.map(({ id, address, tenure, isVerified }) => {
             return (
               <Carousel.Slide key={id}>
                 <ResidentialInfoCard address={address} tenure={tenure} isVerified={isVerified} />
@@ -93,7 +103,7 @@ export const ResidentialInfo = () => {
           })}
         </Carousel>
       )}
-      {data.length > 0 && <Button className="see-all-btn">See All</Button>}
+      {residentialInfoData.length > 0 && <Button className="see-all-btn">See All</Button>}
     </section>
   );
 };
