@@ -127,35 +127,38 @@ export const ResidentialInfo = () => {
             <Title className="title">Address Line 1</Title>
             <TextInput
               data-autofocus
-              label="Job title"
+              label="Address line 1"
               classNames={inputClasses}
               {...residentialInfoForm.getInputProps('address.addressLineOne')}
+              withAsterisk
             />
           </Box>
           <Box className="input-section ">
             <Title className="title">Address Line 2</Title>
             <TextInput
-              label="Job title"
+              label="Address line 2"
               classNames={inputClasses}
               {...residentialInfoForm.getInputProps('address.addressLineTwo')}
+              withAsterisk
             />
           </Box>
           <Box className="input-section ">
             <Title className="title">Landmark</Title>
             <TextInput
-              label="Job title"
+              label="Landmark"
               classNames={inputClasses}
               {...residentialInfoForm.getInputProps('address.landmark')}
+              withAsterisk
             />
           </Box>
           <Box className="input-section ">
             <Title className="title">Pincode</Title>
             <TextInput
-              label="Job title"
+              label="Pincode"
               maxLength={6}
-              pattern="[0-9]"
               classNames={inputClasses}
               {...residentialInfoForm.getInputProps('pincode')}
+              withAsterisk
             />
           </Box>
           <Box className="input-section border-bottom">
@@ -166,12 +169,14 @@ export const ResidentialInfo = () => {
                 label="Select state"
                 classNames={inputClasses}
                 {...residentialInfoForm.getInputProps('stateCountry.state')}
+                withAsterisk
               />
               <Select
                 data={countries}
                 label="Select country"
                 classNames={inputClasses}
                 {...residentialInfoForm.getInputProps('stateCountry.country')}
+                withAsterisk
               />
             </Box>
           </Box>
@@ -183,12 +188,14 @@ export const ResidentialInfo = () => {
                 label="From month"
                 classNames={inputClasses}
                 {...residentialInfoForm.getInputProps('startDate.startMonth')}
+                withAsterisk
               />
               <Select
                 data={years}
                 label="From year"
                 classNames={inputClasses}
                 {...residentialInfoForm.getInputProps('startDate.startYear')}
+                withAsterisk
               />
             </Box>
           </Box>
@@ -201,6 +208,7 @@ export const ResidentialInfo = () => {
                   label="From month"
                   classNames={inputClasses}
                   {...residentialInfoForm.getInputProps('endDate.endMonth')}
+                  withAsterisk
                 />
                 <Select
                   disabled={checked}
@@ -208,6 +216,7 @@ export const ResidentialInfo = () => {
                   label="From year"
                   classNames={inputClasses}
                   {...residentialInfoForm.getInputProps('endDate.endYear')}
+                  withAsterisk
                 />
               </Box>
               <Checkbox

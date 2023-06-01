@@ -13,7 +13,6 @@ import {
   Button,
 } from '@mantine/core';
 import noData from '../assets/noData.png';
-import { Link } from 'react-router-dom';
 import { MdOutlineEdit } from 'react-icons/md';
 import { Carousel } from '@mantine/carousel';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
@@ -22,16 +21,16 @@ import { WorkExperienceCard } from '../components/WorkExperienceCard';
 import { useProfileContext } from '../context/ProfileContext';
 
 const companyName = [
-  { value: 'reliance_industries', label: 'Reliance Industries' },
-  { value: 'tata_consultancy_services', label: 'Tata Consultancy Services' },
-  { value: 'hindustan_unilever', label: 'Hindustan Unilever' },
-  { value: 'infosys', label: 'Infosys' },
-  { value: 'icici_bank', label: 'ICICI Bank' },
-  { value: 'hdfc_bank', label: 'HDFC Bank' },
-  { value: 'coal_india', label: 'Coal India' },
-  { value: 'bharti_airtel', label: 'Bharti Airtel' },
-  { value: 'wipro', label: 'Wipro' },
-  { value: 'mahindra_and_mahindra', label: 'Mahindra & Mahindra' },
+  { value: 'Reliance Industries', label: 'Reliance Industries' },
+  { value: 'Tata Consultancy Services', label: 'Tata Consultancy Services' },
+  { value: 'Hindustan Unilever', label: 'Hindustan Unilever' },
+  { value: 'Infosys', label: 'Infosys' },
+  { value: 'ICICI Bank', label: 'ICICI Bank' },
+  { value: 'HDFC Bank', label: 'HDFC Bank' },
+  { value: 'Coal India', label: 'Coal India' },
+  { value: 'Bharti Airtel', label: 'Bharti Airtel' },
+  { value: 'Wipro', label: 'Wipro' },
+  { value: 'Mahindra & Mahindra', label: 'Mahindra & Mahindra' },
 ];
 const months = [
   { value: 'january', label: 'January' },
@@ -60,6 +59,9 @@ const years = [
   { value: '2015', label: '2015' },
   { value: '2014', label: '2014' },
   { value: '2013', label: '2013' },
+  { value: '2012', label: '2012' },
+  { value: '2011', label: '2011' },
+  { value: '2010', label: '2010' },
 ];
 const workType = [
   { value: 'work from office', label: 'Work From Office' },
@@ -76,7 +78,12 @@ const modeOfWork = [
 export const Experience = () => {
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
-  const { workExperienceData, workExperienceForm, addWorkExperience } = useProfileContext();
+  const {
+    workExperienceData,
+    workExperienceForm,
+    addWorkExperience,
+    handleToggleWorkExperienceDetails,
+  } = useProfileContext();
   const { classes: inputClasses } = inputStyles();
   const [checked, setChecked] = useState(false);
 
@@ -84,6 +91,36 @@ export const Experience = () => {
     event.preventDefault();
     addWorkExperience();
   };
+
+  const data = [
+    {
+      designation: 'Software Development',
+      companyName: 'Something',
+      companyStartDate: 'Something',
+      companyEndDate: 'Something',
+      isVerified: false,
+      verifiedBy: 'Something',
+      description: 'Something',
+    },
+    {
+      designation: 'Software Development',
+      companyName: 'Something',
+      companyStartDate: 'Something',
+      companyEndDate: 'Something',
+      isVerified: false,
+      verifiedBy: 'Something',
+      description: 'Something',
+    },
+    {
+      designation: 'Software Development',
+      companyName: 'Something',
+      companyStartDate: 'Something',
+      companyEndDate: 'Something',
+      isVerified: false,
+      verifiedBy: 'Something',
+      description: 'Something',
+    },
+  ];
 
   return (
     <section className="experience-section container">
@@ -217,10 +254,10 @@ export const Experience = () => {
           <Text className="subheading">All government IDs, personal verification IDs etc.</Text>
         </Box>
         <Box className="header-links">
-          {workExperienceData.length > 0 && (
-            <Link className="link" to={'/'}>
-              See all documents
-            </Link>
+          {data.length > 0 && (
+            <Text className="link" onClick={handleToggleWorkExperienceDetails}>
+              See all experiences
+            </Text>
           )}
 
           <Button leftIcon={<MdOutlineEdit />} onClick={open} className="edit-btn">
@@ -229,7 +266,7 @@ export const Experience = () => {
         </Box>
       </Box>
 
-      {workExperienceData.length === 0 ? (
+      {data.length === 0 ? (
         <Box className="no-data-wrapper">
           {' '}
           <img className="no-data" src={noData} alt="No data" />
@@ -247,7 +284,7 @@ export const Experience = () => {
             { maxWidth: 'md', slideSize: '50%' },
           ]}
         >
-          {workExperienceData.map(
+          {data.map(
             (
               {
                 designation,

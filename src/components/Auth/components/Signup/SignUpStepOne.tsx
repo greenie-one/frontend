@@ -1,6 +1,5 @@
 import { TextInput, createStyles, em, rem, Text, Button, Divider, Box } from '@mantine/core';
 import { useAuthContext } from '../../context/AuthContext';
-import { KeyboardEvent } from 'react';
 import GoogleButton from '../Google/GoogleButton';
 import TermsAndConditions from '../../assets/terms_and_conditions-greenie.pdf';
 import PrivacyPolicy from '../../assets/Privacy Policy-Greenie.pdf';

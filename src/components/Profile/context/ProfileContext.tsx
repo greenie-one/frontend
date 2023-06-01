@@ -1,5 +1,5 @@
 // ---------------Import Statements--------------
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useReducer } from 'react';
 import { useForm, UseFormReturnType, isNotEmpty, isEmail, hasLength } from '@mantine/form';
 import { em } from '@mantine/core';
 import { useLocalStorage } from '@mantine/hooks';
@@ -33,6 +33,10 @@ type ProfileContextType = {
   forceRender: boolean;
   setForceRender: React.Dispatch<React.SetStateAction<boolean>>;
   authTokens: AuthTokens;
+  detailsPage: DetailsPageState;
+  handleToggleWorkExperienceDetails: () => void;
+  handleToggleResidentialDetails: () => void;
+  handleToggleSkillsDetails: () => void;
 };
 
 interface IDocument {
@@ -101,6 +105,17 @@ type skillFormType = {
   skillName: string;
   expertise: string;
 };
+
+type DetailsPageState = {
+  seeAllWorkExperience: boolean;
+  seeAllResidentialInfo: boolean;
+  seeAllSkills: boolean;
+};
+
+type DetailsPageAction =
+  | { type: 'SET_SEE_ALL_WORKEXPERIENCE'; payload: boolean }
+  | { type: 'SET_SEE_ALL_RESIDENTIALINFO'; payload: boolean }
+  | { type: 'SET_SEE_ALL_SKILLS'; payload: boolean };
 
 const ProfileContext = createContext<ProfileContextType>({} as ProfileContextType);
 export const useProfileContext = () => useContext(ProfileContext);
@@ -594,6 +609,49 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
     }
   };
 
+  //------------------Details Page States--------------------------------
+
+  const detailsPageReducer = (
+    state: DetailsPageState,
+    action: DetailsPageAction
+  ): DetailsPageState => {
+    switch (action.type) {
+      case 'SET_SEE_ALL_WORKEXPERIENCE':
+        return { ...state, seeAllWorkExperience: action.payload };
+      case 'SET_SEE_ALL_RESIDENTIALINFO':
+        return { ...state, seeAllResidentialInfo: action.payload };
+      case 'SET_SEE_ALL_SKILLS':
+        return { ...state, seeAllSkills: action.payload };
+      default:
+        return state;
+    }
+  };
+
+  const [detailsPage, dispatchDetailsPage] = useReducer(detailsPageReducer, {
+    seeAllWorkExperience: false,
+    seeAllResidentialInfo: false,
+    seeAllSkills: false,
+  });
+
+  const handleToggleWorkExperienceDetails = (): void => {
+    dispatchDetailsPage({
+      type: 'SET_SEE_ALL_WORKEXPERIENCE',
+      payload: !detailsPage.seeAllWorkExperience,
+    });
+  };
+  const handleToggleResidentialDetails = (): void => {
+    dispatchDetailsPage({
+      type: 'SET_SEE_ALL_RESIDENTIALINFO',
+      payload: !detailsPage.seeAllWorkExperience,
+    });
+  };
+  const handleToggleSkillsDetails = (): void => {
+    dispatchDetailsPage({
+      type: 'SET_SEE_ALL_SKILLS',
+      payload: !detailsPage.seeAllWorkExperience,
+    });
+  };
+
   useEffect(() => {
     getProfile();
     getDocuments();
@@ -621,6 +679,10 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
         forceRender,
         setForceRender,
         authTokens,
+        detailsPage,
+        handleToggleWorkExperienceDetails,
+        handleToggleResidentialDetails,
+        handleToggleSkillsDetails,
       }}
     >
       {children}
