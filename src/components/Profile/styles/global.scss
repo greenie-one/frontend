@@ -38,6 +38,18 @@
     }
   }
 
+  .add-records {
+    padding: 8px 16px;
+    background: #ffffff;
+    border: 1px solid #d1d4db;
+    border-radius: 34px;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 19px;
+    margin-left: 16px;
+    color: #777676;
+  }
+
   .heading {
     font-weight: 600;
     font-size: 20px;
@@ -70,6 +82,7 @@
 
   .no-data-wrapper {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     margin-top: 101px;
@@ -77,6 +90,7 @@
     img {
       width: 344px;
       height: 253px;
+      margin-bottom: 1rem;
     }
   }
 }

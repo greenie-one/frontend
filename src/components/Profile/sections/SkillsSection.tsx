@@ -15,10 +15,10 @@ import { Carousel } from '@mantine/carousel';
 import '../styles/global.scss';
 import noData from '../assets/noData.png';
 import { SkillsCard } from '../components/SkillsCard';
-import { Link } from 'react-router-dom';
 import { MdOutlineEdit } from 'react-icons/md';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 import { useProfileContext } from '../context/ProfileContext';
+import { AiOutlinePlus } from 'react-icons/ai';
 
 const expertise = [
   { value: 'amateur', label: 'Amature' },
@@ -26,12 +26,21 @@ const expertise = [
   { value: 'expert', label: 'Expert' },
 ];
 
+const data = [
+  { designation: 'Software developer', skillRate: 'Amature', isVerified: true },
+  { designation: 'Software developer', skillRate: 'Amature', isVerified: false },
+  { designation: 'Software developer', skillRate: 'Amature', isVerified: true },
+  { designation: 'Software developer', skillRate: 'Amature', isVerified: true },
+  { designation: 'Software developer', skillRate: 'Amature', isVerified: false },
+  { designation: 'Software developer', skillRate: 'Amature', isVerified: true },
+];
+
 export const SkillsSection = () => {
   const screenSize = useMediaQuery('(min-width: 990px)');
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
   const { classes: inputClasses } = inputStyles();
-  const { skillForm } = useProfileContext();
+  const { skillForm, handleToggleSkillsDetails } = useProfileContext();
 
   const { skillData, addSkill } = useProfileContext();
 
@@ -88,22 +97,24 @@ export const SkillsSection = () => {
           <Text className="heading">{`Skills (${skillData.length})`}</Text>
           <Text className="subheading">All government IDs, personal verification IDs etc.</Text>
         </Box>
-        <Box className="header-links">
-          {skillData.length > 0 && (
-            <Link className="link" to={'/'}>
+        {skillData.length > 0 && (
+          <Box className="header-links">
+            <Text className="link" onClick={handleToggleSkillsDetails}>
               See all documents
-            </Link>
-          )}
-
-          <Button leftIcon={<MdOutlineEdit />} onClick={open} className="edit-btn">
-            Edit Section
-          </Button>
-        </Box>
+            </Text>
+            <Button leftIcon={<MdOutlineEdit />} onClick={open} className="edit-btn">
+              Edit Section
+            </Button>
+          </Box>
+        )}
       </Box>
 
       {skillData.length === 0 ? (
         <Box className="no-data-wrapper">
           <img className="no-data" src={noData} alt="No data" />
+          <Button leftIcon={<AiOutlinePlus />} onClick={open} className="add-records">
+            Add records
+          </Button>
         </Box>
       ) : (
         <Carousel
@@ -119,20 +130,20 @@ export const SkillsSection = () => {
             { maxWidth: 'md', slideSize: '50%' },
           ]}
         >
-          {skillData.map((skill: any, id) => {
+          {data.map(({ designation, skillRate, isVerified }, id) => {
             return (
               <Carousel.Slide key={id}>
-                <SkillsCard
-                  skill={skill.designation}
-                  percentage={skill.skillRate / 5}
-                  isVerified={skill.isVerified}
-                />
+                <SkillsCard skill={designation} skillRate={skillRate} isVerified={isVerified} />
               </Carousel.Slide>
             );
           })}
         </Carousel>
       )}
-      {skillData.length > 0 && <Button className="see-all-btn">See All</Button>}
+      {skillData.length > 0 && (
+        <Button onClick={handleToggleSkillsDetails} className="see-all-btn">
+          See All
+        </Button>
+      )}
     </section>
   );
 };

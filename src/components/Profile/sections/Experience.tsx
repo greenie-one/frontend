@@ -19,6 +19,9 @@ import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 import '../styles/global.scss';
 import { WorkExperienceCard } from '../components/WorkExperienceCard';
 import { useProfileContext } from '../context/ProfileContext';
+import { AiOutlinePlus } from 'react-icons/ai';
+import officeBuilding from '../assets/office-building.png';
+import freelancer from '../assets/freelancer.png';
 
 const companyName = [
   { value: 'Reliance Industries', label: 'Reliance Industries' },
@@ -75,13 +78,20 @@ const modeOfWork = [
   { value: 'contract', label: 'Contract' },
 ];
 
+enum EmploymentType {
+  Employment = 'employment',
+  Freelance = 'freelance',
+}
+
 export const Experience = () => {
   const isMobile = useMediaQuery('(max-width: 768px)');
+  const [employmentType, setEmploymentType] = useState<EmploymentType | null>(null);
   const [opened, { open, close }] = useDisclosure(false);
   const {
     workExperienceData,
     workExperienceForm,
     addWorkExperience,
+    freelanceExperienceForm,
     handleToggleWorkExperienceDetails,
   } = useProfileContext();
   const { classes: inputClasses } = inputStyles();
@@ -90,6 +100,11 @@ export const Experience = () => {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     addWorkExperience();
+  };
+
+  const onClose = () => {
+    close();
+    setEmploymentType(null);
   };
 
   const data = [
@@ -124,152 +139,302 @@ export const Experience = () => {
 
   return (
     <section className="experience-section container">
-      <Modal
-        className="modal"
-        size={'65%'}
-        fullScreen={isMobile}
-        opened={opened}
-        onClose={close}
-        title="Add work experience"
-      >
-        <form onSubmit={handleSubmit}>
-          <Box className="input-section border-bottom">
-            <Title className="title">Job title</Title>
-            <TextInput
-              label="Job title"
-              classNames={inputClasses}
-              data-autofocus
-              withAsterisk
-              {...workExperienceForm.getInputProps('jobTitle')}
-            />
-          </Box>
-          <Box className="input-section">
-            <Title className="title">Company name</Title>
-            <Select
-              withAsterisk
-              data={companyName}
-              {...workExperienceForm.getInputProps('companyName')}
-              label="Search by company website"
-              classNames={inputClasses}
-            />
-          </Box>
-          <Box className="input-section">
-            <Title className="title">Work email</Title>
-            <TextInput
-              withAsterisk
-              label="Official Email"
-              classNames={inputClasses}
-              {...workExperienceForm.getInputProps('workEmail')}
-            />
-          </Box>
-          <Box className="input-section border-bottom">
-            <Title className="title">Company ID</Title>
-            <TextInput
-              withAsterisk
-              label="Enter your unique company id"
-              classNames={inputClasses}
-              {...workExperienceForm.getInputProps('companyId')}
-            />
-          </Box>
-          <Box className="input-section border-bottom">
-            <Title className="title">Start Date</Title>
-            <Box className="inner-input-section">
-              <Select
-                withAsterisk
-                data={months}
-                label="From month"
-                classNames={inputClasses}
-                {...workExperienceForm.getInputProps('startDate.startMonth')}
-              />
-              <Select
-                withAsterisk
-                data={years}
-                label="From year"
-                classNames={inputClasses}
-                {...workExperienceForm.getInputProps('startDate.startYear')}
-              />
+      {employmentType === null && (
+        <Modal
+          className="modal"
+          size={'65%'}
+          fullScreen={isMobile}
+          opened={opened}
+          onClose={() => onClose()}
+          title="Choose Work experience type"
+        >
+          <Box className="experience-wrapper">
+            <Box
+              className="employment-type"
+              onClick={() => setEmploymentType(EmploymentType.Employment)}
+            >
+              <img src={officeBuilding} alt="Office building" />
+              <Title className="title">Employment</Title>
+              <Text className="employment-text">
+                Full-time jobs, part-time jobs, Internships etc.
+              </Text>
+            </Box>
+            <Box
+              className="employment-type"
+              onClick={() => setEmploymentType(EmploymentType.Freelance)}
+            >
+              <img src={freelancer} alt="Freelancer" />
+              <Title className="title">Freelance</Title>
+              <Text className="employment-text">Commission work, contracts, side hustles etc.</Text>
             </Box>
           </Box>
-          <Box className="input-section border-bottom">
-            <Title className="title">End Date</Title>
-            <Box className="inner-input-box">
+          <Text className="employment-privacy-policy">
+            The privacy policy and undertaking statement goes here
+          </Text>
+        </Modal>
+      )}
+      {employmentType === EmploymentType.Employment && (
+        <Modal
+          className="modal"
+          size={'65%'}
+          fullScreen={isMobile}
+          opened={opened}
+          onClose={() => onClose()}
+          title="Add work experience"
+        >
+          <form onSubmit={handleSubmit}>
+            <Box className="input-section border-bottom">
+              <Title className="title">Job title</Title>
+              <TextInput
+                label="Job title"
+                classNames={inputClasses}
+                data-autofocus
+                withAsterisk
+                {...workExperienceForm.getInputProps('jobTitle')}
+              />
+            </Box>
+            <Box className="input-section">
+              <Title className="title">Company name</Title>
+              <Select
+                withAsterisk
+                data={companyName}
+                {...workExperienceForm.getInputProps('companyName')}
+                label="Search by company website"
+                classNames={inputClasses}
+              />
+            </Box>
+            <Box className="input-section">
+              <Title className="title">Work email</Title>
+              <TextInput
+                withAsterisk
+                label="Official Email"
+                classNames={inputClasses}
+                {...workExperienceForm.getInputProps('workEmail')}
+              />
+            </Box>
+            <Box className="input-section border-bottom">
+              <Title className="title">Company ID</Title>
+              <TextInput
+                withAsterisk
+                label="Enter your unique company id"
+                classNames={inputClasses}
+                {...workExperienceForm.getInputProps('companyId')}
+              />
+            </Box>
+            <Box className="input-section border-bottom">
+              <Title className="title">Start Date</Title>
               <Box className="inner-input-section">
                 <Select
                   withAsterisk
                   data={months}
                   label="From month"
                   classNames={inputClasses}
-                  {...workExperienceForm.getInputProps('endDate.endMonth')}
+                  {...workExperienceForm.getInputProps('startDate.startMonth')}
                 />
                 <Select
                   withAsterisk
-                  disabled={checked}
                   data={years}
                   label="From year"
                   classNames={inputClasses}
-                  {...workExperienceForm.getInputProps('endDate.endYear')}
+                  {...workExperienceForm.getInputProps('startDate.startYear')}
                 />
               </Box>
-              <Checkbox
-                checked={checked}
-                onChange={(event) => setChecked(event.currentTarget.checked)}
-                className="checkbox"
-                color="teal"
-                label="I currently work here"
+            </Box>
+            <Box className="input-section border-bottom">
+              <Title className="title">End Date</Title>
+              <Box className="inner-input-box">
+                <Box className="inner-input-section">
+                  <Select
+                    withAsterisk
+                    disabled={checked}
+                    data={months}
+                    label="From month"
+                    classNames={inputClasses}
+                    {...workExperienceForm.getInputProps('endDate.endMonth')}
+                  />
+                  <Select
+                    withAsterisk
+                    disabled={checked}
+                    data={years}
+                    label="From year"
+                    classNames={inputClasses}
+                    {...workExperienceForm.getInputProps('endDate.endYear')}
+                  />
+                </Box>
+                <Checkbox
+                  checked={checked}
+                  onChange={(event) => setChecked(event.currentTarget.checked)}
+                  className="checkbox"
+                  color="teal"
+                  label="I currently work here"
+                />
+              </Box>
+            </Box>
+            <Box className="input-section border-bottom">
+              <Title className="title">Work Type</Title>
+              <Box className="inner-input-section">
+                <Select
+                  withAsterisk
+                  data={workType}
+                  label="Mode of Work"
+                  classNames={inputClasses}
+                  {...workExperienceForm.getInputProps('workType.modeOfWork')}
+                />
+                <Select
+                  withAsterisk
+                  data={modeOfWork}
+                  label="Select work type"
+                  classNames={inputClasses}
+                  {...workExperienceForm.getInputProps('workType.workType')}
+                />
+              </Box>
+            </Box>
+            <Box className="btn-wrapper">
+              <Button color="teal" type="submit">
+                Save
+              </Button>
+              <Button variant="default" onClick={() => onClose()}>
+                Cancel
+              </Button>
+            </Box>
+          </form>
+        </Modal>
+      )}
+      {employmentType === EmploymentType.Freelance && (
+        <Modal
+          className="modal"
+          size={'65%'}
+          fullScreen={isMobile}
+          opened={opened}
+          onClose={() => onClose()}
+          title="Add Freelance experience"
+        >
+          <form onSubmit={handleSubmit}>
+            <Box className="input-section border-bottom">
+              <Title className="title">Role</Title>
+              <TextInput
+                label="Enter your role"
+                classNames={inputClasses}
+                data-autofocus
+                withAsterisk
+                {...freelanceExperienceForm.getInputProps('role')}
               />
             </Box>
-          </Box>
-          <Box className="input-section border-bottom">
-            <Title className="title">Work Type</Title>
-            <Box className="inner-input-section">
+            <Box className="input-section">
+              <Title className="title">Company name</Title>
               <Select
                 withAsterisk
-                data={workType}
-                label="Mode of Work"
+                data={companyName}
+                {...freelanceExperienceForm.getInputProps('companyName')}
+                label="Search by company website"
                 classNames={inputClasses}
-                {...workExperienceForm.getInputProps('workType.modeOfWork')}
               />
+            </Box>
+            <Box className="input-section border-bottom">
+              <Title className="title">LinkedIn Url</Title>
+              <TextInput
+                withAsterisk
+                label="Paste the LinkedIn company page link"
+                classNames={inputClasses}
+                {...freelanceExperienceForm.getInputProps('linkedInUrl')}
+              />
+            </Box>
+            <Box className="input-section border-bottom">
+              <Title className="title">Start Date</Title>
+              <Box className="inner-input-section">
+                <Select
+                  withAsterisk
+                  data={months}
+                  label="From month"
+                  classNames={inputClasses}
+                  {...freelanceExperienceForm.getInputProps('startDate.startMonth')}
+                />
+                <Select
+                  withAsterisk
+                  data={years}
+                  label="From year"
+                  classNames={inputClasses}
+                  {...freelanceExperienceForm.getInputProps('startDate.startYear')}
+                />
+              </Box>
+            </Box>
+            <Box className="input-section border-bottom">
+              <Title className="title">End Date</Title>
+              <Box className="inner-input-box">
+                <Box className="inner-input-section">
+                  <Select
+                    withAsterisk
+                    disabled={checked}
+                    data={months}
+                    label="From month"
+                    classNames={inputClasses}
+                    {...freelanceExperienceForm.getInputProps('endDate.endMonth')}
+                  />
+                  <Select
+                    withAsterisk
+                    disabled={checked}
+                    data={years}
+                    label="From year"
+                    classNames={inputClasses}
+                    {...freelanceExperienceForm.getInputProps('endDate.endYear')}
+                  />
+                </Box>
+                <Checkbox
+                  checked={checked}
+                  onChange={(event) => setChecked(event.currentTarget.checked)}
+                  className="checkbox"
+                  color="teal"
+                  label="I currently work here"
+                />
+              </Box>
+            </Box>
+            <Box className="input-section border-bottom">
+              <Title className="title">Work Type</Title>
+
               <Select
                 withAsterisk
                 data={modeOfWork}
                 label="Select work type"
                 classNames={inputClasses}
-                {...workExperienceForm.getInputProps('workType.workType')}
+                {...freelanceExperienceForm.getInputProps('workType')}
               />
             </Box>
-          </Box>
-          <Box className="btn-wrapper">
-            <Button color="teal" type="submit">
-              Save
-            </Button>
-            <Button variant="default" onClick={close}>
-              Cancel
-            </Button>
-          </Box>
-        </form>
-      </Modal>
+            <Box className="btn-wrapper">
+              <Button color="teal" type="submit">
+                Save
+              </Button>
+              <Button variant="default" onClick={() => onClose()}>
+                Cancel
+              </Button>
+            </Box>
+          </form>
+        </Modal>
+      )}
+
       <Box className="header">
         <Box>
           <Text className="heading">{`Work Experience (${workExperienceData.length})`}</Text>
           <Text className="subheading">All government IDs, personal verification IDs etc.</Text>
         </Box>
-        <Box className="header-links">
-          {data.length > 0 && (
+
+        {workExperienceData.length > 0 && (
+          <Box className="header-links">
             <Text className="link" onClick={handleToggleWorkExperienceDetails}>
               See all experiences
             </Text>
-          )}
-
-          <Button leftIcon={<MdOutlineEdit />} onClick={open} className="edit-btn">
-            Edit Section
-          </Button>
-        </Box>
+            <Button leftIcon={<MdOutlineEdit />} onClick={open} className="edit-btn">
+              Edit Section
+            </Button>
+          </Box>
+        )}
       </Box>
 
-      {data.length === 0 ? (
+      {workExperienceData.length === 0 ? (
         <Box className="no-data-wrapper">
-          {' '}
           <img className="no-data" src={noData} alt="No data" />
+          <Button leftIcon={<AiOutlinePlus />} onClick={open} className="add-records">
+            Add records
+          </Button>
         </Box>
       ) : (
         <Carousel
@@ -314,7 +479,11 @@ export const Experience = () => {
           )}
         </Carousel>
       )}
-      {workExperienceData.length > 0 && <Button className="see-all-btn">See All</Button>}
+      {workExperienceData.length > 0 && (
+        <Button onClick={handleToggleWorkExperienceDetails} className="see-all-btn">
+          See All
+        </Button>
+      )}
     </section>
   );
 };

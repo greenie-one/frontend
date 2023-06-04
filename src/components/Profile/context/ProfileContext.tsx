@@ -2,7 +2,6 @@
 import React, { createContext, useContext, useState, useEffect, useReducer } from 'react';
 import { useForm, UseFormReturnType, isNotEmpty, isEmail, hasLength } from '@mantine/form';
 import { em } from '@mantine/core';
-import { useLocalStorage } from '@mantine/hooks';
 import axios from 'axios';
 import ApiList from '../../../assets/api/ApiList';
 import { notifications } from '@mantine/notifications';
@@ -26,6 +25,7 @@ type ProfileContextType = {
   addWorkExperience: () => void;
   documentsForm: UseFormReturnType<documentsFormType>;
   workExperienceForm: UseFormReturnType<workExperienceFormType>;
+  freelanceExperienceForm: UseFormReturnType<freelanceExperienceFormType>;
   residentialInfoForm: UseFormReturnType<residentialInfoFormType>;
   addResidentialInfo: () => void;
   skillForm: UseFormReturnType<skillFormType>;
@@ -84,7 +84,9 @@ type documentsFormType = {
 
 type workExperienceFormType = {
   jobTitle: string;
+  companyType: string;
   companyName: string;
+  linkedInUrl: string;
   workEmail: string;
   companyId: string;
   startDate: { startMonth: string; startYear: string };
@@ -92,9 +94,19 @@ type workExperienceFormType = {
   workType: { modeOfWork: string; workType: string };
 };
 
+type freelanceExperienceFormType = {
+  role: string;
+  companyName: string;
+  linkedInUrl: string;
+  startDate: { startMonth: string; startYear: string };
+  endDate: { endMonth: string; endYear: string };
+  workType: string;
+};
+
 type residentialInfoFormType = {
   address: { addressLineOne: string; addressLineTwo: string; landmark: string };
   pincode: number | null;
+  typeOfAddress: string;
   stateCountry: { state: string; country: '' };
   startDate: { startMonth: string; startYear: string };
   endDate: { endMonth: string; endYear: string };
@@ -144,7 +156,9 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const workExperienceForm = useForm<workExperienceFormType>({
     initialValues: {
       jobTitle: '',
+      companyType: '',
       companyName: '',
+      linkedInUrl: '',
       workEmail: '',
       companyId: '',
       startDate: { startMonth: '', startYear: '' },
@@ -153,10 +167,32 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
     },
 
     validate: {
-      jobTitle: isNotEmpty('Enter your job title'),
-      companyName: isNotEmpty('Enter your company name'),
+      jobTitle: isNotEmpty('Please enter your job title'),
+      companyType: isNotEmpty('Please enter Company Type'),
+      companyName: isNotEmpty('Please enter your company name'),
+      linkedInUrl: isNotEmpty('Please enter LinkedIn Url'),
       workEmail: isEmail('Invalid email'),
-      companyId: isNotEmpty('Enter your company id'),
+      companyId: isNotEmpty('Please enter your company id'),
+      startDate: isNotEmpty('Please enter start date'),
+      endDate: isNotEmpty('Please enter end date'),
+      workType: isNotEmpty('Enter valid work types'),
+    },
+  });
+
+  const freelanceExperienceForm = useForm<freelanceExperienceFormType>({
+    initialValues: {
+      role: '',
+      companyName: '',
+      linkedInUrl: '',
+      startDate: { startMonth: '', startYear: '' },
+      endDate: { endMonth: '', endYear: '' },
+      workType: '',
+    },
+
+    validate: {
+      role: isNotEmpty('Please enter your role'),
+      companyName: isNotEmpty('Please enter company name'),
+      linkedInUrl: isNotEmpty('Please enter LinkedIn url'),
       startDate: isNotEmpty('Please enter start date'),
       endDate: isNotEmpty('Please enter end date'),
       workType: isNotEmpty('Enter valid work types'),
@@ -172,14 +208,16 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
       },
 
       pincode: null,
+      typeOfAddress: '',
       stateCountry: { state: '', country: '' },
       startDate: { startMonth: '', startYear: '' },
       endDate: { endMonth: '', endYear: '' },
       currentLocation: null,
     },
     validate: {
-      address: isNotEmpty('Enter valid address'),
-      pincode: hasLength(6, 'Enter valid pincode'),
+      address: isNotEmpty('Please enter valid address'),
+      typeOfAddress: isNotEmpty('Please enter the address type'),
+      pincode: hasLength(6, 'Please enter valid pincode'),
       stateCountry: isNotEmpty('Please enter your state/country'),
       startDate: isNotEmpty('Please enter start date'),
       endDate: isNotEmpty('Please enter end date'),
@@ -201,7 +239,8 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
   //------------------------------API CALLS----------------------------------------
 
   // const [authTokens, setAuthTokens] = useLocalStorage<AuthTokens>({ key: 'auth-tokens' });
-  const authTokens = JSON.parse(localStorage.getItem('auth-tokens'));
+  const token = localStorage.getItem('auth-tokens');
+  const authTokens = token ? JSON.parse(token) : null;
   const [isLoading, setIsLoading] = useState(false);
 
   //------------------------------PROFILE/BIO----------------------------------------
@@ -210,7 +249,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   const getProfile = async () => {
     try {
-      const res = await axios.get<IUserProfile>(ApiList.getMyProfile, {
+      const res = await axios.get<IUserProfile>(ApiList.profileAPIList.getMyProfile, {
         headers: {
           Authorization: `Bearer ${authTokens?.accessToken}`,
         },
@@ -227,9 +266,10 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   const [documentsData, setDocumentsData] = useState<IDocument[]>([]);
 
+  // GET
   const getDocuments = async () => {
     try {
-      const res = await axios.get(ApiList.documents, {
+      const res = await axios.get(ApiList.documentsAPIList.getDocuments, {
         headers: {
           Authorization: `Bearer ${authTokens?.accessToken}`,
         },
@@ -242,6 +282,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
     }
   };
 
+  // POST
   const addDocument = async () => {
     if (isLoading) {
       return Promise.resolve(null);
@@ -258,7 +299,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
           setIsLoading(true);
           documentsForm.clearErrors();
           const res = await axios.post(
-            ApiList.postDocuments,
+            ApiList.documentsAPIList.postDocuments,
             {
               document_type: documentsForm.values.documentType,
               document_number: documentsForm.values.aadharNumber,
@@ -296,7 +337,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
         try {
           documentsForm.clearErrors();
           const res = await axios.post(
-            ApiList.postDocuments,
+            ApiList.documentsAPIList.postDocuments,
             {
               document_type: documentsForm.values.documentType,
               document_number: documentsForm.values.panNumber,
@@ -333,9 +374,10 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   const [workExperienceData, setWorkExperienceData] = useState<IWorkExperience[]>([]);
 
+  // GET
   const getWorkExperience = async () => {
     try {
-      const res = await axios.get(ApiList.workExperience, {
+      const res = await axios.get(ApiList.workExperienceAPiList.getWorkExperience, {
         headers: {
           Authorization: `Bearer ${authTokens?.accessToken}`,
         },
@@ -348,6 +390,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
     }
   };
 
+  // POST
   const addWorkExperience = async () => {
     if (isLoading) {
       return Promise.resolve(null);
@@ -364,7 +407,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
         setIsLoading(true);
         workExperienceForm.clearErrors();
         const res = await axios.post(
-          ApiList.postWorkExperience,
+          ApiList.workExperienceAPiList.postWorkExperience,
           {
             designation: workExperienceForm.values.jobTitle,
             email: workExperienceForm.values.workEmail,
@@ -397,15 +440,14 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
               sx: { borderRadius: em(8) },
             });
           }, 1100);
+          workExperienceForm.setFieldValue('jobTitle', '');
+          workExperienceForm.setFieldValue('companyName', '');
+          workExperienceForm.setFieldValue('workEmail', '');
+          workExperienceForm.setFieldValue('companyId', '');
+          workExperienceForm.setFieldValue('startDate', { startMonth: '', startYear: '' });
+          workExperienceForm.setFieldValue('endDate', { endMonth: '', endYear: '' });
+          getWorkExperience();
         }
-
-        workExperienceForm.setFieldValue('jobTitle', '');
-        workExperienceForm.setFieldValue('companyName', '');
-        workExperienceForm.setFieldValue('workEmail', '');
-        workExperienceForm.setFieldValue('companyId', '');
-        workExperienceForm.setFieldValue('startDate', { startMonth: '', startYear: '' });
-        workExperienceForm.setFieldValue('endDate', { endMonth: '', endYear: '' });
-        getWorkExperience();
       } catch (err: any) {
         console.log(err.message);
       } finally {
@@ -414,12 +456,82 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
     }
   };
 
+  // DELETE
+  const deleteWorkExperience = async (id: string) => {
+    try {
+      setIsLoading(true);
+      const res = await axios
+        .delete(`${ApiList.workExperienceAPiList.deleteWorkExperience}/${id}`, {
+          headers: {
+            Authorization: `Bearer ${authTokens}`,
+          },
+        })
+        .then(() => {
+          setTimeout(() => {
+            notifications.update({
+              id: 'load-state',
+              title: 'Sucess!',
+              message: 'Experience deleted!',
+              autoClose: 2200,
+              withCloseButton: false,
+              color: 'teal',
+              icon: <BsCheckLg />,
+              sx: { borderRadius: em(8) },
+            });
+          }, 1100);
+          getWorkExperience();
+          setIsLoading(false);
+        });
+    } catch (err: any) {
+      console.log(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // PUT
+  const updateWorkExperience = async (id: string) => {
+    try {
+      const res = await axios
+        .put(
+          `${ApiList.workExperienceAPiList.deleteWorkExperience}/${id}`,
+          workExperienceForm.values,
+          {
+            headers: {
+              Authorization: `Bearer ${authTokens}`,
+            },
+          }
+        )
+        .then(() => {
+          setTimeout(() => {
+            notifications.update({
+              id: 'load-state',
+              title: 'Sucess!',
+              message: 'Experience updated!',
+              autoClose: 2200,
+              withCloseButton: false,
+              color: 'teal',
+              icon: <BsCheckLg />,
+              sx: { borderRadius: em(8) },
+            });
+          }, 1100);
+          getWorkExperience();
+          setIsLoading(false);
+        });
+    } catch (error: any) {
+      console.log(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   //------------------------------RESIDENTIAL INFO----------------------------------------
 
   const [residentialInfoData, setResidentialInfoData] = useState([]);
+  // GET
   const getResidentialInfo = async () => {
     try {
-      const res = await axios.get(ApiList.residentialInfo, {
+      const res = await axios.get(ApiList.residentialInfoAPIList.getResidentialInfo, {
         headers: {
           Authorization: `Bearer ${authTokens?.accessToken}`,
         },
@@ -433,6 +545,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
     }
   };
 
+  // POST
   const validateFormFields = (requiredField: string[]) => {
     const listLength = requiredField.length;
 
@@ -489,11 +602,15 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
         sx: { borderRadius: em(8) },
       });
 
-      const res = await axios.post(ApiList.postResidentialInfo, requestData, {
-        headers: {
-          Authorization: `Bearer ${authTokens?.accessToken}`,
-        },
-      });
+      const res = await axios.post(
+        ApiList.residentialInfoAPIList.postResidentialInfo,
+        requestData,
+        {
+          headers: {
+            Authorization: `Bearer ${authTokens?.accessToken}`,
+          },
+        }
+      );
 
       if (res.data) {
         notifications.update({
@@ -522,12 +639,82 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
     }
   };
 
+  // DELETE
+  const deleteResidentialInfo = async (id: string) => {
+    try {
+      setIsLoading(true);
+      const res = await axios
+        .delete(`${ApiList.residentialInfoAPIList.deleteResidentialInfo}/${id}`, {
+          headers: {
+            Authorization: `Bearer ${authTokens}`,
+          },
+        })
+        .then(() =>
+          setTimeout(() => {
+            notifications.update({
+              id: 'load-state',
+              title: 'Sucess!',
+              message: 'Residential information deleted!',
+              autoClose: 2200,
+              withCloseButton: false,
+              color: 'teal',
+              icon: <BsCheckLg />,
+              sx: { borderRadius: em(8) },
+            });
+          }, 1100)
+        );
+      getResidentialInfo();
+      setIsLoading(false);
+    } catch (error: any) {
+      console.log(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // PUT
+  const updateResidentialInfo = async (id: string) => {
+    try {
+      const res = await axios
+        .put(
+          `${ApiList.residentialInfoAPIList.updateResidentialInfo}/${id}`,
+          residentialInfoForm.values,
+          {
+            headers: {
+              Authorization: `Bearer ${authTokens}`,
+            },
+          }
+        )
+        .then(() => {
+          setTimeout(() => {
+            notifications.update({
+              id: 'load-state',
+              title: 'Sucess!',
+              message: 'Residential information updated!',
+              autoClose: 2200,
+              withCloseButton: false,
+              color: 'teal',
+              icon: <BsCheckLg />,
+              sx: { borderRadius: em(8) },
+            });
+          }, 1100);
+          getResidentialInfo();
+          setIsLoading(false);
+        });
+    } catch (error: any) {
+      console.log(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   //------------------------------SKILLS----------------------------------------
 
   const [skillData, setSkillData] = useState<ISkillDataType[]>([]);
+  // GET
   const getSkills = async () => {
     try {
-      const res = await axios.get(ApiList.skill, {
+      const res = await axios.get(ApiList.skillsAPIList.getSkill, {
         headers: {
           Authorization: `Bearer ${authTokens?.accessToken}`,
         },
@@ -541,6 +728,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
     }
   };
 
+  // POST
   const addSkill = async () => {
     if (isLoading) {
       return Promise.resolve(null);
@@ -565,7 +753,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
       });
 
       const res = await axios.post(
-        ApiList.postSkill,
+        ApiList.skillsAPIList.postSkill,
         {
           designation: skillForm.values.skillName,
           isVerified: false,
@@ -591,6 +779,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
         skillForm.setFieldValue('skillName', '');
         skillForm.setFieldValue('expertise', '');
+        getSkills();
       }
     } catch (err: any) {
       console.error('Error in posting skill: ', err);
@@ -604,6 +793,71 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
         autoClose: 2000,
       });
       getSkills();
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // DELETE
+  const deleteSkill = async (id: string) => {
+    try {
+      setIsLoading(true);
+      const res = await axios
+        .delete(`${ApiList.skillsAPIList.deleteSkill}/${id}`, {
+          headers: {
+            Authorization: `Bearer ${authTokens}`,
+          },
+        })
+        .then(() =>
+          setTimeout(() => {
+            notifications.update({
+              id: 'load-state',
+              title: 'Sucess!',
+              message: 'Skill deleted!',
+              autoClose: 2200,
+              withCloseButton: false,
+              color: 'teal',
+              icon: <BsCheckLg />,
+              sx: { borderRadius: em(8) },
+            });
+          }, 1100)
+        );
+      getSkills();
+      setIsLoading(false);
+    } catch (error: any) {
+      console.log(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // PUT
+  const updateSkill = async (id: string) => {
+    try {
+      const res = await axios
+        .put(`${ApiList.skillsAPIList.updateSkill}/${id}`, skillForm.values, {
+          headers: {
+            Authorization: `Bearer ${authTokens}`,
+          },
+        })
+        .then(() => {
+          setTimeout(() => {
+            notifications.update({
+              id: 'load-state',
+              title: 'Sucess!',
+              message: 'skill updated!',
+              autoClose: 2200,
+              withCloseButton: false,
+              color: 'teal',
+              icon: <BsCheckLg />,
+              sx: { borderRadius: em(8) },
+            });
+          }, 1100);
+          getSkills();
+          setIsLoading(false);
+        });
+    } catch (error: any) {
+      console.log(error.message);
     } finally {
       setIsLoading(false);
     }
@@ -642,22 +896,22 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const handleToggleResidentialDetails = (): void => {
     dispatchDetailsPage({
       type: 'SET_SEE_ALL_RESIDENTIALINFO',
-      payload: !detailsPage.seeAllWorkExperience,
+      payload: !detailsPage.seeAllResidentialInfo,
     });
   };
   const handleToggleSkillsDetails = (): void => {
     dispatchDetailsPage({
       type: 'SET_SEE_ALL_SKILLS',
-      payload: !detailsPage.seeAllWorkExperience,
+      payload: !detailsPage.seeAllSkills,
     });
   };
 
   useEffect(() => {
-    getProfile();
-    getDocuments();
-    getWorkExperience();
-    getSkills();
-    getResidentialInfo();
+    // getProfile();
+    // getDocuments();
+    // getWorkExperience();
+    // getSkills();
+    // getResidentialInfo();
   }, []);
 
   return (
@@ -674,6 +928,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
         addSkill,
         documentsForm,
         workExperienceForm,
+        freelanceExperienceForm,
         residentialInfoForm,
         skillForm,
         forceRender,

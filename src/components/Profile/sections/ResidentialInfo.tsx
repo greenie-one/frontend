@@ -16,10 +16,11 @@ import { Carousel } from '@mantine/carousel';
 import { MdOutlineEdit } from 'react-icons/md';
 import '../styles/global.scss';
 import noData from '../assets/noData.png';
-import { Link } from 'react-router-dom';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 import { useProfileContext } from '../context/ProfileContext';
 import { IoLocationOutline } from 'react-icons/io5';
+import { AiOutlinePlus } from 'react-icons/ai';
+import { ResidentialInfoCard } from '../components/ResidentialInfoCard';
 
 const states = [
   { value: 'andhra pradesh', label: 'Andhra Pradesh' },
@@ -99,9 +100,43 @@ export const ResidentialInfo = () => {
   const screenSize = useMediaQuery('(min-width: 990px)');
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
-  const { residentialInfoData, residentialInfoForm, addResidentialInfo } = useProfileContext();
+  const {
+    residentialInfoData,
+    residentialInfoForm,
+    addResidentialInfo,
+    handleToggleResidentialDetails,
+  } = useProfileContext();
   const { classes: inputClasses } = inputStyles();
   const [checked, setChecked] = useState(false);
+
+  const data = [
+    {
+      addressLineOne: '1901 Thorrodge Cir',
+      addressLineTwo: 'Baner, Pune',
+      landmark: 'JP Mall',
+      pincode: 3892230,
+      type: 'current',
+      state: 'Maharashtra',
+      country: 'India',
+      startDate: 'Jan 2017',
+      endDate: 'May 2020',
+      isverified: true,
+      currentLocation: '',
+    },
+    {
+      addressLineOne: '1901 Thorrodge Cir',
+      addressLineTwo: 'Baner, Pune',
+      landmark: 'JP Mall',
+      pincode: 3892230,
+      type: 'current',
+      state: 'Maharashtra',
+      country: 'India',
+      startDate: 'Jan 2017',
+      endDate: 'May 2020',
+      isverified: false,
+      currentLocation: '',
+    },
+  ];
 
   const handleLocation = () => {
     // @todo: API to be used. should use navigator?
@@ -254,23 +289,25 @@ export const ResidentialInfo = () => {
           <Text className="heading">{`Residential Information (${residentialInfoData.length})`}</Text>
           <Text className="subheading">All government IDs, personal verification IDs etc.</Text>
         </Box>
-        <Box className="header-links">
-          {residentialInfoData.length > 0 && (
-            <Link className="link" to={'/'}>
-              See all documents
-            </Link>
-          )}
 
-          <Button leftIcon={<MdOutlineEdit />} onClick={open} className="edit-btn">
-            Edit Section
-          </Button>
-        </Box>
+        {residentialInfoData.length > 0 && (
+          <Box className="header-links">
+            <Text className="link" onClick={handleToggleResidentialDetails}>
+              See all documents
+            </Text>
+            <Button leftIcon={<MdOutlineEdit />} onClick={open} className="edit-btn">
+              Edit Section
+            </Button>
+          </Box>
+        )}
       </Box>
 
       {residentialInfoData.length === 0 ? (
         <Box className="no-data-wrapper">
-          {' '}
           <img className="no-data" src={noData} alt="No data" />
+          <Button leftIcon={<AiOutlinePlus />} onClick={open} className="add-records">
+            Add records
+          </Button>
         </Box>
       ) : (
         <Carousel

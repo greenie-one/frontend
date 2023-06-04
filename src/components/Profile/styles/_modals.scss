@@ -2,6 +2,7 @@
   form {
     padding-inline: 34px;
   }
+
   .input-section {
     display: grid;
     align-items: center;
@@ -81,6 +82,58 @@
   }
 }
 
+.experience-wrapper {
+  display: grid;
+  grid-template-columns: repeat(2, 49%);
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  cursor: pointer;
+
+  .employment-type {
+    border: 1px solid $lighterGray;
+    border-radius: 20px;
+    padding: 24px;
+    padding-top: 64px;
+    text-align: center;
+
+    img {
+      margin-bottom: 0.5rem;
+    }
+
+    .title {
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 500;
+      font-size: 24px;
+      line-height: 27px;
+      color: $dark;
+    }
+    .employment-text {
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 27px;
+      color: $gray;
+      max-width: 222px;
+      margin: 0 auto;
+      margin-top: 11px;
+    }
+  }
+}
+
+.employment-privacy-policy {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 27px;
+  text-align: center;
+  color: $gray;
+  margin-bottom: 1rem;
+}
+
 @media screen and (max-width: 1200px) {
   .modal {
     form {
@@ -102,6 +155,14 @@
   .modal {
     form {
       padding-inline: 8px;
+    }
+  }
+  .experience-wrapper {
+    grid-template-columns: 98%;
+
+    .employment-type {
+      margin: 1rem auto;
+      max-width: 375px;
     }
   }
 }

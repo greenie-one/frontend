@@ -1,10 +1,11 @@
 import '../styles/global.scss';
 import { useProfileContext } from '../context/ProfileContext';
-import { Text, Modal, Box, Button, Title } from '@mantine/core';
+import { Text, Modal, Box, Button, Title, Divider } from '@mantine/core';
 import { BsArrowLeft } from 'react-icons/bs';
 import { AiOutlineRight } from 'react-icons/ai';
 import { MdVerified } from 'react-icons/md';
 import { CgSandClock } from 'react-icons/cg';
+import { RiDeleteBin6Line } from 'react-icons/ri';
 const data = [
   {
     designation: 'Software Development',
@@ -236,28 +237,37 @@ export const SeeAllExperiences = () => {
             return (
               <Box key={index} className="see-all-card">
                 <Box className="see-all-card-header">
-                  <Box className="company-logo"></Box>
-                  <Box className="see-all-card-header-text-box">
-                    <Text className="designation">{designation}</Text>
-                    <Text className="companyName">{companyName}</Text>
-                    {isVerified ? (
-                      <Button
-                        leftIcon={<MdVerified color="#8CF078" size={'16px'} />}
-                        className="verified"
-                      >
-                        Verified
-                      </Button>
-                    ) : (
-                      <Button
-                        leftIcon={<CgSandClock color="#FF7272" size={'16px'} />}
-                        className="pending"
-                      >
-                        Pending
-                      </Button>
-                    )}
+                  <Box className="header-content">
+                    <Box className="company-logo"></Box>
+                    <Box className="see-all-card-header-text-box">
+                      <Text className="designation">{designation}</Text>
+                      <Text className="companyName">{companyName}</Text>
+                      {isVerified ? (
+                        <Button
+                          leftIcon={<MdVerified color="#8CF078" size={'16px'} />}
+                          className="verified"
+                        >
+                          Verified
+                        </Button>
+                      ) : (
+                        <Button
+                          leftIcon={<CgSandClock color="#FF7272" size={'16px'} />}
+                          className="pending"
+                        >
+                          Pending
+                        </Button>
+                      )}
+                    </Box>
+                  </Box>
+                  <Box className="button-wrappers">
+                    {!isVerified && <Button className="get-verified">Get Verified</Button>}
+
+                    <Box className="delete-icon">
+                      <RiDeleteBin6Line size={'22px'} color="#697082" />
+                    </Box>
                   </Box>
                 </Box>
-                <Box className="border-bottom"></Box>
+                <Divider my="sm" color="#e1e1e1" />
                 <Box className="see-all-info-wrapper">
                   <Box>
                     <Text className="see-all-heading">Company ID</Text>
@@ -282,7 +292,7 @@ export const SeeAllExperiences = () => {
                     <Text className="detail">{workEmail}</Text>
                   </Box>
                 </Box>
-                <Box className="border-bottom"></Box>
+                <Divider my="sm" color="#e1e1e1" />
                 <Box className="see-all-peer-verification">
                   <Title className="see-all-heading">Peer Verification</Title>
                   <Title className="see-all-heading">Verified By</Title>
