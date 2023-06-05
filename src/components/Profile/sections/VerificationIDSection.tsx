@@ -23,13 +23,13 @@ const documentsType = [
     value: 'pan',
     label: 'Pan Card',
   },
-  { value: 'aadhar', label: 'Adhar Card' },
+  { value: 'aadhar', label: 'Aadhar Card' },
 ];
 
 export const VerificationIDSection = () => {
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
-  const { documentsData, addDocument } = useProfileContext();
+  const { documentsData, addDocument, documentsForm } = useProfileContext();
   const { classes: inputClasses } = inputStyles();
 
   const handleSubmit = (event: React.FormEvent) => {
@@ -45,7 +45,7 @@ export const VerificationIDSection = () => {
         fullScreen={isMobile}
         opened={opened}
         onClose={close}
-        title="Add work experience"
+        title="Add documents"
       >
         <form onSubmit={handleSubmit}>
           <Box className="input-section border-bottom">
@@ -55,6 +55,7 @@ export const VerificationIDSection = () => {
               data-autofocus
               label="Enter your name"
               classNames={inputClasses}
+              {...documentsForm.getInputProps('userName')}
             />
           </Box>
           <Box className="input-section">
@@ -64,17 +65,34 @@ export const VerificationIDSection = () => {
               data={documentsType}
               label="Select your document"
               classNames={inputClasses}
+              {...documentsForm.getInputProps('documentType')}
             />
           </Box>
-          <Box className="input-section  border-bottom">
-            <Title className="title">Your Card Number</Title>
-            <TextInput
-              withAsterisk
-              data-autofocus
-              label="Enter your card number"
-              classNames={inputClasses}
-            />
-          </Box>
+          {documentsForm.values.documentType === 'aadhar' && (
+            <Box className="input-section  border-bottom">
+              <Title className="title">Your Card Number</Title>
+              <TextInput
+                withAsterisk
+                data-autofocus
+                label="Enter your aadhar card number"
+                classNames={inputClasses}
+                {...documentsForm.getInputProps('aadharNumber')}
+              />
+            </Box>
+          )}
+          {documentsForm.values.documentType === 'pan' && (
+            <Box className="input-section  border-bottom">
+              <Title className="title">Your Card Number</Title>
+              <TextInput
+                withAsterisk
+                data-autofocus
+                label="Enter your pan card number"
+                classNames={inputClasses}
+                {...documentsForm.getInputProps('panNumber')}
+              />
+            </Box>
+          )}
+
           <Box className="location-wrapper">
             <Box className="btn-wrapper">
               <Button color="teal" type="submit">
