@@ -3,8 +3,9 @@ import axios from 'axios';
 import { TextInput, createStyles, em, Text, Button, Flex, Box } from '@mantine/core';
 import { useLocalStorage } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
+
 import { useAuthContext } from '../../context/AuthContext';
-import ApiList from '../../../../assets/api/ApiList';
+import { authApiList } from '../../../../assets/api/ApiList';
 
 import { FaExclamation } from 'react-icons/fa';
 import { BsArrowLeft } from 'react-icons/bs';
@@ -62,7 +63,7 @@ const SignUpStepThree = () => {
           sx: { borderRadius: em(8) },
         });
 
-        const res = await axios.post(ApiList.validateOtp, {
+        const res = await axios.post(authApiList.validateOtp, {
           validationId,
           otp: signupForm.values.otp,
         });

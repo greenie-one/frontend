@@ -7,7 +7,7 @@ import { useForm, UseFormReturnType, isNotEmpty, matchesField, hasLength } from 
 import { useLocalStorage } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 
-import ApiList from '../../../assets/api/ApiList';
+import { authApiList, profileAPIList } from '../../../assets/api/ApiList';
 import { FaExclamation } from 'react-icons/fa';
 import { BsCheckLg } from 'react-icons/bs';
 
@@ -209,7 +209,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         sx: { borderRadius: em(8) },
       });
 
-      await axios.post(ApiList.resendOtp, { validationId });
+      await axios.post(authApiList.resendOtp, { validationId });
 
       setTimeout(() => {
         notifications.update({
@@ -233,7 +233,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [authTokens, setAuthTokens] = useLocalStorage<AuthTokens>({ key: 'auth-tokens' });
   const getMyProfile = async () => {
     try {
-      const res = await axios.get(ApiList.getMyProfile, {
+      const res = await axios.get(profileAPIList.getMyProfile, {
         headers: {
           Authorization: `Bearer ${authTokens?.accessToken}`,
         },

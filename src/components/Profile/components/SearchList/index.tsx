@@ -4,7 +4,7 @@ import profileThumbnail from '../../assets/johnMarston.png';
 import { SearchResult } from './SearchListContent';
 import { NoResultContent } from './NoResultContent';
 import axios from 'axios';
-import ApiList from '../../../../assets/api/ApiList';
+import { profileAPIList } from '../../../../assets/api/ApiList';
 import { useProfileContext } from '../../context/ProfileContext';
 
 const searchResults = [
@@ -80,7 +80,7 @@ export const SearchList: React.FC<ISearchListPropsType> = ({
   const fetchProfiles = useMemo(
     () => async () => {
       try {
-        const res = await axios.get(`${ApiList.searchProfile}${searchQuery}`, {
+        const res = await axios.get(`${profileAPIList.searchProfile}${searchQuery}`, {
           headers: {
             Authorization: `Bearer ${authTokens?.accessToken}`,
           },

@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 
 import { useLocalStorage } from '@mantine/hooks';
-import ApiList from '../../../../assets/api/ApiList';
+import { authApiList } from '../../../../assets/api/ApiList';
 
 export const GoogleAuthRedirect = () => {
   const [searchParams] = useSearchParams();
@@ -15,7 +15,7 @@ export const GoogleAuthRedirect = () => {
 
       if (code) {
         axios
-          .get(`${ApiList.googleCallback}`, { params: { code: code } })
+          .get(`${authApiList.googleCallback}`, { params: { code: code } })
           .then((res) => {
             setAuthTokens(res.data);
           })
