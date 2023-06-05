@@ -12,8 +12,16 @@ import { BsCheckLg } from 'react-icons/bs';
 import '../../styles/global.scss';
 
 const SignUpStepThree = () => {
-  const { signupForm, state, dispatch, isPhoneNumber, isValidEmail, validationId } =
-    useAuthContext();
+  const {
+    signupForm,
+    state,
+    dispatch,
+    isPhoneNumber,
+    isValidEmail,
+    validationId,
+    resendOtp,
+    setForceRender,
+  } = useAuthContext();
   const { classes: inputClasses } = inputStyles();
   const { signUpStep } = state;
 
@@ -61,6 +69,7 @@ const SignUpStepThree = () => {
 
         if (res.data) {
           setAuthTokens(res.data);
+          setForceRender((prev) => !prev);
 
           setTimeout(() => {
             notifications.update({
@@ -110,11 +119,18 @@ const SignUpStepThree = () => {
           <TextInput
             classNames={inputClasses}
             maxLength={6}
-            pattern="[0-9]{4}"
+            pattern="[0-9]{6}"
             {...signupForm.getInputProps('otp')}
           />
+
           {secondsRemaining === 0 ? (
-            <Button className="resendLink" variant="subtle" color="gray" compact>
+            <Button
+              compact
+              color="gray"
+              variant="subtle"
+              onClick={resendOtp}
+              className="resendLink"
+            >
               Resend
             </Button>
           ) : (
@@ -125,6 +141,7 @@ const SignUpStepThree = () => {
               </Text>
             </Text>
           )}
+
           <Button type="submit" className="primaryBtn" onClick={VerifyOTP}>
             Verify
           </Button>
@@ -142,11 +159,18 @@ const SignUpStepThree = () => {
             <TextInput
               classNames={inputClasses}
               maxLength={6}
-              pattern="[0-9]{4}"
+              pattern="[0-9]{6}"
               {...signupForm.getInputProps('otp')}
             />
+
             {secondsRemaining === 0 ? (
-              <Button className="resendLink" variant="subtle" color="gray" compact>
+              <Button
+                compact
+                color="gray"
+                variant="subtle"
+                onClick={resendOtp}
+                className="resendLink"
+              >
                 Resend
               </Button>
             ) : (
@@ -157,6 +181,7 @@ const SignUpStepThree = () => {
                 </Text>
               </Text>
             )}
+
             <Button type="submit" className="primaryBtn" onClick={VerifyOTP}>
               Verify
             </Button>

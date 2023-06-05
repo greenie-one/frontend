@@ -9,8 +9,6 @@ export const GoogleAuthRedirect = () => {
   const [searchParams] = useSearchParams();
   const [authTokens, setAuthTokens] = useLocalStorage({ key: 'auth-tokens' });
 
-  console.log('hey');
-
   useEffect(() => {
     if (searchParams) {
       const code = searchParams.get('code');
@@ -19,7 +17,6 @@ export const GoogleAuthRedirect = () => {
         axios
           .get(`${ApiList.googleCallback}`, { params: { code: code } })
           .then((res) => {
-            console.log(res.data);
             setAuthTokens(res.data);
           })
           .catch((err) => {

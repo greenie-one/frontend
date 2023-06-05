@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import ApiList from '../../../../assets/api/ApiList';
 
 import { Button } from '@mantine/core';
 import { useLocalStorage } from '@mantine/hooks';
+import ApiList from '../../../../assets/api/ApiList';
+import { useAuthContext } from '../../context/AuthContext';
+
 import GoogleLogo from '../../assets/g-logo.png';
 import '../../styles/global.scss';
 
@@ -14,7 +15,7 @@ type AuthTokens = {
 };
 
 const GoogleButton = () => {
-  const navigate = useNavigate();
+  const { setForceRender } = useAuthContext();
 
   const [authTokens, setAuthTokens] = useLocalStorage<AuthTokens>({ key: 'auth-tokens' });
   const [isLoading, setIsLoading] = useState(false);
@@ -34,7 +35,7 @@ const GoogleButton = () => {
     } catch (error: any) {
       console.log(error.response.data);
     } finally {
-      if (authTokens?.accessToken) navigate('/profile');
+      if (authTokens?.accessToken) setForceRender((prev) => !prev);
     }
   };
 

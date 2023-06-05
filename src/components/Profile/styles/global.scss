@@ -3,6 +3,7 @@
 .profile {
   background-color: $offWhite;
   overflow-x: hidden;
+  z-index: 0;
 }
 .container {
   width: 100%;
@@ -123,6 +124,17 @@
   }
 }
 
+.location-btn {
+  width: 100%;
+  max-width: 458px;
+  height: 51px;
+  border: 1px solid $dark;
+  border-radius: 34px;
+  margin: 0px auto;
+  margin-top: 19px;
+  border: 1px solid $dark;
+}
+
 .footer {
   display: none;
   background-color: $dark;
@@ -189,6 +201,7 @@
 }
 
 @import '_cardStyles';
+@import '_modals';
 @import '_navbar';
 @import '_profile';
 @import '_bioSection';
