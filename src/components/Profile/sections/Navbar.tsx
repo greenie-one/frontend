@@ -7,7 +7,7 @@ import { AiOutlineBell, AiFillCaretDown } from 'react-icons/ai';
 import JohnMarston from '../assets/johnMarston.png';
 import { useDisclosure } from '@mantine/hooks';
 import { SearchList } from '../components/SearchList';
-import { useDebounce } from '../hooks/useDebounce';
+import { useDebounce } from '../../../utils/hooks/useDebounce';
 
 export const Navbar = () => {
   const { classes } = useStyles();
