@@ -4,7 +4,7 @@ import { useForm, isEmail, isNotEmpty } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 
 import useApi from '../utils/hooks/useApi';
-import ApiList from '../assets/api/ApiList';
+import { authApiList } from '../assets/api/ApiList';
 
 import { Navbar } from '../components/common/Navbar';
 import waitlist_img from '../assets/images/waitlist/waitlist_img.png';
@@ -43,7 +43,7 @@ export const Waitlist = () => {
   const handleWaitlistSubmit = () => {
     waitlistForm.reset();
 
-    sendRequest(`${ApiList.waitlist}`, 'POST', waitlistForm.getTransformedValues())
+    sendRequest(`${authApiList.waitlist}`, 'POST', waitlistForm.getTransformedValues())
       .then((res: any) => {
         if (res.message === 'added to waitlist') {
           notifications.show({

@@ -3,7 +3,13 @@ import React, { createContext, useContext, useState, useEffect, useReducer } fro
 import { useForm, UseFormReturnType, isNotEmpty, isEmail, hasLength } from '@mantine/form';
 import { em } from '@mantine/core';
 import axios from 'axios';
-import ApiList from '../../../assets/api/ApiList';
+import {
+  skillsAPIList,
+  profileAPIList,
+  documentsAPIList,
+  workExperienceAPiList,
+  residentialInfoAPIList,
+} from '../../../assets/api/ApiList';
 import { notifications } from '@mantine/notifications';
 import { BsCheckLg } from 'react-icons/bs';
 import { FaExclamation } from 'react-icons/fa';
@@ -249,7 +255,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   const getProfile = async () => {
     try {
-      const res = await axios.get<IUserProfile>(ApiList.profileAPIList.getMyProfile, {
+      const res = await axios.get<IUserProfile>(profileAPIList.getMyProfile, {
         headers: {
           Authorization: `Bearer ${authTokens?.accessToken}`,
         },
@@ -269,7 +275,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
   // GET
   const getDocuments = async () => {
     try {
-      const res = await axios.get(ApiList.documentsAPIList.getDocuments, {
+      const res = await axios.get(documentsAPIList.getDocuments, {
         headers: {
           Authorization: `Bearer ${authTokens?.accessToken}`,
         },
@@ -299,7 +305,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
           setIsLoading(true);
           documentsForm.clearErrors();
           const res = await axios.post(
-            ApiList.documentsAPIList.postDocuments,
+            documentsAPIList.postDocuments,
             {
               document_type: documentsForm.values.documentType,
               document_number: documentsForm.values.aadharNumber,
@@ -337,7 +343,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
         try {
           documentsForm.clearErrors();
           const res = await axios.post(
-            ApiList.documentsAPIList.postDocuments,
+            documentsAPIList.postDocuments,
             {
               document_type: documentsForm.values.documentType,
               document_number: documentsForm.values.panNumber,
@@ -377,7 +383,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
   // GET
   const getWorkExperience = async () => {
     try {
-      const res = await axios.get(ApiList.workExperienceAPiList.getWorkExperience, {
+      const res = await axios.get(workExperienceAPiList.getWorkExperience, {
         headers: {
           Authorization: `Bearer ${authTokens?.accessToken}`,
         },
@@ -407,7 +413,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
         setIsLoading(true);
         workExperienceForm.clearErrors();
         const res = await axios.post(
-          ApiList.workExperienceAPiList.postWorkExperience,
+          workExperienceAPiList.postWorkExperience,
           {
             designation: workExperienceForm.values.jobTitle,
             email: workExperienceForm.values.workEmail,
@@ -415,10 +421,10 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
             workType: workExperienceForm.values.workType.workType,
             companyName: workExperienceForm.values.companyName,
             companyId: workExperienceForm.values.companyId,
-            isVerified: false,
             companyStartDate: workExperienceForm.values.startDate.startYear,
             companyEndDate: workExperienceForm.values.endDate.endYear,
             user: 'GRN788209',
+            isVerified: false,
           },
           {
             headers: {
@@ -461,7 +467,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
     try {
       setIsLoading(true);
       const res = await axios
-        .delete(`${ApiList.workExperienceAPiList.deleteWorkExperience}/${id}`, {
+        .delete(`${workExperienceAPiList.deleteWorkExperience}/${id}`, {
           headers: {
             Authorization: `Bearer ${authTokens}`,
           },
@@ -493,15 +499,11 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const updateWorkExperience = async (id: string) => {
     try {
       const res = await axios
-        .put(
-          `${ApiList.workExperienceAPiList.deleteWorkExperience}/${id}`,
-          workExperienceForm.values,
-          {
-            headers: {
-              Authorization: `Bearer ${authTokens}`,
-            },
-          }
-        )
+        .put(`${workExperienceAPiList.deleteWorkExperience}/${id}`, workExperienceForm.values, {
+          headers: {
+            Authorization: `Bearer ${authTokens}`,
+          },
+        })
         .then(() => {
           setTimeout(() => {
             notifications.update({
@@ -531,7 +533,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
   // GET
   const getResidentialInfo = async () => {
     try {
-      const res = await axios.get(ApiList.residentialInfoAPIList.getResidentialInfo, {
+      const res = await axios.get(residentialInfoAPIList.getResidentialInfo, {
         headers: {
           Authorization: `Bearer ${authTokens?.accessToken}`,
         },
@@ -602,15 +604,11 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
         sx: { borderRadius: em(8) },
       });
 
-      const res = await axios.post(
-        ApiList.residentialInfoAPIList.postResidentialInfo,
-        requestData,
-        {
-          headers: {
-            Authorization: `Bearer ${authTokens?.accessToken}`,
-          },
-        }
-      );
+      const res = await axios.post(residentialInfoAPIList.postResidentialInfo, requestData, {
+        headers: {
+          Authorization: `Bearer ${authTokens?.accessToken}`,
+        },
+      });
 
       if (res.data) {
         notifications.update({
@@ -644,7 +642,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
     try {
       setIsLoading(true);
       const res = await axios
-        .delete(`${ApiList.residentialInfoAPIList.deleteResidentialInfo}/${id}`, {
+        .delete(`${residentialInfoAPIList.deleteResidentialInfo}/${id}`, {
           headers: {
             Authorization: `Bearer ${authTokens}`,
           },
@@ -676,15 +674,11 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const updateResidentialInfo = async (id: string) => {
     try {
       const res = await axios
-        .put(
-          `${ApiList.residentialInfoAPIList.updateResidentialInfo}/${id}`,
-          residentialInfoForm.values,
-          {
-            headers: {
-              Authorization: `Bearer ${authTokens}`,
-            },
-          }
-        )
+        .put(`${residentialInfoAPIList.updateResidentialInfo}/${id}`, residentialInfoForm.values, {
+          headers: {
+            Authorization: `Bearer ${authTokens}`,
+          },
+        })
         .then(() => {
           setTimeout(() => {
             notifications.update({
@@ -714,7 +708,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
   // GET
   const getSkills = async () => {
     try {
-      const res = await axios.get(ApiList.skillsAPIList.getSkill, {
+      const res = await axios.get(skillsAPIList.getSkill, {
         headers: {
           Authorization: `Bearer ${authTokens?.accessToken}`,
         },
@@ -753,7 +747,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
       });
 
       const res = await axios.post(
-        ApiList.skillsAPIList.postSkill,
+        skillsAPIList.postSkill,
         {
           designation: skillForm.values.skillName,
           isVerified: false,
@@ -803,7 +797,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
     try {
       setIsLoading(true);
       const res = await axios
-        .delete(`${ApiList.skillsAPIList.deleteSkill}/${id}`, {
+        .delete(`${skillsAPIList.deleteSkill}/${id}`, {
           headers: {
             Authorization: `Bearer ${authTokens}`,
           },
@@ -835,7 +829,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const updateSkill = async (id: string) => {
     try {
       const res = await axios
-        .put(`${ApiList.skillsAPIList.updateSkill}/${id}`, skillForm.values, {
+        .put(`${skillsAPIList.updateSkill}/${id}`, skillForm.values, {
           headers: {
             Authorization: `Bearer ${authTokens}`,
           },
