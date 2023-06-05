@@ -3,9 +3,9 @@ const BASE_URL = "https://dev-api.greenie.one";
 
 export const authApiList = {
   waitlist: `${BASE_URL}/waitlist`,
-  signup: `${BASE_URL}/signup`,
-  validateOtp: `${BASE_URL}/validateOTP`,
-  login: `${BASE_URL}/login`,
+  signup: `${BASE_URL}/auth/signup`,
+  validateOtp: `${BASE_URL}/auth/validateOTP`,
+  login: `${BASE_URL}/auth/login`,
   googleAuth: `${BASE_URL}/oauth/google/redirect`,
   googleCallback: `${BASE_URL}/oauth/google/callback`,
   refreshToken: `${BASE_URL}/refresh`,
