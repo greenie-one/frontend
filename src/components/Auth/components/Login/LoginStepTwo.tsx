@@ -16,7 +16,7 @@ import {
 import { useLocalStorage } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { useAuthContext } from '../../context/AuthContext';
-import ApiList from '../../../../assets/api/ApiList';
+import { authApiList } from '../../../../assets/api/ApiList';
 
 import GoogleButton from '../Google/GoogleButton';
 import { FaExclamation } from 'react-icons/fa';
@@ -76,14 +76,14 @@ const LoginStepTwo = () => {
           sx: { borderRadius: em(8) },
         });
 
-        const res = await axios.post(ApiList.login, {
+        const res = await axios.post(authApiList.login, {
           email: loginForm.values.emailPhoneGreenieId,
           password: loginForm.values.password,
         });
 
         if (res.data) {
           setValidationId(res.data?.validationId);
-          const resp = await axios.post(ApiList.validateOtp, {
+          const resp = await axios.post(authApiList.validateOtp, {
             validationId: res.data?.validationId,
             otp: '123456',
           });
@@ -164,7 +164,7 @@ const LoginStepTwo = () => {
           sx: { borderRadius: em(8) },
         });
 
-        const res = await axios.post(ApiList.login, {
+        const res = await axios.post(authApiList.login, {
           mobileNumber: loginForm.values.emailPhoneGreenieId,
         });
 

@@ -4,20 +4,13 @@ import '../styles/global.scss';
 
 interface CardProps {
   documentName: string;
-  documentImg: string;
   isVerified: boolean;
 }
 
-export const VerificationIDCard: React.FC<CardProps> = ({
-  documentName,
-  documentImg,
-  isVerified,
-}) => {
+export const VerificationIDCard: React.FC<CardProps> = ({ documentName, isVerified }) => {
   return (
     <Box className="verificationIdCard">
-      <Box className="verificationIdImg">
-        <img src={documentImg} alt="Document Image" />
-      </Box>
+      <Box className="verificationIdImg"></Box>
       <Text className="document-name">{documentName}</Text>
       {isVerified ? (
         <Box className="is-verified-box">

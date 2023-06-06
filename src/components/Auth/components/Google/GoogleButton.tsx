@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import { Button } from '@mantine/core';
 import { useLocalStorage } from '@mantine/hooks';
-import ApiList from '../../../../assets/api/ApiList';
+import { authApiList } from '../../../../assets/api/ApiList';
 import { useAuthContext } from '../../context/AuthContext';
 
 import GoogleLogo from '../../assets/g-logo.png';
@@ -27,7 +27,7 @@ const GoogleButton = () => {
 
     setIsLoading(true);
     try {
-      const res = await axios.get(ApiList.googleAuth);
+      const res = await axios.get(authApiList.googleAuth);
 
       if (res.data) {
         window.open(res.data?.url, '_blank');

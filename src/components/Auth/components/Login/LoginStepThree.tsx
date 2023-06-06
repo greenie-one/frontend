@@ -6,7 +6,7 @@ import { Text, Button, Flex, Box, TextInput, createStyles, em } from '@mantine/c
 import { useLocalStorage } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { useAuthContext } from '../../context/AuthContext';
-import ApiList from '../../../../assets/api/ApiList';
+import { authApiList } from '../../../../assets/api/ApiList';
 
 import { FaExclamation } from 'react-icons/fa';
 import { BsArrowLeft } from 'react-icons/bs';
@@ -53,7 +53,7 @@ const LoginStepThree = () => {
           sx: { borderRadius: em(8) },
         });
 
-        const res = await axios.post(ApiList.validateOtp, {
+        const res = await axios.post(authApiList.validateOtp, {
           validationId,
           otp: loginForm.values.otp,
         });
