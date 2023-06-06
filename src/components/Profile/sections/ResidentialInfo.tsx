@@ -109,35 +109,6 @@ export const ResidentialInfo = () => {
   const { classes: inputClasses } = inputStyles();
   const [checked, setChecked] = useState(false);
 
-  const data = [
-    {
-      addressLineOne: '1901 Thorrodge Cir',
-      addressLineTwo: 'Baner, Pune',
-      landmark: 'JP Mall',
-      pincode: 3892230,
-      type: 'current',
-      state: 'Maharashtra',
-      country: 'India',
-      startDate: 'Jan 2017',
-      endDate: 'May 2020',
-      isverified: true,
-      currentLocation: '',
-    },
-    {
-      addressLineOne: '1901 Thorrodge Cir',
-      addressLineTwo: 'Baner, Pune',
-      landmark: 'JP Mall',
-      pincode: 3892230,
-      type: 'current',
-      state: 'Maharashtra',
-      country: 'India',
-      startDate: 'Jan 2017',
-      endDate: 'May 2020',
-      isverified: false,
-      currentLocation: '',
-    },
-  ];
-
   const handleLocation = () => {
     // @todo: API to be used. should use navigator?
   };
@@ -145,6 +116,7 @@ export const ResidentialInfo = () => {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     addResidentialInfo();
+    close();
   };
 
   return (
@@ -239,27 +211,28 @@ export const ResidentialInfo = () => {
             <Box className="inner-input-box">
               <Box className="inner-input-section">
                 <Select
+                  withAsterisk
+                  disabled={checked}
                   data={months}
                   label="From month"
                   classNames={inputClasses}
                   {...residentialInfoForm.getInputProps('endDate.endMonth')}
-                  withAsterisk
                 />
                 <Select
+                  withAsterisk
                   disabled={checked}
                   data={years}
                   label="From year"
                   classNames={inputClasses}
                   {...residentialInfoForm.getInputProps('endDate.endYear')}
-                  withAsterisk
                 />
               </Box>
               <Checkbox
                 checked={checked}
-                onClick={() => setChecked(!checked)}
+                onChange={(event) => setChecked(event.currentTarget.checked)}
                 className="checkbox"
                 color="teal"
-                label="I currently live here"
+                label="I currently work here"
               />
             </Box>
           </Box>

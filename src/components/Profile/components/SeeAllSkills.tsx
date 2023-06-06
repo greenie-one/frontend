@@ -5,19 +5,10 @@ import { BsArrowLeft } from 'react-icons/bs';
 import { AiOutlineRight } from 'react-icons/ai';
 import { MdVerified } from 'react-icons/md';
 import { CgSandClock } from 'react-icons/cg';
-import { RiDeleteBin6Line } from 'react-icons/ri';
-
-const data = [
-  { designation: 'Software developer', skillRate: 'Amature', isVerified: true },
-  { designation: 'Software developer', skillRate: 'Amature', isVerified: false },
-  { designation: 'Software developer', skillRate: 'Amature', isVerified: true },
-  { designation: 'Software developer', skillRate: 'Amature', isVerified: true },
-  { designation: 'Software developer', skillRate: 'Amature', isVerified: false },
-  { designation: 'Software developer', skillRate: 'Amature', isVerified: true },
-];
+import { RiDeleteBin6Line, RiEdit2Line } from 'react-icons/ri';
 
 export const SeeAllSkills = () => {
-  const { handleToggleSkillsDetails, skillData } = useProfileContext();
+  const { handleToggleSkillsDetails, skillData, deleteSkill } = useProfileContext();
   return (
     <section className="container">
       <Box className="see-all-header">
@@ -29,7 +20,7 @@ export const SeeAllSkills = () => {
         <Text>{`Skills (${skillData.length})`}</Text>
       </Box>
       <Box className="skills-card-wrapper">
-        {data.map(({ designation, skillRate, isVerified }, index) => {
+        {skillData.map(({ _id, designation, skillRate, isVerified }, index) => {
           return (
             <Box className="skill-card" key={index}>
               <Box className="skill-card-header">
@@ -59,9 +50,13 @@ export const SeeAllSkills = () => {
                     Get Verified
                   </Button>
                 )}
-
-                <Box className="delete-icon">
-                  <RiDeleteBin6Line size={'22px'} color="#697082" />
+                <Box className="button-wrappers">
+                  <Box className="icon" onClick={() => deleteSkill(_id)}>
+                    <RiDeleteBin6Line size={'22px'} className="btn" />
+                  </Box>
+                  <Box className="icon">
+                    <RiEdit2Line size={'22px'} className="btn" />
+                  </Box>
                 </Box>
               </Box>
             </Box>

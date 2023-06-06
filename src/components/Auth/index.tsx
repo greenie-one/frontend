@@ -19,7 +19,7 @@ export const Auth = () => {
   const { classes } = useStyles();
 
   const { isPhoneNumber, state, loginForm } = useAuthContext();
-  const { signUpStep, loginStep, loginWithOTPStep, resetPasswordStep } = state;
+  const { signUpStep, loginStep, resetPasswordStep } = state;
 
   return (
     <>

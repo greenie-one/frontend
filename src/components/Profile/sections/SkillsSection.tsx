@@ -21,18 +21,9 @@ import { useProfileContext } from '../context/ProfileContext';
 import { AiOutlinePlus } from 'react-icons/ai';
 
 const expertise = [
-  { value: 'amateur', label: 'Amature' },
-  { value: 'intermediate', label: 'Intermediate' },
-  { value: 'expert', label: 'Expert' },
-];
-
-const data = [
-  { designation: 'Software developer', skillRate: 'Amature', isVerified: true },
-  { designation: 'Software developer', skillRate: 'Amature', isVerified: false },
-  { designation: 'Software developer', skillRate: 'Amature', isVerified: true },
-  { designation: 'Software developer', skillRate: 'Amature', isVerified: true },
-  { designation: 'Software developer', skillRate: 'Amature', isVerified: false },
-  { designation: 'Software developer', skillRate: 'Amature', isVerified: true },
+  { value: 'Amateur', label: 'Amature' },
+  { value: 'Intermediate', label: 'Intermediate' },
+  { value: 'Expert', label: 'Expert' },
 ];
 
 export const SkillsSection = () => {
@@ -47,6 +38,7 @@ export const SkillsSection = () => {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     addSkill();
+    close();
   };
 
   return (
@@ -130,7 +122,7 @@ export const SkillsSection = () => {
             { maxWidth: 'md', slideSize: '50%' },
           ]}
         >
-          {data.map(({ designation, skillRate, isVerified }, id) => {
+          {skillData.reverse().map(({ designation, skillRate, isVerified }, id) => {
             return (
               <Carousel.Slide key={id}>
                 <SkillsCard skill={designation} skillRate={skillRate} isVerified={isVerified} />

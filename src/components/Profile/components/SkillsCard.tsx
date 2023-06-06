@@ -3,7 +3,7 @@ import { MdVerified } from 'react-icons/md';
 import { CgSandClock } from 'react-icons/cg';
 interface CardProps {
   skill: string;
-  skillRate: string;
+  skillRate: number;
   isVerified: boolean;
 }
 
