@@ -70,8 +70,8 @@ interface IWorkExperience {
   companyName: string;
   email: string;
   companyId: string;
-  companyStartDate: Date;
-  companyEndDate: Date;
+  companyStartDate: string;
+  companyEndDate: string;
   workMode: string;
   workType: string;
   isVerified: boolean;
