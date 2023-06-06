@@ -26,16 +26,22 @@ type ProfileContextType = {
   documentsData: IDocument[];
   addDocument: () => void;
   workExperienceData: IWorkExperience[];
-  residentialInfoData: string[];
+  residentialInfoData: IResidendialInfoDataType[];
   skillData: ISkillDataType[];
   addWorkExperience: () => void;
+  deleteWorkExperience: (id: string) => void;
+  updateWorkExperience: (id: string) => void;
   documentsForm: UseFormReturnType<documentsFormType>;
   workExperienceForm: UseFormReturnType<workExperienceFormType>;
   freelanceExperienceForm: UseFormReturnType<freelanceExperienceFormType>;
   residentialInfoForm: UseFormReturnType<residentialInfoFormType>;
   addResidentialInfo: () => void;
+  deleteResidentialInfo: (id: string) => void;
+  updateResidentialInfo: (id: string) => void;
   skillForm: UseFormReturnType<skillFormType>;
   addSkill: () => void;
+  deleteSkill: (id: string) => void;
+  updateSkill: (id: string) => void;
   forceRender: boolean;
   setForceRender: React.Dispatch<React.SetStateAction<boolean>>;
   authTokens: AuthTokens;
@@ -58,19 +64,34 @@ interface IUserProfile {
 }
 
 interface IWorkExperience {
+  _id: string;
   image: string | null;
   designation: string;
-  email: string;
   companyName: string;
+  email: string;
   companyId: string;
-  isVerified: boolean;
-  description: string;
   companyStartDate: string;
   companyEndDate: string;
-  verifiedBy: string | null;
+  workMode: string;
+  workType: string;
+  isVerified: boolean;
+  verifiedBy: [] | null;
+}
+
+interface IResidendialInfoDataType {
+  _id: string;
+  address_line_1: string;
+  address_line_2: string;
+  landmark: string;
+  pincode: number;
+  state: string;
+  country: string;
+  start_date: Date;
+  end_date: Date;
 }
 
 interface ISkillDataType {
+  _id: string;
   createdAt: string;
   designation: string;
   isVerified: boolean;
@@ -78,7 +99,6 @@ interface ISkillDataType {
   updatedAt: string;
   user: string;
   __v: number;
-  _id: string;
 }
 
 type documentsFormType = {
@@ -244,7 +264,6 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   //------------------------------API CALLS----------------------------------------
 
-  // const [authTokens, setAuthTokens] = useLocalStorage<AuthTokens>({ key: 'auth-tokens' });
   const token = localStorage.getItem('auth-tokens');
   const authTokens = token ? JSON.parse(token) : null;
   const [isLoading, setIsLoading] = useState(false);
@@ -469,7 +488,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
       const res = await axios
         .delete(`${workExperienceAPiList.deleteWorkExperience}/${id}`, {
           headers: {
-            Authorization: `Bearer ${authTokens}`,
+            Authorization: `Bearer ${authTokens?.accessToken}`,
           },
         })
         .then(() => {
@@ -529,7 +548,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   //------------------------------RESIDENTIAL INFO----------------------------------------
 
-  const [residentialInfoData, setResidentialInfoData] = useState([]);
+  const [residentialInfoData, setResidentialInfoData] = useState<IResidendialInfoDataType[]>([]);
   // GET
   const getResidentialInfo = async () => {
     try {
@@ -587,12 +606,10 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
       country: residentialInfoForm.values.stateCountry.country,
       start_date: residentialInfoForm.values.startDate.startYear,
       end_date: residentialInfoForm.values.endDate.endYear,
-      user: 'GRN788209',
     };
 
     try {
       residentialInfoForm.clearErrors();
-
       notifications.show({
         id: 'load-data',
         title: 'Please wait !',
@@ -603,13 +620,11 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
         color: 'teal',
         sx: { borderRadius: em(8) },
       });
-
       const res = await axios.post(residentialInfoAPIList.postResidentialInfo, requestData, {
         headers: {
           Authorization: `Bearer ${authTokens?.accessToken}`,
         },
       });
-
       if (res.data) {
         notifications.update({
           id: 'load-data',
@@ -620,9 +635,8 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
           autoClose: 2000,
         });
       }
-      getResidentialInfo();
     } catch (err: any) {
-      console.error('Error in posting residential information: ', err);
+      console.error('Error in posting residential information: ', err.message);
 
       notifications.update({
         id: 'load-data',
@@ -799,7 +813,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
       const res = await axios
         .delete(`${skillsAPIList.deleteSkill}/${id}`, {
           headers: {
-            Authorization: `Bearer ${authTokens}`,
+            Authorization: `Bearer ${authTokens?.accessToken}`,
           },
         })
         .then(() =>
@@ -901,11 +915,13 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
   };
 
   useEffect(() => {
-    // getProfile();
-    // getDocuments();
-    // getWorkExperience();
-    // getSkills();
-    // getResidentialInfo();
+    if (authTokens) {
+      getProfile();
+      // getDocuments();
+      getWorkExperience();
+      getSkills();
+      getResidentialInfo();
+    }
   }, []);
 
   return (
@@ -920,6 +936,12 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
         addWorkExperience,
         addResidentialInfo,
         addSkill,
+        deleteWorkExperience,
+        deleteResidentialInfo,
+        deleteSkill,
+        updateWorkExperience,
+        updateResidentialInfo,
+        updateSkill,
         documentsForm,
         workExperienceForm,
         freelanceExperienceForm,

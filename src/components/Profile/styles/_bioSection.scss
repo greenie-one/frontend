@@ -4,6 +4,12 @@
   position: relative;
   text-align: center;
 
+  .edit-btn {
+    width: 150px;
+    position: absolute;
+    right: 30px;
+  }
+
   .bio-name-box {
     display: flex;
     align-items: center;

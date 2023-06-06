@@ -1,8 +1,22 @@
-.delete-icon {
+.icon {
   border: 1px solid $gray;
-  padding: 4px 16px;
+  padding: 4px 12px;
   border-radius: 24px;
+  margin-left: 8px;
   cursor: pointer;
+
+  .btn {
+    color: $gray;
+  }
+
+  &:hover {
+    background-color: $green;
+    border: 1px solid $green;
+
+    .btn {
+      color: $white;
+    }
+  }
 }
 
 .button-wrappers {
@@ -17,7 +31,6 @@
     background: $white;
     border: 1px solid $red;
     border-radius: 34px;
-    margin-right: 8px;
 
     &:hover {
       background: $white;
@@ -67,6 +80,7 @@
     .header-content {
       display: flex;
       align-items: center;
+
       .company-logo {
         background: #f2f4f2;
         border-radius: 8px;
@@ -231,7 +245,7 @@
 
     .skill-btn-wrapper {
       display: flex;
-      align-items: flex-start;
+      align-items: center;
       justify-content: space-between;
 
       .get-verified {
@@ -246,6 +260,10 @@
         &:hover {
           background: $white;
         }
+      }
+
+      .button-wrappers {
+        margin-top: -0.05rem;
       }
     }
 
@@ -364,15 +382,60 @@
   .skills-card-wrapper {
     grid-template-columns: repeat(2, 48%);
   }
+
+  .see-all-card {
+    .see-all-info-wrapper {
+      grid-template-columns: repeat(2, 50%);
+      .detail {
+        margin-bottom: 2rem;
+      }
+    }
+  }
 }
 
 @media screen and (max-width: 630px) {
   .skills-card-wrapper {
     grid-template-columns: 100%;
   }
+  .see-all-card {
+    .see-all-info-wrapper {
+      grid-template-columns: repeat(2, 50%);
+      .detail {
+        margin-bottom: 2rem;
+      }
+    }
+  }
 }
 
 @media screen and (max-width: 768px) {
+  .see-all-card {
+    .see-all-card-header {
+      flex-direction: column;
+
+      .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+
+        .company-logo {
+          margin-bottom: 1rem;
+          margin-right: 0;
+        }
+      }
+    }
+  }
+
+  .button-wrappers {
+    margin-top: 1rem;
+  }
+
+  .see-all-card {
+    .see-all-info-wrapper {
+      grid-template-columns: repeat(3, 30%);
+      .detail {
+        margin-bottom: 2rem;
+      }
+    }
+  }
   .see-all-residential-info-card-wrapper {
     .see-all-residentila-info-card {
       .residential-info-wrapper {
@@ -387,6 +450,17 @@
 }
 
 @media screen and (max-width: 414px) {
+  .see-all-header {
+    font-size: 18px;
+  }
+  .see-all-card {
+    .see-all-info-wrapper {
+      grid-template-columns: repeat(1, 100%);
+      .detail {
+        margin-bottom: 2rem;
+      }
+    }
+  }
   .see-all-residential-info-card-wrapper {
     .see-all-residentila-info-card {
       .residential-info-wrapper {

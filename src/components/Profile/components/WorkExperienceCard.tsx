@@ -8,8 +8,6 @@ interface CardProps {
   isVerified: boolean;
   companyStartYear: string;
   companyEndYear: string;
-  verifierName: string | null;
-  verifierTestimonial: string | null;
 }
 
 export const WorkExperienceCard: React.FC<CardProps> = ({
@@ -18,8 +16,6 @@ export const WorkExperienceCard: React.FC<CardProps> = ({
   isVerified,
   companyStartYear,
   companyEndYear,
-  verifierName,
-  verifierTestimonial,
 }) => {
   return (
     <Box className="experience-card">
@@ -40,16 +36,6 @@ export const WorkExperienceCard: React.FC<CardProps> = ({
           {companyStartYear.substring(0, 4)}-{companyEndYear.substring(0, 4)}
         </Text>
       </Box>
-      {isVerified && (
-        <Box>
-          <Text className="testimonial">{verifierTestimonial}</Text>
-          <Box className="verifier">
-            <Box className="verifier-img"></Box>
-            <Text className="verified-by">Verified by</Text>
-            <Text className="verifier-name">{verifierName}</Text>
-          </Box>
-        </Box>
-      )}
     </Box>
   );
 };
