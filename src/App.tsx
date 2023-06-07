@@ -8,8 +8,9 @@ import { AuthPage } from './pages/AuthPage';
 import { Waitlist } from './pages/Waitlist';
 
 import { ProfilePage } from './pages/ProfilePage';
+import { SettingsPage } from './pages/SettingsPage';
 import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage';
-import { TearmsAndConditionsPage } from './pages/TearmsAndConditionsPage';
+import { TermsAndConditionsPage } from './pages/TermsAndConditionsPage';
 
 import { AuthVerificationLayout } from './utils/constants/AuthVerification';
 import { GoogleAuthRedirect } from './components/Auth/components/Google/GoogleAuthRedirect';
@@ -29,11 +30,13 @@ const App = () => {
             <Route path="oauth/google/callback" element={<GoogleAuthRedirect />} />
 
             <Route element={<AuthVerificationLayout />}>
-              <Route path="profile" element={<ProfilePage />} />
+              <Route path="profile">
+                <Route index element={<ProfilePage />} />
+                <Route path="settings" element={<SettingsPage />} />
+              </Route>
             </Route>
-
             <Route path="privacy" element={<PrivacyPolicyPage />} />
-            <Route path="tos" element={<TearmsAndConditionsPage />} />
+            <Route path="tos" element={<TermsAndConditionsPage />} />
           </Route>
 
           <Route path="*" element={<PageNotFound />} />
