@@ -1,5 +1,6 @@
-import { Text, Box } from '@mantine/core';
+import { Text, Box, Button } from '@mantine/core';
 import { MdVerified } from 'react-icons/md';
+import { CgSandClock } from 'react-icons/cg';
 import '../styles/global.scss';
 
 interface CardProps {
@@ -13,12 +14,13 @@ export const VerificationIDCard: React.FC<CardProps> = ({ documentName, isVerifi
       <Box className="verificationIdImg"></Box>
       <Text className="document-name">{documentName}</Text>
       {isVerified ? (
-        <Box className="is-verified-box">
-          <Text className="is-verified-text">Verified</Text>
-          <MdVerified color="#9FE870" />
-        </Box>
+        <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
+          Verified
+        </Button>
       ) : (
-        <Box></Box>
+        <Button leftIcon={<CgSandClock color="#FF7272" size={'16px'} />} className="pending">
+          Pending
+        </Button>
       )}
     </Box>
   );

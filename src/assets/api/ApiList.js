@@ -19,8 +19,8 @@ export const profileAPIList = {
 }
 
 export const documentsAPIList = {
-  getDocuments: `${BASE_URL}/documents/me`,
-  postDocuments: `${BASE_URL}/documents`,
+  getDocuments: `${BASE_URL}/ids/me`,
+  postDocuments: `${BASE_URL}/ids`,
 }
 
 export const workExperienceAPiList = {

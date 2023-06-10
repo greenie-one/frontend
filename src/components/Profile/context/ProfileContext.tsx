@@ -32,8 +32,10 @@ type ProfileContextType = {
   deleteWorkExperience: (id: string) => void;
   updateWorkExperience: (id: string) => void;
   documentsForm: UseFormReturnType<documentsFormType>;
+  verifyAadharForm: UseFormReturnType<verifyAadharFormType>;
+  verifyPANForm: UseFormReturnType<verifyPANFormType>;
+  verifyLicenceForm: UseFormReturnType<verifyLicenceFormType>;
   workExperienceForm: UseFormReturnType<workExperienceFormType>;
-  freelanceExperienceForm: UseFormReturnType<freelanceExperienceFormType>;
   residentialInfoForm: UseFormReturnType<residentialInfoFormType>;
   addResidentialInfo: () => void;
   deleteResidentialInfo: (id: string) => void;
@@ -46,9 +48,7 @@ type ProfileContextType = {
   setForceRender: React.Dispatch<React.SetStateAction<boolean>>;
   authTokens: AuthTokens;
   detailsPage: DetailsPageState;
-  handleToggleWorkExperienceDetails: () => void;
-  handleToggleResidentialDetails: () => void;
-  handleToggleSkillsDetails: () => void;
+  dispatchDetailsPage: React.Dispatch<DetailsPageAction>;
 };
 
 interface IDocument {
@@ -76,6 +76,7 @@ interface IWorkExperience {
   workType: string;
   isVerified: boolean;
   verifiedBy: [] | null;
+  companyType: string;
 }
 
 interface IResidendialInfoDataType {
@@ -84,10 +85,12 @@ interface IResidendialInfoDataType {
   address_line_2: string;
   landmark: string;
   pincode: number;
+  city: string;
   state: string;
   country: string;
   start_date: Date;
   end_date: Date;
+  isVerified: boolean;
 }
 
 interface ISkillDataType {
@@ -102,10 +105,23 @@ interface ISkillDataType {
 }
 
 type documentsFormType = {
-  userName: string;
   documentType: string;
   aadharNumber: string;
   panNumber: string;
+  drivingLicenseNumber: string;
+};
+
+type verifyAadharFormType = {
+  linkedPhoneNo: string;
+  otp: string;
+};
+type verifyPANFormType = {
+  panNo: string;
+  otp: string;
+};
+type verifyLicenceFormType = {
+  licenceNo: string;
+  otp: string;
 };
 
 type workExperienceFormType = {
@@ -115,27 +131,21 @@ type workExperienceFormType = {
   linkedInUrl: string;
   workEmail: string;
   companyId: string;
-  startDate: { startMonth: string; startYear: string };
-  endDate: { endMonth: string; endYear: string };
+  startDate: Date | null;
+  endDate: Date | null;
   workType: { modeOfWork: string; workType: string };
 };
 
-type freelanceExperienceFormType = {
-  role: string;
-  companyName: string;
-  linkedInUrl: string;
-  startDate: { startMonth: string; startYear: string };
-  endDate: { endMonth: string; endYear: string };
-  workType: string;
-};
-
 type residentialInfoFormType = {
-  address: { addressLineOne: string; addressLineTwo: string; landmark: string };
+  addressLineOne: string;
+  addressLineTwo: string;
+  landmark: string;
+  city: string;
   pincode: number | null;
   typeOfAddress: string;
   stateCountry: { state: string; country: '' };
-  startDate: { startMonth: string; startYear: string };
-  endDate: { endMonth: string; endYear: string };
+  startDate: Date | null;
+  endDate: Date | null;
   currentLocation: number | null;
 };
 
@@ -148,12 +158,18 @@ type DetailsPageState = {
   seeAllWorkExperience: boolean;
   seeAllResidentialInfo: boolean;
   seeAllSkills: boolean;
+  seeAadharCard: boolean;
+  seePanCard: boolean;
+  seeDrivingLicence: boolean;
 };
 
 type DetailsPageAction =
   | { type: 'SET_SEE_ALL_WORKEXPERIENCE'; payload: boolean }
   | { type: 'SET_SEE_ALL_RESIDENTIALINFO'; payload: boolean }
-  | { type: 'SET_SEE_ALL_SKILLS'; payload: boolean };
+  | { type: 'SET_SEE_ALL_SKILLS'; payload: boolean }
+  | { type: 'SET_SEE_AADHAR_CARD'; payload: boolean }
+  | { type: 'SET_SEE_PAN_CARD'; payload: boolean }
+  | { type: 'SET_SEE_DRIVER_LICENCE'; payload: boolean };
 
 const ProfileContext = createContext<ProfileContextType>({} as ProfileContextType);
 export const useProfileContext = () => useContext(ProfileContext);
@@ -161,21 +177,72 @@ export const useProfileContext = () => useContext(ProfileContext);
 export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [forceRender, setForceRender] = useState<boolean>(false);
 
+  const isPhoneNumber = (input: string): boolean => {
+    const pattern = /^(\+\d{1,2}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/;
+    return pattern.test(input.trim());
+  };
+
+  const validatePhoneNo = (value: string) => {
+    if (value.trim().length === 0) {
+      return 'Phone Number cannot be empty';
+    }
+    if (/^[+]?[\d ]+$/.test(value.trim())) {
+      if (!isPhoneNumber(value)) {
+        return 'Invalid Phone Number';
+      }
+    }
+  };
+
   //------------Forms-----------------
 
   const documentsForm = useForm<documentsFormType>({
     initialValues: {
-      userName: '',
       documentType: '',
       aadharNumber: '',
       panNumber: '',
+      drivingLicenseNumber: '',
     },
 
     validate: {
-      userName: isNotEmpty('Please enter your name'),
       documentType: isNotEmpty('Please select document type'),
       aadharNumber: hasLength(12, 'Please enter valid aadhar card number'),
       panNumber: hasLength(10, 'Please enter valid pan card number'),
+      drivingLicenseNumber: hasLength(15, 'Please enter valid driving licence number'),
+    },
+  });
+
+  const verifyAadharForm = useForm<verifyAadharFormType>({
+    initialValues: {
+      linkedPhoneNo: '',
+      otp: '',
+    },
+
+    validate: {
+      linkedPhoneNo: (value) => validatePhoneNo(value),
+      otp: hasLength(6, 'OTP must be 6 digits'),
+    },
+  });
+
+  const verifyPANForm = useForm<verifyPANFormType>({
+    initialValues: {
+      panNo: '',
+      otp: '',
+    },
+
+    validate: {
+      panNo: hasLength(10, 'Please eneter valid PAN number'),
+      otp: hasLength(6, 'OTP must be 6 digits'),
+    },
+  });
+
+  const verifyLicenceForm = useForm<verifyLicenceFormType>({
+    initialValues: {
+      licenceNo: '',
+      otp: '',
+    },
+    validate: {
+      licenceNo: hasLength(15, 'Please enter valide licence number'),
+      otp: hasLength(6, 'OTP must be 6 digits'),
     },
   });
 
@@ -187,8 +254,8 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
       linkedInUrl: '',
       workEmail: '',
       companyId: '',
-      startDate: { startMonth: '', startYear: '' },
-      endDate: { endMonth: '', endYear: '' },
+      startDate: null,
+      endDate: null,
       workType: { modeOfWork: '', workType: '' },
     },
 
@@ -205,43 +272,23 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
     },
   });
 
-  const freelanceExperienceForm = useForm<freelanceExperienceFormType>({
-    initialValues: {
-      role: '',
-      companyName: '',
-      linkedInUrl: '',
-      startDate: { startMonth: '', startYear: '' },
-      endDate: { endMonth: '', endYear: '' },
-      workType: '',
-    },
-
-    validate: {
-      role: isNotEmpty('Please enter your role'),
-      companyName: isNotEmpty('Please enter company name'),
-      linkedInUrl: isNotEmpty('Please enter LinkedIn url'),
-      startDate: isNotEmpty('Please enter start date'),
-      endDate: isNotEmpty('Please enter end date'),
-      workType: isNotEmpty('Enter valid work types'),
-    },
-  });
-
   const residentialInfoForm = useForm<residentialInfoFormType>({
     initialValues: {
-      address: {
-        addressLineOne: '',
-        addressLineTwo: '',
-        landmark: '',
-      },
-
+      addressLineOne: '',
+      addressLineTwo: '',
+      landmark: '',
+      city: '',
       pincode: null,
       typeOfAddress: '',
       stateCountry: { state: '', country: '' },
-      startDate: { startMonth: '', startYear: '' },
-      endDate: { endMonth: '', endYear: '' },
+      startDate: null,
+      endDate: null,
       currentLocation: null,
     },
     validate: {
-      address: isNotEmpty('Please enter valid address'),
+      addressLineOne: isNotEmpty('Please enter valid address'),
+      addressLineTwo: isNotEmpty('Please enter valid address'),
+      city: isNotEmpty('Please enter valid address'),
       typeOfAddress: isNotEmpty('Please enter the address type'),
       pincode: hasLength(6, 'Please enter valid pincode'),
       stateCountry: isNotEmpty('Please enter your state/country'),
@@ -317,7 +364,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
       !documentsForm.validateField('documentType').hasError
     ) {
       if (
-        documentsForm.values.documentType === 'aadhar' &&
+        documentsForm.values.documentType === 'AADHAR' &&
         !documentsForm.validateField('aadharNumber').hasError
       ) {
         try {
@@ -356,7 +403,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
         }
       }
       if (
-        documentsForm.values.documentType === 'pan' &&
+        documentsForm.values.documentType === 'PAN' &&
         !documentsForm.validateField('panNumber').hasError
       ) {
         try {
@@ -392,6 +439,28 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
           console.log(error.message);
         }
       }
+      if (
+        documentsForm.values.documentType === 'DRIVING_LICENSE' &&
+        !documentsForm.validateField('drivingLicenseNumber').hasError
+      ) {
+        try {
+          documentsForm.clearErrors();
+          const res = await axios.post(
+            documentsAPIList.postDocuments,
+            {
+              document_type: documentsForm.values.documentType,
+              document_number: documentsForm.values.drivingLicenseNumber,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${authTokens?.accessToken}`,
+              },
+            }
+          );
+        } catch (error: any) {
+          console.log(error.message);
+        }
+      }
     }
   };
 
@@ -423,10 +492,13 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
     if (
       !workExperienceForm.validateField('jobTitle').hasError &&
       !workExperienceForm.validateField('companyName').hasError &&
+      !workExperienceForm.validateField('companyType').hasError &&
+      !workExperienceForm.validateField('companyId').hasError &&
       !workExperienceForm.validateField('workEmail').hasError &&
       !workExperienceForm.validateField('companyId').hasError &&
       !workExperienceForm.validateField('startDate').hasError &&
-      !workExperienceForm.validateField('endDate').hasError
+      !workExperienceForm.validateField('linkedInUrl').hasError &&
+      !workExperienceForm.validateField('workType').hasError
     ) {
       try {
         setIsLoading(true);
@@ -435,13 +507,14 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
           workExperienceAPiList.postWorkExperience,
           {
             designation: workExperienceForm.values.jobTitle,
+            companyType: workExperienceForm.values.companyType,
             email: workExperienceForm.values.workEmail,
             workMode: workExperienceForm.values.workType.modeOfWork,
             workType: workExperienceForm.values.workType.workType,
             companyName: workExperienceForm.values.companyName,
             companyId: workExperienceForm.values.companyId,
-            companyStartDate: workExperienceForm.values.startDate.startYear,
-            companyEndDate: workExperienceForm.values.endDate.endYear,
+            companyStartDate: workExperienceForm.values.startDate,
+            companyEndDate: workExperienceForm.values.endDate,
             user: 'GRN788209',
             isVerified: false,
           },
@@ -467,10 +540,13 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
           }, 1100);
           workExperienceForm.setFieldValue('jobTitle', '');
           workExperienceForm.setFieldValue('companyName', '');
+          workExperienceForm.setFieldValue('companyType', '');
+          workExperienceForm.setFieldValue('companyId', '');
+          workExperienceForm.setFieldValue('linkedInUrl', '');
           workExperienceForm.setFieldValue('workEmail', '');
           workExperienceForm.setFieldValue('companyId', '');
-          workExperienceForm.setFieldValue('startDate', { startMonth: '', startYear: '' });
-          workExperienceForm.setFieldValue('endDate', { endMonth: '', endYear: '' });
+          workExperienceForm.setFieldValue('startDate', null);
+          workExperienceForm.setFieldValue('endDate', null);
           getWorkExperience();
         }
       } catch (err: any) {
@@ -514,15 +590,28 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
     }
   };
 
-  // PUT
+  // PATCH
   const updateWorkExperience = async (id: string) => {
     try {
       const res = await axios
-        .put(`${workExperienceAPiList.deleteWorkExperience}/${id}`, workExperienceForm.values, {
-          headers: {
-            Authorization: `Bearer ${authTokens}`,
+        .patch(
+          `${workExperienceAPiList.updateWorkExperience}/${id}`,
+          {
+            designation: workExperienceForm.values.jobTitle,
+            email: workExperienceForm.values.workEmail,
+            workMode: workExperienceForm.values.workType.modeOfWork,
+            workType: workExperienceForm.values.workType.workType,
+            companyName: workExperienceForm.values.companyName,
+            companyId: workExperienceForm.values.companyId,
+            companyStartDate: workExperienceForm.values.startDate,
+            companyEndDate: workExperienceForm.values.endDate,
           },
-        })
+          {
+            headers: {
+              Authorization: `Bearer ${authTokens?.accessToken}`,
+            },
+          }
+        )
         .then(() => {
           setTimeout(() => {
             notifications.update({
@@ -536,6 +625,12 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
               sx: { borderRadius: em(8) },
             });
           }, 1100);
+          workExperienceForm.setFieldValue('jobTitle', '');
+          workExperienceForm.setFieldValue('companyName', '');
+          workExperienceForm.setFieldValue('workEmail', '');
+          workExperienceForm.setFieldValue('companyId', '');
+          workExperienceForm.setFieldValue('startDate', null);
+          workExperienceForm.setFieldValue('endDate', null);
           getWorkExperience();
           setIsLoading(false);
         });
@@ -597,17 +692,6 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
     if (!validateFormFields(requiredField)) return;
 
-    const requestData = {
-      address_line_1: residentialInfoForm.values.address.addressLineOne,
-      address_line_2: residentialInfoForm.values.address.addressLineTwo,
-      landmark: residentialInfoForm.values.address.landmark,
-      pincode: residentialInfoForm.values.pincode,
-      state: residentialInfoForm.values.stateCountry.state,
-      country: residentialInfoForm.values.stateCountry.country,
-      start_date: residentialInfoForm.values.startDate.startYear,
-      end_date: residentialInfoForm.values.endDate.endYear,
-    };
-
     try {
       residentialInfoForm.clearErrors();
       notifications.show({
@@ -620,11 +704,26 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
         color: 'teal',
         sx: { borderRadius: em(8) },
       });
-      const res = await axios.post(residentialInfoAPIList.postResidentialInfo, requestData, {
-        headers: {
-          Authorization: `Bearer ${authTokens?.accessToken}`,
+
+      const res = await axios.post(
+        residentialInfoAPIList.postResidentialInfo,
+        {
+          address_line_1: residentialInfoForm.values.addressLineOne,
+          address_line_2: residentialInfoForm.values.addressLineTwo,
+          landmark: residentialInfoForm.values.landmark,
+          pincode: residentialInfoForm.values.pincode,
+          city: residentialInfoForm.values.city,
+          state: residentialInfoForm.values.stateCountry.state,
+          country: residentialInfoForm.values.stateCountry.country,
+          start_date: residentialInfoForm.values.startDate,
+          end_date: residentialInfoForm.values.endDate,
         },
-      });
+        {
+          headers: {
+            Authorization: `Bearer ${authTokens?.accessToken}`,
+          },
+        }
+      );
       if (res.data) {
         notifications.update({
           id: 'load-data',
@@ -634,6 +733,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
           icon: <BsCheckLg />,
           autoClose: 2000,
         });
+        getResidentialInfo();
       }
     } catch (err: any) {
       console.error('Error in posting residential information: ', err.message);
@@ -658,7 +758,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
       const res = await axios
         .delete(`${residentialInfoAPIList.deleteResidentialInfo}/${id}`, {
           headers: {
-            Authorization: `Bearer ${authTokens}`,
+            Authorization: `Bearer ${authTokens?.accessToken}`,
           },
         })
         .then(() =>
@@ -684,15 +784,19 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
     }
   };
 
-  // PUT
+  // PATCH
   const updateResidentialInfo = async (id: string) => {
     try {
       const res = await axios
-        .put(`${residentialInfoAPIList.updateResidentialInfo}/${id}`, residentialInfoForm.values, {
-          headers: {
-            Authorization: `Bearer ${authTokens}`,
-          },
-        })
+        .patch(
+          `${residentialInfoAPIList.updateResidentialInfo}/${id}`,
+          residentialInfoForm.values,
+          {
+            headers: {
+              Authorization: `Bearer ${authTokens?.accessToken}`,
+            },
+          }
+        )
         .then(() => {
           setTimeout(() => {
             notifications.update({
@@ -764,8 +868,8 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
         skillsAPIList.postSkill,
         {
           designation: skillForm.values.skillName,
-          isVerified: false,
-          skillRate: 0,
+          isVerified: 0,
+          skillRate: skillForm.values.expertise,
           user: 'GRN788209',
         },
         {
@@ -839,15 +943,22 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
     }
   };
 
-  // PUT
+  // PATCH
   const updateSkill = async (id: string) => {
     try {
       const res = await axios
-        .put(`${skillsAPIList.updateSkill}/${id}`, skillForm.values, {
-          headers: {
-            Authorization: `Bearer ${authTokens}`,
+        .patch(
+          `${skillsAPIList.updateSkill}/${id}`,
+          {
+            designation: skillForm.values.skillName,
+            skillRate: 1,
           },
-        })
+          {
+            headers: {
+              Authorization: `Bearer ${authTokens?.accessToken}`,
+            },
+          }
+        )
         .then(() => {
           setTimeout(() => {
             notifications.update({
@@ -884,6 +995,12 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
         return { ...state, seeAllResidentialInfo: action.payload };
       case 'SET_SEE_ALL_SKILLS':
         return { ...state, seeAllSkills: action.payload };
+      case 'SET_SEE_AADHAR_CARD':
+        return { ...state, seeAadharCard: action.payload };
+      case 'SET_SEE_PAN_CARD':
+        return { ...state, seePanCard: action.payload };
+      case 'SET_SEE_DRIVER_LICENCE':
+        return { ...state, seeDrivingLicence: action.payload };
       default:
         return state;
     }
@@ -893,26 +1010,10 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
     seeAllWorkExperience: false,
     seeAllResidentialInfo: false,
     seeAllSkills: false,
+    seeAadharCard: false,
+    seePanCard: false,
+    seeDrivingLicence: false,
   });
-
-  const handleToggleWorkExperienceDetails = (): void => {
-    dispatchDetailsPage({
-      type: 'SET_SEE_ALL_WORKEXPERIENCE',
-      payload: !detailsPage.seeAllWorkExperience,
-    });
-  };
-  const handleToggleResidentialDetails = (): void => {
-    dispatchDetailsPage({
-      type: 'SET_SEE_ALL_RESIDENTIALINFO',
-      payload: !detailsPage.seeAllResidentialInfo,
-    });
-  };
-  const handleToggleSkillsDetails = (): void => {
-    dispatchDetailsPage({
-      type: 'SET_SEE_ALL_SKILLS',
-      payload: !detailsPage.seeAllSkills,
-    });
-  };
 
   useEffect(() => {
     if (authTokens) {
@@ -943,17 +1044,17 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
         updateResidentialInfo,
         updateSkill,
         documentsForm,
+        verifyAadharForm,
+        verifyPANForm,
+        verifyLicenceForm,
         workExperienceForm,
-        freelanceExperienceForm,
         residentialInfoForm,
         skillForm,
         forceRender,
         setForceRender,
         authTokens,
         detailsPage,
-        handleToggleWorkExperienceDetails,
-        handleToggleResidentialDetails,
-        handleToggleSkillsDetails,
+        dispatchDetailsPage,
       }}
     >
       {children}

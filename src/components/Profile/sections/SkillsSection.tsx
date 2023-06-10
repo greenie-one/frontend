@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import {
   Text,
   Box,
@@ -31,9 +30,16 @@ export const SkillsSection = () => {
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
   const { classes: inputClasses } = inputStyles();
-  const { skillForm, handleToggleSkillsDetails } = useProfileContext();
+  const { skillForm, detailsPage, dispatchDetailsPage } = useProfileContext();
 
   const { skillData, addSkill } = useProfileContext();
+
+  const handleToggleSkillsDetails = (): void => {
+    dispatchDetailsPage({
+      type: 'SET_SEE_ALL_SKILLS',
+      payload: !detailsPage.seeAllSkills,
+    });
+  };
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
