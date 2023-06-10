@@ -1,6 +1,6 @@
-import { getEnvValue } from "../../utils/helperFns";
+import { useEnv } from "../../utils/hooks/useEnv";
 
-const BASE_URL = getEnvValue("BASE_URL");
+const BASE_URL = useEnv("BASE_URL");
 
 export const authApiList = {
   waitlist: `${BASE_URL}/waitlist`,
