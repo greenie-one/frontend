@@ -1,5 +1,6 @@
-const BASE_URL = "https://dev-api.greenie.one";
-// const BASE_URL = "http://localhost:8080";
+import { getEnvValue } from "../../utils/helperFns";
+
+const BASE_URL = getEnvValue("BASE_URL");
 
 export const authApiList = {
   waitlist: `${BASE_URL}/waitlist`,
