@@ -10,7 +10,7 @@ export const authApiList = {
   googleAuth: `${BASE_URL}/oauth/google/redirect`,
   googleCallback: `${BASE_URL}/oauth/google/callback`,
   refreshToken: `${BASE_URL}/refresh`,
-  resendOtp: `${BASE_URL}/resendOTP`,
+  resendOtp: `${BASE_URL}/auth/resendOTP`,
 };
 
 export const profileAPIList = {

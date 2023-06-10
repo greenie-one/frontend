@@ -5,208 +5,21 @@ import { BsArrowLeft } from 'react-icons/bs';
 import { AiOutlineRight } from 'react-icons/ai';
 import { MdVerified } from 'react-icons/md';
 import { CgSandClock } from 'react-icons/cg';
-import { RiDeleteBin6Line } from 'react-icons/ri';
-const data = [
-  {
-    designation: 'Software Development',
-    companyName: 'Tata Consultancy Services',
-    companyStartDate: '2018',
-    companyEndDate: '2019',
-    isVerified: false,
-    verifiedBy: [
-      {
-        verifierName: 'Mark Conway',
-        verifierDesignation: 'Reporting manager',
-        description:
-          'Superb! I am rather impressed by Johns great mindset for a startup. I will follow his valuable advice for sure!! Thanks',
-      },
-      {
-        verifierName: 'Mark Conway',
-        verifierDesignation: 'Reporting manager',
-        description:
-          'Superb! I am rather impressed by Johns great mindset for a startup. I will follow his valuable advice for sure!! Thanks',
-      },
-      {
-        verifierName: 'Mark Conway',
-        verifierDesignation: 'Reporting manager',
-        description:
-          'Superb! I am rather impressed by Johns great mindset for a startup. I will follow his valuable advice for sure!! Thanks',
-      },
-      {
-        verifierName: 'Mark Conway',
-        verifierDesignation: 'Reporting manager',
-        description:
-          'Superb! I am rather impressed by Johns great mindset for a startup. I will follow his valuable advice for sure!! Thanks',
-      },
-      {
-        verifierName: 'Mark Conway',
-        verifierDesignation: 'Reporting manager',
-        description:
-          'Superb! I am rather impressed by Johns great mindset for a startup. I will follow his valuable advice for sure!! Thanks',
-      },
-      {
-        verifierName: 'Mark Conway',
-        verifierDesignation: 'Reporting manager',
-        description:
-          'Superb! I am rather impressed by Johns great mindset for a startup. I will follow his valuable advice for sure!! Thanks',
-      },
-    ],
-    companyId: 1234567890,
-    modeOfWork: 'Work From Office',
-    workType: 'Part Time',
-    workEmail: 'gundsagar01@gmail.com',
-  },
-  {
-    designation: 'Software Development',
-    companyName: 'Tata Consultancy Services',
-    companyStartDate: '2018',
-    companyEndDate: '2019',
-    isVerified: false,
-    verifiedBy: [
-      {
-        verifierName: 'Mark Conway',
-        verifierDesignation: 'Reporting manager',
-        description:
-          'Superb! I am rather impressed by Johns great mindset for a startup. I will follow his valuable advice for sure!! Thanks',
-      },
-      {
-        verifierName: 'Mark Conway',
-        verifierDesignation: 'Reporting manager',
-        description:
-          'Superb! I am rather impressed by Johns great mindset for a startup. I will follow his valuable advice for sure!! Thanks',
-      },
-      {
-        verifierName: 'Mark Conway',
-        verifierDesignation: 'Reporting manager',
-        description:
-          'Superb! I am rather impressed by Johns great mindset for a startup. I will follow his valuable advice for sure!! Thanks',
-      },
-      {
-        verifierName: 'Mark Conway',
-        verifierDesignation: 'Reporting manager',
-        description:
-          'Superb! I am rather impressed by Johns great mindset for a startup. I will follow his valuable advice for sure!! Thanks',
-      },
-      {
-        verifierName: 'Mark Conway',
-        verifierDesignation: 'Reporting manager',
-        description:
-          'Superb! I am rather impressed by Johns great mindset for a startup. I will follow his valuable advice for sure!! Thanks',
-      },
-      {
-        verifierName: 'Mark Conway',
-        verifierDesignation: 'Reporting manager',
-        description:
-          'Superb! I am rather impressed by Johns great mindset for a startup. I will follow his valuable advice for sure!! Thanks',
-      },
-    ],
-    companyId: 1234567890,
-    modeOfWork: 'Work From Office',
-    workType: 'Part Time',
-    workEmail: 'gundsagar01@gmail.com',
-  },
-  {
-    designation: 'Software Development',
-    companyName: 'Tata Consultancy Services',
-    companyStartDate: '2018',
-    companyEndDate: '2019',
-    isVerified: true,
-    verifiedBy: [
-      {
-        verifierName: 'Mark Conway',
-        verifierDesignation: 'Reporting manager',
-        description:
-          'Superb! I am rather impressed by Johns great mindset for a startup. I will follow his valuable advice for sure!! Thanks',
-      },
-      {
-        verifierName: 'Mark Conway',
-        verifierDesignation: 'Reporting manager',
-        description:
-          'Superb! I am rather impressed by Johns great mindset for a startup. I will follow his valuable advice for sure!! Thanks',
-      },
-      {
-        verifierName: 'Mark Conway',
-        verifierDesignation: 'Reporting manager',
-        description:
-          'Superb! I am rather impressed by Johns great mindset for a startup. I will follow his valuable advice for sure!! Thanks',
-      },
-      {
-        verifierName: 'Mark Conway',
-        verifierDesignation: 'Reporting manager',
-        description:
-          'Superb! I am rather impressed by Johns great mindset for a startup. I will follow his valuable advice for sure!! Thanks',
-      },
-      {
-        verifierName: 'Mark Conway',
-        verifierDesignation: 'Reporting manager',
-        description:
-          'Superb! I am rather impressed by Johns great mindset for a startup. I will follow his valuable advice for sure!! Thanks',
-      },
-      {
-        verifierName: 'Mark Conway',
-        verifierDesignation: 'Reporting manager',
-        description:
-          'Superb! I am rather impressed by Johns great mindset for a startup. I will follow his valuable advice for sure!! Thanks',
-      },
-    ],
-    companyId: 1234567890,
-    modeOfWork: 'Work From Office',
-    workType: 'Part Time',
-    workEmail: 'gundsagar01@gmail.com',
-  },
-  {
-    designation: 'Software Development',
-    companyName: 'Tata Consultancy Services',
-    companyStartDate: '2018',
-    companyEndDate: '2019',
-    isVerified: false,
-    verifiedBy: [
-      {
-        verifierName: 'Mark Conway',
-        verifierDesignation: 'Reporting manager',
-        description:
-          'Superb! I am rather impressed by Johns great mindset for a startup. I will follow his valuable advice for sure!! Thanks',
-      },
-      {
-        verifierName: 'Mark Conway',
-        verifierDesignation: 'Reporting manager',
-        description:
-          'Superb! I am rather impressed by Johns great mindset for a startup. I will follow his valuable advice for sure!! Thanks',
-      },
-      {
-        verifierName: 'Mark Conway',
-        verifierDesignation: 'Reporting manager',
-        description:
-          'Superb! I am rather impressed by Johns great mindset for a startup. I will follow his valuable advice for sure!! Thanks',
-      },
-      {
-        verifierName: 'Mark Conway',
-        verifierDesignation: 'Reporting manager',
-        description:
-          'Superb! I am rather impressed by Johns great mindset for a startup. I will follow his valuable advice for sure!! Thanks',
-      },
-      {
-        verifierName: 'Mark Conway',
-        verifierDesignation: 'Reporting manager',
-        description:
-          'Superb! I am rather impressed by Johns great mindset for a startup. I will follow his valuable advice for sure!! Thanks',
-      },
-      {
-        verifierName: 'Mark Conway',
-        verifierDesignation: 'Reporting manager',
-        description:
-          'Superb! I am rather impressed by Johns great mindset for a startup. I will follow his valuable advice for sure!! Thanks',
-      },
-    ],
-    companyId: 1234567890,
-    modeOfWork: 'Work From Office',
-    workType: 'Part Time',
-    workEmail: 'gundsagar01@gmail.com',
-  },
-];
+import { RiDeleteBin6Line, RiEdit2Line } from 'react-icons/ri';
 
 export const SeeAllExperiences = () => {
-  const { handleToggleWorkExperienceDetails, workExperienceData } = useProfileContext();
+  const {
+    handleToggleWorkExperienceDetails,
+    workExperienceData,
+    deleteWorkExperience,
+    updateWorkExperience,
+  } = useProfileContext();
+
+  const handleUpdate = (id: string) => {
+    updateWorkExperience(id);
+    close();
+  };
+
   return (
     <section className="container">
       <Box className="see-all-header">
@@ -218,18 +31,19 @@ export const SeeAllExperiences = () => {
         <Text>{`Work Experience (${workExperienceData.length})`}</Text>
       </Box>
       <Box>
-        {data.map(
+        {workExperienceData.map(
           (
             {
+              _id,
               designation,
               companyName,
               companyStartDate,
               companyEndDate,
               isVerified,
               companyId,
-              modeOfWork,
+              workMode,
               workType,
-              workEmail,
+              email,
               verifiedBy,
             },
             index
@@ -262,8 +76,11 @@ export const SeeAllExperiences = () => {
                   <Box className="button-wrappers">
                     {!isVerified && <Button className="get-verified">Get Verified</Button>}
 
-                    <Box className="delete-icon">
-                      <RiDeleteBin6Line size={'22px'} color="#697082" />
+                    <Box className="icon" onClick={() => deleteWorkExperience(_id)}>
+                      <RiDeleteBin6Line size={'22px'} className="btn" />
+                    </Box>
+                    <Box className="icon">
+                      <RiEdit2Line size={'22px'} className="btn" />
                     </Box>
                   </Box>
                 </Box>
@@ -279,36 +96,44 @@ export const SeeAllExperiences = () => {
                   </Box>
                   <Box>
                     <Text className="see-all-heading">Mode of Work</Text>
-                    <Text className="detail">{modeOfWork}</Text>
+                    <Text className="detail">{workMode}</Text>
                   </Box>
                   <Box>
                     <Text className="see-all-heading">Employment since</Text>
                     <Text className="detail">
-                      {companyStartDate} - {companyEndDate}
+                      {companyStartDate.toLocaleString().substring(0, 4)}-
+                      {companyEndDate.toLocaleString().substring(0, 4)}
                     </Text>
                   </Box>
                   <Box>
                     <Text className="see-all-heading">Work Email</Text>
-                    <Text className="detail">{workEmail}</Text>
+                    <Text className="detail">{email}</Text>
                   </Box>
                 </Box>
-                <Divider my="sm" color="#e1e1e1" />
-                <Box className="see-all-peer-verification">
-                  <Title className="see-all-heading">Peer Verification</Title>
-                  <Title className="see-all-heading">Verified By</Title>
-                  <Box className="verified-by-box">
-                    {verifiedBy.map(({ verifierName, verifierDesignation, description }, index) => {
-                      return (
-                        <Box className="verifier-card" key={index}>
-                          <Box className="verifiedByImg"></Box>
-                          <Text className="verifier-name">{verifierName}</Text>
-                          <Text className="verifier-designation">{verifierDesignation}</Text>
-                          <Text className="view-details">View details</Text>
-                        </Box>
-                      );
-                    })}
+
+                {isVerified && (
+                  <Box>
+                    <Divider my="sm" color="#e1e1e1" />
+                    <Box className="see-all-peer-verification">
+                      <Title className="see-all-heading">Peer Verification</Title>
+                      <Title className="see-all-heading">Verified By</Title>
+                      <Box className="verified-by-box">
+                        {verifiedBy?.map(
+                          ({ verifierName, verifierDesignation, description }, index) => {
+                            return (
+                              <Box className="verifier-card" key={index}>
+                                <Box className="verifiedByImg"></Box>
+                                <Text className="verifier-name">{verifierName}</Text>
+                                <Text className="verifier-designation">{verifierDesignation}</Text>
+                                <Text className="view-details">View details</Text>
+                              </Box>
+                            );
+                          }
+                        )}
+                      </Box>
+                    </Box>
                   </Box>
-                </Box>
+                )}
               </Box>
             );
           }

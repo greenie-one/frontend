@@ -22,6 +22,7 @@ import { useProfileContext } from '../context/ProfileContext';
 import { AiOutlinePlus } from 'react-icons/ai';
 import officeBuilding from '../assets/office-building.png';
 import freelancer from '../assets/freelancer.png';
+import linkedInImg from '../../Auth/assets/linkedIn-logo.png';
 
 const companyName = [
   { value: 'Reliance Industries', label: 'Reliance Industries' },
@@ -67,15 +68,28 @@ const years = [
   { value: '2010', label: '2010' },
 ];
 const workType = [
-  { value: 'work from office', label: 'Work From Office' },
-  { value: 'work from home', label: 'Work From Home' },
+  { value: 'Work from office', label: 'Work From Office' },
+  { value: 'Work from home', label: 'Work From Home' },
   { value: 'Hybrid', label: 'Hybrid' },
 ];
 const modeOfWork = [
-  { value: 'full-time', label: 'Full-time' },
-  { value: 'part-time', label: 'Part-time' },
-  { value: 'internship', label: 'Intership' },
-  { value: 'contract', label: 'Contract' },
+  { value: 'Full-time', label: 'Full-time' },
+  { value: 'Part-time', label: 'Part-time' },
+  { value: 'Internship', label: 'Intership' },
+  { value: 'Contract', label: 'Contract' },
+];
+
+const companyTypes = [
+  { value: 'Corporation', label: 'Corporation' },
+  { value: 'Limited Liability Company (LLC)', label: 'Limited Liability Company (LLC)' },
+  { value: 'Partnership', label: 'Partnership' },
+  { value: 'Sole Proprietorship', label: 'Sole Proprietorship' },
+  { value: 'Nonprofit Organization', label: 'Nonprofit Organization' },
+  { value: 'Co-operative', label: 'Co-operative' },
+  { value: 'Government Agency', label: 'Government Agency' },
+  { value: 'Start-up', label: 'Start-up' },
+  { value: 'Small Business', label: 'Small Business' },
+  { value: 'Multinational Corporation', label: 'Multinational Corporation' },
 ];
 
 enum EmploymentType {
@@ -100,42 +114,13 @@ export const Experience = () => {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     addWorkExperience();
+    onClose();
   };
 
   const onClose = () => {
     close();
     setEmploymentType(null);
   };
-
-  const data = [
-    {
-      designation: 'Software Development',
-      companyName: 'Something',
-      companyStartDate: 'Something',
-      companyEndDate: 'Something',
-      isVerified: false,
-      verifiedBy: 'Something',
-      description: 'Something',
-    },
-    {
-      designation: 'Software Development',
-      companyName: 'Something',
-      companyStartDate: 'Something',
-      companyEndDate: 'Something',
-      isVerified: false,
-      verifiedBy: 'Something',
-      description: 'Something',
-    },
-    {
-      designation: 'Software Development',
-      companyName: 'Something',
-      companyStartDate: 'Something',
-      companyEndDate: 'Something',
-      isVerified: false,
-      verifiedBy: 'Something',
-      description: 'Something',
-    },
-  ];
 
   return (
     <section className="experience-section container">
@@ -194,12 +179,34 @@ export const Experience = () => {
               />
             </Box>
             <Box className="input-section">
+              <Title className="title">Company Type</Title>
+              <Select
+                withAsterisk
+                data={companyTypes}
+                label="Select company type"
+                classNames={inputClasses}
+                {...workExperienceForm.getInputProps('companyType')}
+              />
+            </Box>
+            <Box className="input-section">
               <Title className="title">Company name</Title>
               <Select
                 withAsterisk
                 data={companyName}
                 {...workExperienceForm.getInputProps('companyName')}
                 label="Search by company website"
+                classNames={inputClasses}
+              />
+            </Box>
+            <Box className="input-section">
+              <Title className="title">
+                <img src={linkedInImg} className="linked-in" alt="linkedIn logo" />
+                LinkedIn Url
+              </Title>
+              <TextInput
+                withAsterisk
+                {...workExperienceForm.getInputProps('linkedInUrl')}
+                label="Paste the LinkedIn company page link"
                 classNames={inputClasses}
               />
             </Box>
@@ -290,7 +297,7 @@ export const Experience = () => {
               </Box>
             </Box>
             <Box className="btn-wrapper">
-              <Button color="teal" type="submit">
+              <Button color="teal" type="submit" onClick={handleSubmit}>
                 Save
               </Button>
               <Button variant="default" onClick={() => onClose()}>
@@ -331,7 +338,10 @@ export const Experience = () => {
               />
             </Box>
             <Box className="input-section border-bottom">
-              <Title className="title">LinkedIn Url</Title>
+              <Title className="title">
+                <img src={linkedInImg} className="linked-in" alt="linkedIn logo" />
+                LinkedIn Url
+              </Title>
               <TextInput
                 withAsterisk
                 label="Paste the LinkedIn company page link"
@@ -449,34 +459,26 @@ export const Experience = () => {
             { maxWidth: 'md', slideSize: '50%' },
           ]}
         >
-          {data.map(
-            (
-              {
-                designation,
-                companyName,
-                companyStartDate,
-                companyEndDate,
-                isVerified,
-                verifiedBy,
-                description,
-              },
-              index
-            ) => {
-              return (
-                <Carousel.Slide key={index}>
-                  <WorkExperienceCard
-                    position={designation}
-                    companyName={companyName}
-                    isVerified={isVerified}
-                    companyStartYear={companyStartDate}
-                    companyEndYear={companyEndDate}
-                    verifierName={verifiedBy}
-                    verifierTestimonial={description}
-                  />
-                </Carousel.Slide>
-              );
-            }
-          )}
+          {workExperienceData
+            .reverse()
+            .map(
+              (
+                { designation, companyName, companyStartDate, companyEndDate, isVerified },
+                index
+              ) => {
+                return (
+                  <Carousel.Slide key={index}>
+                    <WorkExperienceCard
+                      position={designation}
+                      companyName={companyName}
+                      isVerified={isVerified}
+                      companyStartYear={companyStartDate}
+                      companyEndYear={companyEndDate}
+                    />
+                  </Carousel.Slide>
+                );
+              }
+            )}
         </Carousel>
       )}
       {workExperienceData.length > 0 && (

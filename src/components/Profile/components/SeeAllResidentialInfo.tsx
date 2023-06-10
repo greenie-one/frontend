@@ -99,7 +99,7 @@ export const SeeAllResidentialInfo = () => {
                     {!isVerified && <Button className="get-verified">Get Verified</Button>}
 
                     <Box className="delete-icon">
-                      <RiDeleteBin6Line size={'22px'} color="#697082" />
+                      <RiDeleteBin6Line size={'22px'} className="delete-btn" />
                     </Box>
                   </Box>
                 </Box>
