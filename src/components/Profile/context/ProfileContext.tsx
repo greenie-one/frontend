@@ -847,7 +847,10 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
     }
 
     skillForm.validateField('skillName');
-    if (skillForm.validateField('skillName').hasError) {
+    if (
+      skillForm.validateField('skillName').hasError &&
+      skillForm.validateField('expertise').hasError
+    ) {
       return;
     }
 
@@ -868,8 +871,8 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
         skillsAPIList.postSkill,
         {
           designation: skillForm.values.skillName,
-          isVerified: 0,
-          skillRate: skillForm.values.expertise,
+          isVerified: false,
+          skillRate: parseInt(skillForm.values.expertise, 10),
           user: 'GRN788209',
         },
         {

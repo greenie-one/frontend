@@ -12,7 +12,11 @@ export const SkillsCard: React.FC<CardProps> = ({ skill, skillRate, isVerified }
     <Box className="skill-card">
       <Box className="skill-img"></Box>
       <Box className="skill-wrapper">
-        <Text className="skill-rate">{skillRate}</Text>
+        <Text className="skill-rate">
+          {skillRate === 0 && 'Amature'}
+          {skillRate === 1 && 'Intermediate'}
+          {skillRate === 2 && 'Expert'}
+        </Text>
         <Box>
           <Text className="skill">{skill}</Text>
           {isVerified ? (

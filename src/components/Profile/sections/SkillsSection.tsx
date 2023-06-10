@@ -20,9 +20,9 @@ import { useProfileContext } from '../context/ProfileContext';
 import { AiOutlinePlus } from 'react-icons/ai';
 
 const expertise = [
-  { value: 'Amateur', label: 'Amature' },
-  { value: 'Intermediate', label: 'Intermediate' },
-  { value: 'Expert', label: 'Expert' },
+  { value: '0', label: 'Amature' },
+  { value: '1', label: 'Intermediate' },
+  { value: '2', label: 'Expert' },
 ];
 
 export const SkillsSection = () => {
