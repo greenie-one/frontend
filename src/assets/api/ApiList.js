@@ -17,11 +17,26 @@ export const profileAPIList = {
   createProfile: `${BASE_URL}/profiles/create`,
   getMyProfile: `${BASE_URL}/profiles/me`,
   searchProfile: `${BASE_URL}/profiles?search=`,
+  updateProfile: `${BASE_URL}/profiles`,
+  updateProfilePicture: `${BASE_URL}/utils/profile_pic`,
 }
 
 export const documentsAPIList = {
   getDocuments: `${BASE_URL}/ids/me`,
-  postDocuments: `${BASE_URL}/ids`,
+
+}
+
+export const aadharAPIList = {
+  requestOTPForAadhar: `${BASE_URL}/ids/aadhar/request-otp`,
+  verifyOTPForAadhar: `${BASE_URL}/ids/aadhar/verify-otp`
+}
+export const PANAPIList = {
+  requestOTPForPAN: `${BASE_URL}/ids/pan/request-otp`,
+  verifyOTPForPAN: `${BASE_URL}/ids/pan/verify-otp`
+}
+export const drivingLicenceAPIList = {
+  requestOTPForLicence: `${BASE_URL}/ids/licence/request-otp`,
+  verifyOTPForLicence: `${BASE_URL}/ids/licence/verify-otp`
 }
 
 export const workExperienceAPiList = {

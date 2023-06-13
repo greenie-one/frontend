@@ -1,29 +1,18 @@
-import {
-  Text,
-  Box,
-  Button,
-  Modal,
-  Title,
-  TextInput,
-  createStyles,
-  em,
-  rem,
-  Select,
-} from '@mantine/core';
+import { Text, Box, Button, Modal } from '@mantine/core';
 import '../styles/global.scss';
 import { VerificationIDCard } from '../components/VerificationIDCard';
-import { VerifyIdNoData } from '../components/VerifyIdNoData';
 import { Link } from 'react-router-dom';
-import { MdOutlineEdit } from 'react-icons/md';
+import { MdOutlineEdit, MdVerified } from 'react-icons/md';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 import { useProfileContext } from '../context/ProfileContext';
 import { Carousel } from '@mantine/carousel';
-
-const data = [
-  { documentsType: 'AADHAR', documentName: 'Aadhar Card', isVerified: false },
-  { documentsType: 'PAN', documentName: 'Pan Card', isVerified: true },
-  { documentsType: 'DRIVING_LICENSE', documentName: 'Driving Licence', isVerified: false },
-];
+import janeCooper from '../assets/janeCooper.png';
+import johnMarston from '../assets/johnMarston.png';
+import flyoMiles from '../assets/flyodMiles.png';
+import { AiOutlinePlus } from 'react-icons/ai';
+import aadharLogo from '../assets/aadhar-logo.png';
+import panLogo from '../assets/pan-logo.png';
+import licenceLogo from '../assets/licence-logo.png';
 
 const documentsType = [
   {
@@ -39,7 +28,6 @@ export const VerificationIDSection = () => {
   const [opened, { open, close }] = useDisclosure(false);
   const { documentsData, addDocument, documentsForm, detailsPage, dispatchDetailsPage } =
     useProfileContext();
-  const { classes: inputClasses } = inputStyles();
 
   const handlePageChange = (documentsType: string) => {
     if (documentsType === 'AADHAR') {
@@ -56,14 +44,6 @@ export const VerificationIDSection = () => {
     }
   };
 
-  const onClose = () => {
-    documentsForm.values.aadharNumber = '';
-    documentsForm.values.documentType = '';
-    documentsForm.values.drivingLicenseNumber = '';
-    documentsForm.values.panNumber = '';
-    close();
-  };
-
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     addDocument();
@@ -76,71 +56,23 @@ export const VerificationIDSection = () => {
         size={'65%'}
         fullScreen={isMobile}
         opened={opened}
-        onClose={() => onClose()}
-        title="Add documents"
+        onClose={close}
+        centered
       >
-        <form onSubmit={handleSubmit}>
-          <Box className="input-section">
-            <Title className="title">Select Document</Title>
-            <Select
-              withAsterisk
-              data={documentsType}
-              label="Select your document"
-              classNames={inputClasses}
-              {...documentsForm.getInputProps('documentType')}
-            />
+        <Box className="ids-wrapper">
+          <Box className="id-box" onClick={() => handlePageChange('AADHAR')}>
+            <img src={aadharLogo} alt="" />
+            <Text className="id-name">Aadhar Card</Text>
           </Box>
-          {documentsForm.values.documentType === 'AADHAR' && (
-            <Box className="input-section  border-bottom">
-              <Title className="title">Your Card Number</Title>
-              <TextInput
-                placeholder="Enter 16 digit number"
-                withAsterisk
-                data-autofocus
-                label="Enter Aadhar card number"
-                classNames={inputClasses}
-                {...documentsForm.getInputProps('aadharNumber')}
-              />
-            </Box>
-          )}
-          {documentsForm.values.documentType === 'PAN' && (
-            <Box className="input-section  border-bottom">
-              <Title className="title">Your Card Number</Title>
-              <TextInput
-                placeholder="Enter 10 digit number"
-                withAsterisk
-                data-autofocus
-                label="Enter PAN card number"
-                classNames={inputClasses}
-                {...documentsForm.getInputProps('panNumber')}
-              />
-            </Box>
-          )}
-          {documentsForm.values.documentType === 'DRIVING_LICENSE' && (
-            <Box className="input-section  border-bottom">
-              <Title className="title">Your Card Number</Title>
-              <TextInput
-                placeholder="Enter 15-16 digit number"
-                withAsterisk
-                data-autofocus
-                label="Enter driving licence number"
-                classNames={inputClasses}
-                {...documentsForm.getInputProps('drivingLicenseNumber')}
-              />
-            </Box>
-          )}
-
-          <Box className="location-wrapper">
-            <Box className="btn-wrapper">
-              <Button color="teal" type="submit">
-                Save
-              </Button>
-              <Button variant="default" onClick={() => onClose()}>
-                Cancel
-              </Button>
-            </Box>
+          <Box className="id-box" onClick={() => handlePageChange('PAN')}>
+            <img src={panLogo} alt="" />
+            <Text className="id-name">PAN Card</Text>
           </Box>
-        </form>
+          <Box className="id-box" onClick={() => handlePageChange('DRIVING_LICENSE')}>
+            <img src={licenceLogo} alt="" />
+            <Text className="id-name">Driving Licence</Text>
+          </Box>
+        </Box>
       </Modal>
       <Box className="header">
         <Box>
@@ -161,15 +93,33 @@ export const VerificationIDSection = () => {
         </Box>
       </Box>
 
-      {data.length === 0 ? (
+      {documentsData.length === 0 ? (
         <Box className="verify-id-no-data-wrapper">
           <Box className="verify-id-img">
-            <VerifyIdNoData />
+            <Box className="verify-data-no-data-card-wrapper">
+              <Box className="hidden-card">
+                <img className="card-img" src={janeCooper} alt="Profile Picture" />
+                <Text className="card-text">Jane Cooper </Text>
+              </Box>
+              <Box className="card">
+                <img className="card-img" src={johnMarston} alt="Profile Picture" />
+                <Text className="card-text">{`John Marston`} </Text>
+              </Box>
+              <Box className="hidden-card">
+                <img className="card-img" src={flyoMiles} alt="Profile Picture" />
+                <Text className="card-text">Floyd Miles</Text>
+              </Box>
+            </Box>
           </Box>
           <Box className="verify-id-text">
             <Text className="text-heading">Stand Out!!</Text>
             <Text className="text-subheading">Verify your identity </Text>
-            <Text className="text-subheading">and get a Greenie Check</Text>
+            <Text className="text-subheading">
+              `and get a {<MdVerified color="#8cf078" />} Greenie Check`
+            </Text>
+            <Button leftIcon={<AiOutlinePlus />} onClick={open} mt={'sm'} className="add-records">
+              Verify ID
+            </Button>
           </Box>
         </Box>
       ) : (
@@ -185,10 +135,10 @@ export const VerificationIDSection = () => {
             { maxWidth: 'md', slideSize: '50%' },
           ]}
         >
-          {data.map(({ documentsType, documentName, isVerified }, index) => (
+          {documentsData.map(({ documentType, documentNumber, isVerified }, index) => (
             <Carousel.Slide key={index}>
-              <Box onClick={() => handlePageChange(documentsType)}>
-                <VerificationIDCard documentName={documentName} isVerified={isVerified} />
+              <Box>
+                <VerificationIDCard documentName={documentNumber} isVerified={isVerified} />
               </Box>
             </Carousel.Slide>
           ))}
@@ -197,58 +147,3 @@ export const VerificationIDSection = () => {
     </section>
   );
 };
-
-const inputStyles = createStyles((theme) => ({
-  root: {
-    position: 'relative',
-    marginTop: '10px',
-    marginBottom: '10px',
-  },
-
-  input: {
-    height: '58px',
-    paddingTop: '18px',
-    fontSize: '16px',
-    fontWeight: 500,
-    borderRadius: '8px',
-    border: '1px solid #D1D4DB',
-    lineHeight: '19px',
-    letterSpacing: '-0.02em',
-    color: '#697082',
-
-    [`@media screen and (max-width: ${em(1024)})`]: {
-      height: '46px',
-      borderRadius: '6px',
-      fontSize: '10px',
-      lineHeight: '12px',
-      margin: '0 auto',
-    },
-  },
-
-  innerInput: {
-    height: rem(54),
-    paddingTop: rem(28),
-
-    [`@media screen and (max-width: ${em(1024)})`]: {
-      paddingTop: rem(8),
-    },
-  },
-
-  label: {
-    position: 'absolute',
-    pointerEvents: 'none',
-    fontSize: '12px',
-    paddingLeft: '14px',
-    paddingTop: '7px',
-    lineHeight: '14.52px',
-    letterSpacing: '-0.02em',
-    zIndex: 1,
-    color: '#697082',
-
-    [`@media screen and (max-width: ${em(1024)})`]: {
-      fontSize: '10px',
-      lineHeight: '10px',
-      paddingTop: '8px',
-    },
-  },
-}));

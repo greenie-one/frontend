@@ -115,15 +115,16 @@ export const Experience = () => {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     if (
-      !workExperienceForm.validateField('jobTitle').hasError &&
-      !workExperienceForm.validateField('companyName').hasError &&
+      !workExperienceForm.validateField('designation').hasError &&
       !workExperienceForm.validateField('companyType').hasError &&
-      !workExperienceForm.validateField('companyId').hasError &&
+      !workExperienceForm.validateField('companyName').hasError &&
+      !workExperienceForm.validateField('linkedInUrl').hasError &&
       !workExperienceForm.validateField('workEmail').hasError &&
       !workExperienceForm.validateField('companyId').hasError &&
       !workExperienceForm.validateField('startDate').hasError &&
-      !workExperienceForm.validateField('linkedInUrl').hasError &&
-      !workExperienceForm.validateField('workType').hasError
+      !workExperienceForm.validateField('endDate').hasError &&
+      !workExperienceForm.validateField('workType').hasError &&
+      !workExperienceForm.validateField('modeOfwork').hasError
     ) {
       addWorkExperience();
       onClose();
@@ -133,15 +134,16 @@ export const Experience = () => {
   const onClose = () => {
     close();
     setEmploymentType(null);
-    workExperienceForm.setFieldValue('jobTitle', '');
-    workExperienceForm.setFieldValue('companyName', '');
+    workExperienceForm.setFieldValue('designation', '');
     workExperienceForm.setFieldValue('companyType', '');
-    workExperienceForm.setFieldValue('companyId', '');
+    workExperienceForm.setFieldValue('companyName', '');
     workExperienceForm.setFieldValue('linkedInUrl', '');
     workExperienceForm.setFieldValue('workEmail', '');
     workExperienceForm.setFieldValue('companyId', '');
     workExperienceForm.setFieldValue('startDate', null);
     workExperienceForm.setFieldValue('endDate', null);
+    workExperienceForm.setFieldValue('workType', '');
+    workExperienceForm.setFieldValue('modeOfWork', '');
   };
 
   const handleCheck = () => {
@@ -202,7 +204,7 @@ export const Experience = () => {
                 classNames={inputClasses}
                 data-autofocus
                 withAsterisk
-                {...workExperienceForm.getInputProps('jobTitle')}
+                {...workExperienceForm.getInputProps('designation')}
               />
             </Box>
             <Box className="input-section">
@@ -292,14 +294,14 @@ export const Experience = () => {
                   data={workType}
                   label="Mode of Work"
                   classNames={inputClasses}
-                  {...workExperienceForm.getInputProps('workType.modeOfWork')}
+                  {...workExperienceForm.getInputProps('modeOfWork')}
                 />
                 <Select
                   withAsterisk
                   data={modeOfWork}
                   label="Select work type"
                   classNames={inputClasses}
-                  {...workExperienceForm.getInputProps('workType.workType')}
+                  {...workExperienceForm.getInputProps('workType')}
                 />
               </Box>
             </Box>
@@ -418,14 +420,19 @@ export const Experience = () => {
         </Box>
 
         {workExperienceData.length > 0 && (
-          <Box className="header-links">
-            <Text className="link" onClick={handleToggleWorkExperienceDetails}>
-              See all experiences
-            </Text>
-            <Button leftIcon={<MdOutlineEdit />} onClick={open} className="edit-btn">
-              Edit Section
-            </Button>
-          </Box>
+          <>
+            <Box className="header-links">
+              <Text className="link" onClick={handleToggleWorkExperienceDetails}>
+                See all experiences
+              </Text>
+              <Button leftIcon={<MdOutlineEdit />} onClick={open} className="edit-btn">
+                Edit Section
+              </Button>
+            </Box>
+            <Box className="edit-icon" onClick={open}>
+              <MdOutlineEdit size={'22px'} className="btn" />
+            </Box>
+          </>
         )}
       </Box>
 

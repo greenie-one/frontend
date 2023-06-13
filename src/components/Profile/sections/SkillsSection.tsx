@@ -19,7 +19,7 @@ import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 import { useProfileContext } from '../context/ProfileContext';
 import { AiOutlinePlus } from 'react-icons/ai';
 
-const expertise = [
+const skillRate = [
   { value: '0', label: 'Amature' },
   { value: '1', label: 'Intermediate' },
   { value: '2', label: 'Expert' },
@@ -65,17 +65,17 @@ export const SkillsSection = () => {
               data-autofocus
               label="Eg. Frontend, Backend"
               classNames={inputClasses}
-              {...skillForm.getInputProps('skillName')}
+              {...skillForm.getInputProps('designation')}
             />
           </Box>
           <Box className="input-section border-bottom">
             <Title className="title">Expertise</Title>
             <Select
               withAsterisk
-              data={expertise}
+              data={skillRate}
               label="Select your expertise"
               classNames={inputClasses}
-              {...skillForm.getInputProps('expertise')}
+              {...skillForm.getInputProps('skillRate')}
             />
           </Box>
           <Box className="location-wrapper">
@@ -96,14 +96,19 @@ export const SkillsSection = () => {
           <Text className="subheading">All government IDs, personal verification IDs etc.</Text>
         </Box>
         {skillData.length > 0 && (
-          <Box className="header-links">
-            <Text className="link" onClick={handleToggleSkillsDetails}>
-              See all documents
-            </Text>
-            <Button leftIcon={<MdOutlineEdit />} onClick={open} className="edit-btn">
-              Edit Section
-            </Button>
-          </Box>
+          <>
+            <Box className="header-links">
+              <Text className="link" onClick={handleToggleSkillsDetails}>
+                See all documents
+              </Text>
+              <Button leftIcon={<MdOutlineEdit />} onClick={open} className="edit-btn">
+                Edit Section
+              </Button>
+            </Box>
+            <Box className="edit-icon" onClick={open}>
+              <MdOutlineEdit size={'22px'} className="btn" />
+            </Box>
+          </>
         )}
       </Box>
 
