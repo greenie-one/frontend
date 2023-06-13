@@ -17,20 +17,52 @@ import { Link } from 'react-router-dom';
 import { MdOutlineEdit } from 'react-icons/md';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 import { useProfileContext } from '../context/ProfileContext';
+import { Carousel } from '@mantine/carousel';
+
+const data = [
+  { documentsType: 'AADHAR', documentName: 'Aadhar Card', isVerified: false },
+  { documentsType: 'PAN', documentName: 'Pan Card', isVerified: true },
+  { documentsType: 'DRIVING_LICENSE', documentName: 'Driving Licence', isVerified: false },
+];
 
 const documentsType = [
   {
-    value: 'pan',
+    value: 'PAN',
     label: 'Pan Card',
   },
-  { value: 'aadhar', label: 'Aadhar Card' },
+  { value: 'AADHAR', label: 'Aadhar Card' },
+  { value: 'DRIVING_LICENSE', label: 'Driving Licence' },
 ];
 
 export const VerificationIDSection = () => {
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
-  const { documentsData, addDocument, documentsForm } = useProfileContext();
+  const { documentsData, addDocument, documentsForm, detailsPage, dispatchDetailsPage } =
+    useProfileContext();
   const { classes: inputClasses } = inputStyles();
+
+  const handlePageChange = (documentsType: string) => {
+    if (documentsType === 'AADHAR') {
+      dispatchDetailsPage({ type: 'SET_SEE_AADHAR_CARD', payload: !detailsPage.seeAadharCard });
+    }
+    if (documentsType === 'PAN') {
+      dispatchDetailsPage({ type: 'SET_SEE_PAN_CARD', payload: !detailsPage.seePanCard });
+    }
+    if (documentsType === 'DRIVING_LICENSE') {
+      dispatchDetailsPage({
+        type: 'SET_SEE_DRIVER_LICENCE',
+        payload: !detailsPage.seeDrivingLicence,
+      });
+    }
+  };
+
+  const onClose = () => {
+    documentsForm.values.aadharNumber = '';
+    documentsForm.values.documentType = '';
+    documentsForm.values.drivingLicenseNumber = '';
+    documentsForm.values.panNumber = '';
+    close();
+  };
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -44,20 +76,10 @@ export const VerificationIDSection = () => {
         size={'65%'}
         fullScreen={isMobile}
         opened={opened}
-        onClose={close}
+        onClose={() => onClose()}
         title="Add documents"
       >
         <form onSubmit={handleSubmit}>
-          <Box className="input-section border-bottom">
-            <Title className="title">Your Name</Title>
-            <TextInput
-              withAsterisk
-              data-autofocus
-              label="Enter your name"
-              classNames={inputClasses}
-              {...documentsForm.getInputProps('userName')}
-            />
-          </Box>
           <Box className="input-section">
             <Title className="title">Select Document</Title>
             <Select
@@ -68,27 +90,42 @@ export const VerificationIDSection = () => {
               {...documentsForm.getInputProps('documentType')}
             />
           </Box>
-          {documentsForm.values.documentType === 'aadhar' && (
+          {documentsForm.values.documentType === 'AADHAR' && (
             <Box className="input-section  border-bottom">
               <Title className="title">Your Card Number</Title>
               <TextInput
+                placeholder="Enter 16 digit number"
                 withAsterisk
                 data-autofocus
-                label="Enter your aadhar card number"
+                label="Enter Aadhar card number"
                 classNames={inputClasses}
                 {...documentsForm.getInputProps('aadharNumber')}
               />
             </Box>
           )}
-          {documentsForm.values.documentType === 'pan' && (
+          {documentsForm.values.documentType === 'PAN' && (
             <Box className="input-section  border-bottom">
               <Title className="title">Your Card Number</Title>
               <TextInput
+                placeholder="Enter 10 digit number"
                 withAsterisk
                 data-autofocus
-                label="Enter your pan card number"
+                label="Enter PAN card number"
                 classNames={inputClasses}
                 {...documentsForm.getInputProps('panNumber')}
+              />
+            </Box>
+          )}
+          {documentsForm.values.documentType === 'DRIVING_LICENSE' && (
+            <Box className="input-section  border-bottom">
+              <Title className="title">Your Card Number</Title>
+              <TextInput
+                placeholder="Enter 15-16 digit number"
+                withAsterisk
+                data-autofocus
+                label="Enter driving licence number"
+                classNames={inputClasses}
+                {...documentsForm.getInputProps('drivingLicenseNumber')}
               />
             </Box>
           )}
@@ -98,7 +135,7 @@ export const VerificationIDSection = () => {
               <Button color="teal" type="submit">
                 Save
               </Button>
-              <Button variant="default" onClick={close}>
+              <Button variant="default" onClick={() => onClose()}>
                 Cancel
               </Button>
             </Box>
@@ -124,7 +161,7 @@ export const VerificationIDSection = () => {
         </Box>
       </Box>
 
-      {documentsData.length === 0 ? (
+      {data.length === 0 ? (
         <Box className="verify-id-no-data-wrapper">
           <Box className="verify-id-img">
             <VerifyIdNoData />
@@ -136,16 +173,26 @@ export const VerificationIDSection = () => {
           </Box>
         </Box>
       ) : (
-        <Box className="cards-wrapper">
-          {documentsData.map((document, index) => (
-            <Box key={index}>
-              <VerificationIDCard
-                documentName={document.documentType}
-                isVerified={document.isVerified}
-              />
-            </Box>
+        <Carousel
+          withIndicators={false}
+          slideSize="50%"
+          slideGap={24}
+          slidesToScroll={1}
+          align="start"
+          styles={{ control: { display: 'none' } }}
+          breakpoints={[
+            { maxWidth: 'xs', slideSize: '100%' },
+            { maxWidth: 'md', slideSize: '50%' },
+          ]}
+        >
+          {data.map(({ documentsType, documentName, isVerified }, index) => (
+            <Carousel.Slide key={index}>
+              <Box onClick={() => handlePageChange(documentsType)}>
+                <VerificationIDCard documentName={documentName} isVerified={isVerified} />
+              </Box>
+            </Carousel.Slide>
           ))}
-        </Box>
+        </Carousel>
       )}
     </section>
   );

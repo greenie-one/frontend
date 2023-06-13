@@ -8,37 +8,17 @@ import { CgSandClock } from 'react-icons/cg';
 import location from '../assets/location.png';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 
-const data = [
-  {
-    addressLineOne: '1901 Thorrodge Cir',
-    addressLineTwo: 'Baner, Pune',
-    landmark: 'JP Mall',
-    pincode: 3892230,
-    type: 'current',
-    state: 'Maharashtra',
-    country: 'India',
-    startDate: 'Jan 2017',
-    endDate: 'May 2020',
-    isVerified: true,
-    currentLocation: '',
-  },
-  {
-    addressLineOne: '1901 Thorrodge Cir',
-    addressLineTwo: 'Baner, Pune',
-    landmark: 'JP Mall',
-    pincode: 3892230,
-    type: 'current',
-    state: 'Maharashtra',
-    country: 'India',
-    startDate: 'Jan 2017',
-    endDate: 'May 2020',
-    isVerified: false,
-    currentLocation: '',
-  },
-];
+const type = 'current';
 
 export const SeeAllResidentialInfo = () => {
-  const { handleToggleResidentialDetails, residentialInfoData } = useProfileContext();
+  const { detailsPage, dispatchDetailsPage, residentialInfoData, deleteResidentialInfo } =
+    useProfileContext();
+  const handleToggleResidentialDetails = (): void => {
+    dispatchDetailsPage({
+      type: 'SET_SEE_ALL_RESIDENTIALINFO',
+      payload: !detailsPage.seeAllResidentialInfo,
+    });
+  };
   return (
     <section className="container">
       <Box className="see-all-header">
@@ -50,20 +30,20 @@ export const SeeAllResidentialInfo = () => {
         <Text>{`Residential Information (${residentialInfoData.length})`}</Text>
       </Box>
       <Box className="see-all-residential-info-card-wrapper">
-        {data.map(
+        {residentialInfoData.map(
           (
             {
-              addressLineOne,
-              addressLineTwo,
+              _id,
+              address_line_1,
+              address_line_2,
               landmark,
               pincode,
-              type,
               state,
               country,
-              startDate,
-              endDate,
+              city,
+              start_date,
+              end_date,
               isVerified,
-              currentLocation,
             },
             index
           ) => {
@@ -75,10 +55,9 @@ export const SeeAllResidentialInfo = () => {
                       <img className="location=img" src={location} alt="Location" />
                     </Box>
                     <Text>
-                      {addressLineOne}, {addressLineTwo}
+                      {address_line_1}, {address_line_2}, {city} {pincode}
                     </Text>
 
-                    <Text className="pincode">{pincode}</Text>
                     {isVerified ? (
                       <Button
                         leftIcon={<MdVerified color="#8CF078" size={'16px'} />}
@@ -98,8 +77,8 @@ export const SeeAllResidentialInfo = () => {
                   <Box className="button-wrappers">
                     {!isVerified && <Button className="get-verified">Get Verified</Button>}
 
-                    <Box className="delete-icon">
-                      <RiDeleteBin6Line size={'22px'} className="delete-btn" />
+                    <Box className="icon" onClick={() => deleteResidentialInfo(_id)}>
+                      <RiDeleteBin6Line size={'22px'} className="btn" />
                     </Box>
                   </Box>
                 </Box>
@@ -124,7 +103,7 @@ export const SeeAllResidentialInfo = () => {
                   <Box>
                     <Text className="heading">Living Since</Text>
                     <Text className="details">
-                      {startDate}-{endDate}
+                      {start_date.toString().substring(0, 7)}-{end_date.toString().substring(0, 7)}
                     </Text>
                   </Box>
                 </Box>

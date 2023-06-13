@@ -95,6 +95,18 @@
   }
 }
 
+.green-btn {
+  background-color: $green;
+  color: $white;
+  border-radius: 34px;
+  padding: 6px 52px;
+
+  &:hover {
+    background-color: $green;
+    opacity: 0.9;
+  }
+}
+
 .verified {
   font-weight: 500;
   font-size: 12px;
