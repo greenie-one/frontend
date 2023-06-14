@@ -53,6 +53,7 @@ export const BioSection = () => {
     profileForm.values.firstName = '';
     profileForm.values.lastName = '';
     profileForm.values.bio = '';
+    profileForm.values.descriptionTags = [];
     close();
   };
 
@@ -109,11 +110,7 @@ export const BioSection = () => {
               Introduce yourself in 3 words
             </Title>
 
-            <Chip.Group
-              multiple
-              {...profileForm.getInputProps('descriptionTags')}
-              defaultValue={profileData.descriptionTags}
-            >
+            <Chip.Group multiple {...profileForm.getInputProps('descriptionTags')}>
               <Group className="description-tags-box">
                 {skillSetOne.map((skill) => (
                   <Chip

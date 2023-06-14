@@ -127,7 +127,7 @@ interface ISkillDataType {
 }
 
 type profileFormType = {
-  [key: string]: string | string[] | null;
+  [key: string]: string | string[];
   firstName: string;
   lastName: string;
   bio: string;
@@ -382,35 +382,28 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   const updateProfile = async (id: string) => {
     try {
-      const data = profileForm.values;
-      const filteredData: any = {};
-      for (const key in data) {
-        const value = data[key];
-        if (value !== '' && value !== null) {
-          filteredData[key] = value;
-        }
+      const requestData: any = {};
+      if (profileForm.values.firstName !== '') {
+        requestData.firstName = profileForm.values.firstName;
+      }
+      if (profileForm.values.lastName !== '') {
+        requestData.lastName = profileForm.values.lastName;
+      }
+      if (profileForm.values.bio !== '') {
+        requestData.bio = profileForm.values.bio;
+      }
+      if (profileForm.values.descriptionTags.length === 3) {
+        requestData.descriptionTags = profileForm.values.descriptionTags;
       }
       const res = await axios
-        .patch(`${profileAPIList.updateProfile}/${id}`, filteredData, {
+        .patch(`${profileAPIList.updateProfile}/${id}`, requestData, {
           headers: {
             Authorization: `Bearer ${authTokens?.accessToken}`,
           },
         })
         .then(() => {
-          setTimeout(() => {
-            notifications.update({
-              id: 'load-state',
-              title: 'Sucess!',
-              message: 'Profile updated!',
-              autoClose: 2200,
-              withCloseButton: false,
-              color: 'teal',
-              icon: <BsCheckLg />,
-              sx: { borderRadius: em(8) },
-            });
-          }, 1100);
+          getProfile();
         });
-      getProfile();
     } catch (error: any) {
       console.log(error.message);
     }
@@ -1149,36 +1142,22 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
   // PATCH
   const updateSkill = async (id: string) => {
     try {
-      const filteredData: any = { designation: '', skillRate: 0 };
+      const requestData: any = {};
+
       if (skillForm.values.designation !== '') {
-        filteredData.designation = skillForm.values.designation;
+        requestData.designation = skillForm.values.designation;
       }
       if (skillForm.values.skillRate !== '') {
-        filteredData.skillRate = parseInt(skillForm.values.skillRate);
+        requestData.skillRate = parseInt(skillForm.values.skillRate);
       }
+      const res = await axios.patch(`${skillsAPIList.updateSkill}/${id}`, requestData, {
+        headers: {
+          Authorization: `Bearer ${authTokens?.accessToken}`,
+        },
+      });
 
-      const res = await axios
-        .patch(`${skillsAPIList.updateSkill}/${id}`, filteredData, {
-          headers: {
-            Authorization: `Bearer ${authTokens?.accessToken}`,
-          },
-        })
-        .then(() => {
-          setTimeout(() => {
-            notifications.update({
-              id: 'load-state',
-              title: 'Sucess!',
-              message: 'skill updated!',
-              autoClose: 2200,
-              withCloseButton: false,
-              color: 'teal',
-              icon: <BsCheckLg />,
-              sx: { borderRadius: em(8) },
-            });
-          }, 1100);
-          getSkills();
-          setIsLoading(false);
-        });
+      getSkills();
+      setIsLoading(false);
     } catch (error: any) {
       console.log(error.message);
     } finally {
