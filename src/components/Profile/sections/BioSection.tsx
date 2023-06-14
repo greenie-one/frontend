@@ -44,26 +44,22 @@ export const BioSection = () => {
   const { profileData, profileForm, updateProfile } = useProfileContext();
   const [updateId, setUpdateId] = useState('');
 
-  const handleFirstNameChange = (e: any) => {
-    profileForm.setFieldValue('firstName', e.target.value);
-  };
-  const handleLastNameChange = (e: any) => {
-    profileForm.setFieldValue('lastName', e.target.value);
-  };
-  const handleBioChange = (e: any) => {
-    profileForm.setFieldValue('bio', e.target.value);
-  };
-
   const handleOpenModal = () => {
     setUpdateId(profileData._id);
     open();
   };
 
+  const onClose = () => {
+    profileForm.values.firstName = '';
+    profileForm.values.lastName = '';
+    profileForm.values.bio = '';
+    close();
+  };
+
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    console.log(profileForm.values.firstName);
-    // updateProfile(updateId);
-    // close();
+    updateProfile(updateId);
+    onClose();
   };
 
   return (
@@ -73,7 +69,7 @@ export const BioSection = () => {
         size={'65%'}
         fullScreen={isMobile}
         opened={opened}
-        onClose={close}
+        onClose={onClose}
         title="Add Skills"
       >
         <form onSubmit={handleSubmit}>
@@ -84,8 +80,7 @@ export const BioSection = () => {
               data-autofocus
               label="Your first name"
               classNames={inputClasses}
-              value={profileData.firstName}
-              onChange={handleFirstNameChange}
+              {...profileForm.getInputProps('firstName')}
             />
           </Box>
           <Box className="input-section border-bottom">
@@ -95,8 +90,7 @@ export const BioSection = () => {
               data-autofocus
               label="Your last name"
               classNames={inputClasses}
-              defaultValue={profileData.lastName}
-              onChange={handleLastNameChange}
+              {...profileForm.getInputProps('lastName')}
             />
           </Box>
           <Box className="input-section border-bottom">
@@ -107,8 +101,7 @@ export const BioSection = () => {
               label="Your bio"
               classNames={inputClasses}
               minRows={8}
-              defaultValue={profileData.bio}
-              onChange={handleBioChange}
+              {...profileForm.getInputProps('bio')}
             />
           </Box>
           <Box>
@@ -146,14 +139,14 @@ export const BioSection = () => {
               <Button color="teal" type="submit">
                 Save
               </Button>
-              <Button type="button" variant="default" onClick={close}>
+              <Button type="button" variant="default" onClick={onClose}>
                 Cancel
               </Button>
             </Box>
           </Box>
         </form>
       </Modal>
-      <Box className="icon" onClick={open}>
+      <Box className="icon" onClick={handleOpenModal}>
         <MdOutlineEdit size={'22px'} className="btn" />
       </Box>
       <Box className="bio-name-box">
