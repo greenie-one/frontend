@@ -11,24 +11,60 @@ import {
   createStyles,
   em,
   rem,
+  Textarea,
 } from '@mantine/core';
 import { useState } from 'react';
 import level from '../assets/level.png';
 import levelFilled from '../assets/levelFilled.png';
 import medal from '../assets/medal.png';
 import copyIcon from '../assets/content_copy.png';
-import { MdVerified, MdOutlineEdit } from 'react-icons/md';
+import { MdVerified, MdOutlineEdit, MdOutlineContentCopy } from 'react-icons/md';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 import { useProfileContext } from '../context/ProfileContext';
 
+const skillSetOne = [
+  'Lone Wolf',
+  'Energetic',
+  'Prodigy',
+  'Self Initiator',
+  'Hardworking',
+  'Optimistic',
+  'Team Player',
+  'Micro Planner',
+  'Jack of All',
+];
+
 export const BioSection = () => {
-  const [userLevel, setUserLevel] = useState(0);
-  const [greeneId, setGreenieId] = useState('GRN788209');
+  const userLevel = 0;
+  const greeneId = 'GRN788209';
   const screenSize = useMediaQuery('(min-width: 768px)');
   const isMobile = useMediaQuery('(max-width: 768px)');
   const { classes: inputClasses } = inputStyles();
   const [opened, { open, close }] = useDisclosure(false);
-  const { profileData } = useProfileContext();
+  const { profileData, profileForm, updateProfile } = useProfileContext();
+  const [updateId, setUpdateId] = useState('');
+
+  const handleFirstNameChange = (e: any) => {
+    profileForm.setFieldValue('firstName', e.target.value);
+  };
+  const handleLastNameChange = (e: any) => {
+    profileForm.setFieldValue('lastName', e.target.value);
+  };
+  const handleBioChange = (e: any) => {
+    profileForm.setFieldValue('bio', e.target.value);
+  };
+
+  const handleOpenModal = () => {
+    setUpdateId(profileData._id);
+    open();
+  };
+
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    console.log(profileForm.values.firstName);
+    // updateProfile(updateId);
+    // close();
+  };
 
   return (
     <section className="bio-section container">
@@ -40,10 +76,69 @@ export const BioSection = () => {
         onClose={close}
         title="Add Skills"
       >
-        <form>
+        <form onSubmit={handleSubmit}>
+          <Box className="input-section">
+            <Title className="title">First Name</Title>
+            <TextInput
+              withAsterisk
+              data-autofocus
+              label="Your first name"
+              classNames={inputClasses}
+              value={profileData.firstName}
+              onChange={handleFirstNameChange}
+            />
+          </Box>
+          <Box className="input-section border-bottom">
+            <Title className="title">Last Name</Title>
+            <TextInput
+              withAsterisk
+              data-autofocus
+              label="Your last name"
+              classNames={inputClasses}
+              defaultValue={profileData.lastName}
+              onChange={handleLastNameChange}
+            />
+          </Box>
           <Box className="input-section border-bottom">
             <Title className="title">Tell Us about yourself</Title>
-            <TextInput withAsterisk data-autofocus label="Your bio" classNames={inputClasses} />
+            <Textarea
+              withAsterisk
+              data-autofocus
+              label="Your bio"
+              classNames={inputClasses}
+              minRows={8}
+              defaultValue={profileData.bio}
+              onChange={handleBioChange}
+            />
+          </Box>
+          <Box>
+            <Title className="title" align="center">
+              Introduce yourself in 3 words
+            </Title>
+
+            <Chip.Group
+              multiple
+              {...profileForm.getInputProps('descriptionTags')}
+              defaultValue={profileData.descriptionTags}
+            >
+              <Group className="description-tags-box">
+                {skillSetOne.map((skill) => (
+                  <Chip
+                    key={skill}
+                    value={skill}
+                    variant="filled"
+                    color="teal"
+                    size={'xs'}
+                    disabled={
+                      profileForm.values.descriptionTags.length === 3 &&
+                      !profileForm.values.descriptionTags.includes(skill)
+                    }
+                  >
+                    {skill}
+                  </Chip>
+                ))}
+              </Group>
+            </Chip.Group>
           </Box>
 
           <Box className="location-wrapper">
@@ -58,12 +153,12 @@ export const BioSection = () => {
           </Box>
         </form>
       </Modal>
-      <Button onClick={open} leftIcon={<MdOutlineEdit />} className="edit-btn">
-        Edit Section
-      </Button>
+      <Box className="icon" onClick={open}>
+        <MdOutlineEdit size={'22px'} className="btn" />
+      </Box>
       <Box className="bio-name-box">
         <Text className="bio-name">
-          {profileData?.firstName} <span>{profileData?.lastName}</span>
+          {profileData.firstName} <span>{profileData.lastName}</span>
         </Text>
         <MdVerified className="name-verified" size={'20px'} />
       </Box>
@@ -71,7 +166,7 @@ export const BioSection = () => {
       <Box className="chips">
         <Chip.Group>
           <Group>
-            {profileData?.descriptionTags.map((tag) => (
+            {profileData.descriptionTags.map((tag) => (
               <Chip key={tag} size={screenSize ? 'sm' : 'xs'}>
                 {tag}
               </Chip>
@@ -138,7 +233,7 @@ export const BioSection = () => {
             {({ copied, copy }) => (
               <Box className="greenie-id" onClick={copy}>
                 <Box className="icon-box">
-                  <img src={copyIcon} alt="copy" className="greenie-id-icon" />
+                  <MdOutlineContentCopy className="greenie-id-icon" />
                 </Box>
 
                 <Box>
@@ -154,10 +249,7 @@ export const BioSection = () => {
           </CopyButton>
         </Box>
       </Box>
-      <Text className="bio-text">
-        With over 20 years of experience in engineering leadership, John Smith is a seasoned
-        professional who has consistently driven success in complex and dynamic environments.
-      </Text>
+      <Text className="bio-text">{profileData.bio}</Text>
     </section>
   );
 };

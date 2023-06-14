@@ -12,8 +12,9 @@ import {
   Checkbox,
   Button,
 } from '@mantine/core';
+import { MonthPickerInput } from '@mantine/dates';
 import noData from '../assets/noData.png';
-import { MdOutlineEdit } from 'react-icons/md';
+import { MdOutlineEdit, MdOutlineCalendarMonth } from 'react-icons/md';
 import { Carousel } from '@mantine/carousel';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 import '../styles/global.scss';
@@ -80,16 +81,9 @@ const modeOfWork = [
 ];
 
 const companyTypes = [
-  { value: 'Corporation', label: 'Corporation' },
-  { value: 'Limited Liability Company (LLC)', label: 'Limited Liability Company (LLC)' },
-  { value: 'Partnership', label: 'Partnership' },
-  { value: 'Sole Proprietorship', label: 'Sole Proprietorship' },
-  { value: 'Nonprofit Organization', label: 'Nonprofit Organization' },
-  { value: 'Co-operative', label: 'Co-operative' },
-  { value: 'Government Agency', label: 'Government Agency' },
-  { value: 'Start-up', label: 'Start-up' },
-  { value: 'Small Business', label: 'Small Business' },
-  { value: 'Multinational Corporation', label: 'Multinational Corporation' },
+  { value: 'Startup', label: 'Start-up' },
+  { value: 'Registered', label: 'Registered' },
+  { value: 'Unregistered', label: 'Unregistered' },
 ];
 
 enum EmploymentType {
@@ -105,21 +99,56 @@ export const Experience = () => {
     workExperienceData,
     workExperienceForm,
     addWorkExperience,
-    freelanceExperienceForm,
-    handleToggleWorkExperienceDetails,
+    dispatchDetailsPage,
+    detailsPage,
   } = useProfileContext();
   const { classes: inputClasses } = inputStyles();
   const [checked, setChecked] = useState(false);
 
+  const handleToggleWorkExperienceDetails = (): void => {
+    dispatchDetailsPage({
+      type: 'SET_SEE_ALL_WORKEXPERIENCE',
+      payload: !detailsPage.seeAllWorkExperience,
+    });
+  };
+
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    addWorkExperience();
-    onClose();
+    if (
+      !workExperienceForm.validateField('designation').hasError &&
+      !workExperienceForm.validateField('companyType').hasError &&
+      !workExperienceForm.validateField('companyName').hasError &&
+      !workExperienceForm.validateField('linkedInUrl').hasError &&
+      !workExperienceForm.validateField('workEmail').hasError &&
+      !workExperienceForm.validateField('companyId').hasError &&
+      !workExperienceForm.validateField('startDate').hasError &&
+      !workExperienceForm.validateField('endDate').hasError &&
+      !workExperienceForm.validateField('workType').hasError &&
+      !workExperienceForm.validateField('modeOfwork').hasError
+    ) {
+      addWorkExperience();
+      onClose();
+    }
   };
 
   const onClose = () => {
     close();
     setEmploymentType(null);
+    workExperienceForm.setFieldValue('designation', '');
+    workExperienceForm.setFieldValue('companyType', '');
+    workExperienceForm.setFieldValue('companyName', '');
+    workExperienceForm.setFieldValue('linkedInUrl', '');
+    workExperienceForm.setFieldValue('workEmail', '');
+    workExperienceForm.setFieldValue('companyId', '');
+    workExperienceForm.setFieldValue('startDate', null);
+    workExperienceForm.setFieldValue('endDate', null);
+    workExperienceForm.setFieldValue('workType', '');
+    workExperienceForm.setFieldValue('modeOfWork', '');
+  };
+
+  const handleCheck = () => {
+    workExperienceForm.values.endDate = null;
+    setChecked(!checked);
   };
 
   return (
@@ -175,7 +204,7 @@ export const Experience = () => {
                 classNames={inputClasses}
                 data-autofocus
                 withAsterisk
-                {...workExperienceForm.getInputProps('jobTitle')}
+                {...workExperienceForm.getInputProps('designation')}
               />
             </Box>
             <Box className="input-section">
@@ -230,52 +259,32 @@ export const Experience = () => {
             </Box>
             <Box className="input-section border-bottom">
               <Title className="title">Start Date</Title>
-              <Box className="inner-input-section">
-                <Select
-                  withAsterisk
-                  data={months}
-                  label="From month"
-                  classNames={inputClasses}
-                  {...workExperienceForm.getInputProps('startDate.startMonth')}
-                />
-                <Select
-                  withAsterisk
-                  data={years}
-                  label="From year"
-                  classNames={inputClasses}
-                  {...workExperienceForm.getInputProps('startDate.startYear')}
-                />
-              </Box>
+              <MonthPickerInput
+                icon={<MdOutlineCalendarMonth />}
+                label="Start date"
+                withAsterisk
+                classNames={inputClasses}
+                {...workExperienceForm.getInputProps('startDate')}
+              />
             </Box>
             <Box className="input-section border-bottom">
               <Title className="title">End Date</Title>
-              <Box className="inner-input-box">
-                <Box className="inner-input-section">
-                  <Select
-                    withAsterisk
-                    disabled={checked}
-                    data={months}
-                    label="From month"
-                    classNames={inputClasses}
-                    {...workExperienceForm.getInputProps('endDate.endMonth')}
-                  />
-                  <Select
-                    withAsterisk
-                    disabled={checked}
-                    data={years}
-                    label="From year"
-                    classNames={inputClasses}
-                    {...workExperienceForm.getInputProps('endDate.endYear')}
-                  />
-                </Box>
-                <Checkbox
-                  checked={checked}
-                  onChange={(event) => setChecked(event.currentTarget.checked)}
-                  className="checkbox"
-                  color="teal"
-                  label="I currently work here"
-                />
-              </Box>
+              <MonthPickerInput
+                icon={<MdOutlineCalendarMonth />}
+                label="End date"
+                withAsterisk
+                classNames={inputClasses}
+                disabled={checked}
+                {...workExperienceForm.getInputProps('endDate')}
+              />
+
+              <Checkbox
+                checked={checked}
+                onChange={handleCheck}
+                className="checkbox"
+                color="teal"
+                label="I currently work here"
+              />
             </Box>
             <Box className="input-section border-bottom">
               <Title className="title">Work Type</Title>
@@ -285,14 +294,14 @@ export const Experience = () => {
                   data={workType}
                   label="Mode of Work"
                   classNames={inputClasses}
-                  {...workExperienceForm.getInputProps('workType.modeOfWork')}
+                  {...workExperienceForm.getInputProps('modeOfWork')}
                 />
                 <Select
                   withAsterisk
                   data={modeOfWork}
                   label="Select work type"
                   classNames={inputClasses}
-                  {...workExperienceForm.getInputProps('workType.workType')}
+                  {...workExperienceForm.getInputProps('workType')}
                 />
               </Box>
             </Box>
@@ -300,6 +309,7 @@ export const Experience = () => {
               <Button color="teal" type="submit" onClick={handleSubmit}>
                 Save
               </Button>
+
               <Button variant="default" onClick={() => onClose()}>
                 Cancel
               </Button>
@@ -324,7 +334,6 @@ export const Experience = () => {
                 classNames={inputClasses}
                 data-autofocus
                 withAsterisk
-                {...freelanceExperienceForm.getInputProps('role')}
               />
             </Box>
             <Box className="input-section">
@@ -332,7 +341,6 @@ export const Experience = () => {
               <Select
                 withAsterisk
                 data={companyName}
-                {...freelanceExperienceForm.getInputProps('companyName')}
                 label="Search by company website"
                 classNames={inputClasses}
               />
@@ -346,26 +354,13 @@ export const Experience = () => {
                 withAsterisk
                 label="Paste the LinkedIn company page link"
                 classNames={inputClasses}
-                {...freelanceExperienceForm.getInputProps('linkedInUrl')}
               />
             </Box>
             <Box className="input-section border-bottom">
               <Title className="title">Start Date</Title>
               <Box className="inner-input-section">
-                <Select
-                  withAsterisk
-                  data={months}
-                  label="From month"
-                  classNames={inputClasses}
-                  {...freelanceExperienceForm.getInputProps('startDate.startMonth')}
-                />
-                <Select
-                  withAsterisk
-                  data={years}
-                  label="From year"
-                  classNames={inputClasses}
-                  {...freelanceExperienceForm.getInputProps('startDate.startYear')}
-                />
+                <Select withAsterisk data={months} label="From month" classNames={inputClasses} />
+                <Select withAsterisk data={years} label="From year" classNames={inputClasses} />
               </Box>
             </Box>
             <Box className="input-section border-bottom">
@@ -378,7 +373,6 @@ export const Experience = () => {
                     data={months}
                     label="From month"
                     classNames={inputClasses}
-                    {...freelanceExperienceForm.getInputProps('endDate.endMonth')}
                   />
                   <Select
                     withAsterisk
@@ -386,7 +380,6 @@ export const Experience = () => {
                     data={years}
                     label="From year"
                     classNames={inputClasses}
-                    {...freelanceExperienceForm.getInputProps('endDate.endYear')}
                   />
                 </Box>
                 <Checkbox
@@ -406,7 +399,6 @@ export const Experience = () => {
                 data={modeOfWork}
                 label="Select work type"
                 classNames={inputClasses}
-                {...freelanceExperienceForm.getInputProps('workType')}
               />
             </Box>
             <Box className="btn-wrapper">
@@ -428,14 +420,19 @@ export const Experience = () => {
         </Box>
 
         {workExperienceData.length > 0 && (
-          <Box className="header-links">
-            <Text className="link" onClick={handleToggleWorkExperienceDetails}>
-              See all experiences
-            </Text>
-            <Button leftIcon={<MdOutlineEdit />} onClick={open} className="edit-btn">
-              Edit Section
-            </Button>
-          </Box>
+          <>
+            <Box className="header-links">
+              <Text className="link" onClick={handleToggleWorkExperienceDetails}>
+                See all experiences
+              </Text>
+              <Button leftIcon={<MdOutlineEdit />} onClick={open} className="edit-btn">
+                Edit Section
+              </Button>
+            </Box>
+            <Box className="edit-icon" onClick={open}>
+              <MdOutlineEdit size={'22px'} className="btn" />
+            </Box>
+          </>
         )}
       </Box>
 
@@ -495,6 +492,10 @@ const inputStyles = createStyles((theme) => ({
     position: 'relative',
     marginTop: '10px',
     marginBottom: '10px',
+  },
+
+  icon: {
+    marginTop: '16px',
   },
 
   input: {

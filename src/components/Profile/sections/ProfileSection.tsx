@@ -6,6 +6,10 @@ import { useProfileContext } from '../context/ProfileContext';
 import { SeeAllExperiences } from '../components/SeeAllExperiences';
 import { SeeAllSkills } from '../components/SeeAllSkills';
 import { SeeAllResidentialInfo } from '../components/SeeAllResidentialInfo';
+import { SeeAadharCard } from '../components/SeeAadharCard';
+import { SeePanCard } from '../components/SeePanCard';
+import { SeeDrivingLicence } from '../components/SeeDrivingLicence';
+import { SeeCongratulations } from '../components/SeeCongratulations';
 import { Box } from '@mantine/core';
 
 export const ProfileSection = () => {
@@ -14,7 +18,11 @@ export const ProfileSection = () => {
     <>
       {detailsPage.seeAllWorkExperience === false &&
         detailsPage.seeAllResidentialInfo === false &&
-        detailsPage.seeAllSkills === false && (
+        detailsPage.seeAllSkills === false &&
+        detailsPage.seeAadharCard === false &&
+        detailsPage.seePanCard === false &&
+        detailsPage.seeDrivingLicence === false &&
+        detailsPage.seeCongratulations === false && (
           <Box>
             <VerificationIDSection />
             <Experience />
@@ -25,6 +33,10 @@ export const ProfileSection = () => {
       {detailsPage.seeAllWorkExperience && <SeeAllExperiences />}
       {detailsPage.seeAllResidentialInfo && <SeeAllResidentialInfo />}
       {detailsPage.seeAllSkills && <SeeAllSkills />}
+      {detailsPage.seeAadharCard && <SeeAadharCard />}
+      {detailsPage.seePanCard && <SeePanCard />}
+      {detailsPage.seeDrivingLicence && <SeeDrivingLicence />}
+      {detailsPage.seeCongratulations && <SeeCongratulations />}
     </>
   );
 };

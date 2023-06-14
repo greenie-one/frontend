@@ -4,13 +4,16 @@ import GoogleButton from '../Google/GoogleButton';
 import TermsAndConditions from '../../assets/terms_and_conditions-greenie.pdf';
 import PrivacyPolicy from '../../assets/Privacy Policy-Greenie.pdf';
 import '../../styles/global.scss';
+import React from 'react';
 
 const SignUpStepOne = () => {
   const { signupForm, state, dispatch } = useAuthContext();
   const { classes: inputClasses } = inputStyles();
   const { signUpStep } = state;
 
-  const SignupStep1 = () => {
+  const SignupStep1 = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+
     if (signUpStep === 1 && !signupForm.validateField('emailPhone').hasError) {
       signupForm.clearErrors();
       signupForm.setFieldValue('password', '');

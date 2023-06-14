@@ -33,7 +33,8 @@ export const WorkExperienceCard: React.FC<CardProps> = ({
       <Box className="tenure-box">
         <Text className="since-text">Since</Text>
         <Text className="tenure">
-          {companyStartYear.substring(0, 4)}-{companyEndYear.substring(0, 4)}
+          {companyStartYear?.toString().substring(0, 4)}-
+          {companyEndYear?.toString().substring(0, 4)}
         </Text>
       </Box>
     </Box>

@@ -1,6 +1,73 @@
 .modal {
   form {
     padding-inline: 34px;
+    min-height: 30vh;
+
+    .disbledInput {
+      margin: 1rem auto;
+    }
+  }
+
+  .profile-modal {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    text-align: center;
+    img {
+      margin: 2rem auto;
+    }
+    .primaryBtn {
+      width: 70%;
+    }
+  }
+
+  .congratulations-modal {
+    text-align: center;
+
+    .sub-title {
+      margin: 22px 0px 16px 0px;
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 17px;
+      letter-spacing: -0.02em;
+      color: #b5a9a9;
+    }
+    .greenie-id {
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 700;
+      font-size: 36px;
+      line-height: 44px;
+      letter-spacing: -0.02em;
+      color: #282828;
+    }
+    .buttons-wrapper {
+      margin: 26px auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 190px;
+
+      .copy-btn {
+        font-weight: 500;
+        font-size: 12px;
+        color: $gray;
+        height: 25px;
+        padding: 0px 8px;
+        background: $white;
+        border: 1px solid $gray;
+        border-radius: 34px;
+        &:hover {
+          background: $white;
+        }
+      }
+    }
+    .primaryBtn {
+      max-width: 170px;
+    }
   }
 
   .linked-in {
@@ -8,19 +75,31 @@
     margin-top: -2px;
   }
 
+  .title {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 27px;
+    color: $dark;
+    width: 100%;
+    color: $dark;
+  }
+
+  .description-tags-box {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 12px;
+    row-gap: 12px;
+    align-items: center;
+    justify-content: space-between;
+    margin: 2rem auto;
+    max-width: 414px;
+  }
+
   .input-section {
     display: grid;
     align-items: center;
     justify-content: space-between;
     grid-template-columns: 40% 60%;
-
-    .title {
-      font-weight: 600;
-      font-size: 16px;
-      line-height: 27px;
-      color: $dark;
-      width: 100%;
-    }
 
     .checkbox {
       margin-bottom: 19px;
@@ -137,6 +216,28 @@
   text-align: center;
   color: $gray;
   margin-bottom: 1rem;
+}
+
+.otp-form {
+  display: grid;
+  justify-content: center;
+  padding: 1rem 0rem;
+
+  .title,
+  .warning {
+    text-align: center;
+  }
+
+  .warning {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 25px;
+    text-align: center;
+    letter-spacing: -0.02em;
+    color: #a3a3a3;
+  }
 }
 
 @media screen and (max-width: 1200px) {

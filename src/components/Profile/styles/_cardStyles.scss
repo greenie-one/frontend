@@ -1,50 +1,39 @@
 .verificationId-section {
-  .cards-wrapper {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 26px;
-    align-items: center;
-    justify-content: space-between;
+  .verificationIdCard {
+    cursor: pointer;
+    margin-bottom: 16px;
 
-    .verificationIdCard {
-      .verificationIdImg {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        height: 240px;
-        margin-bottom: 24px;
-        border-radius: 10px;
-        border: 1px solid $lightGray;
-        background: linear-gradient(
-          253.09deg,
-          rgba(217, 217, 217, 0.25) -7.53%,
-          rgba(217, 217, 217, 0) 97.04%
-        );
-        backdrop-filter: blur(25px);
-      }
+    .verificationIdImg {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 240px;
+      margin-bottom: 24px;
+      border-radius: 10px;
+      background: #f2f4f2;
+    }
 
-      .document-name {
-        font-weight: 600;
-        font-size: 20px;
-        line-height: 24px;
+    .document-name {
+      font-weight: 600;
+      font-size: 20px;
+      line-height: 24px;
+      letter-spacing: -0.02em;
+      color: $gray;
+      margin-bottom: 5px;
+    }
+
+    .is-verified-box {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      .is-verified-text {
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 19px;
         letter-spacing: -0.02em;
         color: $gray;
-        margin-bottom: 5px;
-      }
-
-      .is-verified-box {
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        .is-verified-text {
-          font-weight: 400;
-          font-size: 16px;
-          line-height: 19px;
-          letter-spacing: -0.02em;
-          color: $gray;
-          margin-right: 5px;
-        }
+        margin-right: 5px;
       }
     }
   }
@@ -156,7 +145,7 @@
       justify-content: flex-start;
 
       .location {
-        width: 50px;
+        width: 65px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -171,8 +160,7 @@
         line-height: 19px;
         letter-spacing: -0.02em;
         color: $dark;
-        margin-bottom: 18px;
-        width: 160px;
+        margin-bottom: 12px;
       }
     }
     .since-text {

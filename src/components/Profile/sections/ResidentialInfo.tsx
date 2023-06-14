@@ -12,8 +12,9 @@ import {
   Checkbox,
   Button,
 } from '@mantine/core';
+import { MonthPickerInput } from '@mantine/dates';
 import { Carousel } from '@mantine/carousel';
-import { MdOutlineEdit } from 'react-icons/md';
+import { MdOutlineEdit, MdOutlineCalendarMonth } from 'react-icons/md';
 import '../styles/global.scss';
 import noData from '../assets/noData.png';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
@@ -23,94 +24,77 @@ import { AiOutlinePlus } from 'react-icons/ai';
 import { ResidentialInfoCard } from '../components/ResidentialInfoCard';
 
 const states = [
-  { value: 'andhra pradesh', label: 'Andhra Pradesh' },
-  { value: 'arunachal pradesh', label: 'Arunachal Pradesh' },
-  { value: 'assam', label: 'Assam' },
-  { value: 'bihar', label: 'Bihar' },
-  { value: 'chhattisgarh', label: 'Chhattisgarh' },
-  { value: 'goa', label: 'Goa' },
-  { value: 'gujarat', label: 'Gujarat' },
-  { value: 'haryana', label: 'Haryana' },
-  { value: 'himachal pradesh', label: 'Himachal Pradesh' },
-  { value: 'jammu and kashmir', label: 'Jammu and Kashmir' },
-  { value: 'jharkhand', label: 'Jharkhand' },
-  { value: 'karnataka', label: 'Karnataka' },
-  { value: 'kerala', label: 'Kerala' },
-  { value: 'madhya pradesh', label: 'Madhya Pradesh' },
-  { value: 'maharashtra', label: 'Maharashtra' },
-  { value: 'manipur', label: 'Manipur' },
-  { value: 'meghalaya', label: 'Meghalaya' },
-  { value: 'mizoram', label: 'Mizoram' },
-  { value: 'nagaland', label: 'Nagaland' },
-  { value: 'odisha', label: 'Odisha' },
-  { value: 'punjab', label: 'Punjab' },
-  { value: 'rajasthan', label: 'Rajasthan' },
-  { value: 'sikkim', label: 'Sikkim' },
-  { value: 'tamil nadu', label: 'Tamil Nadu' },
-  { value: 'telangana', label: 'Telangana' },
-  { value: 'tripura', label: 'Tripura' },
-  { value: 'uttar pradesh', label: 'Uttar Pradesh' },
-  { value: 'uttarakhand', label: 'Uttarakhand' },
-  { value: 'west bengal', label: 'West Bengal' },
+  { value: 'Andhra Pradesh', label: 'Andhra Pradesh' },
+  { value: 'Arunachal Pradesh', label: 'Arunachal Pradesh' },
+  { value: 'Assam', label: 'Assam' },
+  { value: 'Bihar', label: 'Bihar' },
+  { value: 'Chhattisgarh', label: 'Chhattisgarh' },
+  { value: 'Goa', label: 'Goa' },
+  { value: 'Gujarat', label: 'Gujarat' },
+  { value: 'Haryana', label: 'Haryana' },
+  { value: 'Himachal Pradesh', label: 'Himachal Pradesh' },
+  { value: 'Jammu and Kashmir', label: 'Jammu and Kashmir' },
+  { value: 'Jharkhand', label: 'Jharkhand' },
+  { value: 'Karnataka', label: 'Karnataka' },
+  { value: 'Kerala', label: 'Kerala' },
+  { value: 'Madhya Pradesh', label: 'Madhya Pradesh' },
+  { value: 'Maharashtra', label: 'Maharashtra' },
+  { value: 'Manipur', label: 'Manipur' },
+  { value: 'Meghalaya', label: 'Meghalaya' },
+  { value: 'Mizoram', label: 'Mizoram' },
+  { value: 'Nagaland', label: 'Nagaland' },
+  { value: 'Odisha', label: 'Odisha' },
+  { value: 'Punjab', label: 'Punjab' },
+  { value: 'Rajasthan', label: 'Rajasthan' },
+  { value: 'Sikkim', label: 'Sikkim' },
+  { value: 'Tamil Nadu', label: 'Tamil Nadu' },
+  { value: 'Telangana', label: 'Telangana' },
+  { value: 'Tripura', label: 'Tripura' },
+  { value: 'Uttar Pradesh', label: 'Uttar Pradesh' },
+  { value: 'Uttarakhand', label: 'Uttarakhand' },
+  { value: 'West Bengal', label: 'West Bengal' },
 ];
 
 const countries = [
-  { value: 'united_states', label: 'United States' },
-  { value: 'china', label: 'China' },
-  { value: 'japan', label: 'Japan' },
-  { value: 'germany', label: 'Germany' },
-  { value: 'united_kingdom', label: 'United Kingdom' },
-  { value: 'india', label: 'India' },
-  { value: 'france', label: 'France' },
-  { value: 'italy', label: 'Italy' },
-  { value: 'canada', label: 'Canada' },
-  { value: 'south_korea', label: 'South Korea' },
-];
-
-const months = [
-  { value: 'january', label: 'January' },
-  { value: 'february', label: 'February' },
-  { value: 'march', label: 'March' },
-  { value: 'april', label: 'April' },
-  { value: 'may', label: 'May' },
-  { value: 'june', label: 'June' },
-  { value: 'july', label: 'July' },
-  { value: 'august', label: 'August' },
-  { value: 'september', label: 'September' },
-  { value: 'october', label: 'October' },
-  { value: 'november', label: 'November' },
-  { value: 'december', label: 'December' },
-];
-
-const years = [
-  { value: '2023', label: '2023' },
-  { value: '2022', label: '2022' },
-  { value: '2021', label: '2021' },
-  { value: '2020', label: '2020' },
-  { value: '2019', label: '2019' },
-  { value: '2018', label: '2018' },
-  { value: '2017', label: '2017' },
-  { value: '2016', label: '2016' },
-  { value: '2015', label: '2015' },
-  { value: '2014', label: '2014' },
-  { value: '2013', label: '2013' },
+  { value: 'United States', label: 'United States' },
+  { value: 'China', label: 'China' },
+  { value: 'Japan', label: 'Japan' },
+  { value: 'Germany', label: 'Germany' },
+  { value: 'United Kingdom', label: 'United Kingdom' },
+  { value: 'India', label: 'India' },
+  { value: 'France', label: 'France' },
+  { value: 'Italy', label: 'Italy' },
+  { value: 'Canada', label: 'Canada' },
+  { value: 'South Korea', label: 'South Korea' },
 ];
 
 export const ResidentialInfo = () => {
-  const screenSize = useMediaQuery('(min-width: 990px)');
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
   const {
     residentialInfoData,
     residentialInfoForm,
     addResidentialInfo,
-    handleToggleResidentialDetails,
+    detailsPage,
+    dispatchDetailsPage,
   } = useProfileContext();
   const { classes: inputClasses } = inputStyles();
   const [checked, setChecked] = useState(false);
 
   const handleLocation = () => {
     // @todo: API to be used. should use navigator?
+  };
+
+  const handleToggleResidentialDetails = (): void => {
+    dispatchDetailsPage({
+      type: 'SET_SEE_ALL_RESIDENTIALINFO',
+      payload: !detailsPage.seeAllResidentialInfo,
+    });
+  };
+
+  const handleCheck = () => {
+    residentialInfoForm.values.endDate = null;
+    setChecked(!checked);
   };
 
   const handleSubmit = (event: React.FormEvent) => {
@@ -131,12 +115,26 @@ export const ResidentialInfo = () => {
       >
         <form onSubmit={handleSubmit}>
           <Box className="input-section">
+            <Title className="title">Type of Address</Title>
+            <Select
+              data-autofocus
+              data={[
+                { value: 'Permenent', label: 'Permenent' },
+                { value: 'Current', label: 'Current' },
+              ]}
+              label="Type of address"
+              classNames={inputClasses}
+              {...residentialInfoForm.getInputProps('typeOfAddress')}
+              withAsterisk
+            />
+          </Box>
+          <Box className="input-section">
             <Title className="title">Address Line 1</Title>
             <TextInput
               data-autofocus
               label="Address line 1"
               classNames={inputClasses}
-              {...residentialInfoForm.getInputProps('address.addressLineOne')}
+              {...residentialInfoForm.getInputProps('address_line_1')}
               withAsterisk
             />
           </Box>
@@ -145,7 +143,7 @@ export const ResidentialInfo = () => {
             <TextInput
               label="Address line 2"
               classNames={inputClasses}
-              {...residentialInfoForm.getInputProps('address.addressLineTwo')}
+              {...residentialInfoForm.getInputProps('address_line_2')}
               withAsterisk
             />
           </Box>
@@ -154,7 +152,16 @@ export const ResidentialInfo = () => {
             <TextInput
               label="Landmark"
               classNames={inputClasses}
-              {...residentialInfoForm.getInputProps('address.landmark')}
+              {...residentialInfoForm.getInputProps('landmark')}
+              withAsterisk
+            />
+          </Box>
+          <Box className="input-section ">
+            <Title className="title">City</Title>
+            <TextInput
+              label="City"
+              classNames={inputClasses}
+              {...residentialInfoForm.getInputProps('city')}
               withAsterisk
             />
           </Box>
@@ -175,67 +182,49 @@ export const ResidentialInfo = () => {
                 data={states}
                 label="Select state"
                 classNames={inputClasses}
-                {...residentialInfoForm.getInputProps('stateCountry.state')}
+                {...residentialInfoForm.getInputProps('state')}
                 withAsterisk
               />
               <Select
                 data={countries}
                 label="Select country"
                 classNames={inputClasses}
-                {...residentialInfoForm.getInputProps('stateCountry.country')}
+                {...residentialInfoForm.getInputProps('country')}
                 withAsterisk
               />
             </Box>
           </Box>
           <Box className="input-section">
             <Title className="title">Start Date</Title>
-            <Box className="inner-input-section">
-              <Select
-                data={months}
-                label="From month"
-                classNames={inputClasses}
-                {...residentialInfoForm.getInputProps('startDate.startMonth')}
-                withAsterisk
-              />
-              <Select
-                data={years}
-                label="From year"
-                classNames={inputClasses}
-                {...residentialInfoForm.getInputProps('startDate.startYear')}
-                withAsterisk
-              />
-            </Box>
+
+            <MonthPickerInput
+              icon={<MdOutlineCalendarMonth />}
+              label="Start date"
+              withAsterisk
+              classNames={inputClasses}
+              {...residentialInfoForm.getInputProps('start_date')}
+            />
           </Box>
           <Box className="input-section border-bottom">
             <Title className="title">End Date</Title>
-            <Box className="inner-input-box">
-              <Box className="inner-input-section">
-                <Select
-                  withAsterisk
-                  disabled={checked}
-                  data={months}
-                  label="From month"
-                  classNames={inputClasses}
-                  {...residentialInfoForm.getInputProps('endDate.endMonth')}
-                />
-                <Select
-                  withAsterisk
-                  disabled={checked}
-                  data={years}
-                  label="From year"
-                  classNames={inputClasses}
-                  {...residentialInfoForm.getInputProps('endDate.endYear')}
-                />
-              </Box>
-              <Checkbox
-                checked={checked}
-                onChange={(event) => setChecked(event.currentTarget.checked)}
-                className="checkbox"
-                color="teal"
-                label="I currently work here"
-              />
-            </Box>
+
+            <MonthPickerInput
+              icon={<MdOutlineCalendarMonth />}
+              label="End date"
+              withAsterisk
+              classNames={inputClasses}
+              {...residentialInfoForm.getInputProps('endDate')}
+            />
+
+            <Checkbox
+              checked={checked}
+              onChange={handleCheck}
+              className="checkbox"
+              color="teal"
+              label="I currently work here"
+            />
           </Box>
+
           <Box className="location-wrapper">
             <Button
               leftIcon={<IoLocationOutline size={'22px'} />}
@@ -264,14 +253,19 @@ export const ResidentialInfo = () => {
         </Box>
 
         {residentialInfoData.length > 0 && (
-          <Box className="header-links">
-            <Text className="link" onClick={handleToggleResidentialDetails}>
-              See all documents
-            </Text>
-            <Button leftIcon={<MdOutlineEdit />} onClick={open} className="edit-btn">
-              Edit Section
-            </Button>
-          </Box>
+          <>
+            <Box className="header-links">
+              <Text className="link" onClick={handleToggleResidentialDetails}>
+                See all documents
+              </Text>
+              <Button leftIcon={<MdOutlineEdit />} onClick={open} className="edit-btn">
+                Edit Section
+              </Button>
+            </Box>
+            <Box className="edit-icon" onClick={open}>
+              <MdOutlineEdit size={'22px'} className="btn" />
+            </Box>
+          </>
         )}
       </Box>
 
@@ -288,7 +282,7 @@ export const ResidentialInfo = () => {
           slideSize="33.30%"
           slideGap={24}
           loop={false}
-          slidesToScroll={screenSize ? 0 : 1}
+          slidesToScroll={1}
           align="start"
           styles={{ control: { display: 'none' } }}
           breakpoints={[
@@ -296,16 +290,43 @@ export const ResidentialInfo = () => {
             { maxWidth: 'md', slideSize: '50%' },
           ]}
         >
-          {/* {residentialInfoData.map(({ address, tenure, isVerified }, index) => {
-            return (
-              <Carousel.Slide key={index}>
-                <ResidentialInfoCard address={address} tenure={tenure} isVerified={isVerified} />
-              </Carousel.Slide>
-            );
-          })} */}
+          {residentialInfoData.map(
+            (
+              {
+                address_line_1,
+                address_line_2,
+                landmark,
+                pincode,
+                start_date,
+                end_date,
+                isVerified,
+                city,
+              },
+              index
+            ) => {
+              return (
+                <Carousel.Slide key={index}>
+                  <ResidentialInfoCard
+                    city={city}
+                    address_line_1={address_line_1}
+                    address_line_2={address_line_2}
+                    landmark={landmark}
+                    pincode={pincode}
+                    start_date={start_date}
+                    end_date={end_date}
+                    isVerified={isVerified}
+                  />
+                </Carousel.Slide>
+              );
+            }
+          )}
         </Carousel>
       )}
-      {residentialInfoData.length > 0 && <Button className="see-all-btn">See All</Button>}
+      {residentialInfoData.length > 0 && (
+        <Button className="see-all-btn" onClick={handleToggleResidentialDetails}>
+          See All
+        </Button>
+      )}
     </section>
   );
 };
@@ -315,6 +336,10 @@ const inputStyles = createStyles((theme) => ({
     position: 'relative',
     marginTop: '10px',
     marginBottom: '10px',
+  },
+
+  icon: {
+    marginTop: '18px',
   },
 
   input: {
