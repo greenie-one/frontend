@@ -1,11 +1,13 @@
 import { useForm, isNotEmpty } from '@mantine/form';
+import { useProfileContext } from '../../Profile/context/ProfileContext';
 
 export const useProfileSettingsForm = () => {
+  const { profileData } = useProfileContext();
   const profileSettingsForm = useForm({
     initialValues: {
-      firstName: 'John',
-      lastName: 'Marston',
-      bio: 'With over 20 years of experience in engineering leadership, John Smith is a seasoned professional who has consistently driven success in complex and dynamic environments. ',
+      firstName: profileData?.firstName,
+      lastName: profileData?.lastName,
+      bio: profileData?.bio,
     },
 
     transformValues: (values) => ({
