@@ -127,6 +127,7 @@ interface ISkillDataType {
 }
 
 type profileFormType = {
+  [key: string]: string | string[] | null;
   firstName: string;
   lastName: string;
   bio: string;
@@ -381,43 +382,35 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   const updateProfile = async (id: string) => {
     try {
-      if (
-        !profileForm.validateField('firstName').hasError &&
-        !profileForm.validateField('lastName').hasError &&
-        !profileForm.validateField('bio').hasError &&
-        !profileForm.validateField('descriptionTags').hasError
-      ) {
-        console.log('run');
-        const res = await axios
-          .patch(
-            `${profileAPIList.updateProfile}/${id}`,
-            {
-              firstName: profileForm.values.firstName,
-              lastNameL: profileForm.values.lastName,
-              bio: profileForm.values.bio,
-              descrptionTags: profileForm.values.descriptionTags,
-            },
-            {
-              headers: {
-                Authorization: `Bearer ${authTokens?.accessToken}`,
-              },
-            }
-          )
-          .then(() => {
-            setTimeout(() => {
-              notifications.update({
-                id: 'load-state',
-                title: 'Sucess!',
-                message: 'Profile updated!',
-                autoClose: 2200,
-                withCloseButton: false,
-                color: 'teal',
-                icon: <BsCheckLg />,
-                sx: { borderRadius: em(8) },
-              });
-            }, 1100);
-          });
+      const data = profileForm.values;
+      const filteredData: any = {};
+      for (const key in data) {
+        const value = data[key];
+        if (value !== '' && value !== null) {
+          filteredData[key] = value;
+        }
       }
+      const res = await axios
+        .patch(`${profileAPIList.updateProfile}/${id}`, filteredData, {
+          headers: {
+            Authorization: `Bearer ${authTokens?.accessToken}`,
+          },
+        })
+        .then(() => {
+          setTimeout(() => {
+            notifications.update({
+              id: 'load-state',
+              title: 'Sucess!',
+              message: 'Profile updated!',
+              autoClose: 2200,
+              withCloseButton: false,
+              color: 'teal',
+              icon: <BsCheckLg />,
+              sx: { borderRadius: em(8) },
+            });
+          }, 1100);
+        });
+      getProfile();
     } catch (error: any) {
       console.log(error.message);
     }
