@@ -6,6 +6,10 @@ export const sidebarStyles = createStyles((theme) => ({
     background: '#FFFFFF',
     borderRadius: em(15),
     maxHeight: rem(560),
+
+    [`@media screen and (max-width: ${rem(768)})`]: {
+      display: 'none',
+    },
   },
 
   settingOptionsList: {

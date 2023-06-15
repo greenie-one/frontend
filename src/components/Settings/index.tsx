@@ -6,7 +6,6 @@ import { ArticleContent } from './components/ArticleContents';
 
 export const Settings: React.FC = (): JSX.Element => {
   const { classes } = settingsStyles();
-  const [showDetailsId, setShowDetailsId] = useState<number>(0);
 
   return (
     <>
@@ -15,8 +14,8 @@ export const Settings: React.FC = (): JSX.Element => {
       </header>
       <main className={classes.settingsMain}>
         <div className={classes.settingsPageContainer}>
-          <Sidebar showDetailsId={showDetailsId} setShowDetailsId={setShowDetailsId} />
-          <ArticleContent showDetailsId={showDetailsId} />
+          <Sidebar />
+          <ArticleContent />
         </div>
       </main>
     </>

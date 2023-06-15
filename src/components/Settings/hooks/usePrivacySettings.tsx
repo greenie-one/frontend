@@ -3,9 +3,9 @@ import { useForm, matchesField, hasLength } from '@mantine/form';
 export const usePrivacySettingsForm = () => {
   const privacySettingsForm = useForm({
     initialValues: {
-      currentPassword: 'currentPassword',
-      newPassword: 'myNewPassword',
-      confirmPassword: 'myNewPassword',
+      currentPassword: 'Current Password',
+      newPassword: 'New Password',
+      confirmPassword: 'My New Password',
     },
 
     validate: {

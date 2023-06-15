@@ -25,6 +25,7 @@ export const detailsFormStyles = createStyles((theme) => ({
     fontSize: rem(15),
     color: '#191819',
     marginBlockEnd: rem(2),
+    marginTop: rem(24),
   },
 
   textarea: {
@@ -56,6 +57,10 @@ export const detailsInputStyles = createStyles((theme) => ({
     fontSize: rem(14),
     fontWeight: 500,
     borderRadius: rem(8),
+
+    [`@media screen and (max-width: ${rem(768)})`]: {
+      maxWidth: '100vw',
+    },
   },
 
   innerInput: {

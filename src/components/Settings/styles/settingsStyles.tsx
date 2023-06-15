@@ -13,5 +13,11 @@ export const settingsStyles = createStyles((theme) => ({
     display: 'grid',
     gridTemplateColumns: '15rem 1fr',
     gap: '2rem',
+    gridAutoFlow: 'column-reverse',
+
+    [`@media screen and (max-width: ${rem(768)})`]: {
+      gridTemplateColumns: '100%',
+      paddingInline: '0.5rem',
+    },
   },
 }));

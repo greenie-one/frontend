@@ -37,6 +37,7 @@ export const ConfirmationModal: React.FC<IModalPropsType> = ({
         <Text className={modalStyles.confirmationMsg}>
           Are you sure you want to update the changes made?
         </Text>
+
         <Box className={modalStyles.modalBtnsContainer}>
           {[
             { variant: 'filled', text: 'Confirm', action: handleConfirmation },
