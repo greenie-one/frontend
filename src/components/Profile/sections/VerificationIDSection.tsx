@@ -26,8 +26,7 @@ const documentsType = [
 export const VerificationIDSection = () => {
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
-  const { documentsData, addDocument, documentsForm, detailsPage, dispatchDetailsPage } =
-    useProfileContext();
+  const { documentsData, documentsForm, detailsPage, dispatchDetailsPage } = useProfileContext();
 
   const handlePageChange = (documentsType: string) => {
     if (documentsType === 'AADHAR') {
@@ -42,11 +41,6 @@ export const VerificationIDSection = () => {
         payload: !detailsPage.seeDrivingLicence,
       });
     }
-  };
-
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
-    addDocument();
   };
 
   return (
@@ -79,18 +73,18 @@ export const VerificationIDSection = () => {
           <Text className="heading">{`Verification ID (${documentsData.length})`}</Text>
           <Text className="subheading">All government IDs, personal verification IDs etc.</Text>
         </Box>
-
-        <Box className="header-links">
-          {documentsData.length > 0 && (
-            <Link className="link" to={'/'}>
-              See all documents
-            </Link>
-          )}
-
-          <Button leftIcon={<MdOutlineEdit />} onClick={open} className="edit-btn">
-            Edit Section
-          </Button>
-        </Box>
+        {documentsData.length > 0 && (
+          <>
+            <Box className="header-links">
+              <Button leftIcon={<MdOutlineEdit />} onClick={open} className="edit-btn">
+                Edit Section
+              </Button>
+            </Box>
+            <Box className="edit-icon" onClick={open}>
+              <MdOutlineEdit size={'22px'} className="btn" />
+            </Box>
+          </>
+        )}
       </Box>
 
       {documentsData.length === 0 ? (
@@ -135,10 +129,10 @@ export const VerificationIDSection = () => {
             { maxWidth: 'md', slideSize: '50%' },
           ]}
         >
-          {documentsData.map(({ documentType, documentNumber, isVerified }, index) => (
+          {documentsData.map(({ id_type }, index) => (
             <Carousel.Slide key={index}>
               <Box>
-                <VerificationIDCard documentName={documentNumber} isVerified={isVerified} />
+                <VerificationIDCard documentName={id_type} isVerified={true} />
               </Box>
             </Carousel.Slide>
           ))}

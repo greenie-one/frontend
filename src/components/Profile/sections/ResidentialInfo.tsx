@@ -99,8 +99,22 @@ export const ResidentialInfo = () => {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    addResidentialInfo();
-    close();
+
+    if (
+      !residentialInfoForm.validateField('address_line_1').hasError &&
+      !residentialInfoForm.validateField('address_line_2').hasError &&
+      !residentialInfoForm.validateField('landmark').hasError &&
+      !residentialInfoForm.validateField('city').hasError &&
+      !residentialInfoForm.validateField('pincode').hasError &&
+      !residentialInfoForm.validateField('typeOfAddress').hasError &&
+      !residentialInfoForm.validateField('state').hasError &&
+      !residentialInfoForm.validateField('country').hasError &&
+      !residentialInfoForm.validateField('start_date').hasError &&
+      !residentialInfoForm.validateField('end_date').hasError
+    ) {
+      addResidentialInfo();
+      close();
+    }
   };
 
   return (

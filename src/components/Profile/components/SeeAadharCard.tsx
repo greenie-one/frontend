@@ -12,14 +12,23 @@ import {
   rem,
   TextInput,
   Title,
+  CopyButton,
 } from '@mantine/core';
+import { FaExclamation } from 'react-icons/fa';
+import { MdVerified, MdOutlineContentCopy } from 'react-icons/md';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
-import { BsArrowLeft } from 'react-icons/bs';
+import { BsArrowLeft, BsCheckLg } from 'react-icons/bs';
 import { AiOutlineRight } from 'react-icons/ai';
 import AadharImg from '../assets/Aadhar.png';
 import john from '../assets/johnMarston.png';
+import { notifications } from '@mantine/notifications';
 import { aadharAPIList } from '../../../assets/api/ApiList';
 import axios from 'axios';
+
+interface VerificationData {
+  requestId: string;
+  taskId: string;
+}
 
 export const SeeAadharCard = () => {
   const [opened, { open, close }] = useDisclosure(false);
@@ -27,17 +36,152 @@ export const SeeAadharCard = () => {
   const [isVerified, setIsVerified] = useState(false);
   const { classes: inputClasses } = inputStyles();
   const isMobile = useMediaQuery('(max-width: 768px)');
-  const { detailsPage, dispatchDetailsPage, verifyAadharForm, requestOTPForAadhar } =
-    useProfileContext();
+  const { detailsPage, dispatchDetailsPage, verifyAadharForm, getDocuments } = useProfileContext();
+  const [verificationData, setVerificationData] = useState<VerificationData>({
+    requestId: '',
+    taskId: '',
+  });
+  const greeneId = 'GRN788209';
 
-  const handleCheck = () => {
-    setChecked(!checked);
+  const token = localStorage.getItem('auth-tokens');
+  const authTokens = token ? JSON.parse(token) : null;
+
+  const handleOpenModal = async () => {
+    if (!verifyAadharForm.validateField('aadharNo').hasError && checked) {
+      try {
+        notifications.show({
+          id: 'load-data',
+          title: 'Sending OTP to linked phone number...',
+          message: 'Please wait while we send OTP to your linked number.',
+          loading: true,
+          autoClose: false,
+          withCloseButton: false,
+          sx: { borderRadius: em(8) },
+        });
+        const res = await axios.post(
+          `${aadharAPIList.requestOTPForAadhar}`,
+          {
+            id_type: 'AADHAR',
+            id_number: verifyAadharForm.values.aadharNo,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${authTokens?.accessToken}`,
+            },
+          }
+        );
+        if (res.data.success) {
+          const { request_id, taskId } = res.data;
+          setVerificationData((prevState) => ({
+            ...prevState,
+            requestId: request_id,
+            taskId: taskId,
+          }));
+          notifications.update({
+            id: 'load-data',
+            title: 'Success!',
+            message: 'OTP Sent to your linked phone number',
+            autoClose: 2200,
+            withCloseButton: false,
+            color: 'teal',
+            icon: <BsCheckLg />,
+            sx: { borderRadius: em(8) },
+          });
+          open();
+        }
+      } catch (error: any) {
+        if (error.response?.data?.code === 'GR0033') {
+          notifications.update({
+            id: 'load-data',
+            title: 'Invalid ID Number!',
+            message: 'Please enter valid Aadhar number',
+            autoClose: 2200,
+            withCloseButton: false,
+            color: 'red',
+            icon: <FaExclamation />,
+            sx: { borderRadius: em(8) },
+          });
+        }
+        if (error.response?.data?.code === 'GR0034') {
+          notifications.update({
+            id: 'load-data',
+            title: 'Limit exceeded!',
+            message: 'Rate limit exceeded for OTP requests',
+            autoClose: 2200,
+            withCloseButton: false,
+            color: 'red',
+            icon: <FaExclamation />,
+            sx: { borderRadius: em(8) },
+          });
+        }
+        notifications.update({
+          id: 'load-data',
+          title: 'Something went wrong',
+          message: `${error.message}`,
+          autoClose: 2200,
+          withCloseButton: false,
+          color: 'red',
+          icon: <FaExclamation />,
+          sx: { borderRadius: em(8) },
+        });
+      }
+    }
   };
 
-  const handleOpenModal = () => {
-    if (!verifyAadharForm.validateField('aadharNo').hasError && checked) {
-      open();
-      // requestOTPForAadhar();
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (!verifyAadharForm.validateField('otp').hasError) {
+      try {
+        notifications.show({
+          id: 'load-data',
+          title: 'Verifying your OTP...',
+          message: 'Please wait while we verify your OTP',
+          loading: true,
+          autoClose: false,
+          withCloseButton: false,
+          sx: { borderRadius: em(8) },
+        });
+        const { taskId, requestId } = verificationData;
+        const res = await axios.post(
+          `${aadharAPIList.verifyOTPForAadhar}`,
+          { otp: verifyAadharForm.values.otp, request_id: requestId, task_id: taskId },
+          {
+            headers: {
+              Authorization: `Bearer ${authTokens?.accessToken}`,
+            },
+          }
+        );
+        if (res.data.success) {
+          notifications.update({
+            id: 'load-data',
+            title: 'Success !',
+            message: 'OTP Verified Successfully',
+            autoClose: 2200,
+            withCloseButton: false,
+            color: 'teal',
+            icon: <BsCheckLg />,
+            sx: { borderRadius: em(8) },
+          });
+          close();
+          setIsVerified(true);
+          verifyAadharForm.values.otp = '';
+          verifyAadharForm.values.aadharNo = '';
+          getDocuments();
+        }
+      } catch (error: any) {
+        if (error.response?.data?.code === 'GR0033') {
+          notifications.update({
+            id: 'load-data',
+            title: 'Invalid OTP!',
+            message: 'Please enter valid OTP',
+            autoClose: 2200,
+            withCloseButton: false,
+            color: 'red',
+            icon: <FaExclamation />,
+            sx: { borderRadius: em(8) },
+          });
+        }
+      }
     }
   };
 
@@ -45,12 +189,6 @@ export const SeeAadharCard = () => {
     dispatchDetailsPage({ type: 'SET_SEE_AADHAR_CARD', payload: !detailsPage.seeAadharCard });
     verifyAadharForm.values.aadharNo = '';
     verifyAadharForm.values.otp = '';
-  };
-
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
-    setIsVerified(true);
-    close();
   };
 
   const handleContinue = () => {
@@ -63,45 +201,91 @@ export const SeeAadharCard = () => {
 
   return (
     <section className="container">
-      <Modal
-        centered
-        className="modal"
-        size={'55%'}
-        fullScreen={isMobile}
-        opened={opened}
-        onClose={close}
-        title="Please enter the OTP send to"
-      >
-        <form className="otp-form" onSubmit={handleSubmit}>
-          <Title className="title">OTP has been sent to your linked phone number!</Title>
-          <Text className="disbledInput">
-            {verifyAadharForm.values.aadharNo}
-            <span className="changeBtn" onClick={close}>
-              Change
-            </span>
-          </Text>
-          <TextInput
-            classNames={inputClasses}
-            label="Enter OTP"
-            withAsterisk
-            maxLength={6}
-            pattern="[0-9]{6}"
-            {...verifyAadharForm.getInputProps('otp')}
-          />
-          <Text fw={'light'} fz={'xs'} mb={'md'}>
-            Resend{' '}
-            <Text fw={'600'} span>
-              after 30s.
+      {isVerified && (
+        <Modal
+          centered
+          className="modal"
+          size={'55%'}
+          fullScreen={isMobile}
+          opened={opened}
+          onClose={close}
+        >
+          <Box className="congratulations-modal">
+            <Title className="title">Your Profile is now verified</Title>
+            <Text className="sub-title">Here is your Greenie ID</Text>
+            <Text className="greenie-id">{greeneId}</Text>
+            <Box className="buttons-wrapper">
+              <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
+                Verified
+              </Button>
+              <CopyButton value={greeneId} timeout={2000}>
+                {({ copied, copy }) => (
+                  <Box>
+                    {copied ? (
+                      <Button
+                        className="copy-btn"
+                        leftIcon={<MdOutlineContentCopy size={'16px'} />}
+                      >
+                        Copied
+                      </Button>
+                    ) : (
+                      <Button
+                        className="copy-btn"
+                        onClick={copy}
+                        leftIcon={<MdOutlineContentCopy size={'16px'} />}
+                      >
+                        Copy
+                      </Button>
+                    )}
+                  </Box>
+                )}
+              </CopyButton>
+            </Box>
+            <Button className="primaryBtn" onClick={handleContinue}>
+              Continue
+            </Button>
+          </Box>
+        </Modal>
+      )}
+      {!isVerified && (
+        <Modal
+          centered
+          className="modal"
+          size={'55%'}
+          fullScreen={isMobile}
+          opened={opened}
+          onClose={close}
+          title="Please enter the OTP send to"
+        >
+          <form className="otp-form" onSubmit={handleSubmit}>
+            <Title className="title">OTP has been sent to your linked phone number!</Title>
+            <Text className="disbledInput">
+              {verifyAadharForm.values.aadharNo}
+              <span className="changeBtn" onClick={close}>
+                Change
+              </span>
             </Text>
-          </Text>
-          <Button type="submit" className="primaryBtn">
-            Verify
-          </Button>
-          <Text className="warning">
-            If you haven't received the OTP, make sure to check the spam folder
-          </Text>
-        </form>
-      </Modal>
+            <TextInput
+              classNames={inputClasses}
+              label="Enter OTP"
+              withAsterisk
+              maxLength={6}
+              pattern="[0-9]{6}"
+              {...verifyAadharForm.getInputProps('otp')}
+            />
+            <Text fw={'light'} fz={'xs'} mb={'md'}>
+              Resend{' '}
+              <Text fw={'600'} span>
+                after 30s.
+              </Text>
+            </Text>
+            <Button type="submit" className="primaryBtn">
+              Verify
+            </Button>
+          </form>
+        </Modal>
+      )}
+
       <Box className="see-all-header">
         <Box className="go-back-btn" onClick={handlePageChange}>
           <BsArrowLeft className="arrow-left-icon" size={'16px'} />
@@ -174,7 +358,7 @@ export const SeeAadharCard = () => {
               </Box>
             </Box>
 
-            <Button className="primaryBtn" onClick={handleContinue}>
+            <Button className="primaryBtn" onClick={open}>
               Continue
             </Button>
           </Box>
@@ -188,13 +372,14 @@ export const SeeAadharCard = () => {
               label="Enter aadhar number"
               classNames={inputClasses}
               withAsterisk
+              minLength={12}
               maxLength={12}
               {...verifyAadharForm.getInputProps('aadharNo')}
             />
             <Box className="checkbox-box">
               <Checkbox
                 checked={checked}
-                onChange={handleCheck}
+                onChange={() => setChecked(!checked)}
                 className="checkbox"
                 color="teal"
               />
