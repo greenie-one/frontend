@@ -7,6 +7,7 @@ RUN yarn install
 
 COPY . ./
 
+RUN echo ${MODE}
 RUN yarn build:${MODE}
 
 FROM alpine:3.18.0
