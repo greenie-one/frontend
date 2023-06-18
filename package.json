@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "vite --port 3000",
     "build": "tsc && vite build",
+    "build:dev": "tsc && vite build --mode development",
+    "build:prod": "tsc && vite build --mode production",
     "preview": "vite preview",
     "serve": "serve -s dist -p 3000"
   },
