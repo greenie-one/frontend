@@ -7,8 +7,8 @@ RUN yarn install
 
 COPY . ./
 
-RUN echo ${MODE}
-RUN yarn build:${MODE}
+ARG MODE
+RUN yarn build:$MODE
 
 FROM alpine:3.18.0
 COPY --from=build /app/dist /app/dist
