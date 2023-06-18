@@ -1,12 +1,5 @@
 // ---------------Import Statements--------------
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  useReducer,
-  ChangeEvent,
-} from 'react';
+import React, { createContext, useContext, useState, useEffect, useReducer } from 'react';
 import { useForm, UseFormReturnType, isNotEmpty, isEmail, hasLength } from '@mantine/form';
 import { em } from '@mantine/core';
 import axios from 'axios';
@@ -16,9 +9,6 @@ import {
   documentsAPIList,
   workExperienceAPiList,
   residentialInfoAPIList,
-  aadharAPIList,
-  PANAPIList,
-  drivingLicenceAPIList,
 } from '../../../assets/api/ApiList';
 import { notifications } from '@mantine/notifications';
 import { BsCheckLg } from 'react-icons/bs';
@@ -62,17 +52,11 @@ type ProfileContextType = {
   dispatchDetailsPage: React.Dispatch<DetailsPageAction>;
   isLoading: boolean;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  requestOTPForAadhar: () => void;
-  verifyOTPForAadhar: () => void;
-  requestOTPForPAN: () => void;
-  verifyOTPForPAN: () => void;
-  requestOTPForLicence: () => void;
-  verifyOTPForLicence: () => void;
+  getDocuments: () => void;
 };
 
 interface IDocument {
-  documentType: string;
-  documentNumber: string;
+  id_type: string;
   isVerified: boolean;
 }
 
@@ -147,11 +131,9 @@ type verifyAadharFormType = {
 };
 type verifyPANFormType = {
   panNo: string;
-  otp: string;
 };
 type verifyLicenceFormType = {
   licenceNo: string;
-  otp: string;
 };
 
 type workExperienceFormType = {
@@ -262,23 +244,19 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const verifyPANForm = useForm<verifyPANFormType>({
     initialValues: {
       panNo: '',
-      otp: '',
     },
 
     validate: {
       panNo: hasLength(10, 'Please eneter valid PAN number'),
-      otp: hasLength(6, 'OTP must be 6 digits'),
     },
   });
 
   const verifyLicenceForm = useForm<verifyLicenceFormType>({
     initialValues: {
       licenceNo: '',
-      otp: '',
     },
     validate: {
       licenceNo: hasLength(15, 'Please enter valide licence number'),
-      otp: hasLength(6, 'OTP must be 6 digits'),
     },
   });
 
@@ -422,253 +400,10 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
         },
       });
       if (res.data && authTokens?.accessToken) {
-        setDocumentsData(res.data.documents);
+        setDocumentsData(res.data.ids);
       }
     } catch (err: any) {
       console.log(err.message);
-    }
-  };
-
-  const requestOTPForAadhar = async () => {
-    if (!verifyAadharForm.validateField('aadharNo').hasError) {
-      try {
-        notifications.show({
-          id: 'load-data',
-          title: 'Sending...',
-          message: 'Please wait while we send you an OTP.',
-          loading: true,
-          autoClose: false,
-          withCloseButton: false,
-          sx: { borderRadius: em(8) },
-        });
-        const res = await axios
-          .post(
-            `${aadharAPIList.requestOTPForAadhar}`,
-            {
-              id_type: 'AADHAR_CARD',
-              id_number: verifyAadharForm.values.aadharNo,
-            },
-            {
-              headers: {
-                Authorization: `Bearer ${authTokens?.accessToken}`,
-              },
-            }
-          )
-          .then(() =>
-            notifications.update({
-              id: 'load-data',
-              title: 'Success!',
-              message: 'OTP has been sent to your linked phone number',
-              loading: true,
-              autoClose: false,
-              withCloseButton: false,
-              sx: { borderRadius: em(8) },
-            })
-          );
-      } catch (error: any) {
-        console.log(error.message);
-      }
-    }
-  };
-
-  const verifyOTPForAadhar = async () => {
-    if (!verifyAadharForm.validateField('otp').hasError) {
-      try {
-        notifications.show({
-          id: 'load-data',
-          title: 'Sending...',
-          message: 'Verifying your OTP...',
-          loading: true,
-          autoClose: false,
-          withCloseButton: false,
-          sx: { borderRadius: em(8) },
-        });
-        const res = await axios
-          .post(
-            `${aadharAPIList.verifyOTPForAadhar}`,
-            { otp: verifyAadharForm.values.otp },
-            {
-              headers: {
-                Authorization: `Bearer ${authTokens?.accessToken}`,
-              },
-            }
-          )
-          .then(() =>
-            notifications.update({
-              id: 'load-data',
-              title: 'Success!',
-              message: 'OTP verified Successfully!',
-              loading: true,
-              autoClose: false,
-              withCloseButton: false,
-              sx: { borderRadius: em(8) },
-            })
-          );
-      } catch (error: any) {
-        console.log(error.message);
-      }
-    }
-  };
-
-  const requestOTPForPAN = async () => {
-    if (!verifyPANForm.validateField('panNo').hasError) {
-      try {
-        notifications.show({
-          id: 'load-data',
-          title: 'Sending...',
-          message: 'Please wait while we send you an OTP.',
-          loading: true,
-          autoClose: false,
-          withCloseButton: false,
-          sx: { borderRadius: em(8) },
-        });
-        const res = await axios
-          .post(
-            `${PANAPIList.requestOTPForPAN}`,
-            {
-              id_type: 'PAN',
-              id_number: verifyPANForm.values.panNo,
-            },
-            {
-              headers: {
-                Authorization: `Bearer ${authTokens?.accessToken}`,
-              },
-            }
-          )
-          .then(() =>
-            notifications.update({
-              id: 'load-data',
-              title: 'Success!',
-              message: 'OTP has been sent to your linked phone number',
-              loading: true,
-              autoClose: false,
-              withCloseButton: false,
-              sx: { borderRadius: em(8) },
-            })
-          );
-      } catch (error: any) {
-        console.log(error.message);
-      }
-    }
-  };
-
-  const verifyOTPForPAN = async () => {
-    if (!verifyPANForm.validateField('otp').hasError) {
-      try {
-        notifications.show({
-          id: 'load-data',
-          title: 'Sending...',
-          message: 'Verifying your OTP...',
-          loading: true,
-          autoClose: false,
-          withCloseButton: false,
-          sx: { borderRadius: em(8) },
-        });
-        const res = await axios
-          .post(
-            `${PANAPIList.verifyOTPForPAN}`,
-            { otp: verifyPANForm.values.otp },
-            {
-              headers: {
-                Authorization: `Bearer ${authTokens?.accessToken}`,
-              },
-            }
-          )
-          .then(() =>
-            notifications.update({
-              id: 'load-data',
-              title: 'Success!',
-              message: 'OTP verified Successfully!',
-              loading: true,
-              autoClose: false,
-              withCloseButton: false,
-              sx: { borderRadius: em(8) },
-            })
-          );
-      } catch (error: any) {
-        console.log(error.message);
-      }
-    }
-  };
-
-  const requestOTPForLicence = async () => {
-    if (!verifyLicenceForm.validateField('licenceNo').hasError) {
-      try {
-        notifications.show({
-          id: 'load-data',
-          title: 'Sending...',
-          message: 'Please wait while we send you an OTP.',
-          loading: true,
-          autoClose: false,
-          withCloseButton: false,
-          sx: { borderRadius: em(8) },
-        });
-        const res = await axios
-          .post(
-            `${drivingLicenceAPIList.requestOTPForLicence}`,
-            {
-              id_type: 'DRIVING_LICENCE',
-              id_number: verifyLicenceForm.values.licenceNo,
-            },
-            {
-              headers: {
-                Authorization: `Bearer ${authTokens?.accessToken}`,
-              },
-            }
-          )
-          .then(() =>
-            notifications.update({
-              id: 'load-data',
-              title: 'Success!',
-              message: 'OTP has been sent to your linked phone number',
-              loading: true,
-              autoClose: false,
-              withCloseButton: false,
-              sx: { borderRadius: em(8) },
-            })
-          );
-      } catch (error: any) {
-        console.log(error.message);
-      }
-    }
-  };
-
-  const verifyOTPForLicence = async () => {
-    if (!verifyLicenceForm.validateField('otp').hasError) {
-      try {
-        notifications.show({
-          id: 'load-data',
-          title: 'Sending...',
-          message: 'Verifying your OTP...',
-          loading: true,
-          autoClose: false,
-          withCloseButton: false,
-          sx: { borderRadius: em(8) },
-        });
-        const res = await axios
-          .post(
-            `${drivingLicenceAPIList.verifyOTPForLicence}`,
-            { otp: verifyLicenceForm.values.otp },
-            {
-              headers: {
-                Authorization: `Bearer ${authTokens?.accessToken}`,
-              },
-            }
-          )
-          .then(() =>
-            notifications.update({
-              id: 'load-data',
-              title: 'Success!',
-              message: 'OTP verified Successfully!',
-              loading: true,
-              autoClose: false,
-              withCloseButton: false,
-              sx: { borderRadius: em(8) },
-            })
-          );
-      } catch (error: any) {
-        console.log(error.message);
-      }
     }
   };
 
@@ -870,9 +605,14 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
     }
 
     const requiredField = [
-      'address',
+      'address_line_1',
+      'address_line_2',
+      'landmark',
+      'city',
       'pincode',
-      'stateCountry',
+      'typeOfAddress',
+      'state',
+      ' country',
       'start_date',
       'endDate',
       'currentLocation',
@@ -1204,7 +944,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
   useEffect(() => {
     if (authTokens) {
       getProfile();
-      // getDocuments();
+      getDocuments();
       getWorkExperience();
       getSkills();
       getResidentialInfo();
@@ -1244,12 +984,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
         authTokens,
         detailsPage,
         dispatchDetailsPage,
-        requestOTPForAadhar,
-        verifyOTPForAadhar,
-        requestOTPForPAN,
-        verifyOTPForPAN,
-        requestOTPForLicence,
-        verifyOTPForLicence,
+        getDocuments,
       }}
     >
       {children}

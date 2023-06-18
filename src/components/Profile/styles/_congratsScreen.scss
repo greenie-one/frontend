@@ -1,0 +1,82 @@
+.congratulations-screen {
+  width: 100%;
+  max-width: 960px;
+  background-color: $white;
+  border-radius: 16.0603px;
+  margin: 23px auto;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  padding-top: 10rem;
+
+  .container {
+    padding: 0.5rem;
+  }
+
+  .title {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 44px;
+    letter-spacing: -0.02em;
+    color: $black;
+    margin: 1rem auto;
+  }
+
+  .sub-title {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 29px;
+    letter-spacing: -0.02em;
+    color: $black;
+    margin-bottom: 21px;
+  }
+  .sub-text {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 23px;
+    text-align: center;
+    letter-spacing: -0.02em;
+    color: #a3a3a3;
+    margin-bottom: 4rem;
+  }
+
+  .congrats-profile-section {
+    max-width: 800px;
+    width: 100%;
+    padding: 0;
+    margin: 0 auto;
+    .profile-section {
+      margin-top: 0;
+
+      .profile-photo {
+        width: 191px;
+        height: 190px;
+        margin-top: -130px;
+        background-image: url(../assets/emptyProfile.png);
+        background-position: center;
+        background-size: 110%;
+        background-repeat: no-repeat;
+      }
+    }
+
+    .cover-photo {
+      height: 216px;
+      width: 100%;
+      background: $bgGreen;
+      border-radius: 40px;
+      z-index: 0;
+    }
+  }
+
+  .primaryBtn {
+    max-width: 250px;
+    margin-inline: auto;
+  }
+}

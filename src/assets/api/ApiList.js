@@ -31,12 +31,10 @@ export const aadharAPIList = {
   verifyOTPForAadhar: `${BASE_URL}/ids/aadhar/verify-otp`
 }
 export const PANAPIList = {
-  requestOTPForPAN: `${BASE_URL}/ids/pan/request-otp`,
-  verifyOTPForPAN: `${BASE_URL}/ids/pan/verify-otp`
+  verifyPAN: `${BASE_URL}/ids/pan/verify`
 }
-export const drivingLicenceAPIList = {
-  requestOTPForLicence: `${BASE_URL}/ids/licence/request-otp`,
-  verifyOTPForLicence: `${BASE_URL}/ids/licence/verify-otp`
+export const drivinglicenseAPIList = {
+  verifylicense: `${BASE_URL}/ids/driving-license/verify`
 }
 
 export const workExperienceAPiList = {

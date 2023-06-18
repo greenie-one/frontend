@@ -1,5 +1,5 @@
 import { useState, useReducer } from 'react';
-import { useLocalStorage } from '@mantine/hooks';
+import { useNavigate } from 'react-router-dom';
 import { Box, TextInput, createStyles, Flex, List, Drawer, em, rem } from '@mantine/core';
 import { Link, useLocation } from 'react-router-dom';
 import { MdVerified, MdOutlineMenuOpen, MdOutlineClose } from 'react-icons/md';
@@ -12,6 +12,9 @@ import { BiUserCircle } from 'react-icons/bi';
 import { RiSettings3Line } from 'react-icons/ri';
 import { MdExitToApp, MdOutlineLiveHelp, MdOutlineLock } from 'react-icons/md';
 import { useSettingsContext } from '../../Settings/context/SettingsContext';
+import { useProfileContext } from '../context/ProfileContext';
+import { notifications } from '@mantine/notifications';
+import { BsCheckLg } from 'react-icons/bs';
 
 type DrawerState = {
   firstDrawerOpened: boolean;
@@ -29,7 +32,44 @@ export const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [showSearchList, setShowSearchList] = useState<boolean>(false);
   const { setShowDetailsId } = useSettingsContext();
-  const [authTokens, setAuthTokens, removeAuthTokens] = useLocalStorage({ key: 'auth-tokens' });
+  const { isLoading, setIsLoading } = useProfileContext();
+  const navigate = useNavigate();
+
+  const removeAuthTokens = () => {
+    setIsLoading(true);
+    try {
+      notifications.show({
+        id: 'load-data',
+        title: 'Signing Out',
+        message: 'Please wait while we sign you out',
+        loading: true,
+        autoClose: false,
+        withCloseButton: false,
+        sx: { borderRadius: em(8) },
+      });
+      setTimeout(() => {
+        localStorage.removeItem('auth-tokens');
+        navigate('/auth');
+      }, 600);
+
+      setTimeout(() => {
+        notifications.update({
+          id: 'load-data',
+          title: 'Signed Out',
+          message: 'You have been successfully signed out',
+          autoClose: 1200,
+          withCloseButton: false,
+          color: 'teal',
+          icon: <BsCheckLg />,
+          sx: { borderRadius: em(8) },
+        });
+      }, 1100);
+    } catch (error: any) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const location = useLocation();
   const currentUrl = location.pathname + location.search;
@@ -126,7 +166,10 @@ export const Navbar = () => {
           position="right"
           size="100%"
         >
-          <nav className={classes.mobileNavOptionsContainer}>
+          <nav
+            className={classes.mobileNavOptionsContainer}
+            onClick={() => dispatch({ type: 'CLOSE_FIRST_DRAWER' })}
+          >
             <Flex justify="space-between" align="center" direction="row">
               <span className={classes.navHeading}>Profile</span>
               <span className={classes.menuCloseBtn}>
@@ -161,7 +204,7 @@ export const Navbar = () => {
                 <span className={classes.navOptionsText}>Help</span>
               </li>
             </List>
-            <button className={classes.signOutBtn} onClick={() => removeAuthTokens()}>
+            <button className={classes.signOutBtn} onClick={removeAuthTokens}>
               <span className={classes.signOut}>
                 <MdExitToApp />
               </span>
@@ -237,7 +280,7 @@ export const Navbar = () => {
                   </Link>
                 </li>
               </List>
-              <button className={classes.signOutBtn} onClick={() => removeAuthTokens()}>
+              <button className={classes.signOutBtn} onClick={removeAuthTokens}>
                 <span className={classes.navOptionsIcon2}>
                   <MdExitToApp />
                 </span>
