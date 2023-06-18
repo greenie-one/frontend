@@ -11,6 +11,10 @@ export const authApiList = {
   googleCallback: `${BASE_URL}/oauth/google/callback`,
   refreshToken: `${BASE_URL}/refresh`,
   resendOtp: `${BASE_URL}/auth/resendOTP`,
+  forgetPassowordOTP: `${BASE_URL}/auth/forgot_password`,
+  forgetPassowordValidate: `${BASE_URL}/auth/validate_forgot_password`,
+  changePassoword: `${BASE_URL}/auth/change_password`
+
 };
 
 export const profileAPIList = {

@@ -1,9 +1,11 @@
 import { TextInput, createStyles, em, rem, Text, Button, Box, Flex } from '@mantine/core';
 import { useAuthContext } from '../../context/AuthContext';
-import { KeyboardEvent } from 'react';
 import ForgotPassowrdStepThree from './ForgotPassowrdStepThree';
-import { BsArrowLeft } from 'react-icons/bs';
+import { BsArrowLeft, BsCheckLg } from 'react-icons/bs';
 import '../../styles/global.scss';
+import axios from 'axios';
+import { notifications } from '@mantine/notifications';
+import { authApiList } from '../../../../assets/api/ApiList';
 
 const ForgotPassword = () => {
   const { classes: inputClasses } = inputStyles();
@@ -23,10 +25,96 @@ const ForgotPassword = () => {
   };
 
   const handleNextStep = () => {
-    dispatch({ type: 'NEXTRESETPASSWRDSTEP' });
+    if (!loginForm.validateField('emailPhoneGreenieId').hasError) {
+      dispatch({ type: 'NEXTRESETPASSWRDSTEP' });
+    }
   };
 
-  const handleKeyPressNextStep = (event: KeyboardEvent<HTMLInputElement>): void => {};
+  const token = localStorage.getItem('auth-tokens');
+  const authTokens = token ? JSON.parse(token) : null;
+
+  const handleRequestOTP = async () => {
+    if (!loginForm.validateField('emailPhoneGreenieId').hasError) {
+      try {
+        notifications.show({
+          id: 'load-data',
+          title: 'Sending OTP...',
+          message: 'Please wait while we send OTP to your email.',
+          loading: true,
+          autoClose: false,
+          withCloseButton: false,
+          sx: { borderRadius: em(8) },
+        });
+
+        const res = await axios.post(
+          authApiList.forgetPassowordOTP,
+          {
+            email: loginForm.values.emailPhoneGreenieId,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${authTokens?.accessToken}`,
+            },
+          }
+        );
+
+        if (res.data) {
+          notifications.update({
+            id: 'load-data',
+            title: 'Success!',
+            message: 'OTP Sent to your email',
+            autoClose: 2200,
+            withCloseButton: false,
+            color: 'teal',
+            icon: <BsCheckLg />,
+            sx: { borderRadius: em(8) },
+          });
+          dispatch({ type: 'NEXTRESETPASSWRDSTEP' });
+        }
+      } catch (error: any) {
+        console.log(error.message);
+      }
+    }
+  };
+
+  const verifyOTP = async () => {
+    if (!loginForm.validateField('otp').hasError) {
+      try {
+        notifications.show({
+          id: 'load-data',
+          title: 'Verifying OTP...',
+          message: 'Please wait while we verify your OTP.',
+          loading: true,
+          autoClose: false,
+          withCloseButton: false,
+          sx: { borderRadius: em(8) },
+        });
+        const res = await axios.post(
+          'api endpoint',
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${authTokens?.accessToken}`,
+            },
+          }
+        );
+        if (res.data) {
+          notifications.update({
+            id: 'load-data',
+            title: 'Success!',
+            message: 'OTP verified successfully',
+            autoClose: 2200,
+            withCloseButton: false,
+            color: 'teal',
+            icon: <BsCheckLg />,
+            sx: { borderRadius: em(8) },
+          });
+        }
+      } catch (error: any) {
+        console.log(error);
+      }
+    }
+  };
 
   return (
     <Box className="authRightContainer">
@@ -80,7 +168,7 @@ const ForgotPassword = () => {
               verification
             </Text>
           )}
-          <Button type="submit" className="primaryBtn" onClick={handleNextStep}>
+          <Button type="submit" className="primaryBtn" onClick={handleRequestOTP}>
             Send OTP
           </Button>
         </Box>
