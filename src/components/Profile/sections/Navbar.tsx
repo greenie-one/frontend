@@ -1,23 +1,73 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState, useReducer } from 'react';
+import { useLocalStorage } from '@mantine/hooks';
 import { Box, TextInput, createStyles, Flex, List, Drawer, em, rem } from '@mantine/core';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { MdVerified, MdOutlineMenuOpen, MdOutlineClose } from 'react-icons/md';
 import { GoSearch } from 'react-icons/go';
 import { AiOutlineBell, AiFillCaretDown } from 'react-icons/ai';
 import JohnMarston from '../assets/johnMarston.png';
-import { useDisclosure } from '@mantine/hooks';
 import { SearchList } from '../components/SearchList';
 import { useDebounce } from '../../../utils/hooks/useDebounce';
+import { BiUserCircle } from 'react-icons/bi';
+import { RiSettings3Line } from 'react-icons/ri';
+import { MdExitToApp, MdOutlineLiveHelp, MdOutlineLock } from 'react-icons/md';
+import { useSettingsContext } from '../../Settings/context/SettingsContext';
+
+type DrawerState = {
+  firstDrawerOpened: boolean;
+  secondDrawerOpened: boolean;
+};
+type DrawerAction =
+  | { type: 'OPEN_FIRST_DRAWER' }
+  | { type: 'CLOSE_FIRST_DRAWER' }
+  | { type: 'OPEN_SECOND_DRAWER' }
+  | { type: 'CLOSE_SECOND_DRAWER' };
 
 export const Navbar = () => {
   const { classes } = useStyles();
   const { classes: inputClasses } = inputStyles();
-  const [opened, { open, close }] = useDisclosure(false);
-
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [showSearchList, setShowSearchList] = useState<boolean>(false);
+  const { setShowDetailsId } = useSettingsContext();
+  const [authTokens, setAuthTokens, removeAuthTokens] = useLocalStorage({ key: 'auth-tokens' });
 
+  const location = useLocation();
+  const currentUrl = location.pathname + location.search;
+  const isProfilePage = currentUrl === '/profile';
+  const isProfileSettingsPage = currentUrl === '/profile/settings';
   let debouncedValue = useDebounce(searchQuery, 250);
+
+  const drawerReducer = (state: DrawerState, action: DrawerAction): DrawerState => {
+    switch (action.type) {
+      case 'OPEN_FIRST_DRAWER':
+        return {
+          ...state,
+          firstDrawerOpened: true,
+        };
+      case 'CLOSE_FIRST_DRAWER':
+        return {
+          ...state,
+          firstDrawerOpened: false,
+        };
+      case 'OPEN_SECOND_DRAWER':
+        return {
+          ...state,
+          secondDrawerOpened: true,
+        };
+      case 'CLOSE_SECOND_DRAWER':
+        return {
+          ...state,
+          secondDrawerOpened: false,
+        };
+      default:
+        return state;
+    }
+  };
+
+  const [state, dispatch] = useReducer(drawerReducer, {
+    firstDrawerOpened: false,
+    secondDrawerOpened: false,
+  });
 
   return (
     <header>
@@ -50,39 +100,150 @@ export const Navbar = () => {
           <img className="profile-picture" src={JohnMarston} alt="Profile Piture" />
           <AiFillCaretDown />
 
-          {!opened ? (
+          {!state.firstDrawerOpened && isProfilePage && (
             <span className={classes.menuOpenBtn}>
-              <MdOutlineMenuOpen role="button" onClick={open} />
+              <MdOutlineMenuOpen
+                role="button"
+                onClick={() => dispatch({ type: 'OPEN_FIRST_DRAWER' })}
+              />
             </span>
-          ) : null}
+          )}
+
+          {!state.secondDrawerOpened && isProfileSettingsPage && (
+            <span className={classes.menuOpenBtn}>
+              <MdOutlineMenuOpen
+                role="button"
+                onClick={() => dispatch({ type: 'OPEN_SECOND_DRAWER' })}
+              />
+            </span>
+          )}
         </Box>
 
         <Drawer
-          opened={opened}
-          onClose={close}
+          opened={state.firstDrawerOpened}
+          onClose={() => dispatch({ type: 'CLOSE_FIRST_DRAWER' })}
           withCloseButton={false}
-          overlayProps={{ opacity: 0, blur: 0 }}
+          position="right"
+          size="100%"
         >
           <nav className={classes.mobileNavOptionsContainer}>
             <Flex justify="space-between" align="center" direction="row">
-              <Link to={'/'}>
-                <span className={classes.mobileGreenie}>Greenie</span>
-                <span className={classes.mobileVerified}>
-                  <MdVerified />
-                </span>
-              </Link>
+              <span className={classes.navHeading}>Profile</span>
               <span className={classes.menuCloseBtn}>
-                <MdOutlineClose role="button" onClick={close} />
+                <MdOutlineClose
+                  role="button"
+                  onClick={() => dispatch({ type: 'CLOSE_FIRST_DRAWER' })}
+                />
               </span>
             </Flex>
-            <List className={classes.mobileNavOptionsList}>
-              <Link to="/#features" onClick={close}>
-                <List.Item className={classes.mobileNavOptionsListItems}>Features</List.Item>
-              </Link>
-              <Link to="/waitlist" onClick={close}>
-                <List.Item className={classes.mobileNavOptionsListItems}>Pricing</List.Item>
-              </Link>
+            <List data-autoFocus className={classes.navOptionsList}>
+              <li>
+                <Link to={'/profile'} className={classes.navOptionItems}>
+                  <span className={classes.navOptionsIcon}>
+                    <BiUserCircle />
+                  </span>
+                  <span className={classes.navOptionsText}>View Profile</span>
+                </Link>
+              </li>
+
+              <li>
+                <Link to={'/profile/settings'} className={classes.navOptionItems}>
+                  <span className={classes.navOptionsIcon}>
+                    <RiSettings3Line />
+                  </span>
+                  <span className={classes.navOptionsText}>Settings</span>
+                </Link>
+              </li>
+              <li className={classes.navOptionItems}>
+                <span className={classes.navOptionsIcon}>
+                  <MdOutlineLiveHelp />
+                </span>
+                <span className={classes.navOptionsText}>Help</span>
+              </li>
             </List>
+            <button className={classes.signOutBtn} onClick={() => removeAuthTokens()}>
+              <span className={classes.signOut}>
+                <MdExitToApp />
+              </span>
+              <span className={classes.signOutText}>Sign Out</span>
+            </button>
+          </nav>
+        </Drawer>
+
+        <Drawer
+          opened={state.secondDrawerOpened}
+          onClose={() => dispatch({ type: 'CLOSE_SECOND_DRAWER' })}
+          withCloseButton={false}
+          position="right"
+          size="100%"
+        >
+          <nav className={classes.mobileNavOptionsContainer}>
+            <Flex justify="space-between" align="center" direction="row" className={classes.logo}>
+              <Box>
+                <Link to={'/'}>
+                  <span className={classes.mobileGreenie}>Greenie</span>
+                  <span className={classes.mobileVerified}>
+                    <MdVerified />
+                  </span>
+                </Link>
+              </Box>
+              <Box className="drawer-right-section">
+                <AiOutlineBell size={'22px'} className="bell-icon" />
+                <img className="profile-picture" src={JohnMarston} alt="Profile Piture" />
+              </Box>
+              <span className={classes.menuCloseBtn}>
+                <MdOutlineClose
+                  role="button"
+                  onClick={() => dispatch({ type: 'CLOSE_SECOND_DRAWER' })}
+                />
+              </span>
+            </Flex>
+            <Box onClick={() => dispatch({ type: 'CLOSE_SECOND_DRAWER' })}>
+              <List className={classes.navOptionsList}>
+                <li>
+                  <Link
+                    to={'/profile/settings'}
+                    className={classes.navOptionItems}
+                    onClick={() => setShowDetailsId(0)}
+                  >
+                    <span className={classes.navOptionsIcon2}>
+                      <BiUserCircle />
+                    </span>
+                    <span className={classes.navOptionsText}>Profile</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to={'/profile/settings'}
+                    className={classes.navOptionItems}
+                    onClick={() => setShowDetailsId(1)}
+                  >
+                    <span className={classes.navOptionsIcon2}>
+                      <RiSettings3Line />
+                    </span>
+                    <span className={classes.navOptionsText}>General</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to={'/profile/settings'}
+                    className={classes.navOptionItems}
+                    onClick={() => setShowDetailsId}
+                  >
+                    <span className={classes.navOptionsIcon2}>
+                      <MdOutlineLock />
+                    </span>
+                    <span className={classes.navOptionsText}>Privacy</span>
+                  </Link>
+                </li>
+              </List>
+              <button className={classes.signOutBtn} onClick={() => removeAuthTokens()}>
+                <span className={classes.navOptionsIcon2}>
+                  <MdExitToApp />
+                </span>
+                <span className={classes.signOutText}>Sign Out</span>
+              </button>
+            </Box>
           </nav>
         </Drawer>
       </nav>
@@ -113,6 +274,22 @@ const inputStyles = createStyles((theme) => ({
 }));
 
 const useStyles = createStyles((theme) => ({
+  logo: {
+    paddingInline: '2rem',
+    paddingBlock: '1rem',
+  },
+
+  mobileGreenie: {
+    color: '#000000',
+    fontFamily: 'Gilroy-Bold !important',
+    fontSize: rem(20),
+  },
+
+  mobileVerified: {
+    color: '#9FE870',
+    marginLeft: '5px',
+    fontSize: rem(20),
+  },
   menuOpenBtn: {
     display: 'none',
     [`@media screen and (max-width: ${em(768)})`]: {
@@ -127,9 +304,8 @@ const useStyles = createStyles((theme) => ({
       position: 'absolute',
       inset: '0',
       height: '100dvh',
-      width: '80%',
-      maxWidth: rem(280),
-      backgroundColor: '#047A4F',
+      width: '100%',
+      background: '#ffffff',
       display: 'flex',
       flexDirection: 'column',
       gap: '2rem',
@@ -143,19 +319,19 @@ const useStyles = createStyles((theme) => ({
     },
   },
 
-  mobileGreenie: {
-    color: 'white',
-    fontFamily: 'Gilroy-Bold !important',
-  },
-
-  mobileVerified: {
-    color: 'white',
-    marginLeft: '5px',
+  navHeading: {
+    fontFamily: 'Inter',
+    fontStyle: 'normal',
+    fontWeight: 600,
+    fontSize: '20px',
+    lineHeight: '24px',
+    letterSpacing: '-0.02em',
+    color: '#282828',
   },
 
   menuCloseBtn: {
     fontSize: rem(20),
-    color: 'white',
+    color: '#697082',
   },
 
   mobileNavOptionsList: {
@@ -166,58 +342,95 @@ const useStyles = createStyles((theme) => ({
     alignItems: 'flex-start',
   },
 
-  mobileNavOptionsListItems: {
-    fontSize: rem(16),
+  navOptionsList: {
+    display: 'grid',
+    gap: rem(6),
+    paddingBlockEnd: '1rem',
+    borderBottom: '1px solid #D1D4DB',
+  },
+
+  navOptionItems: {
+    color: '#697082',
     cursor: 'pointer',
-    position: 'relative',
-
-    '::after': {
-      content: '""',
-      display: 'block',
-      position: 'absolute',
-      width: 0,
-      bottom: '-2px',
-      borderTop: '1px solid #8CF078',
-      transition: 'width 200ms linear',
-    },
-
-    ':hover': {
-      color: '#8CF078',
-      transition: 'color 150ms linear',
-    },
-
-    ':hover::after': {
-      width: '100%',
-      transition: 'width 200ms linear',
-    },
-  },
-
-  mobileHeaderBtnsContainer: {
     display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-    marginBlockStart: '0.35rem',
-  },
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: '8px',
+    paddingInline: em(15),
+    paddingBlock: em(12),
+    borderRadius: em(8),
+    border: '2px solid #ffffff',
+    transition: 'background 150ms linear',
 
-  mobileTryBtn: {
-    color: '#FFFFFF',
-    fontSize: rem(16),
-
-    backgroundColor: '#17A672 !important',
-    borderColor: '#17A672 !important',
-
-    [`@media screen and (max-width: ${em(480)})`]: {
-      fontSize: rem(14),
+    ['&:hover']: {
+      border: '2px solid #f4f4f4',
+      transition: 'background 150ms linear',
     },
   },
 
-  exploreBtn: {
-    borderColor: '#FFFFFF !important',
-    color: '#FFFFFF',
-    fontSize: rem(14),
+  navOptionsIcon: {
+    color: 'inherit',
+    display: 'grid',
+    placeItems: 'center',
+    fontSize: rem(20),
+    height: '50px',
+    width: '50px',
+    borderRadius: '50%',
+    background: '#F5F5F5',
+  },
 
-    [`@media screen and (max-width: ${em(480)})`]: {
-      fontSize: rem(13),
+  navOptionsIcon2: {
+    color: 'inherit',
+    display: 'grid',
+    placeItems: 'center',
+    fontSize: rem(25),
+    height: '50px',
+    width: '50px',
+  },
+
+  navOptionsText: {
+    color: 'inherit',
+    fontSize: rem(15),
+    fontWeight: 500,
+  },
+
+  signOut: {
+    color: 'inherit',
+    display: 'grid',
+    placeItems: 'center',
+    fontSize: rem(20),
+    height: '50px',
+    width: '50px',
+    borderRadius: '50%',
+    background: '#F5F5F5',
+  },
+
+  signOutBtn: {
+    width: '100%',
+    color: '#697082',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    gap: '8px',
+    paddingInline: em(15),
+    paddingBlock: em(12),
+    borderRadius: em(8),
+    transition: 'background 150ms linear',
+
+    ['&:hover']: {
+      background: '#F4F4F4',
+      transition: 'background 150ms linear',
     },
+  },
+
+  signOutIcon: {
+    color: 'inherit',
+    fontSize: rem(18),
+  },
+
+  signOutText: {
+    color: 'inherit',
+    fontSize: rem(15),
+    fontWeight: 500,
   },
 }));

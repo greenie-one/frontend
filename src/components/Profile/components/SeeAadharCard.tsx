@@ -18,6 +18,8 @@ import { BsArrowLeft } from 'react-icons/bs';
 import { AiOutlineRight } from 'react-icons/ai';
 import AadharImg from '../assets/Aadhar.png';
 import john from '../assets/johnMarston.png';
+import { aadharAPIList } from '../../../assets/api/ApiList';
+import axios from 'axios';
 
 export const SeeAadharCard = () => {
   const [opened, { open, close }] = useDisclosure(false);
@@ -25,36 +27,40 @@ export const SeeAadharCard = () => {
   const [isVerified, setIsVerified] = useState(false);
   const { classes: inputClasses } = inputStyles();
   const isMobile = useMediaQuery('(max-width: 768px)');
-  const { detailsPage, dispatchDetailsPage, verifyAadharForm } = useProfileContext();
+  const { detailsPage, dispatchDetailsPage, verifyAadharForm, requestOTPForAadhar } =
+    useProfileContext();
 
   const handleCheck = () => {
     setChecked(!checked);
   };
 
   const handleOpenModal = () => {
-    if (!verifyAadharForm.validateField('linkedPhoneNo').hasError && checked) {
+    if (!verifyAadharForm.validateField('aadharNo').hasError && checked) {
       open();
+      // requestOTPForAadhar();
     }
   };
 
   const handlePageChange = () => {
     dispatchDetailsPage({ type: 'SET_SEE_AADHAR_CARD', payload: !detailsPage.seeAadharCard });
-    verifyAadharForm.values.linkedPhoneNo = '';
+    verifyAadharForm.values.aadharNo = '';
     verifyAadharForm.values.otp = '';
   };
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    if (
-      !verifyAadharForm.validateField('linkedPhoneNo').hasError &&
-      !verifyAadharForm.validateField('otp').hasError
-    ) {
-      verifyAadharForm.values.linkedPhoneNo = '';
-      verifyAadharForm.values.otp = '';
-      setIsVerified(true);
-      close();
-    }
+    setIsVerified(true);
+    close();
   };
+
+  const handleContinue = () => {
+    dispatchDetailsPage({ type: 'SET_SEE_AADHAR_CARD', payload: !detailsPage.seeAadharCard });
+    dispatchDetailsPage({
+      type: 'SET_SEE_CONGRATULATIONS_SCREEN',
+      payload: !detailsPage.seeCongratulations,
+    });
+  };
+
   return (
     <section className="container">
       <Modal
@@ -67,9 +73,9 @@ export const SeeAadharCard = () => {
         title="Please enter the OTP send to"
       >
         <form className="otp-form" onSubmit={handleSubmit}>
-          <Title className="title">Phone number linked with your Aadhaar Card</Title>
+          <Title className="title">OTP has been sent to your linked phone number!</Title>
           <Text className="disbledInput">
-            {verifyAadharForm.values.linkedPhoneNo}
+            {verifyAadharForm.values.aadharNo}
             <span className="changeBtn" onClick={close}>
               Change
             </span>
@@ -168,7 +174,7 @@ export const SeeAadharCard = () => {
               </Box>
             </Box>
 
-            <Button className="primaryBtn" onClick={() => setIsVerified(false)}>
+            <Button className="primaryBtn" onClick={handleContinue}>
               Continue
             </Button>
           </Box>
@@ -177,12 +183,13 @@ export const SeeAadharCard = () => {
         <Box className="document-container">
           <img src={AadharImg} className="document-img" alt="Aadhar Img" />
           <Box className="document-text-box">
-            <Title className="heading">Enter your phone number linked with Aadhaar</Title>
+            <Title className="heading">Enter your Aadhaar number</Title>
             <TextInput
-              label="Linked Phone number"
+              label="Enter aadhar number"
               classNames={inputClasses}
               withAsterisk
-              {...verifyAadharForm.getInputProps('linkedPhoneNo')}
+              maxLength={12}
+              {...verifyAadharForm.getInputProps('aadharNo')}
             />
             <Box className="checkbox-box">
               <Checkbox

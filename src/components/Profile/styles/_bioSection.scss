@@ -4,10 +4,9 @@
   position: relative;
   text-align: center;
 
-  .edit-btn {
-    width: 150px;
+  .icon {
     position: absolute;
-    right: 30px;
+    right: 20px;
   }
 
   .bio-name-box {
@@ -122,8 +121,15 @@
         background-color: $bgGreen;
         border-radius: 50%;
         margin-right: 10px;
+        width: 32px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         .greenie-id-icon {
           padding: 7.5px;
+          scale: 18;
+          color: $green;
         }
       }
 
@@ -229,6 +235,7 @@
           margin-right: 10px;
           .greenie-id-icon {
             padding: 4.5px;
+            scale: 3;
           }
         }
         .greenie-id-heading {

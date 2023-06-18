@@ -115,12 +115,26 @@ export const ResidentialInfo = () => {
       >
         <form onSubmit={handleSubmit}>
           <Box className="input-section">
+            <Title className="title">Type of Address</Title>
+            <Select
+              data-autofocus
+              data={[
+                { value: 'Permenent', label: 'Permenent' },
+                { value: 'Current', label: 'Current' },
+              ]}
+              label="Type of address"
+              classNames={inputClasses}
+              {...residentialInfoForm.getInputProps('typeOfAddress')}
+              withAsterisk
+            />
+          </Box>
+          <Box className="input-section">
             <Title className="title">Address Line 1</Title>
             <TextInput
               data-autofocus
               label="Address line 1"
               classNames={inputClasses}
-              {...residentialInfoForm.getInputProps('addressLineOne')}
+              {...residentialInfoForm.getInputProps('address_line_1')}
               withAsterisk
             />
           </Box>
@@ -129,7 +143,7 @@ export const ResidentialInfo = () => {
             <TextInput
               label="Address line 2"
               classNames={inputClasses}
-              {...residentialInfoForm.getInputProps('addressLineTwo')}
+              {...residentialInfoForm.getInputProps('address_line_2')}
               withAsterisk
             />
           </Box>
@@ -168,14 +182,14 @@ export const ResidentialInfo = () => {
                 data={states}
                 label="Select state"
                 classNames={inputClasses}
-                {...residentialInfoForm.getInputProps('stateCountry.state')}
+                {...residentialInfoForm.getInputProps('state')}
                 withAsterisk
               />
               <Select
                 data={countries}
                 label="Select country"
                 classNames={inputClasses}
-                {...residentialInfoForm.getInputProps('stateCountry.country')}
+                {...residentialInfoForm.getInputProps('country')}
                 withAsterisk
               />
             </Box>
@@ -188,7 +202,7 @@ export const ResidentialInfo = () => {
               label="Start date"
               withAsterisk
               classNames={inputClasses}
-              {...residentialInfoForm.getInputProps('startDate')}
+              {...residentialInfoForm.getInputProps('start_date')}
             />
           </Box>
           <Box className="input-section border-bottom">
@@ -239,14 +253,19 @@ export const ResidentialInfo = () => {
         </Box>
 
         {residentialInfoData.length > 0 && (
-          <Box className="header-links">
-            <Text className="link" onClick={handleToggleResidentialDetails}>
-              See all documents
-            </Text>
-            <Button leftIcon={<MdOutlineEdit />} onClick={open} className="edit-btn">
-              Edit Section
-            </Button>
-          </Box>
+          <>
+            <Box className="header-links">
+              <Text className="link" onClick={handleToggleResidentialDetails}>
+                See all documents
+              </Text>
+              <Button leftIcon={<MdOutlineEdit />} onClick={open} className="edit-btn">
+                Edit Section
+              </Button>
+            </Box>
+            <Box className="edit-icon" onClick={open}>
+              <MdOutlineEdit size={'22px'} className="btn" />
+            </Box>
+          </>
         )}
       </Box>
 
@@ -303,7 +322,11 @@ export const ResidentialInfo = () => {
           )}
         </Carousel>
       )}
-      {residentialInfoData.length > 0 && <Button className="see-all-btn">See All</Button>}
+      {residentialInfoData.length > 0 && (
+        <Button className="see-all-btn" onClick={handleToggleResidentialDetails}>
+          See All
+        </Button>
+      )}
     </section>
   );
 };

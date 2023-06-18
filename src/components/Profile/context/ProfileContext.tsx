@@ -1,5 +1,12 @@
 // ---------------Import Statements--------------
-import React, { createContext, useContext, useState, useEffect, useReducer } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useReducer,
+  ChangeEvent,
+} from 'react';
 import { useForm, UseFormReturnType, isNotEmpty, isEmail, hasLength } from '@mantine/form';
 import { em } from '@mantine/core';
 import axios from 'axios';
@@ -9,6 +16,9 @@ import {
   documentsAPIList,
   workExperienceAPiList,
   residentialInfoAPIList,
+  aadharAPIList,
+  PANAPIList,
+  drivingLicenceAPIList,
 } from '../../../assets/api/ApiList';
 import { notifications } from '@mantine/notifications';
 import { BsCheckLg } from 'react-icons/bs';
@@ -22,9 +32,10 @@ type AuthTokens = {
 };
 
 type ProfileContextType = {
-  profileData: IUserProfile | null;
+  profileData: IUserProfile;
+  profileForm: UseFormReturnType<profileFormType>;
+  updateProfile: (id: string) => void;
   documentsData: IDocument[];
-  addDocument: () => void;
   workExperienceData: IWorkExperience[];
   residentialInfoData: IResidendialInfoDataType[];
   skillData: ISkillDataType[];
@@ -49,6 +60,14 @@ type ProfileContextType = {
   authTokens: AuthTokens;
   detailsPage: DetailsPageState;
   dispatchDetailsPage: React.Dispatch<DetailsPageAction>;
+  isLoading: boolean;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  requestOTPForAadhar: () => void;
+  verifyOTPForAadhar: () => void;
+  requestOTPForPAN: () => void;
+  verifyOTPForPAN: () => void;
+  requestOTPForLicence: () => void;
+  verifyOTPForLicence: () => void;
 };
 
 interface IDocument {
@@ -58,8 +77,10 @@ interface IDocument {
 }
 
 interface IUserProfile {
+  _id: string;
   firstName: string;
   lastName: string;
+  bio: string;
   descriptionTags: string[];
 }
 
@@ -83,6 +104,7 @@ interface IResidendialInfoDataType {
   _id: string;
   address_line_1: string;
   address_line_2: string;
+  typeOfAddress: string;
   landmark: string;
   pincode: number;
   city: string;
@@ -104,6 +126,14 @@ interface ISkillDataType {
   __v: number;
 }
 
+type profileFormType = {
+  [key: string]: string | string[];
+  firstName: string;
+  lastName: string;
+  bio: string;
+  descriptionTags: string[];
+};
+
 type documentsFormType = {
   documentType: string;
   aadharNumber: string;
@@ -112,7 +142,7 @@ type documentsFormType = {
 };
 
 type verifyAadharFormType = {
-  linkedPhoneNo: string;
+  aadharNo: string;
   otp: string;
 };
 type verifyPANFormType = {
@@ -125,7 +155,8 @@ type verifyLicenceFormType = {
 };
 
 type workExperienceFormType = {
-  jobTitle: string;
+  [key: string]: string | Date | null;
+  designation: string;
   companyType: string;
   companyName: string;
   linkedInUrl: string;
@@ -133,25 +164,28 @@ type workExperienceFormType = {
   companyId: string;
   startDate: Date | null;
   endDate: Date | null;
-  workType: { modeOfWork: string; workType: string };
+  workType: string;
+  modeOfWork: string;
 };
 
 type residentialInfoFormType = {
-  addressLineOne: string;
-  addressLineTwo: string;
+  [key: string]: string | number | Date | null;
+  address_line_1: string;
+  address_line_2: string;
   landmark: string;
   city: string;
   pincode: number | null;
   typeOfAddress: string;
-  stateCountry: { state: string; country: '' };
-  startDate: Date | null;
+  state: string;
+  country: '';
+  start_date: Date | null;
   endDate: Date | null;
-  currentLocation: number | null;
 };
 
 type skillFormType = {
-  skillName: string;
-  expertise: string;
+  [key: string]: string | null;
+  designation: string;
+  skillRate: string;
 };
 
 type DetailsPageState = {
@@ -161,6 +195,7 @@ type DetailsPageState = {
   seeAadharCard: boolean;
   seePanCard: boolean;
   seeDrivingLicence: boolean;
+  seeCongratulations: boolean;
 };
 
 type DetailsPageAction =
@@ -169,7 +204,8 @@ type DetailsPageAction =
   | { type: 'SET_SEE_ALL_SKILLS'; payload: boolean }
   | { type: 'SET_SEE_AADHAR_CARD'; payload: boolean }
   | { type: 'SET_SEE_PAN_CARD'; payload: boolean }
-  | { type: 'SET_SEE_DRIVER_LICENCE'; payload: boolean };
+  | { type: 'SET_SEE_DRIVER_LICENCE'; payload: boolean }
+  | { type: 'SET_SEE_CONGRATULATIONS_SCREEN'; payload: boolean };
 
 const ProfileContext = createContext<ProfileContextType>({} as ProfileContextType);
 export const useProfileContext = () => useContext(ProfileContext);
@@ -177,23 +213,23 @@ export const useProfileContext = () => useContext(ProfileContext);
 export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [forceRender, setForceRender] = useState<boolean>(false);
 
-  const isPhoneNumber = (input: string): boolean => {
-    const pattern = /^(\+\d{1,2}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/;
-    return pattern.test(input.trim());
-  };
-
-  const validatePhoneNo = (value: string) => {
-    if (value.trim().length === 0) {
-      return 'Phone Number cannot be empty';
-    }
-    if (/^[+]?[\d ]+$/.test(value.trim())) {
-      if (!isPhoneNumber(value)) {
-        return 'Invalid Phone Number';
-      }
-    }
-  };
-
   //------------Forms-----------------
+
+  const profileForm = useForm<profileFormType>({
+    initialValues: {
+      firstName: '',
+      lastName: '',
+      bio: '',
+      descriptionTags: [],
+    },
+
+    validate: {
+      firstName: isNotEmpty('Please provide your first name'),
+      lastName: isNotEmpty('Please provide your last name'),
+      bio: isNotEmpty('Please provide bio'),
+      descriptionTags: hasLength(3, 'Please select at least 3'),
+    },
+  });
 
   const documentsForm = useForm<documentsFormType>({
     initialValues: {
@@ -213,12 +249,12 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   const verifyAadharForm = useForm<verifyAadharFormType>({
     initialValues: {
-      linkedPhoneNo: '',
+      aadharNo: '',
       otp: '',
     },
 
     validate: {
-      linkedPhoneNo: (value) => validatePhoneNo(value),
+      aadharNo: hasLength(12, 'Enter valid aadhar number'),
       otp: hasLength(6, 'OTP must be 6 digits'),
     },
   });
@@ -248,7 +284,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   const workExperienceForm = useForm<workExperienceFormType>({
     initialValues: {
-      jobTitle: '',
+      designation: '',
       companyType: '',
       companyName: '',
       linkedInUrl: '',
@@ -256,11 +292,12 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
       companyId: '',
       startDate: null,
       endDate: null,
-      workType: { modeOfWork: '', workType: '' },
+      workType: '',
+      modeOfWork: '',
     },
 
     validate: {
-      jobTitle: isNotEmpty('Please enter your job title'),
+      designation: isNotEmpty('Please enter your job title'),
       companyType: isNotEmpty('Please enter Company Type'),
       companyName: isNotEmpty('Please enter your company name'),
       linkedInUrl: isNotEmpty('Please enter LinkedIn Url'),
@@ -269,43 +306,46 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
       startDate: isNotEmpty('Please enter start date'),
       endDate: isNotEmpty('Please enter end date'),
       workType: isNotEmpty('Enter valid work types'),
+      modeOfWork: isNotEmpty('Please provide mode of work'),
     },
   });
 
   const residentialInfoForm = useForm<residentialInfoFormType>({
     initialValues: {
-      addressLineOne: '',
-      addressLineTwo: '',
+      address_line_1: '',
+      address_line_2: '',
       landmark: '',
       city: '',
       pincode: null,
       typeOfAddress: '',
-      stateCountry: { state: '', country: '' },
-      startDate: null,
+      state: '',
+      country: '',
+      start_date: null,
       endDate: null,
       currentLocation: null,
     },
     validate: {
-      addressLineOne: isNotEmpty('Please enter valid address'),
-      addressLineTwo: isNotEmpty('Please enter valid address'),
+      address_line_1: isNotEmpty('Please enter valid address'),
+      address_line_2: isNotEmpty('Please enter valid address'),
       city: isNotEmpty('Please enter valid address'),
       typeOfAddress: isNotEmpty('Please enter the address type'),
       pincode: hasLength(6, 'Please enter valid pincode'),
-      stateCountry: isNotEmpty('Please enter your state/country'),
-      startDate: isNotEmpty('Please enter start date'),
+      state: isNotEmpty('Please enter your state/country'),
+      start_date: isNotEmpty('Please enter start date'),
+      country: isNotEmpty('Please enter your country'),
       endDate: isNotEmpty('Please enter end date'),
     },
   });
 
   const skillForm = useForm<skillFormType>({
     initialValues: {
-      skillName: '',
-      expertise: '',
+      designation: '',
+      skillRate: '',
     },
 
     validate: {
-      skillName: isNotEmpty('Please enter your skill'),
-      expertise: isNotEmpty('Please enter your expertise'),
+      designation: isNotEmpty('Please enter your skill'),
+      skillRate: isNotEmpty('Please enter your expertise'),
     },
   });
 
@@ -317,7 +357,13 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   //------------------------------PROFILE/BIO----------------------------------------
 
-  const [profileData, setProfileData] = useState<IUserProfile | null>(null);
+  const [profileData, setProfileData] = useState<IUserProfile>({
+    firstName: '',
+    lastName: '',
+    bio: '',
+    descriptionTags: [],
+    _id: '',
+  });
 
   const getProfile = async () => {
     try {
@@ -331,6 +377,35 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
       }
     } catch (err: any) {
       console.log(err.message);
+    }
+  };
+
+  const updateProfile = async (id: string) => {
+    try {
+      const requestData: any = {};
+      if (profileForm.values.firstName !== '') {
+        requestData.firstName = profileForm.values.firstName;
+      }
+      if (profileForm.values.lastName !== '') {
+        requestData.lastName = profileForm.values.lastName;
+      }
+      if (profileForm.values.bio !== '') {
+        requestData.bio = profileForm.values.bio;
+      }
+      if (profileForm.values.descriptionTags.length === 3) {
+        requestData.descriptionTags = profileForm.values.descriptionTags;
+      }
+      const res = await axios
+        .patch(`${profileAPIList.updateProfile}/${id}`, requestData, {
+          headers: {
+            Authorization: `Bearer ${authTokens?.accessToken}`,
+          },
+        })
+        .then(() => {
+          getProfile();
+        });
+    } catch (error: any) {
+      console.log(error.message);
     }
   };
 
@@ -354,112 +429,245 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
     }
   };
 
-  // POST
-  const addDocument = async () => {
-    if (isLoading) {
-      return Promise.resolve(null);
+  const requestOTPForAadhar = async () => {
+    if (!verifyAadharForm.validateField('aadharNo').hasError) {
+      try {
+        notifications.show({
+          id: 'load-data',
+          title: 'Sending...',
+          message: 'Please wait while we send you an OTP.',
+          loading: true,
+          autoClose: false,
+          withCloseButton: false,
+          sx: { borderRadius: em(8) },
+        });
+        const res = await axios
+          .post(
+            `${aadharAPIList.requestOTPForAadhar}`,
+            {
+              id_type: 'AADHAR_CARD',
+              id_number: verifyAadharForm.values.aadharNo,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${authTokens?.accessToken}`,
+              },
+            }
+          )
+          .then(() =>
+            notifications.update({
+              id: 'load-data',
+              title: 'Success!',
+              message: 'OTP has been sent to your linked phone number',
+              loading: true,
+              autoClose: false,
+              withCloseButton: false,
+              sx: { borderRadius: em(8) },
+            })
+          );
+      } catch (error: any) {
+        console.log(error.message);
+      }
     }
-    if (
-      !documentsForm.validateField('userName').hasError &&
-      !documentsForm.validateField('documentType').hasError
-    ) {
-      if (
-        documentsForm.values.documentType === 'AADHAR' &&
-        !documentsForm.validateField('aadharNumber').hasError
-      ) {
-        try {
-          setIsLoading(true);
-          documentsForm.clearErrors();
-          const res = await axios.post(
-            documentsAPIList.postDocuments,
-            {
-              document_type: documentsForm.values.documentType,
-              document_number: documentsForm.values.aadharNumber,
-            },
-            {
-              headers: {
-                Authorization: `Bearer ${authTokens?.accessToken}`,
-              },
-            }
-          );
-          if (res.data) {
-            setTimeout(() => {
-              notifications.update({
-                id: 'load-state',
-                title: 'Sucess!',
-                message: 'Aadhar added successfully',
-                autoClose: 2200,
-                withCloseButton: false,
-                color: 'teal',
-                icon: <BsCheckLg />,
-                sx: { borderRadius: em(8) },
-              });
-            }, 1100);
-          }
-        } catch (error: any) {
-          console.log(error.message);
-        } finally {
-          setIsLoading(false);
-        }
-      }
-      if (
-        documentsForm.values.documentType === 'PAN' &&
-        !documentsForm.validateField('panNumber').hasError
-      ) {
-        try {
-          documentsForm.clearErrors();
-          const res = await axios.post(
-            documentsAPIList.postDocuments,
-            {
-              document_type: documentsForm.values.documentType,
-              document_number: documentsForm.values.panNumber,
-            },
-            {
-              headers: {
-                Authorization: `Bearer ${authTokens?.accessToken}`,
-              },
-            }
-          );
+  };
 
-          if (res.data) {
-            setTimeout(() => {
-              notifications.update({
-                id: 'load-state',
-                title: 'Sucess!',
-                message: 'Pan Card added successfully',
-                autoClose: 2200,
-                withCloseButton: false,
-                color: 'teal',
-                icon: <BsCheckLg />,
-                sx: { borderRadius: em(8) },
-              });
-            }, 1100);
-          }
-        } catch (error: any) {
-          console.log(error.message);
-        }
-      }
-      if (
-        documentsForm.values.documentType === 'DRIVING_LICENSE' &&
-        !documentsForm.validateField('drivingLicenseNumber').hasError
-      ) {
-        try {
-          documentsForm.clearErrors();
-          const res = await axios.post(
-            documentsAPIList.postDocuments,
+  const verifyOTPForAadhar = async () => {
+    if (!verifyAadharForm.validateField('otp').hasError) {
+      try {
+        notifications.show({
+          id: 'load-data',
+          title: 'Sending...',
+          message: 'Verifying your OTP...',
+          loading: true,
+          autoClose: false,
+          withCloseButton: false,
+          sx: { borderRadius: em(8) },
+        });
+        const res = await axios
+          .post(
+            `${aadharAPIList.verifyOTPForAadhar}`,
+            { otp: verifyAadharForm.values.otp },
             {
-              document_type: documentsForm.values.documentType,
-              document_number: documentsForm.values.drivingLicenseNumber,
+              headers: {
+                Authorization: `Bearer ${authTokens?.accessToken}`,
+              },
+            }
+          )
+          .then(() =>
+            notifications.update({
+              id: 'load-data',
+              title: 'Success!',
+              message: 'OTP verified Successfully!',
+              loading: true,
+              autoClose: false,
+              withCloseButton: false,
+              sx: { borderRadius: em(8) },
+            })
+          );
+      } catch (error: any) {
+        console.log(error.message);
+      }
+    }
+  };
+
+  const requestOTPForPAN = async () => {
+    if (!verifyPANForm.validateField('panNo').hasError) {
+      try {
+        notifications.show({
+          id: 'load-data',
+          title: 'Sending...',
+          message: 'Please wait while we send you an OTP.',
+          loading: true,
+          autoClose: false,
+          withCloseButton: false,
+          sx: { borderRadius: em(8) },
+        });
+        const res = await axios
+          .post(
+            `${PANAPIList.requestOTPForPAN}`,
+            {
+              id_type: 'PAN',
+              id_number: verifyPANForm.values.panNo,
             },
             {
               headers: {
                 Authorization: `Bearer ${authTokens?.accessToken}`,
               },
             }
+          )
+          .then(() =>
+            notifications.update({
+              id: 'load-data',
+              title: 'Success!',
+              message: 'OTP has been sent to your linked phone number',
+              loading: true,
+              autoClose: false,
+              withCloseButton: false,
+              sx: { borderRadius: em(8) },
+            })
           );
-        } catch (error: any) {
-          console.log(error.message);
-        }
+      } catch (error: any) {
+        console.log(error.message);
+      }
+    }
+  };
+
+  const verifyOTPForPAN = async () => {
+    if (!verifyPANForm.validateField('otp').hasError) {
+      try {
+        notifications.show({
+          id: 'load-data',
+          title: 'Sending...',
+          message: 'Verifying your OTP...',
+          loading: true,
+          autoClose: false,
+          withCloseButton: false,
+          sx: { borderRadius: em(8) },
+        });
+        const res = await axios
+          .post(
+            `${PANAPIList.verifyOTPForPAN}`,
+            { otp: verifyPANForm.values.otp },
+            {
+              headers: {
+                Authorization: `Bearer ${authTokens?.accessToken}`,
+              },
+            }
+          )
+          .then(() =>
+            notifications.update({
+              id: 'load-data',
+              title: 'Success!',
+              message: 'OTP verified Successfully!',
+              loading: true,
+              autoClose: false,
+              withCloseButton: false,
+              sx: { borderRadius: em(8) },
+            })
+          );
+      } catch (error: any) {
+        console.log(error.message);
+      }
+    }
+  };
+
+  const requestOTPForLicence = async () => {
+    if (!verifyLicenceForm.validateField('licenceNo').hasError) {
+      try {
+        notifications.show({
+          id: 'load-data',
+          title: 'Sending...',
+          message: 'Please wait while we send you an OTP.',
+          loading: true,
+          autoClose: false,
+          withCloseButton: false,
+          sx: { borderRadius: em(8) },
+        });
+        const res = await axios
+          .post(
+            `${drivingLicenceAPIList.requestOTPForLicence}`,
+            {
+              id_type: 'DRIVING_LICENCE',
+              id_number: verifyLicenceForm.values.licenceNo,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${authTokens?.accessToken}`,
+              },
+            }
+          )
+          .then(() =>
+            notifications.update({
+              id: 'load-data',
+              title: 'Success!',
+              message: 'OTP has been sent to your linked phone number',
+              loading: true,
+              autoClose: false,
+              withCloseButton: false,
+              sx: { borderRadius: em(8) },
+            })
+          );
+      } catch (error: any) {
+        console.log(error.message);
+      }
+    }
+  };
+
+  const verifyOTPForLicence = async () => {
+    if (!verifyLicenceForm.validateField('otp').hasError) {
+      try {
+        notifications.show({
+          id: 'load-data',
+          title: 'Sending...',
+          message: 'Verifying your OTP...',
+          loading: true,
+          autoClose: false,
+          withCloseButton: false,
+          sx: { borderRadius: em(8) },
+        });
+        const res = await axios
+          .post(
+            `${drivingLicenceAPIList.verifyOTPForLicence}`,
+            { otp: verifyLicenceForm.values.otp },
+            {
+              headers: {
+                Authorization: `Bearer ${authTokens?.accessToken}`,
+              },
+            }
+          )
+          .then(() =>
+            notifications.update({
+              id: 'load-data',
+              title: 'Success!',
+              message: 'OTP verified Successfully!',
+              loading: true,
+              autoClose: false,
+              withCloseButton: false,
+              sx: { borderRadius: em(8) },
+            })
+          );
+      } catch (error: any) {
+        console.log(error.message);
       }
     }
   };
@@ -490,7 +698,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
       return Promise.resolve(null);
     }
     if (
-      !workExperienceForm.validateField('jobTitle').hasError &&
+      !workExperienceForm.validateField('designation').hasError &&
       !workExperienceForm.validateField('companyName').hasError &&
       !workExperienceForm.validateField('companyType').hasError &&
       !workExperienceForm.validateField('companyId').hasError &&
@@ -506,11 +714,11 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
         const res = await axios.post(
           workExperienceAPiList.postWorkExperience,
           {
-            designation: workExperienceForm.values.jobTitle,
+            designation: workExperienceForm.values.designation,
             companyType: workExperienceForm.values.companyType,
             email: workExperienceForm.values.workEmail,
-            workMode: workExperienceForm.values.workType.modeOfWork,
-            workType: workExperienceForm.values.workType.workType,
+            workMode: workExperienceForm.values.modeOfWork,
+            workType: workExperienceForm.values.workType,
             companyName: workExperienceForm.values.companyName,
             companyId: workExperienceForm.values.companyId,
             companyStartDate: workExperienceForm.values.startDate,
@@ -538,15 +746,6 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
               sx: { borderRadius: em(8) },
             });
           }, 1100);
-          workExperienceForm.setFieldValue('jobTitle', '');
-          workExperienceForm.setFieldValue('companyName', '');
-          workExperienceForm.setFieldValue('companyType', '');
-          workExperienceForm.setFieldValue('companyId', '');
-          workExperienceForm.setFieldValue('linkedInUrl', '');
-          workExperienceForm.setFieldValue('workEmail', '');
-          workExperienceForm.setFieldValue('companyId', '');
-          workExperienceForm.setFieldValue('startDate', null);
-          workExperienceForm.setFieldValue('endDate', null);
           getWorkExperience();
         }
       } catch (err: any) {
@@ -593,25 +792,20 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
   // PATCH
   const updateWorkExperience = async (id: string) => {
     try {
+      const data = workExperienceForm.values;
+      const filteredData: any = {};
+      for (const key in data) {
+        const value = data[key];
+        if (value !== '' && value !== null) {
+          filteredData[key] = value;
+        }
+      }
       const res = await axios
-        .patch(
-          `${workExperienceAPiList.updateWorkExperience}/${id}`,
-          {
-            designation: workExperienceForm.values.jobTitle,
-            email: workExperienceForm.values.workEmail,
-            workMode: workExperienceForm.values.workType.modeOfWork,
-            workType: workExperienceForm.values.workType.workType,
-            companyName: workExperienceForm.values.companyName,
-            companyId: workExperienceForm.values.companyId,
-            companyStartDate: workExperienceForm.values.startDate,
-            companyEndDate: workExperienceForm.values.endDate,
+        .patch(`${workExperienceAPiList.updateWorkExperience}/${id}`, filteredData, {
+          headers: {
+            Authorization: `Bearer ${authTokens?.accessToken}`,
           },
-          {
-            headers: {
-              Authorization: `Bearer ${authTokens?.accessToken}`,
-            },
-          }
-        )
+        })
         .then(() => {
           setTimeout(() => {
             notifications.update({
@@ -625,12 +819,6 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
               sx: { borderRadius: em(8) },
             });
           }, 1100);
-          workExperienceForm.setFieldValue('jobTitle', '');
-          workExperienceForm.setFieldValue('companyName', '');
-          workExperienceForm.setFieldValue('workEmail', '');
-          workExperienceForm.setFieldValue('companyId', '');
-          workExperienceForm.setFieldValue('startDate', null);
-          workExperienceForm.setFieldValue('endDate', null);
           getWorkExperience();
           setIsLoading(false);
         });
@@ -685,7 +873,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
       'address',
       'pincode',
       'stateCountry',
-      'startDate',
+      'start_date',
       'endDate',
       'currentLocation',
     ];
@@ -708,14 +896,14 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
       const res = await axios.post(
         residentialInfoAPIList.postResidentialInfo,
         {
-          address_line_1: residentialInfoForm.values.addressLineOne,
-          address_line_2: residentialInfoForm.values.addressLineTwo,
+          address_line_1: residentialInfoForm.values.address_line_1,
+          address_line_2: residentialInfoForm.values.address_line_2,
           landmark: residentialInfoForm.values.landmark,
           pincode: residentialInfoForm.values.pincode,
           city: residentialInfoForm.values.city,
-          state: residentialInfoForm.values.stateCountry.state,
-          country: residentialInfoForm.values.stateCountry.country,
-          start_date: residentialInfoForm.values.startDate,
+          state: residentialInfoForm.values.state,
+          country: residentialInfoForm.values.country,
+          start_date: residentialInfoForm.values.start_date,
           end_date: residentialInfoForm.values.endDate,
         },
         {
@@ -787,16 +975,21 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
   // PATCH
   const updateResidentialInfo = async (id: string) => {
     try {
+      const data = residentialInfoForm.values;
+      const filteredData: any = {};
+      for (const key in data) {
+        const value = data[key];
+        if (value !== '' && value !== null) {
+          filteredData[key] = value;
+        }
+      }
+
       const res = await axios
-        .patch(
-          `${residentialInfoAPIList.updateResidentialInfo}/${id}`,
-          residentialInfoForm.values,
-          {
-            headers: {
-              Authorization: `Bearer ${authTokens?.accessToken}`,
-            },
-          }
-        )
+        .patch(`${residentialInfoAPIList.updateResidentialInfo}/${id}`, filteredData, {
+          headers: {
+            Authorization: `Bearer ${authTokens?.accessToken}`,
+          },
+        })
         .then(() => {
           setTimeout(() => {
             notifications.update({
@@ -846,10 +1039,10 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
       return Promise.resolve(null);
     }
 
-    skillForm.validateField('skillName');
+    skillForm.validateField('designation');
     if (
-      skillForm.validateField('skillName').hasError &&
-      skillForm.validateField('expertise').hasError
+      skillForm.validateField('designation').hasError &&
+      skillForm.validateField('skillRate').hasError
     ) {
       return;
     }
@@ -870,9 +1063,9 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
       const res = await axios.post(
         skillsAPIList.postSkill,
         {
-          designation: skillForm.values.skillName,
+          designation: skillForm.values.designation,
           isVerified: false,
-          skillRate: parseInt(skillForm.values.expertise, 10),
+          skillRate: parseInt(skillForm.values.skillRate, 10),
           user: 'GRN788209',
         },
         {
@@ -892,8 +1085,8 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
           autoClose: 2000,
         });
 
-        skillForm.setFieldValue('skillName', '');
-        skillForm.setFieldValue('expertise', '');
+        skillForm.setFieldValue('designation', '');
+        skillForm.setFieldValue('skillRate', '');
         getSkills();
       }
     } catch (err: any) {
@@ -949,35 +1142,22 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
   // PATCH
   const updateSkill = async (id: string) => {
     try {
-      const res = await axios
-        .patch(
-          `${skillsAPIList.updateSkill}/${id}`,
-          {
-            designation: skillForm.values.skillName,
-            skillRate: 1,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${authTokens?.accessToken}`,
-            },
-          }
-        )
-        .then(() => {
-          setTimeout(() => {
-            notifications.update({
-              id: 'load-state',
-              title: 'Sucess!',
-              message: 'skill updated!',
-              autoClose: 2200,
-              withCloseButton: false,
-              color: 'teal',
-              icon: <BsCheckLg />,
-              sx: { borderRadius: em(8) },
-            });
-          }, 1100);
-          getSkills();
-          setIsLoading(false);
-        });
+      const requestData: any = {};
+
+      if (skillForm.values.designation !== '') {
+        requestData.designation = skillForm.values.designation;
+      }
+      if (skillForm.values.skillRate !== '') {
+        requestData.skillRate = parseInt(skillForm.values.skillRate);
+      }
+      const res = await axios.patch(`${skillsAPIList.updateSkill}/${id}`, requestData, {
+        headers: {
+          Authorization: `Bearer ${authTokens?.accessToken}`,
+        },
+      });
+
+      getSkills();
+      setIsLoading(false);
     } catch (error: any) {
       console.log(error.message);
     } finally {
@@ -1004,6 +1184,8 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
         return { ...state, seePanCard: action.payload };
       case 'SET_SEE_DRIVER_LICENCE':
         return { ...state, seeDrivingLicence: action.payload };
+      case 'SET_SEE_CONGRATULATIONS_SCREEN':
+        return { ...state, seeCongratulations: action.payload };
       default:
         return state;
     }
@@ -1016,6 +1198,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
     seeAadharCard: false,
     seePanCard: false,
     seeDrivingLicence: false,
+    seeCongratulations: false,
   });
 
   useEffect(() => {
@@ -1031,12 +1214,15 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
   return (
     <ProfileContext.Provider
       value={{
+        isLoading,
+        setIsLoading,
         profileData,
+        profileForm,
+        updateProfile,
         documentsData,
         workExperienceData,
         residentialInfoData,
         skillData,
-        addDocument,
         addWorkExperience,
         addResidentialInfo,
         addSkill,
@@ -1058,6 +1244,12 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
         authTokens,
         detailsPage,
         dispatchDetailsPage,
+        requestOTPForAadhar,
+        verifyOTPForAadhar,
+        requestOTPForPAN,
+        verifyOTPForPAN,
+        requestOTPForLicence,
+        verifyOTPForLicence,
       }}
     >
       {children}

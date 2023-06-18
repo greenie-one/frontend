@@ -16,9 +16,8 @@ import {
 } from '@mantine/core';
 import { BsArrowLeft } from 'react-icons/bs';
 import { AiOutlineRight } from 'react-icons/ai';
-import { MdVerified, MdOutlineCalendarMonth } from 'react-icons/md';
+import { MdVerified, MdOutlineCalendarMonth, MdOutlineEdit, MdOutlineDelete } from 'react-icons/md';
 import { CgSandClock } from 'react-icons/cg';
-import { RiDeleteBin6Line, RiEdit2Line } from 'react-icons/ri';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 import { MonthPickerInput } from '@mantine/dates';
 import linkedInImg from '../../Auth/assets/linkedIn-logo.png';
@@ -38,15 +37,15 @@ const companies = [
 ];
 
 const typeOfWork = [
-  { value: 'Work from office', label: 'Work From Office' },
-  { value: 'Work from home', label: 'Work From Home' },
-  { value: 'Hybrid', label: 'Hybrid' },
-];
-const modeOfWork = [
   { value: 'Full-time', label: 'Full-time' },
   { value: 'Part-time', label: 'Part-time' },
   { value: 'Internship', label: 'Intership' },
   { value: 'Contract', label: 'Contract' },
+];
+const modeOfWork = [
+  { value: 'Work from office', label: 'Work From Office' },
+  { value: 'Work from home', label: 'Work From Home' },
+  { value: 'Hybrid', label: 'Hybrid' },
 ];
 
 const companyTypes = [
@@ -77,6 +76,20 @@ export const SeeAllExperiences = () => {
     });
   };
 
+  const onClose = () => {
+    close();
+    workExperienceForm.setFieldValue('designation', '');
+    workExperienceForm.setFieldValue('companyType', '');
+    workExperienceForm.setFieldValue('companyName', '');
+    workExperienceForm.setFieldValue('linkedInUrl', '');
+    workExperienceForm.setFieldValue('workEmail', '');
+    workExperienceForm.setFieldValue('companyId', '');
+    workExperienceForm.setFieldValue('startDate', null);
+    workExperienceForm.setFieldValue('endDate', null);
+    workExperienceForm.setFieldValue('workType', '');
+    workExperienceForm.setFieldValue('modeOfWork', '');
+  };
+
   const openModal = (id: string) => {
     setUpdateId(id);
     open();
@@ -90,7 +103,7 @@ export const SeeAllExperiences = () => {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     updateWorkExperience(updateId);
-    close();
+    onClose();
   };
 
   return (
@@ -100,7 +113,7 @@ export const SeeAllExperiences = () => {
         size={'65%'}
         fullScreen={isMobile}
         opened={opened}
-        onClose={close}
+        onClose={onClose}
         title="Add work experience"
       >
         <form onSubmit={handleSubmit}>
@@ -111,7 +124,7 @@ export const SeeAllExperiences = () => {
               classNames={inputClasses}
               data-autofocus
               withAsterisk
-              {...workExperienceForm.getInputProps('jobTitle')}
+              {...workExperienceForm.getInputProps('designation')}
             />
           </Box>
           <Box className="input-section">
@@ -131,6 +144,7 @@ export const SeeAllExperiences = () => {
               data={companies}
               label="Search by company website"
               classNames={inputClasses}
+              {...workExperienceForm.getInputProps('companyName')}
             />
           </Box>
           <Box className="input-section">
@@ -196,17 +210,17 @@ export const SeeAllExperiences = () => {
             <Box className="inner-input-section">
               <Select
                 withAsterisk
-                data={typeOfWork}
+                data={modeOfWork}
                 label="Mode of Work"
                 classNames={inputClasses}
-                {...workExperienceForm.getInputProps('workType.modeOfWork')}
+                {...workExperienceForm.getInputProps('modeOfWork')}
               />
               <Select
                 withAsterisk
-                data={modeOfWork}
+                data={typeOfWork}
                 label="Select work type"
                 classNames={inputClasses}
-                {...workExperienceForm.getInputProps('workType.workType')}
+                {...workExperienceForm.getInputProps('workType')}
               />
             </Box>
           </Box>
@@ -214,7 +228,7 @@ export const SeeAllExperiences = () => {
             <Button color="teal" type="submit">
               Save
             </Button>
-            <Button variant="default" onClick={close}>
+            <Button variant="default" onClick={onClose}>
               Cancel
             </Button>
           </Box>
@@ -249,7 +263,7 @@ export const SeeAllExperiences = () => {
           ) => {
             return (
               <>
-                <Box key={index} className="see-all-card">
+                <Box key={index} className="see-all-card experience-see-all-card">
                   <Box className="see-all-card-header">
                     <Box className="header-content">
                       <Box className="company-logo"></Box>
@@ -277,10 +291,10 @@ export const SeeAllExperiences = () => {
                       {!isVerified && <Button className="get-verified">Get Verified</Button>}
 
                       <Box className="icon" onClick={() => deleteWorkExperience(_id)}>
-                        <RiDeleteBin6Line size={'22px'} className="btn" />
+                        <MdOutlineDelete size={'22px'} className="btn" />
                       </Box>
                       <Box className="icon" onClick={() => openModal(_id)}>
-                        <RiEdit2Line size={'22px'} className="btn" />
+                        <MdOutlineEdit size={'22px'} className="btn" />
                       </Box>
                     </Box>
                   </Box>

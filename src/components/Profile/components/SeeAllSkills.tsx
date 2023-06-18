@@ -16,14 +16,13 @@ import {
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 import { BsArrowLeft } from 'react-icons/bs';
 import { AiOutlineRight } from 'react-icons/ai';
-import { MdVerified } from 'react-icons/md';
+import { MdVerified, MdOutlineDelete, MdOutlineEdit } from 'react-icons/md';
 import { CgSandClock } from 'react-icons/cg';
-import { RiDeleteBin6Line, RiEdit2Line } from 'react-icons/ri';
 
-const expertise = [
-  { value: 'Amateur', label: 'Amature' },
-  { value: 'Intermediate', label: 'Intermediate' },
-  { value: 'Expert', label: 'Expert' },
+const skillRate = [
+  { value: '0', label: 'Amature' },
+  { value: '1', label: 'Intermediate' },
+  { value: '2', label: 'Expert' },
 ];
 
 export const SeeAllSkills = () => {
@@ -46,10 +45,16 @@ export const SeeAllSkills = () => {
     open();
   };
 
+  const onClose = () => {
+    close();
+    skillForm.setFieldValue('designation', '');
+    skillForm.setFieldValue('skillRate', '');
+  };
+
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     updateSkill(updateId);
-    close();
+    onClose();
   };
   return (
     <section className="container">
@@ -58,7 +63,7 @@ export const SeeAllSkills = () => {
         size={'65%'}
         fullScreen={isMobile}
         opened={opened}
-        onClose={close}
+        onClose={onClose}
         title="Add Skills"
       >
         <form onSubmit={handleSubmit}>
@@ -69,17 +74,17 @@ export const SeeAllSkills = () => {
               data-autofocus
               label="Eg. Frontend, Backend"
               classNames={inputClasses}
-              {...skillForm.getInputProps('skillName')}
+              {...skillForm.getInputProps('designation')}
             />
           </Box>
           <Box className="input-section border-bottom">
             <Title className="title">Expertise</Title>
             <Select
               withAsterisk
-              data={expertise}
+              data={skillRate}
               label="Select your expertise"
               classNames={inputClasses}
-              {...skillForm.getInputProps('expertise')}
+              {...skillForm.getInputProps('skillRate')}
             />
           </Box>
           <Box className="location-wrapper">
@@ -87,7 +92,7 @@ export const SeeAllSkills = () => {
               <Button color="teal" type="submit">
                 Save
               </Button>
-              <Button type="button" variant="default" onClick={close}>
+              <Button type="button" variant="default" onClick={onClose}>
                 Cancel
               </Button>
             </Box>
@@ -124,7 +129,11 @@ export const SeeAllSkills = () => {
                   </Button>
                 )}
               </Box>
-              <Text className="skill-rate">{skillRate}</Text>
+              <Text className="skill-rate">
+                {skillRate === 0 && 'Amature'}
+                {skillRate === 1 && 'Intermediate'}
+                {skillRate === 2 && 'Expert'}
+              </Text>
               <Box className="skill-btn-wrapper">
                 {isVerified ? (
                   <Button className="view-details-btn">View details</Button>
@@ -135,10 +144,10 @@ export const SeeAllSkills = () => {
                 )}
                 <Box className="button-wrappers">
                   <Box className="icon" onClick={() => deleteSkill(_id)}>
-                    <RiDeleteBin6Line size={'22px'} className="btn" />
+                    <MdOutlineDelete size={'22px'} className="btn" />
                   </Box>
                   <Box className="icon" onClick={() => openModal(_id)}>
-                    <RiEdit2Line size={'22px'} className="btn" />
+                    <MdOutlineEdit size={'22px'} className="btn" />
                   </Box>
                 </Box>
               </Box>
