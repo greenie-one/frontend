@@ -16,7 +16,7 @@ import {
 import { useLocalStorage } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { useAuthContext } from '../../context/AuthContext';
-import ApiList from '../../../../assets/api/ApiList';
+import { profileAPIList } from '../../../../assets/api/ApiList';
 
 import { FaExclamation } from 'react-icons/fa';
 import { BsArrowLeft } from 'react-icons/bs';
@@ -28,7 +28,6 @@ import '../../styles/global.scss';
 
 const skillSetOne = [
   'Lone Wolf',
-
   'Energetic',
   'Prodigy',
   'Self Initiator',
@@ -98,7 +97,7 @@ const Profile = () => {
           sx: { borderRadius: em(8) },
         });
 
-        const res = await axios.post(ApiList.createProfile, profileForm.values, {
+        const res = await axios.post(profileAPIList.createProfile, profileForm.values, {
           headers: {
             Authorization: `Bearer ${(authTokens as any)?.accessToken}`,
           },

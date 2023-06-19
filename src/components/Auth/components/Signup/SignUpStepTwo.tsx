@@ -3,9 +3,9 @@ import axios from 'axios';
 import { createStyles, em, rem, Text, Button, Divider, PasswordInput, Box } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { useAuthContext } from '../../context/AuthContext';
-import ApiList from '../../../../assets/api/ApiList';
+import { authApiList } from '../../../../assets/api/ApiList';
 
-import GoogleButton from '../GoogleButton';
+import GoogleButton from '../Google/GoogleButton';
 import TermsAndConditions from '../../assets/terms_and_conditions-greenie.pdf';
 import PrivacyPolicy from '../../assets/Privacy Policy-Greenie.pdf';
 import { FaExclamation } from 'react-icons/fa';
@@ -44,7 +44,7 @@ const SignUpStepTwo = () => {
           sx: { borderRadius: em(8) },
         });
 
-        const res = await axios.post(ApiList.signup, {
+        const res = await axios.post(authApiList.signup, {
           email: signupForm.values.emailPhone,
           password: signupForm.values.password,
         });
@@ -109,7 +109,7 @@ const SignUpStepTwo = () => {
           sx: { borderRadius: em(8) },
         });
 
-        const res = await axios.post(ApiList.signup, {
+        const res = await axios.post(authApiList.signup, {
           mobileNumber: signupForm.values.emailPhone,
         });
 
@@ -131,7 +131,6 @@ const SignUpStepTwo = () => {
           dispatch({ type: 'NEXTSIGNUPSTEP' });
         }
       } catch (err: any) {
-        console.log(err.response?.data);
         if (err.response?.data?.code === 'GR0003') {
           notifications.update({
             id: 'load-data',

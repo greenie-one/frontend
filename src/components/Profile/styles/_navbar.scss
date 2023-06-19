@@ -1,11 +1,14 @@
 .navbar {
   background-color: $white;
-  padding: 28px;
+  padding: 18px 28px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   box-shadow: 0px 4px 34px rgba(0, 0, 0, 0.1);
   margin-bottom: 46px;
+  position: fixed;
+  z-index: 10;
+  width: 100vw;
 
   .logo {
     display: flex;
@@ -19,6 +22,13 @@
       color: #000000;
       margin-right: 5px;
     }
+    .nav-verified {
+      margin-top: 3px;
+    }
+  }
+  .search {
+    margin-left: -5rem;
+    position: relative;
   }
 
   .right-section {
@@ -31,6 +41,45 @@
       height: 40px;
       margin-left: 70px;
       margin-right: 12px;
+    }
+  }
+}
+
+.drawer-right-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .profile-picture {
+    width: 40px;
+    height: 40px;
+    margin-left: 40px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .navbar {
+    .logo {
+      .greenie {
+        font-size: 26px;
+        line-height: 38px;
+        letter-spacing: -0.02em;
+      }
+    }
+
+    .right-section {
+      .profile-picture {
+        margin-left: 50px;
+      }
+    }
+  }
+}
+@media screen and (max-width: 414px) {
+  .navbar {
+    .right-section {
+      .profile-picture {
+        margin-left: 20px;
+      }
     }
   }
 }

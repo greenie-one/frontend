@@ -3,9 +3,10 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 import { Text, Button, Flex, Box, TextInput, createStyles, em } from '@mantine/core';
+import { useLocalStorage } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { useAuthContext } from '../../context/AuthContext';
-import ApiList from '../../../../assets/api/ApiList';
+import { authApiList } from '../../../../assets/api/ApiList';
 
 import { FaExclamation } from 'react-icons/fa';
 import { BsArrowLeft } from 'react-icons/bs';
@@ -14,9 +15,11 @@ import '../../styles/global.scss';
 
 const LoginStepThree = () => {
   const navigate = useNavigate();
-  const { loginForm, state, dispatch, isPhoneNumber, validationId } = useAuthContext();
+  const { loginForm, state, dispatch, isPhoneNumber, validationId, resendOtp, setForceRender } =
+    useAuthContext();
   const { classes: inputClasses } = inputStyles();
 
+  const [authTokens, setAuthTokens] = useLocalStorage({ key: 'auth-tokens' });
   const [secondsRemaining, setSecondsRemaining] = useState<number>(60);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -32,7 +35,8 @@ const LoginStepThree = () => {
     return () => clearInterval(timer);
   }, [secondsRemaining]);
 
-  const handleMobileLogin = async () => {
+  const handleMobileLogin = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
     if (isLoading) {
       return Promise.resolve(null);
     }
@@ -49,12 +53,14 @@ const LoginStepThree = () => {
           sx: { borderRadius: em(8) },
         });
 
-        const res = await axios.post(ApiList.validateOtp, {
+        const res = await axios.post(authApiList.validateOtp, {
           validationId,
           otp: loginForm.values.otp,
         });
 
         if (res.data) {
+          setAuthTokens(res.data);
+
           setTimeout(() => {
             notifications.update({
               id: 'load-data',
@@ -68,7 +74,7 @@ const LoginStepThree = () => {
             });
           }, 1100);
 
-          navigate('/profile');
+          setForceRender((prev) => !prev);
         }
       } catch (err: any) {
         loginForm.setFieldValue('otp', '');
@@ -123,15 +129,29 @@ const LoginStepThree = () => {
             <TextInput
               classNames={inputClasses}
               maxLength={6}
-              pattern="[0-9]{4}"
+              pattern="[0-9]{6}"
               {...loginForm.getInputProps('otp')}
             />
-            <Text fw={'light'} fz={'xs'} my={'md'}>
-              Resend
-              <Text fw={'600'} span>
-                after {secondsRemaining}s
+
+            {secondsRemaining === 0 ? (
+              <Button
+                compact
+                color="gray"
+                variant="subtle"
+                onClick={resendOtp}
+                className="resendLink"
+              >
+                Resend
+              </Button>
+            ) : (
+              <Text fw={'light'} fz={'xs'} my={'md'}>
+                Resend{' '}
+                <Text fw={'600'} span>
+                  after {secondsRemaining}s
+                </Text>
               </Text>
-            </Text>
+            )}
+
             <Button type="submit" className="primaryBtn" onClick={handleMobileLogin}>
               Verify & Login
             </Button>

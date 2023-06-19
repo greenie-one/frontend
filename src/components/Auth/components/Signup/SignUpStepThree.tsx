@@ -3,8 +3,9 @@ import axios from 'axios';
 import { TextInput, createStyles, em, Text, Button, Flex, Box } from '@mantine/core';
 import { useLocalStorage } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
+
 import { useAuthContext } from '../../context/AuthContext';
-import ApiList from '../../../../assets/api/ApiList';
+import { authApiList } from '../../../../assets/api/ApiList';
 
 import { FaExclamation } from 'react-icons/fa';
 import { BsArrowLeft } from 'react-icons/bs';
@@ -12,8 +13,16 @@ import { BsCheckLg } from 'react-icons/bs';
 import '../../styles/global.scss';
 
 const SignUpStepThree = () => {
-  const { signupForm, state, dispatch, isPhoneNumber, isValidEmail, validationId } =
-    useAuthContext();
+  const {
+    signupForm,
+    state,
+    dispatch,
+    isPhoneNumber,
+    isValidEmail,
+    validationId,
+    resendOtp,
+    setForceRender,
+  } = useAuthContext();
   const { classes: inputClasses } = inputStyles();
   const { signUpStep } = state;
 
@@ -54,13 +63,14 @@ const SignUpStepThree = () => {
           sx: { borderRadius: em(8) },
         });
 
-        const res = await axios.post(ApiList.validateOtp, {
+        const res = await axios.post(authApiList.validateOtp, {
           validationId,
           otp: signupForm.values.otp,
         });
 
         if (res.data) {
           setAuthTokens(res.data);
+          setForceRender((prev) => !prev);
 
           setTimeout(() => {
             notifications.update({
@@ -110,11 +120,18 @@ const SignUpStepThree = () => {
           <TextInput
             classNames={inputClasses}
             maxLength={6}
-            pattern="[0-9]{4}"
+            pattern="[0-9]{6}"
             {...signupForm.getInputProps('otp')}
           />
+
           {secondsRemaining === 0 ? (
-            <Button className="resendLink" variant="subtle" color="gray" compact>
+            <Button
+              compact
+              color="gray"
+              variant="subtle"
+              onClick={resendOtp}
+              className="resendLink"
+            >
               Resend
             </Button>
           ) : (
@@ -125,6 +142,7 @@ const SignUpStepThree = () => {
               </Text>
             </Text>
           )}
+
           <Button type="submit" className="primaryBtn" onClick={VerifyOTP}>
             Verify
           </Button>
@@ -142,11 +160,18 @@ const SignUpStepThree = () => {
             <TextInput
               classNames={inputClasses}
               maxLength={6}
-              pattern="[0-9]{4}"
+              pattern="[0-9]{6}"
               {...signupForm.getInputProps('otp')}
             />
+
             {secondsRemaining === 0 ? (
-              <Button className="resendLink" variant="subtle" color="gray" compact>
+              <Button
+                compact
+                color="gray"
+                variant="subtle"
+                onClick={resendOtp}
+                className="resendLink"
+              >
                 Resend
               </Button>
             ) : (
@@ -157,6 +182,7 @@ const SignUpStepThree = () => {
                 </Text>
               </Text>
             )}
+
             <Button type="submit" className="primaryBtn" onClick={VerifyOTP}>
               Verify
             </Button>

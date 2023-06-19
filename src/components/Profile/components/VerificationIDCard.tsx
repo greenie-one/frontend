@@ -1,32 +1,28 @@
-import { useState } from 'react';
-import { Text, Box } from '@mantine/core';
+import { Text, Box, Button } from '@mantine/core';
 import { MdVerified } from 'react-icons/md';
+import { CgSandClock } from 'react-icons/cg';
 import '../styles/global.scss';
 
 interface CardProps {
   documentName: string;
-  documentImg: string;
   isVerified: boolean;
 }
 
-export const VerificationIDCard: React.FC<CardProps> = ({
-  documentName,
-  documentImg,
-  isVerified,
-}) => {
+export const VerificationIDCard: React.FC<CardProps> = ({ documentName, isVerified }) => {
   return (
     <Box className="verificationIdCard">
-      <Box className="verificationIdImg">
-        <img src={documentImg} alt="Document Image" />
-      </Box>
-      <Text className="document-name">{documentName}</Text>
+      <Box className="verificationIdImg"></Box>
+      {documentName === 'AADHAR' && <Text className="document-name">Aadhar Card</Text>}
+      {documentName === 'PAN' && <Text className="document-name">PAN Card</Text>}
+      {documentName === 'DRIVING_LICENSE' && <Text className="document-name">Driving License</Text>}
       {isVerified ? (
-        <Box className="is-verified-box">
-          <Text className="is-verified-text">Verified</Text>
-          <MdVerified color="#9FE870" />
-        </Box>
+        <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
+          Verified
+        </Button>
       ) : (
-        <Box></Box>
+        <Button leftIcon={<CgSandClock color="#FF7272" size={'16px'} />} className="pending">
+          Pending
+        </Button>
       )}
     </Box>
   );

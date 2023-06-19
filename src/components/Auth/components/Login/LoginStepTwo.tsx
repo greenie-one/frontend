@@ -13,11 +13,12 @@ import {
   Box,
   em,
 } from '@mantine/core';
+import { useLocalStorage } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { useAuthContext } from '../../context/AuthContext';
-import ApiList from '../../../../assets/api/ApiList';
+import { authApiList } from '../../../../assets/api/ApiList';
 
-import GoogleButton from '../GoogleButton';
+import GoogleButton from '../Google/GoogleButton';
 import { FaExclamation } from 'react-icons/fa';
 import { BsArrowLeft } from 'react-icons/bs';
 import { BsCheckLg } from 'react-icons/bs';
@@ -26,9 +27,17 @@ import '../../styles/global.scss';
 const LoginStepTwo = () => {
   const navigate = useNavigate();
   const { classes: inputClasses } = inputStyles();
-  const { loginForm, state, dispatch, isValidEmail, isPhoneNumber, setValidationId } =
-    useAuthContext();
+  const {
+    loginForm,
+    state,
+    dispatch,
+    isValidEmail,
+    isPhoneNumber,
+    setValidationId,
+    setForceRender,
+  } = useAuthContext();
 
+  const [authTokens, setAuthTokens] = useLocalStorage({ key: 'auth-tokens' });
   const [isLoading, setIsLoading] = useState(false);
 
   const handleLoginWithPhoneNo = () => {
@@ -67,26 +76,35 @@ const LoginStepTwo = () => {
           sx: { borderRadius: em(8) },
         });
 
-        const res = await axios.post(ApiList.login, {
+        const res = await axios.post(authApiList.login, {
           email: loginForm.values.emailPhoneGreenieId,
           password: loginForm.values.password,
         });
 
         if (res.data) {
-          setTimeout(() => {
-            notifications.update({
-              id: 'load-data',
-              title: 'Success !',
-              message: 'You have been logged in successfully.',
-              autoClose: 2200,
-              withCloseButton: false,
-              color: 'teal',
-              icon: <BsCheckLg />,
-              sx: { borderRadius: em(8) },
-            });
-          }, 1100);
+          setValidationId(res.data?.validationId);
+          const resp = await axios.post(authApiList.validateOtp, {
+            validationId: res.data?.validationId,
+            otp: '123456',
+          });
 
-          navigate('/profile');
+          if (resp.data) {
+            setAuthTokens(resp.data);
+            setForceRender((prev) => !prev);
+
+            setTimeout(() => {
+              notifications.update({
+                id: 'load-data',
+                title: 'Success !',
+                message: 'You have been logged in successfully.',
+                autoClose: 2200,
+                withCloseButton: false,
+                color: 'teal',
+                icon: <BsCheckLg />,
+                sx: { borderRadius: em(8) },
+              });
+            }, 1100);
+          }
         }
       } catch (err: any) {
         if (err.response?.data?.code === 'GR0011') {
@@ -125,7 +143,8 @@ const LoginStepTwo = () => {
     }
   };
 
-  const sendLoginOTP = async () => {
+  const sendLoginOTP = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
     if (isLoading) {
       return Promise.resolve(null);
     }
@@ -145,7 +164,7 @@ const LoginStepTwo = () => {
           sx: { borderRadius: em(8) },
         });
 
-        const res = await axios.post(ApiList.login, {
+        const res = await axios.post(authApiList.login, {
           mobileNumber: loginForm.values.emailPhoneGreenieId,
         });
 

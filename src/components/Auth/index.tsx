@@ -10,7 +10,6 @@ import SignUpStepThree from './components/Signup/SignUpStepThree';
 import LoginStepOne from './components/Login/LoginStepOne';
 import LoginStepTwo from './components/Login/LoginStepTwo';
 import LoginStepThree from './components/Login/LoginStepThree';
-import LoginWithOTP from './components/Login/LoginWithOTP';
 
 import Profile from './components/Signup/Profile';
 import ForgotPassword from './components/Login/ForgotPassword';
@@ -20,7 +19,7 @@ export const Auth = () => {
   const { classes } = useStyles();
 
   const { isPhoneNumber, state, loginForm } = useAuthContext();
-  const { signUpStep, loginStep, loginWithOTPStep, resetPasswordStep } = state;
+  const { signUpStep, loginStep, resetPasswordStep } = state;
 
   return (
     <>
@@ -59,17 +58,20 @@ export const Auth = () => {
               </Tabs.Panel>
 
               <Tabs.Panel value="login">
-                <form>
-                  {loginStep === 1 && <LoginStepOne />}
-                  {loginStep === 2 && <LoginStepTwo />}
-                  {loginStep === 3 && <LoginStepThree />}
-                </form>
+                {signUpStep !== 4 ? (
+                  <form>
+                    {loginStep === 1 && <LoginStepOne />}
+                    {loginStep === 2 && <LoginStepTwo />}
+                    {loginStep === 3 && <LoginStepThree />}
+                    {signUpStep === 4 && <Profile />}
+                  </form>
+                ) : (
+                  <form>{signUpStep === 4 && <Profile />}</form>
+                )}
               </Tabs.Panel>
             </Tabs>
-            <form>
-              {loginWithOTPStep > 0 && <LoginWithOTP />}
-              {resetPasswordStep > 0 && <ForgotPassword />}
-            </form>
+
+            <form>{resetPasswordStep > 0 && <ForgotPassword />}</form>
           </Box>
         </Box>
       </Box>

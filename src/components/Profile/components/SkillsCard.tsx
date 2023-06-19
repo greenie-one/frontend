@@ -1,23 +1,22 @@
-import { Box, Text, Button, RingProgress, Center } from '@mantine/core';
+import { Box, Text, Button } from '@mantine/core';
 import { MdVerified } from 'react-icons/md';
+import { CgSandClock } from 'react-icons/cg';
 interface CardProps {
   skill: string;
-  percentage: number;
+  skillRate: number;
   isVerified: boolean;
 }
 
-export const SkillsCard: React.FC<CardProps> = ({ skill, percentage, isVerified }) => {
+export const SkillsCard: React.FC<CardProps> = ({ skill, skillRate, isVerified }) => {
   return (
     <Box className="skill-card">
       <Box className="skill-img"></Box>
       <Box className="skill-wrapper">
-        <RingProgress
-          size={80}
-          sections={[{ value: percentage, color: '#8CF078' }]}
-          roundCaps
-          thickness={8}
-          label={<Center>{percentage}</Center>}
-        />
+        <Text className="skill-rate">
+          {skillRate === 0 && 'Amature'}
+          {skillRate === 1 && 'Intermediate'}
+          {skillRate === 2 && 'Expert'}
+        </Text>
         <Box>
           <Text className="skill">{skill}</Text>
           {isVerified ? (
@@ -25,7 +24,9 @@ export const SkillsCard: React.FC<CardProps> = ({ skill, percentage, isVerified 
               Verified
             </Button>
           ) : (
-            <Box></Box>
+            <Button leftIcon={<CgSandClock color="#FF7272" size={'16px'} />} className="pending">
+              Pending
+            </Button>
           )}
         </Box>
       </Box>

@@ -1,5 +1,20 @@
-import React, { createContext, useContext, useReducer, useState } from 'react';
+import React, { createContext, useContext, useEffect, useReducer, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
+import { em } from '@mantine/core';
 import { useForm, UseFormReturnType, isNotEmpty, matchesField, hasLength } from '@mantine/form';
+import { useLocalStorage } from '@mantine/hooks';
+import { notifications } from '@mantine/notifications';
+
+import { authApiList, profileAPIList } from '../../../assets/api/ApiList';
+import { FaExclamation } from 'react-icons/fa';
+import { BsCheckLg } from 'react-icons/bs';
+
+type AuthTokens = {
+  accessToken: string;
+  refreshToken: string;
+};
 
 type signUpFormType = {
   emailPhone: string;
@@ -37,7 +52,8 @@ type CounterAction =
   | { type: 'NEXTRESETPASSWRDSTEP' }
   | { type: 'PREVRESETPASSWORDSTEP' }
   | { type: 'NEXTLOGINWITHOTPSTEP' }
-  | { type: 'PREVLOGINWITHOTPSTEP' };
+  | { type: 'PREVLOGINWITHOTPSTEP' }
+  | { type: 'CREATEPROFILE' };
 
 type AuthContextType = {
   signupForm: UseFormReturnType<signUpFormType>;
@@ -52,13 +68,22 @@ type AuthContextType = {
 
   validationId: string;
   setValidationId: React.Dispatch<React.SetStateAction<string>>;
+
+  resendOtp: () => Promise<void | null>;
+
+  forceRender: boolean;
+  setForceRender: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 export const useAuthContext = () => useContext(AuthContext);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const navigate = useNavigate();
+
   const [validationId, setValidationId] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [forceRender, setForceRender] = useState<boolean>(false);
 
   const signupForm = useForm<signUpFormType>({
     initialValues: {
@@ -151,6 +176,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return { ...state, loginWithOTPStep: state.loginWithOTPStep + 1 };
       case 'PREVLOGINWITHOTPSTEP':
         return { ...state, loginWithOTPStep: state.loginWithOTPStep - 1 };
+      case 'CREATEPROFILE':
+        return { ...state, signUpStep: 4 };
       default:
         return state;
     }
@@ -162,6 +189,69 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     resetPasswordStep: 0,
     loginWithOTPStep: 0,
   });
+
+  const resendOtp = async () => {
+    if (isLoading) {
+      return Promise.resolve(null);
+    }
+
+    setIsLoading(true);
+    signupForm.clearErrors();
+
+    try {
+      notifications.show({
+        id: 'load-data',
+        title: 'Resending...',
+        message: 'Please wait while we send you an OTP.',
+        loading: true,
+        autoClose: false,
+        withCloseButton: false,
+        sx: { borderRadius: em(8) },
+      });
+
+      await axios.post(authApiList.resendOtp, { validationId });
+
+      setTimeout(() => {
+        notifications.update({
+          id: 'load-data',
+          title: 'Success !',
+          message: 'An OTP has been sent.',
+          autoClose: 2200,
+          withCloseButton: false,
+          color: 'teal',
+          icon: <BsCheckLg />,
+          sx: { borderRadius: em(8) },
+        });
+      }, 1100);
+    } catch (err: any) {
+      console.log(err.response?.data?.code);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const [authTokens, setAuthTokens] = useLocalStorage<AuthTokens>({ key: 'auth-tokens' });
+  const getMyProfile = async () => {
+    try {
+      const res = await axios.get(profileAPIList.getMyProfile, {
+        headers: {
+          Authorization: `Bearer ${authTokens?.accessToken}`,
+        },
+      });
+
+      if (res.data && authTokens?.accessToken) {
+        navigate('/profile');
+      }
+    } catch (err: any) {
+      if (err.response?.data?.code === 'GR0009') {
+        dispatch({ type: 'CREATEPROFILE' });
+      }
+    }
+  };
+
+  useEffect(() => {
+    getMyProfile();
+  }, [authTokens, forceRender]);
 
   return (
     <AuthContext.Provider
@@ -175,6 +265,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         isValidEmail,
         validationId,
         setValidationId,
+        resendOtp,
+        forceRender,
+        setForceRender,
       }}
     >
       {children}
