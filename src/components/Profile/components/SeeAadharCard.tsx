@@ -12,10 +12,8 @@ import {
   rem,
   TextInput,
   Title,
-  CopyButton,
 } from '@mantine/core';
 import { FaExclamation } from 'react-icons/fa';
-import { MdVerified, MdOutlineContentCopy } from 'react-icons/md';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 import { BsArrowLeft, BsCheckLg } from 'react-icons/bs';
 import { AiOutlineRight } from 'react-icons/ai';
@@ -32,19 +30,16 @@ interface VerificationData {
 
 export const SeeAadharCard = () => {
   const [opened, { open, close }] = useDisclosure(false);
-  const [checked, setChecked] = useState(false);
-  const [isVerified, setIsVerified] = useState(false);
+  const [checked, setChecked] = useState<boolean>(false);
+  const [isVerified, setIsVerified] = useState<boolean>(false);
   const { classes: inputClasses } = inputStyles();
   const isMobile = useMediaQuery('(max-width: 768px)');
-  const { detailsPage, dispatchDetailsPage, verifyAadharForm, getDocuments } = useProfileContext();
+  const { detailsPage, dispatchDetailsPage, verifyAadharForm, getDocuments, authTokens } =
+    useProfileContext();
   const [verificationData, setVerificationData] = useState<VerificationData>({
     requestId: '',
     taskId: '',
   });
-  const greeneId = 'GRN788209';
-
-  const token = localStorage.getItem('auth-tokens');
-  const authTokens = token ? JSON.parse(token) : null;
 
   const handleOpenModal = async () => {
     if (!verifyAadharForm.validateField('aadharNo').hasError && checked) {
@@ -201,90 +196,42 @@ export const SeeAadharCard = () => {
 
   return (
     <section className="container">
-      {isVerified && (
-        <Modal
-          centered
-          className="modal"
-          size={'55%'}
-          fullScreen={isMobile}
-          opened={opened}
-          onClose={close}
-        >
-          <Box className="congratulations-modal">
-            <Title className="title">Your Profile is now verified</Title>
-            <Text className="sub-title">Here is your Greenie ID</Text>
-            <Text className="greenie-id">{greeneId}</Text>
-            <Box className="buttons-wrapper">
-              <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
-                Verified
-              </Button>
-              <CopyButton value={greeneId} timeout={2000}>
-                {({ copied, copy }) => (
-                  <Box>
-                    {copied ? (
-                      <Button
-                        className="copy-btn"
-                        leftIcon={<MdOutlineContentCopy size={'16px'} />}
-                      >
-                        Copied
-                      </Button>
-                    ) : (
-                      <Button
-                        className="copy-btn"
-                        onClick={copy}
-                        leftIcon={<MdOutlineContentCopy size={'16px'} />}
-                      >
-                        Copy
-                      </Button>
-                    )}
-                  </Box>
-                )}
-              </CopyButton>
-            </Box>
-            <Button className="primaryBtn" onClick={handleContinue}>
-              Continue
-            </Button>
-          </Box>
-        </Modal>
-      )}
-      {!isVerified && (
-        <Modal
-          centered
-          className="modal"
-          size={'55%'}
-          fullScreen={isMobile}
-          opened={opened}
-          onClose={close}
-          title="Please enter the OTP send to"
-        >
-          <form className="otp-form" onSubmit={handleSubmit}>
-            <Title className="title">OTP has been sent to your linked phone number!</Title>
-            <Text className="disbledInput">
-              {verifyAadharForm.values.aadharNo}
-              <span className="changeBtn" onClick={close}>
-                Change
-              </span>
+      <Modal
+        centered
+        className="modal"
+        size={'55%'}
+        fullScreen={isMobile}
+        opened={opened}
+        onClose={close}
+        title="Please enter the OTP send to"
+      >
+        <form className="otp-form" onSubmit={handleSubmit}>
+          <Title className="title">OTP has been sent to your linked phone number!</Title>
+          <Text className="disbledInput">
+            {verifyAadharForm.values.aadharNo}
+            <span className="changeBtn" onClick={close}>
+              Change
+            </span>
+          </Text>
+          <TextInput
+            classNames={inputClasses}
+            label="Enter OTP"
+            withAsterisk
+            maxLength={6}
+            pattern="[0-9]{6}"
+            {...verifyAadharForm.getInputProps('otp')}
+          />
+          <Text fw={'light'} fz={'xs'} mb={'md'}>
+            Resend{' '}
+            <Text fw={'600'} span>
+              after 30s.
             </Text>
-            <TextInput
-              classNames={inputClasses}
-              label="Enter OTP"
-              withAsterisk
-              maxLength={6}
-              pattern="[0-9]{6}"
-              {...verifyAadharForm.getInputProps('otp')}
-            />
-            <Text fw={'light'} fz={'xs'} mb={'md'}>
-              Resend{' '}
-              <Text fw={'600'} span>
-                after 30s.
-              </Text>
-            </Text>
-            <Button type="submit" className="primaryBtn">
-              Verify
-            </Button>
-          </form>
-        </Modal>
-      )}
+          </Text>
+          <Button type="submit" className="primaryBtn">
+            Verify
+          </Button>
+        </form>
+      </Modal>
 
       <Box className="see-all-header">
         <Box className="go-back-btn" onClick={handlePageChange}>
@@ -358,7 +305,7 @@ export const SeeAadharCard = () => {
               </Box>
             </Box>
 
-            <Button className="primaryBtn" onClick={open}>
+            <Button className="primaryBtn" onClick={handleContinue}>
               Continue
             </Button>
           </Box>

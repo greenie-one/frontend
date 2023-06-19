@@ -35,36 +35,48 @@
       letter-spacing: -0.02em;
       color: #b5a9a9;
     }
-    .greenie-id {
-      font-family: 'Inter';
-      font-style: normal;
-      font-weight: 700;
-      font-size: 36px;
-      line-height: 44px;
-      letter-spacing: -0.02em;
-      color: #282828;
-    }
-    .buttons-wrapper {
-      margin: 26px auto;
+    .greenie-copy-box {
+      border: 1px solid #d1d4db;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      max-width: 190px;
+      margin: 2rem auto;
+      padding: 18px 16px;
+      border-radius: 8px;
+      max-width: 414px;
 
-      .copy-btn {
+      .greenie-id {
+        font-family: 'Inter';
+        font-style: normal;
         font-weight: 500;
-        font-size: 12px;
+        font-size: 16px;
+        line-height: 19px;
+        letter-spacing: -0.02em;
         color: $gray;
-        height: 25px;
-        padding: 0px 8px;
-        background: $white;
-        border: 1px solid $gray;
-        border-radius: 34px;
-        &:hover {
+      }
+
+      .buttons-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .copy-btn {
+          font-weight: 500;
+          font-size: 12px;
+          color: #9e9e9e;
+          height: 25px;
+          padding: 0px 8px;
           background: $white;
+          border: 1px solid #9e9e9e;
+          border-radius: 34px;
+          margin-left: 8px;
+          &:hover {
+            background: $white;
+          }
         }
       }
     }
+
     .primaryBtn {
       max-width: 170px;
     }

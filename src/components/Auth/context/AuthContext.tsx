@@ -53,13 +53,13 @@ type CounterAction =
   | { type: 'PREVRESETPASSWORDSTEP' }
   | { type: 'NEXTLOGINWITHOTPSTEP' }
   | { type: 'PREVLOGINWITHOTPSTEP' }
-  | { type: 'CREATEPROFILE' };
+  | { type: 'CREATEPROFILE' }
+  | { type: 'RESETRESETPASSWORDSTEP' };
 
 type AuthContextType = {
   signupForm: UseFormReturnType<signUpFormType>;
   loginForm: UseFormReturnType<loginFormType>;
   profileForm: UseFormReturnType<ProfileFormType>;
-
   state: CounterState;
   dispatch: React.Dispatch<CounterAction>;
 
@@ -82,6 +82,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const navigate = useNavigate();
 
   const [validationId, setValidationId] = useState<string>('');
+
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [forceRender, setForceRender] = useState<boolean>(false);
 
@@ -172,6 +173,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return { ...state, resetPasswordStep: state.resetPasswordStep + 1 };
       case 'PREVRESETPASSWORDSTEP':
         return { ...state, resetPasswordStep: state.resetPasswordStep - 1 };
+      case 'RESETRESETPASSWORDSTEP':
+        return { ...state, resetPasswordStep: 0 };
       case 'NEXTLOGINWITHOTPSTEP':
         return { ...state, loginWithOTPStep: state.loginWithOTPStep + 1 };
       case 'PREVLOGINWITHOTPSTEP':

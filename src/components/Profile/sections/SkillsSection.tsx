@@ -26,7 +26,6 @@ const skillRate = [
 ];
 
 export const SkillsSection = () => {
-  const screenSize = useMediaQuery('(min-width: 990px)');
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
   const { classes: inputClasses } = inputStyles();
@@ -125,7 +124,7 @@ export const SkillsSection = () => {
           slideSize="33.33%"
           slideGap={24}
           loop={false}
-          slidesToScroll={screenSize ? 0 : 1}
+          slidesToScroll={1}
           align="start"
           styles={{ control: { display: 'none' } }}
           breakpoints={[

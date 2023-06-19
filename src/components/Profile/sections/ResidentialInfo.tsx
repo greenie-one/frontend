@@ -93,7 +93,7 @@ export const ResidentialInfo = () => {
   };
 
   const handleCheck = () => {
-    residentialInfoForm.values.endDate = null;
+    residentialInfoForm.values.endDate = '';
     setChecked(!checked);
   };
 

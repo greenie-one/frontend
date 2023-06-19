@@ -32,7 +32,6 @@ type ProfileContextType = {
   addWorkExperience: () => void;
   deleteWorkExperience: (id: string) => void;
   updateWorkExperience: (id: string) => void;
-  documentsForm: UseFormReturnType<documentsFormType>;
   verifyAadharForm: UseFormReturnType<verifyAadharFormType>;
   verifyPANForm: UseFormReturnType<verifyPANFormType>;
   verifyLicenceForm: UseFormReturnType<verifyLicenceFormType>;
@@ -118,13 +117,6 @@ type profileFormType = {
   descriptionTags: string[];
 };
 
-type documentsFormType = {
-  documentType: string;
-  aadharNumber: string;
-  panNumber: string;
-  drivingLicenseNumber: string;
-};
-
 type verifyAadharFormType = {
   aadharNo: string;
   otp: string;
@@ -156,12 +148,12 @@ type residentialInfoFormType = {
   address_line_2: string;
   landmark: string;
   city: string;
-  pincode: number | null;
+  pincode: number | string;
   typeOfAddress: string;
   state: string;
   country: '';
-  start_date: Date | null;
-  endDate: Date | null;
+  start_date: Date | string;
+  endDate: Date | string;
 };
 
 type skillFormType = {
@@ -210,22 +202,6 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
       lastName: isNotEmpty('Please provide your last name'),
       bio: isNotEmpty('Please provide bio'),
       descriptionTags: hasLength(3, 'Please select at least 3'),
-    },
-  });
-
-  const documentsForm = useForm<documentsFormType>({
-    initialValues: {
-      documentType: '',
-      aadharNumber: '',
-      panNumber: '',
-      drivingLicenseNumber: '',
-    },
-
-    validate: {
-      documentType: isNotEmpty('Please select document type'),
-      aadharNumber: hasLength(12, 'Please enter valid aadhar card number'),
-      panNumber: hasLength(10, 'Please enter valid pan card number'),
-      drivingLicenseNumber: hasLength(15, 'Please enter valid driving licence number'),
     },
   });
 
@@ -294,13 +270,12 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
       address_line_2: '',
       landmark: '',
       city: '',
-      pincode: null,
+      pincode: '',
       typeOfAddress: '',
       state: '',
       country: '',
-      start_date: null,
-      endDate: null,
-      currentLocation: null,
+      start_date: '',
+      endDate: '',
     },
     validate: {
       address_line_1: isNotEmpty('Please enter valid address'),
@@ -972,7 +947,6 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
         updateWorkExperience,
         updateResidentialInfo,
         updateSkill,
-        documentsForm,
         verifyAadharForm,
         verifyPANForm,
         verifyLicenceForm,

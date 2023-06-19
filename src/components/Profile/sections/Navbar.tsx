@@ -137,7 +137,10 @@ export const Navbar = () => {
         </Box>
         <Box className="right-section">
           <AiOutlineBell size={'22px'} className="bell-icon" />
-          <img className="profile-picture" src={JohnMarston} alt="Profile Piture" />
+          <Link to={'/profile'}>
+            <img className="profile-picture" src={JohnMarston} alt="Profile Piture" />
+          </Link>
+
           <AiFillCaretDown />
 
           {!state.firstDrawerOpened && isProfilePage && (
@@ -179,7 +182,7 @@ export const Navbar = () => {
                 />
               </span>
             </Flex>
-            <List data-autoFocus className={classes.navOptionsList}>
+            <List className={classes.navOptionsList}>
               <li>
                 <Link to={'/profile'} className={classes.navOptionItems}>
                   <span className={classes.navOptionsIcon}>
@@ -271,7 +274,7 @@ export const Navbar = () => {
                   <Link
                     to={'/profile/settings'}
                     className={classes.navOptionItems}
-                    onClick={() => setShowDetailsId}
+                    onClick={() => setShowDetailsId(2)}
                   >
                     <span className={classes.navOptionsIcon2}>
                       <MdOutlineLock />

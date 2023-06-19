@@ -1,7 +1,6 @@
 import { Text, Box, Button, Modal } from '@mantine/core';
 import '../styles/global.scss';
 import { VerificationIDCard } from '../components/VerificationIDCard';
-import { Link } from 'react-router-dom';
 import { MdOutlineEdit, MdVerified } from 'react-icons/md';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 import { useProfileContext } from '../context/ProfileContext';
@@ -14,19 +13,10 @@ import aadharLogo from '../assets/aadhar-logo.png';
 import panLogo from '../assets/pan-logo.png';
 import licenceLogo from '../assets/licence-logo.png';
 
-const documentsType = [
-  {
-    value: 'PAN',
-    label: 'Pan Card',
-  },
-  { value: 'AADHAR', label: 'Aadhar Card' },
-  { value: 'DRIVING_LICENSE', label: 'Driving Licence' },
-];
-
 export const VerificationIDSection = () => {
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
-  const { documentsData, documentsForm, detailsPage, dispatchDetailsPage } = useProfileContext();
+  const { documentsData, detailsPage, dispatchDetailsPage } = useProfileContext();
 
   const handlePageChange = (documentsType: string) => {
     if (documentsType === 'AADHAR') {
@@ -55,15 +45,15 @@ export const VerificationIDSection = () => {
       >
         <Box className="ids-wrapper">
           <Box className="id-box" onClick={() => handlePageChange('AADHAR')}>
-            <img src={aadharLogo} alt="" />
+            <img src={aadharLogo} alt="Aadhar logo" />
             <Text className="id-name">Aadhar Card</Text>
           </Box>
           <Box className="id-box" onClick={() => handlePageChange('PAN')}>
-            <img src={panLogo} alt="" />
+            <img src={panLogo} alt="Pan logo" />
             <Text className="id-name">PAN Card</Text>
           </Box>
           <Box className="id-box" onClick={() => handlePageChange('DRIVING_LICENSE')}>
-            <img src={licenceLogo} alt="" />
+            <img src={licenceLogo} alt="licence logo" />
             <Text className="id-name">Driving Licence</Text>
           </Box>
         </Box>

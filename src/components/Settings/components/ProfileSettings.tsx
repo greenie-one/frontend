@@ -10,18 +10,6 @@ import {
 } from '../styles/articleContentStyles';
 
 const introductionTags = [
-  { value: 'teamPlayer', text: 'Team Player' },
-  { value: 'energetic', text: 'Energetic' },
-  { value: 'optimistic', text: 'Optimistic' },
-  { value: 'selfInterior', text: 'Self Interior' },
-  { value: 'hardWorking', text: 'Hard Working' },
-  { value: 'prodigy', text: 'Prodigy' },
-  { value: 'loneWolf', text: 'Lone Wolf' },
-  { value: 'microPlanner', text: 'Micro Planner' },
-  { value: 'jackOfAllTrade', text: 'Jack of All Trade' },
-];
-
-const skillSet = [
   'Team Player',
   'Energetic',
   'Optimistic',
@@ -123,7 +111,7 @@ export const ProfileSettings: React.FC = (): JSX.Element => {
 
           <Chip.Group multiple {...profileForm.getInputProps('descriptionTags')}>
             <Group className={profileClasses.profileChipsWrapper}>
-              {skillSet.map((skill, id) => (
+              {introductionTags.map((skill, id) => (
                 <Chip
                   key={id}
                   value={skill}

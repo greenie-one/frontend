@@ -92,6 +92,17 @@ export const SeeDrivingLicence = () => {
     });
     verifyLicenceForm.values.licenceNo = '';
   };
+  const handleContinue = () => {
+    dispatchDetailsPage({
+      type: 'SET_SEE_DRIVER_LICENCE',
+      payload: !detailsPage.seeDrivingLicence,
+    });
+    verifyLicenceForm.values.licenceNo = '';
+    dispatchDetailsPage({
+      type: 'SET_SEE_CONGRATULATIONS_SCREEN',
+      payload: !detailsPage.seeCongratulations,
+    });
+  };
   return (
     <section className="container">
       <Box className="see-all-header">
@@ -183,7 +194,7 @@ export const SeeDrivingLicence = () => {
               </Box>
             </Box>
 
-            <Button className="primaryBtn" onClick={handlePageChange}>
+            <Button className="primaryBtn" onClick={handleContinue}>
               Continue
             </Button>
           </Box>
