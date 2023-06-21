@@ -1,4 +1,4 @@
-import { useState, KeyboardEvent } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -179,7 +179,7 @@ const LoginStepTwo = () => {
         });
 
         const res = await axios.post(authApiList.login, {
-          mobileNumber: loginForm.values.emailPhoneGreenieId,
+          mobileNumber: `91${loginForm.values.emailPhoneGreenieId}`,
         });
 
         if (res.data) {
@@ -223,6 +223,7 @@ const LoginStepTwo = () => {
             icon: <FaExclamation />,
             sx: { borderRadius: em(8) },
           });
+          console.log(err);
         }
       } finally {
         setIsLoading(false);

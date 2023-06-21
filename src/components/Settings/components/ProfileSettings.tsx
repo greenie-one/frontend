@@ -26,7 +26,7 @@ export const ProfileSettings: React.FC = (): JSX.Element => {
   const { classes: profileClasses } = profileSettingsStyles();
   const { classes: inputClasses } = detailsInputStyles();
   const { classes: modalStyles } = confirmationModalStyle();
-  const { profileForm, profileData, updateProfile } = useProfileContext();
+  const { profileForm, updateProfile } = useProfileContext();
   const [opened, { open, close }] = useDisclosure(false);
 
   const onFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -35,7 +35,7 @@ export const ProfileSettings: React.FC = (): JSX.Element => {
   };
 
   const handleConfirmation = () => {
-    updateProfile(profileData._id);
+    updateProfile();
     close();
   };
 

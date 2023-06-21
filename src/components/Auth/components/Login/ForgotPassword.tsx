@@ -6,12 +6,13 @@ import { notifications } from '@mantine/notifications';
 import { authApiList } from '../../../../assets/api/ApiList';
 import axios from 'axios';
 import { FaExclamation } from 'react-icons/fa';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const ForgotPassword = () => {
   const { classes: inputClasses } = inputStyles();
   const { loginForm, state, dispatch, isPhoneNumber, isValidEmail } = useAuthContext();
   const [validateOTPId, setValidateOTP] = useState<string>('');
+  const [secondsRemaining, setSecondsRemaining] = useState<number>(60);
 
   const token = localStorage.getItem('auth-tokens');
   const authTokens = token ? JSON.parse(token) : null;
@@ -57,7 +58,6 @@ const ForgotPassword = () => {
           }
         );
         if (res.data) {
-          console.log(res.data);
           notifications.update({
             id: 'load-data',
             title: 'Success!',
@@ -113,16 +113,27 @@ const ForgotPassword = () => {
     }
   };
 
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setSecondsRemaining((prevSecondsRemaining) => prevSecondsRemaining - 1);
+    }, 1000);
+
+    if (secondsRemaining === 0) {
+      clearInterval(timer);
+    }
+
+    return () => clearInterval(timer);
+  }, [secondsRemaining]);
+
   return (
     <Box className="authRightContainer">
-      {state.resetPasswordStep < 3 && (
-        <Flex direction={'row'} className="tabTopBox" onClick={handleClick}>
-          <BsArrowLeft size={'15px'} />
-          <Text className="tabHeading">
-            {state.resetPasswordStep === 1 ? 'Back to Login' : 'Change Email ID'}
-          </Text>
-        </Flex>
-      )}
+      <Flex direction={'row'} className="tabTopBox" onClick={handleClick}>
+        <BsArrowLeft size={'15px'} />
+        <Text className="tabHeading">
+          {state.resetPasswordStep === 1 ? 'Back to Login' : 'Change Email ID'}
+        </Text>
+      </Flex>
+
       {state.resetPasswordStep === 1 && (
         <Box>
           <Text className="profileTextBold">Help us identify your Greenie account for you.</Text>
@@ -141,7 +152,7 @@ const ForgotPassword = () => {
         <Box>
           <Text
             className="disbledInput"
-            style={{ border: '1px solid #D1D4DB', borderRadius: '2px', background: '#FFFFFF' }}
+            style={{ border: '1px solid #D1D4DB', borderRadius: '2px', background: '$white' }}
           >
             {loginForm.values.emailPhoneGreenieId}
             <span className="changeBtn" onClick={() => dispatch({ type: 'PREVRESETPASSWORDSTEP' })}>
@@ -177,7 +188,7 @@ const ForgotPassword = () => {
         <Box>
           {isValidEmail(loginForm.values.emailPhoneGreenieId) && (
             <Text className="profileTextBold">
-              Enter the one-time passowrd sent to your email address
+              Enter the one-time passowrd sent to your email address{state.resetPasswordStep}
             </Text>
           )}
           <TextInput
@@ -189,12 +200,24 @@ const ForgotPassword = () => {
           />
           <Text className="profileTextBold">Enter new password</Text>
           <TextInput classNames={inputClasses} {...loginForm.getInputProps('password')} />
-          <Text fw={'light'} fz={'xs'} my={'md'}>
-            Resend
-            <Text fw={'600'} span>
-              after 30s
+          {secondsRemaining === 0 ? (
+            <Button
+              compact
+              color="gray"
+              variant="subtle"
+              onClick={handleRequestOTP}
+              className="resendLink"
+            >
+              Resend
+            </Button>
+          ) : (
+            <Text fw={'light'} fz={'xs'} my={'md'}>
+              Resend{' '}
+              <Text fw={'600'} span>
+                after {secondsRemaining}s
+              </Text>
             </Text>
-          </Text>
+          )}
           <Button
             type="submit"
             className="primaryBtn"
@@ -216,14 +239,15 @@ export default ForgotPassword;
 const inputStyles = createStyles((theme) => ({
   root: {
     position: 'relative',
-    marginBottom: '8px',
-    marginTop: '8px',
+    marginBottom: '24px',
+    marginTop: '24px',
   },
 
   input: {
     width: '458px',
     height: '68px',
-    fontSize: '18px',
+    paddingTop: '18px',
+    fontSize: '16px',
     fontWeight: 500,
     borderRadius: '8px',
     border: '1px solid #D1D4DB',
@@ -238,6 +262,33 @@ const inputStyles = createStyles((theme) => ({
       fontSize: '10px',
       lineHeight: '12px',
       margin: '0 auto',
+    },
+  },
+
+  innerInput: {
+    height: rem(54),
+    paddingTop: rem(28),
+
+    [`@media screen and (max-width: ${em(1024)})`]: {
+      paddingTop: rem(8),
+    },
+  },
+
+  label: {
+    position: 'absolute',
+    pointerEvents: 'none',
+    fontSize: '12px',
+    paddingLeft: '14px',
+    paddingTop: '7px',
+    lineHeight: '14.52px',
+    letterSpacing: '-0.02em',
+    zIndex: 1,
+    color: '#697082',
+
+    [`@media screen and (max-width: ${em(1024)})`]: {
+      fontSize: '10px',
+      lineHeight: '10px',
+      paddingTop: '8px',
     },
   },
 }));

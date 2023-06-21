@@ -17,7 +17,6 @@ import { useState } from 'react';
 import level from '../assets/level.png';
 import levelFilled from '../assets/levelFilled.png';
 import medal from '../assets/medal.png';
-import copyIcon from '../assets/content_copy.png';
 import { MdVerified, MdOutlineEdit, MdOutlineContentCopy } from 'react-icons/md';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 import { useProfileContext } from '../context/ProfileContext';
@@ -44,12 +43,6 @@ export const BioSection = () => {
   const { classes: formStyle } = detailsFormStyles();
   const [opened, { open, close }] = useDisclosure(false);
   const { profileData, profileForm, updateProfile } = useProfileContext();
-  const [updateId, setUpdateId] = useState('');
-
-  const handleOpenModal = () => {
-    setUpdateId(profileData._id);
-    open();
-  };
 
   const onClose = () => {
     profileForm.values.firstName = '';
@@ -61,7 +54,7 @@ export const BioSection = () => {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    updateProfile(updateId);
+    updateProfile();
     onClose();
   };
 
@@ -146,7 +139,7 @@ export const BioSection = () => {
           </Box>
         </form>
       </Modal>
-      <Box className="icon" onClick={handleOpenModal}>
+      <Box className="icon" onClick={open}>
         <MdOutlineEdit size={'22px'} className="btn" />
       </Box>
       <Box className="bio-name-box">

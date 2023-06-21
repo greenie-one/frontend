@@ -133,6 +133,108 @@
   }
 }
 
+.disclaimer-modal {
+  padding: 2rem 3rem;
+  text-align: center;
+
+  .disclaimer-heading {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 36px;
+    line-height: 44px;
+    letter-spacing: -0.02em;
+    color: $black;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  .disclaimer-subHeading {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+    letter-spacing: -0.02em;
+    color: $black;
+    margin-bottom: 40px;
+    text-align: center;
+  }
+
+  .primaryBtn {
+    max-width: 150px;
+  }
+
+  .policy {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 27px;
+    text-decoration-line: underline;
+    text-align: center;
+    color: $dark;
+    margin-bottom: 16px;
+  }
+}
+
+.ids-modal {
+  .title {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+  .ids-wrapper {
+    display: flex;
+    justify-content: space-between;
+    max-width: 450px;
+    margin: 5rem auto;
+
+    .id-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid $lightGray;
+      padding: 2rem;
+      border-radius: 24px;
+      cursor: pointer;
+      position: relative;
+      min-width: 200px;
+
+      img {
+        height: 80px;
+      }
+
+      .id-name {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 19px;
+        letter-spacing: -0.02em;
+        color: $dark;
+        margin-top: 16px;
+      }
+
+      .coming-soon {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 15px;
+        color: $gray;
+        position: absolute;
+        bottom: -15px;
+        background-color: $white;
+        padding: 8px;
+      }
+    }
+
+    .disabled {
+      opacity: 0.4;
+    }
+  }
+}
+
 .border-bottom {
   border-bottom: 1px solid $lighterGray;
 }
@@ -289,6 +391,27 @@
   .modal {
     form {
       padding-inline: 2px;
+    }
+  }
+}
+@media screen and (max-width: 970px) {
+  .ids-modal {
+    .ids-wrapper {
+      display: grid;
+      grid-template-columns: 100%;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 200px;
+      margin: auto;
+
+      .id-box {
+        margin-bottom: 3rem;
+        margin-inline: 0;
+
+        img {
+          height: 80px;
+        }
+      }
     }
   }
 }

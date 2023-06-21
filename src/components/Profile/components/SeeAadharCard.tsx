@@ -1,5 +1,5 @@
 import '../styles/global.scss';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useProfileContext } from '../context/ProfileContext';
 import {
   Text,
@@ -31,88 +31,71 @@ interface VerificationData {
 export const SeeAadharCard = () => {
   const [opened, { open, close }] = useDisclosure(false);
   const [checked, setChecked] = useState<boolean>(false);
-  const [isVerified, setIsVerified] = useState<boolean>(false);
+  const [secondsRemaining, setSecondsRemaining] = useState<number>(60);
   const { classes: inputClasses } = inputStyles();
+  const { classes: otpInputClasses } = OtpInputStyles();
   const isMobile = useMediaQuery('(max-width: 768px)');
-  const { detailsPage, dispatchDetailsPage, verifyAadharForm, getDocuments, authTokens } =
-    useProfileContext();
+  const {
+    detailsPage,
+    dispatchDetailsPage,
+    verifyAadharForm,
+    getDocuments,
+    authTokens,
+    aadharIsVerified,
+    setAadharIsVerified,
+  } = useProfileContext();
   const [verificationData, setVerificationData] = useState<VerificationData>({
     requestId: '',
     taskId: '',
   });
 
-  const handleOpenModal = async () => {
-    if (!verifyAadharForm.validateField('aadharNo').hasError && checked) {
-      try {
-        notifications.show({
-          id: 'load-data',
-          title: 'Sending OTP to linked phone number...',
-          message: 'Please wait while we send OTP to your linked number.',
-          loading: true,
-          autoClose: false,
-          withCloseButton: false,
-          sx: { borderRadius: em(8) },
-        });
-        const res = await axios.post(
-          `${aadharAPIList.requestOTPForAadhar}`,
-          {
-            id_type: 'AADHAR',
-            id_number: verifyAadharForm.values.aadharNo,
+  const requestOTPForAadhar = async () => {
+    try {
+      notifications.show({
+        id: 'load-data',
+        title: 'Sending OTP to linked phone number...',
+        message: 'Please wait while we send OTP to your linked number.',
+        loading: true,
+        autoClose: false,
+        withCloseButton: false,
+        sx: { borderRadius: em(8) },
+      });
+      const res = await axios.post(
+        `${aadharAPIList.requestOTPForAadhar}`,
+        {
+          id_type: 'AADHAR',
+          id_number: verifyAadharForm.values.aadharNo,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${authTokens?.accessToken}`,
           },
-          {
-            headers: {
-              Authorization: `Bearer ${authTokens?.accessToken}`,
-            },
-          }
-        );
-        if (res.data.success) {
-          const { request_id, taskId } = res.data;
-          setVerificationData((prevState) => ({
-            ...prevState,
-            requestId: request_id,
-            taskId: taskId,
-          }));
-          notifications.update({
-            id: 'load-data',
-            title: 'Success!',
-            message: 'OTP Sent to your linked phone number',
-            autoClose: 2200,
-            withCloseButton: false,
-            color: 'teal',
-            icon: <BsCheckLg />,
-            sx: { borderRadius: em(8) },
-          });
-          open();
         }
-      } catch (error: any) {
-        if (error.response?.data?.code === 'GR0033') {
-          notifications.update({
-            id: 'load-data',
-            title: 'Invalid ID Number!',
-            message: 'Please enter valid Aadhar number',
-            autoClose: 2200,
-            withCloseButton: false,
-            color: 'red',
-            icon: <FaExclamation />,
-            sx: { borderRadius: em(8) },
-          });
-        }
-        if (error.response?.data?.code === 'GR0034') {
-          notifications.update({
-            id: 'load-data',
-            title: 'Limit exceeded!',
-            message: 'Rate limit exceeded for OTP requests',
-            autoClose: 2200,
-            withCloseButton: false,
-            color: 'red',
-            icon: <FaExclamation />,
-            sx: { borderRadius: em(8) },
-          });
-        }
+      );
+      if (res.data.success) {
+        const { request_id, taskId } = res.data;
+        setVerificationData((prevState) => ({
+          ...prevState,
+          requestId: request_id,
+          taskId: taskId,
+        }));
         notifications.update({
           id: 'load-data',
-          title: 'Something went wrong',
-          message: `${error.message}`,
+          title: 'Success!',
+          message: 'OTP Sent to your linked phone number',
+          autoClose: 2200,
+          withCloseButton: false,
+          color: 'teal',
+          icon: <BsCheckLg />,
+          sx: { borderRadius: em(8) },
+        });
+      }
+    } catch (error: any) {
+      if (error.response?.data?.code === 'GR0033') {
+        notifications.update({
+          id: 'load-data',
+          title: 'Invalid ID Number!',
+          message: 'Please enter valid Aadhar number',
           autoClose: 2200,
           withCloseButton: false,
           color: 'red',
@@ -120,6 +103,44 @@ export const SeeAadharCard = () => {
           sx: { borderRadius: em(8) },
         });
       }
+      if (error.response?.data?.code === 'GR0034') {
+        notifications.update({
+          id: 'load-data',
+          title: 'Limit exceeded!',
+          message: 'Rate limit exceeded for OTP requests',
+          autoClose: 2200,
+          withCloseButton: false,
+          color: 'red',
+          icon: <FaExclamation />,
+          sx: { borderRadius: em(8) },
+        });
+      }
+      notifications.update({
+        id: 'load-data',
+        title: 'Something went wrong',
+        message: `${error.message}`,
+        autoClose: 2200,
+        withCloseButton: false,
+        color: 'red',
+        icon: <FaExclamation />,
+        sx: { borderRadius: em(8) },
+      });
+    }
+  };
+
+  const handleOpenModal = async () => {
+    if (!verifyAadharForm.validateField('aadharNo').hasError && checked) {
+      requestOTPForAadhar();
+      open();
+      const timer = setInterval(() => {
+        setSecondsRemaining((prevSecondsRemaining) => prevSecondsRemaining - 1);
+      }, 1000);
+
+      if (secondsRemaining === 0) {
+        clearInterval(timer);
+      }
+
+      return () => clearInterval(timer);
     }
   };
 
@@ -158,7 +179,7 @@ export const SeeAadharCard = () => {
             sx: { borderRadius: em(8) },
           });
           close();
-          setIsVerified(true);
+          setAadharIsVerified(true);
           verifyAadharForm.values.otp = '';
           verifyAadharForm.values.aadharNo = '';
           getDocuments();
@@ -195,7 +216,7 @@ export const SeeAadharCard = () => {
   };
 
   return (
-    <section className="container">
+    <section className="container documents-container">
       <Modal
         centered
         className="modal"
@@ -214,19 +235,30 @@ export const SeeAadharCard = () => {
             </span>
           </Text>
           <TextInput
-            classNames={inputClasses}
-            label="Enter OTP"
+            classNames={otpInputClasses}
             withAsterisk
             maxLength={6}
             pattern="[0-9]{6}"
             {...verifyAadharForm.getInputProps('otp')}
           />
-          <Text fw={'light'} fz={'xs'} mb={'md'}>
-            Resend{' '}
-            <Text fw={'600'} span>
-              after 30s.
+          {secondsRemaining === 0 ? (
+            <Button
+              compact
+              color="gray"
+              variant="subtle"
+              onClick={requestOTPForAadhar}
+              className="resendLink"
+            >
+              Resend
+            </Button>
+          ) : (
+            <Text fw={'light'} fz={'xs'} my={'md'}>
+              Resend{' '}
+              <Text fw={'600'} span>
+                after {secondsRemaining}s
+              </Text>
             </Text>
-          </Text>
+          )}
           <Button type="submit" className="primaryBtn">
             Verify
           </Button>
@@ -243,10 +275,10 @@ export const SeeAadharCard = () => {
           <Text>Verification ID</Text>
           <AiOutlineRight className="arrow-right-icon" size={'16px'} />
 
-          {isVerified ? <Text>Aadhar card details</Text> : <Text>Aadhar Card</Text>}
+          {aadharIsVerified ? <Text>Aadhar card details</Text> : <Text>Aadhar Card</Text>}
         </Box>
       </Box>
-      {isVerified ? (
+      {aadharIsVerified ? (
         <Box className="document-verified-container">
           <Box className="document-verified-left-box">
             <Box className="left-img-box">
@@ -400,6 +432,35 @@ const inputStyles = createStyles((theme) => ({
       fontSize: '10px',
       lineHeight: '10px',
       paddingTop: '8px',
+    },
+  },
+}));
+
+const OtpInputStyles = createStyles((theme) => ({
+  root: {
+    position: 'relative',
+    marginBottom: '24px',
+    marginTop: '24px',
+  },
+
+  input: {
+    width: '458px',
+    height: '68px',
+    fontSize: '16px',
+    fontWeight: 500,
+    borderRadius: '8px',
+    border: '1px solid #D1D4DB',
+    lineHeight: '19px',
+    letterSpacing: '24px',
+    color: '#697082',
+
+    [`@media screen and (max-width: ${em(1024)})`]: {
+      width: '350px',
+      height: '46px',
+      borderRadius: '6px',
+      fontSize: '14px',
+      lineHeight: '12px',
+      margin: '0 auto',
     },
   },
 }));

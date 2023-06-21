@@ -73,7 +73,7 @@ export const SettingsProvider: React.FC<{ children: ReactNode }> = ({ children }
             },
           }
         );
-        if (res.status === 200) {
+        if (res.data.status === 200) {
           notifications.update({
             id: 'load-state',
             title: 'Sucess!',

@@ -104,6 +104,7 @@ export const Experience = () => {
   } = useProfileContext();
   const { classes: inputClasses } = inputStyles();
   const [checked, setChecked] = useState(false);
+  const [active, setActive] = useState(1);
 
   const handleToggleWorkExperienceDetails = (): void => {
     dispatchDetailsPage({
@@ -197,6 +198,14 @@ export const Experience = () => {
           title="Add work experience"
         >
           <form onSubmit={handleSubmit}>
+            <Box className="progress-bar-wrapper">
+              <Box className="progress-bar" bg={'#9fe870'}></Box>
+              <Box
+                className="progress-bar"
+                bg={active === 2 || active === 3 ? '#9fe870' : '#F3F3F3'}
+              ></Box>
+              <Box className="progress-bar" bg={active === 3 ? '#9fe870' : '#F3F3F3'}></Box>
+            </Box>
             <Box className="input-section border-bottom">
               <Title className="title">Job title</Title>
               <TextInput

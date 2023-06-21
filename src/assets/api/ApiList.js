@@ -20,7 +20,7 @@ export const profileAPIList = {
   createProfile: `${BASE_URL}/profiles/create`,
   getMyProfile: `${BASE_URL}/profiles/me`,
   searchProfile: `${BASE_URL}/profiles?search=`,
-  updateProfile: `${BASE_URL}/profiles`,
+  updateProfile: `${BASE_URL}/profiles/update`,
   updateProfilePicture: `${BASE_URL}/utils/profile_pic`,
 }
 

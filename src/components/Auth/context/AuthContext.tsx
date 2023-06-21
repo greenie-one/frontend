@@ -253,7 +253,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   useEffect(() => {
-    getMyProfile();
+    if (authTokens?.accessToken) {
+      getMyProfile();
+    }
   }, [authTokens, forceRender]);
 
   return (

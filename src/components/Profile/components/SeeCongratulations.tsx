@@ -7,10 +7,20 @@ import { MdVerified, MdOutlineContentCopy } from 'react-icons/md';
 export const SeeCongratulations = () => {
   const [opened, { open, close }] = useDisclosure(false);
   const isMobile = useMediaQuery('(max-width: 768px)');
-  const { detailsPage, dispatchDetailsPage } = useProfileContext();
+  const {
+    detailsPage,
+    dispatchDetailsPage,
+    documentsData,
+    setAadharIsVerified,
+    setPanIsVerified,
+    setLicenseIsVerified,
+  } = useProfileContext();
   const greeneId = 'GRN788209';
 
   const handleContinue = () => {
+    setAadharIsVerified(false);
+    setPanIsVerified(false);
+    setLicenseIsVerified(false);
     dispatchDetailsPage({
       type: 'SET_SEE_CONGRATULATIONS_SCREEN',
       payload: !detailsPage.seeCongratulations,
@@ -79,10 +89,15 @@ export const SeeCongratulations = () => {
           </Box>
           <BioSection />
         </Box>
-
-        <Button className="primaryBtn" onClick={open}>
-          Continue
-        </Button>
+        {documentsData.length > 1 ? (
+          <Button className="primaryBtn" onClick={handleContinue}>
+            Continue
+          </Button>
+        ) : (
+          <Button className="primaryBtn" onClick={open}>
+            Continue
+          </Button>
+        )}
       </Box>
     </Box>
   );

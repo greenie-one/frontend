@@ -45,7 +45,8 @@
 }
 
 .progress-bar-wrapper {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   align-items: center;
   justify-content: space-between;
   margin-bottom: 8px;
@@ -53,7 +54,6 @@
   .progress-bar {
     height: 4px;
     border-radius: 80px;
-    width: 148px;
 
     &:not(:last-child) {
       margin-right: 4px;

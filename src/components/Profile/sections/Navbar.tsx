@@ -141,7 +141,7 @@ export const Navbar = () => {
             <img className="profile-picture" src={JohnMarston} alt="Profile Piture" />
           </Link>
 
-          <AiFillCaretDown />
+          <AiFillCaretDown className="down-arrow-icon" />
 
           {!state.firstDrawerOpened && isProfilePage && (
             <span className={classes.menuOpenBtn}>
@@ -167,7 +167,7 @@ export const Navbar = () => {
           onClose={() => dispatch({ type: 'CLOSE_FIRST_DRAWER' })}
           withCloseButton={false}
           position="right"
-          size="100%"
+          size="80%"
         >
           <nav
             className={classes.mobileNavOptionsContainer}
@@ -235,8 +235,11 @@ export const Navbar = () => {
               </Box>
               <Box className="drawer-right-section">
                 <AiOutlineBell size={'22px'} className="bell-icon" />
-                <img className="profile-picture" src={JohnMarston} alt="Profile Piture" />
+                <Link to={'/profile'}>
+                  <img className="profile-picture" src={JohnMarston} alt="Profile Piture" />
+                </Link>
               </Box>
+
               <span className={classes.menuCloseBtn}>
                 <MdOutlineClose
                   role="button"

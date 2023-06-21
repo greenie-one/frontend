@@ -93,7 +93,7 @@ export const ResidentialInfo = () => {
   };
 
   const handleCheck = () => {
-    residentialInfoForm.values.endDate = '';
+    residentialInfoForm.values.endDate = null;
     setChecked(!checked);
   };
 
@@ -114,6 +114,15 @@ export const ResidentialInfo = () => {
     ) {
       addResidentialInfo();
       close();
+      residentialInfoForm.values.address_line_1 = '';
+      residentialInfoForm.values.address_line_2 = '';
+      residentialInfoForm.values.landmark = '';
+      residentialInfoForm.values.city = '';
+      residentialInfoForm.values.pincode = '';
+      residentialInfoForm.values.typeOfAddress = '';
+      residentialInfoForm.values.state = '';
+      residentialInfoForm.values.start_date = null;
+      residentialInfoForm.values.end_date = null;
     }
   };
 

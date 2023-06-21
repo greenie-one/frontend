@@ -110,7 +110,7 @@ const SignUpStepTwo = () => {
         });
 
         const res = await axios.post(authApiList.signup, {
-          mobileNumber: signupForm.values.emailPhone,
+          mobileNumber: `91${signupForm.values.emailPhone}`,
         });
 
         if (res.data) {
@@ -143,6 +143,7 @@ const SignUpStepTwo = () => {
             icon: <FaExclamation />,
             sx: { borderRadius: em(8) },
           });
+          console.log(err.message);
         }
       } finally {
         setIsLoading(false);

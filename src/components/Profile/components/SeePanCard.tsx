@@ -23,9 +23,15 @@ import axios from 'axios';
 
 export const SeePanCard = () => {
   const { classes: inputClasses } = inputStyles();
-  const { detailsPage, dispatchDetailsPage, verifyPANForm, getDocuments, authTokens } =
-    useProfileContext();
-  const [isVerified, setIsVerified] = useState<boolean>(false);
+  const {
+    detailsPage,
+    dispatchDetailsPage,
+    verifyPANForm,
+    getDocuments,
+    authTokens,
+    panIsVerified,
+    setPanIsVerified,
+  } = useProfileContext();
   const [checked, setChecked] = useState<boolean>(false);
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -64,7 +70,7 @@ export const SeePanCard = () => {
             icon: <BsCheckLg />,
             sx: { borderRadius: em(8) },
           });
-          setIsVerified(true);
+          setPanIsVerified(true);
           getDocuments();
         }
       } catch (error: any) {
@@ -112,7 +118,7 @@ export const SeePanCard = () => {
           <Text>Pan Card</Text>
         </Box>
       </Box>
-      {isVerified ? (
+      {panIsVerified ? (
         <Box className="document-verified-container">
           <Box className="document-verified-left-box">
             <Box className="left-img-box">

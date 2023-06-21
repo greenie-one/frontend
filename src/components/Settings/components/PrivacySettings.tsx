@@ -1,5 +1,15 @@
 import React from 'react';
-import { Box, Title, TextInput, Button, Modal, Text } from '@mantine/core';
+import {
+  Box,
+  Title,
+  Button,
+  Modal,
+  Text,
+  PasswordInput,
+  rem,
+  em,
+  createStyles,
+} from '@mantine/core';
 import { privacySettingsStyles } from '../styles/articleContentStyles';
 import { detailsFormStyles, detailsInputStyles } from '../styles/articleContentStyles';
 import { useDisclosure } from '@mantine/hooks';
@@ -9,7 +19,7 @@ import { useSettingsContext } from '../context/SettingsContext';
 
 export const PrivacySettings: React.FC = (): JSX.Element => {
   const { classes: privacyClasses } = privacySettingsStyles();
-  const { classes: inputClasses } = detailsInputStyles();
+  const { classes: inputClasses } = inputStyles();
   const [opened, { open, close }] = useDisclosure(false);
   const { changePassword, privacySettingsForm } = useSettingsContext();
 
@@ -102,23 +112,20 @@ export const PrivacySettings: React.FC = (): JSX.Element => {
       </Modal>
       <form className={formClasses.detailsCategory}>
         <Title className={formClasses.detailsCategoryTitle}>Change password</Title>
-        <TextInput
+        <PasswordInput
           withAsterisk
-          data-autofocus
           label="Enter current password"
           classNames={inputClasses}
           {...privacySettingsForm.getInputProps('currentPassword')}
         />
-        <TextInput
+        <PasswordInput
           withAsterisk
-          data-autofocus
           label="Enter new password"
           classNames={inputClasses}
           {...privacySettingsForm.getInputProps('newPassword')}
         />
-        <TextInput
+        <PasswordInput
           withAsterisk
-          data-autofocus
           label="Confirm new password"
           classNames={inputClasses}
           {...privacySettingsForm.getInputProps('confirmPassword')}
@@ -147,3 +154,34 @@ export const PrivacySettings: React.FC = (): JSX.Element => {
     </>
   );
 };
+
+const inputStyles = createStyles((theme) => ({
+  input: {
+    paddingBlockStart: rem(18),
+    height: rem(60),
+    fontSize: rem(14),
+    fontWeight: 500,
+    borderRadius: rem(8),
+
+    [`@media screen and (max-width: ${rem(768)})`]: {
+      maxWidth: '100vw',
+    },
+  },
+
+  innerInput: {
+    maxWidth: rem(420),
+    height: rem(60),
+    paddingBlockStart: rem(18),
+  },
+
+  label: {
+    position: 'absolute',
+    pointerEvents: 'none',
+    fontSize: rem(12),
+    fontWeight: 400,
+    zIndex: 1,
+    paddingBlock: rem(8),
+    paddingInline: rem(14),
+    color: '#697082',
+  },
+}));
