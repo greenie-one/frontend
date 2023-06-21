@@ -22,10 +22,16 @@ import { drivinglicenseAPIList } from '../../../assets/api/ApiList';
 import axios from 'axios';
 
 export const SeeDrivingLicence = () => {
-  const [isVerified, setIsVerified] = useState(false);
   const { classes: inputClasses } = inputStyles();
   const [checked, setChecked] = useState(false);
-  const { detailsPage, dispatchDetailsPage, verifyLicenceForm, getDocuments } = useProfileContext();
+  const {
+    detailsPage,
+    dispatchDetailsPage,
+    verifyLicenceForm,
+    getDocuments,
+    licenseIsVerified,
+    setLicenseIsVerified,
+  } = useProfileContext();
 
   const token = localStorage.getItem('auth-tokens');
   const authTokens = token ? JSON.parse(token) : null;
@@ -66,7 +72,7 @@ export const SeeDrivingLicence = () => {
             icon: <BsCheckLg />,
             sx: { borderRadius: em(8) },
           });
-          setIsVerified(true);
+          setLicenseIsVerified(true);
           getDocuments();
         }
       } catch (error: any) {
@@ -92,6 +98,17 @@ export const SeeDrivingLicence = () => {
     });
     verifyLicenceForm.values.licenceNo = '';
   };
+  const handleContinue = () => {
+    dispatchDetailsPage({
+      type: 'SET_SEE_DRIVER_LICENCE',
+      payload: !detailsPage.seeDrivingLicence,
+    });
+    verifyLicenceForm.values.licenceNo = '';
+    dispatchDetailsPage({
+      type: 'SET_SEE_CONGRATULATIONS_SCREEN',
+      payload: !detailsPage.seeCongratulations,
+    });
+  };
   return (
     <section className="container">
       <Box className="see-all-header">
@@ -106,7 +123,7 @@ export const SeeDrivingLicence = () => {
           <Text>Driving Licence </Text>
         </Box>
       </Box>
-      {isVerified ? (
+      {licenseIsVerified ? (
         <Box className="document-verified-container">
           <Box className="document-verified-left-box">
             <Box className="left-img-box">
@@ -183,7 +200,7 @@ export const SeeDrivingLicence = () => {
               </Box>
             </Box>
 
-            <Button className="primaryBtn" onClick={handlePageChange}>
+            <Button className="primaryBtn" onClick={handleContinue}>
               Continue
             </Button>
           </Box>

@@ -1,23 +1,27 @@
 import React from 'react';
-import { Box, Title, TextInput, Button, Modal, Text } from '@mantine/core';
+import {
+  Box,
+  Title,
+  Button,
+  Modal,
+  Text,
+  PasswordInput,
+  rem,
+  em,
+  createStyles,
+} from '@mantine/core';
 import { privacySettingsStyles } from '../styles/articleContentStyles';
-import { usePrivacySettingsForm } from '../hooks/usePrivacySettings';
 import { detailsFormStyles, detailsInputStyles } from '../styles/articleContentStyles';
 import { useDisclosure } from '@mantine/hooks';
 import { confirmationModalStyle } from '../styles/articleContentStyles';
 import { MdOutlineHelpCenter } from 'react-icons/md';
+import { useSettingsContext } from '../context/SettingsContext';
 
 export const PrivacySettings: React.FC = (): JSX.Element => {
   const { classes: privacyClasses } = privacySettingsStyles();
-  const { classes: inputClasses } = detailsInputStyles();
-  const privacySettingsForm = usePrivacySettingsForm();
+  const { classes: inputClasses } = inputStyles();
   const [opened, { open, close }] = useDisclosure(false);
-
-  const onFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    console.log('Form submitted successfully!');
-  };
+  const { changePassword, privacySettingsForm } = useSettingsContext();
 
   const deactivateAccount = () => {
     console.log('Account deactivated!');
@@ -41,7 +45,25 @@ export const PrivacySettings: React.FC = (): JSX.Element => {
   const { classes: formClasses } = detailsFormStyles();
   const { classes: modalStyles } = confirmationModalStyle();
 
+  const handleOpenModal = () => {
+    if (
+      !privacySettingsForm.validateField('currentPassword').hasError &&
+      !privacySettingsForm.validateField('newPassword').hasError &&
+      !privacySettingsForm.validateField('confirmPassword').hasError
+    ) {
+      open();
+    }
+  };
+
   const handleConfirmation = () => {
+    changePassword();
+    close();
+  };
+
+  const onClose = () => {
+    privacySettingsForm.values.currentPassword = '';
+    privacySettingsForm.values.newPassword = '';
+    privacySettingsForm.values.confirmPassword = '';
     close();
   };
 
@@ -49,7 +71,7 @@ export const PrivacySettings: React.FC = (): JSX.Element => {
     <>
       <Modal
         opened={opened}
-        onClose={close}
+        onClose={onClose}
         title="Confirmation"
         padding="xl"
         radius="lg"
@@ -63,45 +85,47 @@ export const PrivacySettings: React.FC = (): JSX.Element => {
           </Text>
 
           <Box className={modalStyles.modalBtnsContainer}>
-            {[
-              { variant: 'filled', text: 'Confirm', action: handleConfirmation },
-              { variant: 'outline', text: 'Cancel', action: close },
-            ].map((btns, idx) => (
-              <Button
-                key={idx}
-                className={modalStyles.modalActionBtns}
-                onClick={btns.action}
-                size="sm"
-                type="button"
-                radius="xl"
-                variant={btns.variant}
-                color="teal"
-              >
-                {btns.text}
-              </Button>
-            ))}
+            <Button
+              className={modalStyles.modalActionBtns}
+              onClick={handleConfirmation}
+              size="sm"
+              type="button"
+              radius="xl"
+              variant="filled"
+              color="teal"
+            >
+              Confirm
+            </Button>
+            <Button
+              className={modalStyles.modalActionBtns}
+              onClick={onClose}
+              size="sm"
+              type="button"
+              radius="xl"
+              variant="outline"
+              color="teal"
+            >
+              Cancel
+            </Button>
           </Box>
         </Box>
       </Modal>
       <form className={formClasses.detailsCategory}>
         <Title className={formClasses.detailsCategoryTitle}>Change password</Title>
-        <TextInput
+        <PasswordInput
           withAsterisk
-          data-autofocus
           label="Enter current password"
           classNames={inputClasses}
           {...privacySettingsForm.getInputProps('currentPassword')}
         />
-        <TextInput
+        <PasswordInput
           withAsterisk
-          data-autofocus
           label="Enter new password"
           classNames={inputClasses}
           {...privacySettingsForm.getInputProps('newPassword')}
         />
-        <TextInput
+        <PasswordInput
           withAsterisk
-          data-autofocus
           label="Confirm new password"
           classNames={inputClasses}
           {...privacySettingsForm.getInputProps('confirmPassword')}
@@ -122,7 +146,7 @@ export const PrivacySettings: React.FC = (): JSX.Element => {
           type="button"
           radius="xl"
           color="teal"
-          onClick={open}
+          onClick={handleOpenModal}
         >
           Save
         </Button>
@@ -130,3 +154,34 @@ export const PrivacySettings: React.FC = (): JSX.Element => {
     </>
   );
 };
+
+const inputStyles = createStyles((theme) => ({
+  input: {
+    paddingBlockStart: rem(18),
+    height: rem(60),
+    fontSize: rem(14),
+    fontWeight: 500,
+    borderRadius: rem(8),
+
+    [`@media screen and (max-width: ${rem(768)})`]: {
+      maxWidth: '100vw',
+    },
+  },
+
+  innerInput: {
+    maxWidth: rem(420),
+    height: rem(60),
+    paddingBlockStart: rem(18),
+  },
+
+  label: {
+    position: 'absolute',
+    pointerEvents: 'none',
+    fontSize: rem(12),
+    fontWeight: 400,
+    zIndex: 1,
+    paddingBlock: rem(8),
+    paddingInline: rem(14),
+    color: '#697082',
+  },
+}));

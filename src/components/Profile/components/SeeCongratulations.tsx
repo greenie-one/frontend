@@ -1,12 +1,81 @@
-import { Text, Box, Title, Button } from '@mantine/core';
+import { Text, Box, Title, Button, Modal, CopyButton } from '@mantine/core';
 import { useProfileContext } from '../context/ProfileContext';
 import { BioSection } from '../sections/BioSection';
+import { useMediaQuery, useDisclosure } from '@mantine/hooks';
+import { MdVerified, MdOutlineContentCopy } from 'react-icons/md';
 
 export const SeeCongratulations = () => {
-  const { detailsPage, dispatchDetailsPage } = useProfileContext();
+  const [opened, { open, close }] = useDisclosure(false);
+  const isMobile = useMediaQuery('(max-width: 768px)');
+  const {
+    detailsPage,
+    dispatchDetailsPage,
+    documentsData,
+    setAadharIsVerified,
+    setPanIsVerified,
+    setLicenseIsVerified,
+  } = useProfileContext();
+  const greeneId = 'GRN788209';
+
+  const handleContinue = () => {
+    setAadharIsVerified(false);
+    setPanIsVerified(false);
+    setLicenseIsVerified(false);
+    dispatchDetailsPage({
+      type: 'SET_SEE_CONGRATULATIONS_SCREEN',
+      payload: !detailsPage.seeCongratulations,
+    });
+  };
 
   return (
     <Box className="congratulations-screen">
+      <Modal
+        centered
+        className="modal"
+        size={'55%'}
+        fullScreen={isMobile}
+        opened={opened}
+        onClose={close}
+      >
+        <Box className="congratulations-modal">
+          <Title className="title">Your Profile is now verified</Title>
+          <Text className="sub-title">Here is your Greenie ID</Text>
+          <Box className="greenie-copy-box">
+            <Text className="greenie-id">{greeneId}</Text>
+            <Box className="buttons-wrapper">
+              <Button leftIcon={<MdVerified color="#8CF078" size={'18px'} />} className="verified">
+                Verified
+              </Button>
+              <CopyButton value={greeneId} timeout={2000}>
+                {({ copied, copy }) => (
+                  <Box>
+                    {copied ? (
+                      <Button
+                        className="copy-btn"
+                        leftIcon={<MdOutlineContentCopy size={'15px'} />}
+                      >
+                        Copied
+                      </Button>
+                    ) : (
+                      <Button
+                        className="copy-btn"
+                        onClick={copy}
+                        leftIcon={<MdOutlineContentCopy size={'15px'} />}
+                      >
+                        Copy
+                      </Button>
+                    )}
+                  </Box>
+                )}
+              </CopyButton>
+            </Box>
+          </Box>
+
+          <Button className="primaryBtn" onClick={handleContinue}>
+            Continue
+          </Button>
+        </Box>
+      </Modal>
       <Box className="container">
         <Title className="title">Congratulations!</Title>
         <Text className="sub-title">You are a part of the Greenie Community</Text>
@@ -20,18 +89,15 @@ export const SeeCongratulations = () => {
           </Box>
           <BioSection />
         </Box>
-
-        <Button
-          className="primaryBtn"
-          onClick={() =>
-            dispatchDetailsPage({
-              type: 'SET_SEE_CONGRATULATIONS_SCREEN',
-              payload: !detailsPage.seeCongratulations,
-            })
-          }
-        >
-          Continue
-        </Button>
+        {documentsData.length > 1 ? (
+          <Button className="primaryBtn" onClick={handleContinue}>
+            Continue
+          </Button>
+        ) : (
+          <Button className="primaryBtn" onClick={open}>
+            Continue
+          </Button>
+        )}
       </Box>
     </Box>
   );

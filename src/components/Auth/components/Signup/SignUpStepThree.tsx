@@ -152,7 +152,7 @@ const SignUpStepThree = () => {
           <Box>
             <Flex className="tabTopBox" onClick={() => dispatch({ type: 'PREVSIGNUPSTEP' })}>
               <BsArrowLeft size={'15px'} />
-              <Text className="tabHeading">Change Password</Text>
+              <Text className="tabHeading">Login with phone number</Text>
             </Flex>
             <Text className="profileTextBold">
               Enter the one-time password sent to your phone number

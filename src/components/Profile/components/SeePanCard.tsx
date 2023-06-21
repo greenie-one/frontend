@@ -22,13 +22,17 @@ import { PANAPIList } from '../../../assets/api/ApiList';
 import axios from 'axios';
 
 export const SeePanCard = () => {
-  const [isVerified, setIsVerified] = useState(false);
-  const [checked, setChecked] = useState(false);
   const { classes: inputClasses } = inputStyles();
-  const { detailsPage, dispatchDetailsPage, verifyPANForm, getDocuments } = useProfileContext();
-
-  const token = localStorage.getItem('auth-tokens');
-  const authTokens = token ? JSON.parse(token) : null;
+  const {
+    detailsPage,
+    dispatchDetailsPage,
+    verifyPANForm,
+    getDocuments,
+    authTokens,
+    panIsVerified,
+    setPanIsVerified,
+  } = useProfileContext();
+  const [checked, setChecked] = useState<boolean>(false);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -66,7 +70,7 @@ export const SeePanCard = () => {
             icon: <BsCheckLg />,
             sx: { borderRadius: em(8) },
           });
-          setIsVerified(true);
+          setPanIsVerified(true);
           getDocuments();
         }
       } catch (error: any) {
@@ -91,6 +95,15 @@ export const SeePanCard = () => {
     verifyPANForm.values.panNo = '';
   };
 
+  const handleContinue = () => {
+    dispatchDetailsPage({ type: 'SET_SEE_PAN_CARD', payload: !detailsPage.seePanCard });
+    verifyPANForm.values.panNo = '';
+    dispatchDetailsPage({
+      type: 'SET_SEE_CONGRATULATIONS_SCREEN',
+      payload: !detailsPage.seeCongratulations,
+    });
+  };
+
   return (
     <section className="container">
       <Box className="see-all-header">
@@ -105,7 +118,7 @@ export const SeePanCard = () => {
           <Text>Pan Card</Text>
         </Box>
       </Box>
-      {isVerified ? (
+      {panIsVerified ? (
         <Box className="document-verified-container">
           <Box className="document-verified-left-box">
             <Box className="left-img-box">
@@ -116,7 +129,6 @@ export const SeePanCard = () => {
             <Box className="left-text-box">
               <Box>
                 <Text className="heading">Last Updated</Text>
-                <Text className="details">02/03/2023</Text>
               </Box>
               <Box>
                 <Text className="heading">Timestamp</Text>
@@ -179,7 +191,7 @@ export const SeePanCard = () => {
               </Box>
             </Box>
 
-            <Button className="primaryBtn" onClick={handlePageChange}>
+            <Button className="primaryBtn" onClick={handleContinue}>
               Continue
             </Button>
           </Box>
@@ -199,9 +211,9 @@ export const SeePanCard = () => {
             />
             <Box className="checkbox-box">
               <Checkbox
+                className="checkbox"
                 checked={checked}
                 onChange={() => setChecked(!checked)}
-                className="checkbox"
                 color="teal"
               />
               <Text className="tearms-conditions">
@@ -213,7 +225,7 @@ export const SeePanCard = () => {
             </Box>
 
             <Text className="policy">Click to view Data and Privacy Policy</Text>
-            <Button disabled={!checked} className="primaryBtn" onClick={handleSubmit}>
+            <Button className="primaryBtn" disabled={!checked} onClick={handleSubmit}>
               Click to verify
             </Button>
           </Box>

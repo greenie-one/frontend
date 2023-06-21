@@ -9,7 +9,6 @@ import { SeeAllResidentialInfo } from '../components/SeeAllResidentialInfo';
 import { SeeAadharCard } from '../components/SeeAadharCard';
 import { SeePanCard } from '../components/SeePanCard';
 import { SeeDrivingLicence } from '../components/SeeDrivingLicence';
-import { SeeCongratulations } from '../components/SeeCongratulations';
 import { Box } from '@mantine/core';
 
 export const ProfileSection = () => {
@@ -36,7 +35,6 @@ export const ProfileSection = () => {
       {detailsPage.seeAadharCard && <SeeAadharCard />}
       {detailsPage.seePanCard && <SeePanCard />}
       {detailsPage.seeDrivingLicence && <SeeDrivingLicence />}
-      {detailsPage.seeCongratulations && <SeeCongratulations />}
     </>
   );
 };

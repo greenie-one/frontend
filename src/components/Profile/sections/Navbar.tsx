@@ -137,8 +137,11 @@ export const Navbar = () => {
         </Box>
         <Box className="right-section">
           <AiOutlineBell size={'22px'} className="bell-icon" />
-          <img className="profile-picture" src={JohnMarston} alt="Profile Piture" />
-          <AiFillCaretDown />
+          <Link to={'/profile'}>
+            <img className="profile-picture" src={JohnMarston} alt="Profile Piture" />
+          </Link>
+
+          <AiFillCaretDown className="down-arrow-icon" />
 
           {!state.firstDrawerOpened && isProfilePage && (
             <span className={classes.menuOpenBtn}>
@@ -164,7 +167,7 @@ export const Navbar = () => {
           onClose={() => dispatch({ type: 'CLOSE_FIRST_DRAWER' })}
           withCloseButton={false}
           position="right"
-          size="100%"
+          size="80%"
         >
           <nav
             className={classes.mobileNavOptionsContainer}
@@ -179,7 +182,7 @@ export const Navbar = () => {
                 />
               </span>
             </Flex>
-            <List data-autoFocus className={classes.navOptionsList}>
+            <List className={classes.navOptionsList}>
               <li>
                 <Link to={'/profile'} className={classes.navOptionItems}>
                   <span className={classes.navOptionsIcon}>
@@ -232,8 +235,11 @@ export const Navbar = () => {
               </Box>
               <Box className="drawer-right-section">
                 <AiOutlineBell size={'22px'} className="bell-icon" />
-                <img className="profile-picture" src={JohnMarston} alt="Profile Piture" />
+                <Link to={'/profile'}>
+                  <img className="profile-picture" src={JohnMarston} alt="Profile Piture" />
+                </Link>
               </Box>
+
               <span className={classes.menuCloseBtn}>
                 <MdOutlineClose
                   role="button"
@@ -271,7 +277,7 @@ export const Navbar = () => {
                   <Link
                     to={'/profile/settings'}
                     className={classes.navOptionItems}
-                    onClick={() => setShowDetailsId}
+                    onClick={() => setShowDetailsId(2)}
                   >
                     <span className={classes.navOptionsIcon2}>
                       <MdOutlineLock />

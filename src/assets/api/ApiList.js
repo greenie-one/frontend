@@ -11,13 +11,16 @@ export const authApiList = {
   googleCallback: `${BASE_URL}/oauth/google/callback`,
   refreshToken: `${BASE_URL}/refresh`,
   resendOtp: `${BASE_URL}/auth/resendOTP`,
+  forgotpasswordOtp: `${BASE_URL}/auth/forgot_password`,
+  forgotpasswordValidate: `${BASE_URL}/auth/validate_forgot_password`,
+  changePassword: `${BASE_URL}/auth/change_password`
 };
 
 export const profileAPIList = {
   createProfile: `${BASE_URL}/profiles/create`,
   getMyProfile: `${BASE_URL}/profiles/me`,
   searchProfile: `${BASE_URL}/profiles?search=`,
-  updateProfile: `${BASE_URL}/profiles`,
+  updateProfile: `${BASE_URL}/profiles/update`,
   updateProfilePicture: `${BASE_URL}/utils/profile_pic`,
 }
 

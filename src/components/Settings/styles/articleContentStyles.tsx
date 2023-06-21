@@ -19,6 +19,7 @@ export const detailsFormStyles = createStyles((theme) => ({
     display: 'grid',
     alignItems: 'start',
     gap: rem(14),
+    maxWidth: rem(420),
   },
 
   detailsCategoryTitle: {

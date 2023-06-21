@@ -1,4 +1,4 @@
-import { useState, KeyboardEvent } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -121,7 +121,21 @@ const LoginStepTwo = () => {
             sx: { borderRadius: em(8) },
           });
         }
-        if (err.response?.data?.code === 'GR0008') {
+        if (err.response?.data?.code === 'GRA0012') {
+          loginForm.setFieldValue('password', '');
+
+          notifications.update({
+            id: 'load-data',
+            title: 'Error !',
+            message: 'Invalid Credentials. Please try again.',
+            autoClose: 2200,
+            withCloseButton: false,
+            color: 'red',
+            icon: <FaExclamation />,
+            sx: { borderRadius: em(8) },
+          });
+        }
+        if (err.response?.data?.code === 'GRA0008') {
           loginForm.setFieldValue('password', '');
 
           notifications.update({
@@ -165,7 +179,7 @@ const LoginStepTwo = () => {
         });
 
         const res = await axios.post(authApiList.login, {
-          mobileNumber: loginForm.values.emailPhoneGreenieId,
+          mobileNumber: `91${loginForm.values.emailPhoneGreenieId}`,
         });
 
         if (res.data) {
@@ -209,6 +223,7 @@ const LoginStepTwo = () => {
             icon: <FaExclamation />,
             sx: { borderRadius: em(8) },
           });
+          console.log(err);
         }
       } finally {
         setIsLoading(false);

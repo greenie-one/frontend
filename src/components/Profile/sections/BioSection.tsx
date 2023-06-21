@@ -17,10 +17,10 @@ import { useState } from 'react';
 import level from '../assets/level.png';
 import levelFilled from '../assets/levelFilled.png';
 import medal from '../assets/medal.png';
-import copyIcon from '../assets/content_copy.png';
 import { MdVerified, MdOutlineEdit, MdOutlineContentCopy } from 'react-icons/md';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 import { useProfileContext } from '../context/ProfileContext';
+import { detailsFormStyles } from '../../Settings/styles/articleContentStyles';
 
 const skillSetOne = [
   'Lone Wolf',
@@ -40,14 +40,9 @@ export const BioSection = () => {
   const screenSize = useMediaQuery('(min-width: 768px)');
   const isMobile = useMediaQuery('(max-width: 768px)');
   const { classes: inputClasses } = inputStyles();
+  const { classes: formStyle } = detailsFormStyles();
   const [opened, { open, close }] = useDisclosure(false);
   const { profileData, profileForm, updateProfile } = useProfileContext();
-  const [updateId, setUpdateId] = useState('');
-
-  const handleOpenModal = () => {
-    setUpdateId(profileData._id);
-    open();
-  };
 
   const onClose = () => {
     profileForm.values.firstName = '';
@@ -59,7 +54,7 @@ export const BioSection = () => {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    updateProfile(updateId);
+    updateProfile();
     onClose();
   };
 
@@ -101,6 +96,7 @@ export const BioSection = () => {
               data-autofocus
               label="Your bio"
               classNames={inputClasses}
+              className={formStyle.textarea}
               minRows={8}
               {...profileForm.getInputProps('bio')}
             />
@@ -143,7 +139,7 @@ export const BioSection = () => {
           </Box>
         </form>
       </Modal>
-      <Box className="icon" onClick={handleOpenModal}>
+      <Box className="icon" onClick={open}>
         <MdOutlineEdit size={'22px'} className="btn" />
       </Box>
       <Box className="bio-name-box">
@@ -264,6 +260,25 @@ const inputStyles = createStyles((theme) => ({
 
     [`@media screen and (max-width: ${em(1024)})`]: {
       height: '46px',
+      borderRadius: '6px',
+      fontSize: '10px',
+      lineHeight: '12px',
+      margin: '0 auto',
+    },
+  },
+
+  bio: {
+    height: '158px',
+    paddingTop: '18px',
+    fontSize: '16px',
+    fontWeight: 500,
+    borderRadius: '8px',
+    border: '1px solid #D1D4DB',
+    lineHeight: '19px',
+    letterSpacing: '-0.02em',
+    color: '#697082',
+
+    [`@media screen and (max-width: ${em(1024)})`]: {
       borderRadius: '6px',
       fontSize: '10px',
       lineHeight: '12px',

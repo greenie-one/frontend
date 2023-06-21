@@ -24,7 +24,7 @@ type AuthTokens = {
 type ProfileContextType = {
   profileData: IUserProfile;
   profileForm: UseFormReturnType<profileFormType>;
-  updateProfile: (id: string) => void;
+  updateProfile: () => void;
   documentsData: IDocument[];
   workExperienceData: IWorkExperience[];
   residentialInfoData: IResidendialInfoDataType[];
@@ -32,7 +32,6 @@ type ProfileContextType = {
   addWorkExperience: () => void;
   deleteWorkExperience: (id: string) => void;
   updateWorkExperience: (id: string) => void;
-  documentsForm: UseFormReturnType<documentsFormType>;
   verifyAadharForm: UseFormReturnType<verifyAadharFormType>;
   verifyPANForm: UseFormReturnType<verifyPANFormType>;
   verifyLicenceForm: UseFormReturnType<verifyLicenceFormType>;
@@ -47,6 +46,12 @@ type ProfileContextType = {
   updateSkill: (id: string) => void;
   forceRender: boolean;
   setForceRender: React.Dispatch<React.SetStateAction<boolean>>;
+  aadharIsVerified: boolean;
+  panIsVerified: boolean;
+  licenseIsVerified: boolean;
+  setAadharIsVerified: React.Dispatch<React.SetStateAction<boolean>>;
+  setPanIsVerified: React.Dispatch<React.SetStateAction<boolean>>;
+  setLicenseIsVerified: React.Dispatch<React.SetStateAction<boolean>>;
   authTokens: AuthTokens;
   detailsPage: DetailsPageState;
   dispatchDetailsPage: React.Dispatch<DetailsPageAction>;
@@ -118,13 +123,6 @@ type profileFormType = {
   descriptionTags: string[];
 };
 
-type documentsFormType = {
-  documentType: string;
-  aadharNumber: string;
-  panNumber: string;
-  drivingLicenseNumber: string;
-};
-
 type verifyAadharFormType = {
   aadharNo: string;
   otp: string;
@@ -156,9 +154,9 @@ type residentialInfoFormType = {
   address_line_2: string;
   landmark: string;
   city: string;
-  pincode: number | null;
+  pincode: number | string;
   typeOfAddress: string;
-  state: string;
+  state: '';
   country: '';
   start_date: Date | null;
   endDate: Date | null;
@@ -194,6 +192,9 @@ export const useProfileContext = () => useContext(ProfileContext);
 
 export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [forceRender, setForceRender] = useState<boolean>(false);
+  const [aadharIsVerified, setAadharIsVerified] = useState<boolean>(false);
+  const [panIsVerified, setPanIsVerified] = useState<boolean>(false);
+  const [licenseIsVerified, setLicenseIsVerified] = useState<boolean>(false);
 
   //------------Forms-----------------
 
@@ -210,22 +211,6 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
       lastName: isNotEmpty('Please provide your last name'),
       bio: isNotEmpty('Please provide bio'),
       descriptionTags: hasLength(3, 'Please select at least 3'),
-    },
-  });
-
-  const documentsForm = useForm<documentsFormType>({
-    initialValues: {
-      documentType: '',
-      aadharNumber: '',
-      panNumber: '',
-      drivingLicenseNumber: '',
-    },
-
-    validate: {
-      documentType: isNotEmpty('Please select document type'),
-      aadharNumber: hasLength(12, 'Please enter valid aadhar card number'),
-      panNumber: hasLength(10, 'Please enter valid pan card number'),
-      drivingLicenseNumber: hasLength(15, 'Please enter valid driving licence number'),
     },
   });
 
@@ -294,13 +279,12 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
       address_line_2: '',
       landmark: '',
       city: '',
-      pincode: null,
+      pincode: '',
       typeOfAddress: '',
       state: '',
       country: '',
       start_date: null,
       endDate: null,
-      currentLocation: null,
     },
     validate: {
       address_line_1: isNotEmpty('Please enter valid address'),
@@ -358,8 +342,18 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
     }
   };
 
-  const updateProfile = async (id: string) => {
+  const updateProfile = async () => {
     try {
+      notifications.show({
+        id: 'load-data',
+        title: 'Please wait !',
+        message: 'We are updating your profile.',
+        loading: true,
+        autoClose: 2200,
+        withCloseButton: false,
+        color: 'teal',
+        sx: { borderRadius: em(8) },
+      });
       const requestData: any = {};
       if (profileForm.values.firstName !== '') {
         requestData.firstName = profileForm.values.firstName;
@@ -373,15 +367,25 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
       if (profileForm.values.descriptionTags.length === 3) {
         requestData.descriptionTags = profileForm.values.descriptionTags;
       }
-      const res = await axios
-        .patch(`${profileAPIList.updateProfile}/${id}`, requestData, {
-          headers: {
-            Authorization: `Bearer ${authTokens?.accessToken}`,
-          },
-        })
-        .then(() => {
-          getProfile();
-        });
+      const res = await axios.patch(profileAPIList.updateProfile, requestData, {
+        headers: {
+          Authorization: `Bearer ${authTokens?.accessToken}`,
+        },
+      });
+      getProfile();
+      notifications.update({
+        id: 'load-state',
+        title: 'Sucess!',
+        message: 'profile updated successfully',
+        autoClose: 2200,
+        withCloseButton: false,
+        color: 'teal',
+        icon: <BsCheckLg />,
+        sx: { borderRadius: em(8) },
+      });
+      profileForm.values.firstName = '';
+      profileForm.values.lastName = '';
+      profileForm.values.bio = '';
     } catch (error: any) {
       console.log(error.message);
     }
@@ -445,6 +449,16 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
     ) {
       try {
         setIsLoading(true);
+        notifications.show({
+          id: 'load-data',
+          title: 'Please wait !',
+          message: 'We are updating adding your work experience.',
+          loading: true,
+          autoClose: false,
+          withCloseButton: false,
+          color: 'teal',
+          sx: { borderRadius: em(8) },
+        });
         workExperienceForm.clearErrors();
         const res = await axios.post(
           workExperienceAPiList.postWorkExperience,
@@ -469,18 +483,17 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
         );
 
         if (res.data) {
-          setTimeout(() => {
-            notifications.update({
-              id: 'load-state',
-              title: 'Sucess!',
-              message: 'Experience added successfully',
-              autoClose: 2200,
-              withCloseButton: false,
-              color: 'teal',
-              icon: <BsCheckLg />,
-              sx: { borderRadius: em(8) },
-            });
-          }, 1100);
+          notifications.update({
+            id: 'load-state',
+            title: 'Sucess!',
+            message: 'Experience added successfully',
+            autoClose: 2200,
+            withCloseButton: false,
+            color: 'teal',
+            icon: <BsCheckLg />,
+            sx: { borderRadius: em(8) },
+          });
+
           getWorkExperience();
         }
       } catch (err: any) {
@@ -495,6 +508,16 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const deleteWorkExperience = async (id: string) => {
     try {
       setIsLoading(true);
+      notifications.show({
+        id: 'load-data',
+        title: 'Please wait !',
+        message: 'We are removing your work experience.',
+        loading: true,
+        autoClose: false,
+        withCloseButton: false,
+        color: 'teal',
+        sx: { borderRadius: em(8) },
+      });
       const res = await axios
         .delete(`${workExperienceAPiList.deleteWorkExperience}/${id}`, {
           headers: {
@@ -502,18 +525,17 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
           },
         })
         .then(() => {
-          setTimeout(() => {
-            notifications.update({
-              id: 'load-state',
-              title: 'Sucess!',
-              message: 'Experience deleted!',
-              autoClose: 2200,
-              withCloseButton: false,
-              color: 'teal',
-              icon: <BsCheckLg />,
-              sx: { borderRadius: em(8) },
-            });
-          }, 1100);
+          notifications.update({
+            id: 'load-state',
+            title: 'Sucess!',
+            message: 'Experience deleted!',
+            autoClose: 2200,
+            withCloseButton: false,
+            color: 'teal',
+            icon: <BsCheckLg />,
+            sx: { borderRadius: em(8) },
+          });
+
           getWorkExperience();
           setIsLoading(false);
         });
@@ -972,7 +994,6 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
         updateWorkExperience,
         updateResidentialInfo,
         updateSkill,
-        documentsForm,
         verifyAadharForm,
         verifyPANForm,
         verifyLicenceForm,
@@ -985,6 +1006,12 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
         detailsPage,
         dispatchDetailsPage,
         getDocuments,
+        aadharIsVerified,
+        panIsVerified,
+        licenseIsVerified,
+        setAadharIsVerified,
+        setPanIsVerified,
+        setLicenseIsVerified,
       }}
     >
       {children}

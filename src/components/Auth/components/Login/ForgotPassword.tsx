@@ -1,13 +1,21 @@
 import { TextInput, createStyles, em, rem, Text, Button, Box, Flex } from '@mantine/core';
 import { useAuthContext } from '../../context/AuthContext';
-import { KeyboardEvent } from 'react';
-import ForgotPassowrdStepThree from './ForgotPassowrdStepThree';
-import { BsArrowLeft } from 'react-icons/bs';
+import { BsArrowLeft, BsCheckLg } from 'react-icons/bs';
 import '../../styles/global.scss';
+import { notifications } from '@mantine/notifications';
+import { authApiList } from '../../../../assets/api/ApiList';
+import axios from 'axios';
+import { FaExclamation } from 'react-icons/fa';
+import { useState, useEffect } from 'react';
 
 const ForgotPassword = () => {
   const { classes: inputClasses } = inputStyles();
   const { loginForm, state, dispatch, isPhoneNumber, isValidEmail } = useAuthContext();
+  const [validateOTPId, setValidateOTP] = useState<string>('');
+  const [secondsRemaining, setSecondsRemaining] = useState<number>(60);
+
+  const token = localStorage.getItem('auth-tokens');
+  const authTokens = token ? JSON.parse(token) : null;
 
   const handleClick = () => {
     if (state.resetPasswordStep === 1) {
@@ -18,15 +26,104 @@ const ForgotPassword = () => {
     }
   };
 
-  const handleChange = () => {
-    dispatch({ type: 'PREVRESETPASSWORDSTEP' });
-  };
-
   const handleNextStep = () => {
-    dispatch({ type: 'NEXTRESETPASSWRDSTEP' });
+    if (!loginForm.validateField('emailPhoneGreenieId').hasError) {
+      dispatch({ type: 'NEXTRESETPASSWRDSTEP' });
+    }
   };
 
-  const handleKeyPressNextStep = (event: KeyboardEvent<HTMLInputElement>): void => {};
+  const handleRequestOTP = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (!loginForm.validateField('emailPhoneGreenieId').hasError) {
+      try {
+        notifications.show({
+          id: 'load-data',
+          title: 'Sending OTP...',
+          message: 'Please wait while we send OTP to your email.',
+          loading: true,
+          autoClose: false,
+          withCloseButton: false,
+          sx: { borderRadius: em(8) },
+        });
+
+        const res = await axios.post(
+          authApiList.forgotpasswordOtp,
+          {
+            email: loginForm.values.emailPhoneGreenieId,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${authTokens?.accessToken}`,
+            },
+          }
+        );
+        if (res.data) {
+          notifications.update({
+            id: 'load-data',
+            title: 'Success!',
+            message: 'OTP Sent to your email',
+            autoClose: 2200,
+            withCloseButton: false,
+            color: 'teal',
+            icon: <BsCheckLg />,
+            sx: { borderRadius: em(8) },
+          });
+          setValidateOTP(res.data.validationId);
+          dispatch({ type: 'NEXTRESETPASSWRDSTEP' });
+        }
+      } catch (error: any) {
+        console.log(error.message);
+      }
+    }
+  };
+
+  const verifyOTP = async () => {
+    if (!loginForm.validateField('otp').hasError) {
+      try {
+        notifications.show({
+          id: 'load-data',
+          title: 'Verifying OTP...',
+          message: 'Please wait while we verify your OTP.',
+          loading: true,
+          autoClose: false,
+          withCloseButton: false,
+          sx: { borderRadius: em(8) },
+        });
+        const res = await axios.post(authApiList.forgotpasswordValidate, {
+          validationId: validateOTPId,
+          otp: loginForm.values.otp,
+          newPassword: loginForm.values.password,
+        });
+        if (res.data) {
+          notifications.update({
+            id: 'load-data',
+            title: 'Success!',
+            message: 'Verified your OTP',
+            autoClose: 2200,
+            withCloseButton: false,
+            color: 'teal',
+            icon: <BsCheckLg />,
+            sx: { borderRadius: em(8) },
+          });
+          dispatch({ type: 'RESETRESETPASSWORDSTEP' });
+        }
+      } catch (error: any) {
+        console.log(error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setSecondsRemaining((prevSecondsRemaining) => prevSecondsRemaining - 1);
+    }, 1000);
+
+    if (secondsRemaining === 0) {
+      clearInterval(timer);
+    }
+
+    return () => clearInterval(timer);
+  }, [secondsRemaining]);
 
   return (
     <Box className="authRightContainer">
@@ -36,6 +133,7 @@ const ForgotPassword = () => {
           {state.resetPasswordStep === 1 ? 'Back to Login' : 'Change Email ID'}
         </Text>
       </Flex>
+
       {state.resetPasswordStep === 1 && (
         <Box>
           <Text className="profileTextBold">Help us identify your Greenie account for you.</Text>
@@ -54,10 +152,10 @@ const ForgotPassword = () => {
         <Box>
           <Text
             className="disbledInput"
-            style={{ border: '1px solid #D1D4DB', borderRadius: '2px', background: '#FFFFFF' }}
+            style={{ border: '1px solid #D1D4DB', borderRadius: '2px', background: '$white' }}
           >
             {loginForm.values.emailPhoneGreenieId}
-            <span className="changeBtn" onClick={handleChange}>
+            <span className="changeBtn" onClick={() => dispatch({ type: 'PREVRESETPASSWORDSTEP' })}>
               Change
             </span>
           </Text>
@@ -80,13 +178,58 @@ const ForgotPassword = () => {
               verification
             </Text>
           )}
-          <Button type="submit" className="primaryBtn" onClick={handleNextStep}>
+          <Button type="submit" className="primaryBtn" onClick={handleRequestOTP}>
             Send OTP
           </Button>
         </Box>
       )}
 
-      {state.resetPasswordStep === 3 && <ForgotPassowrdStepThree />}
+      {state.resetPasswordStep === 3 && (
+        <Box>
+          {isValidEmail(loginForm.values.emailPhoneGreenieId) && (
+            <Text className="profileTextBold">
+              Enter the one-time passowrd sent to your email address{state.resetPasswordStep}
+            </Text>
+          )}
+          <TextInput
+            classNames={inputClasses}
+            maxLength={6}
+            label=""
+            pattern="[0-9]{6}"
+            {...loginForm.getInputProps('otp')}
+          />
+          <Text className="profileTextBold">Enter new password</Text>
+          <TextInput classNames={inputClasses} {...loginForm.getInputProps('password')} />
+          {secondsRemaining === 0 ? (
+            <Button
+              compact
+              color="gray"
+              variant="subtle"
+              onClick={handleRequestOTP}
+              className="resendLink"
+            >
+              Resend
+            </Button>
+          ) : (
+            <Text fw={'light'} fz={'xs'} my={'md'}>
+              Resend{' '}
+              <Text fw={'600'} span>
+                after {secondsRemaining}s
+              </Text>
+            </Text>
+          )}
+          <Button
+            type="submit"
+            className="primaryBtn"
+            fullWidth
+            radius="xl"
+            color="teal"
+            onClick={verifyOTP}
+          >
+            Reset
+          </Button>
+        </Box>
+      )}
     </Box>
   );
 };
