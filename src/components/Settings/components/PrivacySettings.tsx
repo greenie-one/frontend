@@ -162,6 +162,7 @@ const inputStyles = createStyles((theme) => ({
     fontSize: rem(14),
     fontWeight: 500,
     borderRadius: rem(8),
+    color: '#697082',
 
     [`@media screen and (max-width: ${rem(768)})`]: {
       maxWidth: '100vw',

@@ -91,7 +91,7 @@ export const SeeAllResidentialInfo = () => {
     residentialInfoForm.setFieldValue('landmark', '');
     residentialInfoForm.setFieldValue('typeOfAddres', '');
     residentialInfoForm.setFieldValue('city', '');
-    residentialInfoForm.setFieldValue('pincode', null);
+    // residentialInfoForm.setFieldValue('pincode', null);
     residentialInfoForm.setFieldValue('state', '');
     residentialInfoForm.setFieldValue('country', '');
     residentialInfoForm.setFieldValue('start_date', null);
@@ -190,6 +190,16 @@ export const SeeAllResidentialInfo = () => {
                 classNames={inputClasses}
                 {...residentialInfoForm.getInputProps('state')}
                 withAsterisk
+                styles={() => ({
+                  item: {
+                    '&[data-selected]': {
+                      '&, &:hover': {
+                        backgroundColor: '#17a672',
+                        color: 'white',
+                      },
+                    },
+                  },
+                })}
               />
               <Select
                 data={countries}
@@ -197,6 +207,16 @@ export const SeeAllResidentialInfo = () => {
                 classNames={inputClasses}
                 {...residentialInfoForm.getInputProps('country')}
                 withAsterisk
+                styles={() => ({
+                  item: {
+                    '&[data-selected]': {
+                      '&, &:hover': {
+                        backgroundColor: '#17a672',
+                        color: 'white',
+                      },
+                    },
+                  },
+                })}
               />
             </Box>
           </Box>

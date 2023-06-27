@@ -109,8 +109,7 @@ export const ResidentialInfo = () => {
       !residentialInfoForm.validateField('typeOfAddress').hasError &&
       !residentialInfoForm.validateField('state').hasError &&
       !residentialInfoForm.validateField('country').hasError &&
-      !residentialInfoForm.validateField('start_date').hasError &&
-      !residentialInfoForm.validateField('end_date').hasError
+      !residentialInfoForm.validateField('start_date').hasError
     ) {
       addResidentialInfo();
       close();
@@ -149,6 +148,16 @@ export const ResidentialInfo = () => {
               classNames={inputClasses}
               {...residentialInfoForm.getInputProps('typeOfAddress')}
               withAsterisk
+              styles={() => ({
+                item: {
+                  '&[data-selected]': {
+                    '&, &:hover': {
+                      backgroundColor: '#17a672',
+                      color: 'white',
+                    },
+                  },
+                },
+              })}
             />
           </Box>
           <Box className="input-section">
@@ -207,6 +216,16 @@ export const ResidentialInfo = () => {
                 classNames={inputClasses}
                 {...residentialInfoForm.getInputProps('state')}
                 withAsterisk
+                styles={() => ({
+                  item: {
+                    '&[data-selected]': {
+                      '&, &:hover': {
+                        backgroundColor: '#17a672',
+                        color: 'white',
+                      },
+                    },
+                  },
+                })}
               />
               <Select
                 data={countries}
@@ -214,6 +233,16 @@ export const ResidentialInfo = () => {
                 classNames={inputClasses}
                 {...residentialInfoForm.getInputProps('country')}
                 withAsterisk
+                styles={() => ({
+                  item: {
+                    '&[data-selected]': {
+                      '&, &:hover': {
+                        backgroundColor: '#17a672',
+                        color: 'white',
+                      },
+                    },
+                  },
+                })}
               />
             </Box>
           </Box>
@@ -259,11 +288,11 @@ export const ResidentialInfo = () => {
             </Button>
             <Box className="map"></Box>
             <Box className="btn-wrapper">
-              <Button color="teal" type="submit">
-                Save
-              </Button>
               <Button variant="default" onClick={close}>
                 Cancel
+              </Button>
+              <Button color="teal" type="submit">
+                Save
               </Button>
             </Box>
           </Box>

@@ -1,5 +1,7 @@
 import { Text, Box, Button } from '@mantine/core';
 import { MdVerified } from 'react-icons/md';
+import { CgSandClock } from 'react-icons/cg';
+import tscLogo from '../assets/tscLogo.png';
 import '../styles/global.scss';
 
 interface CardProps {
@@ -19,7 +21,7 @@ export const WorkExperienceCard: React.FC<CardProps> = ({
 }) => {
   return (
     <Box className="experience-card">
-      <Box className="companyLogo"></Box>
+      <img className="companyLogo" src={tscLogo} />
       <Text className="position">{position}</Text>
       <Text className="companyName">{companyName}</Text>
       {isVerified ? (
@@ -27,15 +29,23 @@ export const WorkExperienceCard: React.FC<CardProps> = ({
           Verified
         </Button>
       ) : (
-        <Box></Box>
+        <Button leftIcon={<CgSandClock size={'16px'} />} className="pending">
+          Pending
+        </Button>
       )}
 
       <Box className="tenure-box">
         <Text className="since-text">Since</Text>
-        <Text className="tenure">
-          {companyStartYear?.toString().substring(0, 4)}-
-          {companyEndYear?.toString().substring(0, 4)}
-        </Text>
+
+        {companyEndYear === null ? (
+          <Text> {companyStartYear?.toString().substring(0, 4)}-Present</Text>
+        ) : (
+          <Text className="tenure">
+            {' '}
+            {companyStartYear?.toString().substring(0, 4)}-
+            {companyEndYear?.toString().substring(0, 4)}
+          </Text>
+        )}
       </Box>
     </Box>
   );

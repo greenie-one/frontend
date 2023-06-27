@@ -12,16 +12,19 @@ import {
   rem,
   TextInput,
   Title,
+  CopyButton,
 } from '@mantine/core';
 import { FaExclamation } from 'react-icons/fa';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 import { BsArrowLeft, BsCheckLg } from 'react-icons/bs';
+import { MdVerified, MdOutlineContentCopy } from 'react-icons/md';
 import { AiOutlineRight } from 'react-icons/ai';
 import AadharImg from '../assets/Aadhar.png';
 import john from '../assets/johnMarston.png';
 import { notifications } from '@mantine/notifications';
 import { aadharAPIList } from '../../../assets/api/ApiList';
 import axios from 'axios';
+import checkImg from '../assets/check.png';
 
 interface VerificationData {
   requestId: string;
@@ -35,6 +38,7 @@ export const SeeAadharCard = () => {
   const { classes: inputClasses } = inputStyles();
   const { classes: otpInputClasses } = OtpInputStyles();
   const isMobile = useMediaQuery('(max-width: 768px)');
+  const greeneId = 'GRN788209';
   const {
     detailsPage,
     dispatchDetailsPage,
@@ -43,6 +47,7 @@ export const SeeAadharCard = () => {
     authTokens,
     aadharIsVerified,
     setAadharIsVerified,
+    scrollToTop,
   } = useProfileContext();
   const [verificationData, setVerificationData] = useState<VerificationData>({
     requestId: '',
@@ -115,16 +120,7 @@ export const SeeAadharCard = () => {
           sx: { borderRadius: em(8) },
         });
       }
-      notifications.update({
-        id: 'load-data',
-        title: 'Something went wrong',
-        message: `${error.message}`,
-        autoClose: 2200,
-        withCloseButton: false,
-        color: 'red',
-        icon: <FaExclamation />,
-        sx: { borderRadius: em(8) },
-      });
+      console.log(error.message);
     }
   };
 
@@ -133,7 +129,13 @@ export const SeeAadharCard = () => {
       requestOTPForAadhar();
       open();
       const timer = setInterval(() => {
-        setSecondsRemaining((prevSecondsRemaining) => prevSecondsRemaining - 1);
+        setSecondsRemaining((prevSecondsRemaining) => {
+          const newSecondsRemaining = prevSecondsRemaining - 1;
+          if (newSecondsRemaining === 0) {
+            clearInterval(timer);
+          }
+          return newSecondsRemaining;
+        });
       }, 1000);
 
       if (secondsRemaining === 0) {
@@ -208,6 +210,7 @@ export const SeeAadharCard = () => {
   };
 
   const handleContinue = () => {
+    scrollToTop();
     dispatchDetailsPage({ type: 'SET_SEE_AADHAR_CARD', payload: !detailsPage.seeAadharCard });
     dispatchDetailsPage({
       type: 'SET_SEE_CONGRATULATIONS_SCREEN',
@@ -217,53 +220,111 @@ export const SeeAadharCard = () => {
 
   return (
     <section className="container documents-container">
-      <Modal
-        centered
-        className="modal"
-        size={'55%'}
-        fullScreen={isMobile}
-        opened={opened}
-        onClose={close}
-        title="Please enter the OTP send to"
-      >
-        <form className="otp-form" onSubmit={handleSubmit}>
-          <Title className="title">OTP has been sent to your linked phone number!</Title>
-          <Text className="disbledInput">
-            {verifyAadharForm.values.aadharNo}
-            <span className="changeBtn" onClick={close}>
-              Change
-            </span>
-          </Text>
-          <TextInput
-            classNames={otpInputClasses}
-            withAsterisk
-            maxLength={6}
-            pattern="[0-9]{6}"
-            {...verifyAadharForm.getInputProps('otp')}
-          />
-          {secondsRemaining === 0 ? (
-            <Button
-              compact
-              color="gray"
-              variant="subtle"
-              onClick={requestOTPForAadhar}
-              className="resendLink"
-            >
-              Resend
+      {aadharIsVerified ? (
+        <Modal
+          centered
+          className="modal"
+          size={'55%'}
+          fullScreen={isMobile}
+          opened={opened}
+          onClose={close}
+        >
+          <Box className="congratulations-modal">
+            <img src={checkImg} alt="Checked" />
+            <Title className="title">
+              Your Profile is now verified <MdVerified color="#8CF078" size={'18px'} />
+            </Title>
+            <Text className="sub-title">Here is your Greenie ID</Text>
+            <Text className="greenie-id">{greeneId}</Text>
+
+            <Box className="buttons-wrapper">
+              <Button leftIcon={<MdVerified color="#8CF078" size={'18px'} />} className="verified">
+                Verified
+              </Button>
+              <CopyButton value={greeneId} timeout={2000}>
+                {({ copied, copy }) => (
+                  <Box>
+                    {copied ? (
+                      <Button
+                        className="copy-btn"
+                        leftIcon={<MdOutlineContentCopy size={'15px'} />}
+                      >
+                        Copied
+                      </Button>
+                    ) : (
+                      <Button
+                        className="copy-btn"
+                        onClick={copy}
+                        leftIcon={<MdOutlineContentCopy size={'15px'} />}
+                      >
+                        Copy
+                      </Button>
+                    )}
+                  </Box>
+                )}
+              </CopyButton>
+            </Box>
+
+            <Button className="primaryBtn" onClick={handleContinue}>
+              Continue
             </Button>
-          ) : (
-            <Text fw={'light'} fz={'xs'} my={'md'}>
-              Resend{' '}
-              <Text fw={'600'} span>
-                after {secondsRemaining}s
-              </Text>
+          </Box>
+        </Modal>
+      ) : (
+        <Modal
+          centered
+          className="modal"
+          size={'55%'}
+          fullScreen={isMobile}
+          opened={opened}
+          onClose={close}
+          title="Please enter the OTP send to"
+          styles={{
+            title: {
+              fontSize: '1.25rem',
+              fontWeight: 600,
+            },
+          }}
+        >
+          <form className="otp-form" onSubmit={handleSubmit}>
+            <Title className="title">OTP has been sent to your linked phone number!</Title>
+            <Text className="disbled-Input-State">
+              {verifyAadharForm.values.aadharNo}
+              <span className="changeBtn" onClick={close}>
+                Change
+              </span>
             </Text>
-          )}
-          <Button type="submit" className="primaryBtn">
-            Verify
-          </Button>
-        </form>
-      </Modal>
+            <TextInput
+              classNames={otpInputClasses}
+              withAsterisk
+              maxLength={6}
+              pattern="[0-9]{6}"
+              {...verifyAadharForm.getInputProps('otp')}
+            />
+            {secondsRemaining === 0 ? (
+              <Button
+                compact
+                color="gray"
+                variant="subtle"
+                onClick={requestOTPForAadhar}
+                className="resendLink"
+              >
+                Resend
+              </Button>
+            ) : (
+              <Text fw={'light'} fz={'xs'} my={'md'}>
+                Resend{' '}
+                <Text fw={'500'} span>
+                  after {secondsRemaining}s
+                </Text>
+              </Text>
+            )}
+            <Button type="submit" className="primaryBtn">
+              Verify
+            </Button>
+          </form>
+        </Modal>
+      )}
 
       <Box className="see-all-header">
         <Box className="go-back-btn" onClick={handlePageChange}>
@@ -337,7 +398,7 @@ export const SeeAadharCard = () => {
               </Box>
             </Box>
 
-            <Button className="primaryBtn" onClick={handleContinue}>
+            <Button className="primaryBtn" onClick={open}>
               Continue
             </Button>
           </Box>
@@ -355,6 +416,13 @@ export const SeeAadharCard = () => {
               maxLength={12}
               {...verifyAadharForm.getInputProps('aadharNo')}
             />
+            <Button
+              disabled={!checked}
+              onClick={handleOpenModal}
+              className={checked ? 'greenBtn' : 'disabledBtn'}
+            >
+              Click to verify
+            </Button>
             <Box className="checkbox-box">
               <Checkbox
                 checked={checked}
@@ -371,9 +439,6 @@ export const SeeAadharCard = () => {
             </Box>
 
             <Text className="policy">Click to view Data and Privacy Policy</Text>
-            <Button disabled={!checked} onClick={handleOpenModal} className="primaryBtn">
-              Click to verify
-            </Button>
           </Box>
         </Box>
       )}
@@ -439,8 +504,7 @@ const inputStyles = createStyles((theme) => ({
 const OtpInputStyles = createStyles((theme) => ({
   root: {
     position: 'relative',
-    marginBottom: '24px',
-    marginTop: '24px',
+    marginBlock: '8px',
   },
 
   input: {

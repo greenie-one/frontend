@@ -13,7 +13,6 @@ import {
   rem,
   Textarea,
 } from '@mantine/core';
-import { useState } from 'react';
 import level from '../assets/level.png';
 import levelFilled from '../assets/levelFilled.png';
 import medal from '../assets/medal.png';
@@ -129,11 +128,11 @@ export const BioSection = () => {
 
           <Box className="location-wrapper">
             <Box className="btn-wrapper">
-              <Button color="teal" type="submit">
-                Save
-              </Button>
               <Button type="button" variant="default" onClick={onClose}>
                 Cancel
+              </Button>
+              <Button color="teal" type="submit">
+                Save
               </Button>
             </Box>
           </Box>
@@ -144,7 +143,7 @@ export const BioSection = () => {
       </Box>
       <Box className="bio-name-box">
         <Text className="bio-name">
-          {profileData.firstName} <span>{profileData.lastName}</span>
+          {profileData.firstName} {profileData.lastName}
         </Text>
         <MdVerified className="name-verified" size={'20px'} />
       </Box>
@@ -219,7 +218,7 @@ export const BioSection = () => {
             {({ copied, copy }) => (
               <Box className="greenie-id" onClick={copy}>
                 <Box className="icon-box">
-                  <MdOutlineContentCopy className="greenie-id-icon" />
+                  <MdOutlineContentCopy size={'18px'} color="#17a672" />
                 </Box>
 
                 <Box>

@@ -1,4 +1,14 @@
-import { TextInput, createStyles, em, rem, Text, Button, Box, Flex } from '@mantine/core';
+import {
+  TextInput,
+  createStyles,
+  em,
+  rem,
+  Text,
+  Button,
+  Box,
+  Flex,
+  PasswordInput,
+} from '@mantine/core';
 import { useAuthContext } from '../../context/AuthContext';
 import { BsArrowLeft, BsCheckLg } from 'react-icons/bs';
 import '../../styles/global.scss';
@@ -10,6 +20,7 @@ import { useState, useEffect } from 'react';
 
 const ForgotPassword = () => {
   const { classes: inputClasses } = inputStyles();
+  const { classes: otpInputClasses } = OtpInputStyles();
   const { loginForm, state, dispatch, isPhoneNumber, isValidEmail } = useAuthContext();
   const [validateOTPId, setValidateOTP] = useState<string>('');
   const [secondsRemaining, setSecondsRemaining] = useState<number>(60);
@@ -77,7 +88,53 @@ const ForgotPassword = () => {
     }
   };
 
-  const verifyOTP = async () => {
+  const handleResendOTP = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (!loginForm.validateField('emailPhoneGreenieId').hasError) {
+      try {
+        notifications.show({
+          id: 'load-data',
+          title: 'Sending OTP...',
+          message: 'Please wait while we send OTP to your email.',
+          loading: true,
+          autoClose: false,
+          withCloseButton: false,
+          sx: { borderRadius: em(8) },
+        });
+
+        const res = await axios.post(
+          authApiList.forgotpasswordOtp,
+          {
+            email: loginForm.values.emailPhoneGreenieId,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${authTokens?.accessToken}`,
+            },
+          }
+        );
+        if (res.data) {
+          notifications.update({
+            id: 'load-data',
+            title: 'Success!',
+            message: 'OTP Sent to your email',
+            autoClose: 2200,
+            withCloseButton: false,
+            color: 'teal',
+            icon: <BsCheckLg />,
+            sx: { borderRadius: em(8) },
+          });
+          setValidateOTP(res.data.validationId);
+          setSecondsRemaining(60);
+        }
+      } catch (error: any) {
+        console.log(error.message);
+      }
+    }
+  };
+
+  const verifyOTP = async (event: React.FormEvent) => {
+    event.preventDefault();
     if (!loginForm.validateField('otp').hasError) {
       try {
         notifications.show({
@@ -105,12 +162,12 @@ const ForgotPassword = () => {
             icon: <BsCheckLg />,
             sx: { borderRadius: em(8) },
           });
-          dispatch({ type: 'RESETRESETPASSWORDSTEP' });
         }
       } catch (error: any) {
         console.log(error);
       }
     }
+    // dispatch({ type: 'NEXTRESETPASSWRDSTEP' });
   };
 
   useEffect(() => {
@@ -129,9 +186,9 @@ const ForgotPassword = () => {
     <Box className="authRightContainer">
       <Flex direction={'row'} className="tabTopBox" onClick={handleClick}>
         <BsArrowLeft size={'15px'} />
-        <Text className="tabHeading">
-          {state.resetPasswordStep === 1 ? 'Back to Login' : 'Change Email ID'}
-        </Text>
+        {state.resetPasswordStep === 1 && <Text className="tabHeading">Back to Login</Text>}
+        {state.resetPasswordStep === 2 && <Text className="tabHeading">Change Email ID</Text>}
+        {state.resetPasswordStep === 3 && <Text className="tabHeading">Set New Password</Text>}
       </Flex>
 
       {state.resetPasswordStep === 1 && (
@@ -150,10 +207,7 @@ const ForgotPassword = () => {
 
       {state.resetPasswordStep === 2 && (
         <Box>
-          <Text
-            className="disbledInput"
-            style={{ border: '1px solid #D1D4DB', borderRadius: '2px', background: '$white' }}
-          >
+          <Text className="disabledInput">
             {loginForm.values.emailPhoneGreenieId}
             <span className="changeBtn" onClick={() => dispatch({ type: 'PREVRESETPASSWORDSTEP' })}>
               Change
@@ -167,13 +221,13 @@ const ForgotPassword = () => {
               </Text>
             )}
           {isValidEmail(loginForm.values.emailPhoneGreenieId) && (
-            <Text className="profileTextBold">
+            <Text className="profileTextBold" mb={'2rem'}>
               A one-time passowrd (OTP) will be sent to your registered email address for
               verification
             </Text>
           )}
           {isPhoneNumber(loginForm.values.emailPhoneGreenieId) && (
-            <Text className="profileTextBold">
+            <Text className="profileTextBold" mb={'2rem'}>
               A one-time passowrd (OTP) will be sent to your registered phone number for
               verification
             </Text>
@@ -188,24 +242,28 @@ const ForgotPassword = () => {
         <Box>
           {isValidEmail(loginForm.values.emailPhoneGreenieId) && (
             <Text className="profileTextBold">
-              Enter the one-time passowrd sent to your email address{state.resetPasswordStep}
+              Enter the one-time passowrd sent to your email address
             </Text>
           )}
           <TextInput
-            classNames={inputClasses}
+            classNames={otpInputClasses}
             maxLength={6}
-            label=""
             pattern="[0-9]{6}"
             {...loginForm.getInputProps('otp')}
           />
           <Text className="profileTextBold">Enter new password</Text>
-          <TextInput classNames={inputClasses} {...loginForm.getInputProps('password')} />
+          <PasswordInput
+            classNames={inputClasses}
+            {...loginForm.getInputProps('password')}
+            label="Enter new password"
+          />
+
           {secondsRemaining === 0 ? (
             <Button
               compact
               color="gray"
               variant="subtle"
-              onClick={handleRequestOTP}
+              onClick={handleResendOTP}
               className="resendLink"
             >
               Resend
@@ -226,7 +284,7 @@ const ForgotPassword = () => {
             color="teal"
             onClick={verifyOTP}
           >
-            Reset
+            Verify OTP
           </Button>
         </Box>
       )}
@@ -239,8 +297,7 @@ export default ForgotPassword;
 const inputStyles = createStyles((theme) => ({
   root: {
     position: 'relative',
-    marginBottom: '24px',
-    marginTop: '24px',
+    marginBlock: '24px',
   },
 
   input: {
@@ -289,6 +346,34 @@ const inputStyles = createStyles((theme) => ({
       fontSize: '10px',
       lineHeight: '10px',
       paddingTop: '8px',
+    },
+  },
+}));
+
+const OtpInputStyles = createStyles((theme) => ({
+  root: {
+    position: 'relative',
+    marginBlock: '24px',
+  },
+
+  input: {
+    width: '458px',
+    height: '68px',
+    fontSize: '16px',
+    fontWeight: 500,
+    borderRadius: '8px',
+    border: '1px solid #D1D4DB',
+    lineHeight: '19px',
+    letterSpacing: '24px',
+    color: '#697082',
+
+    [`@media screen and (max-width: ${em(1024)})`]: {
+      width: '350px',
+      height: '46px',
+      borderRadius: '6px',
+      fontSize: '14px',
+      lineHeight: '12px',
+      margin: '0 auto',
     },
   },
 }));
