@@ -74,13 +74,17 @@ const companyTypes = [
   { value: 'Unregistered', label: 'Unregistered' },
 ];
 
+// const skillRate = [
+//   { value: 'BEGINEER', label: 'Begineer/Novice' },
+//   { value: 'INTERMEDIATE', label: 'Intermediate' },
+//   { value: 'HIGHLY COMPETANT', label: 'Highly Competant' },
+//   { value: 'ADVANCED', label: 'Advanced Proficiency' },
+//   { value: 'EXPERT', label: 'Expert' },
+//   { value: 'MASTER', label: 'Master - Pro(Global Recognition)' },
+// ];
 const skillRate = [
-  { value: 'BEGINEER', label: 'Begineer/Novice' },
-  { value: 'INTERMEDIATE', label: 'Intermediate' },
-  { value: 'HIGHLY COMPETANT', label: 'Highly Competant' },
-  { value: 'ADVANCED', label: 'Advanced Proficiency' },
-  { value: 'EXPERT', label: 'Expert' },
-  { value: 'MASTER', label: 'Master - Pro(Global Recognition)' },
+  { value: 'AMATEUR', label: 'Begineer/Novice' },
+  { value: 'EXPERT', label: 'Intermediate' },
 ];
 
 const documentType = [
@@ -499,7 +503,6 @@ export const AddWorkExperience = () => {
             <MonthPickerInput
               icon={<MdOutlineCalendarMonth />}
               label="End date"
-              withAsterisk
               classNames={inputClasses}
               disabled={experienceChecked}
               {...workExperienceForm.getInputProps('endDate')}
@@ -615,20 +618,13 @@ export const AddWorkExperience = () => {
           </Box>
           {skills.length > 0 && <Divider color="#ebebeb" />}
 
-          <Box className="location-wrapper">
-            <Box className="btn-wrapper">
-              <Button
-                type="button"
-                className="cancel-btn"
-                variant="default"
-                onClick={handlePrevPage}
-              >
-                Back
-              </Button>
-              <Button className="green-btn" onClick={handleSkillContinue}>
-                Continue
-              </Button>
-            </Box>
+          <Box className="btn-wrapper">
+            <Button type="button" className="cancel-btn" variant="default" onClick={handlePrevPage}>
+              Back
+            </Button>
+            <Button className="green-btn" onClick={handleSkillContinue}>
+              Continue
+            </Button>
           </Box>
         </form>
       )}
@@ -730,24 +726,18 @@ export const AddWorkExperience = () => {
               registration and website usage.
             </Text>
           </Box>
-          <Box className="location-wrapper">
-            <Box className="btn-wrapper">
-              <Button
-                type="button"
-                className="cancel-btn"
-                variant="default"
-                onClick={handlePrevPage}
-              >
-                Back
-              </Button>
-              <Button
-                className="green-btn"
-                onClick={handleDocumentContinue}
-                disabled={!documentsChecked}
-              >
-                Continue
-              </Button>
-            </Box>
+
+          <Box className="btn-wrapper">
+            <Button type="button" className="cancel-btn" variant="default" onClick={handlePrevPage}>
+              Back
+            </Button>
+            <Button
+              className="green-btn"
+              onClick={handleDocumentContinue}
+              disabled={!documentsChecked}
+            >
+              Continue
+            </Button>
           </Box>
         </Box>
       )}

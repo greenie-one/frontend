@@ -34,7 +34,7 @@
     display: flex;
     align-items: center;
     .greenie {
-      font-family: 'Gilroy-Bold' !important;
+      font-family: 'Inter';
       font-weight: 700;
       font-size: 32px;
       line-height: 38px;
@@ -110,7 +110,7 @@
 }
 
 .notification-drop-down {
-  min-width: 400px;
+  width: 400px;
   height: 296px;
   border-radius: 20px;
   padding: 1rem;

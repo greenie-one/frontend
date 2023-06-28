@@ -1,7 +1,7 @@
 import { Text, Box, Title, Button } from '@mantine/core';
 import { useProfileContext } from '../context/ProfileContext';
 import { BioSection } from '../sections/BioSection';
-import checkImg from '../assets/check.png';
+import checkGif from '../assets/94109-confirmation 1.gif';
 
 export const SeeCongratulations = () => {
   const { detailsPage, dispatchDetailsPage, setAadharIsVerified, scrollToTop } =
@@ -19,7 +19,7 @@ export const SeeCongratulations = () => {
   return (
     <Box className="congratulations-screen">
       <Box className="container">
-        <img src={checkImg} className="checkedImg" alt="Checked" />
+        <img src={checkGif} className="checkedImg" alt="Checked" />
         <Title className="title">Congratulations!</Title>
         <Text className="sub-title">You are a part of the Greenie Community</Text>
         <Text className="sub-text">

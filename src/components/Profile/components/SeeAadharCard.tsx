@@ -84,6 +84,7 @@ export const SeeAadharCard = () => {
           requestId: request_id,
           taskId: taskId,
         }));
+        open();
         notifications.update({
           id: 'load-data',
           title: 'Success!',
@@ -127,7 +128,6 @@ export const SeeAadharCard = () => {
   const handleOpenModal = async () => {
     if (!verifyAadharForm.validateField('aadharNo').hasError && checked) {
       requestOTPForAadhar();
-      open();
       const timer = setInterval(() => {
         setSecondsRemaining((prevSecondsRemaining) => {
           const newSecondsRemaining = prevSecondsRemaining - 1;

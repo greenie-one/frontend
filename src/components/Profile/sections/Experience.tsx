@@ -78,14 +78,14 @@ export const Experience = () => {
       <Box className="header">
         <Box>
           <Text className="heading">{`Work Experience (${workExperienceData.length})`}</Text>
-          <Text className="subheading">All government IDs, personal verification IDs etc.</Text>
+          <Text className="subheading">All your past and present work experience</Text>
         </Box>
 
         {workExperienceData.length > 0 && (
           <>
             <Box className="header-links">
               <Text className="link" onClick={handleToggleWorkExperienceDetails}>
-                See all experiences
+                See All Experiences
               </Text>
               <Button
                 leftIcon={<MdOutlineEdit />}

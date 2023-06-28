@@ -47,7 +47,7 @@ export const SeeAllExperiences = () => {
       </Box>
       {selectedCard === null ? (
         <Box className="see-all-experiences-wrapper">
-          {workExperienceData.map((workExperience) => {
+          {workExperienceData.reverse().map((workExperience) => {
             return (
               <Box key={workExperience._id} onClick={() => setSelectedCard(workExperience)}>
                 <Box className="experience-card">

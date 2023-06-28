@@ -1,8 +1,6 @@
 import { Text, Box, Button } from '@mantine/core';
-import { Carousel } from '@mantine/carousel';
 import '../styles/global.scss';
 import noData from '../assets/noData.png';
-import { SkillsCard } from '../components/SkillsCard';
 import { MdOutlineEdit } from 'react-icons/md';
 import { useProfileContext } from '../context/ProfileContext';
 import { AiOutlinePlus } from 'react-icons/ai';
@@ -29,13 +27,13 @@ export const SkillsSection = () => {
       <Box className="header">
         <Box>
           <Text className="heading">{`Skills (${skillData.length})`}</Text>
-          <Text className="subheading">All government IDs, personal verification IDs etc.</Text>
+          <Text className="subheading">All your skills, certifications and expertise</Text>
         </Box>
         {skillData.length > 0 && (
           <>
             <Box className="header-links">
               <Text className="link" onClick={handleToggleSkillsDetails}>
-                See all skills
+                See All Skills
               </Text>
               <Button
                 leftIcon={<MdOutlineEdit />}
@@ -60,24 +58,17 @@ export const SkillsSection = () => {
           </Button>
         </Box>
       ) : (
-        <Carousel
-          withIndicators={false}
-          slideSize="33.33%"
-          slideGap={24}
-          loop={false}
-          slidesToScroll={1}
-          align="start"
-          styles={{ control: { display: 'none' } }}
-          breakpoints={[{ maxWidth: '800', slideSize: '70%' }]}
-        >
-          {skillData.reverse().map(({ skillName, expertise, isVerified }, id) => {
+        <Box className="add-skills-wrapper">
+          {skillData.map((skill, index) => {
+            const { expertise, skillName } = skill;
             return (
-              <Carousel.Slide key={id}>
-                <SkillsCard skillName={skillName} expertise={expertise} isVerified={isVerified} />
-              </Carousel.Slide>
+              <Box key={index} className="add-skill-box">
+                <Text className="add-skill-name">{skillName}</Text>
+                <Text className="add-skill-rate">{expertise}</Text>
+              </Box>
             );
           })}
-        </Carousel>
+        </Box>
       )}
       {skillData.length > 0 && (
         <Button onClick={handleToggleSkillsDetails} className="see-all-btn">

@@ -31,7 +31,7 @@ export const ResidentialInfoCard: React.FC<CardProps> = ({
         <Box className="location">
           <img className="location=img" src={location} alt="Location" />
         </Box>
-        <Box>
+        <Box className="address-box">
           <Box className="address">
             {address_line_1}, {address_line_2}, {landmark}, {city} {pincode}
           </Box>

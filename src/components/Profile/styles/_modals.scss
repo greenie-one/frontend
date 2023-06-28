@@ -409,6 +409,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      text-align: center;
     }
   }
 }
@@ -450,6 +451,16 @@
       max-width: 375px;
     }
   }
+
+  .add-skills-wrapper {
+    grid-template-columns: repeat(3, 33%);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .add-skills-wrapper {
+    grid-template-columns: repeat(2, 49%);
+  }
 }
 
 @media screen and (max-width: 512px) {
@@ -457,6 +468,10 @@
     form {
       padding-inline: 2px;
     }
+  }
+
+  .add-skills-wrapper {
+    grid-template-columns: 100%;
   }
 }
 @media screen and (max-width: 970px) {

@@ -22,8 +22,11 @@ export const WorkExperienceCard: React.FC<CardProps> = ({
   return (
     <Box className="experience-card">
       <img className="companyLogo" src={tscLogo} />
-      <Text className="position">{position}</Text>
-      <Text className="companyName">{companyName}</Text>
+      <Box>
+        <Text className="position">{position}</Text>
+        <Text className="companyName">{companyName}</Text>
+      </Box>
+
       {isVerified ? (
         <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
           Verified

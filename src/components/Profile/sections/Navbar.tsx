@@ -241,7 +241,7 @@ export const Navbar = () => {
                     </span>
                     <span className="navOptionsText">Help</span>
                   </li>
-                  <Divider className="divider" />
+                  <Divider className="divider" my={'1rem'} />
                   <button className="navOptionItems" onClick={removeAuthTokens}>
                     <span className="navOptionsIcon">
                       <MdExitToApp />

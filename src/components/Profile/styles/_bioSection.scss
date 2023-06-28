@@ -159,6 +159,27 @@
   }
 }
 
+.verify-id-bio-text {
+  text-align: center;
+  margin-left: 58px;
+  .text-heading {
+    font-size: 22px;
+    line-height: 26px;
+    letter-spacing: -0.02em;
+    color: $gray;
+    font-weight: 600;
+    margin-bottom: 5px;
+  }
+  .text-subheading {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+    letter-spacing: -0.02em;
+    color: $gray;
+    margin-bottom: 5px;
+  }
+}
+
 @media screen and (max-width: 768px) {
   .bio-section {
     .bio-name-box {
@@ -253,6 +274,10 @@
     .border-left {
       display: none;
     }
+  }
+
+  .verify-id-bio-text {
+    margin-left: -1rem;
   }
 }
 
