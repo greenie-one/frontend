@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from 'react';
+import React, { useReducer, useState, CSSProperties } from 'react';
 import {
   Title,
   Text,
@@ -10,19 +10,25 @@ import {
   em,
   rem,
   Modal,
+  Divider,
 } from '@mantine/core';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
-import { useForm, UseFormReturnType, isNotEmpty, isEmail, hasLength } from '@mantine/form';
+import { useForm, isNotEmpty, isEmail, hasLength } from '@mantine/form';
 import { MdVerified, MdOutlineDelete } from 'react-icons/md';
-import { GrAdd } from 'react-icons/gr';
-import { CgSandClock } from 'react-icons/cg';
+import { AiOutlinePlus, AiFillInfoCircle } from 'react-icons/ai';
+import { BsArrowLeft, BsCheckLg } from 'react-icons/bs';
+import { CgSandClock, CgProfile } from 'react-icons/cg';
+import { FaExclamation } from 'react-icons/fa';
 import tscLogo from '../assets/tscLogo.png';
+import noData from '../assets/noData.png';
+import { notifications } from '@mantine/notifications';
+import { useProfileContext } from '../context/ProfileContext';
 
 const peerType = [
   { value: 'Line Manager', label: 'Line Manager' },
   { value: 'Reporting Manager', label: 'Reporting Manager' },
   { value: 'HR', label: 'HR' },
-  { value: 'College', label: 'College' },
+  { value: 'Colleague', label: 'Colleague' },
   { value: 'CXO', label: 'CXO' },
 ];
 
@@ -36,7 +42,7 @@ type PeerVerificationFormType = {
 type Peer = {
   name: string;
   email: string;
-  response: string;
+  status: string;
   peerType: string;
   contactNumber: string;
 };
@@ -93,6 +99,13 @@ export const VerifyWorkExperience: React.FC<IWorkExperience> = ({
   const [opened, { open, close }] = useDisclosure(false);
   const { classes: inputClasses } = inputStyles();
   const [addedPeers, setAddedPeers] = useState<Peer[]>([]);
+  const [activePeer, setActivePeer] = useState(0);
+  const [backgroundStyle, setBackgroundStyle] = useState<CSSProperties>({
+    backgroundImage: `url(${tscLogo})`,
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+  });
+  const { detailsPage, dispatchDetailsPage, setSelectedCard, scrollToTop } = useProfileContext();
 
   const peerVerificationForm = useForm<PeerVerificationFormType>({
     initialValues: {
@@ -121,7 +134,7 @@ export const VerifyWorkExperience: React.FC<IWorkExperience> = ({
         name: peerVerificationForm.values.name,
         email: peerVerificationForm.values.email,
         peerType: peerVerificationForm.values.peerType,
-        response: 'waiting',
+        status: 'Waiting',
         contactNumber: peerVerificationForm.values.contactNumber,
       };
 
@@ -133,15 +146,111 @@ export const VerifyWorkExperience: React.FC<IWorkExperience> = ({
     }
   };
 
+  const handleRemovePeer = (index: number) => {
+    if (index < 0 || index >= addedPeers.length) {
+      return;
+    }
+    setAddedPeers((prevPeer) => {
+      const newPeer = [...prevPeer];
+      newPeer.splice(index, 1);
+      return newPeer;
+    });
+  };
+
+  const handleProceed = () => {
+    if (addedPeers.length < 2) {
+      notifications.show({
+        id: 'load-data',
+        title: 'Insufficient number of peers !',
+        message: 'Please add atleast 2 peers',
+        autoClose: 2200,
+        withCloseButton: false,
+        color: 'red',
+        icon: <FaExclamation />,
+        sx: { borderRadius: em(8) },
+      });
+    }
+    if (addedPeers.length >= 2) {
+      verificationStepDispatch({ type: ReviewActionType.NEXT_STEP });
+      notifications.show({
+        id: 'load-data',
+        title: 'Peers added',
+        message: 'Peers added to the list',
+        autoClose: 2200,
+        withCloseButton: false,
+        color: 'teal',
+        icon: <BsCheckLg />,
+        sx: { borderRadius: em(8) },
+      });
+    }
+  };
+
+  const handleSeeRequest = () => {
+    setSelectedCard(null);
+    dispatchDetailsPage({
+      type: 'SET_SEE_ALL_WORKEXPERIENCE',
+      payload: !detailsPage.seeAllWorkExperience,
+    });
+    close();
+    scrollToTop();
+  };
+
   return (
     <>
+      <Modal
+        size={isTablet ? '85%' : '65%'}
+        fullScreen={isMobile}
+        opened={opened}
+        onClose={close}
+        centered
+      >
+        <Box className="verify-experience-modal">
+          <Title className="heading">Your request has been sent</Title>
+          <Text className="subHeading">Verifying your work experience</Text>
+          <Box className="modal-experience-details">
+            <Box className="company-logo" style={backgroundStyle}>
+              <MdVerified className="verified-icon" color="#17a672" size="22px" />
+            </Box>
+
+            <Box className="experience-details-text-box">
+              <Text className="designation">{designation}</Text>
+              <Text className="company-name">{companyName}</Text>
+              {isVerified ? (
+                <Button
+                  leftIcon={<MdVerified color="#8CF078" size={'16px'} />}
+                  className="verified"
+                >
+                  Verified
+                </Button>
+              ) : (
+                <Button leftIcon={<CgSandClock size={'16px'} />} className="pending">
+                  Pending
+                </Button>
+              )}
+            </Box>
+          </Box>
+          <Button className="green-btn" onClick={handleSeeRequest}>
+            See request
+          </Button>
+          <Box className="note">
+            <AiFillInfoCircle className="info-icon" size={'18px'} />
+            <Text className="note-heading">Note</Text>
+            <Text className="text">
+              Candidates cannot see this verification process or its results.
+            </Text>
+          </Box>
+        </Box>
+      </Modal>
       {currentStep === 0 && (
         <Box className="add-peer-box">
           <Box className="experience-details">
-            <img src={tscLogo} alt="Company logo" />
+            <Box className="company-logo" style={backgroundStyle}>
+              <MdVerified className="verified-icon" color="#17a672" size="22px" />
+            </Box>
+
             <Box className="experience-details-text-box">
-              <Text>{designation}</Text>
-              <Text>{companyName}</Text>
+              <Text className="designation">{designation}</Text>
+              <Text className="company-name">{companyName}</Text>
               {isVerified ? (
                 <Button
                   leftIcon={<MdVerified color="#8CF078" size={'16px'} />}
@@ -194,28 +303,78 @@ export const VerifyWorkExperience: React.FC<IWorkExperience> = ({
               {...peerVerificationForm.getInputProps('contactNumber')}
             />
           </Box>
-          <Button className="add-peer-btn" leftIcon={<GrAdd />} onClick={handleAddPeer}>
+          <Button
+            className="add-peer-btn"
+            leftIcon={<AiOutlinePlus size={'18px'} />}
+            onClick={handleAddPeer}
+          >
             Add Peer
           </Button>
-          <Box className="add-peers">
-            {addedPeers.reverse().map(({ name, email, response, peerType }, index) => {
-              return (
-                <Box key={index}>
-                  <Text>{name}</Text>
-                  <Text>{email}</Text>
-                  <Text>{response}</Text>
-                  <Text>{peerType}</Text>
-                </Box>
-              );
-            })}
+          <Box className="add-peer-header">
+            <Text>Peer</Text>
+            <Text>Email</Text>
+            <Text>Status</Text>
+            <Text>Peer Type</Text>
+            <Text>Action</Text>
           </Box>
-          <Button>Proceed</Button>
+
+          {addedPeers.length > 0 ? (
+            <Box className="add-peers">
+              {addedPeers.reverse().map(({ name, email, status, peerType }, index) => {
+                return (
+                  <Box key={index} className="added-peers">
+                    <Text className="peer-name">
+                      <CgProfile className="profile-icon" />
+                      <span>{name}</span>
+                    </Text>
+                    <Text className="peer-email">{email}</Text>
+                    <Text className="peer-response">{status}</Text>
+                    <Text className="peer-type">{peerType}</Text>
+                    <Text className="peer-remove" onClick={() => handleRemovePeer(index)}>
+                      <MdOutlineDelete size={'20px'} />
+                      <span>Remove</span>
+                    </Text>
+                  </Box>
+                );
+              })}
+            </Box>
+          ) : (
+            <Box className="peer-no-data-wrapper">
+              <img src={noData} alt="No data" />
+            </Box>
+          )}
+          <Button disabled={addedPeers.length < 2} className="primaryBtn" onClick={handleProceed}>
+            Proceed
+          </Button>
         </Box>
       )}
       {currentStep === 1 && (
-        <Box className="see-peers-box">
-          <Box className="see-peers-sidebar"></Box>
-          <Box className="see-peers-main-box"></Box>
+        <Box className="see-peers">
+          <Box className="see-peers-box">
+            <Box className="see-peers-sidebar">
+              <Text className="select-peer-heading">Select Peer</Text>
+              {addedPeers.reverse().map(({ name, peerType }, index) => {
+                return (
+                  <Box key={index}>
+                    <Box className="peer">
+                      <Text className="peer-name">{name}</Text>
+                      <Text className="peer-type">{peerType}</Text>
+                    </Box>
+                    {addedPeers.length - 1 !== index && <Divider color="#ebebeb" />}
+                  </Box>
+                );
+              })}
+            </Box>
+            <Box className="see-peers-main-box">
+              <img src={noData} alt="No data" />
+            </Box>
+          </Box>
+          <Box className="see-peers-btn-wrapper">
+            <Button className="green-btn" onClick={open}>
+              Confirm and send request
+            </Button>
+            <Button className="cancel-btn">Cancel</Button>
+          </Box>
         </Box>
       )}
     </>
@@ -225,8 +384,6 @@ export const VerifyWorkExperience: React.FC<IWorkExperience> = ({
 const inputStyles = createStyles((theme) => ({
   root: {
     position: 'relative',
-    marginTop: '10px',
-    marginBottom: '10px',
   },
 
   input: {

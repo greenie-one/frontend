@@ -5,30 +5,12 @@ import { BsArrowLeft } from 'react-icons/bs';
 import { AiOutlineRight } from 'react-icons/ai';
 import { MdVerified } from 'react-icons/md';
 import { CgSandClock } from 'react-icons/cg';
-import { useState } from 'react';
 import tscLogo from '../assets/tscLogo.png';
 import { VerifyWorkExperience } from './VerifyWorkExperience';
 
-interface IWorkExperience {
-  _id: string;
-  image: string | null;
-  designation: string;
-  companyName: string;
-  email: string;
-  companyId: string;
-  companyStartDate: string;
-  companyEndDate: string;
-  workMode: string;
-  workType: string;
-  isVerified: boolean;
-  verifiedBy: [] | null;
-  companyType: string;
-}
-
 export const SeeAllExperiences = () => {
-  const [selectedCard, setSelectedCard] = useState<IWorkExperience | null>(null);
-
-  const { dispatchDetailsPage, detailsPage, workExperienceData } = useProfileContext();
+  const { dispatchDetailsPage, detailsPage, workExperienceData, selectedCard, setSelectedCard } =
+    useProfileContext();
 
   const handleToggleWorkExperienceDetails = (): void => {
     dispatchDetailsPage({

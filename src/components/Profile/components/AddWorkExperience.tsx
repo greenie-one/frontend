@@ -110,6 +110,7 @@ export const AddWorkExperience = () => {
     authTokens,
     getSkills,
     scrollToProfileNav,
+    setSelectedCard,
   } = useProfileContext();
   const { classes: inputClasses } = inputStyles();
   const [active, setActive] = useState<number>(1);
@@ -360,6 +361,11 @@ export const AddWorkExperience = () => {
     close();
   };
 
+  const handleGoToVerification = () => {
+    handleModalContinue();
+    setSelectedCard(workExperienceData);
+  };
+
   return (
     <section className="container add-work-experience">
       <Modal
@@ -383,7 +389,9 @@ export const AddWorkExperience = () => {
               <Button leftIcon={<CgSandClock color="#FF7272" size={'16px'} />} className="pending">
                 Pending
               </Button>
-              <Button className="go-to-verfication">Go to verification</Button>
+              <Button className="go-to-verfication" onClick={handleGoToVerification}>
+                Go to verification
+              </Button>
             </Box>
           </Box>
           <Button className="primaryBtn" onClick={handleModalContinue}>
