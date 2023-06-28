@@ -1,12 +1,13 @@
 import '../styles/global.scss';
 import { useProfileContext } from '../context/ProfileContext';
-import { Text, Box, Button, createStyles, em, rem } from '@mantine/core';
+import { Text, Box, Button } from '@mantine/core';
 import { BsArrowLeft } from 'react-icons/bs';
 import { AiOutlineRight } from 'react-icons/ai';
 import { MdVerified } from 'react-icons/md';
 import { CgSandClock } from 'react-icons/cg';
 import { useState } from 'react';
 import tscLogo from '../assets/tscLogo.png';
+import { VerifyWorkExperience } from './VerifyWorkExperience';
 
 interface IWorkExperience {
   _id: string;
@@ -26,6 +27,7 @@ interface IWorkExperience {
 
 export const SeeAllExperiences = () => {
   const [selectedCard, setSelectedCard] = useState<IWorkExperience | null>(null);
+
   const { dispatchDetailsPage, detailsPage, workExperienceData } = useProfileContext();
 
   const handleToggleWorkExperienceDetails = (): void => {
@@ -43,7 +45,9 @@ export const SeeAllExperiences = () => {
           <Text>Profile</Text>
           <AiOutlineRight className="arrow-right-icon" size={'16px'} />
         </Box>
-        <Text>{`Work Experience (${workExperienceData.length})`}</Text>
+        <Text
+          onClick={() => setSelectedCard(null)}
+        >{`Work Experience (${workExperienceData.length})`}</Text>
       </Box>
       {selectedCard === null ? (
         <Box className="see-all-experiences-wrapper">
@@ -81,7 +85,13 @@ export const SeeAllExperiences = () => {
         </Box>
       ) : (
         <Box>
-          <Text>{selectedCard.companyName}</Text>
+          <VerifyWorkExperience
+            _id={selectedCard._id}
+            image={selectedCard.image}
+            companyName={selectedCard.companyName}
+            designation={selectedCard.designation}
+            isVerified={selectedCard.isVerified}
+          />
         </Box>
       )}
     </section>
