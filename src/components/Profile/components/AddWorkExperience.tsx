@@ -74,17 +74,13 @@ const companyTypes = [
   { value: 'Unregistered', label: 'Unregistered' },
 ];
 
-// const skillRate = [
-//   { value: 'BEGINEER', label: 'Begineer/Novice' },
-//   { value: 'INTERMEDIATE', label: 'Intermediate' },
-//   { value: 'HIGHLY COMPETANT', label: 'Highly Competant' },
-//   { value: 'ADVANCED', label: 'Advanced Proficiency' },
-//   { value: 'EXPERT', label: 'Expert' },
-//   { value: 'MASTER', label: 'Master - Pro(Global Recognition)' },
-// ];
 const skillRate = [
-  { value: 'AMATEUR', label: 'Begineer/Novice' },
-  { value: 'EXPERT', label: 'Intermediate' },
+  { value: 'BEGINEER', label: 'Begineer/Novice' },
+  { value: 'INTERMEDIATE', label: 'Intermediate' },
+  { value: 'HIGHLY COMPETANT', label: 'Highly Competant' },
+  { value: 'ADVANCED', label: 'Advanced Proficiency' },
+  { value: 'EXPERT', label: 'Expert' },
+  { value: 'MASTER', label: 'Master - Pro(Global Recognition)' },
 ];
 
 const documentType = [
