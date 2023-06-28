@@ -31,6 +31,7 @@ export const SeePanCard = () => {
     authTokens,
     panIsVerified,
     setPanIsVerified,
+    scrollToTop,
   } = useProfileContext();
   const [checked, setChecked] = useState<boolean>(false);
 
@@ -72,6 +73,7 @@ export const SeePanCard = () => {
           });
           setPanIsVerified(true);
           getDocuments();
+          scrollToTop();
         }
       } catch (error: any) {
         if (error.response?.data?.code === 'GR0031') {
@@ -91,17 +93,10 @@ export const SeePanCard = () => {
   };
 
   const handlePageChange = () => {
+    scrollToTop();
     dispatchDetailsPage({ type: 'SET_SEE_PAN_CARD', payload: !detailsPage.seePanCard });
     verifyPANForm.values.panNo = '';
-  };
-
-  const handleContinue = () => {
-    dispatchDetailsPage({ type: 'SET_SEE_PAN_CARD', payload: !detailsPage.seePanCard });
-    verifyPANForm.values.panNo = '';
-    dispatchDetailsPage({
-      type: 'SET_SEE_CONGRATULATIONS_SCREEN',
-      payload: !detailsPage.seeCongratulations,
-    });
+    setPanIsVerified(false);
   };
 
   return (
@@ -191,7 +186,7 @@ export const SeePanCard = () => {
               </Box>
             </Box>
 
-            <Button className="primaryBtn" onClick={handleContinue}>
+            <Button className="primaryBtn" onClick={handlePageChange}>
               Continue
             </Button>
           </Box>
@@ -209,6 +204,13 @@ export const SeePanCard = () => {
               maxLength={10}
               {...verifyPANForm.getInputProps('panNo')}
             />
+            <Button
+              className={checked ? 'greenBtn' : 'disabledBtn'}
+              disabled={!checked}
+              onClick={handleSubmit}
+            >
+              Click to verify
+            </Button>
             <Box className="checkbox-box">
               <Checkbox
                 className="checkbox"
@@ -225,9 +227,6 @@ export const SeePanCard = () => {
             </Box>
 
             <Text className="policy">Click to view Data and Privacy Policy</Text>
-            <Button className="primaryBtn" disabled={!checked} onClick={handleSubmit}>
-              Click to verify
-            </Button>
           </Box>
         </form>
       )}
@@ -239,7 +238,7 @@ const inputStyles = createStyles((theme) => ({
   root: {
     position: 'relative',
     marginTop: '10px',
-    marginBottom: '26px',
+    marginBottom: '16px',
   },
 
   input: {

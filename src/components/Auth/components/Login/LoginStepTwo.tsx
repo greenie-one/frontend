@@ -266,13 +266,13 @@ const LoginStepTwo = () => {
             <BsArrowLeft size={'15px'} />
             <Text className="tabHeading">Login using OTP</Text>
           </Flex>
-          <Text className="disbledInput">
+          <Text className="disabledInput">
             {loginForm.values.emailPhoneGreenieId}
-            <span className="changeBtn" onClick={handleChangeButton}>
+            <Button unstyled className="changeBtn" onClick={handleChangeButton}>
               Change
-            </span>
+            </Button>
           </Text>
-          <Text className="profileTextBold">
+          <Text className="profileTextBold" mb={'2rem'}>
             A one-time passowrd (OTP) will be sent to your registered phone number for verification
           </Text>
           <Button type="submit" onClick={sendLoginOTP} className="primaryBtn">

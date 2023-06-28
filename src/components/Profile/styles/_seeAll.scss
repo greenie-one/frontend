@@ -19,6 +19,14 @@
   }
 }
 
+.see-all-experiences-wrapper {
+  display: grid;
+  grid-template-columns: repeat(3, 32%);
+  align-items: flex-start;
+  justify-content: space-between;
+  row-gap: 16px;
+}
+
 .button-wrappers {
   display: flex;
   align-items: center;
@@ -60,145 +68,6 @@
     }
     .arrow-right-icon {
       margin-inline: 1rem;
-    }
-  }
-}
-
-.see-all-card {
-  border: 1px solid $lighterGray;
-  border-radius: 27px;
-  padding: 26px;
-  margin-bottom: 90px;
-
-  .see-all-card-header {
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    margin-bottom: 28px;
-
-    .header-content {
-      display: flex;
-      align-items: center;
-
-      .company-logo {
-        background: #f2f4f2;
-        border-radius: 8px;
-        width: 256px;
-        height: 89px;
-        margin-right: 1rem;
-      }
-      .see-all-card-header-text-box {
-        .designation {
-          font-family: 'Inter';
-          font-style: normal;
-          font-weight: 400;
-          font-size: 16px;
-          line-height: 19px;
-          letter-spacing: -0.02em;
-          color: $dark;
-          margin-bottom: 8px;
-        }
-        .companyName {
-          font-family: 'Inter';
-          font-style: normal;
-          font-weight: 400;
-          font-size: 16px;
-          line-height: 19px;
-          letter-spacing: -0.02em;
-          color: #a3a3a3;
-          margin-bottom: 8px;
-        }
-      }
-    }
-  }
-
-  .see-all-info-wrapper {
-    margin: 1rem 0rem;
-    display: grid;
-    align-items: flex-start;
-    justify-content: flex-start;
-    grid-template-columns: repeat(5, 18.5%);
-    .detail {
-      font-family: 'Inter';
-      font-style: normal;
-      font-weight: 500;
-      font-size: 16px;
-      line-height: 19px;
-      letter-spacing: -0.02em;
-      color: $gray;
-      margin-bottom: 8px;
-    }
-  }
-  .see-all-heading {
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 600;
-    font-size: 16px;
-    color: $dark;
-    margin-bottom: 8px;
-  }
-
-  .see-all-peer-verification {
-    margin: 1rem 0;
-    .see-all-heading {
-      &:first-child {
-        margin-bottom: 40px;
-      }
-    }
-
-    .verified-by-box {
-      display: grid;
-      grid-template-columns: repeat(5, 19%);
-      justify-content: space-between;
-      .verifier-card {
-        text-align: center;
-        margin-bottom: 16px;
-
-        .verifiedByImg {
-          width: 80px;
-          height: 80px;
-          background: #f2f4f2;
-          border-radius: 50%;
-          margin: 1rem auto;
-        }
-
-        .verifier-name {
-          font-family: 'Inter';
-          font-style: normal;
-          font-weight: 400;
-          font-size: 16px;
-          line-height: 19px;
-          letter-spacing: -0.02em;
-          color: $dark;
-          margin-bottom: 4px;
-          color: $dark;
-        }
-
-        .verifier-designation {
-          font-family: 'Inter';
-          font-style: normal;
-          font-weight: 400;
-          font-size: 12px;
-          line-height: 15px;
-          letter-spacing: -0.02em;
-          color: $dark;
-          margin-bottom: 4px;
-          color: $dark;
-        }
-
-        .view-details {
-          font-family: 'Inter';
-          font-style: normal;
-          font-weight: 400;
-          font-size: 12px;
-          line-height: 15px;
-          letter-spacing: -0.02em;
-          text-decoration-line: underline;
-          color: $green;
-          cursor: pointer;
-        }
-      }
     }
   }
 }
@@ -250,12 +119,13 @@
 
       .get-verified {
         font-weight: 500;
-        font-size: 16px;
-        color: $green;
+        font-size: 12px;
+        color: $dark;
+        height: 24px;
+        padding: 0px 16px;
         background: $white;
-        border: 2px solid $green;
+        border: 1px solid $dark;
         border-radius: 34px;
-        margin-top: 0;
 
         &:hover {
           background: $white;
@@ -405,9 +275,32 @@
       margin-bottom: 16px;
     }
 
-    .primaryBtn {
-      margin: 0rem auto;
-      width: 50%;
+    button {
+      font-family: 'Inter';
+      border-radius: 34px;
+      width: 180px;
+      font-weight: 500;
+      font-size: 16px;
+      margin-bottom: 24px;
+      height: 40px;
+    }
+
+    .greenBtn {
+      background: $green;
+      color: $white;
+      &:hover {
+        opacity: 0.9;
+        background: $green;
+      }
+    }
+    .disabledBtn {
+      background: $lightGray;
+      color: $gray;
+      opacity: 0.6;
+
+      &:hover {
+        background: $lightGray;
+      }
     }
   }
 }
@@ -436,8 +329,9 @@
   line-height: 27px;
   text-decoration-line: underline;
   text-align: center;
-  color: #969696;
+  color: $dark;
   margin-bottom: 16px;
+  cursor: pointer;
 }
 
 .document-verified-container {
@@ -560,15 +454,6 @@
     grid-template-columns: repeat(2, 48%);
   }
 
-  .see-all-card {
-    .see-all-info-wrapper {
-      grid-template-columns: repeat(2, 50%);
-      .detail {
-        margin-bottom: 2rem;
-      }
-    }
-  }
-
   .document-verified-container {
     grid-template-columns: 100%;
 
@@ -599,51 +484,10 @@
   }
 }
 
-@media screen and (max-width: 630px) {
-  .skills-card-wrapper {
-    grid-template-columns: 100%;
-  }
-  .see-all-card {
-    .see-all-info-wrapper {
-      grid-template-columns: repeat(2, 50%);
-      .detail {
-        margin-bottom: 2rem;
-      }
-    }
-  }
-
-  .document-verified-container {
-    .document-verified-left-box {
-      flex-direction: column;
-
-      .left-text-box {
-        grid-template-columns: 100%;
-      }
-    }
-    .document-verified-right-box {
-      .aadhar-first-row,
-      .aadhar-second-row,
-      .aadhar-third-row,
-      .pan-first-row,
-      .pan-second-row,
-      .pan-third-row,
-      .pan-fourth-row,
-      .licence-first-row,
-      .licence-second-row,
-      .licence-third-row,
-      .licence-third-row,
-      .licence-fourth-row {
-        grid-template-columns: 100%;
-      }
-
-      .primaryBtn {
-        width: 100%;
-      }
-    }
-  }
-}
-
 @media screen and (max-width: 768px) {
+  .see-all-experiences-wrapper {
+    grid-template-columns: repeat(2, 49%);
+  }
   .see-all-residential-info-card-wrapper {
     .see-all-residentila-info-card {
       padding: 16px;
@@ -661,36 +505,6 @@
     }
     .see-all-header {
       font-size: 16px;
-    }
-    .see-all-card {
-      .see-all-card-header {
-        flex-direction: column;
-
-        .header-content {
-          flex-direction: column;
-          align-items: flex-start;
-
-          .company-logo {
-            margin-bottom: 1rem;
-            margin-right: 0;
-          }
-        }
-      }
-    }
-
-    .experience-see-all-card {
-      .button-wrappers {
-        margin-top: 1rem;
-      }
-    }
-
-    .see-all-card {
-      .see-all-info-wrapper {
-        grid-template-columns: repeat(3, 30%);
-        .detail {
-          margin-bottom: 2rem;
-        }
-      }
     }
   }
 
@@ -724,6 +538,45 @@
   }
 }
 
+@media screen and (max-width: 630px) {
+  .see-all-experiences-wrapper {
+    grid-template-columns: 100%;
+  }
+  .skills-card-wrapper {
+    grid-template-columns: 100%;
+  }
+
+  .document-verified-container {
+    .document-verified-left-box {
+      flex-direction: column;
+
+      .left-text-box {
+        grid-template-columns: 100%;
+      }
+    }
+    .document-verified-right-box {
+      .aadhar-first-row,
+      .aadhar-second-row,
+      .aadhar-third-row,
+      .pan-first-row,
+      .pan-second-row,
+      .pan-third-row,
+      .pan-fourth-row,
+      .licence-first-row,
+      .licence-second-row,
+      .licence-third-row,
+      .licence-third-row,
+      .licence-fourth-row {
+        grid-template-columns: 100%;
+      }
+
+      .primaryBtn {
+        width: 100%;
+      }
+    }
+  }
+}
+
 @media screen and (max-width: 414px) {
   .see-all-residential-info-card-wrapper {
     .see-all-residentila-info-card {
@@ -746,14 +599,6 @@
       }
       .residential-info-wrapper {
         grid-template-columns: 100%;
-      }
-    }
-  }
-  .see-all-card {
-    .see-all-info-wrapper {
-      grid-template-columns: repeat(1, 100%);
-      .detail {
-        margin-bottom: 2rem;
       }
     }
   }

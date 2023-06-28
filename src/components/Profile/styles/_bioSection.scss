@@ -126,11 +126,6 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        .greenie-id-icon {
-          padding: 7.5px;
-          scale: 18;
-          color: $green;
-        }
       }
 
       .greenie-id-heading {
@@ -161,6 +156,27 @@
     width: 75%;
     margin: 0 auto;
     margin-bottom: 16px;
+  }
+}
+
+.verify-id-bio-text {
+  text-align: center;
+  margin-left: 58px;
+  .text-heading {
+    font-size: 22px;
+    line-height: 26px;
+    letter-spacing: -0.02em;
+    color: $gray;
+    font-weight: 600;
+    margin-bottom: 5px;
+  }
+  .text-subheading {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+    letter-spacing: -0.02em;
+    color: $gray;
+    margin-bottom: 5px;
   }
 }
 
@@ -258,6 +274,10 @@
     .border-left {
       display: none;
     }
+  }
+
+  .verify-id-bio-text {
+    margin-left: -1rem;
   }
 }
 

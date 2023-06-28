@@ -97,17 +97,8 @@ export const SeeDrivingLicence = () => {
       payload: !detailsPage.seeDrivingLicence,
     });
     verifyLicenceForm.values.licenceNo = '';
-  };
-  const handleContinue = () => {
-    dispatchDetailsPage({
-      type: 'SET_SEE_DRIVER_LICENCE',
-      payload: !detailsPage.seeDrivingLicence,
-    });
-    verifyLicenceForm.values.licenceNo = '';
-    dispatchDetailsPage({
-      type: 'SET_SEE_CONGRATULATIONS_SCREEN',
-      payload: !detailsPage.seeCongratulations,
-    });
+    verifyLicenceForm.values.dateOfBirth = null;
+    setLicenseIsVerified(false);
   };
   return (
     <section className="container">
@@ -200,7 +191,7 @@ export const SeeDrivingLicence = () => {
               </Box>
             </Box>
 
-            <Button className="primaryBtn" onClick={handleContinue}>
+            <Button className="primaryBtn" onClick={handlePageChange}>
               Continue
             </Button>
           </Box>
@@ -209,15 +200,28 @@ export const SeeDrivingLicence = () => {
         <form onSubmit={handleSubmit} className="document-container">
           <img src={DrivingLicenceImg} className="document-img" alt="Driving Licence Image" />
           <Box className="document-text-box">
-            <Title className="heading">Enter your Driving Licence Number</Title>
+            <Title className="heading">Enter your Driving Licence Details</Title>
             <TextInput
-              label="Driving Licence Number"
+              label="DOB as per license(DD/MM/YYYY)"
+              classNames={inputClasses}
+              withAsterisk
+              {...verifyLicenceForm.getInputProps('dateOfBirth')}
+            />
+            <TextInput
+              label="Licence Number"
               classNames={inputClasses}
               withAsterisk
               maxLength={15}
               minLength={15}
               {...verifyLicenceForm.getInputProps('licenceNo')}
             />
+            <Button
+              disabled={!checked}
+              onClick={handleSubmit}
+              className={checked ? 'greenBtn' : 'disabledBtn'}
+            >
+              Click to verify
+            </Button>
             <Box className="checkbox-box">
               <Checkbox
                 checked={checked}
@@ -234,9 +238,6 @@ export const SeeDrivingLicence = () => {
             </Box>
 
             <Text className="policy">Click to view Data and Privacy Policy</Text>
-            <Button disabled={!checked} onClick={handleSubmit} type="submit" className="primaryBtn">
-              Click to verify
-            </Button>
           </Box>
         </form>
       )}
@@ -247,8 +248,7 @@ export const SeeDrivingLicence = () => {
 const inputStyles = createStyles((theme) => ({
   root: {
     position: 'relative',
-    marginTop: '10px',
-    marginBottom: '26px',
+    marginBottom: '16px',
   },
 
   input: {

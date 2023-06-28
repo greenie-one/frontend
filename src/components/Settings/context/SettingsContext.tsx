@@ -57,7 +57,7 @@ export const SettingsProvider: React.FC<{ children: ReactNode }> = ({ children }
           title: 'Changing your password',
           message: 'Please wait while we change your password.',
           loading: true,
-          autoClose: 2200,
+          autoClose: false,
           withCloseButton: false,
           sx: { borderRadius: em(8) },
         });
@@ -73,21 +73,18 @@ export const SettingsProvider: React.FC<{ children: ReactNode }> = ({ children }
             },
           }
         );
-        if (res.data.status === 200) {
-          notifications.update({
-            id: 'load-state',
-            title: 'Sucess!',
-            message: 'Password changed successfully',
-            autoClose: 2200,
-            withCloseButton: false,
-            color: 'teal',
-            icon: <BsCheckLg />,
-            sx: { borderRadius: em(8) },
-          });
-          privacySettingsForm.values.currentPassword = '';
-          privacySettingsForm.values.newPassword = '';
-          privacySettingsForm.values.confirmPassword = '';
-        }
+
+        notifications.update({
+          id: 'load-data',
+          color: 'teal',
+          title: 'Success !',
+          message: 'Password changed successfully.',
+          icon: <BsCheckLg />,
+          autoClose: 2000,
+        });
+        privacySettingsForm.setFieldValue('currentPassword', '');
+        privacySettingsForm.setFieldValue('newPassword', '');
+        privacySettingsForm.setFieldValue('confirmPassword', '');
       } catch (error: any) {
         if (error.response?.data?.code === 'GRA0012') {
           notifications.update({

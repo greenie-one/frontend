@@ -67,7 +67,7 @@ const SignUpStepTwo = () => {
           dispatch({ type: 'NEXTSIGNUPSTEP' });
         }
       } catch (err: any) {
-        if (err.response?.data?.code === 'GR0003') {
+        if (err.response?.data?.code === 'GRA0003') {
           signupForm.setFieldValue('password', '');
           signupForm.setFieldValue('confirmPassword', '');
 
@@ -110,7 +110,7 @@ const SignUpStepTwo = () => {
         });
 
         const res = await axios.post(authApiList.signup, {
-          mobileNumber: `91${signupForm.values.emailPhone}`,
+          mobileNumber: `+91${signupForm.values.emailPhone}`,
         });
 
         if (res.data) {
@@ -131,7 +131,7 @@ const SignUpStepTwo = () => {
           dispatch({ type: 'NEXTSIGNUPSTEP' });
         }
       } catch (err: any) {
-        if (err.response?.data?.code === 'GR0003') {
+        if (err.response?.data?.code === 'GRA0003') {
           notifications.update({
             id: 'load-data',
             title: 'Error !',
@@ -155,11 +155,15 @@ const SignUpStepTwo = () => {
     <>
       {(signUpStep === 2 && isValidEmail(signupForm.values.emailPhone) && (
         <Box>
-          <Text className="disbledInput">
+          <Text className="disabledInput">
             {signupForm.values.emailPhone}
-            <span className="changeBtn" onClick={() => dispatch({ type: 'PREVSIGNUPSTEP' })}>
+            <Button
+              unstyled
+              className="changeBtn"
+              onClick={() => dispatch({ type: 'PREVSIGNUPSTEP' })}
+            >
               Change
-            </span>
+            </Button>
           </Text>
           <PasswordInput
             label="Create Password"
@@ -192,7 +196,7 @@ const SignUpStepTwo = () => {
       )) ||
         (signUpStep === 2 && isPhoneNumber(signupForm.values.emailPhone) && (
           <Box id="disbaled-input-screen">
-            <Text className="disbledInput">
+            <Text className="disabledInput">
               {signupForm.values.emailPhone}
               <span className="changeBtn" onClick={() => dispatch({ type: 'PREVSIGNUPSTEP' })}>
                 Change
@@ -218,8 +222,7 @@ export default SignUpStepTwo;
 const inputStyles = createStyles((theme) => ({
   root: {
     position: 'relative',
-    marginBottom: '24px',
-    marginTop: '24px',
+    marginBlock: '12px',
   },
 
   input: {
@@ -241,6 +244,12 @@ const inputStyles = createStyles((theme) => ({
       fontSize: '10px',
       lineHeight: '12px',
       margin: '0 auto',
+    },
+  },
+
+  passwordInput: {
+    '& input': {
+      color: '#697082',
     },
   },
 

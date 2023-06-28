@@ -4,6 +4,7 @@
   background-color: $offWhite;
   overflow-x: hidden;
   z-index: 0;
+  min-height: 100vh;
 }
 .container {
   width: 100%;
@@ -172,6 +173,20 @@
   }
 }
 
+.add-skill-btn {
+  background-color: $lightGray;
+  color: $dark;
+  border-radius: 24px;
+  margin-block: 1.5rem;
+  width: 144px;
+  justify-self: flex-end;
+
+  &:hover {
+    background-color: $lightGray;
+    opacity: 0.7;
+  }
+}
+
 .location-btn {
   width: 100%;
   max-width: 458px;
@@ -256,6 +271,7 @@
 @import '_profileNav';
 @import '_verificationId';
 @import '_seeAll';
+@import '_workExperience';
 @import '_congratsScreen';
 
 @media screen and (max-width: 970px) {

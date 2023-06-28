@@ -18,21 +18,24 @@ import { useState } from 'react';
 export const VerificationIDSection = () => {
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
-  const { detailsPage, dispatchDetailsPage, documentsData } = useProfileContext();
+  const { detailsPage, dispatchDetailsPage, documentsData, scrollToTop } = useProfileContext();
   const [isAgreed, setIsAgreed] = useState<boolean>(false);
   const [checked, setChecked] = useState<boolean>(false);
   const handlePageChange = (documentsType: string) => {
     if (documentsType === 'AADHAR') {
       dispatchDetailsPage({ type: 'SET_SEE_AADHAR_CARD', payload: !detailsPage.seeAadharCard });
+      scrollToTop();
     }
     if (documentsType === 'PAN') {
       dispatchDetailsPage({ type: 'SET_SEE_PAN_CARD', payload: !detailsPage.seePanCard });
+      scrollToTop();
     }
     if (documentsType === 'DRIVING_LICENSE') {
       dispatchDetailsPage({
         type: 'SET_SEE_DRIVER_LICENCE',
         payload: !detailsPage.seeDrivingLicence,
       });
+      scrollToTop();
     }
   };
 

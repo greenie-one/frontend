@@ -55,7 +55,7 @@ export const residentialInfoAPIList = {
 }
 
 export const skillsAPIList = {
-  getSkill: `${BASE_URL}/skill/me`,
+  getSkill: `${BASE_URL}/skill/get`,
   postSkill: `${BASE_URL}/skill/create`,
   deleteSkill: `${BASE_URL}/skill`,
   updateSkill: `${BASE_URL}/skill`,

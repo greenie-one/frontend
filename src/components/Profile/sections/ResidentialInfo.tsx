@@ -77,6 +77,7 @@ export const ResidentialInfo = () => {
     addResidentialInfo,
     detailsPage,
     dispatchDetailsPage,
+    scrollToProfileNav,
   } = useProfileContext();
   const { classes: inputClasses } = inputStyles();
   const [checked, setChecked] = useState(false);
@@ -86,6 +87,7 @@ export const ResidentialInfo = () => {
   };
 
   const handleToggleResidentialDetails = (): void => {
+    scrollToProfileNav();
     dispatchDetailsPage({
       type: 'SET_SEE_ALL_RESIDENTIALINFO',
       payload: !detailsPage.seeAllResidentialInfo,
@@ -109,8 +111,7 @@ export const ResidentialInfo = () => {
       !residentialInfoForm.validateField('typeOfAddress').hasError &&
       !residentialInfoForm.validateField('state').hasError &&
       !residentialInfoForm.validateField('country').hasError &&
-      !residentialInfoForm.validateField('start_date').hasError &&
-      !residentialInfoForm.validateField('end_date').hasError
+      !residentialInfoForm.validateField('start_date').hasError
     ) {
       addResidentialInfo();
       close();
@@ -149,6 +150,16 @@ export const ResidentialInfo = () => {
               classNames={inputClasses}
               {...residentialInfoForm.getInputProps('typeOfAddress')}
               withAsterisk
+              styles={() => ({
+                item: {
+                  '&[data-selected]': {
+                    '&, &:hover': {
+                      backgroundColor: '#17a672',
+                      color: 'white',
+                    },
+                  },
+                },
+              })}
             />
           </Box>
           <Box className="input-section">
@@ -207,6 +218,16 @@ export const ResidentialInfo = () => {
                 classNames={inputClasses}
                 {...residentialInfoForm.getInputProps('state')}
                 withAsterisk
+                styles={() => ({
+                  item: {
+                    '&[data-selected]': {
+                      '&, &:hover': {
+                        backgroundColor: '#17a672',
+                        color: 'white',
+                      },
+                    },
+                  },
+                })}
               />
               <Select
                 data={countries}
@@ -214,6 +235,16 @@ export const ResidentialInfo = () => {
                 classNames={inputClasses}
                 {...residentialInfoForm.getInputProps('country')}
                 withAsterisk
+                styles={() => ({
+                  item: {
+                    '&[data-selected]': {
+                      '&, &:hover': {
+                        backgroundColor: '#17a672',
+                        color: 'white',
+                      },
+                    },
+                  },
+                })}
               />
             </Box>
           </Box>
@@ -234,7 +265,6 @@ export const ResidentialInfo = () => {
             <MonthPickerInput
               icon={<MdOutlineCalendarMonth />}
               label="End date"
-              withAsterisk
               classNames={inputClasses}
               {...residentialInfoForm.getInputProps('endDate')}
             />
@@ -258,28 +288,28 @@ export const ResidentialInfo = () => {
               Find my current location
             </Button>
             <Box className="map"></Box>
-            <Box className="btn-wrapper">
-              <Button color="teal" type="submit">
-                Save
-              </Button>
-              <Button variant="default" onClick={close}>
-                Cancel
-              </Button>
-            </Box>
+          </Box>
+          <Box className="btn-wrapper">
+            <Button variant="default" onClick={close}>
+              Cancel
+            </Button>
+            <Button color="teal" type="submit">
+              Save
+            </Button>
           </Box>
         </form>
       </Modal>
       <Box className="header">
         <Box>
           <Text className="heading">{`Residential Information (${residentialInfoData.length})`}</Text>
-          <Text className="subheading">All government IDs, personal verification IDs etc.</Text>
+          <Text className="subheading">All your permanenent and temporary addresses</Text>
         </Box>
 
         {residentialInfoData.length > 0 && (
           <>
             <Box className="header-links">
               <Text className="link" onClick={handleToggleResidentialDetails}>
-                See all documents
+                See All Addresses
               </Text>
               <Button leftIcon={<MdOutlineEdit />} onClick={open} className="edit-btn">
                 Edit Section
@@ -313,36 +343,38 @@ export const ResidentialInfo = () => {
             { maxWidth: 'md', slideSize: '50%' },
           ]}
         >
-          {residentialInfoData.map(
-            (
-              {
-                address_line_1,
-                address_line_2,
-                landmark,
-                pincode,
-                start_date,
-                end_date,
-                isVerified,
-                city,
-              },
-              index
-            ) => {
-              return (
-                <Carousel.Slide key={index}>
-                  <ResidentialInfoCard
-                    city={city}
-                    address_line_1={address_line_1}
-                    address_line_2={address_line_2}
-                    landmark={landmark}
-                    pincode={pincode}
-                    start_date={start_date}
-                    end_date={end_date}
-                    isVerified={isVerified}
-                  />
-                </Carousel.Slide>
-              );
-            }
-          )}
+          {residentialInfoData
+            .reverse()
+            .map(
+              (
+                {
+                  address_line_1,
+                  address_line_2,
+                  landmark,
+                  pincode,
+                  start_date,
+                  end_date,
+                  isVerified,
+                  city,
+                },
+                index
+              ) => {
+                return (
+                  <Carousel.Slide key={index}>
+                    <ResidentialInfoCard
+                      city={city}
+                      address_line_1={address_line_1}
+                      address_line_2={address_line_2}
+                      landmark={landmark}
+                      pincode={pincode}
+                      start_date={start_date}
+                      end_date={end_date}
+                      isVerified={isVerified}
+                    />
+                  </Carousel.Slide>
+                );
+              }
+            )}
         </Carousel>
       )}
       {residentialInfoData.length > 0 && (

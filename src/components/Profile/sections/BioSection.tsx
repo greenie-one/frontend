@@ -13,7 +13,6 @@ import {
   rem,
   Textarea,
 } from '@mantine/core';
-import { useState } from 'react';
 import level from '../assets/level.png';
 import levelFilled from '../assets/levelFilled.png';
 import medal from '../assets/medal.png';
@@ -42,7 +41,7 @@ export const BioSection = () => {
   const { classes: inputClasses } = inputStyles();
   const { classes: formStyle } = detailsFormStyles();
   const [opened, { open, close }] = useDisclosure(false);
-  const { profileData, profileForm, updateProfile } = useProfileContext();
+  const { profileData, profileForm, updateProfile, documentsData } = useProfileContext();
 
   const onClose = () => {
     profileForm.values.firstName = '';
@@ -127,15 +126,13 @@ export const BioSection = () => {
             </Chip.Group>
           </Box>
 
-          <Box className="location-wrapper">
-            <Box className="btn-wrapper">
-              <Button color="teal" type="submit">
-                Save
-              </Button>
-              <Button type="button" variant="default" onClick={onClose}>
-                Cancel
-              </Button>
-            </Box>
+          <Box className="btn-wrapper">
+            <Button type="button" variant="default" onClick={onClose}>
+              Cancel
+            </Button>
+            <Button color="teal" type="submit">
+              Save
+            </Button>
           </Box>
         </form>
       </Modal>
@@ -144,9 +141,9 @@ export const BioSection = () => {
       </Box>
       <Box className="bio-name-box">
         <Text className="bio-name">
-          {profileData.firstName} <span>{profileData.lastName}</span>
+          {profileData.firstName} {profileData.lastName}
         </Text>
-        <MdVerified className="name-verified" size={'20px'} />
+        {documentsData.length > 0 && <MdVerified className="name-verified" size={'20px'} />}
       </Box>
 
       <Box className="chips">
@@ -208,31 +205,40 @@ export const BioSection = () => {
           <Box className="medal-wrapper">
             <img className="medal-icon" src={medal} alt="Medal Icon" />
             <Box className="medal-text-box">
-              <Text className="top-text">Among Top</Text>
-              <Text className="percentage">2%</Text>
+              <Text className="top-text">No rank</Text>
+              <Text className="percentage">#</Text>
             </Box>
           </Box>
         </Box>
         <Box className="border-left"></Box>
         <Box className="right-section">
-          <CopyButton value={greeneId} timeout={2000}>
-            {({ copied, copy }) => (
-              <Box className="greenie-id" onClick={copy}>
-                <Box className="icon-box">
-                  <MdOutlineContentCopy className="greenie-id-icon" />
-                </Box>
+          {documentsData.length > 0 ? (
+            <CopyButton value={greeneId} timeout={2000}>
+              {({ copied, copy }) => (
+                <Box className="greenie-id" onClick={copy}>
+                  <Box className="icon-box">
+                    <MdOutlineContentCopy size={'18px'} color="#17a672" />
+                  </Box>
 
-                <Box>
-                  <Text className="greenie-id-heading">Share Greenie ID </Text>
-                  {copied ? (
-                    <Text className="id">Copied</Text>
-                  ) : (
-                    <Text className="id">{greeneId}</Text>
-                  )}
+                  <Box>
+                    <Text className="greenie-id-heading">Share Greenie ID </Text>
+                    {copied ? (
+                      <Text className="id">Copied</Text>
+                    ) : (
+                      <Text className="id">{greeneId}</Text>
+                    )}
+                  </Box>
                 </Box>
-              </Box>
-            )}
-          </CopyButton>
+              )}
+            </CopyButton>
+          ) : (
+            <Box className="verify-id-bio-text">
+              <Text className="text-subheading">Verify your identity </Text>
+              <Text className="text-subheading">
+                and get a {<MdVerified color="#8cf078" />} Greenie Check
+              </Text>
+            </Box>
+          )}
         </Box>
       </Box>
       <Text className="bio-text">{profileData.bio}</Text>
