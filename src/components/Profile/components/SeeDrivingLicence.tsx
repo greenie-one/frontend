@@ -97,7 +97,7 @@ export const SeeDrivingLicence = () => {
       payload: !detailsPage.seeDrivingLicence,
     });
     verifyLicenceForm.values.licenceNo = '';
-    verifyLicenceForm.values.dateOfBirth = '';
+    verifyLicenceForm.values.dateOfBirth = null;
     setLicenseIsVerified(false);
   };
   return (
@@ -205,8 +205,6 @@ export const SeeDrivingLicence = () => {
               label="DOB as per license(DD/MM/YYYY)"
               classNames={inputClasses}
               withAsterisk
-              maxLength={15}
-              minLength={15}
               {...verifyLicenceForm.getInputProps('dateOfBirth')}
             />
             <TextInput

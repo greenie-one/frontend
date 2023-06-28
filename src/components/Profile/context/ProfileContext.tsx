@@ -130,7 +130,7 @@ type verifyPANFormType = {
 };
 type verifyLicenceFormType = {
   licenceNo: string;
-  dateOfBirth: string;
+  dateOfBirth: Date | null;
 };
 
 type workExperienceFormType = {
@@ -242,7 +242,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const verifyLicenceForm = useForm<verifyLicenceFormType>({
     initialValues: {
       licenceNo: '',
-      dateOfBirth: '',
+      dateOfBirth: null,
     },
     validate: {
       licenceNo: hasLength(15, 'Please enter valide licence number'),

@@ -265,7 +265,6 @@ export const ResidentialInfo = () => {
             <MonthPickerInput
               icon={<MdOutlineCalendarMonth />}
               label="End date"
-              withAsterisk
               classNames={inputClasses}
               {...residentialInfoForm.getInputProps('endDate')}
             />

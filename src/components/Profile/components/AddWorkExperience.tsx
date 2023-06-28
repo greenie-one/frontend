@@ -455,7 +455,7 @@ export const AddWorkExperience = () => {
             <TextInput
               withAsterisk
               {...workExperienceForm.getInputProps('companyName')}
-              label="Search by company website"
+              label="Enter your company name"
               classNames={inputClasses}
             />
           </Box>
