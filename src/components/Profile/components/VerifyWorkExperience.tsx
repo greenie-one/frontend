@@ -365,7 +365,7 @@ export const VerifyWorkExperience: React.FC<IWorkExperience> = ({
                 )}
               </Box>
             </Box>
-            <Button className="green-btn" onClick={() => handleOpenModal(ModalType.ConfirmRequest)}>
+            <Button className="green-btn" onClick={() => setOpenModalType(ModalType.SeeRequest)}>
               Send request
             </Button>
             <Box className="note">
