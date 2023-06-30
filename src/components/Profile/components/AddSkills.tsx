@@ -41,8 +41,8 @@ export const AddSkills = () => {
 
   const handleAddSkill = () => {
     if (
-      !skillForm.validateField('designation').hasError &&
-      !skillForm.validateField('skillRate').hasError
+      !skillForm.validateField('skillName').hasError &&
+      !skillForm.validateField('expertise').hasError
     ) {
       const newSkill: Skill = {
         skillName: skillForm.values.skillName,
