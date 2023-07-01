@@ -11,6 +11,7 @@ import waitlist_img from '../assets/images/waitlist/waitlist_img.png';
 import { MdVerified } from 'react-icons/md';
 import { BsCheckLg } from 'react-icons/bs';
 import { FaExclamation } from 'react-icons/fa';
+import { HttpClient } from '../utils/generic/httpClient';
 
 export const Waitlist = () => {
   const navigate = useNavigate();
@@ -42,6 +43,14 @@ export const Waitlist = () => {
 
   const handleWaitlistSubmit = () => {
     waitlistForm.reset();
+
+    // HttpClient.callApi({
+    //   url: `${authApiList.waitlist}`,
+    //   method: 'POST',
+    //   body: waitlistForm.getTransformedValues(),
+    // }).then((res: any) => {
+    //   console.log(res);
+    // });
 
     sendRequest(`${authApiList.waitlist}`, 'POST', waitlistForm.getTransformedValues())
       .then((res: any) => {

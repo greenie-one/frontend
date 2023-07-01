@@ -10,6 +10,8 @@ import { notifications } from '@mantine/notifications';
 import { authApiList, profileAPIList } from '../../../assets/api/ApiList';
 import { FaExclamation } from 'react-icons/fa';
 import { BsCheckLg } from 'react-icons/bs';
+import { HttpClient } from '../../../utils/generic/httpClient';
+import { AuthClient } from '../../../utils/generic/authClinet';
 
 type AuthTokens = {
   accessToken: string;
@@ -236,6 +238,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [authTokens, setAuthTokens] = useLocalStorage<AuthTokens>({ key: 'auth-tokens' });
   const getMyProfile = async () => {
     try {
+      console.log("getMyProfile");
+      const resp: any = await HttpClient.callApiAuth({
+        url: profileAPIList.getMyProfile,
+        method: 'GET',
+      }, AuthClient.getInstance());
+
+      console.log(resp);
+
       const res = await axios.get(profileAPIList.getMyProfile, {
         headers: {
           Authorization: `Bearer ${authTokens?.accessToken}`,
