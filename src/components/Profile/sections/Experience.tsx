@@ -16,12 +16,34 @@ enum EmploymentType {
   Freelance = 'freelance',
 }
 
+interface IWorkExperience {
+  _id: string;
+  image: string | null;
+  designation: string;
+  companyName: string;
+  email: string;
+  companyId: string;
+  companyStartDate: string;
+  companyEndDate: string;
+  workMode: string;
+  workType: string;
+  isVerified: boolean;
+  verifiedBy: [] | null;
+  companyType: string;
+}
+
 export const Experience = () => {
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [employmentType, setEmploymentType] = useState<EmploymentType | null>(null);
   const [opened, { open, close }] = useDisclosure(false);
-  const { workExperienceData, dispatchDetailsPage, detailsPage, scrollToTop, scrollToProfileNav } =
-    useProfileContext();
+  const {
+    workExperienceData,
+    dispatchDetailsPage,
+    detailsPage,
+    scrollToTop,
+    scrollToProfileNav,
+    setSelectedCard,
+  } = useProfileContext();
 
   const handleToggleWorkExperienceDetails = (): void => {
     scrollToProfileNav();
@@ -122,26 +144,19 @@ export const Experience = () => {
             { maxWidth: 'md', slideSize: '50%' },
           ]}
         >
-          {workExperienceData
-            .reverse()
-            .map(
-              (
-                { designation, companyName, companyStartDate, companyEndDate, isVerified },
-                index
-              ) => {
-                return (
-                  <Carousel.Slide key={index}>
-                    <WorkExperienceCard
-                      position={designation}
-                      companyName={companyName}
-                      isVerified={isVerified}
-                      companyStartYear={companyStartDate}
-                      companyEndYear={companyEndDate}
-                    />
-                  </Carousel.Slide>
-                );
-              }
-            )}
+          {workExperienceData.reverse().map((workExperience, index) => {
+            return (
+              <Carousel.Slide key={index}>
+                <WorkExperienceCard
+                  position={workExperience.designation}
+                  companyName={workExperience.companyName}
+                  isVerified={workExperience.isVerified}
+                  companyStartYear={workExperience.companyStartDate}
+                  companyEndYear={workExperience.companyEndDate}
+                />
+              </Carousel.Slide>
+            );
+          })}
         </Carousel>
       )}
       {workExperienceData.length > 0 && (

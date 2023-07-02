@@ -1,12 +1,14 @@
 import '../styles/global.scss';
 import { useProfileContext } from '../context/ProfileContext';
-import { Text, Box, Button, createStyles, em, rem } from '@mantine/core';
+import { Text, Box, Button, Modal, Title, Checkbox } from '@mantine/core';
 import { BsArrowLeft } from 'react-icons/bs';
 import { AiOutlineRight } from 'react-icons/ai';
 import { MdVerified } from 'react-icons/md';
 import { CgSandClock } from 'react-icons/cg';
-import { useState } from 'react';
 import tscLogo from '../assets/tscLogo.png';
+import { VerifyWorkExperience } from './VerifyWorkExperience';
+import { useMediaQuery, useDisclosure } from '@mantine/hooks';
+import { useState } from 'react';
 
 interface IWorkExperience {
   _id: string;
@@ -25,8 +27,12 @@ interface IWorkExperience {
 }
 
 export const SeeAllExperiences = () => {
-  const [selectedCard, setSelectedCard] = useState<IWorkExperience | null>(null);
-  const { dispatchDetailsPage, detailsPage, workExperienceData } = useProfileContext();
+  const { dispatchDetailsPage, detailsPage, workExperienceData, selectedCard, setSelectedCard } =
+    useProfileContext();
+  const isMobile = useMediaQuery('(max-width: 768px)');
+  const [opened, { open, close }] = useDisclosure(false);
+  const [checked, setChecked] = useState<boolean>(false);
+  const [selectedExperience, setSelectedExperience] = useState<IWorkExperience | null>(null);
 
   const handleToggleWorkExperienceDetails = (): void => {
     dispatchDetailsPage({
@@ -35,21 +41,67 @@ export const SeeAllExperiences = () => {
     });
   };
 
+  const handleOpenModal = (workExperience: IWorkExperience) => {
+    open();
+    setSelectedExperience(workExperience);
+  };
+
+  const handleGoToVerification = () => {
+    if (selectedExperience !== null) {
+      setSelectedCard(selectedExperience);
+      setChecked(!checked);
+      close();
+    }
+  };
+
   return (
     <section className="container">
+      <Modal
+        className="modal"
+        size={'60%'}
+        fullScreen={isMobile}
+        opened={opened}
+        onClose={close}
+        centered
+      >
+        <Box className="disclaimer-modal">
+          <Title className="disclaimer-heading">Disclaimer</Title>
+          <Text className="disclaimer-subHeading">Verifying IDs on Greenie</Text>
+          <Button className="primaryBtn" disabled={!checked} onClick={handleGoToVerification}>
+            I Agree
+          </Button>
+          <Box className="checkbox-box">
+            <Checkbox
+              checked={checked}
+              onChange={() => setChecked(!checked)}
+              className="checkbox"
+              color="teal"
+            />
+            <Text className="tearms-conditions">
+              I understand that during the sign-up process and while using this website, I may be
+              required to provide certain personal information, including but not limited to my
+              name, email address, contact details, and any other information deemed necessary for
+              registration and website usage.
+            </Text>
+          </Box>
+          <Text className="policy">Click to view Data and Privacy Policy</Text>
+        </Box>
+      </Modal>
       <Box className="see-all-header">
         <Box className="go-back-btn" onClick={handleToggleWorkExperienceDetails}>
           <BsArrowLeft className="arrow-left-icon" size={'16px'} />
           <Text>Profile</Text>
           <AiOutlineRight className="arrow-right-icon" size={'16px'} />
         </Box>
-        <Text>{`Work Experience (${workExperienceData.length})`}</Text>
+        <Text
+          onClick={() => setSelectedCard(null)}
+        >{`Work Experience (${workExperienceData.length})`}</Text>
       </Box>
       {selectedCard === null ? (
         <Box className="see-all-experiences-wrapper">
           {workExperienceData.reverse().map((workExperience) => {
             return (
-              <Box key={workExperience._id} onClick={() => setSelectedCard(workExperience)}>
+              <Box key={workExperience._id} onClick={() => handleOpenModal(workExperience)}>
                 <Box className="experience-card">
                   <img className="companyLogo" src={tscLogo} />
                   <Text className="position">{workExperience.designation}</Text>
@@ -81,7 +133,13 @@ export const SeeAllExperiences = () => {
         </Box>
       ) : (
         <Box>
-          <Text>{selectedCard.companyName}</Text>
+          <VerifyWorkExperience
+            _id={selectedCard._id}
+            image={selectedCard.image}
+            companyName={selectedCard.companyName}
+            designation={selectedCard.designation}
+            isVerified={selectedCard.isVerified}
+          />
         </Box>
       )}
     </section>
