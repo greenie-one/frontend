@@ -16,8 +16,8 @@ export const LandingTestimonials: React.FC = (): JSX.Element => {
               Happy Greenie Users
             </Title>
             <Text className={classes.testimonialText}>
-              Select few users got a chance to test our beta version. They share their success
-              stories of using Greenie and optimizing their hiring process.
+              Select few users got a chance to test our beta version. They share their success stories of using Greenie
+              and optimizing their hiring process.
             </Text>
           </Box>
           <Box className={classes.testimonialIllustration}>

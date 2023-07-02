@@ -27,8 +27,7 @@ interface IWorkExperience {
 }
 
 export const SeeAllExperiences = () => {
-  const { dispatchDetailsPage, detailsPage, workExperienceData, selectedCard, setSelectedCard } =
-    useProfileContext();
+  const { dispatchDetailsPage, detailsPage, workExperienceData, selectedCard, setSelectedCard } = useProfileContext();
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
   const [checked, setChecked] = useState<boolean>(false);
@@ -56,14 +55,7 @@ export const SeeAllExperiences = () => {
 
   return (
     <section className="container">
-      <Modal
-        className="modal"
-        size={'60%'}
-        fullScreen={isMobile}
-        opened={opened}
-        onClose={close}
-        centered
-      >
+      <Modal className="modal" size={'60%'} fullScreen={isMobile} opened={opened} onClose={close} centered>
         <Box className="disclaimer-modal">
           <Title className="disclaimer-heading">Disclaimer</Title>
           <Text className="disclaimer-subHeading">Verifying IDs on Greenie</Text>
@@ -71,17 +63,11 @@ export const SeeAllExperiences = () => {
             I Agree
           </Button>
           <Box className="checkbox-box">
-            <Checkbox
-              checked={checked}
-              onChange={() => setChecked(!checked)}
-              className="checkbox"
-              color="teal"
-            />
+            <Checkbox checked={checked} onChange={() => setChecked(!checked)} className="checkbox" color="teal" />
             <Text className="tearms-conditions">
-              I understand that during the sign-up process and while using this website, I may be
-              required to provide certain personal information, including but not limited to my
-              name, email address, contact details, and any other information deemed necessary for
-              registration and website usage.
+              I understand that during the sign-up process and while using this website, I may be required to provide
+              certain personal information, including but not limited to my name, email address, contact details, and
+              any other information deemed necessary for registration and website usage.
             </Text>
           </Box>
           <Text className="policy">Click to view Data and Privacy Policy</Text>
@@ -93,9 +79,7 @@ export const SeeAllExperiences = () => {
           <Text>Profile</Text>
           <AiOutlineRight className="arrow-right-icon" size={'16px'} />
         </Box>
-        <Text
-          onClick={() => setSelectedCard(null)}
-        >{`Work Experience (${workExperienceData.length})`}</Text>
+        <Text onClick={() => setSelectedCard(null)}>{`Work Experience (${workExperienceData.length})`}</Text>
       </Box>
       {selectedCard === null ? (
         <Box className="see-all-experiences-wrapper">
@@ -107,10 +91,7 @@ export const SeeAllExperiences = () => {
                   <Text className="position">{workExperience.designation}</Text>
                   <Text className="companyName">{workExperience.companyName}</Text>
                   {workExperience.isVerified ? (
-                    <Button
-                      leftIcon={<MdVerified color="#8CF078" size={'16px'} />}
-                      className="verified"
-                    >
+                    <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
                       Verified
                     </Button>
                   ) : (

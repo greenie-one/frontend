@@ -16,13 +16,7 @@ export const Footer: React.FC = (): JSX.Element => {
         <Box className={classes.footerGridContainer}>
           <Box className={classes.gridLeftContainer}>
             <Link to={'/'}>
-              <Flex
-                justify="center"
-                align="center"
-                direction="row"
-                className={classes.footerHeading}
-                gap={'sm'}
-              >
+              <Flex justify="center" align="center" direction="row" className={classes.footerHeading} gap={'sm'}>
                 <span className={classes.footerHeadingTexts}>We</span>
                 <span className={classes.verified}>
                   <MdVerified />
@@ -33,30 +27,16 @@ export const Footer: React.FC = (): JSX.Element => {
             <Title order={1} className={classes.footerTagline}>
               On a mission to disrupt traditional background verification.
             </Title>
-            <Flex
-              justify="flex-start"
-              align="center"
-              direction="row"
-              className={classes.footerSocialLinks}
-              gap="md"
-            >
+            <Flex justify="flex-start" align="center" direction="row" className={classes.footerSocialLinks} gap="md">
               {/* <span className={classes.socialLinkIcons}>
                                 <MdOutlineFacebook />
                             </span> */}
-              <a
-                href="https://instagram.com/greenie.one?igshid=ZDdkNTZiNTM="
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <a href="https://instagram.com/greenie.one?igshid=ZDdkNTZiNTM=" target="_blank" rel="noopener noreferrer">
                 <span className={classes.socialLinkIcons}>
                   <BsInstagram />
                 </span>
               </a>
-              <a
-                href="https://www.linkedin.com/company/gogreenie/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <a href="https://www.linkedin.com/company/gogreenie/" target="_blank" rel="noopener noreferrer">
                 <span className={classes.socialLinkIcons}>
                   <FiLinkedin />
                 </span>

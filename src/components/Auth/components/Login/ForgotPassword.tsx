@@ -1,14 +1,4 @@
-import {
-  TextInput,
-  createStyles,
-  em,
-  rem,
-  Text,
-  Button,
-  Box,
-  Flex,
-  PasswordInput,
-} from '@mantine/core';
+import { TextInput, createStyles, em, rem, Text, Button, Box, Flex, PasswordInput } from '@mantine/core';
 import { useAuthContext } from '../../context/AuthContext';
 import { BsArrowLeft, BsCheckLg } from 'react-icons/bs';
 import '../../styles/global.scss';
@@ -216,20 +206,17 @@ const ForgotPassword = () => {
           {!isValidEmail(loginForm.values.emailPhoneGreenieId) &&
             !isPhoneNumber(loginForm.values.emailPhoneGreenieId) && (
               <Text className="profileTextBold">
-                A one-time passowrd (OTP) will be sent to your registered phone number for
-                verification
+                A one-time passowrd (OTP) will be sent to your registered phone number for verification
               </Text>
             )}
           {isValidEmail(loginForm.values.emailPhoneGreenieId) && (
             <Text className="profileTextBold" mb={'2rem'}>
-              A one-time passowrd (OTP) will be sent to your registered email address for
-              verification
+              A one-time passowrd (OTP) will be sent to your registered email address for verification
             </Text>
           )}
           {isPhoneNumber(loginForm.values.emailPhoneGreenieId) && (
             <Text className="profileTextBold" mb={'2rem'}>
-              A one-time passowrd (OTP) will be sent to your registered phone number for
-              verification
+              A one-time passowrd (OTP) will be sent to your registered phone number for verification
             </Text>
           )}
           <Button type="submit" className="primaryBtn" onClick={handleRequestOTP}>
@@ -241,9 +228,7 @@ const ForgotPassword = () => {
       {state.resetPasswordStep === 3 && (
         <Box>
           {isValidEmail(loginForm.values.emailPhoneGreenieId) && (
-            <Text className="profileTextBold">
-              Enter the one-time passowrd sent to your email address
-            </Text>
+            <Text className="profileTextBold">Enter the one-time passowrd sent to your email address</Text>
           )}
           <TextInput
             classNames={otpInputClasses}
@@ -259,13 +244,7 @@ const ForgotPassword = () => {
           />
 
           {secondsRemaining === 0 ? (
-            <Button
-              compact
-              color="gray"
-              variant="subtle"
-              onClick={handleResendOTP}
-              className="resendLink"
-            >
+            <Button compact color="gray" variant="subtle" onClick={handleResendOTP} className="resendLink">
               Resend
             </Button>
           ) : (
@@ -276,14 +255,7 @@ const ForgotPassword = () => {
               </Text>
             </Text>
           )}
-          <Button
-            type="submit"
-            className="primaryBtn"
-            fullWidth
-            radius="xl"
-            color="teal"
-            onClick={verifyOTP}
-          >
+          <Button type="submit" className="primaryBtn" fullWidth radius="xl" color="teal" onClick={verifyOTP}>
             Verify OTP
           </Button>
         </Box>

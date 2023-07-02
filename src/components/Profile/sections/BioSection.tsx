@@ -59,14 +59,7 @@ export const BioSection = () => {
 
   return (
     <section className="bio-section container">
-      <Modal
-        className="modal"
-        size={'65%'}
-        fullScreen={isMobile}
-        opened={opened}
-        onClose={onClose}
-        title="Add Skills"
-      >
+      <Modal className="modal" size={'65%'} fullScreen={isMobile} opened={opened} onClose={onClose} title="Add Skills">
         <form onSubmit={handleSubmit}>
           <Box className="input-section">
             <Title className="title">First Name</Title>
@@ -222,11 +215,7 @@ export const BioSection = () => {
 
                   <Box>
                     <Text className="greenie-id-heading">Share Greenie ID </Text>
-                    {copied ? (
-                      <Text className="id">Copied</Text>
-                    ) : (
-                      <Text className="id">{greeneId}</Text>
-                    )}
+                    {copied ? <Text className="id">Copied</Text> : <Text className="id">{greeneId}</Text>}
                   </Box>
                 </Box>
               )}
@@ -234,9 +223,7 @@ export const BioSection = () => {
           ) : (
             <Box className="verify-id-bio-text">
               <Text className="text-subheading">Verify your identity </Text>
-              <Text className="text-subheading">
-                and get a {<MdVerified color="#8cf078" />} Greenie Check
-              </Text>
+              <Text className="text-subheading">and get a {<MdVerified color="#8cf078" />} Greenie Check</Text>
             </Box>
           )}
         </Box>

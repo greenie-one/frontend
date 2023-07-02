@@ -15,8 +15,7 @@ import '../../styles/global.scss';
 
 const LoginStepThree = () => {
   const navigate = useNavigate();
-  const { loginForm, state, dispatch, isPhoneNumber, validationId, resendOtp, setForceRender } =
-    useAuthContext();
+  const { loginForm, state, dispatch, isPhoneNumber, validationId, resendOtp, setForceRender } = useAuthContext();
   const { classes: inputClasses } = inputStyles();
 
   const [authTokens, setAuthTokens] = useLocalStorage({ key: 'auth-tokens' });
@@ -111,52 +110,33 @@ const LoginStepThree = () => {
 
   return (
     <>
-      {state.loginStep === 3 &&
-        isPhoneNumber(loginForm.values.emailPhoneGreenieId) &&
-        state.resetPasswordStep < 1 && (
-          <Box>
-            <Flex
-              direction={'row'}
-              className="tabTopBox"
-              onClick={() => dispatch({ type: 'PREVLOGINSTEP' })}
-            >
-              <BsArrowLeft size={'15px'} />
-              <Text className="tabHeading">Login using OTP</Text>
-            </Flex>
-            <Text className="profileTextBold">
-              Enter the one-time passowrd sent to your phone number
-            </Text>
-            <TextInput
-              classNames={inputClasses}
-              maxLength={6}
-              pattern="[0-9]{6}"
-              {...loginForm.getInputProps('otp')}
-            />
+      {state.loginStep === 3 && isPhoneNumber(loginForm.values.emailPhoneGreenieId) && state.resetPasswordStep < 1 && (
+        <Box>
+          <Flex direction={'row'} className="tabTopBox" onClick={() => dispatch({ type: 'PREVLOGINSTEP' })}>
+            <BsArrowLeft size={'15px'} />
+            <Text className="tabHeading">Login using OTP</Text>
+          </Flex>
+          <Text className="profileTextBold">Enter the one-time passowrd sent to your phone number</Text>
+          <TextInput classNames={inputClasses} maxLength={6} pattern="[0-9]{6}" {...loginForm.getInputProps('otp')} />
 
-            {secondsRemaining === 0 ? (
-              <Button
-                compact
-                color="gray"
-                variant="subtle"
-                onClick={resendOtp}
-                className="resendLink"
-              >
-                Resend
-              </Button>
-            ) : (
-              <Text fw={'light'} fz={'xs'} my={'md'}>
-                Resend{' '}
-                <Text fw={'600'} span>
-                  after {secondsRemaining}s
-                </Text>
-              </Text>
-            )}
-
-            <Button type="submit" className="primaryBtn" onClick={handleMobileLogin}>
-              Verify & Login
+          {secondsRemaining === 0 ? (
+            <Button compact color="gray" variant="subtle" onClick={resendOtp} className="resendLink">
+              Resend
             </Button>
-          </Box>
-        )}
+          ) : (
+            <Text fw={'light'} fz={'xs'} my={'md'}>
+              Resend{' '}
+              <Text fw={'600'} span>
+                after {secondsRemaining}s
+              </Text>
+            </Text>
+          )}
+
+          <Button type="submit" className="primaryBtn" onClick={handleMobileLogin}>
+            Verify & Login
+          </Button>
+        </Box>
+      )}
     </>
   );
 };

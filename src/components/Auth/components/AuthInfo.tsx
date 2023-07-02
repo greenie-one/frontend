@@ -14,9 +14,9 @@ export const AuthInfo = () => {
 
       <Title className="authInfoHeading">Welcome to Greenie, your professional community </Title>
       <Text className="authInfoText">
-        Our background verification app delivers reliable and comprehensive screening solutions,
-        enabling you to make informed decisions with confidence. Trust and safety are guaranteed
-        with our accurate and efficient background checks.
+        Our background verification app delivers reliable and comprehensive screening solutions, enabling you to make
+        informed decisions with confidence. Trust and safety are guaranteed with our accurate and efficient background
+        checks.
       </Text>
 
       <Box className="authInfoTestimonialBox">

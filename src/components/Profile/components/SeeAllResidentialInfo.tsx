@@ -311,17 +311,11 @@ export const SeeAllResidentialInfo = () => {
                     </Text>
 
                     {isVerified ? (
-                      <Button
-                        leftIcon={<MdVerified color="#8CF078" size={'16px'} />}
-                        className="verified"
-                      >
+                      <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
                         Verified
                       </Button>
                     ) : (
-                      <Button
-                        leftIcon={<CgSandClock color="#FF7272" size={'16px'} />}
-                        className="pending"
-                      >
+                      <Button leftIcon={<CgSandClock color="#FF7272" size={'16px'} />} className="pending">
                         Pending
                       </Button>
                     )}

@@ -33,9 +33,7 @@ export const Sidebar = (): JSX.Element => {
           {settingsOptionsList.map((option, index) => (
             <li
               key={index}
-              className={`${classes.settingOptionItems} ${
-                showDetailsId === index ? classes.activeOptionItems : null
-              }`}
+              className={`${classes.settingOptionItems} ${showDetailsId === index ? classes.activeOptionItems : null}`}
               onClick={() => setShowDetailsId(index)}
             >
               <span className={classes.settingOptionsIcon}>{option.icon}</span>

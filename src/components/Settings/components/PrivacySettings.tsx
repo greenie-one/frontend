@@ -1,15 +1,5 @@
 import React from 'react';
-import {
-  Box,
-  Title,
-  Button,
-  Modal,
-  Text,
-  PasswordInput,
-  rem,
-  em,
-  createStyles,
-} from '@mantine/core';
+import { Box, Title, Button, Modal, Text, PasswordInput, rem, em, createStyles } from '@mantine/core';
 import { privacySettingsStyles } from '../styles/articleContentStyles';
 import { detailsFormStyles, detailsInputStyles } from '../styles/articleContentStyles';
 import { useDisclosure } from '@mantine/hooks';
@@ -80,9 +70,7 @@ export const PrivacySettings: React.FC = (): JSX.Element => {
         classNames={modalStyles}
       >
         <Box className={modalStyles.confirmationMsgWrapper}>
-          <Text className={modalStyles.title}>
-            Are you sure you want to update the changes made?
-          </Text>
+          <Text className={modalStyles.title}>Are you sure you want to update the changes made?</Text>
 
           <Box className={modalStyles.modalBtnsContainer}>
             <Button

@@ -1,15 +1,4 @@
-import {
-  Text,
-  Box,
-  Title,
-  TextInput,
-  createStyles,
-  em,
-  rem,
-  Select,
-  Button,
-  Divider,
-} from '@mantine/core';
+import { Text, Box, Title, TextInput, createStyles, em, rem, Select, Button, Divider } from '@mantine/core';
 import { useState } from 'react';
 import { BsArrowLeft, BsCheckLg } from 'react-icons/bs';
 import { useProfileContext } from '../context/ProfileContext';
@@ -34,16 +23,12 @@ const skillRate = [
 ];
 
 export const AddSkills = () => {
-  const { detailsPage, dispatchDetailsPage, getSkills, skillForm, authTokens, scrollToTop } =
-    useProfileContext();
+  const { detailsPage, dispatchDetailsPage, getSkills, skillForm, authTokens, scrollToTop } = useProfileContext();
   const [skills, setSkills] = useState<Skill[]>([]);
   const { classes: inputClasses } = inputStyles();
 
   const handleAddSkill = () => {
-    if (
-      !skillForm.validateField('skillName').hasError &&
-      !skillForm.validateField('expertise').hasError
-    ) {
+    if (!skillForm.validateField('skillName').hasError && !skillForm.validateField('expertise').hasError) {
       const newSkill: Skill = {
         skillName: skillForm.values.skillName,
         expertise: skillForm.values.expertise,
@@ -176,12 +161,7 @@ export const AddSkills = () => {
 
         <Box className="location-wrapper">
           <Box className="btn-wrapper">
-            <Button
-              type="button"
-              className="cancel-btn"
-              variant="default"
-              onClick={handleAddSkillPage}
-            >
+            <Button type="button" className="cancel-btn" variant="default" onClick={handleAddSkillPage}>
               Back
             </Button>
             <Button className="green-btn" onClick={handleSkillContinue}>

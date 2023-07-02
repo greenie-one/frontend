@@ -2,17 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-import {
-  createStyles,
-  rem,
-  Text,
-  Button,
-  Divider,
-  PasswordInput,
-  Flex,
-  Box,
-  em,
-} from '@mantine/core';
+import { createStyles, rem, Text, Button, Divider, PasswordInput, Flex, Box, em } from '@mantine/core';
 import { useLocalStorage } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { useAuthContext } from '../../context/AuthContext';
@@ -27,15 +17,7 @@ import '../../styles/global.scss';
 const LoginStepTwo = () => {
   const navigate = useNavigate();
   const { classes: inputClasses } = inputStyles();
-  const {
-    loginForm,
-    state,
-    dispatch,
-    isValidEmail,
-    isPhoneNumber,
-    setValidationId,
-    setForceRender,
-  } = useAuthContext();
+  const { loginForm, state, dispatch, isValidEmail, isPhoneNumber, setValidationId, setForceRender } = useAuthContext();
 
   const [authTokens, setAuthTokens] = useLocalStorage({ key: 'auth-tokens' });
   const [isLoading, setIsLoading] = useState(false);
@@ -235,11 +217,7 @@ const LoginStepTwo = () => {
     <>
       {state.loginStep === 2 && isValidEmail(loginForm.values.emailPhoneGreenieId) && (
         <Box>
-          <PasswordInput
-            label="Enter Password"
-            classNames={inputClasses}
-            {...loginForm.getInputProps('password')}
-          />
+          <PasswordInput label="Enter Password" classNames={inputClasses} {...loginForm.getInputProps('password')} />
           <Flex direction={'row'} align={'center'} justify={'space-between'} mt={'6px'}>
             <Text className="loginLink" onClick={handleLoginWithPhoneNo}>
               Login using Phone Number
@@ -258,11 +236,7 @@ const LoginStepTwo = () => {
 
       {state.loginStep === 2 && isPhoneNumber(loginForm.values.emailPhoneGreenieId) && (
         <Box>
-          <Flex
-            direction={'row'}
-            className="tabTopBox"
-            onClick={() => dispatch({ type: 'PREVLOGINSTEP' })}
-          >
+          <Flex direction={'row'} className="tabTopBox" onClick={() => dispatch({ type: 'PREVLOGINSTEP' })}>
             <BsArrowLeft size={'15px'} />
             <Text className="tabHeading">Login using OTP</Text>
           </Flex>

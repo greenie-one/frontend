@@ -9,8 +9,8 @@ export const PageNotFound = () => {
       <Box className={classes.label}>404</Box>
       <Title className={classes.title}>You have found a secret place.</Title>
       <Text color="dimmed" size="lg" align="center" className={classes.description}>
-        Unfortunately, this is only a 404 page. You may have mistyped the address, or the page has
-        been moved to another URL.
+        Unfortunately, this is only a 404 page. You may have mistyped the address, or the page has been moved to another
+        URL.
       </Text>
       <Group position="center">
         <Link to="/">

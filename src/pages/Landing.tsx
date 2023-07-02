@@ -19,11 +19,7 @@ type TestimonialCardPropsType = {
   designation: string;
 };
 
-const TestimonialCard: React.FC<TestimonialCardPropsType> = ({
-  statement,
-  name,
-  designation,
-}): JSX.Element => {
+const TestimonialCard: React.FC<TestimonialCardPropsType> = ({ statement, name, designation }): JSX.Element => {
   const location = useLocation();
   const { classes } = useStyles();
 
@@ -99,11 +95,7 @@ export const Landing = () => {
       <Affix position={{ bottom: rem(20), right: rem(20) }}>
         <Transition transition="slide-up" mounted={scroll.y > 0}>
           {(transitionStyles) => (
-            <Button
-              className={classes.affix}
-              style={transitionStyles}
-              onClick={() => scrollTo({ y: 0 })}
-            >
+            <Button className={classes.affix} style={transitionStyles} onClick={() => scrollTo({ y: 0 })}>
               <FaChevronUp size="2rem" />
             </Button>
           )}
