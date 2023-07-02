@@ -1,181 +1,209 @@
-import {
-  Text,
-  Box,
-  Button,
-  Modal,
-  Title,
-  TextInput,
-  createStyles,
-  em,
-  rem,
-  Select,
-} from '@mantine/core';
+import { Text, Box, Button, Modal, Title, Checkbox } from '@mantine/core';
 import '../styles/global.scss';
 import { VerificationIDCard } from '../components/VerificationIDCard';
-import { VerifyIdNoData } from '../components/VerifyIdNoData';
-import { Link } from 'react-router-dom';
-import { MdOutlineEdit } from 'react-icons/md';
+import { MdOutlineEdit, MdVerified } from 'react-icons/md';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 import { useProfileContext } from '../context/ProfileContext';
 import { Carousel } from '@mantine/carousel';
-
-const data = [
-  { documentsType: 'AADHAR', documentName: 'Aadhar Card', isVerified: false },
-  { documentsType: 'PAN', documentName: 'Pan Card', isVerified: true },
-  { documentsType: 'DRIVING_LICENSE', documentName: 'Driving Licence', isVerified: false },
-];
-
-const documentsType = [
-  {
-    value: 'PAN',
-    label: 'Pan Card',
-  },
-  { value: 'AADHAR', label: 'Aadhar Card' },
-  { value: 'DRIVING_LICENSE', label: 'Driving Licence' },
-];
+import janeCooper from '../assets/janeCooper.png';
+import johnMarston from '../assets/johnMarston.png';
+import flyoMiles from '../assets/flyodMiles.png';
+import { AiOutlinePlus } from 'react-icons/ai';
+import aadharLogo from '../assets/aadhar-logo.png';
+import panLogo from '../assets/pan-logo.png';
+import licenceLogo from '../assets/licence-logo.png';
+import updateIdTrophy from '../assets/updateIdTrophy.png';
+import { useState } from 'react';
 
 export const VerificationIDSection = () => {
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
-  const { documentsData, addDocument, documentsForm, detailsPage, dispatchDetailsPage } =
-    useProfileContext();
-  const { classes: inputClasses } = inputStyles();
-
+  const { detailsPage, dispatchDetailsPage, documentsData, scrollToTop } = useProfileContext();
+  const [isAgreed, setIsAgreed] = useState<boolean>(false);
+  const [checked, setChecked] = useState<boolean>(false);
   const handlePageChange = (documentsType: string) => {
     if (documentsType === 'AADHAR') {
       dispatchDetailsPage({ type: 'SET_SEE_AADHAR_CARD', payload: !detailsPage.seeAadharCard });
+      scrollToTop();
     }
     if (documentsType === 'PAN') {
       dispatchDetailsPage({ type: 'SET_SEE_PAN_CARD', payload: !detailsPage.seePanCard });
+      scrollToTop();
     }
     if (documentsType === 'DRIVING_LICENSE') {
       dispatchDetailsPage({
         type: 'SET_SEE_DRIVER_LICENCE',
         payload: !detailsPage.seeDrivingLicence,
       });
+      scrollToTop();
     }
   };
 
   const onClose = () => {
-    documentsForm.values.aadharNumber = '';
-    documentsForm.values.documentType = '';
-    documentsForm.values.drivingLicenseNumber = '';
-    documentsForm.values.panNumber = '';
+    setIsAgreed(false);
+    setChecked(false);
     close();
-  };
-
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
-    addDocument();
   };
 
   return (
     <section className="verificationId-section  container">
-      <Modal
-        className="modal"
-        size={'65%'}
-        fullScreen={isMobile}
-        opened={opened}
-        onClose={() => onClose()}
-        title="Add documents"
-      >
-        <form onSubmit={handleSubmit}>
-          <Box className="input-section">
-            <Title className="title">Select Document</Title>
-            <Select
-              withAsterisk
-              data={documentsType}
-              label="Select your document"
-              classNames={inputClasses}
-              {...documentsForm.getInputProps('documentType')}
-            />
+      {isAgreed && documentsData.length === 0 && (
+        <Modal
+          className="modal"
+          size={'55%'}
+          fullScreen={isMobile}
+          opened={opened}
+          onClose={onClose}
+          centered
+        >
+          <Box className="ids-modal">
+            <Text className="title">Select ID that you want to verify</Text>
+            <Box className="ids-wrapper">
+              <Box className="id-box" onClick={() => handlePageChange('AADHAR')}>
+                <img src={aadharLogo} alt="Aadhar logo" />
+                <Text className="id-name">Aadhar Card</Text>
+              </Box>
+              <Box className="id-box  disabled">
+                <img src={licenceLogo} alt="licence logo" />
+                <Text className="id-name">Passport</Text>
+                <Text className="coming-soon">Coming soon</Text>
+              </Box>
+            </Box>
           </Box>
-          {documentsForm.values.documentType === 'AADHAR' && (
-            <Box className="input-section  border-bottom">
-              <Title className="title">Your Card Number</Title>
-              <TextInput
-                placeholder="Enter 16 digit number"
-                withAsterisk
-                data-autofocus
-                label="Enter Aadhar card number"
-                classNames={inputClasses}
-                {...documentsForm.getInputProps('aadharNumber')}
-              />
+        </Modal>
+      )}
+      {isAgreed && documentsData.length > 0 && (
+        <Modal
+          className="modal"
+          size={'65%'}
+          fullScreen={isMobile}
+          opened={opened}
+          onClose={onClose}
+          centered
+        >
+          <Box className="ids-modal">
+            <Text className="title">Select ID that you want to verify</Text>
+            <Box className="ids-wrapper">
+              <Box className="id-box" onClick={() => handlePageChange('PAN')}>
+                <img src={panLogo} alt="Pan logo" />
+                <Text className="id-name">PAN Card</Text>
+              </Box>
+              <Box className="id-box" onClick={() => handlePageChange('DRIVING_LICENSE')}>
+                <img src={licenceLogo} alt="licence logo" />
+                <Text className="id-name">Driving Licence</Text>
+              </Box>
             </Box>
-          )}
-          {documentsForm.values.documentType === 'PAN' && (
-            <Box className="input-section  border-bottom">
-              <Title className="title">Your Card Number</Title>
-              <TextInput
-                placeholder="Enter 10 digit number"
-                withAsterisk
-                data-autofocus
-                label="Enter PAN card number"
-                classNames={inputClasses}
-                {...documentsForm.getInputProps('panNumber')}
+          </Box>
+        </Modal>
+      )}
+      {!isAgreed && (
+        <Modal
+          className="modal"
+          size={'60%'}
+          fullScreen={isMobile}
+          opened={opened}
+          onClose={onClose}
+          centered
+        >
+          <Box className="disclaimer-modal">
+            <Title className="disclaimer-heading">Disclaimer</Title>
+            <Text className="disclaimer-subHeading">Verifying IDs on Greenie</Text>
+            <Button
+              className="primaryBtn"
+              disabled={!checked}
+              onClick={() => setIsAgreed(!isAgreed)}
+            >
+              I Agree
+            </Button>
+            <Box className="checkbox-box">
+              <Checkbox
+                checked={checked}
+                onChange={() => setChecked(!checked)}
+                className="checkbox"
+                color="teal"
               />
+              <Text className="tearms-conditions">
+                I understand that during the sign-up process and while using this website, I may be
+                required to provide certain personal information, including but not limited to my
+                name, email address, contact details, and any other information deemed necessary for
+                registration and website usage.
+              </Text>
             </Box>
-          )}
-          {documentsForm.values.documentType === 'DRIVING_LICENSE' && (
-            <Box className="input-section  border-bottom">
-              <Title className="title">Your Card Number</Title>
-              <TextInput
-                placeholder="Enter 15-16 digit number"
-                withAsterisk
-                data-autofocus
-                label="Enter driving licence number"
-                classNames={inputClasses}
-                {...documentsForm.getInputProps('drivingLicenseNumber')}
-              />
-            </Box>
-          )}
+            <Text className="policy">Click to view Data and Privacy Policy</Text>
+          </Box>
+        </Modal>
+      )}
 
-          <Box className="location-wrapper">
-            <Box className="btn-wrapper">
-              <Button color="teal" type="submit">
-                Save
-              </Button>
-              <Button variant="default" onClick={() => onClose()}>
-                Cancel
-              </Button>
-            </Box>
-          </Box>
-        </form>
-      </Modal>
       <Box className="header">
         <Box>
           <Text className="heading">{`Verification ID (${documentsData.length})`}</Text>
           <Text className="subheading">All government IDs, personal verification IDs etc.</Text>
         </Box>
-
-        <Box className="header-links">
-          {documentsData.length > 0 && (
-            <Link className="link" to={'/'}>
-              See all documents
-            </Link>
-          )}
-
-          <Button leftIcon={<MdOutlineEdit />} onClick={open} className="edit-btn">
-            Edit Section
-          </Button>
-        </Box>
+        {documentsData.length > 0 && (
+          <>
+            <Box className="header-links">
+              <Button leftIcon={<MdOutlineEdit />} onClick={open} className="edit-btn">
+                Edit Section
+              </Button>
+            </Box>
+            <Box className="edit-icon" onClick={open}>
+              <MdOutlineEdit size={'22px'} className="btn" />
+            </Box>
+          </>
+        )}
       </Box>
 
-      {data.length === 0 ? (
+      {documentsData.length === 0 && (
         <Box className="verify-id-no-data-wrapper">
           <Box className="verify-id-img">
-            <VerifyIdNoData />
+            <Box className="verify-data-no-data-card-wrapper">
+              <Box className="hidden-card">
+                <img className="card-img" src={janeCooper} alt="Profile Picture" />
+                <Text className="card-text">Jane Cooper </Text>
+              </Box>
+              <Box className="card">
+                <img className="card-img" src={johnMarston} alt="Profile Picture" />
+                <Text className="card-text">{`John Marston`} </Text>
+              </Box>
+              <Box className="hidden-card">
+                <img className="card-img" src={flyoMiles} alt="Profile Picture" />
+                <Text className="card-text">Floyd Miles</Text>
+              </Box>
+            </Box>
           </Box>
           <Box className="verify-id-text">
             <Text className="text-heading">Stand Out!!</Text>
             <Text className="text-subheading">Verify your identity </Text>
-            <Text className="text-subheading">and get a Greenie Check</Text>
+            <Text className="text-subheading">
+              and get a {<MdVerified color="#8cf078" />} Greenie Check
+            </Text>
+
+            <Button leftIcon={<AiOutlinePlus />} onClick={open} mt={'sm'} className="add-records">
+              Verify ID
+            </Button>
           </Box>
         </Box>
-      ) : (
+      )}
+
+      {documentsData.length === 1 && (
+        <Box className="singleData-wrapper">
+          <VerificationIDCard documentName={documentsData[0].id_type} isVerified={true} />
+          <Box className="single-data-box">
+            <img src={updateIdTrophy} alt="Update Id" />
+            <Box className="verify-id-text">
+              <Text className="text-heading">Update IDs</Text>
+              <Text className="text-subheading">Increase your ranking by adding more IDs</Text>
+              <Button leftIcon={<AiOutlinePlus />} onClick={open} mt={'sm'} className="add-records">
+                Add more
+              </Button>
+            </Box>
+          </Box>
+        </Box>
+      )}
+      {documentsData.length > 1 && (
         <Carousel
           withIndicators={false}
-          slideSize="50%"
+          slideSize="33.33%"
           slideGap={24}
           slidesToScroll={1}
           align="start"
@@ -185,10 +213,10 @@ export const VerificationIDSection = () => {
             { maxWidth: 'md', slideSize: '50%' },
           ]}
         >
-          {data.map(({ documentsType, documentName, isVerified }, index) => (
+          {documentsData.map(({ id_type }, index) => (
             <Carousel.Slide key={index}>
-              <Box onClick={() => handlePageChange(documentsType)}>
-                <VerificationIDCard documentName={documentName} isVerified={isVerified} />
+              <Box>
+                <VerificationIDCard documentName={id_type} isVerified={true} />
               </Box>
             </Carousel.Slide>
           ))}
@@ -197,58 +225,3 @@ export const VerificationIDSection = () => {
     </section>
   );
 };
-
-const inputStyles = createStyles((theme) => ({
-  root: {
-    position: 'relative',
-    marginTop: '10px',
-    marginBottom: '10px',
-  },
-
-  input: {
-    height: '58px',
-    paddingTop: '18px',
-    fontSize: '16px',
-    fontWeight: 500,
-    borderRadius: '8px',
-    border: '1px solid #D1D4DB',
-    lineHeight: '19px',
-    letterSpacing: '-0.02em',
-    color: '#697082',
-
-    [`@media screen and (max-width: ${em(1024)})`]: {
-      height: '46px',
-      borderRadius: '6px',
-      fontSize: '10px',
-      lineHeight: '12px',
-      margin: '0 auto',
-    },
-  },
-
-  innerInput: {
-    height: rem(54),
-    paddingTop: rem(28),
-
-    [`@media screen and (max-width: ${em(1024)})`]: {
-      paddingTop: rem(8),
-    },
-  },
-
-  label: {
-    position: 'absolute',
-    pointerEvents: 'none',
-    fontSize: '12px',
-    paddingLeft: '14px',
-    paddingTop: '7px',
-    lineHeight: '14.52px',
-    letterSpacing: '-0.02em',
-    zIndex: 1,
-    color: '#697082',
-
-    [`@media screen and (max-width: ${em(1024)})`]: {
-      fontSize: '10px',
-      lineHeight: '10px',
-      paddingTop: '8px',
-    },
-  },
-}));

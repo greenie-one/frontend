@@ -11,21 +11,33 @@ export const authApiList = {
   googleCallback: `${BASE_URL}/oauth/google/callback`,
   refreshToken: `${BASE_URL}/refresh`,
   resendOtp: `${BASE_URL}/auth/resendOTP`,
-  forgetPassowordOTP: `${BASE_URL}/auth/forgot_password`,
-  forgetPassowordValidate: `${BASE_URL}/auth/validate_forgot_password`,
-  changePassoword: `${BASE_URL}/auth/change_password`
-
+  forgotpasswordOtp: `${BASE_URL}/auth/forgot_password`,
+  forgotpasswordValidate: `${BASE_URL}/auth/validate_forgot_password`,
+  changePassword: `${BASE_URL}/auth/change_password`
 };
 
 export const profileAPIList = {
   createProfile: `${BASE_URL}/profiles/create`,
   getMyProfile: `${BASE_URL}/profiles/me`,
   searchProfile: `${BASE_URL}/profiles?search=`,
+  updateProfile: `${BASE_URL}/profiles/update`,
+  updateProfilePicture: `${BASE_URL}/utils/profile_pic`,
 }
 
 export const documentsAPIList = {
   getDocuments: `${BASE_URL}/ids/me`,
-  postDocuments: `${BASE_URL}/ids`,
+
+}
+
+export const aadharAPIList = {
+  requestOTPForAadhar: `${BASE_URL}/ids/aadhar/request-otp`,
+  verifyOTPForAadhar: `${BASE_URL}/ids/aadhar/verify-otp`
+}
+export const PANAPIList = {
+  verifyPAN: `${BASE_URL}/ids/pan/verify`
+}
+export const drivinglicenseAPIList = {
+  verifylicense: `${BASE_URL}/ids/driving-license/verify`
 }
 
 export const workExperienceAPiList = {
@@ -43,7 +55,7 @@ export const residentialInfoAPIList = {
 }
 
 export const skillsAPIList = {
-  getSkill: `${BASE_URL}/skill/me`,
+  getSkill: `${BASE_URL}/skill/get`,
   postSkill: `${BASE_URL}/skill/create`,
   deleteSkill: `${BASE_URL}/skill`,
   updateSkill: `${BASE_URL}/skill`,

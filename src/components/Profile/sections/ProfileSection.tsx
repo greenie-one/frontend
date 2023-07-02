@@ -20,7 +20,8 @@ export const ProfileSection = () => {
         detailsPage.seeAllSkills === false &&
         detailsPage.seeAadharCard === false &&
         detailsPage.seePanCard === false &&
-        detailsPage.seeDrivingLicence === false && (
+        detailsPage.seeDrivingLicence === false &&
+        detailsPage.seeCongratulations === false && (
           <Box>
             <VerificationIDSection />
             <Experience />

@@ -11,43 +11,84 @@ import {
   TextInput,
   Title,
   Checkbox,
-  Modal,
 } from '@mantine/core';
-import { useMediaQuery, useDisclosure } from '@mantine/hooks';
-import { BsArrowLeft } from 'react-icons/bs';
+import { FaExclamation } from 'react-icons/fa';
+import { BsArrowLeft, BsCheckLg } from 'react-icons/bs';
 import { AiOutlineRight } from 'react-icons/ai';
 import DrivingLicenceImg from '../assets/DrivingLicence.png';
 import john from '../assets/johnMarston.png';
+import { notifications } from '@mantine/notifications';
+import { drivinglicenseAPIList } from '../../../assets/api/ApiList';
+import axios from 'axios';
 
 export const SeeDrivingLicence = () => {
-  const [opened, { open, close }] = useDisclosure(false);
-  const [isVerified, setIsVerified] = useState(false);
   const { classes: inputClasses } = inputStyles();
-  const isMobile = useMediaQuery('(max-width: 768px)');
   const [checked, setChecked] = useState(false);
+  const {
+    detailsPage,
+    dispatchDetailsPage,
+    verifyLicenceForm,
+    getDocuments,
+    licenseIsVerified,
+    setLicenseIsVerified,
+  } = useProfileContext();
 
-  const { documentsData, detailsPage, dispatchDetailsPage, verifyLicenceForm } =
-    useProfileContext();
-  const handleCheck = () => {
-    setChecked(!checked);
-  };
+  const token = localStorage.getItem('auth-tokens');
+  const authTokens = token ? JSON.parse(token) : null;
 
-  const handleOpenModal = () => {
-    if (!verifyLicenceForm.validateField('licenceNo').hasError && checked) {
-      open();
-    }
-  };
-
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    if (
-      !verifyLicenceForm.validateField('licenceNo').hasError &&
-      !verifyLicenceForm.validateField('otp').hasError
-    ) {
-      verifyLicenceForm.values.licenceNo = '';
-      verifyLicenceForm.values.otp = '';
-      setIsVerified(true);
-      close();
+    if (!verifyLicenceForm.validateField('licenceNo').hasError && checked) {
+      try {
+        notifications.show({
+          id: 'load-data',
+          title: 'Verifying your PAN Card...',
+          message: 'Please wait while we verify your PAN',
+          loading: true,
+          autoClose: false,
+          withCloseButton: false,
+          sx: { borderRadius: em(8) },
+        });
+        const res = await axios.post(
+          drivinglicenseAPIList.verifylicense,
+          {
+            id_type: 'DRIVING_LICENSE',
+            id_number: verifyLicenceForm.values.licenceNo,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${authTokens?.accessToken}`,
+            },
+          }
+        );
+        if (res.data.success) {
+          notifications.update({
+            id: 'load-data',
+            title: 'Success!',
+            message: 'Verified your Licence successfully',
+            autoClose: 2200,
+            withCloseButton: false,
+            color: 'teal',
+            icon: <BsCheckLg />,
+            sx: { borderRadius: em(8) },
+          });
+          setLicenseIsVerified(true);
+          getDocuments();
+        }
+      } catch (error: any) {
+        if (error.response?.data?.code === 'GR0032') {
+          notifications.update({
+            id: 'load-data',
+            title: 'Invalid Licence Number!',
+            message: 'Please enter valid licence number',
+            autoClose: 2200,
+            withCloseButton: false,
+            color: 'red',
+            icon: <FaExclamation />,
+            sx: { borderRadius: em(8) },
+          });
+        }
+      }
     }
   };
   const handlePageChange = () => {
@@ -56,49 +97,11 @@ export const SeeDrivingLicence = () => {
       payload: !detailsPage.seeDrivingLicence,
     });
     verifyLicenceForm.values.licenceNo = '';
-    verifyLicenceForm.values.otp = '';
+    verifyLicenceForm.values.dateOfBirth = null;
+    setLicenseIsVerified(false);
   };
   return (
     <section className="container">
-      <Modal
-        centered
-        className="modal"
-        size={'55%'}
-        fullScreen={isMobile}
-        opened={opened}
-        onClose={close}
-        title="Please enter the OTP send to"
-      >
-        <form className="otp-form" onSubmit={handleSubmit}>
-          <Title className="title">Phone number linked with your Aadhaar Card</Title>
-          <Text className="disbledInput">
-            {verifyLicenceForm.values.licenceNo}
-            <span className="changeBtn" onClick={close}>
-              Change
-            </span>
-          </Text>
-          <TextInput
-            classNames={inputClasses}
-            label="Enter OTP"
-            withAsterisk
-            maxLength={6}
-            pattern="[0-9]{6}"
-            {...verifyLicenceForm.getInputProps('otp')}
-          />
-          <Text fw={'light'} fz={'xs'} mb={'md'}>
-            Resend{' '}
-            <Text fw={'600'} span>
-              after 30s.
-            </Text>
-          </Text>
-          <Button type="submit" className="primaryBtn">
-            Verify
-          </Button>
-          <Text className="warning">
-            If you haven't received the OTP, make sure to check the spam folder
-          </Text>
-        </form>
-      </Modal>
       <Box className="see-all-header">
         <Box className="go-back-btn" onClick={handlePageChange}>
           <BsArrowLeft className="arrow-left-icon" size={'16px'} />
@@ -111,7 +114,7 @@ export const SeeDrivingLicence = () => {
           <Text>Driving Licence </Text>
         </Box>
       </Box>
-      {isVerified ? (
+      {licenseIsVerified ? (
         <Box className="document-verified-container">
           <Box className="document-verified-left-box">
             <Box className="left-img-box">
@@ -188,26 +191,41 @@ export const SeeDrivingLicence = () => {
               </Box>
             </Box>
 
-            <Button className="primaryBtn" onClick={() => setIsVerified(false)}>
+            <Button className="primaryBtn" onClick={handlePageChange}>
               Continue
             </Button>
           </Box>
         </Box>
       ) : (
-        <Box className="document-container">
+        <form onSubmit={handleSubmit} className="document-container">
           <img src={DrivingLicenceImg} className="document-img" alt="Driving Licence Image" />
           <Box className="document-text-box">
-            <Title className="heading">Enter your Driving Licence Number</Title>
+            <Title className="heading">Enter your Driving Licence Details</Title>
             <TextInput
-              label="Driving Licence Number"
+              label="DOB as per license(DD/MM/YYYY)"
               classNames={inputClasses}
               withAsterisk
+              {...verifyLicenceForm.getInputProps('dateOfBirth')}
+            />
+            <TextInput
+              label="Licence Number"
+              classNames={inputClasses}
+              withAsterisk
+              maxLength={15}
+              minLength={15}
               {...verifyLicenceForm.getInputProps('licenceNo')}
             />
+            <Button
+              disabled={!checked}
+              onClick={handleSubmit}
+              className={checked ? 'greenBtn' : 'disabledBtn'}
+            >
+              Click to verify
+            </Button>
             <Box className="checkbox-box">
               <Checkbox
                 checked={checked}
-                onChange={handleCheck}
+                onChange={() => setChecked(!checked)}
                 className="checkbox"
                 color="teal"
               />
@@ -220,11 +238,8 @@ export const SeeDrivingLicence = () => {
             </Box>
 
             <Text className="policy">Click to view Data and Privacy Policy</Text>
-            <Button disabled={!checked} onClick={handleOpenModal} className="primaryBtn">
-              Click to verify
-            </Button>
           </Box>
-        </Box>
+        </form>
       )}
     </section>
   );
@@ -233,8 +248,7 @@ export const SeeDrivingLicence = () => {
 const inputStyles = createStyles((theme) => ({
   root: {
     position: 'relative',
-    marginTop: '10px',
-    marginBottom: '26px',
+    marginBottom: '16px',
   },
 
   input: {

@@ -2,7 +2,7 @@ import { Title, Text, createStyles } from '@mantine/core';
 import { MdVerified } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 
-export const TearmsAndConditionsPage = () => {
+export const TermsAndConditionsPage = () => {
   const { classes } = useStyles();
   return (
     <main className={classes.tosPrivacyPage}>

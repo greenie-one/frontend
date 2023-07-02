@@ -11,90 +11,96 @@ import {
   TextInput,
   Title,
   Checkbox,
-  Modal,
 } from '@mantine/core';
-import { useMediaQuery, useDisclosure } from '@mantine/hooks';
-import { BsArrowLeft } from 'react-icons/bs';
+import { FaExclamation } from 'react-icons/fa';
+import { BsArrowLeft, BsCheckLg } from 'react-icons/bs';
 import { AiOutlineRight } from 'react-icons/ai';
 import PanImg from '../assets/Pan.png';
 import john from '../assets/johnMarston.png';
+import { notifications } from '@mantine/notifications';
+import { PANAPIList } from '../../../assets/api/ApiList';
+import axios from 'axios';
 
 export const SeePanCard = () => {
-  const [opened, { open, close }] = useDisclosure(false);
-  const [isVerified, setIsVerified] = useState(false);
-  const [checked, setChecked] = useState(false);
   const { classes: inputClasses } = inputStyles();
-  const isMobile = useMediaQuery('(max-width: 768px)');
-  const { documentsData, detailsPage, dispatchDetailsPage, verifyPANForm } = useProfileContext();
+  const {
+    detailsPage,
+    dispatchDetailsPage,
+    verifyPANForm,
+    getDocuments,
+    authTokens,
+    panIsVerified,
+    setPanIsVerified,
+    scrollToTop,
+  } = useProfileContext();
+  const [checked, setChecked] = useState<boolean>(false);
 
-  const handleCheck = () => {
-    setChecked(!checked);
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (!verifyPANForm.validateField('panNo').hasError && checked) {
+      try {
+        notifications.show({
+          id: 'load-data',
+          title: 'Verifying your PAN Card...',
+          message: 'Please wait while we verify your PAN',
+          loading: true,
+          autoClose: false,
+          withCloseButton: false,
+          sx: { borderRadius: em(8) },
+        });
+        const res = await axios.post(
+          PANAPIList.verifyPAN,
+          {
+            id_type: 'PAN',
+            id_number: verifyPANForm.values.panNo,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${authTokens?.accessToken}`,
+            },
+          }
+        );
+        if (res.data.success) {
+          notifications.update({
+            id: 'load-data',
+            title: 'Success!',
+            message: 'Verified your PAN successfully',
+            autoClose: 2200,
+            withCloseButton: false,
+            color: 'teal',
+            icon: <BsCheckLg />,
+            sx: { borderRadius: em(8) },
+          });
+          setPanIsVerified(true);
+          getDocuments();
+          scrollToTop();
+        }
+      } catch (error: any) {
+        if (error.response?.data?.code === 'GR0031') {
+          notifications.update({
+            id: 'load-data',
+            title: 'Invalid PAN Number!',
+            message: 'Please enter valid PAN number',
+            autoClose: 2200,
+            withCloseButton: false,
+            color: 'red',
+            icon: <FaExclamation />,
+            sx: { borderRadius: em(8) },
+          });
+        }
+      }
+    }
   };
+
   const handlePageChange = () => {
+    scrollToTop();
     dispatchDetailsPage({ type: 'SET_SEE_PAN_CARD', payload: !detailsPage.seePanCard });
     verifyPANForm.values.panNo = '';
-    verifyPANForm.values.otp = '';
+    setPanIsVerified(false);
   };
 
-  const handleOpenModal = () => {
-    if (!verifyPANForm.validateField('panNo').hasError && checked) {
-      open();
-    }
-  };
-
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
-    if (
-      !verifyPANForm.validateField('panNo').hasError &&
-      !verifyPANForm.validateField('otp').hasError
-    ) {
-      verifyPANForm.values.panNo = '';
-      verifyPANForm.values.otp = '';
-      setIsVerified(true);
-      close();
-    }
-  };
   return (
     <section className="container">
-      <Modal
-        centered
-        className="modal"
-        size={'55%'}
-        fullScreen={isMobile}
-        opened={opened}
-        onClose={close}
-        title="Please enter the OTP send to"
-      >
-        <form className="otp-form" onSubmit={handleSubmit}>
-          <Title className="title">Phone number linked with your Aadhaar Card</Title>
-          <Text className="disbledInput">
-            {verifyPANForm.values.panNo}
-            <span className="changeBtn" onClick={close}>
-              Change
-            </span>
-          </Text>
-          <TextInput
-            classNames={inputClasses}
-            label="Enter OTP"
-            withAsterisk
-            maxLength={6}
-            pattern="[0-9]{6}"
-            {...verifyPANForm.getInputProps('otp')}
-          />
-          <Text fw={'light'} fz={'xs'} mb={'md'}>
-            Resend{' '}
-            <Text fw={'600'} span>
-              after 30s.
-            </Text>
-          </Text>
-          <Button type="submit" className="primaryBtn">
-            Verify
-          </Button>
-          <Text className="warning">
-            If you haven't received the OTP, make sure to check the spam folder
-          </Text>
-        </form>
-      </Modal>
       <Box className="see-all-header">
         <Box className="go-back-btn" onClick={handlePageChange}>
           <BsArrowLeft className="arrow-left-icon" size={'16px'} />
@@ -107,7 +113,7 @@ export const SeePanCard = () => {
           <Text>Pan Card</Text>
         </Box>
       </Box>
-      {isVerified ? (
+      {panIsVerified ? (
         <Box className="document-verified-container">
           <Box className="document-verified-left-box">
             <Box className="left-img-box">
@@ -118,7 +124,6 @@ export const SeePanCard = () => {
             <Box className="left-text-box">
               <Box>
                 <Text className="heading">Last Updated</Text>
-                <Text className="details">02/03/2023</Text>
               </Box>
               <Box>
                 <Text className="heading">Timestamp</Text>
@@ -181,13 +186,13 @@ export const SeePanCard = () => {
               </Box>
             </Box>
 
-            <Button className="primaryBtn" onClick={() => setIsVerified(false)}>
+            <Button className="primaryBtn" onClick={handlePageChange}>
               Continue
             </Button>
           </Box>
         </Box>
       ) : (
-        <Box className="document-container">
+        <form onSubmit={handleSubmit} className="document-container">
           <img src={PanImg} className="document-img" alt="Pan Card Image" />
           <Box className="document-text-box">
             <Title className="heading">Enter your PAN Number</Title>
@@ -195,13 +200,22 @@ export const SeePanCard = () => {
               label="PAN Number"
               classNames={inputClasses}
               withAsterisk
+              minLength={10}
+              maxLength={10}
               {...verifyPANForm.getInputProps('panNo')}
             />
+            <Button
+              className={checked ? 'greenBtn' : 'disabledBtn'}
+              disabled={!checked}
+              onClick={handleSubmit}
+            >
+              Click to verify
+            </Button>
             <Box className="checkbox-box">
               <Checkbox
-                checked={checked}
-                onChange={handleCheck}
                 className="checkbox"
+                checked={checked}
+                onChange={() => setChecked(!checked)}
                 color="teal"
               />
               <Text className="tearms-conditions">
@@ -213,11 +227,8 @@ export const SeePanCard = () => {
             </Box>
 
             <Text className="policy">Click to view Data and Privacy Policy</Text>
-            <Button disabled={!checked} onClick={handleOpenModal} className="primaryBtn">
-              Click to verify
-            </Button>
           </Box>
-        </Box>
+        </form>
       )}
     </section>
   );
@@ -227,7 +238,7 @@ const inputStyles = createStyles((theme) => ({
   root: {
     position: 'relative',
     marginTop: '10px',
-    marginBottom: '26px',
+    marginBottom: '16px',
   },
 
   input: {
