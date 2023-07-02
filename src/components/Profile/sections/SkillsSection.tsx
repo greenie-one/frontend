@@ -6,8 +6,7 @@ import { useProfileContext } from '../context/ProfileContext';
 import { AiOutlinePlus } from 'react-icons/ai';
 
 export const SkillsSection = () => {
-  const { detailsPage, dispatchDetailsPage, skillData, scrollToTop, scrollToProfileNav } =
-    useProfileContext();
+  const { detailsPage, dispatchDetailsPage, skillData, scrollToTop, scrollToProfileNav } = useProfileContext();
 
   const handleToggleSkillsDetails = (): void => {
     scrollToProfileNav();
@@ -35,11 +34,7 @@ export const SkillsSection = () => {
               <Text className="link" onClick={handleToggleSkillsDetails}>
                 See All Skills
               </Text>
-              <Button
-                leftIcon={<MdOutlineEdit />}
-                onClick={handleAddSkillPage}
-                className="edit-btn"
-              >
+              <Button leftIcon={<MdOutlineEdit />} onClick={handleAddSkillPage} className="edit-btn">
                 Edit Section
               </Button>
             </Box>

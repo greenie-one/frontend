@@ -28,7 +28,136 @@ const ForgotPassword = () => {
   };
 
   const handleNextStep = () => {
-    dispatch({ type: 'NEXTRESETPASSWRDSTEP' });
+    if (!loginForm.validateField('emailPhoneGreenieId').hasError) {
+      dispatch({ type: 'NEXTRESETPASSWRDSTEP' });
+    }
+  };
+
+  const handleRequestOTP = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (!loginForm.validateField('emailPhoneGreenieId').hasError) {
+      try {
+        notifications.show({
+          id: 'load-data',
+          title: 'Sending OTP...',
+          message: 'Please wait while we send OTP to your email.',
+          loading: true,
+          autoClose: false,
+          withCloseButton: false,
+          sx: { borderRadius: em(8) },
+        });
+
+        const res = await axios.post(
+          authApiList.forgotpasswordOtp,
+          {
+            email: loginForm.values.emailPhoneGreenieId,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${authTokens?.accessToken}`,
+            },
+          }
+        );
+        if (res.data) {
+          notifications.update({
+            id: 'load-data',
+            title: 'Success!',
+            message: 'OTP Sent to your email',
+            autoClose: 2200,
+            withCloseButton: false,
+            color: 'teal',
+            icon: <BsCheckLg />,
+            sx: { borderRadius: em(8) },
+          });
+          setValidateOTP(res.data.validationId);
+          dispatch({ type: 'NEXTRESETPASSWRDSTEP' });
+        }
+      } catch (error: any) {
+        console.log(error.message);
+      }
+    }
+  };
+
+  const handleResendOTP = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (!loginForm.validateField('emailPhoneGreenieId').hasError) {
+      try {
+        notifications.show({
+          id: 'load-data',
+          title: 'Sending OTP...',
+          message: 'Please wait while we send OTP to your email.',
+          loading: true,
+          autoClose: false,
+          withCloseButton: false,
+          sx: { borderRadius: em(8) },
+        });
+
+        const res = await axios.post(
+          authApiList.forgotpasswordOtp,
+          {
+            email: loginForm.values.emailPhoneGreenieId,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${authTokens?.accessToken}`,
+            },
+          }
+        );
+        if (res.data) {
+          notifications.update({
+            id: 'load-data',
+            title: 'Success!',
+            message: 'OTP Sent to your email',
+            autoClose: 2200,
+            withCloseButton: false,
+            color: 'teal',
+            icon: <BsCheckLg />,
+            sx: { borderRadius: em(8) },
+          });
+          setValidateOTP(res.data.validationId);
+          setSecondsRemaining(60);
+        }
+      } catch (error: any) {
+        console.log(error.message);
+      }
+    }
+  };
+
+  const verifyOTP = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (!loginForm.validateField('otp').hasError) {
+      try {
+        notifications.show({
+          id: 'load-data',
+          title: 'Verifying OTP...',
+          message: 'Please wait while we verify your OTP.',
+          loading: true,
+          autoClose: false,
+          withCloseButton: false,
+          sx: { borderRadius: em(8) },
+        });
+        const res = await axios.post(authApiList.forgotpasswordValidate, {
+          validationId: validateOTPId,
+          otp: loginForm.values.otp,
+          newPassword: loginForm.values.password,
+        });
+        if (res.data) {
+          notifications.update({
+            id: 'load-data',
+            title: 'Success!',
+            message: 'Verified your OTP',
+            autoClose: 2200,
+            withCloseButton: false,
+            color: 'teal',
+            icon: <BsCheckLg />,
+            sx: { borderRadius: em(8) },
+          });
+        }
+      } catch (error: any) {
+        console.log(error);
+      }
+    }
+    // dispatch({ type: 'NEXTRESETPASSWRDSTEP' });
   };
 
   useEffect(() => {

@@ -56,6 +56,10 @@ type ProfileContextType = {
   getSkills: () => void;
   scrollToTop: () => void;
   scrollToProfileNav: () => void;
+  selectedCard: IWorkExperience | null;
+  setSelectedCard: React.Dispatch<React.SetStateAction<IWorkExperience | null>>;
+  selectedSkills: ISkill[];
+  setSelectedSkills: React.Dispatch<React.SetStateAction<ISkill[]>>;
 };
 
 interface IDocument {
@@ -111,6 +115,11 @@ interface ISkillDataType {
   updatedAt: string;
   user: string;
   __v: number;
+}
+
+interface ISkill {
+  skillName: string;
+  expertise: string;
 }
 
 type profileFormType = {
@@ -198,6 +207,8 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const [aadharIsVerified, setAadharIsVerified] = useState<boolean>(false);
   const [panIsVerified, setPanIsVerified] = useState<boolean>(false);
   const [licenseIsVerified, setLicenseIsVerified] = useState<boolean>(false);
+  const [selectedCard, setSelectedCard] = useState<IWorkExperience | null>(null);
+  const [selectedSkills, setSelectedSkills] = useState<ISkill[]>([]);
 
   //------------Forms-----------------
 
@@ -743,6 +754,10 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
         setLicenseIsVerified,
         scrollToProfileNav,
         scrollToTop,
+        selectedCard,
+        setSelectedCard,
+        selectedSkills,
+        setSelectedSkills,
       }}
     >
       {children}

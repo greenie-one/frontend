@@ -28,7 +28,7 @@ export const AddSkills = () => {
   const { classes: inputClasses } = inputStyles();
 
   const handleAddSkill = () => {
-    if (!skillForm.validateField('designation').hasError && !skillForm.validateField('skillRate').hasError) {
+    if (!skillForm.validateField('skillName').hasError && !skillForm.validateField('expertise').hasError) {
       const newSkill: Skill = {
         skillName: skillForm.values.skillName,
         expertise: skillForm.values.expertise,

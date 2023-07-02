@@ -75,13 +75,17 @@ const companyTypes = [
 ];
 
 const skillRate = [
-  { value: 'BEGINEER', label: 'Begineer/Novice' },
-  { value: 'INTERMEDIATE', label: 'Intermediate' },
-  { value: 'HIGHLY COMPETANT', label: 'Highly Competant' },
-  { value: 'ADVANCED', label: 'Advanced Proficiency' },
-  { value: 'EXPERT', label: 'Expert' },
-  { value: 'MASTER', label: 'Master - Pro(Global Recognition)' },
+  { value: 'AMATEUR', label: 'Begineer/Novice' },
+  { value: 'EXPERT', label: 'Intermediate' },
 ];
+// const skillRate = [
+//   { value: 'BEGINEER', label: 'Begineer/Novice' },
+//   { value: 'INTERMEDIATE', label: 'Intermediate' },
+//   { value: 'HIGHLY COMPETANT', label: 'Highly Competant' },
+//   { value: 'ADVANCED', label: 'Advanced Proficiency' },
+//   { value: 'EXPERT', label: 'Expert' },
+//   { value: 'MASTER', label: 'Master - Pro(Global Recognition)' },
+// ];
 
 const documentType = [
   { value: 'Appointsment Letter', label: 'Appointsment Letter' },
@@ -96,7 +100,6 @@ export const AddWorkExperience = () => {
   const [experienceChecked, setExperienceChecked] = useState(false);
   const [documentsChecked, setDocumentsChecked] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | undefined>(undefined);
-  const [skills, setSkills] = useState<Skill[]>([]);
   const [documents, setDocuments] = useState<Document[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [workExperienceData, setWorkExperienceData] = useState<IWorkExperience | null>(null);
@@ -110,6 +113,9 @@ export const AddWorkExperience = () => {
     authTokens,
     getSkills,
     scrollToProfileNav,
+    setSelectedCard,
+    selectedSkills,
+    setSelectedSkills,
   } = useProfileContext();
   const { classes: inputClasses } = inputStyles();
   const [active, setActive] = useState<number>(1);
@@ -227,12 +233,12 @@ export const AddWorkExperience = () => {
   };
 
   const handleAddSkill = () => {
-    if (!skillForm.validateField('designation').hasError && !skillForm.validateField('skillRate').hasError) {
+    if (!skillForm.validateField('skillName').hasError && !skillForm.validateField('expertise').hasError) {
       const newSkill: Skill = {
         skillName: skillForm.values.skillName,
         expertise: skillForm.values.expertise,
       };
-      setSkills((prevSkills) => [...prevSkills, newSkill]);
+      setSelectedSkills((prevSkills) => [...prevSkills, newSkill]);
       skillForm.values.skillName = '';
       skillForm.values.expertise = '';
     }
@@ -250,7 +256,7 @@ export const AddWorkExperience = () => {
         color: 'teal',
         sx: { borderRadius: em(8) },
       });
-      if (skills.length < 1) {
+      if (selectedSkills.length < 1) {
         notifications.update({
           id: 'load-data',
           title: 'Error !',
@@ -260,8 +266,8 @@ export const AddWorkExperience = () => {
           autoClose: 2200,
         });
       }
-      if (skills.length > 0) {
-        for (const skill of skills) {
+      if (selectedSkills.length > 0) {
+        for (const skill of selectedSkills) {
           const res = await axios.post(skillsAPIList.postSkill, skill, {
             headers: {
               Authorization: `Bearer ${authTokens?.accessToken}`,
@@ -282,7 +288,6 @@ export const AddWorkExperience = () => {
         });
         getSkills();
         setActive(3);
-        setSkills([]);
         skillForm.values.skillName = '';
         skillForm.values.expertise = '';
       }
@@ -357,6 +362,11 @@ export const AddWorkExperience = () => {
     close();
   };
 
+  const handleGoToVerification = () => {
+    handleModalContinue();
+    setSelectedCard(workExperienceData);
+  };
+
   return (
     <section className="container add-work-experience">
       <Modal
@@ -380,7 +390,9 @@ export const AddWorkExperience = () => {
               <Button leftIcon={<CgSandClock color="#FF7272" size={'16px'} />} className="pending">
                 Pending
               </Button>
-              <Button className="go-to-verfication">Go to verification</Button>
+              <Button className="go-to-verfication" onClick={handleGoToVerification}>
+                Go to verification
+              </Button>
             </Box>
           </Box>
           <Button className="primaryBtn" onClick={handleModalContinue}>
@@ -594,7 +606,7 @@ export const AddWorkExperience = () => {
 
           <Divider color="#ebebeb" />
           <Box className="add-skills-wrapper">
-            {skills.map((skill, index) => {
+            {selectedSkills.map((skill, index) => {
               const { expertise, skillName } = skill;
               return (
                 <Box key={index} className="add-skill-box">
@@ -604,7 +616,7 @@ export const AddWorkExperience = () => {
               );
             })}
           </Box>
-          {skills.length > 0 && <Divider color="#ebebeb" />}
+          {selectedSkills.length > 0 && <Divider color="#ebebeb" />}
 
           <Box className="btn-wrapper">
             <Button type="button" className="cancel-btn" variant="default" onClick={handlePrevPage}>
