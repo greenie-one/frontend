@@ -52,8 +52,6 @@ export class HttpClient {
       body = JSON.stringify(request.body);
     }
 
-    console.info(`Sending HTTP request [${request.method}]:`, request);
-
     const resp = await fetch(url, {
       method: request.method,
       headers: {
@@ -70,14 +68,10 @@ export class HttpClient {
       response = (await resp.text()) as T;
     }
 
-    console.info('Got response', response);
-
     return response;
   }
 
   static async callApiAuth<T = unknown>(request: HttpRequest, authClient: AuthClient): Promise<T> {
-    console.info('Calling API with auth', request);
-    console.info('Access token', authClient.getAccessToken());
     if (!authClient.getAccessToken()) {
       throw new Error('Access token is not set');
     }

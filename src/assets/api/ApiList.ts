@@ -26,16 +26,17 @@ export const profileAPIList = {
 
 export const documentsAPIList = {
   getDocuments: `${BASE_URL}/ids/me`,
-
 }
 
 export const aadharAPIList = {
   requestOTPForAadhar: `${BASE_URL}/ids/aadhar/request-otp`,
   verifyOTPForAadhar: `${BASE_URL}/ids/aadhar/verify-otp`
 }
+
 export const PANAPIList = {
   verifyPAN: `${BASE_URL}/ids/pan/verify`
 }
+
 export const drivinglicenseAPIList = {
   verifylicense: `${BASE_URL}/ids/driving-license/verify`
 }
