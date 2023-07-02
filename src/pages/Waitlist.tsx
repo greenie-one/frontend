@@ -1,16 +1,18 @@
 import { useNavigate } from 'react-router-dom';
 import { Box, TextInput, createStyles, rem, em, Button, Title, Text, Image } from '@mantine/core';
 import { useForm, isEmail, isNotEmpty } from '@mantine/form';
-import { notifications } from '@mantine/notifications';
 
 import { authApiList } from '../assets/api/ApiList';
-import { HttpClient } from '../utils/generic/httpClient';
-import { showErrorNotification } from '../utils/functions/showErrorNotification';
+import { HttpClient, Result } from '../utils/generic/httpClient';
+import {
+  showErrorNotification,
+  showLoadingNotification,
+  showSuccessNotification,
+} from '../utils/functions/showNotification';
 
 import { Navbar } from '../components/common/Navbar';
 import waitlist_img from '../assets/images/waitlist/waitlist_img.png';
 import { MdVerified } from 'react-icons/md';
-import { BsCheckLg } from 'react-icons/bs';
 
 export const Waitlist = () => {
   const navigate = useNavigate();
@@ -39,28 +41,29 @@ export const Waitlist = () => {
   });
 
   const handleWaitlistSubmit = async () => {
-    waitlistForm.reset();
+    showLoadingNotification({
+      title: 'Loading !',
+      message: 'Please wait while we add you to the waitlist.',
+    });
 
-    const res: any = await HttpClient.callApi({
+    const res: Result<any> = await HttpClient.callApi({
       url: `${authApiList.waitlist}`,
       method: 'POST',
       body: waitlistForm.getTransformedValues(),
     });
 
-    if (!res.code) {
-      notifications.show({
+    waitlistForm.reset();
+    if (res.ok) {
+      showSuccessNotification({
         title: 'Success !',
         message: 'You have been added to the waitlist! We will notify you when we launch.',
-        autoClose: 2200,
-        color: 'teal',
-        icon: <BsCheckLg />,
       });
 
       setTimeout(() => {
         navigate('/');
       }, 2200);
     } else {
-      showErrorNotification(res.code);
+      showErrorNotification(res.error.code);
     }
   };
 
