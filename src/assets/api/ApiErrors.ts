@@ -4,6 +4,22 @@ type Error = {
 }
 
 export const ErrorMessage: Record<string, Error> = {
+  // AUTH ERRORS
+  ["GRA0000"]: {title:'Error !',message:'Failed to validate request'},
+  ["GRA0001"]: {title:'Error !',message:'Unauthorized'},
+  ["GRA0003"]: {title:'Error !',message:'User already exists'},
+  ["GRA0004"]: {title:'Error !',message:'Invalid validation ID'},
+  ["GRA0005"]: {title:'Error !',message:'Invalid refresh token'},
+  ["GRA0008"]: {title:'Error !',message:'User not found'},
+  ["GRA0011"]: {title:'Error !',message:'Both mobile and email are missing'},
+  ["GRA0012"]: {title:'Error !',message:'Invalid user details'},
+  ["GRA0013"]: {title:'Error !',message:'Mobile number and email both cannot be empty'},
+  ["GRA0014"]: {title:'Error !',message:'Invalid OTP'},
+  ["GRA0015"]: {title:'Error !',message:'Auth token is expired'},
+  ["GRA0016"]: {title:'Error !',message:'OAuth invalid provider'},
+  ["GRA0017"]: { title: 'Error !', message: 'OAuth failed' },
+  
+  // OTHER ERRORS
   ["GR0000"]: {title:'Error !',message:'Error Message for Validation Error'},
   ["GR0001"]: {title:'Error !', message:'Something went wrong. Please try again later.'},
   ["GR0008"]: {title:'Error !',message:'User not found. Please create an account first.'},
