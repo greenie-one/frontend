@@ -3,25 +3,9 @@ import { Box, Chip, Group, Title, TextInput, Textarea, Button, Modal, Text } fro
 import { useProfileContext } from '../../Profile/context/ProfileContext';
 import { useDisclosure } from '@mantine/hooks';
 import { confirmationModalStyle } from '../styles/articleContentStyles';
-import {
-  detailsFormStyles,
-  profileSettingsStyles,
-  detailsInputStyles,
-} from '../styles/articleContentStyles';
+import { detailsFormStyles, profileSettingsStyles, detailsInputStyles } from '../styles/articleContentStyles';
 
 const introductionTags = [
-  { value: 'teamPlayer', text: 'Team Player' },
-  { value: 'energetic', text: 'Energetic' },
-  { value: 'optimistic', text: 'Optimistic' },
-  { value: 'selfInterior', text: 'Self Interior' },
-  { value: 'hardWorking', text: 'Hard Working' },
-  { value: 'prodigy', text: 'Prodigy' },
-  { value: 'loneWolf', text: 'Lone Wolf' },
-  { value: 'microPlanner', text: 'Micro Planner' },
-  { value: 'jackOfAllTrade', text: 'Jack of All Trade' },
-];
-
-const skillSet = [
   'Team Player',
   'Energetic',
   'Optimistic',
@@ -38,7 +22,7 @@ export const ProfileSettings: React.FC = (): JSX.Element => {
   const { classes: profileClasses } = profileSettingsStyles();
   const { classes: inputClasses } = detailsInputStyles();
   const { classes: modalStyles } = confirmationModalStyle();
-  const { profileForm, profileData, updateProfile } = useProfileContext();
+  const { profileForm, updateProfile } = useProfileContext();
   const [opened, { open, close }] = useDisclosure(false);
 
   const onFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -47,7 +31,7 @@ export const ProfileSettings: React.FC = (): JSX.Element => {
   };
 
   const handleConfirmation = () => {
-    updateProfile(profileData._id);
+    updateProfile();
     close();
   };
 
@@ -64,9 +48,7 @@ export const ProfileSettings: React.FC = (): JSX.Element => {
         classNames={modalStyles}
       >
         <Box className={modalStyles.confirmationMsgWrapper}>
-          <Text className={modalStyles.title}>
-            Are you sure you want to update the changes made?
-          </Text>
+          <Text className={modalStyles.title}>Are you sure you want to update the changes made?</Text>
 
           <Box className={modalStyles.modalBtnsContainer}>
             {[
@@ -123,7 +105,7 @@ export const ProfileSettings: React.FC = (): JSX.Element => {
 
           <Chip.Group multiple {...profileForm.getInputProps('descriptionTags')}>
             <Group className={profileClasses.profileChipsWrapper}>
-              {skillSet.map((skill, id) => (
+              {introductionTags.map((skill, id) => (
                 <Chip
                   key={id}
                   value={skill}
@@ -140,14 +122,7 @@ export const ProfileSettings: React.FC = (): JSX.Element => {
           </Chip.Group>
         </Box>
 
-        <Button
-          className={formClasses.formSubmitBtn}
-          size="sm"
-          type="button"
-          radius="xl"
-          color="teal"
-          onClick={open}
-        >
+        <Button className={formClasses.formSubmitBtn} size="sm" type="button" radius="xl" color="teal" onClick={open}>
           Save
         </Button>
       </form>

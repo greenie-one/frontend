@@ -65,19 +65,9 @@ export const Navbar = () => {
             <MdOutlineMenuOpen role="button" className={classes.menuBtnIcon} onClick={open} />
           </span>
         ) : null}
-        <Drawer
-          opened={opened}
-          onClose={close}
-          withCloseButton={false}
-          overlayProps={{ opacity: 0, blur: 0 }}
-        >
+        <Drawer opened={opened} onClose={close} withCloseButton={false} overlayProps={{ opacity: 0, blur: 0 }}>
           <nav className={classes.mobileNavOptionsContainer}>
-            <Flex
-              justify="space-between"
-              align="center"
-              direction="row"
-              className={classes.mobileLogo}
-            >
+            <Flex justify="space-between" align="center" direction="row" className={classes.mobileLogo}>
               <Link to={'/'}>
                 <span className={`${classes.greenie} ${classes.mobileGreenie}`}>Greenie</span>
                 <span className={`${classes.verified} ${classes.mobileVerified}`}>

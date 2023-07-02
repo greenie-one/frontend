@@ -8,20 +8,12 @@ type ButtonProps = {
   onClick?: () => any;
 };
 
-export const Button: React.FC<ButtonProps> = ({
-  children,
-  variant,
-  classNames,
-  outline,
-  onClick,
-}) => {
+export const Button: React.FC<ButtonProps> = ({ children, variant, classNames, outline, onClick }) => {
   const { classes } = useStyles();
 
   return (
     <button
-      className={`${classes.customButton} ${classes[variant]} ${
-        outline ? '' : classes.noOutline
-      } ${classNames}`}
+      className={`${classes.customButton} ${classes[variant]} ${outline ? '' : classes.noOutline} ${classNames}`}
       onClick={onClick ? onClick : () => null}
     >
       {children}

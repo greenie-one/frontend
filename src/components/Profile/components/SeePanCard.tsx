@@ -1,17 +1,7 @@
 import '../styles/global.scss';
 import { useState } from 'react';
 import { useProfileContext } from '../context/ProfileContext';
-import {
-  Text,
-  Box,
-  Button,
-  createStyles,
-  em,
-  rem,
-  TextInput,
-  Title,
-  Checkbox,
-} from '@mantine/core';
+import { Text, Box, Button, createStyles, em, rem, TextInput, Title, Checkbox } from '@mantine/core';
 import { FaExclamation } from 'react-icons/fa';
 import { BsArrowLeft, BsCheckLg } from 'react-icons/bs';
 import { AiOutlineRight } from 'react-icons/ai';
@@ -22,13 +12,18 @@ import { PANAPIList } from '../../../assets/api/ApiList';
 import axios from 'axios';
 
 export const SeePanCard = () => {
-  const [isVerified, setIsVerified] = useState(false);
-  const [checked, setChecked] = useState(false);
   const { classes: inputClasses } = inputStyles();
-  const { detailsPage, dispatchDetailsPage, verifyPANForm, getDocuments } = useProfileContext();
-
-  const token = localStorage.getItem('auth-tokens');
-  const authTokens = token ? JSON.parse(token) : null;
+  const {
+    detailsPage,
+    dispatchDetailsPage,
+    verifyPANForm,
+    getDocuments,
+    authTokens,
+    panIsVerified,
+    setPanIsVerified,
+    scrollToTop,
+  } = useProfileContext();
+  const [checked, setChecked] = useState<boolean>(false);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -66,8 +61,9 @@ export const SeePanCard = () => {
             icon: <BsCheckLg />,
             sx: { borderRadius: em(8) },
           });
-          setIsVerified(true);
+          setPanIsVerified(true);
           getDocuments();
+          scrollToTop();
         }
       } catch (error: any) {
         if (error.response?.data?.code === 'GR0031') {
@@ -87,8 +83,10 @@ export const SeePanCard = () => {
   };
 
   const handlePageChange = () => {
+    scrollToTop();
     dispatchDetailsPage({ type: 'SET_SEE_PAN_CARD', payload: !detailsPage.seePanCard });
     verifyPANForm.values.panNo = '';
+    setPanIsVerified(false);
   };
 
   return (
@@ -105,7 +103,7 @@ export const SeePanCard = () => {
           <Text>Pan Card</Text>
         </Box>
       </Box>
-      {isVerified ? (
+      {panIsVerified ? (
         <Box className="document-verified-container">
           <Box className="document-verified-left-box">
             <Box className="left-img-box">
@@ -116,7 +114,6 @@ export const SeePanCard = () => {
             <Box className="left-text-box">
               <Box>
                 <Text className="heading">Last Updated</Text>
-                <Text className="details">02/03/2023</Text>
               </Box>
               <Box>
                 <Text className="heading">Timestamp</Text>
@@ -197,25 +194,19 @@ export const SeePanCard = () => {
               maxLength={10}
               {...verifyPANForm.getInputProps('panNo')}
             />
+            <Button className={checked ? 'greenBtn' : 'disabledBtn'} disabled={!checked} onClick={handleSubmit}>
+              Click to verify
+            </Button>
             <Box className="checkbox-box">
-              <Checkbox
-                checked={checked}
-                onChange={() => setChecked(!checked)}
-                className="checkbox"
-                color="teal"
-              />
+              <Checkbox className="checkbox" checked={checked} onChange={() => setChecked(!checked)} color="teal" />
               <Text className="tearms-conditions">
-                I understand that during the sign-up process and while using this website, I may be
-                required to provide certain personal information, including but not limited to my
-                name, email address, contact details, and any other information deemed necessary for
-                registration and website usage.
+                I understand that during the sign-up process and while using this website, I may be required to provide
+                certain personal information, including but not limited to my name, email address, contact details, and
+                any other information deemed necessary for registration and website usage.
               </Text>
             </Box>
 
             <Text className="policy">Click to view Data and Privacy Policy</Text>
-            <Button disabled={!checked} className="primaryBtn" onClick={handleSubmit}>
-              Click to verify
-            </Button>
           </Box>
         </form>
       )}
@@ -227,7 +218,7 @@ const inputStyles = createStyles((theme) => ({
   root: {
     position: 'relative',
     marginTop: '10px',
-    marginBottom: '26px',
+    marginBottom: '16px',
   },
 
   input: {

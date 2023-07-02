@@ -1,17 +1,7 @@
 import '../styles/global.scss';
 import { useState } from 'react';
 import { useProfileContext } from '../context/ProfileContext';
-import {
-  Text,
-  Box,
-  Button,
-  createStyles,
-  em,
-  rem,
-  TextInput,
-  Title,
-  Checkbox,
-} from '@mantine/core';
+import { Text, Box, Button, createStyles, em, rem, TextInput, Title, Checkbox } from '@mantine/core';
 import { FaExclamation } from 'react-icons/fa';
 import { BsArrowLeft, BsCheckLg } from 'react-icons/bs';
 import { AiOutlineRight } from 'react-icons/ai';
@@ -22,10 +12,10 @@ import { drivinglicenseAPIList } from '../../../assets/api/ApiList';
 import axios from 'axios';
 
 export const SeeDrivingLicence = () => {
-  const [isVerified, setIsVerified] = useState(false);
   const { classes: inputClasses } = inputStyles();
   const [checked, setChecked] = useState(false);
-  const { detailsPage, dispatchDetailsPage, verifyLicenceForm, getDocuments } = useProfileContext();
+  const { detailsPage, dispatchDetailsPage, verifyLicenceForm, getDocuments, licenseIsVerified, setLicenseIsVerified } =
+    useProfileContext();
 
   const token = localStorage.getItem('auth-tokens');
   const authTokens = token ? JSON.parse(token) : null;
@@ -66,7 +56,7 @@ export const SeeDrivingLicence = () => {
             icon: <BsCheckLg />,
             sx: { borderRadius: em(8) },
           });
-          setIsVerified(true);
+          setLicenseIsVerified(true);
           getDocuments();
         }
       } catch (error: any) {
@@ -91,6 +81,8 @@ export const SeeDrivingLicence = () => {
       payload: !detailsPage.seeDrivingLicence,
     });
     verifyLicenceForm.values.licenceNo = '';
+    verifyLicenceForm.values.dateOfBirth = null;
+    setLicenseIsVerified(false);
   };
   return (
     <section className="container">
@@ -106,7 +98,7 @@ export const SeeDrivingLicence = () => {
           <Text>Driving Licence </Text>
         </Box>
       </Box>
-      {isVerified ? (
+      {licenseIsVerified ? (
         <Box className="document-verified-container">
           <Box className="document-verified-left-box">
             <Box className="left-img-box">
@@ -192,34 +184,34 @@ export const SeeDrivingLicence = () => {
         <form onSubmit={handleSubmit} className="document-container">
           <img src={DrivingLicenceImg} className="document-img" alt="Driving Licence Image" />
           <Box className="document-text-box">
-            <Title className="heading">Enter your Driving Licence Number</Title>
+            <Title className="heading">Enter your Driving Licence Details</Title>
             <TextInput
-              label="Driving Licence Number"
+              label="DOB as per license(DD/MM/YYYY)"
+              classNames={inputClasses}
+              withAsterisk
+              {...verifyLicenceForm.getInputProps('dateOfBirth')}
+            />
+            <TextInput
+              label="Licence Number"
               classNames={inputClasses}
               withAsterisk
               maxLength={15}
               minLength={15}
               {...verifyLicenceForm.getInputProps('licenceNo')}
             />
+            <Button disabled={!checked} onClick={handleSubmit} className={checked ? 'greenBtn' : 'disabledBtn'}>
+              Click to verify
+            </Button>
             <Box className="checkbox-box">
-              <Checkbox
-                checked={checked}
-                onChange={() => setChecked(!checked)}
-                className="checkbox"
-                color="teal"
-              />
+              <Checkbox checked={checked} onChange={() => setChecked(!checked)} className="checkbox" color="teal" />
               <Text className="tearms-conditions">
-                I understand that during the sign-up process and while using this website, I may be
-                required to provide certain personal information, including but not limited to my
-                name, email address, contact details, and any other information deemed necessary for
-                registration and website usage.
+                I understand that during the sign-up process and while using this website, I may be required to provide
+                certain personal information, including but not limited to my name, email address, contact details, and
+                any other information deemed necessary for registration and website usage.
               </Text>
             </Box>
 
             <Text className="policy">Click to view Data and Privacy Policy</Text>
-            <Button disabled={!checked} onClick={handleSubmit} type="submit" className="primaryBtn">
-              Click to verify
-            </Button>
           </Box>
         </form>
       )}
@@ -230,8 +222,7 @@ export const SeeDrivingLicence = () => {
 const inputStyles = createStyles((theme) => ({
   root: {
     position: 'relative',
-    marginTop: '10px',
-    marginBottom: '26px',
+    marginBottom: '16px',
   },
 
   input: {

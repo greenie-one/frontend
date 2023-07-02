@@ -96,26 +96,21 @@ export const LandingGreenieWorkings = () => {
     <section className={`${classes.root} section`}>
       <LandingSectionHeading heading={'The Greenie Journey'} subheading={''} />
       <Box className={classes.workingsBtnContainer}>
-        {[
-          '1. Create Greenie Account',
-          '2. Verify Documents',
-          '3. Send or Receive Request',
-          '4. Share Greenie ID',
-        ].map((text, id) => {
-          return (
-            <Button
-              key={id}
-              variant={'outline'}
-              classNames={`${classes.workingsBtn} ${
-                activeWorkingBtn === id ? classes.activeWorkingBtn : ''
-              }`}
-              outline={activeWorkingBtn === id}
-              onClick={() => setActiveWorkingBtn(id)}
-            >
-              {text}
-            </Button>
-          );
-        })}
+        {['1. Create Greenie Account', '2. Verify Documents', '3. Send or Receive Request', '4. Share Greenie ID'].map(
+          (text, id) => {
+            return (
+              <Button
+                key={id}
+                variant={'outline'}
+                classNames={`${classes.workingsBtn} ${activeWorkingBtn === id ? classes.activeWorkingBtn : ''}`}
+                outline={activeWorkingBtn === id}
+                onClick={() => setActiveWorkingBtn(id)}
+              >
+                {text}
+              </Button>
+            );
+          }
+        )}
       </Box>
       <Box className={classes.workingCardsContainer}>
         {workingsCardContent.map((cardContent, id) => {
@@ -144,7 +139,7 @@ const useStyles = createStyles((theme) => ({
     flexDirection: 'column',
     alignItems: 'stretch',
     gap: '2rem',
-    paddingTop:"0rem"
+    paddingTop: '0rem',
   },
 
   workingsBtnContainer: {
@@ -174,7 +169,7 @@ const useStyles = createStyles((theme) => ({
     fontSize: rem(14.5),
     backgroundColor: 'transparent',
     border: '1px solid #17A672',
-    color:"#17A672",
+    color: '#17A672',
 
     ':hover': {
       backgroundColor: '#17A672',

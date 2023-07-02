@@ -19,7 +19,6 @@ export const Auth = () => {
   const { classes } = useStyles();
 
   const { isPhoneNumber, state, loginForm } = useAuthContext();
-  const { signUpStep, loginStep, resetPasswordStep } = state;
 
   return (
     <>
@@ -34,9 +33,9 @@ export const Auth = () => {
         <Box className="authRight">
           <Box className="authRightContainer">
             <Tabs defaultValue="signup" color="dark">
-              {loginStep === 2 && isPhoneNumber(loginForm.values.emailPhoneGreenieId)}
-              {signUpStep < 3 && loginStep < 3 ? (
-                loginStep === 2 && isPhoneNumber(loginForm.values.emailPhoneGreenieId) ? null : (
+              {state.loginStep === 2 && isPhoneNumber(loginForm.values.emailPhoneGreenieId)}
+              {state.signUpStep < 3 && state.loginStep < 3 ? (
+                state.loginStep === 2 && isPhoneNumber(loginForm.values.emailPhoneGreenieId) ? null : (
                   <Tabs.List className="tabList" position="center">
                     <Tabs.Tab className="tabBtn" value="signup">
                       Create new account
@@ -50,28 +49,28 @@ export const Auth = () => {
 
               <Tabs.Panel value="signup">
                 <form>
-                  {signUpStep === 1 && <SignUpStepOne />}
-                  {signUpStep === 2 && <SignUpStepTwo />}
-                  {signUpStep === 3 && <SignUpStepThree />}
-                  {signUpStep === 4 && <Profile />}
+                  {state.signUpStep === 1 && <SignUpStepOne />}
+                  {state.signUpStep === 2 && <SignUpStepTwo />}
+                  {state.signUpStep === 3 && <SignUpStepThree />}
+                  {state.signUpStep === 4 && <Profile />}
                 </form>
               </Tabs.Panel>
 
               <Tabs.Panel value="login">
-                {signUpStep !== 4 ? (
+                {state.signUpStep !== 4 ? (
                   <form>
-                    {loginStep === 1 && <LoginStepOne />}
-                    {loginStep === 2 && <LoginStepTwo />}
-                    {loginStep === 3 && <LoginStepThree />}
-                    {signUpStep === 4 && <Profile />}
+                    {state.loginStep === 1 && <LoginStepOne />}
+                    {state.loginStep === 2 && <LoginStepTwo />}
+                    {state.loginStep === 3 && <LoginStepThree />}
+                    {state.signUpStep === 4 && <Profile />}
                   </form>
                 ) : (
-                  <form>{signUpStep === 4 && <Profile />}</form>
+                  <form>{state.signUpStep === 4 && <Profile />}</form>
                 )}
               </Tabs.Panel>
             </Tabs>
 
-            <form>{resetPasswordStep > 0 && <ForgotPassword />}</form>
+            <form>{state.resetPasswordStep > 0 && <ForgotPassword />}</form>
           </Box>
         </Box>
       </Box>

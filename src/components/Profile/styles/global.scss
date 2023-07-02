@@ -4,6 +4,7 @@
   background-color: $offWhite;
   overflow-x: hidden;
   z-index: 0;
+  min-height: 100vh;
 }
 .container {
   width: 100%;
@@ -26,7 +27,7 @@
       margin-top: -20px;
       .edit-btn {
         padding: 8px 16px;
-        background: #ffffff;
+        background: $white;
         border: 1px solid #d1d4db;
         border-radius: 34px;
         font-weight: 500;
@@ -43,7 +44,7 @@
 
   .add-records {
     padding: 8px 16px;
-    background: #ffffff;
+    background: $white;
     border: 1px solid #d1d4db;
     border-radius: 34px;
     font-weight: 500;
@@ -140,7 +141,7 @@
 }
 
 .see-all-btn {
-  background: #ffffff;
+  background: $white;
   border: 1px solid #d1d4db;
   border-radius: 34px;
   font-weight: 500;
@@ -158,7 +159,7 @@
 
 .edit-btn {
   padding: 8px 16px;
-  background: #ffffff;
+  background: $white;
   border: 1px solid #d1d4db;
   border-radius: 34px;
   font-weight: 500;
@@ -168,7 +169,21 @@
   color: #697082;
 
   &:hover {
-    background: #ffffff;
+    background: $white;
+  }
+}
+
+.add-skill-btn {
+  background-color: $lightGray;
+  color: $dark;
+  border-radius: 24px;
+  margin-block: 1.5rem;
+  width: 144px;
+  justify-self: flex-end;
+
+  &:hover {
+    background-color: $lightGray;
+    opacity: 0.7;
   }
 }
 
@@ -224,7 +239,7 @@
     font-size: 10px;
     line-height: 12px;
     letter-spacing: -0.02em;
-    color: #ffffff;
+    color: $white;
   }
 
   .footer-link {
@@ -248,42 +263,6 @@
   }
 }
 
-.ids-wrapper {
-  display: grid;
-  grid-template-columns: 30% 30% 30%;
-  align-items: center;
-  justify-content: space-between;
-  max-width: 650px;
-  margin: auto;
-  height: 50vh;
-
-  .id-box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid $lightGray;
-    padding: 2rem;
-    border-radius: 24px;
-    cursor: pointer;
-
-    img {
-      height: 80px;
-    }
-
-    .id-name {
-      font-family: 'Inter';
-      font-style: normal;
-      font-weight: 400;
-      font-size: 16px;
-      line-height: 19px;
-      letter-spacing: -0.02em;
-      color: $dark;
-      margin-top: 16px;
-    }
-  }
-}
-
 @import '_cardStyles';
 @import '_modals';
 @import '_navbar';
@@ -292,6 +271,7 @@
 @import '_profileNav';
 @import '_verificationId';
 @import '_seeAll';
+@import '_workExperience';
 @import '_congratsScreen';
 
 @media screen and (max-width: 970px) {
@@ -321,35 +301,6 @@
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-  }
-
-  .ids-wrapper {
-    display: grid;
-    grid-template-columns: 100%;
-    align-items: center;
-    justify-content: space-between;
-    max-width: 200px;
-    margin: auto;
-    height: 50vh;
-
-    .id-box {
-      margin-top: 2rem;
-
-      img {
-        height: 80px;
-      }
-
-      .id-name {
-        font-family: 'Inter';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 16px;
-        line-height: 19px;
-        letter-spacing: -0.02em;
-        color: $dark;
-        margin-top: 16px;
-      }
-    }
   }
 }
 

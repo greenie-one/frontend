@@ -1,18 +1,8 @@
-import { useState, KeyboardEvent } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-import {
-  createStyles,
-  rem,
-  Text,
-  Button,
-  Divider,
-  PasswordInput,
-  Flex,
-  Box,
-  em,
-} from '@mantine/core';
+import { createStyles, rem, Text, Button, Divider, PasswordInput, Flex, Box, em } from '@mantine/core';
 import { useLocalStorage } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { useAuthContext } from '../../context/AuthContext';
@@ -27,15 +17,7 @@ import '../../styles/global.scss';
 const LoginStepTwo = () => {
   const navigate = useNavigate();
   const { classes: inputClasses } = inputStyles();
-  const {
-    loginForm,
-    state,
-    dispatch,
-    isValidEmail,
-    isPhoneNumber,
-    setValidationId,
-    setForceRender,
-  } = useAuthContext();
+  const { loginForm, state, dispatch, isValidEmail, isPhoneNumber, setValidationId, setForceRender } = useAuthContext();
 
   const [authTokens, setAuthTokens] = useLocalStorage({ key: 'auth-tokens' });
   const [isLoading, setIsLoading] = useState(false);
@@ -121,7 +103,21 @@ const LoginStepTwo = () => {
             sx: { borderRadius: em(8) },
           });
         }
-        if (err.response?.data?.code === 'GR0008') {
+        if (err.response?.data?.code === 'GRA0012') {
+          loginForm.setFieldValue('password', '');
+
+          notifications.update({
+            id: 'load-data',
+            title: 'Error !',
+            message: 'Invalid Credentials. Please try again.',
+            autoClose: 2200,
+            withCloseButton: false,
+            color: 'red',
+            icon: <FaExclamation />,
+            sx: { borderRadius: em(8) },
+          });
+        }
+        if (err.response?.data?.code === 'GRA0008') {
           loginForm.setFieldValue('password', '');
 
           notifications.update({
@@ -165,7 +161,7 @@ const LoginStepTwo = () => {
         });
 
         const res = await axios.post(authApiList.login, {
-          mobileNumber: loginForm.values.emailPhoneGreenieId,
+          mobileNumber: `91${loginForm.values.emailPhoneGreenieId}`,
         });
 
         if (res.data) {
@@ -209,6 +205,7 @@ const LoginStepTwo = () => {
             icon: <FaExclamation />,
             sx: { borderRadius: em(8) },
           });
+          console.log(err);
         }
       } finally {
         setIsLoading(false);
@@ -220,11 +217,7 @@ const LoginStepTwo = () => {
     <>
       {state.loginStep === 2 && isValidEmail(loginForm.values.emailPhoneGreenieId) && (
         <Box>
-          <PasswordInput
-            label="Enter Password"
-            classNames={inputClasses}
-            {...loginForm.getInputProps('password')}
-          />
+          <PasswordInput label="Enter Password" classNames={inputClasses} {...loginForm.getInputProps('password')} />
           <Flex direction={'row'} align={'center'} justify={'space-between'} mt={'6px'}>
             <Text className="loginLink" onClick={handleLoginWithPhoneNo}>
               Login using Phone Number
@@ -243,21 +236,17 @@ const LoginStepTwo = () => {
 
       {state.loginStep === 2 && isPhoneNumber(loginForm.values.emailPhoneGreenieId) && (
         <Box>
-          <Flex
-            direction={'row'}
-            className="tabTopBox"
-            onClick={() => dispatch({ type: 'PREVLOGINSTEP' })}
-          >
+          <Flex direction={'row'} className="tabTopBox" onClick={() => dispatch({ type: 'PREVLOGINSTEP' })}>
             <BsArrowLeft size={'15px'} />
             <Text className="tabHeading">Login using OTP</Text>
           </Flex>
-          <Text className="disbledInput">
+          <Text className="disabledInput">
             {loginForm.values.emailPhoneGreenieId}
-            <span className="changeBtn" onClick={handleChangeButton}>
+            <Button unstyled className="changeBtn" onClick={handleChangeButton}>
               Change
-            </span>
+            </Button>
           </Text>
-          <Text className="profileTextBold">
+          <Text className="profileTextBold" mb={'2rem'}>
             A one-time passowrd (OTP) will be sent to your registered phone number for verification
           </Text>
           <Button type="submit" onClick={sendLoginOTP} className="primaryBtn">

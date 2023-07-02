@@ -14,9 +14,9 @@ export const AuthInfo = () => {
 
       <Title className="authInfoHeading">Welcome to Greenie, your professional community </Title>
       <Text className="authInfoText">
-        Our background verification app delivers reliable and comprehensive screening solutions,
-        enabling you to make informed decisions with confidence. Trust and safety are guaranteed
-        with our accurate and efficient background checks.
+        Our background verification app delivers reliable and comprehensive screening solutions, enabling you to make
+        informed decisions with confidence. Trust and safety are guaranteed with our accurate and efficient background
+        checks.
       </Text>
 
       <Box className="authInfoTestimonialBox">
@@ -42,7 +42,7 @@ const useStyles = createStyles((theme) => ({
     fontWeight: 400,
     fontSize: '0.95rem',
     lineHeight: rem(22),
-    color: '#FFFFFF',
+    color: '$white',
     marginBottom: '2rem',
 
     [`@media screen and (max-width: ${em(1024)})`]: {
@@ -50,7 +50,7 @@ const useStyles = createStyles((theme) => ({
     },
   },
   authLeftTestimonial: {
-    background: '#FFFFFF',
+    background: '$white',
     boxShadow: ' 0px 4px 34px rgba(0, 0, 0, 0.1)',
     borderRadius: rem(20),
     padding: '1.25rem',

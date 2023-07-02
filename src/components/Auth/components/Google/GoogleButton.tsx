@@ -44,7 +44,7 @@ const GoogleButton = () => {
       <span>
         <img src={GoogleLogo} alt="Google" />
       </span>
-      Contiue with Google
+      Continue with Google
     </Button>
   );
 };

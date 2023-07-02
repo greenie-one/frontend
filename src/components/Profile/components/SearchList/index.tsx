@@ -65,10 +65,7 @@ interface ISearchListPropsType {
   setShowSearchList: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const SearchList: React.FC<ISearchListPropsType> = ({
-  searchQuery,
-  setShowSearchList,
-}): JSX.Element => {
+export const SearchList: React.FC<ISearchListPropsType> = ({ searchQuery, setShowSearchList }): JSX.Element => {
   const { classes } = useStyles();
 
   const [profilesData, setProfilesData] = useState([]);

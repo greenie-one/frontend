@@ -19,6 +19,7 @@ export const detailsFormStyles = createStyles((theme) => ({
     display: 'grid',
     alignItems: 'start',
     gap: rem(14),
+    maxWidth: rem(420),
   },
 
   detailsCategoryTitle: {
@@ -34,6 +35,7 @@ export const detailsFormStyles = createStyles((theme) => ({
       paddingBlockStart: rem(32),
       msOverflowStyle: 'none',
       scrollbarWidth: 'none',
+      color: '#697082',
 
       ['&::-webkit-scrollbar']: {
         display: 'none',
@@ -57,6 +59,7 @@ export const detailsInputStyles = createStyles((theme) => ({
     fontSize: rem(14),
     fontWeight: 500,
     borderRadius: rem(8),
+    color: '#697082',
 
     [`@media screen and (max-width: ${rem(768)})`]: {
       maxWidth: '100vw',

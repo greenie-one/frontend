@@ -13,8 +13,7 @@ import { BsCheckLg } from 'react-icons/bs';
 import '../../styles/global.scss';
 
 const SignUpStepTwo = () => {
-  const { signupForm, state, dispatch, isPhoneNumber, isValidEmail, setValidationId } =
-    useAuthContext();
+  const { signupForm, state, dispatch, isPhoneNumber, isValidEmail, setValidationId } = useAuthContext();
   const { classes: inputClasses } = inputStyles();
   const { signUpStep } = state;
   const [isLoading, setIsLoading] = useState(false);
@@ -67,7 +66,7 @@ const SignUpStepTwo = () => {
           dispatch({ type: 'NEXTSIGNUPSTEP' });
         }
       } catch (err: any) {
-        if (err.response?.data?.code === 'GR0003') {
+        if (err.response?.data?.code === 'GRA0003') {
           signupForm.setFieldValue('password', '');
           signupForm.setFieldValue('confirmPassword', '');
 
@@ -110,7 +109,7 @@ const SignUpStepTwo = () => {
         });
 
         const res = await axios.post(authApiList.signup, {
-          mobileNumber: signupForm.values.emailPhone,
+          mobileNumber: `+91${signupForm.values.emailPhone}`,
         });
 
         if (res.data) {
@@ -131,18 +130,18 @@ const SignUpStepTwo = () => {
           dispatch({ type: 'NEXTSIGNUPSTEP' });
         }
       } catch (err: any) {
-        if (err.response?.data?.code === 'GR0003') {
+        if (err.response?.data?.code === 'GRA0003') {
           notifications.update({
             id: 'load-data',
             title: 'Error !',
-            message:
-              'This mobile number is already registered. Please try again with a different mobile number.',
+            message: 'This mobile number is already registered. Please try again with a different mobile number.',
             autoClose: 2200,
             withCloseButton: false,
             color: 'red',
             icon: <FaExclamation />,
             sx: { borderRadius: em(8) },
           });
+          console.log(err.message);
         }
       } finally {
         setIsLoading(false);
@@ -154,17 +153,13 @@ const SignUpStepTwo = () => {
     <>
       {(signUpStep === 2 && isValidEmail(signupForm.values.emailPhone) && (
         <Box>
-          <Text className="disbledInput">
+          <Text className="disabledInput">
             {signupForm.values.emailPhone}
-            <span className="changeBtn" onClick={() => dispatch({ type: 'PREVSIGNUPSTEP' })}>
+            <Button unstyled className="changeBtn" onClick={() => dispatch({ type: 'PREVSIGNUPSTEP' })}>
               Change
-            </span>
+            </Button>
           </Text>
-          <PasswordInput
-            label="Create Password"
-            classNames={inputClasses}
-            {...signupForm.getInputProps('password')}
-          />
+          <PasswordInput label="Create Password" classNames={inputClasses} {...signupForm.getInputProps('password')} />
 
           <PasswordInput
             label="Confirm Password"
@@ -191,15 +186,14 @@ const SignUpStepTwo = () => {
       )) ||
         (signUpStep === 2 && isPhoneNumber(signupForm.values.emailPhone) && (
           <Box id="disbaled-input-screen">
-            <Text className="disbledInput">
+            <Text className="disabledInput">
               {signupForm.values.emailPhone}
               <span className="changeBtn" onClick={() => dispatch({ type: 'PREVSIGNUPSTEP' })}>
                 Change
               </span>
             </Text>
             <Text className="tearms-condition">
-              By creating an account, you agree to our <u>Terms of Service</u> and{' '}
-              <u>Privacy & Cookie Statement</u>.
+              By creating an account, you agree to our <u>Terms of Service</u> and <u>Privacy & Cookie Statement</u>.
             </Text>
             <Button type="submit" onClick={MobileSignupStep} className="primaryBtn">
               Send OTP
@@ -217,8 +211,7 @@ export default SignUpStepTwo;
 const inputStyles = createStyles((theme) => ({
   root: {
     position: 'relative',
-    marginBottom: '24px',
-    marginTop: '24px',
+    marginBlock: '12px',
   },
 
   input: {
@@ -240,6 +233,12 @@ const inputStyles = createStyles((theme) => ({
       fontSize: '10px',
       lineHeight: '12px',
       margin: '0 auto',
+    },
+  },
+
+  passwordInput: {
+    '& input': {
+      color: '#697082',
     },
   },
 

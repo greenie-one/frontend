@@ -1,6 +1,6 @@
 import { useState, useReducer } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, TextInput, createStyles, Flex, List, Drawer, em, rem } from '@mantine/core';
+import { Box, TextInput, createStyles, Flex, List, Drawer, em, rem, Menu, Divider, Group, Text } from '@mantine/core';
 import { Link, useLocation } from 'react-router-dom';
 import { MdVerified, MdOutlineMenuOpen, MdOutlineClose } from 'react-icons/md';
 import { GoSearch } from 'react-icons/go';
@@ -15,6 +15,29 @@ import { useSettingsContext } from '../../Settings/context/SettingsContext';
 import { useProfileContext } from '../context/ProfileContext';
 import { notifications } from '@mantine/notifications';
 import { BsCheckLg } from 'react-icons/bs';
+
+const notificationsData = [
+  {
+    imgUrl: JohnMarston,
+    heading: 'Your request to verify skill sent',
+    subHeading: 'Honestrly, your energy is infections. I wish I could work with someone like you.',
+  },
+  {
+    imgUrl: JohnMarston,
+    heading: 'Request to verify address',
+    subHeading: 'Albert Mereno is asking you to verify your account',
+  },
+  {
+    imgUrl: JohnMarston,
+    heading: 'Help Jeremy verify his skills',
+    subHeading: 'Verify his skills as a colleague and help Jeremy grow on Greenie',
+  },
+  {
+    imgUrl: JohnMarston,
+    heading: 'Request to verify your ID',
+    subHeading: 'Esther Smith is asking you to verify your address proof',
+  },
+];
 
 type DrawerState = {
   firstDrawerOpened: boolean;
@@ -32,7 +55,7 @@ export const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [showSearchList, setShowSearchList] = useState<boolean>(false);
   const { setShowDetailsId } = useSettingsContext();
-  const { isLoading, setIsLoading } = useProfileContext();
+  const { setIsLoading, scrollToTop } = useProfileContext();
   const navigate = useNavigate();
 
   const removeAuthTokens = () => {
@@ -109,187 +132,234 @@ export const Navbar = () => {
     secondDrawerOpened: false,
   });
 
+  const handleShowDetailsID = (index: number) => {
+    scrollToTop();
+    setShowDetailsId(index);
+  };
+
   return (
     <header>
-      <nav className="navbar">
-        <Link to={'/'} className="logo">
-          <span className="greenie">Greenie</span>
-          <span className="nav-verified">
-            <MdVerified size={'20px'} color="#9fe870" />
-          </span>
-        </Link>
-        <Box
-          className="search"
-          tabIndex={0}
-          onFocus={() => setShowSearchList(true)}
-          onBlur={() => setShowSearchList(false)}
-        >
-          <TextInput
-            classNames={inputClasses}
-            placeholder="Search"
-            icon={<GoSearch />}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            value={searchQuery}
-          />
-          {debouncedValue && showSearchList ? (
-            <SearchList searchQuery={debouncedValue} setShowSearchList={setShowSearchList} />
-          ) : null}
-        </Box>
-        <Box className="right-section">
-          <AiOutlineBell size={'22px'} className="bell-icon" />
-          <img className="profile-picture" src={JohnMarston} alt="Profile Piture" />
-          <AiFillCaretDown />
-
-          {!state.firstDrawerOpened && isProfilePage && (
-            <span className={classes.menuOpenBtn}>
-              <MdOutlineMenuOpen
-                role="button"
-                onClick={() => dispatch({ type: 'OPEN_FIRST_DRAWER' })}
-              />
+      <Box className="navbar">
+        <Box className="nav-container">
+          <Link to={'/'} className="logo">
+            <span className="greenie">Greenie</span>
+            <span className="nav-verified">
+              <MdVerified size={'20px'} color="#9fe870" />
             </span>
-          )}
+          </Link>
 
-          {!state.secondDrawerOpened && isProfileSettingsPage && (
-            <span className={classes.menuOpenBtn}>
-              <MdOutlineMenuOpen
-                role="button"
-                onClick={() => dispatch({ type: 'OPEN_SECOND_DRAWER' })}
-              />
-            </span>
-          )}
-        </Box>
-
-        <Drawer
-          opened={state.firstDrawerOpened}
-          onClose={() => dispatch({ type: 'CLOSE_FIRST_DRAWER' })}
-          withCloseButton={false}
-          position="right"
-          size="100%"
-        >
-          <nav
-            className={classes.mobileNavOptionsContainer}
-            onClick={() => dispatch({ type: 'CLOSE_FIRST_DRAWER' })}
+          <Box
+            className="search"
+            tabIndex={0}
+            onFocus={() => setShowSearchList(true)}
+            onBlur={() => setShowSearchList(false)}
           >
-            <Flex justify="space-between" align="center" direction="row">
-              <span className={classes.navHeading}>Profile</span>
-              <span className={classes.menuCloseBtn}>
-                <MdOutlineClose
-                  role="button"
-                  onClick={() => dispatch({ type: 'CLOSE_FIRST_DRAWER' })}
-                />
-              </span>
-            </Flex>
-            <List data-autoFocus className={classes.navOptionsList}>
-              <li>
-                <Link to={'/profile'} className={classes.navOptionItems}>
-                  <span className={classes.navOptionsIcon}>
-                    <BiUserCircle />
-                  </span>
-                  <span className={classes.navOptionsText}>View Profile</span>
-                </Link>
-              </li>
+            <TextInput
+              classNames={inputClasses}
+              placeholder="Search"
+              icon={<GoSearch />}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              value={searchQuery}
+            />
+            {debouncedValue && showSearchList ? (
+              <SearchList searchQuery={debouncedValue} setShowSearchList={setShowSearchList} />
+            ) : null}
+          </Box>
 
-              <li>
-                <Link to={'/profile/settings'} className={classes.navOptionItems}>
-                  <span className={classes.navOptionsIcon}>
-                    <RiSettings3Line />
-                  </span>
-                  <span className={classes.navOptionsText}>Settings</span>
-                </Link>
-              </li>
-              <li className={classes.navOptionItems}>
+          <Box className="right-section">
+            <Menu trigger="hover" position="bottom-end">
+              <Menu.Target>
+                <Group className="bell-icon-box">
+                  <AiOutlineBell size={'22px'} className="bell-icon" />
+                  {notificationsData.length > 0 && <Box className="red-dot"></Box>}
+                </Group>
+              </Menu.Target>
+              <Menu.Dropdown className="notification-drop-down">
+                {notificationsData.length > 0 ? (
+                  <Box>
+                    {notificationsData.slice(-4).map(({ imgUrl, heading, subHeading }, index) => {
+                      return (
+                        <Box key={index} className="notification">
+                          <img src={imgUrl} alt="profile-picture" className="profile-pic" />
+                          <Box className="notification-text-box">
+                            <Text className="notification-heading">{heading}</Text>
+                            <Text className="notification-subHeading">{subHeading.slice(0, 50)}...</Text>
+                          </Box>
+                        </Box>
+                      );
+                    })}
+                  </Box>
+                ) : (
+                  <Box>No Notifications yet</Box>
+                )}
+              </Menu.Dropdown>
+            </Menu>
+            <Menu trigger="hover" position="bottom-end">
+              <Menu.Target>
+                <Group>
+                  <img className="profile-picture" src={JohnMarston} alt="Profile Piture" />
+                  <AiFillCaretDown className="down-arrow-icon" />
+                </Group>
+              </Menu.Target>
+              <Menu.Dropdown className="profile-dropdown-menu">
+                <List className="navOptionsList">
+                  <li>
+                    <Link to={'/profile'} className="navOptionItems">
+                      <span className="navOptionsIcon">
+                        <BiUserCircle />
+                      </span>
+                      <span className="navOptionsText">View Profile</span>
+                    </Link>
+                  </li>
+
+                  <li>
+                    <Link to={'/profile/settings'} className="navOptionItems">
+                      <span className="navOptionsIcon">
+                        <RiSettings3Line />
+                      </span>
+                      <span className="navOptionsText">Settings</span>
+                    </Link>
+                  </li>
+                  <li className="navOptionItems">
+                    <span className="navOptionsIcon">
+                      <MdOutlineLiveHelp />
+                    </span>
+                    <span className="navOptionsText">Help</span>
+                  </li>
+                  <Divider className="divider" my={'1rem'} />
+                  <button className="navOptionItems" onClick={removeAuthTokens}>
+                    <span className="navOptionsIcon">
+                      <MdExitToApp />
+                    </span>
+                    <span className="navOptionsText">Sign Out</span>
+                  </button>
+                </List>
+              </Menu.Dropdown>
+            </Menu>
+
+            {!state.firstDrawerOpened && isProfilePage && (
+              <span className={classes.menuOpenBtn}>
+                <MdOutlineMenuOpen role="button" onClick={() => dispatch({ type: 'OPEN_FIRST_DRAWER' })} />
+              </span>
+            )}
+
+            {!state.secondDrawerOpened && isProfileSettingsPage && (
+              <span className={classes.menuOpenBtn}>
+                <MdOutlineMenuOpen role="button" onClick={() => dispatch({ type: 'OPEN_SECOND_DRAWER' })} />
+              </span>
+            )}
+          </Box>
+        </Box>
+      </Box>
+
+      <Drawer
+        opened={state.firstDrawerOpened}
+        onClose={() => dispatch({ type: 'CLOSE_FIRST_DRAWER' })}
+        withCloseButton={false}
+        position="right"
+        size="80%"
+      >
+        <nav className={classes.mobileNavOptionsContainer} onClick={() => dispatch({ type: 'CLOSE_FIRST_DRAWER' })}>
+          <Flex justify="space-between" align="center" direction="row">
+            <span className={classes.navHeading}>Profile</span>
+            <span className={classes.menuCloseBtn}>
+              <MdOutlineClose role="button" onClick={() => dispatch({ type: 'CLOSE_FIRST_DRAWER' })} />
+            </span>
+          </Flex>
+          <List className={classes.navOptionsList}>
+            <li>
+              <Link to={'/profile'} className={classes.navOptionItems}>
                 <span className={classes.navOptionsIcon}>
-                  <MdOutlineLiveHelp />
+                  <BiUserCircle />
                 </span>
-                <span className={classes.navOptionsText}>Help</span>
+                <span className={classes.navOptionsText}>View Profile</span>
+              </Link>
+            </li>
+
+            <li>
+              <Link to={'/profile/settings'} className={classes.navOptionItems}>
+                <span className={classes.navOptionsIcon}>
+                  <RiSettings3Line />
+                </span>
+                <span className={classes.navOptionsText}>Settings</span>
+              </Link>
+            </li>
+            <li className={classes.navOptionItems}>
+              <span className={classes.navOptionsIcon}>
+                <MdOutlineLiveHelp />
+              </span>
+              <span className={classes.navOptionsText}>Help</span>
+            </li>
+          </List>
+          <Divider className="divider" />
+          <button className={classes.signOutBtn} onClick={removeAuthTokens}>
+            <span className={classes.signOut}>
+              <MdExitToApp />
+            </span>
+            <span className={classes.signOutText}>Sign Out</span>
+          </button>
+        </nav>
+      </Drawer>
+
+      <Drawer
+        opened={state.secondDrawerOpened}
+        onClose={() => dispatch({ type: 'CLOSE_SECOND_DRAWER' })}
+        withCloseButton={false}
+        position="right"
+        size="100%"
+      >
+        <nav className={classes.mobileNavOptionsContainer}>
+          <Flex justify="space-between" align="center" direction="row" className={classes.logo}>
+            <Box>
+              <Link to={'/'}>
+                <span className={classes.mobileGreenie}>Greenie</span>
+                <span className={classes.mobileVerified}>
+                  <MdVerified />
+                </span>
+              </Link>
+            </Box>
+            <Box className="drawer-right-section">
+              <AiOutlineBell size={'22px'} className="bell-icon" />
+              <Link to={'/profile'}>
+                <img className="profile-picture" src={JohnMarston} alt="Profile Piture" />
+              </Link>
+            </Box>
+
+            <span className={classes.menuCloseBtn}>
+              <MdOutlineClose role="button" onClick={() => dispatch({ type: 'CLOSE_SECOND_DRAWER' })} />
+            </span>
+          </Flex>
+          <Box onClick={() => dispatch({ type: 'CLOSE_SECOND_DRAWER' })}>
+            <List className={classes.navOptionsList}>
+              <li className={classes.navOptionItems} onClick={() => handleShowDetailsID(0)}>
+                <span className={classes.navOptionsIcon2}>
+                  <BiUserCircle />
+                </span>
+                <span className={classes.navOptionsText}>Profile</span>
+              </li>
+              <li className={classes.navOptionItems} onClick={() => handleShowDetailsID(1)}>
+                <span className={classes.navOptionsIcon2}>
+                  <RiSettings3Line />
+                </span>
+                <span className={classes.navOptionsText}>General</span>
+              </li>
+              <li className={classes.navOptionItems} onClick={() => handleShowDetailsID(2)}>
+                <span className={classes.navOptionsIcon2}>
+                  <MdOutlineLock />
+                </span>
+                <span className={classes.navOptionsText}>Privacy</span>
               </li>
             </List>
+            <Divider className="divider" />
             <button className={classes.signOutBtn} onClick={removeAuthTokens}>
               <span className={classes.signOut}>
                 <MdExitToApp />
               </span>
               <span className={classes.signOutText}>Sign Out</span>
             </button>
-          </nav>
-        </Drawer>
-
-        <Drawer
-          opened={state.secondDrawerOpened}
-          onClose={() => dispatch({ type: 'CLOSE_SECOND_DRAWER' })}
-          withCloseButton={false}
-          position="right"
-          size="100%"
-        >
-          <nav className={classes.mobileNavOptionsContainer}>
-            <Flex justify="space-between" align="center" direction="row" className={classes.logo}>
-              <Box>
-                <Link to={'/'}>
-                  <span className={classes.mobileGreenie}>Greenie</span>
-                  <span className={classes.mobileVerified}>
-                    <MdVerified />
-                  </span>
-                </Link>
-              </Box>
-              <Box className="drawer-right-section">
-                <AiOutlineBell size={'22px'} className="bell-icon" />
-                <img className="profile-picture" src={JohnMarston} alt="Profile Piture" />
-              </Box>
-              <span className={classes.menuCloseBtn}>
-                <MdOutlineClose
-                  role="button"
-                  onClick={() => dispatch({ type: 'CLOSE_SECOND_DRAWER' })}
-                />
-              </span>
-            </Flex>
-            <Box onClick={() => dispatch({ type: 'CLOSE_SECOND_DRAWER' })}>
-              <List className={classes.navOptionsList}>
-                <li>
-                  <Link
-                    to={'/profile/settings'}
-                    className={classes.navOptionItems}
-                    onClick={() => setShowDetailsId(0)}
-                  >
-                    <span className={classes.navOptionsIcon2}>
-                      <BiUserCircle />
-                    </span>
-                    <span className={classes.navOptionsText}>Profile</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to={'/profile/settings'}
-                    className={classes.navOptionItems}
-                    onClick={() => setShowDetailsId(1)}
-                  >
-                    <span className={classes.navOptionsIcon2}>
-                      <RiSettings3Line />
-                    </span>
-                    <span className={classes.navOptionsText}>General</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to={'/profile/settings'}
-                    className={classes.navOptionItems}
-                    onClick={() => setShowDetailsId}
-                  >
-                    <span className={classes.navOptionsIcon2}>
-                      <MdOutlineLock />
-                    </span>
-                    <span className={classes.navOptionsText}>Privacy</span>
-                  </Link>
-                </li>
-              </List>
-              <button className={classes.signOutBtn} onClick={removeAuthTokens}>
-                <span className={classes.navOptionsIcon2}>
-                  <MdExitToApp />
-                </span>
-                <span className={classes.signOutText}>Sign Out</span>
-              </button>
-            </Box>
-          </nav>
-        </Drawer>
-      </nav>
+          </Box>
+        </nav>
+      </Drawer>
     </header>
   );
 };
@@ -377,19 +447,10 @@ const useStyles = createStyles((theme) => ({
     color: '#697082',
   },
 
-  mobileNavOptionsList: {
-    color: 'white',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '1rem',
-    alignItems: 'flex-start',
-  },
-
   navOptionsList: {
     display: 'grid',
+    gridTemplateColumns: '1fr',
     gap: rem(6),
-    paddingBlockEnd: '1rem',
-    borderBottom: '1px solid #D1D4DB',
   },
 
   navOptionItems: {
@@ -402,12 +463,10 @@ const useStyles = createStyles((theme) => ({
     paddingInline: em(15),
     paddingBlock: em(12),
     borderRadius: em(8),
-    border: '2px solid #ffffff',
     transition: 'background 150ms linear',
 
     ['&:hover']: {
-      border: '2px solid #f4f4f4',
-      transition: 'background 150ms linear',
+      background: '#F5F5F5',
     },
   },
 
@@ -459,16 +518,11 @@ const useStyles = createStyles((theme) => ({
     paddingBlock: em(12),
     borderRadius: em(8),
     transition: 'background 150ms linear',
+    border: '2px solid #ffffff',
 
     ['&:hover']: {
-      background: '#F4F4F4',
-      transition: 'background 150ms linear',
+      background: '#f5f5f5',
     },
-  },
-
-  signOutIcon: {
-    color: 'inherit',
-    fontSize: rem(18),
   },
 
   signOutText: {
