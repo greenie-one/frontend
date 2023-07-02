@@ -4,7 +4,7 @@ import { useForm, isEmail, isNotEmpty } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 
 import { authApiList } from '../assets/api/ApiList';
-import { HttpClient } from '../utils/generic/httpClient';
+import { HttpClient, Result } from '../utils/generic/httpClient';
 import { showErrorNotification } from '../utils/functions/showErrorNotification';
 
 import { Navbar } from '../components/common/Navbar';
@@ -41,13 +41,13 @@ export const Waitlist = () => {
   const handleWaitlistSubmit = async () => {
     waitlistForm.reset();
 
-    const res: any = await HttpClient.callApi({
+    const res: Result<any> = await HttpClient.callApi({
       url: `${authApiList.waitlist}`,
       method: 'POST',
       body: waitlistForm.getTransformedValues(),
     });
 
-    if (!res.code) {
+    if (res.ok) {
       notifications.show({
         title: 'Success !',
         message: 'You have been added to the waitlist! We will notify you when we launch.',
@@ -60,7 +60,7 @@ export const Waitlist = () => {
         navigate('/');
       }, 2200);
     } else {
-      showErrorNotification(res.code);
+      showErrorNotification(res.error.code);
     }
   };
 
