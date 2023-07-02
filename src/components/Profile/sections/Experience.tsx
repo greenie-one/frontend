@@ -20,8 +20,7 @@ export const Experience = () => {
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [employmentType, setEmploymentType] = useState<EmploymentType | null>(null);
   const [opened, { open, close }] = useDisclosure(false);
-  const { workExperienceData, dispatchDetailsPage, detailsPage, scrollToTop, scrollToProfileNav } =
-    useProfileContext();
+  const { workExperienceData, dispatchDetailsPage, detailsPage, scrollToTop, scrollToProfileNav } = useProfileContext();
 
   const handleToggleWorkExperienceDetails = (): void => {
     scrollToProfileNav();
@@ -59,9 +58,7 @@ export const Experience = () => {
             <Box className="employment-type" onClick={handleWorkExperiencePage}>
               <img src={officeBuilding} alt="Office building" />
               <Title className="title">Employment</Title>
-              <Text className="employment-text">
-                Full-time jobs, part-time jobs, Internships etc.
-              </Text>
+              <Text className="employment-text">Full-time jobs, part-time jobs, Internships etc.</Text>
             </Box>
             <Box className="employment-type" onClick={handleWorkExperiencePage}>
               <img src={freelancer} alt="Freelancer" />
@@ -69,9 +66,7 @@ export const Experience = () => {
               <Text className="employment-text">Commission work, contracts, side hustles etc.</Text>
             </Box>
           </Box>
-          <Text className="employment-privacy-policy">
-            The privacy policy and undertaking statement goes here
-          </Text>
+          <Text className="employment-privacy-policy">The privacy policy and undertaking statement goes here</Text>
         </Modal>
       )}
 
@@ -87,11 +82,7 @@ export const Experience = () => {
               <Text className="link" onClick={handleToggleWorkExperienceDetails}>
                 See All Experiences
               </Text>
-              <Button
-                leftIcon={<MdOutlineEdit />}
-                onClick={handleWorkExperiencePage}
-                className="edit-btn"
-              >
+              <Button leftIcon={<MdOutlineEdit />} onClick={handleWorkExperiencePage} className="edit-btn">
                 Edit Section
               </Button>
             </Box>
@@ -124,24 +115,19 @@ export const Experience = () => {
         >
           {workExperienceData
             .reverse()
-            .map(
-              (
-                { designation, companyName, companyStartDate, companyEndDate, isVerified },
-                index
-              ) => {
-                return (
-                  <Carousel.Slide key={index}>
-                    <WorkExperienceCard
-                      position={designation}
-                      companyName={companyName}
-                      isVerified={isVerified}
-                      companyStartYear={companyStartDate}
-                      companyEndYear={companyEndDate}
-                    />
-                  </Carousel.Slide>
-                );
-              }
-            )}
+            .map(({ designation, companyName, companyStartDate, companyEndDate, isVerified }, index) => {
+              return (
+                <Carousel.Slide key={index}>
+                  <WorkExperienceCard
+                    position={designation}
+                    companyName={companyName}
+                    isVerified={isVerified}
+                    companyStartYear={companyStartDate}
+                    companyEndYear={companyEndDate}
+                  />
+                </Carousel.Slide>
+              );
+            })}
         </Carousel>
       )}
       {workExperienceData.length > 0 && (

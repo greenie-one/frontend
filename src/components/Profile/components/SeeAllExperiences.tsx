@@ -55,10 +55,7 @@ export const SeeAllExperiences = () => {
                   <Text className="position">{workExperience.designation}</Text>
                   <Text className="companyName">{workExperience.companyName}</Text>
                   {workExperience.isVerified ? (
-                    <Button
-                      leftIcon={<MdVerified color="#8CF078" size={'16px'} />}
-                      className="verified"
-                    >
+                    <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
                       Verified
                     </Button>
                   ) : (

@@ -13,8 +13,7 @@ import { BsCheckLg } from 'react-icons/bs';
 import '../../styles/global.scss';
 
 const SignUpStepTwo = () => {
-  const { signupForm, state, dispatch, isPhoneNumber, isValidEmail, setValidationId } =
-    useAuthContext();
+  const { signupForm, state, dispatch, isPhoneNumber, isValidEmail, setValidationId } = useAuthContext();
   const { classes: inputClasses } = inputStyles();
   const { signUpStep } = state;
   const [isLoading, setIsLoading] = useState(false);
@@ -135,8 +134,7 @@ const SignUpStepTwo = () => {
           notifications.update({
             id: 'load-data',
             title: 'Error !',
-            message:
-              'This mobile number is already registered. Please try again with a different mobile number.',
+            message: 'This mobile number is already registered. Please try again with a different mobile number.',
             autoClose: 2200,
             withCloseButton: false,
             color: 'red',
@@ -157,19 +155,11 @@ const SignUpStepTwo = () => {
         <Box>
           <Text className="disabledInput">
             {signupForm.values.emailPhone}
-            <Button
-              unstyled
-              className="changeBtn"
-              onClick={() => dispatch({ type: 'PREVSIGNUPSTEP' })}
-            >
+            <Button unstyled className="changeBtn" onClick={() => dispatch({ type: 'PREVSIGNUPSTEP' })}>
               Change
             </Button>
           </Text>
-          <PasswordInput
-            label="Create Password"
-            classNames={inputClasses}
-            {...signupForm.getInputProps('password')}
-          />
+          <PasswordInput label="Create Password" classNames={inputClasses} {...signupForm.getInputProps('password')} />
 
           <PasswordInput
             label="Confirm Password"
@@ -203,8 +193,7 @@ const SignUpStepTwo = () => {
               </span>
             </Text>
             <Text className="tearms-condition">
-              By creating an account, you agree to our <u>Terms of Service</u> and{' '}
-              <u>Privacy & Cookie Statement</u>.
+              By creating an account, you agree to our <u>Terms of Service</u> and <u>Privacy & Cookie Statement</u>.
             </Text>
             <Button type="submit" onClick={MobileSignupStep} className="primaryBtn">
               Send OTP

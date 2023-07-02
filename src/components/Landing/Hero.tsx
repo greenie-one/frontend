@@ -43,8 +43,8 @@ export const LandingHero = () => {
     if (isInView) {
       animate(
         'span',
-        { scale:[0,1], transformOrigin:"top left" },
-        { type: 'spring', bounce:0.4, bounceStiffness:400, duration:1.5}
+        { scale: [0, 1], transformOrigin: 'top left' },
+        { type: 'spring', bounce: 0.4, bounceStiffness: 400, duration: 1.5 }
       );
     }
   }, [isInView]);
@@ -54,10 +54,12 @@ export const LandingHero = () => {
       <_2ColumnLayout>
         <Box className={classes.heroContentContainer}>
           <Title order={1} className={classes.heroTitle}>
-            <span className={classes.highlight}>Unlocking</span> <br/>The Future Of <br/> Background Verification
+            <span className={classes.highlight}>Unlocking</span> <br />
+            The Future Of <br /> Background Verification
           </Title>
           <Text className={classes.heroText}>
-          Experience verifications, document storage, contract creation, sharing of verification reports on our secure encrypted platform.
+            Experience verifications, document storage, contract creation, sharing of verification reports on our secure
+            encrypted platform.
           </Text>
           <Box className={classes.heroActionBtn}>
             <Link to="/waitlist">
@@ -88,7 +90,10 @@ export const LandingHero = () => {
             >
               <img src={popup6} alt="popup6" />
             </motion.span>
-            <motion.span initial={{ translateX:'-65%',  translateY:'-25%' }} className={`${classes.popups} ${classes.popup2}`}>
+            <motion.span
+              initial={{ translateX: '-65%', translateY: '-25%' }}
+              className={`${classes.popups} ${classes.popup2}`}
+            >
               <img src={popup2} alt="popup2" />
             </motion.span>
             <motion.span
@@ -97,7 +102,10 @@ export const LandingHero = () => {
             >
               <img src={popup3} alt="popup3" />
             </motion.span>
-            <motion.span initial={{ translateX:"-32%",  translateY:"-50%" }}className={`${classes.popups} ${classes.popup1}`}>
+            <motion.span
+              initial={{ translateX: '-32%', translateY: '-50%' }}
+              className={`${classes.popups} ${classes.popup1}`}
+            >
               <img src={popup1} alt="popup1" />
             </motion.span>
           </span>
@@ -131,9 +139,8 @@ const useStyles = createStyles((theme) => ({
 
     [`@media screen and (max-width: ${em(1440)})`]: {
       fontSize: '2.6rem',
-      width:"18ch"
+      width: '18ch',
     },
-
 
     [`@media screen and (max-width: ${em(1340)})`]: {
       fontSize: '2.6rem',
@@ -144,7 +151,6 @@ const useStyles = createStyles((theme) => ({
       maxWidth: '25ch',
       marginInline: 'auto',
     },
-
 
     [`@media screen and (max-width: ${em(768)})`]: {
       fontSize: '2.5rem',
@@ -175,8 +181,8 @@ const useStyles = createStyles((theme) => ({
     fontSize: '0.85rem',
     marginBlockStart: '1.2rem',
     marginBlockEnd: '1.25rem',
-    maxWidth:"45ch",
-    width:"100%",
+    maxWidth: '45ch',
+    width: '100%',
 
     [`@media screen and (max-width: ${em(1280)})`]: {
       textAlign: 'center',
@@ -217,7 +223,7 @@ const useStyles = createStyles((theme) => ({
 
   heroIllustration: {
     zIndex: -1,
-    width:"98%",
+    width: '98%',
 
     [`@media screen and (max-width: ${em(1280)})`]: {
       gridRow: '1/2',
@@ -251,7 +257,7 @@ const useStyles = createStyles((theme) => ({
     left: 0,
 
     [`@media screen and (max-width: ${em(768)})`]: {
-      width: '40dvw'
+      width: '40dvw',
     },
   },
 

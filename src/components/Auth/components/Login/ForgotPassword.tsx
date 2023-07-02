@@ -1,14 +1,4 @@
-import {
-  TextInput,
-  createStyles,
-  em,
-  rem,
-  Text,
-  Button,
-  Box,
-  Flex,
-  PasswordInput,
-} from '@mantine/core';
+import { TextInput, createStyles, em, rem, Text, Button, Box, Flex, PasswordInput } from '@mantine/core';
 import { useAuthContext } from '../../context/AuthContext';
 import { BsArrowLeft, BsCheckLg } from 'react-icons/bs';
 import '../../styles/global.scss';
@@ -65,7 +55,11 @@ const ForgotPassword = () => {
       {state.resetPasswordStep === 1 && (
         <Box>
           <Text className="profileTextBold">Help us identify your Greenie account for you.</Text>
-          <TextInput label="Email or greenie ID" {...loginForm.getInputProps('emailPhoneGreenieId')} classNames={inputClasses} />
+          <TextInput
+            label="Email or greenie ID"
+            {...loginForm.getInputProps('emailPhoneGreenieId')}
+            classNames={inputClasses}
+          />
           <Button type="submit" className="primaryBtn" onClick={handleNextStep}>
             Continue
           </Button>
@@ -80,9 +74,12 @@ const ForgotPassword = () => {
               Change
             </span>
           </Text>
-          {!isValidEmail(loginForm.values.emailPhoneGreenieId) && !isPhoneNumber(loginForm.values.emailPhoneGreenieId) && (
-            <Text className="profileTextBold">A one-time passowrd (OTP) will be sent to your registered phone number for verification</Text>
-          )}
+          {!isValidEmail(loginForm.values.emailPhoneGreenieId) &&
+            !isPhoneNumber(loginForm.values.emailPhoneGreenieId) && (
+              <Text className="profileTextBold">
+                A one-time passowrd (OTP) will be sent to your registered phone number for verification
+              </Text>
+            )}
           {isValidEmail(loginForm.values.emailPhoneGreenieId) && (
             <Text className="profileTextBold" mb={'2rem'}>
               A one-time passowrd (OTP) will be sent to your registered email address for verification
@@ -104,9 +101,18 @@ const ForgotPassword = () => {
           {isValidEmail(loginForm.values.emailPhoneGreenieId) && (
             <Text className="profileTextBold">Enter the one-time passowrd sent to your email address</Text>
           )}
-          <TextInput classNames={otpInputClasses} maxLength={6} pattern="[0-9]{6}" {...loginForm.getInputProps('otp')} />
+          <TextInput
+            classNames={otpInputClasses}
+            maxLength={6}
+            pattern="[0-9]{6}"
+            {...loginForm.getInputProps('otp')}
+          />
           <Text className="profileTextBold">Enter new password</Text>
-          <PasswordInput classNames={inputClasses} {...loginForm.getInputProps('password')} label="Enter new password" />
+          <PasswordInput
+            classNames={inputClasses}
+            {...loginForm.getInputProps('password')}
+            label="Enter new password"
+          />
 
           {secondsRemaining === 0 ? (
             <Button compact color="gray" variant="subtle" onClick={handleResendOTP} className="resendLink">

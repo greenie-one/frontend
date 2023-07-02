@@ -26,10 +26,7 @@ interface ISearchListContentType {
   classes: any;
 }
 
-export const SearchResult: React.FC<ISearchListContentType> = ({
-  results,
-  classes,
-}): JSX.Element => {
+export const SearchResult: React.FC<ISearchListContentType> = ({ results, classes }): JSX.Element => {
   console.log(results);
 
   return (
@@ -54,9 +51,7 @@ export const SearchResult: React.FC<ISearchListContentType> = ({
                     <MdVerified color="#9FE870" />
                   </span>
                 ) : null}
-                {profile?.designation ? (
-                  <Box className={classes.designation}>{'Software Developer'}</Box>
-                ) : null}
+                {profile?.designation ? <Box className={classes.designation}>{'Software Developer'}</Box> : null}
               </Box>
               <span className={classes.rating}>
                 {profile?.rating ? (

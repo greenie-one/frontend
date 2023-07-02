@@ -3,10 +3,9 @@ import { _2ColumnLayout } from '../layouts/_2ColumnLayout';
 import hiringDocuments from '../../assets/images/Landing/hiring-documents.png';
 import cap from '../../assets/images/Landing/cap.svg';
 import { MdVerified } from 'react-icons/md';
-import { motion } from "framer-motion";
-import { useAnimate, useTransform , useInView } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useAnimate, useTransform, useInView } from 'framer-motion';
 import { useEffect } from 'react';
-
 
 export const LandingHiring: React.FC = (): JSX.Element => {
   const { classes } = useStyles();
@@ -17,8 +16,8 @@ export const LandingHiring: React.FC = (): JSX.Element => {
     if (isInView) {
       animate(
         scope.current,
-        { y:[20,0], opacity:[0,1]},
-        { type: 'spring', bounce:0.8, bounceStiffness:200, duration:1.5, delay:0.2}
+        { y: [20, 0], opacity: [0, 1] },
+        { type: 'spring', bounce: 0.8, bounceStiffness: 200, duration: 1.5, delay: 0.2 }
       );
     }
   }, [isInView]);
@@ -29,27 +28,23 @@ export const LandingHiring: React.FC = (): JSX.Element => {
         <Box className={''}>
           <Title order={1} className={classes.hiringTitle}>
             We make hiring super simple.
-            <Flex
-              justify="center"
-              align="center"
-              direction="row"
-              className={classes.verifiedTextContainer}
-            >
+            <Flex justify="center" align="center" direction="row" className={classes.verifiedTextContainer}>
               <motion.span className={classes.verified}>
                 <MdVerified />
               </motion.span>
-              <span  ref={scope} className={classes.verifiedText}>Verified</span>
+              <span ref={scope} className={classes.verifiedText}>
+                Verified
+              </span>
               <span className={classes.capIconContainer}>
                 <img src={cap} alt="cap" className={'verifiedIcon'} />
               </span>
             </Flex>
           </Title>
           <Text className={classes.hiringText}>
-            Greenie's mission is to instill trust in the hiring process by verifying both candidates
-            and companies. Our platform creates value for companies by allowing HR teams to access
-            verification reports instantly, eliminating weeks of waiting. Simultaneously, we empower
-            candidates by giving them total control over their personal data, democratizing
-            verifications for all
+            Greenie's mission is to instill trust in the hiring process by verifying both candidates and companies. Our
+            platform creates value for companies by allowing HR teams to access verification reports instantly,
+            eliminating weeks of waiting. Simultaneously, we empower candidates by giving them total control over their
+            personal data, democratizing verifications for all
           </Text>
         </Box>
         <Box className={classes.hiringIllustration}>
@@ -80,9 +75,9 @@ const useStyles = createStyles((theme) => ({
     zIndex: -1,
 
     [`@media screen and (max-width: ${em(1440)})`]: {
-      width: "max-content",
-      textAlign: "left",
-      marginInline: "auto",
+      width: 'max-content',
+      textAlign: 'left',
+      marginInline: 'auto',
     },
 
     [`@media screen and (max-width: ${em(1280)})`]: {
@@ -112,7 +107,7 @@ const useStyles = createStyles((theme) => ({
       fontSize: rem(26),
     },
     [`@media screen and (max-width: ${em(280)})`]: {
-      width: "16ch",
+      width: '16ch',
       fontSize: rem(24),
     },
   },
@@ -148,7 +143,6 @@ const useStyles = createStyles((theme) => ({
       fontSize: '1.25rem',
       left: '4.85rem',
     },
-
   },
 
   verified: {
@@ -197,7 +191,7 @@ const useStyles = createStyles((theme) => ({
     maxWidth: '40ch',
 
     [`@media screen and (max-width: ${em(1440)})`]: {
-      textAlign: "left"
+      textAlign: 'left',
     },
 
     [`@media screen and (max-width: ${em(1280)})`]: {
@@ -215,7 +209,7 @@ const useStyles = createStyles((theme) => ({
       marginBlockStart: '1rem',
     },
     [`@media screen and (max-width: ${em(280)})`]: {
-      width: "30ch",
+      width: '30ch',
       fontSize: rem(13),
     },
   },

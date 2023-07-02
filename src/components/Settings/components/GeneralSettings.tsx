@@ -34,9 +34,7 @@ export const GeneralSettings: React.FC = (): JSX.Element => {
         classNames={modalStyles}
       >
         <Box className={modalStyles.confirmationMsgWrapper}>
-          <Text className={modalStyles.title}>
-            Are you sure you want to update the changes made?
-          </Text>
+          <Text className={modalStyles.title}>Are you sure you want to update the changes made?</Text>
 
           <Box className={modalStyles.modalBtnsContainer}>
             {[
@@ -122,14 +120,7 @@ export const GeneralSettings: React.FC = (): JSX.Element => {
           {...generalSettingsForm.getInputProps('PANNumber')}
         />
 
-        <Button
-          className={formClasses.formSubmitBtn}
-          size="sm"
-          type="button"
-          radius="xl"
-          color="teal"
-          onClick={open}
-        >
+        <Button className={formClasses.formSubmitBtn} size="sm" type="button" radius="xl" color="teal" onClick={open}>
           Save
         </Button>
       </form>

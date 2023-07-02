@@ -1,18 +1,7 @@
 import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import {
-  TextInput,
-  createStyles,
-  rem,
-  Text,
-  Button,
-  Box,
-  Flex,
-  em,
-  Chip,
-  Group,
-} from '@mantine/core';
+import { TextInput, createStyles, rem, Text, Button, Box, Flex, em, Chip, Group } from '@mantine/core';
 import { useLocalStorage } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { useAuthContext } from '../../context/AuthContext';
@@ -58,9 +47,7 @@ const Profile = () => {
     }
   };
 
-  const nextStep = (
-    event: React.MouseEvent<HTMLButtonElement> | React.MouseEvent<HTMLDivElement>
-  ) => {
+  const nextStep = (event: React.MouseEvent<HTMLButtonElement> | React.MouseEvent<HTMLDivElement>) => {
     event.preventDefault();
     if (
       active === 1 &&
@@ -142,10 +129,7 @@ const Profile = () => {
     <Box>
       <Box className="progress-bar-wrapper">
         <Box className="progress-bar" bg={'#9fe870'}></Box>
-        <Box
-          className="progress-bar"
-          bg={active === 2 || active === 3 ? '#9fe870' : '#F3F3F3'}
-        ></Box>
+        <Box className="progress-bar" bg={active === 2 || active === 3 ? '#9fe870' : '#F3F3F3'}></Box>
         <Box className="progress-bar" bg={active === 3 ? '#9fe870' : '#F3F3F3'}></Box>
       </Box>
       {active !== 1 && (
@@ -197,13 +181,7 @@ const Profile = () => {
             LinkedIn Account
           </Button>
 
-          <Text
-            fz={'xs'}
-            align="center"
-            color="#4C4C4C"
-            onClick={(e) => nextStep(e)}
-            style={{ cursor: 'pointer' }}
-          >
+          <Text fz={'xs'} align="center" color="#4C4C4C" onClick={(e) => nextStep(e)} style={{ cursor: 'pointer' }}>
             Skip for now
           </Text>
         </Box>

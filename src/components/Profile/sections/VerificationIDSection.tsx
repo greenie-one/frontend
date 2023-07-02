@@ -48,14 +48,7 @@ export const VerificationIDSection = () => {
   return (
     <section className="verificationId-section  container">
       {isAgreed && documentsData.length === 0 && (
-        <Modal
-          className="modal"
-          size={'55%'}
-          fullScreen={isMobile}
-          opened={opened}
-          onClose={onClose}
-          centered
-        >
+        <Modal className="modal" size={'55%'} fullScreen={isMobile} opened={opened} onClose={onClose} centered>
           <Box className="ids-modal">
             <Text className="title">Select ID that you want to verify</Text>
             <Box className="ids-wrapper">
@@ -73,14 +66,7 @@ export const VerificationIDSection = () => {
         </Modal>
       )}
       {isAgreed && documentsData.length > 0 && (
-        <Modal
-          className="modal"
-          size={'65%'}
-          fullScreen={isMobile}
-          opened={opened}
-          onClose={onClose}
-          centered
-        >
+        <Modal className="modal" size={'65%'} fullScreen={isMobile} opened={opened} onClose={onClose} centered>
           <Box className="ids-modal">
             <Text className="title">Select ID that you want to verify</Text>
             <Box className="ids-wrapper">
@@ -97,36 +83,19 @@ export const VerificationIDSection = () => {
         </Modal>
       )}
       {!isAgreed && (
-        <Modal
-          className="modal"
-          size={'60%'}
-          fullScreen={isMobile}
-          opened={opened}
-          onClose={onClose}
-          centered
-        >
+        <Modal className="modal" size={'60%'} fullScreen={isMobile} opened={opened} onClose={onClose} centered>
           <Box className="disclaimer-modal">
             <Title className="disclaimer-heading">Disclaimer</Title>
             <Text className="disclaimer-subHeading">Verifying IDs on Greenie</Text>
-            <Button
-              className="primaryBtn"
-              disabled={!checked}
-              onClick={() => setIsAgreed(!isAgreed)}
-            >
+            <Button className="primaryBtn" disabled={!checked} onClick={() => setIsAgreed(!isAgreed)}>
               I Agree
             </Button>
             <Box className="checkbox-box">
-              <Checkbox
-                checked={checked}
-                onChange={() => setChecked(!checked)}
-                className="checkbox"
-                color="teal"
-              />
+              <Checkbox checked={checked} onChange={() => setChecked(!checked)} className="checkbox" color="teal" />
               <Text className="tearms-conditions">
-                I understand that during the sign-up process and while using this website, I may be
-                required to provide certain personal information, including but not limited to my
-                name, email address, contact details, and any other information deemed necessary for
-                registration and website usage.
+                I understand that during the sign-up process and while using this website, I may be required to provide
+                certain personal information, including but not limited to my name, email address, contact details, and
+                any other information deemed necessary for registration and website usage.
               </Text>
             </Box>
             <Text className="policy">Click to view Data and Privacy Policy</Text>
@@ -174,9 +143,7 @@ export const VerificationIDSection = () => {
           <Box className="verify-id-text">
             <Text className="text-heading">Stand Out!!</Text>
             <Text className="text-subheading">Verify your identity </Text>
-            <Text className="text-subheading">
-              and get a {<MdVerified color="#8cf078" />} Greenie Check
-            </Text>
+            <Text className="text-subheading">and get a {<MdVerified color="#8cf078" />} Greenie Check</Text>
 
             <Button leftIcon={<AiOutlinePlus />} onClick={open} mt={'sm'} className="add-records">
               Verify ID

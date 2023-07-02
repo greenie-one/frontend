@@ -55,14 +55,7 @@ export const ProfilePhotos = () => {
 
   return (
     <section className="profile-section">
-      <Modal
-        className="modal"
-        size={'65%'}
-        centered
-        fullScreen={isMobile}
-        opened={opened}
-        onClose={close}
-      >
+      <Modal className="modal" size={'65%'} centered fullScreen={isMobile} opened={opened} onClose={close}>
         <Box className="profile-modal">
           <Text className="title">Upload the selected image</Text>
           <img src={profileIllustration} alt="" />
@@ -78,19 +71,10 @@ export const ProfilePhotos = () => {
       </Box>
 
       <Box className="profile-photo" style={backgroundStyle}>
-        <Button
-          leftIcon={<MdOutlineEdit />}
-          onClick={() => fileInputRef.current?.click()}
-          className="edit-btn"
-        >
+        <Button leftIcon={<MdOutlineEdit />} onClick={() => fileInputRef.current?.click()} className="edit-btn">
           Change picture
         </Button>
-        <input
-          type="file"
-          ref={fileInputRef}
-          style={{ display: 'none' }}
-          onChange={handleFileInputChange}
-        />
+        <input type="file" ref={fileInputRef} style={{ display: 'none' }} onChange={handleFileInputChange} />
       </Box>
     </section>
   );

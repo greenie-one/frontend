@@ -3,11 +3,7 @@ import { Box, Chip, Group, Title, TextInput, Textarea, Button, Modal, Text } fro
 import { useProfileContext } from '../../Profile/context/ProfileContext';
 import { useDisclosure } from '@mantine/hooks';
 import { confirmationModalStyle } from '../styles/articleContentStyles';
-import {
-  detailsFormStyles,
-  profileSettingsStyles,
-  detailsInputStyles,
-} from '../styles/articleContentStyles';
+import { detailsFormStyles, profileSettingsStyles, detailsInputStyles } from '../styles/articleContentStyles';
 
 const introductionTags = [
   'Team Player',
@@ -52,9 +48,7 @@ export const ProfileSettings: React.FC = (): JSX.Element => {
         classNames={modalStyles}
       >
         <Box className={modalStyles.confirmationMsgWrapper}>
-          <Text className={modalStyles.title}>
-            Are you sure you want to update the changes made?
-          </Text>
+          <Text className={modalStyles.title}>Are you sure you want to update the changes made?</Text>
 
           <Box className={modalStyles.modalBtnsContainer}>
             {[
@@ -128,14 +122,7 @@ export const ProfileSettings: React.FC = (): JSX.Element => {
           </Chip.Group>
         </Box>
 
-        <Button
-          className={formClasses.formSubmitBtn}
-          size="sm"
-          type="button"
-          radius="xl"
-          color="teal"
-          onClick={open}
-        >
+        <Button className={formClasses.formSubmitBtn} size="sm" type="button" radius="xl" color="teal" onClick={open}>
           Save
         </Button>
       </form>

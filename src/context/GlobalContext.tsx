@@ -14,9 +14,5 @@ export const GlobalContextProvider: React.FC<{
 }> = ({ children }) => {
   const [forceRender, setForceRender] = useState<boolean>(true);
 
-  return (
-    <GlobalContext.Provider value={{ forceRender, setForceRender }}>
-      {children}
-    </GlobalContext.Provider>
-  );
+  return <GlobalContext.Provider value={{ forceRender, setForceRender }}>{children}</GlobalContext.Provider>;
 };

@@ -1,19 +1,7 @@
 import '../styles/global.scss';
 import { useState, useEffect } from 'react';
 import { useProfileContext } from '../context/ProfileContext';
-import {
-  Text,
-  Box,
-  Button,
-  Modal,
-  Checkbox,
-  createStyles,
-  em,
-  rem,
-  TextInput,
-  Title,
-  CopyButton,
-} from '@mantine/core';
+import { Text, Box, Button, Modal, Checkbox, createStyles, em, rem, TextInput, Title, CopyButton } from '@mantine/core';
 import { FaExclamation } from 'react-icons/fa';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 import { BsArrowLeft, BsCheckLg } from 'react-icons/bs';
@@ -221,14 +209,7 @@ export const SeeAadharCard = () => {
   return (
     <section className="container documents-container">
       {aadharIsVerified ? (
-        <Modal
-          centered
-          className="modal"
-          size={'55%'}
-          fullScreen={isMobile}
-          opened={opened}
-          onClose={close}
-        >
+        <Modal centered className="modal" size={'55%'} fullScreen={isMobile} opened={opened} onClose={close}>
           <Box className="congratulations-modal">
             <img src={checkImg} alt="Checked" />
             <Title className="title">
@@ -245,18 +226,11 @@ export const SeeAadharCard = () => {
                 {({ copied, copy }) => (
                   <Box>
                     {copied ? (
-                      <Button
-                        className="copy-btn"
-                        leftIcon={<MdOutlineContentCopy size={'15px'} />}
-                      >
+                      <Button className="copy-btn" leftIcon={<MdOutlineContentCopy size={'15px'} />}>
                         Copied
                       </Button>
                     ) : (
-                      <Button
-                        className="copy-btn"
-                        onClick={copy}
-                        leftIcon={<MdOutlineContentCopy size={'15px'} />}
-                      >
+                      <Button className="copy-btn" onClick={copy} leftIcon={<MdOutlineContentCopy size={'15px'} />}>
                         Copy
                       </Button>
                     )}
@@ -302,13 +276,7 @@ export const SeeAadharCard = () => {
               {...verifyAadharForm.getInputProps('otp')}
             />
             {secondsRemaining === 0 ? (
-              <Button
-                compact
-                color="gray"
-                variant="subtle"
-                onClick={requestOTPForAadhar}
-                className="resendLink"
-              >
+              <Button compact color="gray" variant="subtle" onClick={requestOTPForAadhar} className="resendLink">
                 Resend
               </Button>
             ) : (
@@ -416,25 +384,15 @@ export const SeeAadharCard = () => {
               maxLength={12}
               {...verifyAadharForm.getInputProps('aadharNo')}
             />
-            <Button
-              disabled={!checked}
-              onClick={handleOpenModal}
-              className={checked ? 'greenBtn' : 'disabledBtn'}
-            >
+            <Button disabled={!checked} onClick={handleOpenModal} className={checked ? 'greenBtn' : 'disabledBtn'}>
               Click to verify
             </Button>
             <Box className="checkbox-box">
-              <Checkbox
-                checked={checked}
-                onChange={() => setChecked(!checked)}
-                className="checkbox"
-                color="teal"
-              />
+              <Checkbox checked={checked} onChange={() => setChecked(!checked)} className="checkbox" color="teal" />
               <Text className="tearms-conditions">
-                I understand that during the sign-up process and while using this website, I may be
-                required to provide certain personal information, including but not limited to my
-                name, email address, contact details, and any other information deemed necessary for
-                registration and website usage.
+                I understand that during the sign-up process and while using this website, I may be required to provide
+                certain personal information, including but not limited to my name, email address, contact details, and
+                any other information deemed necessary for registration and website usage.
               </Text>
             </Box>
 

@@ -645,10 +645,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   //------------------Details Page States--------------------------------
 
-  const detailsPageReducer = (
-    state: DetailsPageState,
-    action: DetailsPageAction
-  ): DetailsPageState => {
+  const detailsPageReducer = (state: DetailsPageState, action: DetailsPageAction): DetailsPageState => {
     switch (action.type) {
       case 'SET_SEE_ALL_WORKEXPERIENCE':
         return { ...state, seeAllWorkExperience: action.payload };

@@ -227,10 +227,7 @@ export const AddWorkExperience = () => {
   };
 
   const handleAddSkill = () => {
-    if (
-      !skillForm.validateField('designation').hasError &&
-      !skillForm.validateField('skillRate').hasError
-    ) {
+    if (!skillForm.validateField('designation').hasError && !skillForm.validateField('skillRate').hasError) {
       const newSkill: Skill = {
         skillName: skillForm.values.skillName,
         expertise: skillForm.values.expertise,
@@ -391,9 +388,7 @@ export const AddWorkExperience = () => {
           </Button>
           <Box className="fact-box">
             <Text className="fact-heading">Did you know!</Text>
-            <Text className="fact">
-              Getting Work Experience verified increases your profile rating on Greenie
-            </Text>
+            <Text className="fact">Getting Work Experience verified increases your profile rating on Greenie</Text>
           </Box>
         </Box>
       </Modal>
@@ -407,10 +402,7 @@ export const AddWorkExperience = () => {
       </Box>
       <Box className="progress-bar-wrapper">
         <Box className="progress-bar" bg={'#9fe870'}></Box>
-        <Box
-          className="progress-bar"
-          bg={active === 2 || active === 3 ? '#9fe870' : '#F3F3F3'}
-        ></Box>
+        <Box className="progress-bar" bg={active === 2 || active === 3 ? '#9fe870' : '#F3F3F3'}></Box>
         <Box className="progress-bar" bg={active === 3 ? '#9fe870' : '#F3F3F3'}></Box>
       </Box>
       <Text className="step-identifier">Step {active}/3</Text>
@@ -628,18 +620,10 @@ export const AddWorkExperience = () => {
         <Box>
           <Box className="documents-input-box">
             <img src={uploadIcon} alt="upload icon" />
-            <input
-              type="file"
-              ref={fileInputRef}
-              style={{ display: 'none' }}
-              onChange={handleUploadDocument}
-            />
+            <input type="file" ref={fileInputRef} style={{ display: 'none' }} onChange={handleUploadDocument} />
             <Text className="add-document-heading">Add your work documents</Text>
             {typeof selectedFile === 'undefined' && (
-              <Button
-                className="add-document-sub-heading"
-                onClick={() => fileInputRef.current?.click()}
-              >
+              <Button className="add-document-sub-heading" onClick={() => fileInputRef.current?.click()}>
                 Select document
               </Button>
             )}
@@ -648,14 +632,8 @@ export const AddWorkExperience = () => {
                 <Text className="label">File upload</Text>
                 <Text className="input-file-name">{selectedFile.name}</Text>
                 <Box className="icon-box">
-                  <VscDebugRestart
-                    className="add-document-icon"
-                    onClick={() => fileInputRef.current?.click()}
-                  />
-                  <MdOutlineDelete
-                    className="add-document-icon"
-                    onClick={() => setSelectedFile(undefined)}
-                  />
+                  <VscDebugRestart className="add-document-icon" onClick={() => fileInputRef.current?.click()} />
+                  <MdOutlineDelete className="add-document-icon" onClick={() => setSelectedFile(undefined)} />
                 </Box>
               </Box>
             )}
@@ -693,10 +671,7 @@ export const AddWorkExperience = () => {
                         <BsCheckLg color="#17a672" size={'16px'} />
                         <Text color="#17a672">Added</Text>
                       </Box>
-                      <Box
-                        className="add-document-icon"
-                        onClick={() => handleRemoveDocument(index)}
-                      >
+                      <Box className="add-document-icon" onClick={() => handleRemoveDocument(index)}>
                         <MdOutlineDelete size={'18px'} color="#697082" />
                         <Text color="#697082">Remove</Text>
                       </Box>
@@ -716,10 +691,9 @@ export const AddWorkExperience = () => {
               color="teal"
             />
             <Text className="tearms-conditions">
-              I understand that during the sign-up process and while using this website, I may be
-              required to provide certain personal information, including but not limited to my
-              name, email address, contact details, and any other information deemed necessary for
-              registration and website usage.
+              I understand that during the sign-up process and while using this website, I may be required to provide
+              certain personal information, including but not limited to my name, email address, contact details, and
+              any other information deemed necessary for registration and website usage.
             </Text>
           </Box>
 
@@ -727,11 +701,7 @@ export const AddWorkExperience = () => {
             <Button type="button" className="cancel-btn" variant="default" onClick={handlePrevPage}>
               Back
             </Button>
-            <Button
-              className="green-btn"
-              onClick={handleDocumentContinue}
-              disabled={!documentsChecked}
-            >
+            <Button className="green-btn" onClick={handleDocumentContinue} disabled={!documentsChecked}>
               Continue
             </Button>
           </Box>
