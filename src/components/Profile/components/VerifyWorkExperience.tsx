@@ -1,17 +1,5 @@
 import React, { useReducer, useState, CSSProperties, useRef, useEffect } from 'react';
-import {
-  Title,
-  Text,
-  Box,
-  Button,
-  TextInput,
-  Select,
-  createStyles,
-  em,
-  rem,
-  Modal,
-  Divider,
-} from '@mantine/core';
+import { Title, Text, Box, Button, TextInput, Select, createStyles, em, rem, Modal, Divider } from '@mantine/core';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 import { useForm, isNotEmpty, isEmail, hasLength } from '@mantine/form';
 import { MdVerified, MdOutlineDelete, MdDriveFolderUpload } from 'react-icons/md';
@@ -92,10 +80,7 @@ type ReviewStepState = {
 
 type ReviewStepAction = { type: ReviewActionType };
 
-const VerifiationStepReducer = (
-  state: ReviewStepState,
-  action: ReviewStepAction
-): ReviewStepState => {
+const VerifiationStepReducer = (state: ReviewStepState, action: ReviewStepAction): ReviewStepState => {
   switch (action.type) {
     case ReviewActionType.NEXT_STEP:
       return { currentStep: state.currentStep + 1 };
@@ -266,10 +251,7 @@ export const VerifyWorkExperience: React.FC<IWorkExperience> = ({
 
   const handleAddSkill = (event: React.FormEvent) => {
     event.preventDefault();
-    if (
-      !skillForm.validateField('skillName').hasError &&
-      !skillForm.validateField('expertise').hasError
-    ) {
+    if (!skillForm.validateField('skillName').hasError && !skillForm.validateField('expertise').hasError) {
       const newSkill: ISkill = {
         skillName: skillForm.values.skillName,
         expertise: skillForm.values.expertise,
@@ -287,13 +269,7 @@ export const VerifyWorkExperience: React.FC<IWorkExperience> = ({
   return (
     <>
       {openModalType === ModalType.SeeRequest && (
-        <Modal
-          size={isTablet ? '85%' : '65%'}
-          fullScreen={isMobile}
-          opened={opened}
-          onClose={close}
-          centered
-        >
+        <Modal size={isTablet ? '85%' : '65%'} fullScreen={isMobile} opened={opened} onClose={close} centered>
           <Box className="verify-experience-modal">
             <Title className="heading">Your request has been sent</Title>
             <Text className="subHeading">Verifying your work experience</Text>
@@ -306,10 +282,7 @@ export const VerifyWorkExperience: React.FC<IWorkExperience> = ({
                 <Text className="designation">{designation}</Text>
                 <Text className="company-name">{companyName}</Text>
                 {isVerified ? (
-                  <Button
-                    leftIcon={<MdVerified color="#8CF078" size={'16px'} />}
-                    className="verified"
-                  >
+                  <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
                     Verified
                   </Button>
                 ) : (
@@ -325,21 +298,13 @@ export const VerifyWorkExperience: React.FC<IWorkExperience> = ({
             <Box className="note">
               <AiFillInfoCircle className="info-icon" size={'18px'} />
               <Text className="note-heading">Note</Text>
-              <Text className="text">
-                Candidates cannot see this verification process or its results.
-              </Text>
+              <Text className="text">Candidates cannot see this verification process or its results.</Text>
             </Box>
           </Box>
         </Modal>
       )}
       {openModalType === ModalType.ConfirmRequest && (
-        <Modal
-          size={isTablet ? '85%' : '65%'}
-          fullScreen={isMobile}
-          opened={opened}
-          onClose={close}
-          centered
-        >
+        <Modal size={isTablet ? '85%' : '65%'} fullScreen={isMobile} opened={opened} onClose={close} centered>
           <Box className="verify-experience-modal">
             <Title className="heading">Review and Confirm Your Request</Title>
             <Text className="subHeading">Please confirm sending experience for verification</Text>
@@ -352,10 +317,7 @@ export const VerifyWorkExperience: React.FC<IWorkExperience> = ({
                 <Text className="designation">{designation}</Text>
                 <Text className="company-name">{companyName}</Text>
                 {isVerified ? (
-                  <Button
-                    leftIcon={<MdVerified color="#8CF078" size={'16px'} />}
-                    className="verified"
-                  >
+                  <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
                     Verified
                   </Button>
                 ) : (
@@ -371,21 +333,13 @@ export const VerifyWorkExperience: React.FC<IWorkExperience> = ({
             <Box className="note">
               <AiFillInfoCircle className="info-icon" size={'18px'} />
               <Text className="note-heading">Note</Text>
-              <Text className="text">
-                Candidates cannot see this verification process or its results.
-              </Text>
+              <Text className="text">Candidates cannot see this verification process or its results.</Text>
             </Box>
           </Box>
         </Modal>
       )}
       {openModalType === ModalType.AddSkill && (
-        <Modal
-          size={isTablet ? '65%' : '50%'}
-          fullScreen={isMobile}
-          opened={opened}
-          onClose={close}
-          centered
-        >
+        <Modal size={isTablet ? '65%' : '50%'} fullScreen={isMobile} opened={opened} onClose={close} centered>
           <Box className="add-skill-form">
             <Box className="add-skill-header">
               <Text className="heading">Add Skills</Text>
@@ -446,10 +400,7 @@ export const VerifyWorkExperience: React.FC<IWorkExperience> = ({
               <Text className="designation">{designation}</Text>
               <Text className="company-name">{companyName}</Text>
               {isVerified ? (
-                <Button
-                  leftIcon={<MdVerified color="#8CF078" size={'16px'} />}
-                  className="verified"
-                >
+                <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
                   Verified
                 </Button>
               ) : (
@@ -499,11 +450,7 @@ export const VerifyWorkExperience: React.FC<IWorkExperience> = ({
               {...peerVerificationForm.getInputProps('contactNumber')}
             />
           </Box>
-          <Button
-            className="add-peer-btn"
-            leftIcon={<AiOutlinePlus size={'18px'} />}
-            onClick={handleAddPeer}
-          >
+          <Button className="add-peer-btn" leftIcon={<AiOutlinePlus size={'18px'} />} onClick={handleAddPeer}>
             Add Peer
           </Button>
           <Box className="add-peer-header">
@@ -587,12 +534,7 @@ export const VerifyWorkExperience: React.FC<IWorkExperience> = ({
                 </Box>
                 {selectionPage === 'Document' && (
                   <Box className="documents-action-section">
-                    <input
-                      type="file"
-                      ref={fileInputRef}
-                      style={{ display: 'none' }}
-                      onChange={handleUploadDocument}
-                    />
+                    <input type="file" ref={fileInputRef} style={{ display: 'none' }} onChange={handleUploadDocument} />
                     <Box className="documents-action-nav">
                       <Box className="document-action-heading-box">
                         <Text className="document-action-heading">Documents</Text>
@@ -603,10 +545,7 @@ export const VerifyWorkExperience: React.FC<IWorkExperience> = ({
                       </Box>
 
                       <Box className="document-action-selector">
-                        <Box
-                          className="document-action"
-                          onClick={() => fileInputRef.current?.click()}
-                        >
+                        <Box className="document-action" onClick={() => fileInputRef.current?.click()}>
                           <RiAddCircleLine className="action-icon" />
                           <Text className="action-text">Upload</Text>
                         </Box>
@@ -639,10 +578,7 @@ export const VerifyWorkExperience: React.FC<IWorkExperience> = ({
                       </Box>
 
                       <Box className="document-action-selector">
-                        <Box
-                          className="document-action"
-                          onClick={() => handleOpenModal(ModalType.AddSkill)}
-                        >
+                        <Box className="document-action" onClick={() => handleOpenModal(ModalType.AddSkill)}>
                           <RiAddCircleLine className="action-icon" />
                           <Text className="action-text">Add more</Text>
                         </Box>
@@ -666,17 +602,12 @@ export const VerifyWorkExperience: React.FC<IWorkExperience> = ({
                                 <Box className="selected-skill">
                                   <Text>{skillName}</Text>
                                   <Text>{expertise}</Text>
-                                  <Text
-                                    className="peer-remove"
-                                    onClick={() => handleRemoveSkill(index)}
-                                  >
+                                  <Text className="peer-remove" onClick={() => handleRemoveSkill(index)}>
                                     <MdOutlineDelete size={'20px'} />
                                     <span>Remove</span>
                                   </Text>
                                 </Box>
-                                {addedPeers[activePeer].skills.length - 1 !== index && (
-                                  <Divider color="#ebebeb" />
-                                )}
+                                {addedPeers[activePeer].skills.length - 1 !== index && <Divider color="#ebebeb" />}
                               </Box>
                             );
                           })}

@@ -1,17 +1,5 @@
 import { useState } from 'react';
-import {
-  Text,
-  Modal,
-  Box,
-  Title,
-  TextInput,
-  createStyles,
-  em,
-  rem,
-  Select,
-  Checkbox,
-  Button,
-} from '@mantine/core';
+import { Text, Modal, Box, Title, TextInput, createStyles, em, rem, Select, Checkbox, Button } from '@mantine/core';
 import { MonthPickerInput } from '@mantine/dates';
 import { Carousel } from '@mantine/carousel';
 import { MdOutlineEdit, MdOutlineCalendarMonth } from 'react-icons/md';
@@ -347,16 +335,7 @@ export const ResidentialInfo = () => {
             .reverse()
             .map(
               (
-                {
-                  address_line_1,
-                  address_line_2,
-                  landmark,
-                  pincode,
-                  start_date,
-                  end_date,
-                  isVerified,
-                  city,
-                },
+                { address_line_1, address_line_2, landmark, pincode, start_date, end_date, isVerified, city },
                 index
               ) => {
                 return (

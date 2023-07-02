@@ -15,9 +15,7 @@ export const VerificationIDCard: React.FC<CardProps> = ({ documentName, isVerifi
       <Box className="verification-id-text-box">
         {documentName === 'AADHAR' && <Text className="document-name">Aadhar Card</Text>}
         {documentName === 'PAN' && <Text className="document-name">PAN Card</Text>}
-        {documentName === 'DRIVING_LICENSE' && (
-          <Text className="document-name">Driving License</Text>
-        )}
+        {documentName === 'DRIVING_LICENSE' && <Text className="document-name">Driving License</Text>}
         {isVerified ? (
           <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
             Verified

@@ -58,26 +58,14 @@ export const VBMStepFour = () => {
                 <Text className="expertise">{expertise}</Text>
                 <Box className="verification-skills-action">
                   {status === 'approved' ? (
-                    <BsPersonCheckFill
-                      className="approved-skill-icon"
-                      onClick={() => handlePending(index)}
-                    />
+                    <BsPersonCheckFill className="approved-skill-icon" onClick={() => handlePending(index)} />
                   ) : (
-                    <BsPersonCheckFill
-                      className="verification-skill-icon"
-                      onClick={() => handleApprove(index)}
-                    />
+                    <BsPersonCheckFill className="verification-skill-icon" onClick={() => handleApprove(index)} />
                   )}
                   {status === 'disputed' ? (
-                    <HiOutlineBan
-                      className="disputed-skill-icon"
-                      onClick={() => handlePending(index)}
-                    />
+                    <HiOutlineBan className="disputed-skill-icon" onClick={() => handlePending(index)} />
                   ) : (
-                    <HiOutlineBan
-                      className="verification-skill-icon"
-                      onClick={() => handleDispute(index)}
-                    />
+                    <HiOutlineBan className="verification-skill-icon" onClick={() => handleDispute(index)} />
                   )}
                 </Box>
               </Box>
@@ -94,10 +82,9 @@ export const VBMStepFour = () => {
         </Button>
       </Box>
       <Text className="verification-disclaimer">
-        I understand that during the sign-up process and while using this website, I may be required
-        to provide certain personal information, including but not limited to my name, email
-        address, contact details, and any other information deemed necessary for registration and
-        website usage.
+        I understand that during the sign-up process and while using this website, I may be required to provide certain
+        personal information, including but not limited to my name, email address, contact details, and any other
+        information deemed necessary for registration and website usage.
       </Text>
       <Text className="policy">Click to view Data and Privacy Policy</Text>
     </section>

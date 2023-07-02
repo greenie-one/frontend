@@ -1,19 +1,6 @@
 import { useState, useReducer } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  Box,
-  TextInput,
-  createStyles,
-  Flex,
-  List,
-  Drawer,
-  em,
-  rem,
-  Menu,
-  Divider,
-  Group,
-  Text,
-} from '@mantine/core';
+import { Box, TextInput, createStyles, Flex, List, Drawer, em, rem, Menu, Divider, Group, Text } from '@mantine/core';
 import { Link, useLocation } from 'react-router-dom';
 import { MdVerified, MdOutlineMenuOpen, MdOutlineClose } from 'react-icons/md';
 import { GoSearch } from 'react-icons/go';
@@ -196,9 +183,7 @@ export const Navbar = () => {
                           <img src={imgUrl} alt="profile-picture" className="profile-pic" />
                           <Box className="notification-text-box">
                             <Text className="notification-heading">{heading}</Text>
-                            <Text className="notification-subHeading">
-                              {subHeading.slice(0, 50)}...
-                            </Text>
+                            <Text className="notification-subHeading">{subHeading.slice(0, 50)}...</Text>
                           </Box>
                         </Box>
                       );
@@ -254,19 +239,13 @@ export const Navbar = () => {
 
             {!state.firstDrawerOpened && isProfilePage && (
               <span className={classes.menuOpenBtn}>
-                <MdOutlineMenuOpen
-                  role="button"
-                  onClick={() => dispatch({ type: 'OPEN_FIRST_DRAWER' })}
-                />
+                <MdOutlineMenuOpen role="button" onClick={() => dispatch({ type: 'OPEN_FIRST_DRAWER' })} />
               </span>
             )}
 
             {!state.secondDrawerOpened && isProfileSettingsPage && (
               <span className={classes.menuOpenBtn}>
-                <MdOutlineMenuOpen
-                  role="button"
-                  onClick={() => dispatch({ type: 'OPEN_SECOND_DRAWER' })}
-                />
+                <MdOutlineMenuOpen role="button" onClick={() => dispatch({ type: 'OPEN_SECOND_DRAWER' })} />
               </span>
             )}
           </Box>
@@ -280,17 +259,11 @@ export const Navbar = () => {
         position="right"
         size="80%"
       >
-        <nav
-          className={classes.mobileNavOptionsContainer}
-          onClick={() => dispatch({ type: 'CLOSE_FIRST_DRAWER' })}
-        >
+        <nav className={classes.mobileNavOptionsContainer} onClick={() => dispatch({ type: 'CLOSE_FIRST_DRAWER' })}>
           <Flex justify="space-between" align="center" direction="row">
             <span className={classes.navHeading}>Profile</span>
             <span className={classes.menuCloseBtn}>
-              <MdOutlineClose
-                role="button"
-                onClick={() => dispatch({ type: 'CLOSE_FIRST_DRAWER' })}
-              />
+              <MdOutlineClose role="button" onClick={() => dispatch({ type: 'CLOSE_FIRST_DRAWER' })} />
             </span>
           </Flex>
           <List className={classes.navOptionsList}>
@@ -353,10 +326,7 @@ export const Navbar = () => {
             </Box>
 
             <span className={classes.menuCloseBtn}>
-              <MdOutlineClose
-                role="button"
-                onClick={() => dispatch({ type: 'CLOSE_SECOND_DRAWER' })}
-              />
+              <MdOutlineClose role="button" onClick={() => dispatch({ type: 'CLOSE_SECOND_DRAWER' })} />
             </span>
           </Flex>
           <Box onClick={() => dispatch({ type: 'CLOSE_SECOND_DRAWER' })}>

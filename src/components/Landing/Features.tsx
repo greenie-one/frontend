@@ -41,16 +41,8 @@ const FeaturesCard: React.FC<FeaturesCardPropsType> = ({
         {text}
       </Text>
       <span className={`${classes.featuresCardIllustration} ${id}`}>
-        <img
-          src={illustrationSmall}
-          alt="illustration"
-          className={classes.featuresCardIllustrationSmall}
-        />
-        <img
-          src={illustrationLarge}
-          alt="illustration"
-          className={classes.featuresCardIllustrationLarge}
-        />
+        <img src={illustrationSmall} alt="illustration" className={classes.featuresCardIllustrationSmall} />
+        <img src={illustrationLarge} alt="illustration" className={classes.featuresCardIllustrationLarge} />
       </span>
     </Box>
   );
@@ -96,7 +88,7 @@ const featuresCardContent = [
     cardBg: '#A0E2E1',
     titleColor: '#310805',
     textColor: '#191819',
-  }
+  },
 ];
 
 export const LandingFeatures = () => {

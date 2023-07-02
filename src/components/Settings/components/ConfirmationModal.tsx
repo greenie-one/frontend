@@ -8,11 +8,7 @@ interface IModalPropsType {
   modalClose: () => void;
 }
 
-export const ConfirmationModal: React.FC<IModalPropsType> = ({
-  formRef,
-  modalOpened,
-  modalClose,
-}) => {
+export const ConfirmationModal: React.FC<IModalPropsType> = ({ formRef, modalOpened, modalClose }) => {
   const { classes: modalStyles } = confirmationModalStyle();
 
   const handleConfirmation = () => {
@@ -34,9 +30,7 @@ export const ConfirmationModal: React.FC<IModalPropsType> = ({
       classNames={modalStyles}
     >
       <Box className={modalStyles.confirmationMsgWrapper}>
-        <Text className={modalStyles.confirmationMsg}>
-          Are you sure you want to update the changes made?
-        </Text>
+        <Text className={modalStyles.confirmationMsg}>Are you sure you want to update the changes made?</Text>
 
         <Box className={modalStyles.modalBtnsContainer}>
           {[

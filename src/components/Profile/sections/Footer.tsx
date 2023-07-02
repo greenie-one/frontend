@@ -15,9 +15,7 @@ export const Footer = () => {
           <MdVerified color="#8CF078" style={{ marginInline: '4px' }} size={'18px'} />
           <Text className="text">Greenie</Text>
         </Box>
-        <Text className="mission-text">
-          On a mission to disrupt traditional background verification.
-        </Text>
+        <Text className="mission-text">On a mission to disrupt traditional background verification.</Text>
         <Text className="copy-right">2023 Greenie. All rights reserved</Text>
       </Box>
       <Box className="right-box">

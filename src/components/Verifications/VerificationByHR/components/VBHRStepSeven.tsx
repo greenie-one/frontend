@@ -28,8 +28,7 @@ export const VBHRStepSeven = () => {
         </Box>
       </Box>
       <Text className="question-text" w={'70%'}>
-        Thank you, could you please provide your best regards by crafting an exceptional review for
-        your esteemed peer
+        Thank you, could you please provide your best regards by crafting an exceptional review for your esteemed peer
       </Text>
       <Box className="text-area-box">
         <Textarea
@@ -43,10 +42,9 @@ export const VBHRStepSeven = () => {
 
       <Button className="green-outline-btn">End Verification</Button>
       <Text className="verification-disclaimer">
-        I understand that during the sign-up process and while using this website, I may be required
-        to provide certain personal information, including but not limited to my name, email
-        address, contact details, and any other information deemed necessary for registration and
-        website usage.
+        I understand that during the sign-up process and while using this website, I may be required to provide certain
+        personal information, including but not limited to my name, email address, contact details, and any other
+        information deemed necessary for registration and website usage.
       </Text>
       <Text className="policy">Click to view Data and Privacy Policy</Text>
     </section>

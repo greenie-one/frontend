@@ -13,16 +13,8 @@ import { BsCheckLg } from 'react-icons/bs';
 import '../../styles/global.scss';
 
 const SignUpStepThree = () => {
-  const {
-    signupForm,
-    state,
-    dispatch,
-    isPhoneNumber,
-    isValidEmail,
-    validationId,
-    resendOtp,
-    setForceRender,
-  } = useAuthContext();
+  const { signupForm, state, dispatch, isPhoneNumber, isValidEmail, validationId, resendOtp, setForceRender } =
+    useAuthContext();
   const { classes: inputClasses } = inputStyles();
   const { signUpStep } = state;
 
@@ -114,24 +106,11 @@ const SignUpStepThree = () => {
             <BsArrowLeft size={'15px'} />
             <Text className="tabHeading">Change Password</Text>
           </Flex>
-          <Text className="profileTextBold">
-            Enter the one-time password sent to your email address
-          </Text>
-          <TextInput
-            classNames={inputClasses}
-            maxLength={6}
-            pattern="[0-9]{6}"
-            {...signupForm.getInputProps('otp')}
-          />
+          <Text className="profileTextBold">Enter the one-time password sent to your email address</Text>
+          <TextInput classNames={inputClasses} maxLength={6} pattern="[0-9]{6}" {...signupForm.getInputProps('otp')} />
 
           {secondsRemaining === 0 ? (
-            <Button
-              compact
-              color="gray"
-              variant="subtle"
-              onClick={resendOtp}
-              className="resendLink"
-            >
+            <Button compact color="gray" variant="subtle" onClick={resendOtp} className="resendLink">
               Resend
             </Button>
           ) : (
@@ -154,9 +133,7 @@ const SignUpStepThree = () => {
               <BsArrowLeft size={'15px'} />
               <Text className="tabHeading">Login with phone number</Text>
             </Flex>
-            <Text className="profileTextBold">
-              Enter the one-time password sent to your phone number
-            </Text>
+            <Text className="profileTextBold">Enter the one-time password sent to your phone number</Text>
             <TextInput
               classNames={inputClasses}
               maxLength={6}
@@ -165,13 +142,7 @@ const SignUpStepThree = () => {
             />
 
             {secondsRemaining === 0 ? (
-              <Button
-                compact
-                color="gray"
-                variant="subtle"
-                onClick={resendOtp}
-                className="resendLink"
-              >
+              <Button compact color="gray" variant="subtle" onClick={resendOtp} className="resendLink">
                 Resend
               </Button>
             ) : (

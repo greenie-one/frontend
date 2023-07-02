@@ -1,17 +1,7 @@
 import '../styles/global.scss';
 import { useState } from 'react';
 import { useProfileContext } from '../context/ProfileContext';
-import {
-  Text,
-  Box,
-  Button,
-  createStyles,
-  em,
-  rem,
-  TextInput,
-  Title,
-  Checkbox,
-} from '@mantine/core';
+import { Text, Box, Button, createStyles, em, rem, TextInput, Title, Checkbox } from '@mantine/core';
 import { FaExclamation } from 'react-icons/fa';
 import { BsArrowLeft, BsCheckLg } from 'react-icons/bs';
 import { AiOutlineRight } from 'react-icons/ai';
@@ -24,14 +14,8 @@ import axios from 'axios';
 export const SeeDrivingLicence = () => {
   const { classes: inputClasses } = inputStyles();
   const [checked, setChecked] = useState(false);
-  const {
-    detailsPage,
-    dispatchDetailsPage,
-    verifyLicenceForm,
-    getDocuments,
-    licenseIsVerified,
-    setLicenseIsVerified,
-  } = useProfileContext();
+  const { detailsPage, dispatchDetailsPage, verifyLicenceForm, getDocuments, licenseIsVerified, setLicenseIsVerified } =
+    useProfileContext();
 
   const token = localStorage.getItem('auth-tokens');
   const authTokens = token ? JSON.parse(token) : null;
@@ -215,25 +199,15 @@ export const SeeDrivingLicence = () => {
               minLength={15}
               {...verifyLicenceForm.getInputProps('licenceNo')}
             />
-            <Button
-              disabled={!checked}
-              onClick={handleSubmit}
-              className={checked ? 'greenBtn' : 'disabledBtn'}
-            >
+            <Button disabled={!checked} onClick={handleSubmit} className={checked ? 'greenBtn' : 'disabledBtn'}>
               Click to verify
             </Button>
             <Box className="checkbox-box">
-              <Checkbox
-                checked={checked}
-                onChange={() => setChecked(!checked)}
-                className="checkbox"
-                color="teal"
-              />
+              <Checkbox checked={checked} onChange={() => setChecked(!checked)} className="checkbox" color="teal" />
               <Text className="tearms-conditions">
-                I understand that during the sign-up process and while using this website, I may be
-                required to provide certain personal information, including but not limited to my
-                name, email address, contact details, and any other information deemed necessary for
-                registration and website usage.
+                I understand that during the sign-up process and while using this website, I may be required to provide
+                certain personal information, including but not limited to my name, email address, contact details, and
+                any other information deemed necessary for registration and website usage.
               </Text>
             </Box>
 

@@ -5,10 +5,7 @@ type LandingSectionHeadingProps = {
   subheading: string;
 };
 
-export const LandingSectionHeading: React.FC<LandingSectionHeadingProps> = ({
-  heading,
-  subheading,
-}): JSX.Element => {
+export const LandingSectionHeading: React.FC<LandingSectionHeadingProps> = ({ heading, subheading }): JSX.Element => {
   const { classes } = useStyles();
 
   return (

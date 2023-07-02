@@ -35,8 +35,7 @@ export const Auth = () => {
             <Tabs defaultValue="signup" color="dark">
               {state.loginStep === 2 && isPhoneNumber(loginForm.values.emailPhoneGreenieId)}
               {state.signUpStep < 3 && state.loginStep < 3 ? (
-                state.loginStep === 2 &&
-                isPhoneNumber(loginForm.values.emailPhoneGreenieId) ? null : (
+                state.loginStep === 2 && isPhoneNumber(loginForm.values.emailPhoneGreenieId) ? null : (
                   <Tabs.List className="tabList" position="center">
                     <Tabs.Tab className="tabBtn" value="signup">
                       Create new account

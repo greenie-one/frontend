@@ -43,9 +43,7 @@ export const VBHRStepFour = () => {
           </Button>
         </Box>
       </Box>
-      <Text className="question-text">
-        Rate attitude of Candidate 0 least Collaborative, 5 Highly Collaborative
-      </Text>
+      <Text className="question-text">Rate attitude of Candidate 0 least Collaborative, 5 Highly Collaborative</Text>
       <Box className="verification-attitude-wrapper">
         <Box
           className={attitude === 'Non-Collaborative' ? 'attitude-box active' : 'attitude-box'}
@@ -62,9 +60,7 @@ export const VBHRStepFour = () => {
           <Text className="attitude-text">Rarely Collaborative</Text>
         </Box>
         <Box
-          className={
-            attitude === 'Occasionally Collaborative' ? 'attitude-box active' : 'attitude-box'
-          }
+          className={attitude === 'Occasionally Collaborative' ? 'attitude-box active' : 'attitude-box'}
           onClick={() => handleButtonClick('Occasionally Collaborative')}
         >
           <BsEmojiSmile />
@@ -73,9 +69,7 @@ export const VBHRStepFour = () => {
       </Box>
       <Box className="verification-attitude-wrapper">
         <Box
-          className={
-            attitude === 'Moderately Collaborative' ? 'attitude-box active' : 'attitude-box'
-          }
+          className={attitude === 'Moderately Collaborative' ? 'attitude-box active' : 'attitude-box'}
           onClick={() => handleButtonClick('Moderately Collaborative')}
         >
           <BsEmojiSmile />
@@ -98,10 +92,9 @@ export const VBHRStepFour = () => {
         </Button>
       </Box>
       <Text className="verification-disclaimer">
-        I understand that during the sign-up process and while using this website, I may be required
-        to provide certain personal information, including but not limited to my name, email
-        address, contact details, and any other information deemed necessary for registration and
-        website usage.
+        I understand that during the sign-up process and while using this website, I may be required to provide certain
+        personal information, including but not limited to my name, email address, contact details, and any other
+        information deemed necessary for registration and website usage.
       </Text>
       <Text className="policy">Click to view Data and Privacy Policy</Text>
     </section>

@@ -103,16 +103,13 @@ export const VBMStepThree = () => {
                 placeholder="Write a review to help your peer get his dream job"
                 className="text-area"
               />
-              <Text className="word-limit">
-                {disputeReason.trim().split(' ').length} / 150 words
-              </Text>
+              <Text className="word-limit">{disputeReason.trim().split(' ').length} / 150 words</Text>
             </Box>
             <Button className="primaryBtn" onClick={handleDispute}>
               Send
             </Button>
             <Text className="fact">
-              This information will not be shared with the cadidate, it will be only used to
-              maintain records
+              This information will not be shared with the cadidate, it will be only used to maintain records
             </Text>
           </Box>
         </Modal>
@@ -145,26 +142,17 @@ export const VBMStepThree = () => {
                   <Text className="name">{fileName}</Text>
                 </Box>
                 {status === 'pending' && (
-                  <Button
-                    className="verify-action-btn pending-btn"
-                    leftIcon={<CgSandClock size={'18px'} />}
-                  >
+                  <Button className="verify-action-btn pending-btn" leftIcon={<CgSandClock size={'18px'} />}>
                     Pending
                   </Button>
                 )}
                 {status === 'approved' && (
-                  <Button
-                    className="verify-action-btn approved-btn"
-                    leftIcon={<BsPersonCheckFill size={'18px'} />}
-                  >
+                  <Button className="verify-action-btn approved-btn" leftIcon={<BsPersonCheckFill size={'18px'} />}>
                     Approved
                   </Button>
                 )}
                 {status === 'disputed' && (
-                  <Button
-                    className="verify-action-btn disputed-btn"
-                    leftIcon={<HiOutlineBan size={'18px'} />}
-                  >
+                  <Button className="verify-action-btn disputed-btn" leftIcon={<HiOutlineBan size={'18px'} />}>
                     Disputed
                   </Button>
                 )}
@@ -189,10 +177,9 @@ export const VBMStepThree = () => {
         </Button>
       </Box>
       <Text className="verification-disclaimer">
-        I understand that during the sign-up process and while using this website, I may be required
-        to provide certain personal information, including but not limited to my name, email
-        address, contact details, and any other information deemed necessary for registration and
-        website usage.
+        I understand that during the sign-up process and while using this website, I may be required to provide certain
+        personal information, including but not limited to my name, email address, contact details, and any other
+        information deemed necessary for registration and website usage.
       </Text>
       <Text className="policy">Click to view Data and Privacy Policy</Text>
     </section>

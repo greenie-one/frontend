@@ -20,9 +20,7 @@ type privacySettingsFormType = {
   confirmPassword: string;
 };
 
-export const SettingsContext = createContext<ShowDetailsIdContextType>(
-  {} as ShowDetailsIdContextType
-);
+export const SettingsContext = createContext<ShowDetailsIdContextType>({} as ShowDetailsIdContextType);
 
 export const useSettingsContext = () => useContext(SettingsContext);
 
@@ -108,9 +106,7 @@ export const SettingsProvider: React.FC<{ children: ReactNode }> = ({ children }
   }, []);
 
   return (
-    <SettingsContext.Provider
-      value={{ showDetailsId, setShowDetailsId, privacySettingsForm, changePassword }}
-    >
+    <SettingsContext.Provider value={{ showDetailsId, setShowDetailsId, privacySettingsForm, changePassword }}>
       {children}
     </SettingsContext.Provider>
   );
