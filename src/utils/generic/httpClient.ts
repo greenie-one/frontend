@@ -1,3 +1,4 @@
+import { Error, ErrorMessage } from '../../assets/api/ApiErrors';
 import { AuthClient } from './authClinet';
 
 type HttpRequest = {
@@ -30,8 +31,11 @@ type HttpRequest = {
     }
 );
 
+export type APIError = { status: number; code: string; message: string };
+export type Result<T, E = APIError> = { ok: true; value: T } | { ok: false; error: E };
+
 export class HttpClient {
-  static async callApi<T = unknown>(request: HttpRequest): Promise<T> {
+  static async callApi<T = unknown>(request: HttpRequest): Promise<Result<T>> {
     const url = new URL(request.url);
     if ((request.method === 'GET' || request.method === 'DELETE') && request.query) {
       for (const [key, value] of Object.entries(request.query)) {
@@ -68,10 +72,15 @@ export class HttpClient {
       response = (await resp.text()) as T;
     }
 
-    return response;
+    if (!resp.ok) {
+      const error = response as APIError;
+      return { ok: false, error: error };
+    }
+
+    return { ok: true, value: response };
   }
 
-  static async callApiAuth<T = unknown>(request: HttpRequest, authClient: AuthClient): Promise<T> {
+  static async callApiAuth<T = unknown>(request: HttpRequest, authClient: AuthClient): Promise<Result<T>> {
     if (!authClient.getAccessToken()) {
       throw new Error('Access token is not set');
     }
@@ -81,30 +90,30 @@ export class HttpClient {
       ...(request.headers ?? {}),
     };
 
-    let resp: T;
-    try {
+    let resp: Result<T>;
+    resp = await HttpClient.callApi({
+      ...request,
+      headers,
+    });
+
+    if (resp.ok) {
+      return resp;
+    } else if (resp.error.status === 401) {
+      const status = await authClient.refreshAccessToken();
+
+      if (!status.ok) {
+        return status;
+      }
+
+      const headers = {
+        Authorization: `Bearer ${authClient.getAccessToken()}`,
+        ...(request.headers ?? {}),
+      };
       resp = await HttpClient.callApi({
         ...request,
         headers,
       });
-    } catch (e) {
-      let error = e as any;
-      if (error.status === 401) {
-        await authClient.refreshAccessToken();
-
-        const headers = {
-          Authorization: `Bearer ${authClient.getAccessToken()}`,
-          ...(request.headers ?? {}),
-        };
-
-        resp = await HttpClient.callApi({
-          ...request,
-          headers,
-        });
-      }
-      throw e;
     }
-
     return resp;
   }
 }

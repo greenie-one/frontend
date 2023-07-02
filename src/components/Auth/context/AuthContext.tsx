@@ -239,7 +239,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const getMyProfile = async () => {
     try {
       console.log("getMyProfile");
-      const resp: any = await HttpClient.callApiAuth({
+      const resp = await HttpClient.callApiAuth({
         url: profileAPIList.getMyProfile,
         method: 'GET',
       }, AuthClient.getInstance());

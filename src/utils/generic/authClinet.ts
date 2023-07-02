@@ -4,7 +4,7 @@
 // If the refresh token is expired, it will delete the tokens from local storage and throw an error
 
 import { authApiList } from '../../assets/api/ApiList';
-import { HttpClient } from './httpClient';
+import { HttpClient, Result } from './httpClient';
 
 type TokensDTO = {
   accessToken: string;
@@ -59,12 +59,12 @@ export class AuthClient {
     localStorage.removeItem('refreshToken');
   }
 
-  public async refreshAccessToken(): Promise<TokensDTO> {
+  public async refreshAccessToken(): Promise<Result<TokensDTO>> {
     if (!this.refreshToken) {
       throw new Error('Refresh token is not set');
     }
 
-    let tokens: TokensDTO | null = await HttpClient.callApi({
+    let resp: Result<TokensDTO> = await HttpClient.callApi({
       url: authApiList.refreshToken,
       method: 'GET',
       query: {
@@ -72,11 +72,11 @@ export class AuthClient {
       },
     });
 
-    if (!tokens) {
-      throw new Error('Refresh token is invalid');
+    if (resp.ok) {
+      await this.setTokens(resp.value.accessToken, resp.value.refreshToken);
     } else {
-      await this.setTokens(tokens.accessToken, tokens.refreshToken);
+      throw new Error(JSON.stringify(resp.error));
     }
-    return tokens as TokensDTO;
+    return resp;
   }
 }
