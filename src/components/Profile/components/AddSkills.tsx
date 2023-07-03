@@ -1,12 +1,16 @@
 import { Text, Box, Title, TextInput, createStyles, em, rem, Select, Button, Divider } from '@mantine/core';
 import { useState } from 'react';
-import { BsArrowLeft, BsCheckLg } from 'react-icons/bs';
+import { BsArrowLeft } from 'react-icons/bs';
 import { useProfileContext } from '../context/ProfileContext';
 import { GrAdd } from 'react-icons/gr';
-import { FaExclamation } from 'react-icons/fa';
-import { notifications } from '@mantine/notifications';
 import { skillsAPIList } from '../../../assets/api/ApiList';
-import axios from 'axios';
+import { useGlobalContext } from '../../../context/GlobalContext';
+import {
+  showErrorNotification,
+  showSuccessNotification,
+  showLoadingNotification,
+} from '../../../utils/functions/showNotification';
+import { HttpClient, Result } from '../../../utils/generic/httpClient';
 
 type Skill = {
   skillName: string;
@@ -14,6 +18,7 @@ type Skill = {
 };
 
 const skillRate = [
+  { value: 'AMATEUR', label: 'Amature' },
   { value: 'BEGINEER', label: 'Begineer/Novice' },
   { value: 'INTERMEDIATE', label: 'Intermediate' },
   { value: 'HIGHLY COMPETANT', label: 'Highly Competant' },
@@ -23,9 +28,10 @@ const skillRate = [
 ];
 
 export const AddSkills = () => {
-  const { detailsPage, dispatchDetailsPage, getSkills, skillForm, authTokens, scrollToTop } = useProfileContext();
+  const { detailsPage, dispatchDetailsPage, getSkills, skillForm, scrollToTop } = useProfileContext();
   const [skills, setSkills] = useState<Skill[]>([]);
   const { classes: inputClasses } = inputStyles();
+  const { authClient } = useGlobalContext();
 
   const handleAddSkill = () => {
     if (!skillForm.validateField('skillName').hasError && !skillForm.validateField('expertise').hasError) {
@@ -45,55 +51,39 @@ export const AddSkills = () => {
   };
 
   const handleSkillContinue = async () => {
-    try {
-      notifications.show({
-        id: 'load-data',
-        title: 'Please wait !',
-        message: 'We are adding your skill.',
-        loading: true,
-        autoClose: false,
-        withCloseButton: false,
-        color: 'teal',
-        sx: { borderRadius: em(8) },
-      });
-      if (skills.length < 1) {
-        notifications.update({
-          id: 'load-data',
-          title: 'Error !',
-          color: 'red',
-          message: 'Please add atleast one skill.',
-          icon: <FaExclamation />,
-          autoClose: 2200,
-        });
-      }
-      if (skills.length > 0) {
-        for (const skill of skills) {
-          const res = await axios.post(skillsAPIList.postSkill, skill, {
-            headers: {
-              Authorization: `Bearer ${authTokens?.accessToken}`,
-            },
+    showLoadingNotification({
+      title: 'Wait !',
+      message: 'We are adding your skill.',
+    });
+
+    if (skills.length < 1) {
+      showErrorNotification('NOSKILL');
+    }
+    if (skills.length > 0) {
+      for (const skill of skills) {
+        const res: Result<any> = await HttpClient.callApiAuth(
+          {
+            url: `${skillsAPIList.postSkill}`,
+            method: 'POST',
+            body: skill,
+          },
+          authClient
+        );
+        if (res.ok) {
+          showSuccessNotification({
+            title: 'Success !',
+            message: 'Skills have been added successfully !',
           });
+        } else {
+          showErrorNotification(res.error.code);
         }
-        document.documentElement.scrollTo({
-          top: 0,
-          behavior: 'smooth',
-        });
-        notifications.update({
-          id: 'load-data',
-          color: 'teal',
-          title: 'Success !',
-          message: 'New skills added to your profile.',
-          icon: <BsCheckLg />,
-          autoClose: 2000,
-        });
-        getSkills();
-        setSkills([]);
-        skillForm.values.skillName = '';
-        skillForm.values.expertise = '';
-        handleAddSkillPage();
       }
-    } catch (error: any) {
-      console.log(error.message);
+      scrollToTop();
+      getSkills();
+      setSkills([]);
+      skillForm.values.skillName = '';
+      skillForm.values.expertise = '';
+      handleAddSkillPage();
     }
   };
   return (
@@ -149,10 +139,7 @@ export const AddSkills = () => {
             return (
               <Box key={index} className="add-skill-box">
                 <Text className="add-skill-name">{skillName}</Text>
-                <Text className="add-skill-rate">
-                  {expertise === 'AMATEUR' && 'Amature'}
-                  {expertise === 'EXPERT' && 'Expert'}
-                </Text>
+                <Text className="add-skill-rate">{expertise}</Text>
               </Box>
             );
           })}

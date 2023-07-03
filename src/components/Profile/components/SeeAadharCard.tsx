@@ -2,18 +2,21 @@ import '../styles/global.scss';
 import { useState, useEffect } from 'react';
 import { useProfileContext } from '../context/ProfileContext';
 import { Text, Box, Button, Modal, Checkbox, createStyles, em, rem, TextInput, Title, CopyButton } from '@mantine/core';
-import { FaExclamation } from 'react-icons/fa';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
-import { BsArrowLeft, BsCheckLg } from 'react-icons/bs';
+import { BsArrowLeft } from 'react-icons/bs';
 import { MdVerified, MdOutlineContentCopy } from 'react-icons/md';
 import { AiOutlineRight } from 'react-icons/ai';
 import AadharImg from '../assets/Aadhar.png';
 import john from '../assets/johnMarston.png';
-import { notifications } from '@mantine/notifications';
 import { aadharAPIList } from '../../../assets/api/ApiList';
-import axios from 'axios';
 import checkImg from '../assets/check.png';
-
+import { useGlobalContext } from '../../../context/GlobalContext';
+import { HttpClient, Result } from '../../../utils/generic/httpClient';
+import {
+  showErrorNotification,
+  showLoadingNotification,
+  showSuccessNotification,
+} from '../../../utils/functions/showNotification';
 interface VerificationData {
   requestId: string;
   taskId: string;
@@ -32,84 +35,40 @@ export const SeeAadharCard = () => {
     dispatchDetailsPage,
     verifyAadharForm,
     getDocuments,
-    authTokens,
     aadharIsVerified,
     setAadharIsVerified,
     scrollToTop,
   } = useProfileContext();
+  const { authClient } = useGlobalContext();
   const [verificationData, setVerificationData] = useState<VerificationData>({
     requestId: '',
     taskId: '',
   });
 
   const requestOTPForAadhar = async () => {
-    try {
-      notifications.show({
-        id: 'load-data',
-        title: 'Sending OTP to linked phone number...',
-        message: 'Please wait while we send OTP to your linked number.',
-        loading: true,
-        autoClose: false,
-        withCloseButton: false,
-        sx: { borderRadius: em(8) },
-      });
-      const res = await axios.post(
-        `${aadharAPIList.requestOTPForAadhar}`,
-        {
-          id_type: 'AADHAR',
-          id_number: verifyAadharForm.values.aadharNo,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${authTokens?.accessToken}`,
-          },
-        }
-      );
-      if (res.data.success) {
-        const { request_id, taskId } = res.data;
-        setVerificationData((prevState) => ({
-          ...prevState,
-          requestId: request_id,
-          taskId: taskId,
-        }));
-        open();
-        notifications.update({
-          id: 'load-data',
-          title: 'Success!',
-          message: 'OTP Sent to your linked phone number',
-          autoClose: 2200,
-          withCloseButton: false,
-          color: 'teal',
-          icon: <BsCheckLg />,
-          sx: { borderRadius: em(8) },
-        });
-      }
-    } catch (error: any) {
-      if (error.response?.data?.code === 'GR0033') {
-        notifications.update({
-          id: 'load-data',
-          title: 'Invalid ID Number!',
-          message: 'Please enter valid Aadhar number',
-          autoClose: 2200,
-          withCloseButton: false,
-          color: 'red',
-          icon: <FaExclamation />,
-          sx: { borderRadius: em(8) },
-        });
-      }
-      if (error.response?.data?.code === 'GR0034') {
-        notifications.update({
-          id: 'load-data',
-          title: 'Limit exceeded!',
-          message: 'Rate limit exceeded for OTP requests',
-          autoClose: 2200,
-          withCloseButton: false,
-          color: 'red',
-          icon: <FaExclamation />,
-          sx: { borderRadius: em(8) },
-        });
-      }
-      console.log(error.message);
+    showLoadingNotification({
+      title: 'Sending OTP to linked phone number...',
+      message: 'Please wait while we send OTP to your linked number.',
+    });
+    const res: Result<any> = await HttpClient.callApiAuth(
+      {
+        url: `${aadharAPIList.requestOTPForAadhar}`,
+        method: 'POST',
+        body: { id_type: 'AADHAR', id_number: verifyAadharForm.values.aadharNo },
+      },
+      authClient
+    );
+    if (res.ok) {
+      const { request_id, taskId } = res.value;
+      setVerificationData((prevState) => ({
+        ...prevState,
+        requestId: request_id,
+        taskId: taskId,
+      }));
+      open();
+      showSuccessNotification({ title: 'Success !', message: 'OTP Sent to your linked phone number' });
+    } else {
+      showErrorNotification(res.error.code);
     }
   };
 
@@ -137,56 +96,28 @@ export const SeeAadharCard = () => {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     if (!verifyAadharForm.validateField('otp').hasError) {
-      try {
-        notifications.show({
-          id: 'load-data',
-          title: 'Verifying your OTP...',
-          message: 'Please wait while we verify your OTP',
-          loading: true,
-          autoClose: false,
-          withCloseButton: false,
-          sx: { borderRadius: em(8) },
-        });
-        const { taskId, requestId } = verificationData;
-        const res = await axios.post(
-          `${aadharAPIList.verifyOTPForAadhar}`,
-          { otp: verifyAadharForm.values.otp, request_id: requestId, task_id: taskId },
-          {
-            headers: {
-              Authorization: `Bearer ${authTokens?.accessToken}`,
-            },
-          }
-        );
-        if (res.data.success) {
-          notifications.update({
-            id: 'load-data',
-            title: 'Success !',
-            message: 'OTP Verified Successfully',
-            autoClose: 2200,
-            withCloseButton: false,
-            color: 'teal',
-            icon: <BsCheckLg />,
-            sx: { borderRadius: em(8) },
-          });
-          close();
-          setAadharIsVerified(true);
-          verifyAadharForm.values.otp = '';
-          verifyAadharForm.values.aadharNo = '';
-          getDocuments();
-        }
-      } catch (error: any) {
-        if (error.response?.data?.code === 'GR0033') {
-          notifications.update({
-            id: 'load-data',
-            title: 'Invalid OTP!',
-            message: 'Please enter valid OTP',
-            autoClose: 2200,
-            withCloseButton: false,
-            color: 'red',
-            icon: <FaExclamation />,
-            sx: { borderRadius: em(8) },
-          });
-        }
+      showLoadingNotification({
+        title: 'Verifying your OTP...',
+        message: 'Please wait while we verify your OTP',
+      });
+      const { taskId, requestId } = verificationData;
+      const res: Result<any> = await HttpClient.callApiAuth(
+        {
+          url: `${aadharAPIList.verifyOTPForAadhar}`,
+          method: 'POST',
+          body: { otp: verifyAadharForm.values.otp, request_id: requestId, task_id: taskId },
+        },
+        authClient
+      );
+      if (res.ok) {
+        showSuccessNotification({ title: 'Success !', message: 'OTP Verified Successfully' });
+        close();
+        setAadharIsVerified(true);
+        verifyAadharForm.values.otp = '';
+        verifyAadharForm.values.aadharNo = '';
+        getDocuments();
+      } else {
+        showErrorNotification(res.error.code);
       }
     }
   };

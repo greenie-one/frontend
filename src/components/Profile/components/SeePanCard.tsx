@@ -2,14 +2,18 @@ import '../styles/global.scss';
 import { useState } from 'react';
 import { useProfileContext } from '../context/ProfileContext';
 import { Text, Box, Button, createStyles, em, rem, TextInput, Title, Checkbox } from '@mantine/core';
-import { FaExclamation } from 'react-icons/fa';
-import { BsArrowLeft, BsCheckLg } from 'react-icons/bs';
+import { BsArrowLeft } from 'react-icons/bs';
 import { AiOutlineRight } from 'react-icons/ai';
 import PanImg from '../assets/Pan.png';
 import john from '../assets/johnMarston.png';
-import { notifications } from '@mantine/notifications';
 import { PANAPIList } from '../../../assets/api/ApiList';
-import axios from 'axios';
+import { useGlobalContext } from '../../../context/GlobalContext';
+import { HttpClient, Result } from '../../../utils/generic/httpClient';
+import {
+  showErrorNotification,
+  showLoadingNotification,
+  showSuccessNotification,
+} from '../../../utils/functions/showNotification';
 
 export const SeePanCard = () => {
   const { classes: inputClasses } = inputStyles();
@@ -18,66 +22,33 @@ export const SeePanCard = () => {
     dispatchDetailsPage,
     verifyPANForm,
     getDocuments,
-    authTokens,
+
     panIsVerified,
     setPanIsVerified,
     scrollToTop,
   } = useProfileContext();
   const [checked, setChecked] = useState<boolean>(false);
+  const { authClient } = useGlobalContext();
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     if (!verifyPANForm.validateField('panNo').hasError && checked) {
-      try {
-        notifications.show({
-          id: 'load-data',
-          title: 'Verifying your PAN Card...',
-          message: 'Please wait while we verify your PAN',
-          loading: true,
-          autoClose: false,
-          withCloseButton: false,
-          sx: { borderRadius: em(8) },
-        });
-        const res = await axios.post(
-          PANAPIList.verifyPAN,
-          {
-            id_type: 'PAN',
-            id_number: verifyPANForm.values.panNo,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${authTokens?.accessToken}`,
-            },
-          }
-        );
-        if (res.data.success) {
-          notifications.update({
-            id: 'load-data',
-            title: 'Success!',
-            message: 'Verified your PAN successfully',
-            autoClose: 2200,
-            withCloseButton: false,
-            color: 'teal',
-            icon: <BsCheckLg />,
-            sx: { borderRadius: em(8) },
-          });
-          setPanIsVerified(true);
-          getDocuments();
-          scrollToTop();
-        }
-      } catch (error: any) {
-        if (error.response?.data?.code === 'GR0031') {
-          notifications.update({
-            id: 'load-data',
-            title: 'Invalid PAN Number!',
-            message: 'Please enter valid PAN number',
-            autoClose: 2200,
-            withCloseButton: false,
-            color: 'red',
-            icon: <FaExclamation />,
-            sx: { borderRadius: em(8) },
-          });
-        }
+      showLoadingNotification({ title: 'Verifying your PAN Card...', message: 'Please wait while we verify your PAN' });
+      const res: Result<any> = await HttpClient.callApiAuth(
+        {
+          url: `${PANAPIList.verifyPAN}`,
+          method: 'POST',
+          body: { id_type: 'PAN', id_number: verifyPANForm.values.panNo },
+        },
+        authClient
+      );
+      if (res.ok) {
+        showSuccessNotification({ title: 'Success !', message: 'Verified your PAN successfully' });
+        setPanIsVerified(true);
+        getDocuments();
+        scrollToTop();
+      } else {
+        showErrorNotification(res.error.code);
       }
     }
   };

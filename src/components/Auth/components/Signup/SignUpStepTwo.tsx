@@ -1,16 +1,20 @@
 import { useState } from 'react';
-import axios from 'axios';
+
 import { createStyles, em, rem, Text, Button, Divider, PasswordInput, Box } from '@mantine/core';
-import { notifications } from '@mantine/notifications';
+
 import { useAuthContext } from '../../context/AuthContext';
 import { authApiList } from '../../../../assets/api/ApiList';
 
 import GoogleButton from '../Google/GoogleButton';
 import TermsAndConditions from '../../assets/terms_and_conditions-greenie.pdf';
 import PrivacyPolicy from '../../assets/Privacy Policy-Greenie.pdf';
-import { FaExclamation } from 'react-icons/fa';
-import { BsCheckLg } from 'react-icons/bs';
 import '../../styles/global.scss';
+import {
+  showErrorNotification,
+  showLoadingNotification,
+  showSuccessNotification,
+} from '../../../../utils/functions/showNotification';
+import { HttpClient, Result } from '../../../../utils/generic/httpClient';
 
 const SignUpStepTwo = () => {
   const { signupForm, state, dispatch, isPhoneNumber, isValidEmail, setValidationId } = useAuthContext();
@@ -31,59 +35,20 @@ const SignUpStepTwo = () => {
     ) {
       signupForm.clearErrors();
       setIsLoading(true);
-
-      try {
-        notifications.show({
-          id: 'load-data',
-          title: 'Sending...',
-          message: 'Please wait while we send you an OTP.',
-          loading: true,
-          autoClose: false,
-          withCloseButton: false,
-          sx: { borderRadius: em(8) },
-        });
-
-        const res = await axios.post(authApiList.signup, {
-          email: signupForm.values.emailPhone,
-          password: signupForm.values.password,
-        });
-
-        if (res.data) {
-          setValidationId(res.data?.validationId);
-          setTimeout(() => {
-            notifications.update({
-              id: 'load-data',
-              title: 'Success !',
-              message: 'An OTP has been sent to your email.',
-              autoClose: 2200,
-              withCloseButton: false,
-              color: 'teal',
-              icon: <BsCheckLg />,
-              sx: { borderRadius: em(8) },
-            });
-          }, 1100);
-
-          dispatch({ type: 'NEXTSIGNUPSTEP' });
-        }
-      } catch (err: any) {
-        if (err.response?.data?.code === 'GRA0003') {
-          signupForm.setFieldValue('password', '');
-          signupForm.setFieldValue('confirmPassword', '');
-
-          notifications.update({
-            id: 'load-data',
-            title: 'Error !',
-            message: 'This email is already registered. Please try again with a different email.',
-            autoClose: 2200,
-            withCloseButton: false,
-            color: 'red',
-            icon: <FaExclamation />,
-            sx: { borderRadius: em(8) },
-          });
-        }
-      } finally {
-        setIsLoading(false);
+      showLoadingNotification({ title: 'Sending...', message: 'Please wait while we send you an OTP' });
+      const res: Result<any> = await HttpClient.callApi({
+        url: `${authApiList.signup}`,
+        method: 'POST',
+        body: { email: signupForm.values.emailPhone, password: signupForm.values.password },
+      });
+      if (res.ok) {
+        dispatch({ type: 'NEXTSIGNUPSTEP' });
+        setValidationId(res.value.validationId);
+        showSuccessNotification({ title: 'Success !', message: 'An OTP has been sent to your email.' });
+      } else {
+        showErrorNotification(res.error.code);
       }
+      setIsLoading(false);
     }
   };
 
@@ -97,55 +62,20 @@ const SignUpStepTwo = () => {
       signupForm.clearErrors();
       setIsLoading(true);
 
-      try {
-        notifications.show({
-          id: 'load-data',
-          title: 'Sending...',
-          message: 'Please wait while we send you an OTP.',
-          loading: true,
-          autoClose: false,
-          withCloseButton: false,
-          sx: { borderRadius: em(8) },
-        });
-
-        const res = await axios.post(authApiList.signup, {
-          mobileNumber: `+91${signupForm.values.emailPhone}`,
-        });
-
-        if (res.data) {
-          setValidationId(res.data?.validationId);
-          setTimeout(() => {
-            notifications.update({
-              id: 'load-data',
-              title: 'Success !',
-              message: 'An OTP has been sent to your mobile number.',
-              autoClose: 2200,
-              withCloseButton: false,
-              color: 'teal',
-              icon: <BsCheckLg />,
-              sx: { borderRadius: em(8) },
-            });
-          }, 1100);
-
-          dispatch({ type: 'NEXTSIGNUPSTEP' });
-        }
-      } catch (err: any) {
-        if (err.response?.data?.code === 'GRA0003') {
-          notifications.update({
-            id: 'load-data',
-            title: 'Error !',
-            message: 'This mobile number is already registered. Please try again with a different mobile number.',
-            autoClose: 2200,
-            withCloseButton: false,
-            color: 'red',
-            icon: <FaExclamation />,
-            sx: { borderRadius: em(8) },
-          });
-          console.log(err.message);
-        }
-      } finally {
-        setIsLoading(false);
+      showLoadingNotification({ title: 'Sending...', message: 'Please wait while we send you an OTP' });
+      const res: Result<any> = await HttpClient.callApi({
+        url: `${authApiList.signup}`,
+        method: 'POST',
+        body: { mobileNumber: `+91${signupForm.values.emailPhone}` },
+      });
+      if (res.ok) {
+        dispatch({ type: 'NEXTSIGNUPSTEP' });
+        setValidationId(res.value.validationId);
+        showSuccessNotification({ title: 'Success !', message: 'An OTP has been sent to your email.' });
+      } else {
+        showErrorNotification(res.error.code);
       }
+      setIsLoading(false);
     }
   };
 

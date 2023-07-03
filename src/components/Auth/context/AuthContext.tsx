@@ -1,22 +1,19 @@
 import React, { createContext, useContext, useEffect, useReducer, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 
 import { em } from '@mantine/core';
 import { useForm, UseFormReturnType, isNotEmpty, matchesField, hasLength } from '@mantine/form';
 import { useLocalStorage } from '@mantine/hooks';
-import { notifications } from '@mantine/notifications';
 
 import { authApiList, profileAPIList } from '../../../assets/api/ApiList';
-import { FaExclamation } from 'react-icons/fa';
-import { BsCheckLg } from 'react-icons/bs';
-import { HttpClient } from '../../../utils/generic/httpClient';
-import { AuthClient } from '../../../utils/generic/authClinet';
+import { useGlobalContext } from '../../../context/GlobalContext';
 
-type AuthTokens = {
-  accessToken: string;
-  refreshToken: string;
-};
+import { HttpClient, Result } from '../../../utils/generic/httpClient';
+import {
+  showErrorNotification,
+  showLoadingNotification,
+  showSuccessNotification,
+} from '../../../utils/functions/showNotification';
 
 type signUpFormType = {
   emailPhone: string;
@@ -87,6 +84,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [forceRender, setForceRender] = useState<boolean>(false);
+  const { authClient } = useGlobalContext();
+  const authTokens = authClient.getAccessToken();
+
+  const token = localStorage.getItem('auth-tokens');
 
   const signupForm = useForm<signUpFormType>({
     initialValues: {
@@ -199,71 +200,47 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (isLoading) {
       return Promise.resolve(null);
     }
-
     setIsLoading(true);
     signupForm.clearErrors();
-
-    try {
-      notifications.show({
-        id: 'load-data',
-        title: 'Resending...',
-        message: 'Please wait while we send you an OTP.',
-        loading: true,
-        autoClose: false,
-        withCloseButton: false,
-        sx: { borderRadius: em(8) },
+    showLoadingNotification({
+      title: 'Resending...',
+      message: 'Please wait while we send you an OTP.',
+    });
+    const res: Result<any> = await HttpClient.callApiAuth(
+      {
+        url: `${authApiList.resendOtp}`,
+        method: 'POST',
+        body: validationId,
+      },
+      authClient
+    );
+    if (res.ok) {
+      showSuccessNotification({
+        title: 'Success !',
+        message: 'An OTP has been sent.',
       });
-
-      await axios.post(authApiList.resendOtp, { validationId });
-
-      setTimeout(() => {
-        notifications.update({
-          id: 'load-data',
-          title: 'Success !',
-          message: 'An OTP has been sent.',
-          autoClose: 2200,
-          withCloseButton: false,
-          color: 'teal',
-          icon: <BsCheckLg />,
-          sx: { borderRadius: em(8) },
-        });
-      }, 1100);
-    } catch (err: any) {
-      console.log(err.response?.data?.code);
-    } finally {
-      setIsLoading(false);
+    } else {
+      showErrorNotification(res.error.code);
     }
   };
 
-  const [authTokens, setAuthTokens] = useLocalStorage<AuthTokens>({ key: 'auth-tokens' });
   const getMyProfile = async () => {
-    try {
-      console.log("getMyProfile");
-      const resp = await HttpClient.callApiAuth({
-        url: profileAPIList.getMyProfile,
+    const res: Result<any> = await HttpClient.callApiAuth(
+      {
+        url: `${profileAPIList.getMyProfile}`,
         method: 'GET',
-      }, AuthClient.getInstance());
-
-      console.log(resp);
-
-      const res = await axios.get(profileAPIList.getMyProfile, {
-        headers: {
-          Authorization: `Bearer ${authTokens?.accessToken}`,
-        },
-      });
-
-      if (res.data && authTokens?.accessToken) {
-        navigate('/profile');
-      }
-    } catch (err: any) {
-      if (err.response?.data?.code === 'GR0009') {
-        dispatch({ type: 'CREATEPROFILE' });
-      }
+      },
+      authClient
+    );
+    if (res.ok) {
+      navigate('/profile');
+    } else {
+      showErrorNotification(res.error.code);
     }
   };
 
   useEffect(() => {
-    if (authTokens?.accessToken) {
+    if (authTokens) {
       getMyProfile();
     }
   }, [authTokens, forceRender]);
