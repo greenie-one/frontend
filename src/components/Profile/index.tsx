@@ -5,7 +5,7 @@ import { BioSection } from './sections/BioSection';
 import { Navbar } from './sections/Navbar';
 import { ProfilePhotos } from './sections/ProfilePhotos';
 import { ProfileSection } from './sections/ProfileSection';
-import { DocDepot } from './sections/DocDepot';
+import { DocDepot } from '../DocDepot';
 import { MyVerifications } from './sections/MyVerifications';
 import { Box, Button } from '@mantine/core';
 import { SeeCongratulations } from './components/SeeCongratulations';

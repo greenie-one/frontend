@@ -58,6 +58,10 @@ type ProfileContextType = {
   setSelectedCard: React.Dispatch<React.SetStateAction<IWorkExperience | null>>;
   selectedSkills: ISkill[];
   setSelectedSkills: React.Dispatch<React.SetStateAction<ISkill[]>>;
+  docDepotActivePage: number;
+  setDocDepotActivePage: React.Dispatch<React.SetStateAction<number>>;
+  docDepotData: [];
+  setDocDepotData: React.Dispatch<React.SetStateAction<[]>>;
 };
 
 interface IDocument {
@@ -209,6 +213,44 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const [selectedSkills, setSelectedSkills] = useState<ISkill[]>([]);
   const { authClient } = useGlobalContext();
   const authTokens = authClient.getAccessToken();
+  const [docDepotActivePage, setDocDepotActivePage] = useState<number>(0);
+  const [docDepotData, setDocDepotData] = useState([
+    {
+      name: 'IDs',
+      isFolder: true,
+      items: [
+        { id_type: 'AADHAR', isVerified: true },
+        { id_type: 'PAN', isVerified: true },
+        { id_type: 'DRIVING_LICENCE', isVerified: true },
+      ],
+    },
+    {
+      name: 'Work Documents',
+      isFolder: true,
+      items: [
+        { name: 'Letter of appointment', isFolder: false },
+        { name: 'Payslips', isFolder: false },
+        { name: 'Experience letter', isFolder: false },
+        { name: 'Relieving Letter', isFolder: false },
+      ],
+    },
+    {
+      name: 'Education documents',
+      isFolder: true,
+      items: [
+        { name: '10th Marksheet', isFolder: false },
+        { name: '12th Marksheet', isFolder: false },
+      ],
+    },
+    {
+      name: 'Others',
+      isFolder: true,
+      items: [
+        { name: '10th Marksheet', isFolder: false },
+        { name: '12th Marksheet', isFolder: false },
+      ],
+    },
+  ]);
 
   //------------Forms-----------------
 
@@ -410,6 +452,11 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
     );
     if (res.ok) {
       setDocumentsData(res.value.ids);
+      setDocDepotData((prevState) => {
+        const updatedData = [...prevState];
+        updatedData[0].items = res.value.ids;
+        return updatedData;
+      });
     } else {
       showErrorNotification(res.error.code);
     }
@@ -687,6 +734,8 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
         setForceRender,
         detailsPage,
         dispatchDetailsPage,
+        docDepotActivePage,
+        setDocDepotActivePage,
         getDocuments,
         aadharIsVerified,
         panIsVerified,
@@ -700,6 +749,8 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
         setSelectedCard,
         selectedSkills,
         setSelectedSkills,
+        docDepotData,
+        setDocDepotData,
       }}
     >
       {children}
