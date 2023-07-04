@@ -66,7 +66,7 @@ const SignUpStepTwo = () => {
       const res: Result<any> = await HttpClient.callApi({
         url: `${authApiList.signup}`,
         method: 'POST',
-        body: { mobileNumber: `+91${signupForm.values.emailPhone}` },
+        body: { mobileNumber: `${signupForm.values.emailPhone}` },
       });
       if (res.ok) {
         dispatch({ type: 'NEXTSIGNUPSTEP' });

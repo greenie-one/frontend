@@ -100,7 +100,7 @@ const LoginStepTwo = () => {
       const res = await HttpClient.callApi({
         url: `${authApiList.login}`,
         method: 'POST',
-        body: { mobileNumber: `91${loginForm.values.emailPhoneGreenieId}` },
+        body: { mobileNumber: `${loginForm.values.emailPhoneGreenieId}` },
       });
       if (res.ok) {
         setValidationId(res.value);
