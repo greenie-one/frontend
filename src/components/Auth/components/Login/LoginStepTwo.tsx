@@ -1,26 +1,29 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 
 import { createStyles, rem, Text, Button, Divider, PasswordInput, Flex, Box, em } from '@mantine/core';
-import { useLocalStorage } from '@mantine/hooks';
-import { notifications } from '@mantine/notifications';
 import { useAuthContext } from '../../context/AuthContext';
 import { authApiList } from '../../../../assets/api/ApiList';
-
+import { useProfileContext } from '../../../Profile/context/ProfileContext';
 import GoogleButton from '../Google/GoogleButton';
-import { FaExclamation } from 'react-icons/fa';
 import { BsArrowLeft } from 'react-icons/bs';
-import { BsCheckLg } from 'react-icons/bs';
 import '../../styles/global.scss';
+
+import { useGlobalContext } from '../../../../context/GlobalContext';
+import {
+  showErrorNotification,
+  showLoadingNotification,
+  showSuccessNotification,
+} from '../../../../utils/functions/showNotification';
+import { HttpClient, Result } from '../../../../utils/generic/httpClient';
 
 const LoginStepTwo = () => {
   const navigate = useNavigate();
   const { classes: inputClasses } = inputStyles();
   const { loginForm, state, dispatch, isValidEmail, isPhoneNumber, setValidationId, setForceRender } = useAuthContext();
-
-  const [authTokens, setAuthTokens] = useLocalStorage({ key: 'auth-tokens' });
+  const { authClient } = useGlobalContext();
   const [isLoading, setIsLoading] = useState(false);
+  const {} = useProfileContext();
 
   const handleLoginWithPhoneNo = () => {
     loginForm.setFieldValue('emailPhoneGreenieId', '');
@@ -46,96 +49,41 @@ const LoginStepTwo = () => {
     if (!loginForm.validateField('password').hasError) {
       loginForm.clearErrors();
       setIsLoading(true);
-
-      try {
-        notifications.show({
-          id: 'load-data',
-          title: 'Loading...',
-          message: 'Please wait while we log you in...',
-          loading: true,
-          autoClose: false,
-          withCloseButton: false,
-          sx: { borderRadius: em(8) },
+      showLoadingNotification({
+        title: 'Loading...',
+        message: 'Please wait while we log you in...',
+      });
+      const res: Result<any> = await HttpClient.callApi({
+        url: `${authApiList.login}`,
+        method: 'POST',
+        body: { email: loginForm.values.emailPhoneGreenieId, password: loginForm.values.password },
+      });
+      if (res.ok) {
+        setValidationId(res.value.validationId);
+        const resp = await HttpClient.callApi({
+          url: `${authApiList.validateOtp}`,
+          method: 'POST',
+          body: { validationId: res.value.validationId, otp: '123456' },
         });
-
-        const res = await axios.post(authApiList.login, {
-          email: loginForm.values.emailPhoneGreenieId,
-          password: loginForm.values.password,
-        });
-
-        if (res.data) {
-          setValidationId(res.data?.validationId);
-          const resp = await axios.post(authApiList.validateOtp, {
-            validationId: res.data?.validationId,
-            otp: '123456',
+        if (resp.ok) {
+          showSuccessNotification({
+            title: 'Success !',
+            message: 'You have been logged in successfully.',
           });
-
-          if (resp.data) {
-            setAuthTokens(resp.data);
-            setForceRender((prev) => !prev);
-
-            setTimeout(() => {
-              notifications.update({
-                id: 'load-data',
-                title: 'Success !',
-                message: 'You have been logged in successfully.',
-                autoClose: 2200,
-                withCloseButton: false,
-                color: 'teal',
-                icon: <BsCheckLg />,
-                sx: { borderRadius: em(8) },
-              });
-            }, 1100);
-          }
-        }
-      } catch (err: any) {
-        if (err.response?.data?.code === 'GR0011') {
+          authClient.setTokens(resp.value.accessToken, resp.value.refreshToken);
+          setForceRender((prev) => !prev);
+          navigate('/profile');
           loginForm.setFieldValue('password', '');
-
-          notifications.update({
-            id: 'load-data',
-            title: 'Error !',
-            message: 'Invalid Credentials. Please try again.',
-            autoClose: 2200,
-            withCloseButton: false,
-            color: 'red',
-            icon: <FaExclamation />,
-            sx: { borderRadius: em(8) },
-          });
-        }
-        if (err.response?.data?.code === 'GRA0012') {
-          loginForm.setFieldValue('password', '');
-
-          notifications.update({
-            id: 'load-data',
-            title: 'Error !',
-            message: 'Invalid Credentials. Please try again.',
-            autoClose: 2200,
-            withCloseButton: false,
-            color: 'red',
-            icon: <FaExclamation />,
-            sx: { borderRadius: em(8) },
-          });
-        }
-        if (err.response?.data?.code === 'GRA0008') {
-          loginForm.setFieldValue('password', '');
-
-          notifications.update({
-            id: 'load-data',
-            title: 'Error !',
-            message: 'User not found. Please create an account first.',
-            autoClose: 2200,
-            withCloseButton: false,
-            color: 'red',
-            icon: <FaExclamation />,
-            sx: { borderRadius: em(8) },
-          });
-
           dispatch({ type: 'PREVLOGINSTEP' });
+        } else {
+          showErrorNotification(resp.error.code);
+          dispatch({ type: 'PREVLOGINSTEP' });
+          loginForm.setFieldValue('password', '');
         }
-      } finally {
-        setIsLoading(false);
+      } else {
+        showErrorNotification(res.error.code);
       }
+      setIsLoading(false);
     }
   };
 
@@ -148,67 +96,21 @@ const LoginStepTwo = () => {
     if (state.loginStep === 2) {
       loginForm.clearErrors();
       setIsLoading(true);
-
-      try {
-        notifications.show({
-          id: 'load-data',
-          title: 'Sending...',
-          message: 'Please wait while we send you an OTP.',
-          loading: true,
-          autoClose: false,
-          withCloseButton: false,
-          sx: { borderRadius: em(8) },
+      showLoadingNotification({ title: 'Sending...', message: 'Please wait while we send you an OTP.' });
+      const res = await HttpClient.callApi({
+        url: `${authApiList.login}`,
+        method: 'POST',
+        body: { mobileNumber: `${loginForm.values.emailPhoneGreenieId}` },
+      });
+      if (res.ok) {
+        setValidationId(res.value);
+        showSuccessNotification({
+          title: 'Success !',
+          message: 'An OTP has been sent to your mobile number.',
         });
-
-        const res = await axios.post(authApiList.login, {
-          mobileNumber: `91${loginForm.values.emailPhoneGreenieId}`,
-        });
-
-        if (res.data) {
-          setValidationId(res.data?.validationId);
-          setTimeout(() => {
-            notifications.update({
-              id: 'load-data',
-              title: 'Success !',
-              message: 'An OTP has been sent to your mobile number.',
-              autoClose: 2200,
-              withCloseButton: false,
-              color: 'teal',
-              icon: <BsCheckLg />,
-              sx: { borderRadius: em(8) },
-            });
-          }, 1100);
-
-          dispatch({ type: 'NEXTLOGINSTEP' });
-        }
-      } catch (err: any) {
-        if (err.response?.data?.code === 'GR0011') {
-          notifications.update({
-            id: 'load-data',
-            title: 'Error !',
-            message: 'Invalid Credentials. Please try again.',
-            autoClose: 2200,
-            withCloseButton: false,
-            color: 'red',
-            icon: <FaExclamation />,
-            sx: { borderRadius: em(8) },
-          });
-        }
-        if (err.response?.data?.code === 'GR0008') {
-          notifications.update({
-            id: 'load-data',
-            title: 'Error !',
-            message: 'User not found. Please create an account first.',
-            autoClose: 2200,
-            withCloseButton: false,
-            color: 'red',
-            icon: <FaExclamation />,
-            sx: { borderRadius: em(8) },
-          });
-          console.log(err);
-        }
-      } finally {
-        setIsLoading(false);
+        dispatch({ type: 'NEXTLOGINSTEP' });
+      } else {
+        showErrorNotification(res.error.code);
       }
     }
   };

@@ -7,6 +7,7 @@ import axios from 'axios';
 import { profileAPIList } from '../../../assets/api/ApiList';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 import profileIllustration from '../../Auth/assets/profileillustration.png';
+import { useGlobalContext } from '../../../context/GlobalContext';
 
 export const ProfilePhotos = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -17,8 +18,9 @@ export const ProfilePhotos = () => {
     backgroundImage: `url(${emptyProfile})`,
     backgroundPosition: 'center',
   });
-  const { authTokens } = useProfileContext();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { authClient } = useGlobalContext();
+  const authToken = authClient.getAccessToken();
 
   const handleFileInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -39,7 +41,7 @@ export const ProfilePhotos = () => {
         .post(`${profileAPIList.updateProfilePicture}`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
-            Authorization: `Bearer ${authTokens?.accessToken}`,
+            Authorization: `Bearer ${authToken}`,
           },
         })
         .then((res) => {

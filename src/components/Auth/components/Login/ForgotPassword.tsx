@@ -1,12 +1,16 @@
 import { TextInput, createStyles, em, rem, Text, Button, Box, Flex, PasswordInput } from '@mantine/core';
 import { useAuthContext } from '../../context/AuthContext';
-import { BsArrowLeft, BsCheckLg } from 'react-icons/bs';
+import { BsArrowLeft } from 'react-icons/bs';
 import '../../styles/global.scss';
-import { notifications } from '@mantine/notifications';
 import { authApiList } from '../../../../assets/api/ApiList';
-import axios from 'axios';
-import { FaExclamation } from 'react-icons/fa';
 import { useState, useEffect } from 'react';
+import {
+  showErrorNotification,
+  showLoadingNotification,
+  showSuccessNotification,
+} from '../../../../utils/functions/showNotification';
+import { useGlobalContext } from '../../../../context/GlobalContext';
+import { HttpClient, Result } from '../../../../utils/generic/httpClient';
 
 const ForgotPassword = () => {
   const { classes: inputClasses } = inputStyles();
@@ -14,9 +18,7 @@ const ForgotPassword = () => {
   const { loginForm, state, dispatch, isPhoneNumber, isValidEmail } = useAuthContext();
   const [validateOTPId, setValidateOTP] = useState<string>('');
   const [secondsRemaining, setSecondsRemaining] = useState<number>(60);
-
-  const token = localStorage.getItem('auth-tokens');
-  const authTokens = token ? JSON.parse(token) : null;
+  const { authClient } = useGlobalContext();
 
   const handleClick = () => {
     if (state.resetPasswordStep === 1) {
@@ -36,44 +38,27 @@ const ForgotPassword = () => {
   const handleRequestOTP = async (event: React.FormEvent) => {
     event.preventDefault();
     if (!loginForm.validateField('emailPhoneGreenieId').hasError) {
-      try {
-        notifications.show({
-          id: 'load-data',
-          title: 'Sending OTP...',
-          message: 'Please wait while we send OTP to your email.',
-          loading: true,
-          autoClose: false,
-          withCloseButton: false,
-          sx: { borderRadius: em(8) },
+      showLoadingNotification({
+        title: 'Sending OTP...',
+        message: 'Please wait while we send OTP to your email.',
+      });
+      const res: Result<any> = await HttpClient.callApiAuth(
+        {
+          url: `${authApiList.forgotpasswordOtp}`,
+          method: 'POST',
+          body: { email: loginForm.values.emailPhoneGreenieId },
+        },
+        authClient
+      );
+      if (res.ok) {
+        showSuccessNotification({
+          title: 'Success !',
+          message: 'An OTP has been sent to your email.',
         });
-
-        const res = await axios.post(
-          authApiList.forgotpasswordOtp,
-          {
-            email: loginForm.values.emailPhoneGreenieId,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${authTokens?.accessToken}`,
-            },
-          }
-        );
-        if (res.data) {
-          notifications.update({
-            id: 'load-data',
-            title: 'Success!',
-            message: 'OTP Sent to your email',
-            autoClose: 2200,
-            withCloseButton: false,
-            color: 'teal',
-            icon: <BsCheckLg />,
-            sx: { borderRadius: em(8) },
-          });
-          setValidateOTP(res.data.validationId);
-          dispatch({ type: 'NEXTRESETPASSWRDSTEP' });
-        }
-      } catch (error: any) {
-        console.log(error.message);
+        setValidateOTP(res.data.validationId);
+        dispatch({ type: 'NEXTRESETPASSWRDSTEP' });
+      } else {
+        showErrorNotification(res.error.code);
       }
     }
   };
@@ -81,44 +66,27 @@ const ForgotPassword = () => {
   const handleResendOTP = async (event: React.FormEvent) => {
     event.preventDefault();
     if (!loginForm.validateField('emailPhoneGreenieId').hasError) {
-      try {
-        notifications.show({
-          id: 'load-data',
-          title: 'Sending OTP...',
-          message: 'Please wait while we send OTP to your email.',
-          loading: true,
-          autoClose: false,
-          withCloseButton: false,
-          sx: { borderRadius: em(8) },
-        });
+      showLoadingNotification({
+        title: 'Sending OTP...',
+        message: 'Please wait while we send OTP to your email.',
+      });
 
-        const res = await axios.post(
-          authApiList.forgotpasswordOtp,
-          {
-            email: loginForm.values.emailPhoneGreenieId,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${authTokens?.accessToken}`,
-            },
-          }
-        );
-        if (res.data) {
-          notifications.update({
-            id: 'load-data',
-            title: 'Success!',
-            message: 'OTP Sent to your email',
-            autoClose: 2200,
-            withCloseButton: false,
-            color: 'teal',
-            icon: <BsCheckLg />,
-            sx: { borderRadius: em(8) },
-          });
-          setValidateOTP(res.data.validationId);
-          setSecondsRemaining(60);
-        }
-      } catch (error: any) {
-        console.log(error.message);
+      const res: Result<any> = await HttpClient.callApiAuth(
+        {
+          url: `${authApiList.forgotpasswordOtp}`,
+          method: 'POST',
+          body: { email: loginForm.values.emailPhoneGreenieId },
+        },
+        authClient
+      );
+      if (res.ok) {
+        showSuccessNotification({
+          title: 'Success !',
+          message: 'An OTP has been sent to your email.',
+        });
+        setValidateOTP(res.data.validationId);
+      } else {
+        showErrorNotification(res.error.code);
       }
     }
   };
@@ -126,35 +94,26 @@ const ForgotPassword = () => {
   const verifyOTP = async (event: React.FormEvent) => {
     event.preventDefault();
     if (!loginForm.validateField('otp').hasError) {
-      try {
-        notifications.show({
-          id: 'load-data',
-          title: 'Verifying OTP...',
-          message: 'Please wait while we verify your OTP.',
-          loading: true,
-          autoClose: false,
-          withCloseButton: false,
-          sx: { borderRadius: em(8) },
+      showLoadingNotification({
+        title: 'Verifying OTP...',
+        message: 'Please wait while we verify your OTP.',
+      });
+
+      const res: Result<any> = await HttpClient.callApiAuth(
+        {
+          url: `${authApiList.forgotpasswordValidate}`,
+          method: 'POST',
+          body: { validationId: validateOTPId, otp: loginForm.values.otp, newPassword: loginForm.values.password },
+        },
+        authClient
+      );
+      if (res.ok) {
+        showSuccessNotification({
+          title: 'Success !',
+          message: 'OTP has been verified successfully.',
         });
-        const res = await axios.post(authApiList.forgotpasswordValidate, {
-          validationId: validateOTPId,
-          otp: loginForm.values.otp,
-          newPassword: loginForm.values.password,
-        });
-        if (res.data) {
-          notifications.update({
-            id: 'load-data',
-            title: 'Success!',
-            message: 'Verified your OTP',
-            autoClose: 2200,
-            withCloseButton: false,
-            color: 'teal',
-            icon: <BsCheckLg />,
-            sx: { borderRadius: em(8) },
-          });
-        }
-      } catch (error: any) {
-        console.log(error);
+      } else {
+        showErrorNotification(res.error.code);
       }
     }
     // dispatch({ type: 'NEXTRESETPASSWRDSTEP' });

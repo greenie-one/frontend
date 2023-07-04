@@ -55,4 +55,7 @@ export const ErrorMessage: Record<string, Error> = {
   ["GR0039"]: {title:'Error !',message:'Aadhar already exists'},
   ["GR0040"]: {title:'Error !',message:'PAN already exists'},
   ["GR0041"]: {title:'Error !',message:'Driving License already exists'},
+
+  // CUSTOM ERRORS
+  ["NOSKILL"]: {title: "Error !", message: "Please add atleast one skill."}
 };

@@ -5,7 +5,8 @@ import { BiUserCircle } from 'react-icons/bi';
 import { RiSettings3Line } from 'react-icons/ri';
 import { MdExitToApp, MdOutlineLock } from 'react-icons/md';
 import { useSettingsContext } from '../context/SettingsContext';
-
+import { useGlobalContext } from '../../../context/GlobalContext';
+import { showLoadingNotification, showSuccessNotification } from '../../../utils/functions/showNotification';
 const settingsOptionsList = [
   {
     icon: <BiUserCircle />,
@@ -24,7 +25,23 @@ const settingsOptionsList = [
 export const Sidebar = (): JSX.Element => {
   const { classes } = sidebarStyles();
   const { showDetailsId, setShowDetailsId } = useSettingsContext();
-  const [authTokens, setAuthTokens, removeAuthTokens] = useLocalStorage({ key: 'auth-tokens' });
+
+  const removeAuthTokens = () => {
+    setIsLoading(true);
+    showLoadingNotification({ title: 'Signing Out', message: 'Please wait while we sign you out' });
+
+    setTimeout(() => {
+      authClient.deleteTokens();
+      navigate('/auth');
+    }, 600);
+
+    setTimeout(() => {
+      showSuccessNotification({
+        title: 'Signed Out !',
+        message: 'You have been successfully signed out',
+      });
+    }, 1100);
+  };
 
   return (
     <>

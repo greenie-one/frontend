@@ -22,14 +22,18 @@ import { useProfileContext } from '../context/ProfileContext';
 import { GrAdd } from 'react-icons/gr';
 import linkedInImg from '../../Auth/assets/linkedIn-logo.png';
 import { BsArrowLeft, BsCheckLg } from 'react-icons/bs';
-import { FaExclamation } from 'react-icons/fa';
 import { skillsAPIList } from '../../../assets/api/ApiList';
-import axios from 'axios';
-import { notifications } from '@mantine/notifications';
 import uploadIcon from '../assets/upload.png';
 import checkedIcon from '../assets/check.png';
 import { workExperienceAPiList } from '../../../assets/api/ApiList';
 import { CgSandClock } from 'react-icons/cg';
+import { useGlobalContext } from '../../../context/GlobalContext';
+import { HttpClient, Result } from '../../../utils/generic/httpClient';
+import {
+  showErrorNotification,
+  showLoadingNotification,
+  showSuccessNotification,
+} from '../../../utils/functions/showNotification';
 
 type Skill = {
   skillName: string;
@@ -103,6 +107,7 @@ export const AddWorkExperience = () => {
   const [documents, setDocuments] = useState<Document[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [workExperienceData, setWorkExperienceData] = useState<IWorkExperience | null>(null);
+  const { authClient } = useGlobalContext();
 
   const {
     workExperienceForm,
@@ -110,8 +115,8 @@ export const AddWorkExperience = () => {
     dispatchDetailsPage,
     detailsPage,
     skillForm,
-    authTokens,
     getSkills,
+    scrollToTop,
     scrollToProfileNav,
     setSelectedCard,
     selectedSkills,
@@ -167,21 +172,13 @@ export const AddWorkExperience = () => {
       !workExperienceForm.validateField('workType').hasError &&
       !workExperienceForm.validateField('modeOfwork').hasError
     ) {
-      try {
-        notifications.show({
-          id: 'load-data',
-          title: 'Please wait !',
-          message: 'We are adding your work experience.',
-          loading: true,
-          autoClose: 2200,
-          withCloseButton: false,
-          color: 'teal',
-          sx: { borderRadius: em(8) },
-        });
-        workExperienceForm.clearErrors();
-        const res = await axios.post(
-          workExperienceAPiList.postWorkExperience,
-          {
+      showLoadingNotification({ title: 'Please wait !', message: 'We are adding your work experience.' });
+      workExperienceForm.clearErrors();
+      const res: Result<any> = await HttpClient.callApiAuth(
+        {
+          url: `${workExperienceAPiList.postWorkExperience}`,
+          method: 'POST',
+          body: {
             designation: workExperienceForm.values.designation,
             companyType: workExperienceForm.values.companyType,
             email: workExperienceForm.values.workEmail,
@@ -193,41 +190,17 @@ export const AddWorkExperience = () => {
             companyEndDate: workExperienceForm.values.endDate,
             isVerified: false,
           },
-          {
-            headers: {
-              Authorization: `Bearer ${authTokens?.accessToken}`,
-            },
-          }
-        );
-        document.documentElement.scrollTo({
-          top: 0,
-          behavior: 'smooth',
-        });
-        setWorkExperienceData(res.data);
-        notifications.update({
-          id: 'load-data',
-          color: 'teal',
-          title: 'Success !',
-          message: 'New experience added to your profile.',
-          icon: <BsCheckLg />,
-          autoClose: 2000,
-        });
+        },
+        authClient
+      );
+      if (res.ok) {
+        setWorkExperienceData(res.value);
+        showSuccessNotification({ title: 'Success !', message: 'New experience added to your profile.' });
         getWorkExperience();
         setActive(2);
-      } catch (err: any) {
-        if (err.response?.data?.code === 'GR0036') {
-          notifications.update({
-            id: 'load-data',
-            title: 'Invalid date range',
-            message: 'End date must be after start date.',
-            autoClose: 2200,
-            withCloseButton: false,
-            color: 'red',
-            icon: <FaExclamation />,
-            sx: { borderRadius: em(8) },
-          });
-        }
-        console.log(err.message);
+        scrollToTop();
+      } else {
+        showErrorNotification(res.error.code);
       }
     }
   };
@@ -245,54 +218,27 @@ export const AddWorkExperience = () => {
   };
 
   const handleSkillContinue = async () => {
-    try {
-      notifications.show({
-        id: 'load-data',
-        title: 'Please wait !',
-        message: 'We are adding your skill.',
-        loading: true,
-        autoClose: false,
-        withCloseButton: false,
-        color: 'teal',
-        sx: { borderRadius: em(8) },
-      });
-      if (selectedSkills.length < 1) {
-        notifications.update({
-          id: 'load-data',
-          title: 'Error !',
-          color: 'red',
-          message: 'Please add atleast one skill.',
-          icon: <FaExclamation />,
-          autoClose: 2200,
-        });
-      }
-      if (selectedSkills.length > 0) {
-        for (const skill of selectedSkills) {
-          const res = await axios.post(skillsAPIList.postSkill, skill, {
-            headers: {
-              Authorization: `Bearer ${authTokens?.accessToken}`,
-            },
-          });
+    if (selectedSkills.length < 1) {
+      showErrorNotification('1');
+    }
+    if (selectedSkills.length > 0) {
+      showLoadingNotification({ title: 'Please wait !', message: 'We are adding your skill' });
+      for (const skill of selectedSkills) {
+        const res = await HttpClient.callApiAuth(
+          { url: `${skillsAPIList.postSkill}`, method: 'POST', body: skill },
+          authClient
+        );
+        if (res.ok) {
+          showSuccessNotification({ title: 'Success !', message: 'New skills added to your profile.' });
+
+          setActive(3);
         }
-        document.documentElement.scrollTo({
-          top: 0,
-          behavior: 'smooth',
-        });
-        notifications.update({
-          id: 'load-data',
-          color: 'teal',
-          title: 'Success !',
-          message: 'New skills added to your profile.',
-          icon: <BsCheckLg />,
-          autoClose: 2000,
-        });
-        getSkills();
-        setActive(3);
-        skillForm.values.skillName = '';
-        skillForm.values.expertise = '';
       }
-    } catch (error: any) {
-      console.log(error.message);
+
+      getSkills();
+      scrollToTop();
+      skillForm.values.skillName = '';
+      skillForm.values.expertise = '';
     }
   };
 

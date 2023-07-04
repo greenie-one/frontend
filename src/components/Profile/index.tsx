@@ -5,7 +5,7 @@ import { BioSection } from './sections/BioSection';
 import { Navbar } from './sections/Navbar';
 import { ProfilePhotos } from './sections/ProfilePhotos';
 import { ProfileSection } from './sections/ProfileSection';
-import { DocDepot } from './sections/DocDepot';
+import { DocDepot } from '../DocDepot';
 import { MyVerifications } from './sections/MyVerifications';
 import { Box, Button } from '@mantine/core';
 import { SeeCongratulations } from './components/SeeCongratulations';
@@ -16,6 +16,7 @@ import './styles/global.scss';
 export const Profile = () => {
   const [activeButton, setActiveButton] = useState(1);
   const { detailsPage, aadharIsVerified, panIsVerified, licenseIsVerified } = useProfileContext();
+  const { seeAddWorkExperience, seeAadharCard, seePanCard, seeDrivingLicence, seeCongratulations } = detailsPage;
 
   const handleButtonClick = (buttonId: number) => {
     setActiveButton(buttonId);
@@ -26,7 +27,7 @@ export const Profile = () => {
       <header>
         <Navbar />
       </header>
-      {detailsPage.seeAddWorkExperience ? (
+      {seeAddWorkExperience ? (
         <main className="profile">
           <AddWorkExperience />
         </main>
@@ -36,13 +37,13 @@ export const Profile = () => {
         </main>
       ) : (
         <main className="profile">
-          {!detailsPage?.seeCongratulations &&
+          {!seeCongratulations &&
             !aadharIsVerified &&
             !panIsVerified &&
             !licenseIsVerified &&
-            detailsPage.seeAadharCard === false &&
-            detailsPage.seePanCard === false &&
-            detailsPage.seeDrivingLicence === false && (
+            seeAadharCard === false &&
+            seePanCard === false &&
+            seeDrivingLicence === false && (
               <Box>
                 <ProfilePhotos />
                 <BioSection />
@@ -57,9 +58,9 @@ export const Profile = () => {
                 aadharIsVerified ||
                 panIsVerified ||
                 licenseIsVerified ||
-                !detailsPage.seeAadharCard === false ||
-                !detailsPage.seePanCard === false ||
-                !detailsPage.seeDrivingLicence === false
+                seeAadharCard === true ||
+                seePanCard === true ||
+                seeDrivingLicence === true
                   ? '7rem'
                   : '0rem',
             }}
@@ -88,7 +89,7 @@ export const Profile = () => {
               </Button>
             </Box>
           </Box>
-          {detailsPage.seeCongratulations && activeButton === 1 && <SeeCongratulations />}
+          {seeCongratulations && activeButton === 1 && <SeeCongratulations />}
           {activeButton === 1 && <ProfileSection />}
           {activeButton === 2 && <DocDepot />}
           {activeButton === 3 && <MyVerifications />}

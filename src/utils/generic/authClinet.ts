@@ -22,9 +22,9 @@ export class AuthClient {
       this.accessToken = null;
       this.refreshToken = null;
     } else {
-        const parsedTokens = JSON.parse(tokens);
-        this.accessToken = parsedTokens.accessToken;
-        this.refreshToken = parsedTokens.refreshToken;
+      const parsedTokens = JSON.parse(tokens);
+      this.accessToken = parsedTokens.accessToken;
+      this.refreshToken = parsedTokens.refreshToken;
     }
   }
 

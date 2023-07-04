@@ -1,15 +1,16 @@
 import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { TextInput, createStyles, rem, Text, Button, Box, Flex, em, Chip, Group } from '@mantine/core';
-import { useLocalStorage } from '@mantine/hooks';
-import { notifications } from '@mantine/notifications';
 import { useAuthContext } from '../../context/AuthContext';
 import { profileAPIList } from '../../../../assets/api/ApiList';
-
-import { FaExclamation } from 'react-icons/fa';
+import { useGlobalContext } from '../../../../context/GlobalContext';
+import { HttpClient, Result } from '../../../../utils/generic/httpClient';
+import {
+  showErrorNotification,
+  showLoadingNotification,
+  showSuccessNotification,
+} from '../../../../utils/functions/showNotification';
 import { BsArrowLeft } from 'react-icons/bs';
-import { BsCheckLg } from 'react-icons/bs';
 import linkedInLogo from '../../assets/linkedIn-logo.png';
 import linkedInGreenieLogo from '../../assets/linkedInGreenieLogo.png';
 import profileIllustration from '../../assets/profileillustration.png';
@@ -34,9 +35,9 @@ const Profile = () => {
 
   const [active, setActive] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
-  const [authTokens, setAuthTokens] = useLocalStorage({ key: 'auth-tokens' });
   const firstNameRef = useRef<HTMLInputElement>(null);
   const lastNameRef = useRef<HTMLInputElement>(null);
+  const { authClient } = useGlobalContext();
 
   const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
   const handleGoBack = () => {
@@ -68,60 +69,28 @@ const Profile = () => {
     if (isLoading) {
       return Promise.resolve(null);
     }
-
     if (active === 3) {
       setIsLoading(true);
       profileForm.clearErrors();
-
-      try {
-        notifications.show({
-          id: 'load-data',
-          title: 'Adding Profile Details...',
-          message: 'Please wait while we add your profile details.',
-          loading: true,
-          autoClose: false,
-          withCloseButton: false,
-          sx: { borderRadius: em(8) },
-        });
-
-        const res = await axios.post(profileAPIList.createProfile, profileForm.values, {
-          headers: {
-            Authorization: `Bearer ${(authTokens as any)?.accessToken}`,
-          },
-        });
-
-        if (res.data) {
-          setTimeout(() => {
-            notifications.update({
-              id: 'load-data',
-              title: 'Success !',
-              message: 'Your profile details have been added successfully.',
-              autoClose: 2200,
-              withCloseButton: false,
-              color: 'teal',
-              icon: <BsCheckLg />,
-              sx: { borderRadius: em(8) },
-            });
-          }, 1100);
-
-          navigate('/profile');
-        }
-      } catch (err: any) {
-        if (err.response?.data?.code === 'GR0001') {
-          notifications.update({
-            id: 'load-data',
-            title: 'Error !',
-            message: 'Something went wrong. Please try again later.',
-            autoClose: 2200,
-            withCloseButton: false,
-            color: 'red',
-            icon: <FaExclamation />,
-            sx: { borderRadius: em(8) },
-          });
-        }
-      } finally {
-        setIsLoading(false);
+      showLoadingNotification({
+        title: 'Adding Profile Details...',
+        message: 'Please wait while we add your profile details.',
+      });
+      const res: Result<any> = await HttpClient.callApiAuth(
+        {
+          url: `${profileAPIList.createProfile}`,
+          method: 'POST',
+          body: profileForm.values,
+        },
+        authClient
+      );
+      if (res.ok) {
+        showSuccessNotification({ title: 'Success !', message: 'Your profile details have been added successfully.' });
+        navigate('/profile');
+      } else {
+        showErrorNotification(res.error.code);
       }
+      setIsLoading(false);
     }
   };
 
