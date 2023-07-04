@@ -1,4 +1,3 @@
-import { ErrorMessage } from '../../assets/api/ApiErrors';
 import { AuthClient } from './authClinet';
 
 type Error = {
