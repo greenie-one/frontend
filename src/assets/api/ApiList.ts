@@ -9,7 +9,7 @@ export const authApiList = {
   login: `${BASE_URL}/auth/login`,
   googleAuth: `${BASE_URL}/auth/redirect/google`,
   googleCallback: `${BASE_URL}/auth/callback/google`,
-  refreshToken: `${BASE_URL}/refresh`,
+  refreshToken: `${BASE_URL}/auth/refresh`,
   resendOtp: `${BASE_URL}/auth/resendOTP`,
   forgotpasswordOtp: `${BASE_URL}/auth/forgot_password`,
   forgotpasswordValidate: `${BASE_URL}/auth/validate_forgot_password`,
