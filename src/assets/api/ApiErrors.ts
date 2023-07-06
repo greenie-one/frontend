@@ -58,5 +58,6 @@ export const ErrorMessage: Record<string, Error> = {
 
   // CUSTOM ERRORS
   ["NO_SKILL"]: {title: "Error !", message: "Please add atleast one skill."},
-  ["MISSING_TAGS"]: {title: "Error !", message: "Please select document tags for all the documents."}
+  ["MISSING_TAGS"]: {title: "Error !", message: "Please select document tags for all the documents."},
+  ["AUTH_TOKENS_NOT_SET"]: {title: "Error !", message: "Please Login"}
 };
