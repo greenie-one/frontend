@@ -1,26 +1,28 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useGlobalContext } from '../../../../context/GlobalContext';
+import {
+  showErrorNotification,
+  showLoadingNotification,
+  showSuccessNotification,
+} from '../../../../utils/functions/showNotification';
+import { HttpClient, Result } from '../../../../utils/generic/httpClient';
 
 import { Text, Button, Flex, Box, TextInput, createStyles, em } from '@mantine/core';
-import { useLocalStorage } from '@mantine/hooks';
-import { notifications } from '@mantine/notifications';
+
 import { useAuthContext } from '../../context/AuthContext';
 import { authApiList } from '../../../../assets/api/ApiList';
 
-import { FaExclamation } from 'react-icons/fa';
 import { BsArrowLeft } from 'react-icons/bs';
-import { BsCheckLg } from 'react-icons/bs';
 import '../../styles/global.scss';
 
 const LoginStepThree = () => {
   const navigate = useNavigate();
   const { loginForm, state, dispatch, isPhoneNumber, validationId, resendOtp, setForceRender } = useAuthContext();
   const { classes: inputClasses } = inputStyles();
-
-  const [authTokens, setAuthTokens] = useLocalStorage({ key: 'auth-tokens' });
   const [secondsRemaining, setSecondsRemaining] = useState<number>(60);
   const [isLoading, setIsLoading] = useState(false);
+  const { authClient } = useGlobalContext();
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -41,70 +43,29 @@ const LoginStepThree = () => {
     }
 
     if (!loginForm.validateField('otp').hasError) {
-      try {
-        notifications.show({
-          id: 'load-data',
-          title: 'Loading...',
-          message: 'Please wait while we log you in...',
-          loading: true,
-          autoClose: false,
-          withCloseButton: false,
-          sx: { borderRadius: em(8) },
+      showLoadingNotification({
+        title: 'Loading...',
+        message: 'Please wait while we log you in...',
+      });
+
+      const res: Result<any> = await HttpClient.callApi({
+        url: `${authApiList.validateOtp}`,
+        method: 'POST',
+        body: { validationId, otp: loginForm.values.otp },
+      });
+      if (res.ok) {
+        authClient.setTokens(res.value.accessToken, res.value.refreshToken);
+        showSuccessNotification({
+          title: 'Success !',
+          message: 'You have been logged in successfully.',
         });
-
-        const res = await axios.post(authApiList.validateOtp, {
-          validationId,
-          otp: loginForm.values.otp,
-        });
-
-        if (res.data) {
-          setAuthTokens(res.data);
-
-          setTimeout(() => {
-            notifications.update({
-              id: 'load-data',
-              title: 'Success !',
-              message: 'You have been logged in successfully.',
-              autoClose: 2200,
-              withCloseButton: false,
-              color: 'teal',
-              icon: <BsCheckLg />,
-              sx: { borderRadius: em(8) },
-            });
-          }, 1100);
-
-          setForceRender((prev) => !prev);
-        }
-      } catch (err: any) {
-        loginForm.setFieldValue('otp', '');
-
-        if (err.response?.data?.code === 'GR0004') {
-          notifications.update({
-            id: 'load-data',
-            title: 'Error !',
-            message: 'Invalid OTP. Please try again.',
-            autoClose: 2200,
-            withCloseButton: false,
-            color: 'red',
-            icon: <FaExclamation />,
-            sx: { borderRadius: em(8) },
-          });
-        }
-        if (err.response?.data?.code === 'GR0008') {
-          notifications.update({
-            id: 'load-data',
-            title: 'Error !',
-            message: 'User not found. Please create an account first.',
-            autoClose: 2200,
-            withCloseButton: false,
-            color: 'red',
-            icon: <FaExclamation />,
-            sx: { borderRadius: em(8) },
-          });
-        }
-      } finally {
-        setIsLoading(false);
+        setForceRender((prev) => !prev);
+        navigate('/profile');
+      } else {
+        showErrorNotification(res.error.code);
       }
+      loginForm.setFieldValue('otp', '');
+      setIsLoading(false);
     }
   };
 

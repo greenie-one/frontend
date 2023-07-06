@@ -257,11 +257,8 @@ export const VerifyWorkExperience: React.FC<IWorkExperience> = ({
         expertise: skillForm.values.expertise,
       };
       setSelectedSkills((prevSkills) => [...prevSkills, newSkill]);
-      console.log(selectedSkills);
-      console.log(addedPeers[activePeer].skills);
       skillForm.values.skillName = '';
       skillForm.values.expertise = '';
-      console.log(selectedSkills);
       close();
     }
   };

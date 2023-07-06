@@ -1,11 +1,14 @@
 import React, { createContext, useState, ReactNode, useContext, useEffect } from 'react';
-import { FaExclamation } from 'react-icons/fa';
 import { useForm, matchesField, hasLength, UseFormReturnType } from '@mantine/form';
 import { em } from '@mantine/core';
 import { authApiList } from '../../../assets/api/ApiList';
-import { notifications } from '@mantine/notifications';
-import axios from 'axios';
-import { BsCheckLg } from 'react-icons/bs';
+import { useGlobalContext } from '../../../context/GlobalContext';
+import {
+  showErrorNotification,
+  showLoadingNotification,
+  showSuccessNotification,
+} from '../../../utils/functions/showNotification';
+import { HttpClient, Result } from '../../../utils/generic/httpClient';
 
 type ShowDetailsIdContextType = {
   showDetailsId: number;
@@ -26,6 +29,7 @@ export const useSettingsContext = () => useContext(SettingsContext);
 
 export const SettingsProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [showDetailsId, setShowDetailsId] = useState<number>(0);
+  const { authClient } = useGlobalContext();
 
   const privacySettingsForm = useForm<privacySettingsFormType>({
     initialValues: {
@@ -40,8 +44,6 @@ export const SettingsProvider: React.FC<{ children: ReactNode }> = ({ children }
       confirmPassword: matchesField('newPassword', 'Passwords are not the same'),
     },
   });
-  const token = localStorage.getItem('auth-tokens');
-  const authTokens = token ? JSON.parse(token) : null;
 
   const changePassword = async () => {
     if (
@@ -49,54 +51,28 @@ export const SettingsProvider: React.FC<{ children: ReactNode }> = ({ children }
       !privacySettingsForm.validateField('newPassword').hasError &&
       !privacySettingsForm.validateField('confirmPassword').hasError
     ) {
-      try {
-        notifications.show({
-          id: 'load-data',
-          title: 'Changing your password',
-          message: 'Please wait while we change your password.',
-          loading: true,
-          autoClose: false,
-          withCloseButton: false,
-          sx: { borderRadius: em(8) },
-        });
-        const res = await axios.post(
-          authApiList.changePassword,
-          {
+      showLoadingNotification({
+        title: 'Changing your password',
+        message: 'Please wait while we change your password.',
+      });
+      const res: Result<any> = await HttpClient.callApiAuth(
+        {
+          url: `${authApiList.changePassword}`,
+          method: 'POST',
+          body: {
             currentPassword: privacySettingsForm.values.currentPassword,
             newPassword: privacySettingsForm.values.newPassword,
           },
-          {
-            headers: {
-              Authorization: `Bearer ${authTokens?.accessToken}`,
-            },
-          }
-        );
-
-        notifications.update({
-          id: 'load-data',
-          color: 'teal',
-          title: 'Success !',
-          message: 'Password changed successfully.',
-          icon: <BsCheckLg />,
-          autoClose: 2000,
-        });
+        },
+        authClient
+      );
+      if (res.ok) {
+        showSuccessNotification({ title: 'Success !', message: 'Password changed successfully.' });
         privacySettingsForm.setFieldValue('currentPassword', '');
         privacySettingsForm.setFieldValue('newPassword', '');
         privacySettingsForm.setFieldValue('confirmPassword', '');
-      } catch (error: any) {
-        if (error.response?.data?.code === 'GRA0012') {
-          notifications.update({
-            id: 'load-data',
-            title: 'Invalid password',
-            message: 'Please enter valid current password',
-            autoClose: 2200,
-            withCloseButton: false,
-            color: 'red',
-            icon: <FaExclamation />,
-            sx: { borderRadius: em(8) },
-          });
-        }
-        console.log(error.message);
+      } else {
+        showErrorNotification(res.error.code);
       }
     }
   };

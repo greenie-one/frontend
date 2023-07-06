@@ -27,8 +27,6 @@ interface ISearchListContentType {
 }
 
 export const SearchResult: React.FC<ISearchListContentType> = ({ results, classes }): JSX.Element => {
-  console.log(results);
-
   return (
     <ul className={classes.searchList}>
       {results.map((profile, idx) => {

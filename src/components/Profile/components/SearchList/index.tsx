@@ -3,9 +3,11 @@ import { Box, createStyles, em, rem } from '@mantine/core';
 import profileThumbnail from '../../assets/johnMarston.png';
 import { SearchResult } from './SearchListContent';
 import { NoResultContent } from './NoResultContent';
-import axios from 'axios';
 import { profileAPIList } from '../../../../assets/api/ApiList';
 import { useProfileContext } from '../../context/ProfileContext';
+import { useGlobalContext } from '../../../../context/GlobalContext';
+
+import { HttpClient, Result } from '../../../../utils/generic/httpClient';
 
 const searchResults = [
   {
@@ -71,28 +73,26 @@ export const SearchList: React.FC<ISearchListPropsType> = ({ searchQuery, setSho
   const [profilesData, setProfilesData] = useState([]);
   const [fetchingData, setFetchingData] = useState<boolean>(true);
   const [error, setError] = useState<boolean>(false);
+  const { authClient } = useGlobalContext();
 
   const { authTokens } = useProfileContext();
 
   const fetchProfiles = useMemo(
     () => async () => {
-      try {
-        const res = await axios.get(`${profileAPIList.searchProfile}${searchQuery}`, {
-          headers: {
-            Authorization: `Bearer ${authTokens?.accessToken}`,
-          },
-        });
-
-        if (res.data) {
-          console.log(res.data);
-          setProfilesData(res.data);
-          setError(false);
-        }
-      } catch (err: any) {
-        console.log('Error in searching profile: ', err);
-        setError(true);
-      } finally {
+      const res: Result<any> = await HttpClient.callApiAuth(
+        {
+          url: `${profileAPIList.searchProfile}${searchQuery}`,
+          method: 'GET',
+        },
+        authClient
+      );
+      if (res.ok) {
+        setProfilesData(res.value);
+        setError(false);
         setFetchingData(false);
+      } else {
+        setFetchingData(false);
+        setError(true);
       }
     },
     [searchQuery, authTokens]

@@ -13,8 +13,8 @@ import { RiSettings3Line } from 'react-icons/ri';
 import { MdExitToApp, MdOutlineLiveHelp, MdOutlineLock } from 'react-icons/md';
 import { useSettingsContext } from '../../Settings/context/SettingsContext';
 import { useProfileContext } from '../context/ProfileContext';
-import { notifications } from '@mantine/notifications';
-import { BsCheckLg } from 'react-icons/bs';
+import { showLoadingNotification, showSuccessNotification } from '../../../utils/functions/showNotification';
+import { useGlobalContext } from '../../../context/GlobalContext';
 
 const notificationsData = [
   {
@@ -57,41 +57,23 @@ export const Navbar = () => {
   const { setShowDetailsId } = useSettingsContext();
   const { setIsLoading, scrollToTop } = useProfileContext();
   const navigate = useNavigate();
+  const { authClient } = useGlobalContext();
 
   const removeAuthTokens = () => {
     setIsLoading(true);
-    try {
-      notifications.show({
-        id: 'load-data',
-        title: 'Signing Out',
-        message: 'Please wait while we sign you out',
-        loading: true,
-        autoClose: false,
-        withCloseButton: false,
-        sx: { borderRadius: em(8) },
-      });
-      setTimeout(() => {
-        localStorage.removeItem('auth-tokens');
-        navigate('/auth');
-      }, 600);
+    showLoadingNotification({ title: 'Signing Out', message: 'Please wait while we sign you out' });
 
-      setTimeout(() => {
-        notifications.update({
-          id: 'load-data',
-          title: 'Signed Out',
-          message: 'You have been successfully signed out',
-          autoClose: 1200,
-          withCloseButton: false,
-          color: 'teal',
-          icon: <BsCheckLg />,
-          sx: { borderRadius: em(8) },
-        });
-      }, 1100);
-    } catch (error: any) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
+    setTimeout(() => {
+      authClient.deleteTokens();
+      navigate('/auth');
+    }, 600);
+
+    setTimeout(() => {
+      showSuccessNotification({
+        title: 'Signed Out !',
+        message: 'You have been successfully signed out',
+      });
+    }, 1100);
   };
 
   const location = useLocation();

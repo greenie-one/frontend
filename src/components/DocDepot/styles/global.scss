@@ -1,0 +1,144 @@
+$offWhite: #f9f9f9;
+$white: #ffffff;
+$green: #17a672;
+$limeGreen: #8cf078;
+$bgGreen: #a5fbc9;
+$lightGray: #ebebeb;
+$lighterGray: #e1e1e1;
+$red: #ff7272;
+
+$black: #282828;
+$gray: #697082;
+$dark: #191919;
+
+@import '_profilebar';
+@import '_docDepotNavbar';
+
+.filter-box {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 1rem;
+
+  .filter-heading {
+    font-size: 14px;
+    color: $gray;
+  }
+
+  .filter {
+    border: 1px solid $lighterGray;
+    border-radius: 24px;
+    color: $gray;
+    font-size: 12px;
+    padding: 0.15rem 1rem;
+    margin-left: 1rem;
+  }
+}
+
+.folder-wrapper {
+  display: grid;
+  grid-template-columns: repeat(4, 23%);
+  align-items: center;
+  justify-content: space-between;
+}
+
+.folder {
+  border: 1px solid $lighterGray;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 1rem;
+  font-size: 16px;
+  height: 80px;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    border: 1px solid $green;
+  }
+
+  img {
+    width: 45px;
+    margin-right: 0.5rem;
+  }
+
+  .folder-text {
+    font-family: Inter;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: -0.02em;
+    text-align: left;
+  }
+}
+
+.doc-depot-heading {
+  margin: 1rem 0rem;
+  font-weight: 500;
+  font-size: 18px;
+}
+
+.doc-depo-header {
+  display: flex;
+  align-items: center;
+  width: 280px;
+  margin-bottom: 2rem;
+  cursor: pointer;
+
+  .text {
+    font-size: 16px;
+    font-weight: 500;
+    margin-left: 0.5rem;
+  }
+}
+
+.ids-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  .id-box {
+    border: 1px solid $lighterGray;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 200px;
+    height: 75px;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+
+    &:not(:first-child) {
+      margin-left: 1rem;
+    }
+
+    &:first-child {
+      img {
+        width: 50px;
+      }
+    }
+    &:nth-child(2) {
+      img {
+        width: 25px;
+      }
+    }
+
+    .id-text {
+      margin-left: 1rem;
+      font-size: 14px;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .folder-wrapper {
+    grid-template-columns: repeat(2, 49%);
+  }
+}
+@media screen and (max-width: 512px) {
+  .folder-wrapper {
+    grid-template-columns: 100%;
+  }
+}

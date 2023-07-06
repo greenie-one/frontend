@@ -2,7 +2,6 @@
 import React, { createContext, useContext, useState, useEffect, useReducer } from 'react';
 import { useForm, UseFormReturnType, isNotEmpty, isEmail, hasLength } from '@mantine/form';
 import { em } from '@mantine/core';
-import axios from 'axios';
 import {
   skillsAPIList,
   profileAPIList,
@@ -10,16 +9,16 @@ import {
   workExperienceAPiList,
   residentialInfoAPIList,
 } from '../../../assets/api/ApiList';
-import { notifications } from '@mantine/notifications';
-import { BsCheckLg } from 'react-icons/bs';
-import { FaExclamation } from 'react-icons/fa';
+import { useGlobalContext } from '../../../context/GlobalContext';
+
+import { HttpClient, Result } from '../../../utils/generic/httpClient';
+import {
+  showErrorNotification,
+  showLoadingNotification,
+  showSuccessNotification,
+} from '../../../utils/functions/showNotification';
 
 // ----------------Types-------------------------
-
-type AuthTokens = {
-  accessToken: string;
-  refreshToken: string;
-};
 
 type ProfileContextType = {
   profileData: IUserProfile;
@@ -47,7 +46,6 @@ type ProfileContextType = {
   setAadharIsVerified: React.Dispatch<React.SetStateAction<boolean>>;
   setPanIsVerified: React.Dispatch<React.SetStateAction<boolean>>;
   setLicenseIsVerified: React.Dispatch<React.SetStateAction<boolean>>;
-  authTokens: AuthTokens;
   detailsPage: DetailsPageState;
   dispatchDetailsPage: React.Dispatch<DetailsPageAction>;
   isLoading: boolean;
@@ -60,6 +58,10 @@ type ProfileContextType = {
   setSelectedCard: React.Dispatch<React.SetStateAction<IWorkExperience | null>>;
   selectedSkills: ISkill[];
   setSelectedSkills: React.Dispatch<React.SetStateAction<ISkill[]>>;
+  docDepotActivePage: number;
+  setDocDepotActivePage: React.Dispatch<React.SetStateAction<number>>;
+  docDepotData: [];
+  setDocDepotData: React.Dispatch<React.SetStateAction<[]>>;
 };
 
 interface IDocument {
@@ -209,6 +211,46 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const [licenseIsVerified, setLicenseIsVerified] = useState<boolean>(false);
   const [selectedCard, setSelectedCard] = useState<IWorkExperience | null>(null);
   const [selectedSkills, setSelectedSkills] = useState<ISkill[]>([]);
+  const { authClient } = useGlobalContext();
+  const authTokens = authClient.getAccessToken();
+  const [docDepotActivePage, setDocDepotActivePage] = useState<number>(0);
+  const [docDepotData, setDocDepotData] = useState([
+    {
+      name: 'IDs',
+      isFolder: true,
+      items: [
+        { id_type: 'AADHAR', isVerified: true },
+        { id_type: 'PAN', isVerified: true },
+        { id_type: 'DRIVING_LICENCE', isVerified: true },
+      ],
+    },
+    {
+      name: 'Work Documents',
+      isFolder: true,
+      items: [
+        { name: 'Letter of appointment', isFolder: false },
+        { name: 'Payslips', isFolder: false },
+        { name: 'Experience letter', isFolder: false },
+        { name: 'Relieving Letter', isFolder: false },
+      ],
+    },
+    {
+      name: 'Education documents',
+      isFolder: true,
+      items: [
+        { name: '10th Marksheet', isFolder: false },
+        { name: '12th Marksheet', isFolder: false },
+      ],
+    },
+    {
+      name: 'Others',
+      isFolder: true,
+      items: [
+        { name: '10th Marksheet', isFolder: false },
+        { name: '12th Marksheet', isFolder: false },
+      ],
+    },
+  ]);
 
   //------------Forms-----------------
 
@@ -326,9 +368,6 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
   });
 
   //------------------------------API CALLS----------------------------------------
-
-  const token = localStorage.getItem('auth-tokens');
-  const authTokens = token ? JSON.parse(token) : null;
   const [isLoading, setIsLoading] = useState(false);
 
   //------------------------------PROFILE/BIO----------------------------------------
@@ -342,67 +381,60 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
   });
 
   const getProfile = async () => {
-    try {
-      const res = await axios.get<IUserProfile>(profileAPIList.getMyProfile, {
-        headers: {
-          Authorization: `Bearer ${authTokens?.accessToken}`,
-        },
-      });
-      if (res.data && authTokens?.accessToken) {
-        setProfileData(res.data);
-      }
-    } catch (err: any) {
-      console.log(err.message);
+    const res: Result<any> = await HttpClient.callApiAuth(
+      {
+        url: `${profileAPIList.getMyProfile}`,
+        method: 'GET',
+      },
+      authClient
+    );
+    if (res.ok) {
+      setProfileData(res.value);
+    } else {
+      showErrorNotification(res.error.code);
     }
   };
 
   const updateProfile = async () => {
-    try {
-      notifications.show({
-        id: 'load-data',
-        title: 'Please wait !',
-        message: 'We are updating your profile.',
-        loading: true,
-        autoClose: false,
-        withCloseButton: false,
-        color: 'teal',
-        sx: { borderRadius: em(8) },
-      });
-      const requestData: any = {};
-      if (profileForm.values.firstName !== '') {
-        requestData.firstName = profileForm.values.firstName;
-      }
-      if (profileForm.values.lastName !== '') {
-        requestData.lastName = profileForm.values.lastName;
-      }
-      if (profileForm.values.bio !== '') {
-        requestData.bio = profileForm.values.bio;
-      }
-      if (profileForm.values.descriptionTags.length === 3) {
-        requestData.descriptionTags = profileForm.values.descriptionTags;
-      }
-      const res = await axios.patch(profileAPIList.updateProfile, requestData, {
-        headers: {
-          Authorization: `Bearer ${authTokens?.accessToken}`,
-        },
-      });
-      getProfile();
-
-      notifications.update({
-        id: 'load-data',
-        color: 'teal',
-        title: 'Success !',
-        message: 'Profile details updated.',
-        icon: <BsCheckLg />,
-        autoClose: 2000,
-      });
-
-      profileForm.values.firstName = '';
-      profileForm.values.lastName = '';
-      profileForm.values.bio = '';
-    } catch (error: any) {
-      console.log(error.message);
+    showLoadingNotification({
+      title: 'Loading !',
+      message: 'We are updating your profile.',
+    });
+    const requestData: any = {};
+    if (profileForm.values.firstName !== '') {
+      requestData.firstName = profileForm.values.firstName;
     }
+    if (profileForm.values.lastName !== '') {
+      requestData.lastName = profileForm.values.lastName;
+    }
+    if (profileForm.values.bio !== '') {
+      requestData.bio = profileForm.values.bio;
+    }
+    if (profileForm.values.descriptionTags.length === 3) {
+      requestData.descriptionTags = profileForm.values.descriptionTags;
+    }
+    const res: Result<any> = await HttpClient.callApiAuth(
+      {
+        url: `${profileAPIList.updateProfile}`,
+        method: 'PATCH',
+        body: requestData,
+      },
+      authClient
+    );
+
+    if (res.ok) {
+      showSuccessNotification({
+        title: 'Success !',
+        message: 'Your profile have been updated',
+      });
+    } else {
+      showErrorNotification(res.error.code);
+    }
+
+    getProfile();
+    profileForm.values.firstName = '';
+    profileForm.values.lastName = '';
+    profileForm.values.bio = '';
   };
 
   //------------------------------DOCUMENTS----------------------------------------
@@ -411,17 +443,22 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   // GET
   const getDocuments = async () => {
-    try {
-      const res = await axios.get(documentsAPIList.getDocuments, {
-        headers: {
-          Authorization: `Bearer ${authTokens?.accessToken}`,
-        },
+    const res: Result<any> = await HttpClient.callApiAuth(
+      {
+        url: `${documentsAPIList.getDocuments}`,
+        method: 'GET',
+      },
+      authClient
+    );
+    if (res.ok) {
+      setDocumentsData(res.value.ids);
+      setDocDepotData((prevState) => {
+        const updatedData = [...prevState];
+        updatedData[0].items = res.value.ids;
+        return updatedData;
       });
-      if (res.data && authTokens?.accessToken) {
-        setDocumentsData(res.data.ids);
-      }
-    } catch (err: any) {
-      console.log(err.message);
+    } else {
+      showErrorNotification(res.error.code);
     }
   };
 
@@ -431,17 +468,17 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   // GET
   const getWorkExperience = async () => {
-    try {
-      const res = await axios.get(workExperienceAPiList.getWorkExperience, {
-        headers: {
-          Authorization: `Bearer ${authTokens?.accessToken}`,
-        },
-      });
-      if (res.data && authTokens?.accessToken) {
-        setWorkExperienceData(res.data);
-      }
-    } catch (err: any) {
-      console.log(err.message);
+    const res: Result<any> = await HttpClient.callApiAuth(
+      {
+        url: `${workExperienceAPiList.getWorkExperience}`,
+        method: 'GET',
+      },
+      authClient
+    );
+    if (res.ok) {
+      setWorkExperienceData(res.value);
+    } else {
+      showErrorNotification(res.error.code);
     }
   };
 
@@ -450,18 +487,17 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const [residentialInfoData, setResidentialInfoData] = useState<IResidendialInfoDataType[]>([]);
   // GET
   const getResidentialInfo = async () => {
-    try {
-      const res = await axios.get(residentialInfoAPIList.getResidentialInfo, {
-        headers: {
-          Authorization: `Bearer ${authTokens?.accessToken}`,
-        },
-      });
-
-      if (res.data && authTokens?.accessToken) {
-        setResidentialInfoData(res.data.residentialInfo);
-      }
-    } catch (err: any) {
-      console.log(err.message);
+    const res: Result<any> = await HttpClient.callApiAuth(
+      {
+        url: `${residentialInfoAPIList.getResidentialInfo}`,
+        method: 'GET',
+      },
+      authClient
+    );
+    if (res.ok) {
+      setResidentialInfoData(res.value.residentialInfo);
+    } else {
+      showErrorNotification(res.error.code);
     }
   };
 
@@ -481,10 +517,6 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
   };
 
   const addResidentialInfo = async () => {
-    if (isLoading) {
-      return Promise.resolve(null);
-    }
-
     const requiredField = [
       'address_line_1',
       'address_line_2',
@@ -500,137 +532,96 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
     ];
 
     if (!validateFormFields(requiredField)) return;
-
-    try {
-      residentialInfoForm.clearErrors();
-      notifications.show({
-        id: 'load-data',
-        title: 'Please wait !',
-        message: 'We are updating your residential information.',
-        loading: true,
-        autoClose: false,
-        withCloseButton: false,
-        color: 'teal',
-        sx: { borderRadius: em(8) },
+    showLoadingNotification({
+      title: 'Wait !',
+      message: 'Please wait while we update your residential information.',
+    });
+    const data = {
+      address_line_1: residentialInfoForm.values.address_line_1,
+      address_line_2: residentialInfoForm.values.address_line_2,
+      landmark: residentialInfoForm.values.landmark,
+      pincode: residentialInfoForm.values.pincode,
+      city: residentialInfoForm.values.city,
+      state: residentialInfoForm.values.state,
+      country: residentialInfoForm.values.country,
+      start_date: residentialInfoForm.values.start_date,
+      end_date: residentialInfoForm.values.endDate,
+    };
+    const res: Result<any> = await HttpClient.callApiAuth(
+      {
+        url: `${residentialInfoAPIList.postResidentialInfo}`,
+        method: 'POST',
+        body: data,
+      },
+      authClient
+    );
+    if (res.ok) {
+      showSuccessNotification({
+        title: 'Success !',
+        message: 'We have added your residential information.',
       });
-
-      const res = await axios.post(
-        residentialInfoAPIList.postResidentialInfo,
-        {
-          address_line_1: residentialInfoForm.values.address_line_1,
-          address_line_2: residentialInfoForm.values.address_line_2,
-          landmark: residentialInfoForm.values.landmark,
-          pincode: residentialInfoForm.values.pincode,
-          city: residentialInfoForm.values.city,
-          state: residentialInfoForm.values.state,
-          country: residentialInfoForm.values.country,
-          start_date: residentialInfoForm.values.start_date,
-          end_date: residentialInfoForm.values.endDate,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${authTokens?.accessToken}`,
-          },
-        }
-      );
-      if (res.data) {
-        notifications.update({
-          id: 'load-data',
-          color: 'teal',
-          title: 'Success !',
-          message: 'Residential information updated successfully.',
-          icon: <BsCheckLg />,
-          autoClose: 2000,
-        });
-        getResidentialInfo();
-      }
-    } catch (err: any) {
-      console.error('Error in posting residential information: ', err.message);
-
-      notifications.update({
-        id: 'load-data',
-        color: 'teal',
-        title: 'Error !',
-        message: 'Something went wrong! Please check browser console for more info.',
-        icon: <FaExclamation />,
-        autoClose: 2000,
-      });
-    } finally {
-      setIsLoading(false);
+      getResidentialInfo();
+    } else {
+      showErrorNotification(res.error.code);
     }
+
+    getResidentialInfo();
   };
 
   // DELETE
   const deleteResidentialInfo = async (id: string) => {
-    try {
-      setIsLoading(true);
-      const res = await axios
-        .delete(`${residentialInfoAPIList.deleteResidentialInfo}/${id}`, {
-          headers: {
-            Authorization: `Bearer ${authTokens?.accessToken}`,
-          },
-        })
-        .then(() =>
-          setTimeout(() => {
-            notifications.update({
-              id: 'load-state',
-              title: 'Sucess!',
-              message: 'Residential information deleted!',
-              autoClose: 2200,
-              withCloseButton: false,
-              color: 'teal',
-              icon: <BsCheckLg />,
-              sx: { borderRadius: em(8) },
-            });
-          }, 1100)
-        );
+    showLoadingNotification({
+      title: 'Wait !',
+      message: 'Please wait while we delete your residential information.',
+    });
+    const res: Result<any> = await HttpClient.callApiAuth(
+      {
+        url: `${residentialInfoAPIList.deleteResidentialInfo}/${id}`,
+        method: 'DELETE',
+      },
+      authClient
+    );
+    if (res.ok) {
+      showSuccessNotification({
+        title: 'Success !',
+        message: 'Your residential information have been deleted.',
+      });
       getResidentialInfo();
-      setIsLoading(false);
-    } catch (error: any) {
-      console.log(error.message);
-    } finally {
-      setIsLoading(false);
+    } else {
+      showErrorNotification(res.error.code);
     }
   };
 
   // PATCH
   const updateResidentialInfo = async (id: string) => {
-    try {
-      const data = residentialInfoForm.values;
-      const filteredData: any = {};
-      for (const key in data) {
-        const value = data[key];
-        if (value !== '' && value !== null) {
-          filteredData[key] = value;
-        }
+    showLoadingNotification({
+      title: 'Wait !',
+      message: 'Please wait while we update your residential information.',
+    });
+    const data = residentialInfoForm.values;
+    const filteredData: any = {};
+    for (const key in data) {
+      const value = data[key];
+      if (value !== '' && value !== null) {
+        filteredData[key] = value;
       }
-
-      const res = await axios
-        .patch(`${residentialInfoAPIList.updateResidentialInfo}/${id}`, filteredData, {
-          headers: {
-            Authorization: `Bearer ${authTokens?.accessToken}`,
-          },
-        })
-        .then(() => {
-          setTimeout(() => {
-            notifications.update({
-              id: 'load-state',
-              title: 'Sucess!',
-              message: 'Residential information updated!',
-              autoClose: 2200,
-              withCloseButton: false,
-              color: 'teal',
-              icon: <BsCheckLg />,
-              sx: { borderRadius: em(8) },
-            });
-          }, 1100);
-          getResidentialInfo();
-          setIsLoading(false);
-        });
-    } catch (error: any) {
-      console.log(error.message);
-    } finally {
-      setIsLoading(false);
+    }
+    const res: Result<any> = await HttpClient.callApiAuth(
+      {
+        url: `${residentialInfoAPIList.updateResidentialInfo}/${id}`,
+        method: 'PATCH',
+        body: filteredData,
+      },
+      authClient
+    );
+    if (res.ok) {
+      showSuccessNotification({
+        title: 'Success !',
+        message: 'Your residential information have been updated.',
+      });
+      getResidentialInfo();
+    } else {
+      showErrorNotification(res.error.code);
     }
   };
 
@@ -639,18 +630,17 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const [skillData, setSkillData] = useState<ISkillDataType[]>([]);
   // GET
   const getSkills = async () => {
-    try {
-      const res = await axios.get(skillsAPIList.getSkill, {
-        headers: {
-          Authorization: `Bearer ${authTokens?.accessToken}`,
-        },
-      });
-
-      if (res.data && authTokens?.accessToken) {
-        setSkillData(res.data);
-      }
-    } catch (err: any) {
-      console.log(err.message);
+    const res: Result<any> = await HttpClient.callApiAuth(
+      {
+        url: `${skillsAPIList.getSkill}`,
+        method: 'GET',
+      },
+      authClient
+    );
+    if (res.ok) {
+      setSkillData(res.value);
+    } else {
+      showErrorNotification(res.error.code);
     }
   };
 
@@ -742,9 +732,10 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
         skillForm,
         forceRender,
         setForceRender,
-        authTokens,
         detailsPage,
         dispatchDetailsPage,
+        docDepotActivePage,
+        setDocDepotActivePage,
         getDocuments,
         aadharIsVerified,
         panIsVerified,
@@ -758,6 +749,8 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
         setSelectedCard,
         selectedSkills,
         setSelectedSkills,
+        docDepotData,
+        setDocDepotData,
       }}
     >
       {children}

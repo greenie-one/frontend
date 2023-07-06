@@ -1,5 +1,10 @@
 import { AuthClient } from './authClinet';
 
+type Error = {
+  title: string;
+  message: string;
+};
+
 type HttpRequest = {
   url: string;
   headers?:
