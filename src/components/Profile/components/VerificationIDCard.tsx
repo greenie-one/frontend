@@ -3,12 +3,12 @@ import { MdVerified } from 'react-icons/md';
 import { CgSandClock } from 'react-icons/cg';
 import '../styles/global.scss';
 
-interface CardProps {
+interface IVerificationIdCardProp {
   documentName: string;
   isVerified: boolean;
 }
 
-export const VerificationIDCard: React.FC<CardProps> = ({ documentName, isVerified }) => {
+export const VerificationIDCard: React.FC<IVerificationIdCardProp> = ({ documentName, isVerified }) => {
   return (
     <Box className="verificationIdCard">
       <Box className="verificationIdImg"></Box>

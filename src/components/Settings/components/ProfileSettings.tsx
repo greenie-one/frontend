@@ -3,7 +3,7 @@ import { Box, Chip, Group, Title, TextInput, Textarea, Button, Modal, Text } fro
 import { useProfileContext } from '../../Profile/context/ProfileContext';
 import { useDisclosure } from '@mantine/hooks';
 import { confirmationModalStyle } from '../styles/articleContentStyles';
-import { detailsFormStyles, profileSettingsStyles, detailsInputStyles } from '../styles/articleContentStyles';
+import { detailsFormStyles, profileSettingsStyles } from '../styles/articleContentStyles';
 
 const introductionTags = [
   'Team Player',
@@ -20,7 +20,6 @@ const introductionTags = [
 export const ProfileSettings: React.FC = (): JSX.Element => {
   const { classes: formClasses } = detailsFormStyles();
   const { classes: profileClasses } = profileSettingsStyles();
-  const { classes: inputClasses } = detailsInputStyles();
   const { classes: modalStyles } = confirmationModalStyle();
   const { profileForm, updateProfile } = useProfileContext();
   const [opened, { open, close }] = useDisclosure(false);
@@ -77,14 +76,14 @@ export const ProfileSettings: React.FC = (): JSX.Element => {
           withAsterisk
           data-autofocus
           label="First Name"
-          classNames={inputClasses}
+          className="inputClass"
           {...profileForm.getInputProps('firstName')}
         />
         <TextInput
           withAsterisk
           data-autofocus
           label="Last Name"
-          classNames={inputClasses}
+          className="inputClass"
           {...profileForm.getInputProps('lastName')}
         />
 
@@ -93,8 +92,7 @@ export const ProfileSettings: React.FC = (): JSX.Element => {
           withAsterisk
           data-autofocus
           label="Edit your bio"
-          classNames={inputClasses}
-          className={formClasses.textarea}
+          className="text-area-input"
           minRows={8}
           {...profileForm.getInputProps('bio')}
         />

@@ -2,7 +2,6 @@ import { Box, Button, Modal, Text } from '@mantine/core';
 import { useState, useRef, CSSProperties, ChangeEvent } from 'react';
 import emptyProfile from '../assets/emptyProfile.png';
 import { MdOutlineEdit } from 'react-icons/md';
-import { useProfileContext } from '../context/ProfileContext';
 import axios from 'axios';
 import { profileAPIList } from '../../../assets/api/ApiList';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
@@ -48,8 +47,8 @@ export const ProfilePhotos = () => {
           const imageURL = res.data.url;
           setUrl(imageURL);
           setBackgroundStyle({ backgroundImage: `url(${imageURL})` });
-          close();
         });
+      close();
     } catch (error: any) {
       console.log(error.message);
     }
@@ -57,7 +56,7 @@ export const ProfilePhotos = () => {
 
   return (
     <section className="profile-section">
-      <Modal className="modal" size={'65%'} centered fullScreen={isMobile} opened={opened} onClose={close}>
+      <Modal className="modal" size={'512px'} centered fullScreen={isMobile} opened={opened} onClose={close}>
         <Box className="profile-modal">
           <Text className="title">Upload the selected image</Text>
           <img src={profileIllustration} alt="" />

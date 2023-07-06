@@ -4,7 +4,7 @@ import { CgSandClock } from 'react-icons/cg';
 import tscLogo from '../assets/tscLogo.png';
 import '../styles/global.scss';
 
-interface CardProps {
+interface IExperienceCardProp {
   position: string;
   companyName: string;
   isVerified: boolean;
@@ -12,7 +12,7 @@ interface CardProps {
   companyEndYear: string;
 }
 
-export const WorkExperienceCard: React.FC<CardProps> = ({
+export const WorkExperienceCard: React.FC<IExperienceCardProp> = ({
   position,
   companyName,
   isVerified,
@@ -44,7 +44,6 @@ export const WorkExperienceCard: React.FC<CardProps> = ({
           <Text> {companyStartYear?.toString().substring(0, 4)}-Present</Text>
         ) : (
           <Text className="tenure">
-            {' '}
             {companyStartYear?.toString().substring(0, 4)}-{companyEndYear?.toString().substring(0, 4)}
           </Text>
         )}

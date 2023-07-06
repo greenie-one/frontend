@@ -15,6 +15,7 @@ import { useSettingsContext } from '../../Settings/context/SettingsContext';
 import { useProfileContext } from '../context/ProfileContext';
 import { showLoadingNotification, showSuccessNotification } from '../../../utils/functions/showNotification';
 import { useGlobalContext } from '../../../context/GlobalContext';
+import { DrawerAction, DrawerState } from '../types/reducers';
 
 const notificationsData = [
   {
@@ -38,16 +39,6 @@ const notificationsData = [
     subHeading: 'Esther Smith is asking you to verify your address proof',
   },
 ];
-
-type DrawerState = {
-  firstDrawerOpened: boolean;
-  secondDrawerOpened: boolean;
-};
-type DrawerAction =
-  | { type: 'OPEN_FIRST_DRAWER' }
-  | { type: 'CLOSE_FIRST_DRAWER' }
-  | { type: 'OPEN_SECOND_DRAWER' }
-  | { type: 'CLOSE_SECOND_DRAWER' };
 
 export const Navbar = () => {
   const { classes } = useStyles();

@@ -1,20 +1,7 @@
 import { useState, useRef } from 'react';
-import {
-  Text,
-  Modal,
-  Box,
-  Title,
-  TextInput,
-  createStyles,
-  em,
-  rem,
-  Select,
-  Checkbox,
-  Button,
-  Divider,
-} from '@mantine/core';
-import { MonthPickerInput } from '@mantine/dates';
-import { MdOutlineCalendarMonth, MdOutlineDelete } from 'react-icons/md';
+import { Text, Modal, Box, Title, TextInput, Select, Checkbox, Button, Divider, Textarea } from '@mantine/core';
+import { DateInput } from '@mantine/dates';
+import { MdOutlineDelete } from 'react-icons/md';
 import { VscDebugRestart } from 'react-icons/vsc';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 import '../styles/global.scss';
@@ -35,30 +22,12 @@ import {
   showSuccessNotification,
 } from '../../../utils/functions/showNotification';
 
-type Skill = {
-  skillName: string;
-  expertise: string;
-};
+import { ISkill, IWorkExperience } from '../types/APICalls';
+
 type Document = {
   document: File | undefined;
   documentTag: string | null;
 };
-
-interface IWorkExperience {
-  _id: string;
-  image: string | null;
-  designation: string;
-  companyName: string;
-  email: string;
-  companyId: string;
-  companyStartDate: string;
-  companyEndDate: string;
-  workMode: string;
-  workType: string;
-  isVerified: boolean;
-  verifiedBy: [] | null;
-  companyType: string;
-}
 
 const workType = [
   { value: 'Work from office', label: 'Work From Office' },
@@ -73,28 +42,58 @@ const modeOfWork = [
 ];
 
 const companyTypes = [
-  { value: 'Startup', label: 'Start-up' },
-  { value: 'Registered', label: 'Registered' },
-  { value: 'Unregistered', label: 'Unregistered' },
+  { value: 'Startup', label: 'Start-up (Funded)' },
+  { value: 'Early Stage Startup', label: 'Early Stage Startup' },
+  { value: 'Startup (Profitable)', label: 'Startup (Profitable)' },
+  { value: 'Startup (Unicorn, Not Profitable)', label: 'Startup (Unicorn, Not Profitable)' },
+  { value: 'Family Owned Business', label: 'Family Owned Business' },
+  { value: 'Private Limited (India)', label: 'Private Limited (India)' },
+  { value: 'Partnership (LLP/LLC)', label: 'Partnership (LLP/LLC)' },
+  { value: 'Public Limited Company', label: 'Public Limited Company' },
 ];
 
 const skillRate = [
-  { value: 'AMATEUR', label: 'Begineer/Novice' },
-  { value: 'EXPERT', label: 'Intermediate' },
+  { value: 'BEGINEER', label: 'Begineer/Novice' },
+  { value: 'INTERMEDIATE', label: 'Intermediate' },
+  { value: 'HIGHLY COMPETANT', label: 'Highly Competant' },
+  { value: 'ADVANCED', label: 'Advanced Proficiency' },
+  { value: 'EXPERT', label: 'Expert' },
+  { value: 'MASTER', label: 'Master - Pro(Global Recognition)' },
 ];
-// const skillRate = [
-//   { value: 'BEGINEER', label: 'Begineer/Novice' },
-//   { value: 'INTERMEDIATE', label: 'Intermediate' },
-//   { value: 'HIGHLY COMPETANT', label: 'Highly Competant' },
-//   { value: 'ADVANCED', label: 'Advanced Proficiency' },
-//   { value: 'EXPERT', label: 'Expert' },
-//   { value: 'MASTER', label: 'Master - Pro(Global Recognition)' },
-// ];
 
-const documentType = [
+const documentTags = [
   { value: 'Appointsment Letter', label: 'Appointsment Letter' },
   { value: 'Payment Slip', label: 'Payment Slip' },
   { value: 'Cerificate', label: 'Cerificate' },
+  { value: 'Other', label: 'Other' },
+];
+
+const departments = [
+  { value: 'HR', label: 'Human Resources' },
+  { value: 'Finance', label: 'Finance and Accounting' },
+  { value: 'Sales', label: 'Sales and Marketing' },
+  { value: 'Operations', label: 'Operations' },
+  { value: 'IT', label: 'Information Technology' },
+  { value: 'CustomerService', label: 'Customer Service' },
+  { value: 'R&D', label: 'Research and Development' },
+  { value: 'Production', label: 'Production or Manufacturing' },
+  { value: 'SupplyChain', label: 'Supply Chain or Logistics' },
+  { value: 'Administration', label: 'Administration' },
+  { value: 'Legal', label: 'Legal and Compliance' },
+  { value: 'QA', label: 'Quality Assurance' },
+  { value: 'ProjectManagement', label: 'Project Management' },
+  { value: 'Procurement', label: 'Procurement or Purchasing' },
+  { value: 'PR', label: 'Public Relations' },
+  { value: 'Training', label: 'Training and Development' },
+  { value: 'Facilities', label: 'Facilities Management' },
+  { value: 'RiskManagement', label: 'Risk Management' },
+  { value: 'BusinessDevelopment', label: 'Business Development' },
+  { value: 'StrategicPlanning', label: 'Strategic Planning' },
+  { value: 'CorporateCommunications', label: 'Corporate Communications' },
+  { value: 'InternalAudit', label: 'Internal Audit' },
+  { value: 'HealthSafety', label: 'Health and Safety' },
+  { value: 'Sustainability', label: 'Sustainability or Corporate Social Responsibility' },
+  { value: 'DataAnalytics', label: 'Data Analytics or Business Intelligence' },
 ];
 
 export const AddWorkExperience = () => {
@@ -122,7 +121,6 @@ export const AddWorkExperience = () => {
     selectedSkills,
     setSelectedSkills,
   } = useProfileContext();
-  const { classes: inputClasses } = inputStyles();
   const [active, setActive] = useState<number>(1);
 
   const handleCheck = () => {
@@ -162,6 +160,7 @@ export const AddWorkExperience = () => {
 
   const handleExperienceContinue = async (event: React.FormEvent) => {
     event.preventDefault();
+
     if (
       !workExperienceForm.validateField('designation').hasError &&
       !workExperienceForm.validateField('companyType').hasError &&
@@ -206,10 +205,15 @@ export const AddWorkExperience = () => {
   };
 
   const handleAddSkill = () => {
-    if (!skillForm.validateField('skillName').hasError && !skillForm.validateField('expertise').hasError) {
-      const newSkill: Skill = {
+    if (
+      !skillForm.validateField('skillName').hasError &&
+      !skillForm.validateField('expertise').hasError &&
+      workExperienceData !== null
+    ) {
+      const newSkill: ISkill = {
         skillName: skillForm.values.skillName,
         expertise: skillForm.values.expertise,
+        workExperience: workExperienceData?._id,
       };
       setSelectedSkills((prevSkills) => [...prevSkills, newSkill]);
       skillForm.values.skillName = '';
@@ -219,13 +223,17 @@ export const AddWorkExperience = () => {
 
   const handleSkillContinue = async () => {
     if (selectedSkills.length < 1) {
-      showErrorNotification('1');
+      showErrorNotification('NO_SKILL');
     }
     if (selectedSkills.length > 0) {
       showLoadingNotification({ title: 'Please wait !', message: 'We are adding your skill' });
       for (const skill of selectedSkills) {
         const res = await HttpClient.callApiAuth(
-          { url: `${skillsAPIList.postSkill}`, method: 'POST', body: skill },
+          {
+            url: `${skillsAPIList.postSkill}`,
+            method: 'POST',
+            body: { skillName: skill.skillName, expertise: skill.expertise },
+          },
           authClient
         );
         if (res.ok) {
@@ -279,15 +287,8 @@ export const AddWorkExperience = () => {
     if (documents.length > 0 && documentsChecked) {
       for (const document of documents) {
         if (document.documentTag === '') {
-          notifications.show({
-            id: 'load-data',
-            title: 'Missing document tags !',
-            message: 'Please select document tags for all the documents.',
-            autoClose: 2200,
-            withCloseButton: false,
-            color: 'teal',
-            sx: { borderRadius: em(8) },
-          });
+          showLoadingNotification({ title: 'Please wait !', message: 'Adding your documents' });
+          showErrorNotification('MISSING_TAGS');
           return;
         }
         open();
@@ -366,23 +367,24 @@ export const AddWorkExperience = () => {
       <Text className="step-identifier">Step {active}/3</Text>
       {active === 1 && (
         <Box>
-          <Box className="input-section border-bottom">
+          <Box className="input-section">
             <Title className="title">Job title</Title>
             <TextInput
               label="Job title"
-              classNames={inputClasses}
+              className="inputClass"
               data-autofocus
               withAsterisk
               {...workExperienceForm.getInputProps('designation')}
             />
           </Box>
+          <Divider mb={'10px'} color="#e1e1e1" />
           <Box className="input-section">
             <Title className="title">Company Type</Title>
             <Select
               withAsterisk
               data={companyTypes}
               label="Select company type"
-              classNames={inputClasses}
+              className="inputClass"
               styles={() => ({
                 item: {
                   '&[data-selected]': {
@@ -402,7 +404,7 @@ export const AddWorkExperience = () => {
               withAsterisk
               {...workExperienceForm.getInputProps('companyName')}
               label="Enter your company name"
-              classNames={inputClasses}
+              className="inputClass"
             />
           </Box>
           <Box className="input-section">
@@ -413,43 +415,73 @@ export const AddWorkExperience = () => {
             <TextInput
               {...workExperienceForm.getInputProps('linkedInUrl')}
               label="Paste the LinkedIn company page link"
-              classNames={inputClasses}
+              className="inputClass"
             />
           </Box>
+          <Box className="input-section">
+            <Title className="title">Department</Title>
+            <Select
+              withAsterisk
+              data={departments}
+              label="Select department"
+              className="inputClass"
+              styles={() => ({
+                item: {
+                  '&[data-selected]': {
+                    '&, &:hover': {
+                      backgroundColor: '#17a672',
+                      color: 'white',
+                    },
+                  },
+                },
+              })}
+            />
+          </Box>
+          <Box className="input-section">
+            <Title className="title">Salary (CTC)</Title>
+            <TextInput withAsterisk label="Enter your CTC in Rs." className="inputClass" />
+          </Box>
+
           <Box className="input-section">
             <Title className="title">Work email</Title>
             <TextInput
               withAsterisk
-              label="Official Email"
-              classNames={inputClasses}
+              label="Previous work email"
+              className="inputClass"
               {...workExperienceForm.getInputProps('workEmail')}
             />
           </Box>
-          <Box className="input-section border-bottom">
+
+          <Box className="input-section">
             <Title className="title">Company ID</Title>
             <TextInput
               withAsterisk
               label="Enter your unique company id"
-              classNames={inputClasses}
+              className="inputClass"
               {...workExperienceForm.getInputProps('companyId')}
             />
           </Box>
-          <Box className="input-section border-bottom">
+          <Box className="input-section">
+            <Title className="title">Reason for leaving</Title>
+            <Textarea label="Write down the reason for leaving" className="text-area-input" />
+          </Box>
+          <Divider mb={'10px'} color="#e1e1e1" />
+
+          <Box className="input-section">
             <Title className="title">Start Date</Title>
-            <MonthPickerInput
-              icon={<MdOutlineCalendarMonth />}
+            <DateInput
               label="Start date"
+              className="inputClass"
               withAsterisk
-              classNames={inputClasses}
               {...workExperienceForm.getInputProps('startDate')}
             />
           </Box>
-          <Box className="input-section border-bottom">
+          <Divider mb={'10px'} color="#e1e1e1" />
+          <Box className="input-section">
             <Title className="title">End Date</Title>
-            <MonthPickerInput
-              icon={<MdOutlineCalendarMonth />}
+            <DateInput
               label="End date"
-              classNames={inputClasses}
+              className="inputClass"
               disabled={experienceChecked}
               {...workExperienceForm.getInputProps('endDate')}
             />
@@ -462,14 +494,15 @@ export const AddWorkExperience = () => {
               label="I currently work here"
             />
           </Box>
-          <Box className="input-section border-bottom">
+          <Divider mb={'10px'} color="#e1e1e1" />
+          <Box className="input-section">
             <Title className="title">Work Type</Title>
             <Box className="inner-input-section">
               <Select
                 withAsterisk
                 data={workType}
                 label="Mode of Work"
-                classNames={inputClasses}
+                className="inputClass"
                 {...workExperienceForm.getInputProps('modeOfWork')}
                 styles={() => ({
                   item: {
@@ -486,7 +519,7 @@ export const AddWorkExperience = () => {
                 withAsterisk
                 data={modeOfWork}
                 label="Select work type"
-                classNames={inputClasses}
+                className="inputClass"
                 {...workExperienceForm.getInputProps('workType')}
                 styles={() => ({
                   item: {
@@ -519,7 +552,7 @@ export const AddWorkExperience = () => {
               withAsterisk
               data-autofocus
               label="Eg. Frontend, Backend"
-              classNames={inputClasses}
+              className="inputClass"
               {...skillForm.getInputProps('skillName')}
             />
           </Box>
@@ -529,7 +562,7 @@ export const AddWorkExperience = () => {
               withAsterisk
               data={skillRate}
               label="Select your expertise"
-              classNames={inputClasses}
+              className="inputClass"
               {...skillForm.getInputProps('expertise')}
               styles={() => ({
                 item: {
@@ -613,7 +646,7 @@ export const AddWorkExperience = () => {
                       <Select
                         value={documentTag}
                         onChange={(value) => handleSelectTag(index, value)}
-                        data={documentType}
+                        data={documentTags}
                         styles={() => ({
                           item: {
                             '&[data-selected]': {
@@ -659,7 +692,11 @@ export const AddWorkExperience = () => {
             <Button type="button" className="cancel-btn" variant="default" onClick={handlePrevPage}>
               Back
             </Button>
-            <Button className="green-btn" onClick={handleDocumentContinue} disabled={!documentsChecked}>
+            <Button
+              className={documentsChecked ? 'green-btn' : 'disabled-btn'}
+              onClick={handleDocumentContinue}
+              disabled={!documentsChecked}
+            >
               Continue
             </Button>
           </Box>
@@ -668,70 +705,3 @@ export const AddWorkExperience = () => {
     </section>
   );
 };
-
-const inputStyles = createStyles((theme) => ({
-  root: {
-    position: 'relative',
-    marginTop: '10px',
-    marginBottom: '10px',
-  },
-
-  icon: {
-    marginTop: '16px',
-  },
-
-  input: {
-    height: '58px',
-    paddingTop: '18px',
-    fontSize: '16px',
-    fontWeight: 500,
-    borderRadius: '8px',
-    border: '1px solid #D1D4DB',
-    lineHeight: '19px',
-    letterSpacing: '-0.02em',
-    color: '#697082',
-
-    [`@media screen and (max-width: ${em(1024)})`]: {
-      height: '46px',
-      borderRadius: '6px',
-      fontSize: '10px',
-      lineHeight: '12px',
-      margin: '0 auto',
-    },
-  },
-
-  selectInput: {
-    fontSize: '16px',
-    fontWeight: 500,
-    lineHeight: '19px',
-    letterSpacing: '-0.02em',
-    color: '#697082',
-  },
-
-  innerInput: {
-    height: rem(54),
-    paddingTop: rem(28),
-
-    [`@media screen and (max-width: ${em(1024)})`]: {
-      paddingTop: rem(8),
-    },
-  },
-
-  label: {
-    position: 'absolute',
-    pointerEvents: 'none',
-    fontSize: '12px',
-    paddingLeft: '14px',
-    paddingTop: '7px',
-    lineHeight: '14.52px',
-    letterSpacing: '-0.02em',
-    zIndex: 1,
-    color: '#697082',
-
-    [`@media screen and (max-width: ${em(1024)})`]: {
-      fontSize: '10px',
-      lineHeight: '10px',
-      paddingTop: '8px',
-    },
-  },
-}));

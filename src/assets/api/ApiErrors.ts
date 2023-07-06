@@ -57,5 +57,6 @@ export const ErrorMessage: Record<string, Error> = {
   ["GR0041"]: {title:'Error !',message:'Driving License already exists'},
 
   // CUSTOM ERRORS
-  ["NOSKILL"]: {title: "Error !", message: "Please add atleast one skill."}
+  ["NO_SKILL"]: {title: "Error !", message: "Please add atleast one skill."},
+  ["MISSING_TAGS"]: {title: "Error !", message: "Please select document tags for all the documents."}
 };

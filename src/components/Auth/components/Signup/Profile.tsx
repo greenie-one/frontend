@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { TextInput, createStyles, rem, Text, Button, Box, Flex, em, Chip, Group } from '@mantine/core';
+import { TextInput, Text, Button, Box, Flex, Chip, Group } from '@mantine/core';
 import { useAuthContext } from '../../context/AuthContext';
 import { profileAPIList } from '../../../../assets/api/ApiList';
 import { useGlobalContext } from '../../../../context/GlobalContext';
@@ -30,7 +30,6 @@ const skillSetOne = [
 
 const Profile = () => {
   const navigate = useNavigate();
-  const { classes: inputClasses } = inputStyles();
   const { profileForm, dispatch } = useAuthContext();
 
   const [active, setActive] = useState(1);
@@ -116,13 +115,13 @@ const Profile = () => {
           <Text className="profileText">Enter Name As Per Aadhar Card</Text>
           <TextInput
             label="First Name"
-            classNames={inputClasses}
+            className="inputClass"
             {...profileForm.getInputProps('firstName')}
             ref={firstNameRef}
           />
           <TextInput
             label="Last Name"
-            classNames={inputClasses}
+            className="inputClass"
             {...profileForm.getInputProps('lastName')}
             ref={lastNameRef}
           />
@@ -204,60 +203,3 @@ const Profile = () => {
 };
 
 export default Profile;
-
-const inputStyles = createStyles((theme) => ({
-  root: {
-    position: 'relative',
-    marginBottom: '16px',
-  },
-
-  input: {
-    width: '458px',
-    height: '68px',
-    paddingTop: '18px',
-    fontSize: '16px',
-    fontWeight: 500,
-    borderRadius: '8px',
-    border: '1px solid #D1D4DB',
-    lineHeight: '19px',
-    letterSpacing: '-0.02em',
-    color: '#697082',
-
-    [`@media screen and (max-width: ${em(1024)})`]: {
-      width: '350px',
-      height: '46px',
-      borderRadius: '6px',
-      fontSize: '12px',
-      lineHeight: '12px',
-      margin: '0 auto',
-    },
-  },
-
-  // for password field
-  innerInput: {
-    height: rem(54),
-    paddingTop: rem(28),
-
-    [`@media screen and (max-width: ${em(1024)})`]: {
-      paddingTop: rem(8),
-    },
-  },
-
-  label: {
-    position: 'absolute',
-    pointerEvents: 'none',
-    fontSize: '12px',
-    paddingLeft: '14px',
-    paddingTop: '7px',
-    lineHeight: '14.52px',
-    letterSpacing: '-0.02em',
-    zIndex: 1,
-    color: '#697082',
-
-    [`@media screen and (max-width: ${em(1024)})`]: {
-      fontSize: '10px',
-      lineHeight: '10px',
-      paddingLeft: '11.54px',
-    },
-  },
-}));

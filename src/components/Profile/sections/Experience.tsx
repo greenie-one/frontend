@@ -1,43 +1,14 @@
-import { useState } from 'react';
-import { Text, Modal, Box, Title, Button } from '@mantine/core';
+import { Text, Box, Button } from '@mantine/core';
 import noData from '../assets/noData.png';
 import { MdOutlineEdit } from 'react-icons/md';
 import { Carousel } from '@mantine/carousel';
-import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 import '../styles/global.scss';
 import { WorkExperienceCard } from '../components/WorkExperienceCard';
 import { useProfileContext } from '../context/ProfileContext';
 import { AiOutlinePlus } from 'react-icons/ai';
-import officeBuilding from '../assets/office-building.png';
-import freelancer from '../assets/freelancer.png';
-
-enum EmploymentType {
-  Employment = 'employment',
-  Freelance = 'freelance',
-}
-
-interface IWorkExperience {
-  _id: string;
-  image: string | null;
-  designation: string;
-  companyName: string;
-  email: string;
-  companyId: string;
-  companyStartDate: string;
-  companyEndDate: string;
-  workMode: string;
-  workType: string;
-  isVerified: boolean;
-  verifiedBy: [] | null;
-  companyType: string;
-}
 
 export const Experience = () => {
-  const isMobile = useMediaQuery('(max-width: 768px)');
-  const [employmentType, setEmploymentType] = useState<EmploymentType | null>(null);
-  const [opened, { open, close }] = useDisclosure(false);
-  const { workExperienceData, dispatchDetailsPage, detailsPage, scrollToTop, scrollToProfileNav, setSelectedCard } =
-    useProfileContext();
+  const { workExperienceData, dispatchDetailsPage, detailsPage, scrollToTop, scrollToProfileNav } = useProfileContext();
 
   const handleToggleWorkExperienceDetails = (): void => {
     scrollToProfileNav();
@@ -55,38 +26,8 @@ export const Experience = () => {
     });
   };
 
-  const onClose = () => {
-    close();
-    setEmploymentType(null);
-  };
-
   return (
     <section className="experience-section container">
-      {employmentType === null && (
-        <Modal
-          className="modal"
-          size={'65%'}
-          fullScreen={isMobile}
-          opened={opened}
-          onClose={() => onClose()}
-          title="Choose Work experience type"
-        >
-          <Box className="experience-wrapper">
-            <Box className="employment-type" onClick={handleWorkExperiencePage}>
-              <img src={officeBuilding} alt="Office building" />
-              <Title className="title">Employment</Title>
-              <Text className="employment-text">Full-time jobs, part-time jobs, Internships etc.</Text>
-            </Box>
-            <Box className="employment-type" onClick={handleWorkExperiencePage}>
-              <img src={freelancer} alt="Freelancer" />
-              <Title className="title">Freelance</Title>
-              <Text className="employment-text">Commission work, contracts, side hustles etc.</Text>
-            </Box>
-          </Box>
-          <Text className="employment-privacy-policy">The privacy policy and undertaking statement goes here</Text>
-        </Modal>
-      )}
-
       <Box className="header">
         <Box>
           <Text className="heading">{`Work Experience (${workExperienceData.length})`}</Text>
@@ -113,7 +54,7 @@ export const Experience = () => {
       {workExperienceData.length === 0 ? (
         <Box className="no-data-wrapper">
           <img className="no-data" src={noData} alt="No data" />
-          <Button leftIcon={<AiOutlinePlus />} onClick={open} className="add-records">
+          <Button leftIcon={<AiOutlinePlus />} onClick={handleWorkExperiencePage} className="add-records">
             Add records
           </Button>
         </Box>

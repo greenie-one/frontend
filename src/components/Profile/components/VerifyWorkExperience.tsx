@@ -1,28 +1,38 @@
-import React, { useReducer, useState, CSSProperties, useRef, useEffect } from 'react';
-import { Title, Text, Box, Button, TextInput, Select, createStyles, em, rem, Modal, Divider } from '@mantine/core';
+import React, { useReducer, useState, CSSProperties, useRef } from 'react';
+import { Title, Text, Box, Button, TextInput, Select, Modal, Divider } from '@mantine/core';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 import { useForm, isNotEmpty, isEmail, hasLength } from '@mantine/form';
 import { MdVerified, MdOutlineDelete, MdDriveFolderUpload } from 'react-icons/md';
 import { AiOutlinePlus, AiFillInfoCircle } from 'react-icons/ai';
-import { BsCheckLg } from 'react-icons/bs';
 import { RiAddCircleLine } from 'react-icons/ri';
 import { CgSandClock, CgProfile } from 'react-icons/cg';
-import { FaExclamation } from 'react-icons/fa';
 import tscLogo from '../assets/tscLogo.png';
 import noData from '../assets/noData.png';
-import { notifications } from '@mantine/notifications';
 import { useProfileContext } from '../context/ProfileContext';
 import pdfIcon from '../assets/pdfIcon.png';
+import {
+  showErrorNotification,
+  showLoadingNotification,
+  showSuccessNotification,
+} from '../../../utils/functions/showNotification';
+import { ISkill } from '../types/APICalls';
+import { PeerVerificationFormType } from '../types/forms';
 
+export enum ReviewActionType {
+  NEXT_STEP,
+  PREVIOUS_STEP,
+  RESET_STEP,
+}
+
+export type ReviewStepState = {
+  currentStep: number;
+};
+
+export type ReviewStepAction = { type: ReviewActionType };
 enum ModalType {
   AddSkill = 'Add skill',
   ConfirmRequest = 'Confirm request',
   SeeRequest = 'See request',
-}
-
-interface ISkill {
-  skillName: string;
-  expertise: string;
 }
 
 const peerType = [
@@ -42,13 +52,6 @@ const skillRate = [
   { value: 'MASTER', label: 'Master - Pro(Global Recognition)' },
 ];
 
-type PeerVerificationFormType = {
-  name: string;
-  peerType: string;
-  email: string;
-  contactNumber: string;
-};
-
 type Peer = {
   index: number;
   name: string;
@@ -60,25 +63,13 @@ type Peer = {
   skills: ISkill[];
 };
 
-interface IWorkExperience {
+interface IWorkExperienceVerification {
   _id: string;
   image: string | null;
   designation: string;
   companyName: string;
   isVerified: boolean;
 }
-
-enum ReviewActionType {
-  NEXT_STEP,
-  PREVIOUS_STEP,
-  RESET_STEP,
-}
-
-type ReviewStepState = {
-  currentStep: number;
-};
-
-type ReviewStepAction = { type: ReviewActionType };
 
 const VerifiationStepReducer = (state: ReviewStepState, action: ReviewStepAction): ReviewStepState => {
   switch (action.type) {
@@ -93,7 +84,7 @@ const VerifiationStepReducer = (state: ReviewStepState, action: ReviewStepAction
   }
 };
 
-export const VerifyWorkExperience: React.FC<IWorkExperience> = ({
+export const VerifyWorkExperience: React.FC<IWorkExperienceVerification> = ({
   _id,
   image,
   designation,
@@ -107,7 +98,6 @@ export const VerifyWorkExperience: React.FC<IWorkExperience> = ({
   const isMobile = useMediaQuery('(max-width: 768px)');
   const isTablet = useMediaQuery('(max-width: 1024px)');
   const [opened, { open, close }] = useDisclosure(false);
-  const { classes: inputClasses } = inputStyles();
   const [addedPeers, setAddedPeers] = useState<Peer[]>([]);
   const [addedPeersDocument, setAddedPeersDoucment] = useState<File[]>([]);
   const [openModalType, setOpenModalType] = useState<ModalType | null>(null);
@@ -200,31 +190,14 @@ export const VerifyWorkExperience: React.FC<IWorkExperience> = ({
   };
 
   const handleProceed = () => {
+    showLoadingNotification({ title: 'Please wait !', message: 'We are adding your peers' });
     if (addedPeers.length < 2) {
-      notifications.show({
-        id: 'load-data',
-        title: 'Insufficient number of peers !',
-        message: 'Please add atleast 2 peers',
-        autoClose: 2200,
-        withCloseButton: false,
-        color: 'red',
-        icon: <FaExclamation />,
-        sx: { borderRadius: em(8) },
-      });
+      showErrorNotification('NO_PEERS');
     }
     if (addedPeers.length >= 2) {
       scrollToProfileNav();
       verificationStepDispatch({ type: ReviewActionType.NEXT_STEP });
-      notifications.show({
-        id: 'load-data',
-        title: 'Peers added',
-        message: 'Peers added to the list',
-        autoClose: 2200,
-        withCloseButton: false,
-        color: 'teal',
-        icon: <BsCheckLg />,
-        sx: { borderRadius: em(8) },
-      });
+      showSuccessNotification({ title: 'Success !', message: 'Your Peers have been added sucessfully' });
     }
   };
 
@@ -349,7 +322,7 @@ export const VerifyWorkExperience: React.FC<IWorkExperience> = ({
                   withAsterisk
                   data-autofocus
                   label="Eg. Frontend, Backend"
-                  classNames={inputClasses}
+                  className="inputClass"
                   {...skillForm.getInputProps('skillName')}
                 />
               </Box>
@@ -359,7 +332,7 @@ export const VerifyWorkExperience: React.FC<IWorkExperience> = ({
                   withAsterisk
                   data={skillRate}
                   label="Select your expertise"
-                  classNames={inputClasses}
+                  className="inputClass"
                   {...skillForm.getInputProps('expertise')}
                   styles={() => ({
                     item: {
@@ -412,7 +385,7 @@ export const VerifyWorkExperience: React.FC<IWorkExperience> = ({
             <TextInput
               withAsterisk
               label="Name"
-              classNames={inputClasses}
+              className="inputClass"
               {...peerVerificationForm.getInputProps('name')}
             />
             <Select
@@ -429,19 +402,19 @@ export const VerifyWorkExperience: React.FC<IWorkExperience> = ({
                   },
                 },
               })}
-              classNames={inputClasses}
+              className="inputClass"
               {...peerVerificationForm.getInputProps('peerType')}
             />
             <TextInput
               withAsterisk
               label="Official email id"
-              classNames={inputClasses}
+              className="inputClass"
               {...peerVerificationForm.getInputProps('email')}
             />
             <TextInput
               withAsterisk
               label="Contact number"
-              classNames={inputClasses}
+              className="inputClass"
               maxLength={10}
               minLength={10}
               {...peerVerificationForm.getInputProps('contactNumber')}
@@ -631,64 +604,3 @@ export const VerifyWorkExperience: React.FC<IWorkExperience> = ({
     </>
   );
 };
-
-const inputStyles = createStyles((theme) => ({
-  root: {
-    position: 'relative',
-  },
-
-  input: {
-    height: '58px',
-    paddingTop: '18px',
-    fontSize: '16px',
-    fontWeight: 500,
-    borderRadius: '8px',
-    border: '1px solid #D1D4DB',
-    lineHeight: '19px',
-    letterSpacing: '-0.02em',
-    color: '#697082',
-
-    [`@media screen and (max-width: ${em(1024)})`]: {
-      height: '46px',
-      borderRadius: '6px',
-      fontSize: '10px',
-      lineHeight: '12px',
-      margin: '0 auto',
-    },
-  },
-
-  selectInput: {
-    fontSize: '16px',
-    fontWeight: 500,
-    lineHeight: '19px',
-    letterSpacing: '-0.02em',
-    color: '#697082',
-  },
-
-  innerInput: {
-    height: rem(54),
-    paddingTop: rem(28),
-
-    [`@media screen and (max-width: ${em(1024)})`]: {
-      paddingTop: rem(8),
-    },
-  },
-
-  label: {
-    position: 'absolute',
-    pointerEvents: 'none',
-    fontSize: '12px',
-    paddingLeft: '14px',
-    paddingTop: '7px',
-    lineHeight: '14.52px',
-    letterSpacing: '-0.02em',
-    zIndex: 1,
-    color: '#697082',
-
-    [`@media screen and (max-width: ${em(1024)})`]: {
-      fontSize: '10px',
-      lineHeight: '10px',
-      paddingTop: '8px',
-    },
-  },
-}));

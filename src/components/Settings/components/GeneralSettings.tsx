@@ -7,7 +7,6 @@ import { useDisclosure } from '@mantine/hooks';
 
 export const GeneralSettings: React.FC = (): JSX.Element => {
   const { classes: formClasses } = detailsFormStyles();
-  const { classes: inputClasses } = detailsInputStyles();
   const generalSettingsForm = useGeneralSettingsForm();
   const [opened, { open, close }] = useDisclosure(false);
   const onFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -64,14 +63,14 @@ export const GeneralSettings: React.FC = (): JSX.Element => {
           withAsterisk
           data-autofocus
           label="Phone number"
-          classNames={inputClasses}
+          className="inputClass"
           {...generalSettingsForm.getInputProps('phoneNumber')}
         />
         <TextInput
           withAsterisk
           data-autofocus
           label="Email"
-          classNames={inputClasses}
+          className="inputClass"
           {...generalSettingsForm.getInputProps('emailId')}
         />
         <Title className={formClasses.detailsCategoryTitle}>Demographics</Title>
@@ -79,14 +78,14 @@ export const GeneralSettings: React.FC = (): JSX.Element => {
           withAsterisk
           data-autofocus
           label="Age"
-          classNames={inputClasses}
+          className="inputClass"
           {...generalSettingsForm.getInputProps('age')}
         />
         <TextInput
           withAsterisk
           data-autofocus
           label="Date of birth"
-          classNames={inputClasses}
+          className="inputClass"
           {...generalSettingsForm.getInputProps('dateOfBirth')}
         />
         <Title className={formClasses.detailsCategoryTitle}>Aadhar details</Title>
@@ -94,14 +93,14 @@ export const GeneralSettings: React.FC = (): JSX.Element => {
           withAsterisk
           data-autofocus
           label="Phone number linked with Aadhaar"
-          classNames={inputClasses}
+          className="inputClass"
           {...generalSettingsForm.getInputProps('phoneLinkedWithAadhar')}
         />
         <TextInput
           withAsterisk
           data-autofocus
           label="Aadhar number"
-          classNames={inputClasses}
+          className="inputClass"
           {...generalSettingsForm.getInputProps('aadharNumber')}
         />
         <Title className={formClasses.detailsCategoryTitle}>PAN details</Title>
@@ -109,14 +108,14 @@ export const GeneralSettings: React.FC = (): JSX.Element => {
           withAsterisk
           data-autofocus
           label="Phone number linked with PAN"
-          classNames={inputClasses}
+          className="inputClass"
           {...generalSettingsForm.getInputProps('phoneLinkedWithPAN')}
         />
         <TextInput
           withAsterisk
           data-autofocus
           label="PAN"
-          classNames={inputClasses}
+          className="inputClass"
           {...generalSettingsForm.getInputProps('PANNumber')}
         />
 
