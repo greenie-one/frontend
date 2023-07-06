@@ -1,5 +1,5 @@
 import '../styles/global.scss';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useProfileContext } from '../context/ProfileContext';
 import { Text, Box, Button, Modal, Checkbox, createStyles, em, rem, TextInput, Title, CopyButton } from '@mantine/core';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
@@ -17,16 +17,12 @@ import {
   showLoadingNotification,
   showSuccessNotification,
 } from '../../../utils/functions/showNotification';
-interface VerificationData {
-  requestId: string;
-  taskId: string;
-}
+import { IAadharVerificationData } from '../types/APICalls';
 
 export const SeeAadharCard = () => {
   const [opened, { open, close }] = useDisclosure(false);
   const [checked, setChecked] = useState<boolean>(false);
   const [secondsRemaining, setSecondsRemaining] = useState<number>(60);
-  const { classes: inputClasses } = inputStyles();
   const { classes: otpInputClasses } = OtpInputStyles();
   const isMobile = useMediaQuery('(max-width: 768px)');
   const greeneId = 'GRN788209';
@@ -40,7 +36,7 @@ export const SeeAadharCard = () => {
     scrollToTop,
   } = useProfileContext();
   const { authClient } = useGlobalContext();
-  const [verificationData, setVerificationData] = useState<VerificationData>({
+  const [verificationData, setVerificationData] = useState<IAadharVerificationData>({
     requestId: '',
     taskId: '',
   });
@@ -309,7 +305,7 @@ export const SeeAadharCard = () => {
             <Title className="heading">Enter your Aadhaar number</Title>
             <TextInput
               label="Enter aadhar number"
-              classNames={inputClasses}
+              className="inputClass"
               withAsterisk
               minLength={12}
               maxLength={12}
@@ -334,61 +330,6 @@ export const SeeAadharCard = () => {
     </section>
   );
 };
-
-const inputStyles = createStyles((theme) => ({
-  root: {
-    position: 'relative',
-    marginTop: '10px',
-    marginBottom: '26px',
-  },
-
-  input: {
-    height: '58px',
-    paddingTop: '18px',
-    fontSize: '16px',
-    fontWeight: 500,
-    borderRadius: '8px',
-    border: '1px solid #D1D4DB',
-    lineHeight: '19px',
-    letterSpacing: '-0.02em',
-    color: '#697082',
-
-    [`@media screen and (max-width: ${em(1024)})`]: {
-      height: '46px',
-      borderRadius: '6px',
-      fontSize: '10px',
-      lineHeight: '12px',
-      margin: '0 auto',
-    },
-  },
-
-  innerInput: {
-    height: rem(54),
-    paddingTop: rem(28),
-
-    [`@media screen and (max-width: ${em(1024)})`]: {
-      paddingTop: rem(8),
-    },
-  },
-
-  label: {
-    position: 'absolute',
-    pointerEvents: 'none',
-    fontSize: '12px',
-    paddingLeft: '14px',
-    paddingTop: '7px',
-    lineHeight: '14.52px',
-    letterSpacing: '-0.02em',
-    zIndex: 1,
-    color: '#697082',
-
-    [`@media screen and (max-width: ${em(1024)})`]: {
-      fontSize: '10px',
-      lineHeight: '10px',
-      paddingTop: '8px',
-    },
-  },
-}));
 
 const OtpInputStyles = createStyles((theme) => ({
   root: {

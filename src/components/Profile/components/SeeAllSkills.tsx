@@ -1,6 +1,6 @@
 import '../styles/global.scss';
 import { useProfileContext } from '../context/ProfileContext';
-import { Text, Box, Button, createStyles, em, rem } from '@mantine/core';
+import { Text, Box, Button } from '@mantine/core';
 import { BsArrowLeft } from 'react-icons/bs';
 import { AiOutlineRight } from 'react-icons/ai';
 import { MdVerified } from 'react-icons/md';
@@ -27,7 +27,7 @@ export const SeeAllSkills = () => {
         <Text>{`Skills (${skillData.length})`}</Text>
       </Box>
       <Box className="skills-card-wrapper">
-        {skillData.reverse().map(({ _id, skillName, expertise, isVerified }, index) => {
+        {skillData.reverse().map(({ skillName, expertise, isVerified }, index) => {
           return (
             <Box className="skill-card" key={index}>
               <Box className="skill-card-header">
@@ -62,62 +62,3 @@ export const SeeAllSkills = () => {
     </section>
   );
 };
-
-const inputStyles = createStyles((theme) => ({
-  root: {
-    position: 'relative',
-    marginTop: '10px',
-    marginBottom: '10px',
-  },
-
-  icon: {
-    marginTop: '16px',
-  },
-
-  input: {
-    height: '58px',
-    paddingTop: '18px',
-    fontSize: '16px',
-    fontWeight: 500,
-    borderRadius: '8px',
-    border: '1px solid #D1D4DB',
-    lineHeight: '19px',
-    letterSpacing: '-0.02em',
-    color: '#697082',
-
-    [`@media screen and (max-width: ${em(1024)})`]: {
-      height: '46px',
-      borderRadius: '6px',
-      fontSize: '10px',
-      lineHeight: '12px',
-      margin: '0 auto',
-    },
-  },
-
-  innerInput: {
-    height: rem(54),
-    paddingTop: rem(28),
-
-    [`@media screen and (max-width: ${em(1024)})`]: {
-      paddingTop: rem(8),
-    },
-  },
-
-  label: {
-    position: 'absolute',
-    pointerEvents: 'none',
-    fontSize: '12px',
-    paddingLeft: '14px',
-    paddingTop: '7px',
-    lineHeight: '14.52px',
-    letterSpacing: '-0.02em',
-    zIndex: 1,
-    color: '#697082',
-
-    [`@media screen and (max-width: ${em(1024)})`]: {
-      fontSize: '10px',
-      lineHeight: '10px',
-      paddingTop: '8px',
-    },
-  },
-}));

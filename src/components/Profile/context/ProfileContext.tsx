@@ -1,7 +1,6 @@
 // ---------------Import Statements--------------
 import React, { createContext, useContext, useState, useEffect, useReducer } from 'react';
 import { useForm, UseFormReturnType, isNotEmpty, isEmail, hasLength } from '@mantine/form';
-import { em } from '@mantine/core';
 import {
   skillsAPIList,
   profileAPIList,
@@ -17,6 +16,26 @@ import {
   showLoadingNotification,
   showSuccessNotification,
 } from '../../../utils/functions/showNotification';
+import { DetailsPageAction, DetailsPageState } from '../types/reducers';
+import {
+  IDocument,
+  DocumentsRes,
+  IUserProfile,
+  IWorkExperience,
+  IResidendialInfoDataType,
+  ResidentialInfoRes,
+  ISkill,
+  ISkillDataType,
+} from '../types/APICalls';
+import {
+  profileFormType,
+  workExperienceFormType,
+  residentialInfoFormType,
+  skillFormType,
+  verifyAadharFormType,
+  verifyLicenceFormType,
+  verifyPANFormType,
+} from '../types/forms';
 
 // ----------------Types-------------------------
 
@@ -34,7 +53,6 @@ type ProfileContextType = {
   verifyLicenceForm: UseFormReturnType<verifyLicenceFormType>;
   workExperienceForm: UseFormReturnType<workExperienceFormType>;
   residentialInfoForm: UseFormReturnType<residentialInfoFormType>;
-  addResidentialInfo: () => void;
   deleteResidentialInfo: (id: string) => void;
   updateResidentialInfo: (id: string) => void;
   skillForm: UseFormReturnType<skillFormType>;
@@ -52,6 +70,7 @@ type ProfileContextType = {
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   getDocuments: () => void;
   getSkills: () => void;
+  getResidentialInfo: () => void;
   scrollToTop: () => void;
   scrollToProfileNav: () => void;
   selectedCard: IWorkExperience | null;
@@ -60,146 +79,7 @@ type ProfileContextType = {
   setSelectedSkills: React.Dispatch<React.SetStateAction<ISkill[]>>;
   docDepotActivePage: number;
   setDocDepotActivePage: React.Dispatch<React.SetStateAction<number>>;
-  docDepotData: [];
-  setDocDepotData: React.Dispatch<React.SetStateAction<[]>>;
 };
-
-interface IDocument {
-  id_type: string;
-  isVerified: boolean;
-}
-
-interface IUserProfile {
-  _id: string;
-  firstName: string;
-  lastName: string;
-  bio: string;
-  descriptionTags: string[];
-}
-
-interface IWorkExperience {
-  _id: string;
-  image: string | null;
-  designation: string;
-  companyName: string;
-  email: string;
-  companyId: string;
-  companyStartDate: string;
-  companyEndDate: string;
-  workMode: string;
-  workType: string;
-  isVerified: boolean;
-  verifiedBy: [] | null;
-  companyType: string;
-}
-
-interface IResidendialInfoDataType {
-  _id: string;
-  address_line_1: string;
-  address_line_2: string;
-  typeOfAddress: string;
-  landmark: string;
-  pincode: number;
-  city: string;
-  state: string;
-  country: string;
-  start_date: Date;
-  end_date: Date;
-  isVerified: boolean;
-}
-
-interface ISkillDataType {
-  _id: string;
-  createdAt: string;
-  skillName: string;
-  isVerified: boolean;
-  expertise: string;
-  updatedAt: string;
-  user: string;
-  __v: number;
-}
-
-interface ISkill {
-  skillName: string;
-  expertise: string;
-}
-
-type profileFormType = {
-  [key: string]: string | string[];
-  firstName: string;
-  lastName: string;
-  bio: string;
-  descriptionTags: string[];
-};
-
-type verifyAadharFormType = {
-  aadharNo: string;
-  otp: string;
-};
-type verifyPANFormType = {
-  panNo: string;
-};
-type verifyLicenceFormType = {
-  licenceNo: string;
-  dateOfBirth: Date | null;
-};
-
-type workExperienceFormType = {
-  [key: string]: string | Date | null;
-  designation: string;
-  companyType: string;
-  companyName: string;
-  linkedInUrl: string;
-  workEmail: string;
-  companyId: string;
-  startDate: Date | null;
-  endDate: Date | null;
-  workType: string;
-  modeOfWork: string;
-};
-
-type residentialInfoFormType = {
-  [key: string]: string | number | Date | null;
-  address_line_1: string;
-  address_line_2: string;
-  landmark: string;
-  city: string;
-  pincode: number | string;
-  typeOfAddress: string;
-  state: '';
-  country: '';
-  start_date: Date | null;
-  endDate: Date | null;
-};
-
-type skillFormType = {
-  [key: string]: string | null;
-  skillName: string;
-  expertise: string;
-};
-
-type DetailsPageState = {
-  seeAllWorkExperience: boolean;
-  seeAllResidentialInfo: boolean;
-  seeAllSkills: boolean;
-  seeAadharCard: boolean;
-  seePanCard: boolean;
-  seeDrivingLicence: boolean;
-  seeCongratulations: boolean;
-  seeAddWorkExperience: boolean;
-  seeAddSkills: boolean;
-};
-
-type DetailsPageAction =
-  | { type: 'SET_SEE_ALL_WORKEXPERIENCE'; payload: boolean }
-  | { type: 'SET_SEE_ALL_RESIDENTIALINFO'; payload: boolean }
-  | { type: 'SET_SEE_ALL_SKILLS'; payload: boolean }
-  | { type: 'SET_SEE_AADHAR_CARD'; payload: boolean }
-  | { type: 'SET_SEE_PAN_CARD'; payload: boolean }
-  | { type: 'SET_SEE_DRIVER_LICENCE'; payload: boolean }
-  | { type: 'SET_SEE_CONGRATULATIONS_SCREEN'; payload: boolean }
-  | { type: 'SET_SEE_ADD_WORK_EXPERIENCE'; payload: boolean }
-  | { type: 'SET_SEE_ADD_SKILLS'; payload: boolean };
 
 const ProfileContext = createContext<ProfileContextType>({} as ProfileContextType);
 export const useProfileContext = () => useContext(ProfileContext);
@@ -214,43 +94,6 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const { authClient } = useGlobalContext();
   const authTokens = authClient.getAccessToken();
   const [docDepotActivePage, setDocDepotActivePage] = useState<number>(0);
-  const [docDepotData, setDocDepotData] = useState([
-    {
-      name: 'IDs',
-      isFolder: true,
-      items: [
-        { id_type: 'AADHAR', isVerified: true },
-        { id_type: 'PAN', isVerified: true },
-        { id_type: 'DRIVING_LICENCE', isVerified: true },
-      ],
-    },
-    {
-      name: 'Work Documents',
-      isFolder: true,
-      items: [
-        { name: 'Letter of appointment', isFolder: false },
-        { name: 'Payslips', isFolder: false },
-        { name: 'Experience letter', isFolder: false },
-        { name: 'Relieving Letter', isFolder: false },
-      ],
-    },
-    {
-      name: 'Education documents',
-      isFolder: true,
-      items: [
-        { name: '10th Marksheet', isFolder: false },
-        { name: '12th Marksheet', isFolder: false },
-      ],
-    },
-    {
-      name: 'Others',
-      isFolder: true,
-      items: [
-        { name: '10th Marksheet', isFolder: false },
-        { name: '12th Marksheet', isFolder: false },
-      ],
-    },
-  ]);
 
   //------------Forms-----------------
 
@@ -341,16 +184,18 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
       state: '',
       country: '',
       start_date: null,
-      endDate: null,
+      end_date: null,
     },
     validate: {
       address_line_1: isNotEmpty('Please enter valid address'),
       address_line_2: isNotEmpty('Please enter valid address'),
+      landmark: isNotEmpty('Please enter valid address'),
       city: isNotEmpty('Please enter valid address'),
       typeOfAddress: isNotEmpty('Please enter the address type'),
       pincode: hasLength(6, 'Please enter valid pincode'),
       state: isNotEmpty('Please enter your state/country'),
       start_date: isNotEmpty('Please enter start date'),
+      end_date: isNotEmpty('Please enter start date'),
       country: isNotEmpty('Please enter your country'),
     },
   });
@@ -381,7 +226,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
   });
 
   const getProfile = async () => {
-    const res: Result<any> = await HttpClient.callApiAuth(
+    const res: Result<IUserProfile> = await HttpClient.callApiAuth(
       {
         url: `${profileAPIList.getMyProfile}`,
         method: 'GET',
@@ -443,7 +288,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   // GET
   const getDocuments = async () => {
-    const res: Result<any> = await HttpClient.callApiAuth(
+    const res: Result<DocumentsRes> = await HttpClient.callApiAuth(
       {
         url: `${documentsAPIList.getDocuments}`,
         method: 'GET',
@@ -452,11 +297,6 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
     );
     if (res.ok) {
       setDocumentsData(res.value.ids);
-      setDocDepotData((prevState) => {
-        const updatedData = [...prevState];
-        updatedData[0].items = res.value.ids;
-        return updatedData;
-      });
     } else {
       showErrorNotification(res.error.code);
     }
@@ -468,7 +308,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   // GET
   const getWorkExperience = async () => {
-    const res: Result<any> = await HttpClient.callApiAuth(
+    const res: Result<IWorkExperience[]> = await HttpClient.callApiAuth(
       {
         url: `${workExperienceAPiList.getWorkExperience}`,
         method: 'GET',
@@ -487,7 +327,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const [residentialInfoData, setResidentialInfoData] = useState<IResidendialInfoDataType[]>([]);
   // GET
   const getResidentialInfo = async () => {
-    const res: Result<any> = await HttpClient.callApiAuth(
+    const res: Result<ResidentialInfoRes> = await HttpClient.callApiAuth(
       {
         url: `${residentialInfoAPIList.getResidentialInfo}`,
         method: 'GET',
@@ -514,58 +354,6 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
     }
 
     return true;
-  };
-
-  const addResidentialInfo = async () => {
-    const requiredField = [
-      'address_line_1',
-      'address_line_2',
-      'landmark',
-      'city',
-      'pincode',
-      'typeOfAddress',
-      'state',
-      ' country',
-      'start_date',
-      'endDate',
-      'currentLocation',
-    ];
-
-    if (!validateFormFields(requiredField)) return;
-    showLoadingNotification({
-      title: 'Wait !',
-      message: 'Please wait while we update your residential information.',
-    });
-    const data = {
-      address_line_1: residentialInfoForm.values.address_line_1,
-      address_line_2: residentialInfoForm.values.address_line_2,
-      landmark: residentialInfoForm.values.landmark,
-      pincode: residentialInfoForm.values.pincode,
-      city: residentialInfoForm.values.city,
-      state: residentialInfoForm.values.state,
-      country: residentialInfoForm.values.country,
-      start_date: residentialInfoForm.values.start_date,
-      end_date: residentialInfoForm.values.endDate,
-    };
-    const res: Result<any> = await HttpClient.callApiAuth(
-      {
-        url: `${residentialInfoAPIList.postResidentialInfo}`,
-        method: 'POST',
-        body: data,
-      },
-      authClient
-    );
-    if (res.ok) {
-      showSuccessNotification({
-        title: 'Success !',
-        message: 'We have added your residential information.',
-      });
-      getResidentialInfo();
-    } else {
-      showErrorNotification(res.error.code);
-    }
-
-    getResidentialInfo();
   };
 
   // DELETE
@@ -630,7 +418,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const [skillData, setSkillData] = useState<ISkillDataType[]>([]);
   // GET
   const getSkills = async () => {
-    const res: Result<any> = await HttpClient.callApiAuth(
+    const res: Result<ISkillDataType[]> = await HttpClient.callApiAuth(
       {
         url: `${skillsAPIList.getSkill}`,
         method: 'GET',
@@ -720,7 +508,6 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
         residentialInfoData,
         skillData,
         getWorkExperience,
-        addResidentialInfo,
         deleteResidentialInfo,
         updateResidentialInfo,
         verifyAadharForm,
@@ -749,8 +536,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
         setSelectedCard,
         selectedSkills,
         setSelectedSkills,
-        docDepotData,
-        setDocDepotData,
+        getResidentialInfo,
       }}
     >
       {children}

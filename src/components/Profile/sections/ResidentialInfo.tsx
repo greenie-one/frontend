@@ -1,15 +1,22 @@
 import { useState } from 'react';
-import { Text, Modal, Box, Title, TextInput, createStyles, em, rem, Select, Checkbox, Button } from '@mantine/core';
-import { MonthPickerInput } from '@mantine/dates';
+import { Text, Modal, Box, Title, TextInput, Select, Checkbox, Button, Divider } from '@mantine/core';
+import { DateInput } from '@mantine/dates';
 import { Carousel } from '@mantine/carousel';
-import { MdOutlineEdit, MdOutlineCalendarMonth } from 'react-icons/md';
+import { MdOutlineEdit } from 'react-icons/md';
 import '../styles/global.scss';
 import noData from '../assets/noData.png';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 import { useProfileContext } from '../context/ProfileContext';
-import { IoLocationOutline } from 'react-icons/io5';
 import { AiOutlinePlus } from 'react-icons/ai';
+import {
+  showErrorNotification,
+  showLoadingNotification,
+  showSuccessNotification,
+} from '../../../utils/functions/showNotification';
+import { HttpClient, Result } from '../../../utils/generic/httpClient';
 import { ResidentialInfoCard } from '../components/ResidentialInfoCard';
+import { useGlobalContext } from '../../../context/GlobalContext';
+import { residentialInfoAPIList } from '../../../assets/api/ApiList';
 
 const states = [
   { value: 'Andhra Pradesh', label: 'Andhra Pradesh' },
@@ -43,18 +50,7 @@ const states = [
   { value: 'West Bengal', label: 'West Bengal' },
 ];
 
-const countries = [
-  { value: 'United States', label: 'United States' },
-  { value: 'China', label: 'China' },
-  { value: 'Japan', label: 'Japan' },
-  { value: 'Germany', label: 'Germany' },
-  { value: 'United Kingdom', label: 'United Kingdom' },
-  { value: 'India', label: 'India' },
-  { value: 'France', label: 'France' },
-  { value: 'Italy', label: 'Italy' },
-  { value: 'Canada', label: 'Canada' },
-  { value: 'South Korea', label: 'South Korea' },
-];
+const countries = [{ value: 'India', label: 'India' }];
 
 export const ResidentialInfo = () => {
   const isMobile = useMediaQuery('(max-width: 768px)');
@@ -62,17 +58,13 @@ export const ResidentialInfo = () => {
   const {
     residentialInfoData,
     residentialInfoForm,
-    addResidentialInfo,
     detailsPage,
     dispatchDetailsPage,
     scrollToProfileNav,
+    getResidentialInfo,
   } = useProfileContext();
-  const { classes: inputClasses } = inputStyles();
+  const { authClient } = useGlobalContext();
   const [checked, setChecked] = useState(false);
-
-  const handleLocation = () => {
-    // @todo: API to be used. should use navigator?
-  };
 
   const handleToggleResidentialDetails = (): void => {
     scrollToProfileNav();
@@ -87,31 +79,69 @@ export const ResidentialInfo = () => {
     setChecked(!checked);
   };
 
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
+  const validateFormFields = (requiredField: string[]) => {
+    const listLength = requiredField.length;
 
-    if (
-      !residentialInfoForm.validateField('address_line_1').hasError &&
-      !residentialInfoForm.validateField('address_line_2').hasError &&
-      !residentialInfoForm.validateField('landmark').hasError &&
-      !residentialInfoForm.validateField('city').hasError &&
-      !residentialInfoForm.validateField('pincode').hasError &&
-      !residentialInfoForm.validateField('typeOfAddress').hasError &&
-      !residentialInfoForm.validateField('state').hasError &&
-      !residentialInfoForm.validateField('country').hasError &&
-      !residentialInfoForm.validateField('start_date').hasError
-    ) {
-      addResidentialInfo();
+    for (let i = 0; i < listLength; i++) {
+      residentialInfoForm.validateField(requiredField[i]);
+    }
+
+    for (let i = 0; i < listLength; i++) {
+      if (residentialInfoForm.validateField(requiredField[i]).hasError) return false;
+    }
+
+    return true;
+  };
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    const requiredField = [
+      'address_line_1',
+      'address_line_2',
+      'landmark',
+      'city',
+      'pincode',
+      'typeOfAddress',
+      'state',
+      'country',
+      'start_date',
+      'end_date',
+      'currentLocation',
+    ];
+
+    if (!validateFormFields(requiredField)) return;
+    showLoadingNotification({
+      title: 'Wait !',
+      message: 'Please wait while we update your residential information.',
+    });
+    const data = {
+      address_line_1: residentialInfoForm.values.address_line_1,
+      address_line_2: residentialInfoForm.values.address_line_2,
+      landmark: residentialInfoForm.values.landmark,
+      pincode: residentialInfoForm.values.pincode,
+      city: residentialInfoForm.values.city,
+      state: residentialInfoForm.values.state,
+      country: residentialInfoForm.values.country,
+      start_date: residentialInfoForm.values.start_date,
+      end_date: residentialInfoForm.values.end_date,
+    };
+    const res: Result<any> = await HttpClient.callApiAuth(
+      {
+        url: `${residentialInfoAPIList.postResidentialInfo}`,
+        method: 'POST',
+        body: data,
+      },
+      authClient
+    );
+    if (res.ok) {
+      showSuccessNotification({
+        title: 'Success !',
+        message: 'We have added your residential information.',
+      });
+      getResidentialInfo();
       close();
-      residentialInfoForm.values.address_line_1 = '';
-      residentialInfoForm.values.address_line_2 = '';
-      residentialInfoForm.values.landmark = '';
-      residentialInfoForm.values.city = '';
-      residentialInfoForm.values.pincode = '';
-      residentialInfoForm.values.typeOfAddress = '';
-      residentialInfoForm.values.state = '';
-      residentialInfoForm.values.start_date = null;
-      residentialInfoForm.values.end_date = null;
+    } else {
+      showErrorNotification(res.error.code);
     }
   };
 
@@ -133,9 +163,10 @@ export const ResidentialInfo = () => {
               data={[
                 { value: 'Permenent', label: 'Permenent' },
                 { value: 'Current', label: 'Current' },
+                { value: 'Temporary', label: 'Temporary' },
               ]}
               label="Type of address"
-              classNames={inputClasses}
+              className="inputClass"
               {...residentialInfoForm.getInputProps('typeOfAddress')}
               withAsterisk
               styles={() => ({
@@ -155,7 +186,7 @@ export const ResidentialInfo = () => {
             <TextInput
               data-autofocus
               label="Address line 1"
-              classNames={inputClasses}
+              className="inputClass"
               {...residentialInfoForm.getInputProps('address_line_1')}
               withAsterisk
             />
@@ -164,7 +195,7 @@ export const ResidentialInfo = () => {
             <Title className="title">Address Line 2</Title>
             <TextInput
               label="Address line 2"
-              classNames={inputClasses}
+              className="inputClass"
               {...residentialInfoForm.getInputProps('address_line_2')}
               withAsterisk
             />
@@ -173,7 +204,7 @@ export const ResidentialInfo = () => {
             <Title className="title">Landmark</Title>
             <TextInput
               label="Landmark"
-              classNames={inputClasses}
+              className="inputClass"
               {...residentialInfoForm.getInputProps('landmark')}
               withAsterisk
             />
@@ -182,7 +213,7 @@ export const ResidentialInfo = () => {
             <Title className="title">City</Title>
             <TextInput
               label="City"
-              classNames={inputClasses}
+              className="inputClass"
               {...residentialInfoForm.getInputProps('city')}
               withAsterisk
             />
@@ -192,18 +223,18 @@ export const ResidentialInfo = () => {
             <TextInput
               label="Pincode"
               maxLength={6}
-              classNames={inputClasses}
+              className="inputClass"
               {...residentialInfoForm.getInputProps('pincode')}
               withAsterisk
             />
           </Box>
-          <Box className="input-section border-bottom">
+          <Box className="input-section">
             <Title className="title">State/Country</Title>
             <Box className="inner-input-section">
               <Select
                 data={states}
                 label="Select state"
-                classNames={inputClasses}
+                className="inputClass"
                 {...residentialInfoForm.getInputProps('state')}
                 withAsterisk
                 styles={() => ({
@@ -220,7 +251,7 @@ export const ResidentialInfo = () => {
               <Select
                 data={countries}
                 label="Select country"
-                classNames={inputClasses}
+                className="inputClass"
                 {...residentialInfoForm.getInputProps('country')}
                 withAsterisk
                 styles={() => ({
@@ -236,26 +267,20 @@ export const ResidentialInfo = () => {
               />
             </Box>
           </Box>
+          <Divider mb={'10px'} />
           <Box className="input-section">
             <Title className="title">Start Date</Title>
-
-            <MonthPickerInput
-              icon={<MdOutlineCalendarMonth />}
+            <DateInput
               label="Start date"
               withAsterisk
-              classNames={inputClasses}
+              className="inputClass"
               {...residentialInfoForm.getInputProps('start_date')}
             />
           </Box>
-          <Box className="input-section border-bottom">
+          <Box className="input-section">
             <Title className="title">End Date</Title>
 
-            <MonthPickerInput
-              icon={<MdOutlineCalendarMonth />}
-              label="End date"
-              classNames={inputClasses}
-              {...residentialInfoForm.getInputProps('endDate')}
-            />
+            <DateInput label="End date" className="inputClass" {...residentialInfoForm.getInputProps('end_date')} />
 
             <Checkbox
               checked={checked}
@@ -265,18 +290,7 @@ export const ResidentialInfo = () => {
               label="I currently work here"
             />
           </Box>
-
-          <Box className="location-wrapper">
-            <Button
-              leftIcon={<IoLocationOutline size={'22px'} />}
-              className="location-btn"
-              variant="default"
-              onClick={handleLocation}
-            >
-              Find my current location
-            </Button>
-            <Box className="map"></Box>
-          </Box>
+          <Divider />
           <Box className="btn-wrapper">
             <Button variant="default" onClick={close}>
               Cancel
@@ -364,62 +378,3 @@ export const ResidentialInfo = () => {
     </section>
   );
 };
-
-const inputStyles = createStyles((theme) => ({
-  root: {
-    position: 'relative',
-    marginTop: '10px',
-    marginBottom: '10px',
-  },
-
-  icon: {
-    marginTop: '18px',
-  },
-
-  input: {
-    height: '58px',
-    paddingTop: '18px',
-    fontSize: '16px',
-    fontWeight: 500,
-    borderRadius: '8px',
-    border: '1px solid #D1D4DB',
-    lineHeight: '19px',
-    letterSpacing: '-0.02em',
-    color: '#697082',
-
-    [`@media screen and (max-width: ${em(1024)})`]: {
-      height: '46px',
-      borderRadius: '6px',
-      fontSize: '10px',
-      lineHeight: '12px',
-      margin: '0 auto',
-    },
-  },
-
-  innerInput: {
-    height: rem(54),
-    paddingTop: rem(28),
-
-    [`@media screen and (max-width: ${em(1024)})`]: {
-      paddingTop: rem(8),
-    },
-  },
-
-  label: {
-    position: 'absolute',
-    pointerEvents: 'none',
-    fontSize: '12px',
-    paddingLeft: '14px',
-    paddingTop: '7px',
-    lineHeight: '14.52px',
-    letterSpacing: '-0.02em',
-    zIndex: 1,
-    color: '#697082',
-
-    [`@media screen and (max-width: ${em(1024)})`]: {
-      fontSize: '10px',
-      lineHeight: '10px',
-      paddingTop: '8px',
-    },
-  },
-}));

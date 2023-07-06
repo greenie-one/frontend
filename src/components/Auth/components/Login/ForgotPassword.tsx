@@ -13,7 +13,6 @@ import { useGlobalContext } from '../../../../context/GlobalContext';
 import { HttpClient, Result } from '../../../../utils/generic/httpClient';
 
 const ForgotPassword = () => {
-  const { classes: inputClasses } = inputStyles();
   const { classes: otpInputClasses } = OtpInputStyles();
   const { loginForm, state, dispatch, isPhoneNumber, isValidEmail } = useAuthContext();
   const [validateOTPId, setValidateOTP] = useState<string>('');
@@ -146,7 +145,8 @@ const ForgotPassword = () => {
           <TextInput
             label="Email or greenie ID"
             {...loginForm.getInputProps('emailPhoneGreenieId')}
-            classNames={inputClasses}
+            className="inputClass"
+            my={'1.5rem'}
           />
           <Button type="submit" className="primaryBtn" onClick={handleNextStep}>
             Continue

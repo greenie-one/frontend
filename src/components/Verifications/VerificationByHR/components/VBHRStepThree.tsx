@@ -1,26 +1,14 @@
 import { Text, Box, Button } from '@mantine/core';
-import { MdVerified } from 'react-icons/md';
-import ProfilePic from '../../../Profile/assets/johnMarston.png';
 import { useVBHRContext } from '../context/VBHRContext';
+import { ProfileDetailsBox } from './ProfileDetailsBox';
 
 export const VBHRStepThree = () => {
   const salary = '13.5 Lac p.a.';
   const companyName = 'Infotech Solutions Private Limited';
   const { NextActiveStep } = useVBHRContext();
   return (
-    <section className="verification-step">
-      <Box className="profile-details-top">
-        <Box className="candidate-profile">
-          <img src={ProfilePic} alt="" />
-        </Box>
-        <Box className="profile-details-text-box">
-          <Text className="name">Abhishek Deshmukh</Text>
-          <Text className="designation">Software Engieer</Text>
-          <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
-            Verified
-          </Button>
-        </Box>
-      </Box>
+    <Box className="verification-step">
+      <ProfileDetailsBox />
       <Text className="question-text">
         Was his salary <span>{salary}</span> at the {companyName}?
       </Text>
@@ -36,6 +24,6 @@ export const VBHRStepThree = () => {
         information deemed necessary for registration and website usage.
       </Text>
       <Text className="policy">Click to view Data and Privacy Policy</Text>
-    </section>
+    </Box>
   );
 };

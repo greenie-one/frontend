@@ -8,7 +8,7 @@ import {
 } from '../../../../utils/functions/showNotification';
 import { HttpClient, Result } from '../../../../utils/generic/httpClient';
 
-import { Text, Button, Flex, Box, TextInput, createStyles, em } from '@mantine/core';
+import { Text, Button, Flex, Box, TextInput } from '@mantine/core';
 
 import { useAuthContext } from '../../context/AuthContext';
 import { authApiList } from '../../../../assets/api/ApiList';
@@ -19,7 +19,6 @@ import '../../styles/global.scss';
 const LoginStepThree = () => {
   const navigate = useNavigate();
   const { loginForm, state, dispatch, isPhoneNumber, validationId, resendOtp, setForceRender } = useAuthContext();
-  const { classes: inputClasses } = inputStyles();
   const [secondsRemaining, setSecondsRemaining] = useState<number>(60);
   const [isLoading, setIsLoading] = useState(false);
   const { authClient } = useGlobalContext();
@@ -78,7 +77,7 @@ const LoginStepThree = () => {
             <Text className="tabHeading">Login using OTP</Text>
           </Flex>
           <Text className="profileTextBold">Enter the one-time passowrd sent to your phone number</Text>
-          <TextInput classNames={inputClasses} maxLength={6} pattern="[0-9]{6}" {...loginForm.getInputProps('otp')} />
+          <TextInput className="inputClass" maxLength={6} pattern="[0-9]{6}" {...loginForm.getInputProps('otp')} />
 
           {secondsRemaining === 0 ? (
             <Button compact color="gray" variant="subtle" onClick={resendOtp} className="resendLink">
@@ -103,32 +102,3 @@ const LoginStepThree = () => {
 };
 
 export default LoginStepThree;
-
-const inputStyles = createStyles((theme) => ({
-  root: {
-    position: 'relative',
-    marginBottom: '24px',
-    marginTop: '24px',
-  },
-
-  input: {
-    width: '458px',
-    height: '68px',
-    fontSize: '16px',
-    fontWeight: 500,
-    borderRadius: '8px',
-    border: '1px solid #D1D4DB',
-    lineHeight: '19px',
-    letterSpacing: '24px',
-    color: '#697082',
-
-    [`@media screen and (max-width: ${em(1024)})`]: {
-      width: '350px',
-      height: '46px',
-      borderRadius: '6px',
-      fontSize: '12px',
-      lineHeight: '12px',
-      margin: '0 auto',
-    },
-  },
-}));

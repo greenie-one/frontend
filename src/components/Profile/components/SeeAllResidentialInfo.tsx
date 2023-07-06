@@ -1,24 +1,11 @@
 import '../styles/global.scss';
 import { useState } from 'react';
 import { useProfileContext } from '../context/ProfileContext';
-import {
-  Text,
-  Modal,
-  Box,
-  Button,
-  Divider,
-  createStyles,
-  em,
-  rem,
-  Title,
-  TextInput,
-  Select,
-  Checkbox,
-} from '@mantine/core';
-import { MonthPickerInput } from '@mantine/dates';
+import { Text, Modal, Box, Button, Divider, Title, TextInput, Select, Checkbox } from '@mantine/core';
+import { DateInput } from '@mantine/dates';
 import { BsArrowLeft } from 'react-icons/bs';
 import { AiOutlineRight } from 'react-icons/ai';
-import { MdVerified, MdOutlineEdit, MdOutlineDelete, MdOutlineCalendarMonth } from 'react-icons/md';
+import { MdVerified, MdOutlineEdit, MdOutlineDelete } from 'react-icons/md';
 import { CgSandClock } from 'react-icons/cg';
 import location from '../assets/location.png';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
@@ -80,7 +67,6 @@ export const SeeAllResidentialInfo = () => {
   } = useProfileContext();
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
-  const { classes: inputClasses } = inputStyles();
   const [checked, setChecked] = useState(false);
   const [updateId, setUpdateId] = useState<string>('');
 
@@ -91,7 +77,7 @@ export const SeeAllResidentialInfo = () => {
     residentialInfoForm.setFieldValue('landmark', '');
     residentialInfoForm.setFieldValue('typeOfAddres', '');
     residentialInfoForm.setFieldValue('city', '');
-    // residentialInfoForm.setFieldValue('pincode', null);
+    residentialInfoForm.setFieldValue('pincode', '');
     residentialInfoForm.setFieldValue('state', '');
     residentialInfoForm.setFieldValue('country', '');
     residentialInfoForm.setFieldValue('start_date', null);
@@ -139,7 +125,7 @@ export const SeeAllResidentialInfo = () => {
             <TextInput
               data-autofocus
               label="Address line 1"
-              classNames={inputClasses}
+              className="inputClass"
               {...residentialInfoForm.getInputProps('address_line_1')}
               withAsterisk
             />
@@ -148,7 +134,7 @@ export const SeeAllResidentialInfo = () => {
             <Title className="title">Address Line 2</Title>
             <TextInput
               label="Address line 2"
-              classNames={inputClasses}
+              className="inputClass"
               {...residentialInfoForm.getInputProps('address_line_2')}
               withAsterisk
             />
@@ -157,7 +143,7 @@ export const SeeAllResidentialInfo = () => {
             <Title className="title">Landmark</Title>
             <TextInput
               label="Landmark"
-              classNames={inputClasses}
+              className="inputClass"
               {...residentialInfoForm.getInputProps('landmark')}
               withAsterisk
             />
@@ -166,7 +152,7 @@ export const SeeAllResidentialInfo = () => {
             <Title className="title">City</Title>
             <TextInput
               label="City"
-              classNames={inputClasses}
+              className="inputClass"
               {...residentialInfoForm.getInputProps('city')}
               withAsterisk
             />
@@ -176,7 +162,7 @@ export const SeeAllResidentialInfo = () => {
             <TextInput
               label="Pincode"
               maxLength={6}
-              classNames={inputClasses}
+              className="inputClass"
               {...residentialInfoForm.getInputProps('pincode')}
               withAsterisk
             />
@@ -187,7 +173,7 @@ export const SeeAllResidentialInfo = () => {
               <Select
                 data={states}
                 label="Select state"
-                classNames={inputClasses}
+                className="inputClass"
                 {...residentialInfoForm.getInputProps('state')}
                 withAsterisk
                 styles={() => ({
@@ -204,7 +190,7 @@ export const SeeAllResidentialInfo = () => {
               <Select
                 data={countries}
                 label="Select country"
-                classNames={inputClasses}
+                className="inputClass"
                 {...residentialInfoForm.getInputProps('country')}
                 withAsterisk
                 styles={() => ({
@@ -223,22 +209,20 @@ export const SeeAllResidentialInfo = () => {
           <Box className="input-section">
             <Title className="title">Start Date</Title>
 
-            <MonthPickerInput
-              icon={<MdOutlineCalendarMonth />}
+            <DateInput
               label="Start date"
               withAsterisk
-              classNames={inputClasses}
+              className="inputClass"
               {...residentialInfoForm.getInputProps('start_date')}
             />
           </Box>
           <Box className="input-section border-bottom">
             <Title className="title">End Date</Title>
 
-            <MonthPickerInput
-              icon={<MdOutlineCalendarMonth />}
+            <DateInput
               label="End date"
               withAsterisk
-              classNames={inputClasses}
+              className="inputClass"
               {...residentialInfoForm.getInputProps('endDate')}
             />
 
@@ -371,62 +355,3 @@ export const SeeAllResidentialInfo = () => {
     </section>
   );
 };
-
-const inputStyles = createStyles((theme) => ({
-  root: {
-    position: 'relative',
-    marginTop: '10px',
-    marginBottom: '10px',
-  },
-
-  icon: {
-    marginTop: '18px',
-  },
-
-  input: {
-    height: '58px',
-    paddingTop: '18px',
-    fontSize: '16px',
-    fontWeight: 500,
-    borderRadius: '8px',
-    border: '1px solid #D1D4DB',
-    lineHeight: '19px',
-    letterSpacing: '-0.02em',
-    color: '#697082',
-
-    [`@media screen and (max-width: ${em(1024)})`]: {
-      height: '46px',
-      borderRadius: '6px',
-      fontSize: '10px',
-      lineHeight: '12px',
-      margin: '0 auto',
-    },
-  },
-
-  innerInput: {
-    height: rem(54),
-    paddingTop: rem(28),
-
-    [`@media screen and (max-width: ${em(1024)})`]: {
-      paddingTop: rem(8),
-    },
-  },
-
-  label: {
-    position: 'absolute',
-    pointerEvents: 'none',
-    fontSize: '12px',
-    paddingLeft: '14px',
-    paddingTop: '7px',
-    lineHeight: '14.52px',
-    letterSpacing: '-0.02em',
-    zIndex: 1,
-    color: '#697082',
-
-    [`@media screen and (max-width: ${em(1024)})`]: {
-      fontSize: '10px',
-      lineHeight: '10px',
-      paddingTop: '8px',
-    },
-  },
-}));

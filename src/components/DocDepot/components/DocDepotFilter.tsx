@@ -1,4 +1,3 @@
-import React from 'react';
 import { Text, Box } from '@mantine/core';
 
 export const DocDepotFilter = () => {

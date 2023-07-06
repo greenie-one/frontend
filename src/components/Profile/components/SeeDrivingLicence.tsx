@@ -1,7 +1,7 @@
 import '../styles/global.scss';
 import { useState } from 'react';
 import { useProfileContext } from '../context/ProfileContext';
-import { Text, Box, Button, createStyles, em, rem, TextInput, Title, Checkbox } from '@mantine/core';
+import { Text, Box, Button, TextInput, Title, Checkbox } from '@mantine/core';
 import { BsArrowLeft } from 'react-icons/bs';
 import { AiOutlineRight } from 'react-icons/ai';
 import DrivingLicenceImg from '../assets/DrivingLicence.png';
@@ -16,7 +16,6 @@ import {
 import { HttpClient, Result } from '../../../utils/generic/httpClient';
 
 export const SeeDrivingLicence = () => {
-  const { classes: inputClasses } = inputStyles();
   const [checked, setChecked] = useState(false);
   const { detailsPage, dispatchDetailsPage, verifyLicenceForm, getDocuments, licenseIsVerified, setLicenseIsVerified } =
     useProfileContext();
@@ -111,7 +110,6 @@ export const SeeDrivingLicence = () => {
               </Box>
             </Box>
             <Box className="box-row licence-second-row">
-              {' '}
               <Box className="details-box">
                 <Title className="details-title">State</Title>
                 <Text className="details-detail">Maharashtra</Text>
@@ -158,13 +156,13 @@ export const SeeDrivingLicence = () => {
             <Title className="heading">Enter your Driving Licence Details</Title>
             <TextInput
               label="DOB as per license(DD/MM/YYYY)"
-              classNames={inputClasses}
+              className="inputClass"
               withAsterisk
               {...verifyLicenceForm.getInputProps('dateOfBirth')}
             />
             <TextInput
               label="Licence Number"
-              classNames={inputClasses}
+              className="inputClass"
               withAsterisk
               maxLength={15}
               minLength={15}
@@ -189,57 +187,3 @@ export const SeeDrivingLicence = () => {
     </section>
   );
 };
-
-const inputStyles = createStyles((theme) => ({
-  root: {
-    position: 'relative',
-    marginBottom: '16px',
-  },
-
-  input: {
-    height: '58px',
-    paddingTop: '18px',
-    fontSize: '16px',
-    fontWeight: 500,
-    borderRadius: '8px',
-    border: '1px solid #D1D4DB',
-    lineHeight: '19px',
-    letterSpacing: '-0.02em',
-    color: '#697082',
-
-    [`@media screen and (max-width: ${em(1024)})`]: {
-      height: '46px',
-      borderRadius: '6px',
-      fontSize: '10px',
-      lineHeight: '12px',
-      margin: '0 auto',
-    },
-  },
-
-  innerInput: {
-    height: rem(54),
-    paddingTop: rem(28),
-
-    [`@media screen and (max-width: ${em(1024)})`]: {
-      paddingTop: rem(8),
-    },
-  },
-
-  label: {
-    position: 'absolute',
-    pointerEvents: 'none',
-    fontSize: '12px',
-    paddingLeft: '14px',
-    paddingTop: '7px',
-    lineHeight: '14.52px',
-    letterSpacing: '-0.02em',
-    zIndex: 1,
-    color: '#697082',
-
-    [`@media screen and (max-width: ${em(1024)})`]: {
-      fontSize: '10px',
-      lineHeight: '10px',
-      paddingTop: '8px',
-    },
-  },
-}));

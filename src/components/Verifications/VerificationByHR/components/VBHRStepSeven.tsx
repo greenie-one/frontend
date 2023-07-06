@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Text, Box, Button, Textarea } from '@mantine/core';
-import { MdVerified } from 'react-icons/md';
-import ProfilePic from '../../../Profile/assets/johnMarston.png';
+import { ProfileDetailsBox } from './ProfileDetailsBox';
 
 export const VBHRStepSeven = () => {
   const [review, setReview] = useState<string>('');
@@ -15,18 +14,7 @@ export const VBHRStepSeven = () => {
   };
   return (
     <section className="verification-step">
-      <Box className="profile-details-top">
-        <Box className="candidate-profile">
-          <img src={ProfilePic} alt="" />
-        </Box>
-        <Box className="profile-details-text-box">
-          <Text className="name">Abhishek Deshmukh</Text>
-          <Text className="designation">Software Engieer</Text>
-          <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
-            Verified
-          </Button>
-        </Box>
-      </Box>
+      <ProfileDetailsBox />
       <Text className="question-text" w={'70%'}>
         Thank you, could you please provide your best regards by crafting an exceptional review for your esteemed peer
       </Text>

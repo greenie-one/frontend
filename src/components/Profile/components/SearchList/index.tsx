@@ -1,10 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Box, createStyles, em, rem } from '@mantine/core';
+import { Box, createStyles, rem } from '@mantine/core';
 import profileThumbnail from '../../assets/johnMarston.png';
 import { SearchResult } from './SearchListContent';
 import { NoResultContent } from './NoResultContent';
 import { profileAPIList } from '../../../../assets/api/ApiList';
-import { useProfileContext } from '../../context/ProfileContext';
 import { useGlobalContext } from '../../../../context/GlobalContext';
 
 import { HttpClient, Result } from '../../../../utils/generic/httpClient';
@@ -74,8 +73,7 @@ export const SearchList: React.FC<ISearchListPropsType> = ({ searchQuery, setSho
   const [fetchingData, setFetchingData] = useState<boolean>(true);
   const [error, setError] = useState<boolean>(false);
   const { authClient } = useGlobalContext();
-
-  const { authTokens } = useProfileContext();
+  const authTokens = authClient.getAccessToken();
 
   const fetchProfiles = useMemo(
     () => async () => {

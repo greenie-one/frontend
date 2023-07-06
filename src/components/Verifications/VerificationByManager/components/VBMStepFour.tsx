@@ -1,10 +1,9 @@
-import { Text, Box, Button, em, Modal } from '@mantine/core';
-import { MdVerified } from 'react-icons/md';
-import ProfilePic from '../../../Profile/assets/johnMarston.png';
+import { Text, Box, Button } from '@mantine/core';
 import { BsPersonCheckFill } from 'react-icons/bs';
 import { HiOutlineBan } from 'react-icons/hi';
 import { useVBMContext } from '../context/VBMContext';
 import { useState } from 'react';
+import { ProfileDetailsBox } from '../../VerificationByHR/components';
 
 export const VBMStepFour = () => {
   const { PrevActiveStep, NextActiveStep } = useVBMContext();
@@ -31,18 +30,7 @@ export const VBMStepFour = () => {
   };
   return (
     <section className="verification-step">
-      <Box className="profile-details-top">
-        <Box className="candidate-profile">
-          <img src={ProfilePic} alt="" />
-        </Box>
-        <Box className="profile-details-text-box">
-          <Text className="name">Abhishek Deshmukh</Text>
-          <Text className="designation">Software Engieer</Text>
-          <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
-            Verified
-          </Button>
-        </Box>
-      </Box>
+      <ProfileDetailsBox />
       <Text className="question-text">Could you verify documents uploaded by Abhishek?</Text>
       <Box className="verification-skills-box">
         <Box className="verification-skill-header">

@@ -1,25 +1,10 @@
-import {
-  Box,
-  Text,
-  TextInput,
-  Chip,
-  Group,
-  CopyButton,
-  Button,
-  Modal,
-  Title,
-  createStyles,
-  em,
-  rem,
-  Textarea,
-} from '@mantine/core';
+import { Box, Text, TextInput, Chip, Group, CopyButton, Button, Modal, Title, Textarea, Divider } from '@mantine/core';
 import level from '../assets/level.png';
 import levelFilled from '../assets/levelFilled.png';
 import medal from '../assets/medal.png';
 import { MdVerified, MdOutlineEdit, MdOutlineContentCopy } from 'react-icons/md';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 import { useProfileContext } from '../context/ProfileContext';
-import { detailsFormStyles } from '../../Settings/styles/articleContentStyles';
 
 const skillSetOne = [
   'Lone Wolf',
@@ -38,8 +23,6 @@ export const BioSection = () => {
   const greeneId = 'GRN788209';
   const screenSize = useMediaQuery('(min-width: 768px)');
   const isMobile = useMediaQuery('(max-width: 768px)');
-  const { classes: inputClasses } = inputStyles();
-  const { classes: formStyle } = detailsFormStyles();
   const [opened, { open, close }] = useDisclosure(false);
   const { profileData, profileForm, updateProfile, documentsData } = useProfileContext();
 
@@ -50,6 +33,12 @@ export const BioSection = () => {
     profileForm.values.descriptionTags = [];
     close();
   };
+
+  const isSubmitDisabled =
+    profileForm.values.firstName === '' &&
+    profileForm.values.lastName === '' &&
+    profileForm.values.bio === '' &&
+    profileForm.values.descriptionTags.length !== 3;
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -67,32 +56,32 @@ export const BioSection = () => {
               withAsterisk
               data-autofocus
               label="Your first name"
-              classNames={inputClasses}
+              className="inputClass"
               {...profileForm.getInputProps('firstName')}
             />
           </Box>
-          <Box className="input-section border-bottom">
+          <Box className="input-section">
             <Title className="title">Last Name</Title>
             <TextInput
               withAsterisk
               data-autofocus
               label="Your last name"
-              classNames={inputClasses}
+              className="inputClass"
               {...profileForm.getInputProps('lastName')}
             />
           </Box>
-          <Box className="input-section border-bottom">
+          <Divider mb={'10px'} />
+          <Box className="input-section">
             <Title className="title">Tell Us about yourself</Title>
             <Textarea
               withAsterisk
               data-autofocus
               label="Your bio"
-              classNames={inputClasses}
-              className={formStyle.textarea}
-              minRows={8}
+              className="text-area-input"
               {...profileForm.getInputProps('bio')}
             />
           </Box>
+          <Divider mb={'10px'} />
           <Box>
             <Title className="title" align="center">
               Introduce yourself in 3 words
@@ -123,7 +112,7 @@ export const BioSection = () => {
             <Button type="button" variant="default" onClick={onClose}>
               Cancel
             </Button>
-            <Button color="teal" type="submit">
+            <Button color="teal" disabled={isSubmitDisabled} type="submit">
               Save
             </Button>
           </Box>
@@ -232,77 +221,3 @@ export const BioSection = () => {
     </section>
   );
 };
-
-const inputStyles = createStyles((theme) => ({
-  root: {
-    position: 'relative',
-    marginTop: '10px',
-    marginBottom: '10px',
-  },
-
-  input: {
-    height: '58px',
-    paddingTop: '18px',
-    fontSize: '16px',
-    fontWeight: 500,
-    borderRadius: '8px',
-    border: '1px solid #D1D4DB',
-    lineHeight: '19px',
-    letterSpacing: '-0.02em',
-    color: '#697082',
-
-    [`@media screen and (max-width: ${em(1024)})`]: {
-      height: '46px',
-      borderRadius: '6px',
-      fontSize: '10px',
-      lineHeight: '12px',
-      margin: '0 auto',
-    },
-  },
-
-  bio: {
-    height: '158px',
-    paddingTop: '18px',
-    fontSize: '16px',
-    fontWeight: 500,
-    borderRadius: '8px',
-    border: '1px solid #D1D4DB',
-    lineHeight: '19px',
-    letterSpacing: '-0.02em',
-    color: '#697082',
-
-    [`@media screen and (max-width: ${em(1024)})`]: {
-      borderRadius: '6px',
-      fontSize: '10px',
-      lineHeight: '12px',
-      margin: '0 auto',
-    },
-  },
-
-  innerInput: {
-    height: rem(54),
-    paddingTop: rem(28),
-
-    [`@media screen and (max-width: ${em(1024)})`]: {
-      paddingTop: rem(8),
-    },
-  },
-
-  label: {
-    position: 'absolute',
-    pointerEvents: 'none',
-    fontSize: '12px',
-    paddingLeft: '14px',
-    paddingTop: '7px',
-    lineHeight: '14.52px',
-    letterSpacing: '-0.02em',
-    zIndex: 1,
-    color: '#697082',
-
-    [`@media screen and (max-width: ${em(1024)})`]: {
-      fontSize: '10px',
-      lineHeight: '10px',
-      paddingTop: '8px',
-    },
-  },
-}));
