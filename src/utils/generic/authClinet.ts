@@ -4,7 +4,7 @@
 // If the refresh token is expired, it will delete the tokens from local storage and throw an error
 
 import { authApiList } from '../../assets/api/ApiList';
-import { HttpClient, Result } from './httpClient';
+import { APIError, HttpClient, Result } from './httpClient';
 
 type TokensDTO = {
   accessToken: string;
@@ -19,6 +19,7 @@ export class AuthClient {
   private constructor() {
     const tokens = localStorage.getItem('auth-tokens');
     if (!tokens) {
+      console.log('No tokens found in local storage');
       this.accessToken = null;
       this.refreshToken = null;
     } else {
@@ -28,9 +29,18 @@ export class AuthClient {
     }
   }
 
-  public static getInstance(): AuthClient {
+  public static getInstance(): AuthClient | APIError {
     if (!AuthClient.instance) {
       AuthClient.instance = new AuthClient();
+    }
+
+    if (!AuthClient.instance.accessToken || !AuthClient.instance.refreshToken) {
+      console.log('No tokens found in local storage');
+      return {
+        status: 401,
+        message: 'No tokens found in local storage',
+        code: 'GRA0001',
+      };
     }
 
     return AuthClient.instance;
@@ -75,6 +85,11 @@ export class AuthClient {
     if (resp.ok) {
       await this.setTokens(resp.value.accessToken, resp.value.refreshToken);
     } else {
+      if (resp.error.status === 401) {
+        console.error('Refresh token is expired or invalid, deleting tokens');
+        console.error(resp.error);
+        await this.deleteTokens();
+      }
       throw new Error(JSON.stringify(resp.error));
     }
     return resp;
