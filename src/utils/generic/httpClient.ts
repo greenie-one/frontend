@@ -103,6 +103,7 @@ export class HttpClient {
     if (resp.ok) {
       return resp;
     } else if (resp.error.status === 401) {
+      console.log('Refreshing token for request: ', request.url);
       const status = await authClient.refreshAccessToken();
 
       if (!status.ok) {
