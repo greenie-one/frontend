@@ -3,16 +3,16 @@ import { useAuthContext } from './context/AuthContext';
 import { Navbar } from '../common/Navbar';
 import { AuthInfo } from './components/AuthInfo';
 
-import SignUpStepOne from './components/signup_/SignUpStepOne';
-import SignUpStepTwo from './components/signup_/SignUpStepTwo';
-import SignUpStepThree from './components/signup_/SignUpStepThree';
+import SignUpStepOne from './components/signup/SignUpStepOne';
+import SignUpStepTwo from './components/signup/SignUpStepTwo';
+import SignUpStepThree from './components/signup/SignUpStepThree';
 
-import LoginStepOne from './components/login_/LoginStepOne';
-import LoginStepTwo from './components/login_/LoginStepTwo';
-import LoginStepThree from './components/login_/LoginStepThree';
+import LoginStepOne from './components/login/LoginStepOne';
+import LoginStepTwo from './components/login/LoginStepTwo';
+import LoginStepThree from './components/login/LoginStepThree';
 
-import Profile from './components/signup_/Profile';
-import ForgotPassword from './components/login_/ForgotPassword';
+import Profile from './components/signup/Profile';
+import ForgotPassword from './components/login/ForgotPassword';
 import './styles/global.scss';
 
 export const Auth = () => {

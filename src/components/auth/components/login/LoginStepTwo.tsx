@@ -4,7 +4,7 @@ import { Text, Button, Divider, PasswordInput, Flex, Box } from '@mantine/core';
 
 import { useGlobalContext } from '../../../../context/GlobalContext';
 import { useAuthContext } from '../../context/AuthContext';
-import GoogleButton from '../google_/GoogleButton';
+import GoogleButton from '../google/GoogleButton';
 
 import { HttpClient, Result } from '../../../../utils/generic/httpClient';
 import { authApiList } from '../../../../assets/api/ApiList';
