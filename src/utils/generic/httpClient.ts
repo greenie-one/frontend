@@ -1,18 +1,10 @@
 import { AuthClient } from './authClinet';
 
-type Error = {
-  title: string;
-  message: string;
-};
-
 type PostBody = string | string[] | number | boolean | { [key: string]: PostBody };
 
 type HttpRequest = {
   url: string;
-  headers?:
-    | {
-        'Content-Type'?: 'application/json' | 'application/x-www-form-urlencoded';
-      } & Record<string, string>;
+  headers?: Record<string, string>;
   toJSON?: boolean;
 } & (
   | {
@@ -64,10 +56,7 @@ export class HttpClient {
 
     const resp = await fetch(url, {
       method: request.method,
-      headers: {
-        'Content-Type': 'application/json',
-        ...(request.headers ?? {}),
-      },
+      headers: request.headers,
       body,
     });
 
@@ -78,7 +67,6 @@ export class HttpClient {
       response = (await resp.text()) as T;
     }
 
-    console.log(response.value);
     if (!resp.ok) {
       const error = response as APIError;
       return { ok: false, error: error };
