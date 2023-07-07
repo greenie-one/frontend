@@ -1,6 +1,6 @@
-import { Profile } from '../components/Profile/index';
-import { ProfileProvider } from '../components/Profile/context/ProfileContext';
-import { DocDepotContextProvider } from '../components/DocDepot/context/DocDepotContext';
+import { Profile } from '../components/profile/index';
+import { ProfileProvider } from '../components/profile/context/ProfileContext';
+import { DocDepotContextProvider } from '../components/doc_depot/context/DocDepotContext';
 
 export const ProfilePage = () => {
   return (

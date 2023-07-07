@@ -1,0 +1,234 @@
+.verificationId-section {
+  .verificationIdCard {
+    cursor: pointer;
+    margin-bottom: 16px;
+
+    .verificationIdImg {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 180px;
+      margin-bottom: 24px;
+      border-radius: 10px;
+      background: #f2f4f2;
+    }
+
+    .verification-id-text-box {
+      text-align: center;
+    }
+
+    .document-name {
+      font-weight: 600;
+      font-size: 20px;
+      line-height: 24px;
+      letter-spacing: -0.02em;
+      color: $gray;
+      margin-bottom: 5px;
+    }
+
+    .is-verified-box {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      .is-verified-text {
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 19px;
+        letter-spacing: -0.02em;
+        color: $gray;
+        margin-right: 5px;
+      }
+    }
+  }
+}
+
+.experience-card {
+  border: 1px solid $lighterGray;
+  padding: 16px;
+  text-align: center;
+  border-radius: 24px;
+  cursor: pointer;
+  height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
+
+  .companyLogo {
+    margin: 2rem auto;
+  }
+  .position {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+    letter-spacing: -0.02em;
+    color: $dark;
+    margin-bottom: 8px;
+  }
+  .companyName {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+    color: #a3a3a3;
+  }
+
+  .since-text {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 15px;
+    letter-spacing: -0.02em;
+    margin-bottom: 3px;
+    color: #a3a3a3;
+    margin-top: 1rem;
+  }
+  .tenure {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 19px;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+    color: $gray;
+  }
+  .testimonial {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 23px;
+    color: $gray;
+    margin-bottom: 20px;
+    padding: 0px 20px;
+  }
+
+  .verified {
+    margin-bottom: 24px;
+  }
+
+  .verifier {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .verifier-img {
+      width: 60px;
+      height: 60px;
+      background-color: $lightGray;
+      border-radius: 50%;
+      margin-bottom: 8px;
+    }
+    .verified-by {
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 15px;
+      letter-spacing: -0.02em;
+      color: #a3a3a3;
+      margin-bottom: 3px;
+    }
+    .verifier-name {
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 19px;
+      letter-spacing: -0.02em;
+      color: $dark;
+    }
+  }
+}
+
+.residential-info {
+  .residential-card {
+    border: 1px solid $lighterGray;
+    padding: 16px;
+    border-radius: 24px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .top-box {
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
+
+      .address-box {
+        height: 120px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+
+        .pending {
+          width: 100px;
+        }
+      }
+
+      .location {
+        min-width: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid $lighterGray;
+        padding: 12px;
+        border-radius: 50%;
+        margin-right: 12px;
+      }
+      .address {
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 20px;
+        letter-spacing: -0.02em;
+        color: $dark;
+        margin-bottom: 12px;
+      }
+    }
+    .since-text {
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 15px;
+      letter-spacing: -0.02em;
+      margin-bottom: 3px;
+      color: #a3a3a3;
+    }
+    .tenure {
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 19px;
+      letter-spacing: -0.02em;
+      color: $gray;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .verificationId-section {
+    .cards-wrapper {
+      grid-template-columns: 1fr;
+      grid-template-rows: repeat(2, 1fr);
+
+      .verificationIdCard {
+        .is-verified-box {
+          margin-bottom: 34px;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 414px) {
+  .experience-section {
+    .experience-card {
+      .testimonial {
+        padding: 0px 4px;
+      }
+    }
+  }
+
+  .residential-info {
+    .residential-card {
+      .top-box {
+        .address {
+          font-size: 14px;
+        }
+      }
+    }
+  }
+}

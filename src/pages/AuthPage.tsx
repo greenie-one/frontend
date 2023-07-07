@@ -1,5 +1,5 @@
-import { AuthProvider } from '../components/Auth/context/AuthContext';
-import { Auth } from '../components/Auth/index';
+import { AuthProvider } from '../components/auth/context/AuthContext';
+import { Auth } from '../components/auth/index';
 
 export const AuthPage = () => {
   return (

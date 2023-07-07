@@ -1,0 +1,309 @@
+.bio-section {
+  margin-top: -2rem;
+  z-index: 2;
+  position: relative;
+  text-align: center;
+
+  .icon {
+    position: absolute;
+    right: 20px;
+  }
+
+  .bio-name-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+    .bio-name {
+      font-family: 'Gilroy-Bold' !important;
+      font-size: 32px;
+      line-height: 38px;
+      letter-spacing: -0.02em;
+      color: $dark;
+      font-weight: 600;
+    }
+    .name-verified {
+      margin-left: 8px;
+      color: #9fe870;
+      margin-top: 6px;
+    }
+  }
+
+  .chips {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 52px;
+  }
+  .bio-section-wrapper {
+    text-align: left;
+    width: 80%;
+    margin: 0 auto;
+    margin-bottom: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .left-section {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+
+      .level {
+        padding-right: 22px;
+        .level-heading {
+          font-weight: 400;
+          font-size: 18px;
+          line-height: 30px;
+          color: $gray;
+          margin-bottom: 6px;
+        }
+
+        .level-wrapper {
+          display: flex;
+          .level-img {
+            width: 28px;
+            height: 28px;
+            &:not(:last-child) {
+              margin-right: 10px;
+            }
+          }
+        }
+      }
+
+      .medal-wrapper {
+        padding: 0px 29px;
+        display: flex;
+        align-items: center;
+        .medal-icon {
+          border-radius: 50%;
+          padding: 8px 12px;
+          background-color: $bgGreen;
+        }
+        .medal-text-box {
+          margin-left: 7.5px;
+          .top-text {
+            color: $gray;
+            font-weight: 400;
+            font-size: 13px;
+            line-height: 30px;
+          }
+          .percentage {
+            color: $gray;
+            font-weight: 600;
+            font-size: 32px;
+            line-height: 30px;
+          }
+        }
+      }
+    }
+
+    .border-left {
+      background-color: $lightGray;
+      width: 2px;
+      height: 69px;
+    }
+
+    .greenie-id {
+      background: $green;
+      box-shadow: 0px -26px 144px rgba(0, 0, 0, 0.05);
+      border-radius: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      margin-left: 9px;
+      padding: 10px;
+      width: 200px;
+      height: 50px;
+      cursor: pointer;
+
+      .icon-box {
+        background-color: $bgGreen;
+        border-radius: 50%;
+        margin-right: 10px;
+        width: 32px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .greenie-id-heading {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 15px;
+        color: $white;
+        padding-bottom: 2px;
+      }
+      .id {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 20px;
+        line-height: 20px;
+        text-align: left;
+        color: $white;
+      }
+    }
+  }
+  .bio-text {
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 30px;
+    color: $gray;
+    width: 75%;
+    margin: 0 auto;
+    margin-bottom: 16px;
+  }
+}
+
+.verify-id-bio-text {
+  text-align: center;
+  margin-left: 58px;
+  .text-heading {
+    font-size: 22px;
+    line-height: 26px;
+    letter-spacing: -0.02em;
+    color: $gray;
+    font-weight: 600;
+    margin-bottom: 5px;
+  }
+  .text-subheading {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+    letter-spacing: -0.02em;
+    color: $gray;
+    margin-bottom: 5px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .bio-section {
+    .bio-name-box {
+      .bio-name {
+        font-size: 20px;
+        line-height: 23px;
+        letter-spacing: -0.02em;
+      }
+    }
+
+    .bio-section-wrapper {
+      flex-direction: column;
+      width: 100%;
+      margin: 0 0;
+      margin-bottom: 24px;
+
+      .left-section {
+        width: 100%;
+        justify-content: center;
+
+        .level {
+          text-align: center;
+          padding-right: 0;
+
+          .level-heading {
+            font-size: 10.9223px;
+            line-height: 18px;
+          }
+          .level-wrapper {
+            width: 100%;
+
+            .level-img {
+              width: 25px;
+              height: 25px;
+              &:not(:last-child) {
+                margin-right: 6px;
+              }
+            }
+          }
+        }
+
+        .medal-wrapper {
+          width: 25%;
+          padding: 0px 8px;
+          justify-content: center;
+
+          .medal-text-box {
+            .top-text {
+              font-size: 10px;
+              line-height: 16px;
+            }
+            .percentage {
+              font-size: 18px;
+              line-height: 16px;
+            }
+          }
+        }
+      }
+
+      .greenie-id {
+        margin-left: 0px;
+        height: 40px;
+        width: 200px;
+        margin: 0 auto;
+
+        .icon-box {
+          background-color: $bgGreen;
+          border-radius: 50%;
+          margin-right: 10px;
+          .greenie-id-icon {
+            padding: 4.5px;
+            scale: 3;
+          }
+        }
+        .greenie-id-heading {
+          font-size: 8px;
+          line-height: 14px;
+        }
+        .id {
+          font-size: 14px;
+          line-height: 11px;
+        }
+      }
+    }
+
+    .right-section {
+      margin-top: 2rem;
+      width: 50%;
+    }
+
+    .bio-text,
+    .border-left {
+      display: none;
+    }
+  }
+
+  .verify-id-bio-text {
+    margin-left: -1rem;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .bio-section {
+    .bio-section-wrapper {
+      .left-section {
+        .medal-wrapper {
+          width: 30%;
+        }
+      }
+    }
+  }
+}
+@media screen and (max-width: 440px) {
+  .bio-section {
+    .bio-section-wrapper {
+      .left-section {
+        .medal-wrapper {
+          width: 50%;
+        }
+      }
+
+      .greenie-id {
+        width: 100%;
+      }
+    }
+  }
+}
