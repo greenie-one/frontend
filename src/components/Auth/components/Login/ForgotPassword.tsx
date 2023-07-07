@@ -4,7 +4,7 @@ import { TextInput, createStyles, em, rem, Text, Button, Box, Flex, PasswordInpu
 import { useGlobalContext } from '../../../../context/GlobalContext';
 import { useAuthContext } from '../../context/AuthContext';
 
-import { HttpClient, Result } from '../../../../utils/generic/httpClient';
+import { HttpClient } from '../../../../utils/generic/httpClient';
 import { authApiList } from '../../../../assets/api/ApiList';
 import {
   showErrorNotification,
@@ -82,7 +82,7 @@ const ForgotPassword = () => {
         message: 'Please wait while we send OTP to your email.',
       });
 
-      const res = await HttpClient.callApiAuth(
+      const res = await HttpClient.callApiAuth<ForgotPasswordResponse>(
         {
           url: `${authApiList.forgotpasswordOtp}`,
           method: 'POST',
@@ -120,6 +120,7 @@ const ForgotPassword = () => {
         },
         authClient
       );
+
       if (res.ok) {
         showSuccessNotification({
           title: 'Success !',

@@ -1,18 +1,13 @@
 import { useState } from 'react';
-import axios from 'axios';
-
 import { Button } from '@mantine/core';
 import { useLocalStorage } from '@mantine/hooks';
+
+import { HttpClient } from '../../../../utils/generic/httpClient';
 import { authApiList } from '../../../../assets/api/ApiList';
 import { useAuthContext } from '../../context/AuthContext';
 
 import GoogleLogo from '../../assets/g-logo.png';
 import '../../styles/global.scss';
-
-type AuthTokens = {
-  accessToken: string;
-  refreshToken: string;
-};
 
 const GoogleButton = () => {
   const { setForceRender } = useAuthContext();
@@ -24,19 +19,20 @@ const GoogleButton = () => {
     if (isLoading) {
       return Promise.resolve(null);
     }
-
     setIsLoading(true);
-    try {
-      const res = await axios.get(authApiList.googleAuth);
 
-      if (res.data) {
-        window.open(res.data?.url, '_blank');
-      }
-    } catch (error: any) {
-      console.log(error.response.data);
-    } finally {
-      if (authTokens?.accessToken) setForceRender((prev) => !prev);
+    const res = await HttpClient.callApi<GoogleAuthResponse>({
+      url: `${authApiList.googleAuth}`,
+      method: 'GET',
+    });
+
+    if (res.ok) {
+      window.open(res.value?.url, '_blank');
+    } else {
+      console.log(res.error.code);
     }
+
+    if (authTokens?.accessToken) setForceRender((prev) => !prev);
   };
 
   return (
