@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Text, Box, Button, Textarea } from '@mantine/core';
-import { ProfileDetailsBox } from '../../VerificationByHR/components';
+import { ProfileDetailsBox } from '../../verification_by_hr/components';
 
 export const VBMStepFive = () => {
   const [review, setReview] = useState<string>('');

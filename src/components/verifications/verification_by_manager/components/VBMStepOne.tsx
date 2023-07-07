@@ -1,6 +1,6 @@
 import { Text, Box, Button } from '@mantine/core';
 import { useVBMContext } from '../context/VBMContext';
-import { ProfileDetailsBox } from '../../VerificationByHR/components';
+import { ProfileDetailsBox } from '../../verification_by_hr/components';
 
 const candidateDetails = [
   { label: 'Candidate Company ID', detail: 'INFO001308' },

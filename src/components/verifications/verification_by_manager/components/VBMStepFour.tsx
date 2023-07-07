@@ -3,7 +3,7 @@ import { BsPersonCheckFill } from 'react-icons/bs';
 import { HiOutlineBan } from 'react-icons/hi';
 import { useVBMContext } from '../context/VBMContext';
 import { useState } from 'react';
-import { ProfileDetailsBox } from '../../VerificationByHR/components';
+import { ProfileDetailsBox } from '../../verification_by_hr/components';
 
 export const VBMStepFour = () => {
   const { PrevActiveStep, NextActiveStep } = useVBMContext();

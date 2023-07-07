@@ -1,9 +1,9 @@
-import { Navbar } from '../../Profile/sections/Navbar';
+import { Navbar } from '../../profile/sections/Navbar';
 import { Text, Box, Title } from '@mantine/core';
 import { VBMStepOne, VBMStepTwo, VBMStepThree, VBMStepFour, VBMStepFive } from './components';
 import { useVBMContext } from './context/VBMContext';
 import './styles/global.scss';
-import '../VerificationByHR/styles/global.scss';
+import '../verification_by_hr/styles/global.scss';
 
 export const VerifyByManager = () => {
   const { activeStep } = useVBMContext();
