@@ -159,7 +159,8 @@ const ForgotPassword = () => {
           <TextInput
             label="Email or greenie ID"
             {...loginForm.getInputProps('emailPhoneGreenieId')}
-            classNames={inputClasses}
+            className="inputClass"
+            my={'1.5rem'}
           />
           <Button type="submit" className="primaryBtn" onClick={handleNextStep}>
             Continue
@@ -293,5 +294,3 @@ const inputStyles = createStyles((theme) => ({
     },
   },
 }));
-
-

@@ -1,17 +1,14 @@
 import React from 'react';
-import { Box, Title, Button, Modal, Text, PasswordInput, rem, em, createStyles } from '@mantine/core';
-import { privacySettingsStyles } from '../styles/articleContentStyles';
-import { detailsFormStyles, detailsInputStyles } from '../styles/articleContentStyles';
+import { Box, Title, Button, Modal, Text, PasswordInput, createStyles, rem, em } from '@mantine/core';
+import { privacySettingsStyles, detailsFormStyles, confirmationModalStyle } from '../styles/articleContentStyles';
 import { useDisclosure } from '@mantine/hooks';
-import { confirmationModalStyle } from '../styles/articleContentStyles';
 import { MdOutlineHelpCenter } from 'react-icons/md';
 import { useSettingsContext } from '../context/SettingsContext';
 
 export const PrivacySettings: React.FC = (): JSX.Element => {
   const { classes: privacyClasses } = privacySettingsStyles();
-  const { classes: inputClasses } = inputStyles();
   const [opened, { open, close }] = useDisclosure(false);
-  const { changePassword, privacySettingsForm } = useSettingsContext();
+  const { changeCurrentPassword, privacySettingsForm } = useSettingsContext();
 
   const deactivateAccount = () => {
     console.log('Account deactivated!');
@@ -34,6 +31,7 @@ export const PrivacySettings: React.FC = (): JSX.Element => {
 
   const { classes: formClasses } = detailsFormStyles();
   const { classes: modalStyles } = confirmationModalStyle();
+  const { classes: inputClasses } = inputStyles();
 
   const handleOpenModal = () => {
     if (
@@ -46,7 +44,7 @@ export const PrivacySettings: React.FC = (): JSX.Element => {
   };
 
   const handleConfirmation = () => {
-    changePassword();
+    changeCurrentPassword();
     close();
   };
 
@@ -144,33 +142,60 @@ export const PrivacySettings: React.FC = (): JSX.Element => {
 };
 
 const inputStyles = createStyles((theme) => ({
+  root: {
+    position: 'relative',
+  },
+
   input: {
-    paddingBlockStart: rem(18),
-    height: rem(60),
-    fontSize: rem(14),
+    height: '68px',
+    paddingTop: '18px',
+    fontSize: '16px',
     fontWeight: 500,
-    borderRadius: rem(8),
+    borderRadius: '8px',
+    border: '1px solid #D1D4DB',
+    lineHeight: '19px',
+    letterSpacing: '-0.02em',
     color: '#697082',
 
-    [`@media screen and (max-width: ${rem(768)})`]: {
-      maxWidth: '100vw',
+    [`@media screen and (max-width: ${em(1024)})`]: {
+      height: '46px',
+      borderRadius: '6px',
+      fontSize: '10px',
+      lineHeight: '12px',
+      margin: '0 auto',
+    },
+  },
+
+  passwordInput: {
+    '& input': {
+      color: '#697082',
     },
   },
 
   innerInput: {
-    maxWidth: rem(420),
-    height: rem(60),
-    paddingBlockStart: rem(18),
+    height: rem(54),
+    paddingTop: rem(28),
+
+    [`@media screen and (max-width: ${em(1024)})`]: {
+      paddingTop: rem(8),
+    },
   },
 
   label: {
     position: 'absolute',
     pointerEvents: 'none',
-    fontSize: rem(12),
-    fontWeight: 400,
+    fontSize: '12px',
+    paddingLeft: '14px',
+    paddingTop: '7px',
+    lineHeight: '14.52px',
+    letterSpacing: '-0.02em',
     zIndex: 1,
-    paddingBlock: rem(8),
-    paddingInline: rem(14),
     color: '#697082',
+
+    [`@media screen and (max-width: ${em(1024)})`]: {
+      fontSize: '10px',
+      lineHeight: '10px',
+      paddingTop: '8px',
+    },
   },
 }));

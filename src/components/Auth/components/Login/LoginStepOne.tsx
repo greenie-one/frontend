@@ -27,8 +27,8 @@ const LoginStepOne = () => {
         <Box>
           <TextInput
             label="Email or Phone number"
-            style={{ borderRadius: '1rem' }}
-            classNames={inputClasses}
+            style={{ borderRadius: '1rem', marginBlock: '1.5rem' }}
+            className="inputClass"
             {...loginForm.getInputProps('emailPhoneGreenieId')}
           />
 

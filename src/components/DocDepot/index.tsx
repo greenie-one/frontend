@@ -1,6 +1,5 @@
 import { Text, Box } from '@mantine/core';
-import ProfilePic from '../../../Profile/assets/johnMarston.png';
-import { useState } from 'react';
+
 import {
   ProfileBar,
   DocDepotExpPage,
@@ -11,13 +10,24 @@ import {
   DocDepotEduDocPage,
   Folder,
 } from './components';
-import { docDepotExplorer } from './data/folderData';
 import './styles/global.scss';
 
 import { useProfileContext } from '../Profile/context/ProfileContext';
 
+type docDepotData = {
+  name: string;
+  isFolder: boolean;
+};
+
 export const DocDepot = () => {
-  const { docDepotActivePage, setDocDepotActivePage, docDepotData } = useProfileContext();
+  const { docDepotActivePage, setDocDepotActivePage } = useProfileContext();
+
+  const docDepotData: docDepotData[] = [
+    { name: 'IDs', isFolder: true },
+    { name: 'Work Documents', isFolder: true },
+    { name: 'Education documentsz', isFolder: true },
+    { name: 'Others', isFolder: true },
+  ];
 
   return (
     <main>
@@ -34,8 +44,8 @@ export const DocDepot = () => {
             <Box className="folder-wrapper">
               {docDepotData.map(({ name, isFolder }, index) => {
                 return (
-                  <Box key={index}>
-                    <Folder id={index + 1} name={name} isFolder={isFolder} />
+                  <Box key={index} onClick={() => setDocDepotActivePage(index + 1)}>
+                    <Folder name={name} isFolder={isFolder} />
                   </Box>
                 );
               })}

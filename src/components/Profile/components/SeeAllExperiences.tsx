@@ -10,21 +10,7 @@ import { VerifyWorkExperience } from './VerifyWorkExperience';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 import { useState } from 'react';
 
-interface IWorkExperience {
-  _id: string;
-  image: string | null;
-  designation: string;
-  companyName: string;
-  email: string;
-  companyId: string;
-  companyStartDate: string;
-  companyEndDate: string;
-  workMode: string;
-  workType: string;
-  isVerified: boolean;
-  verifiedBy: [] | null;
-  companyType: string;
-}
+import { IWorkExperience } from '../types/APICalls';
 
 export const SeeAllExperiences = () => {
   const { dispatchDetailsPage, detailsPage, workExperienceData, selectedCard, setSelectedCard } = useProfileContext();

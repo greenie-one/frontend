@@ -1,10 +1,8 @@
 import { useState } from 'react';
-import { Text, Box, Button, em } from '@mantine/core';
-import { MdVerified } from 'react-icons/md';
-import ProfilePic from '../../../Profile/assets/johnMarston.png';
+import { Text, Box, Button } from '@mantine/core';
 import { BsEmojiFrown, BsEmojiNeutral, BsEmojiSmile, BsEmojiLaughing } from 'react-icons/bs';
 import { useVBHRContext } from '../context/VBHRContext';
-import { notifications } from '@mantine/notifications';
+import { ProfileDetailsBox } from './ProfileDetailsBox';
 
 export const VBHRStepFour = () => {
   const [attitude, setAttitude] = useState('');
@@ -17,32 +15,11 @@ export const VBHRStepFour = () => {
   const handleNextStep = () => {
     if (attitude !== '') {
       NextActiveStep();
-    } else {
-      notifications.show({
-        id: 'load-data',
-        title: 'Please select your answer !',
-        message: 'Please give us your valuable feedback.',
-        autoClose: 2200,
-        withCloseButton: false,
-        color: 'teal',
-        sx: { borderRadius: em(8) },
-      });
     }
   };
   return (
     <section className="verification-step">
-      <Box className="profile-details-top">
-        <Box className="candidate-profile">
-          <img src={ProfilePic} alt="" />
-        </Box>
-        <Box className="profile-details-text-box">
-          <Text className="name">Abhishek Deshmukh</Text>
-          <Text className="designation">Software Engieer</Text>
-          <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
-            Verified
-          </Button>
-        </Box>
-      </Box>
+      <ProfileDetailsBox />
       <Text className="question-text">Rate attitude of Candidate 0 least Collaborative, 5 Highly Collaborative</Text>
       <Box className="verification-attitude-wrapper">
         <Box

@@ -1,6 +1,5 @@
 import React, { createContext, useState, ReactNode, useContext, useEffect } from 'react';
 import { useForm, matchesField, hasLength, UseFormReturnType } from '@mantine/form';
-import { em } from '@mantine/core';
 import { authApiList } from '../../../assets/api/ApiList';
 import { useGlobalContext } from '../../../context/GlobalContext';
 import {
@@ -14,7 +13,7 @@ type ShowDetailsIdContextType = {
   showDetailsId: number;
   setShowDetailsId: React.Dispatch<React.SetStateAction<number>>;
   privacySettingsForm: UseFormReturnType<privacySettingsFormType>;
-  changePassword: () => void;
+  changeCurrentPassword: () => void;
 };
 
 type privacySettingsFormType = {
@@ -45,7 +44,7 @@ export const SettingsProvider: React.FC<{ children: ReactNode }> = ({ children }
     },
   });
 
-  const changePassword = async () => {
+  const changeCurrentPassword = async () => {
     if (
       !privacySettingsForm.validateField('currentPassword').hasError &&
       !privacySettingsForm.validateField('newPassword').hasError &&
@@ -55,7 +54,7 @@ export const SettingsProvider: React.FC<{ children: ReactNode }> = ({ children }
         title: 'Changing your password',
         message: 'Please wait while we change your password.',
       });
-      const res: Result<any> = await HttpClient.callApiAuth(
+      const res = await HttpClient.callApiAuth(
         {
           url: `${authApiList.changePassword}`,
           method: 'POST',
@@ -73,6 +72,7 @@ export const SettingsProvider: React.FC<{ children: ReactNode }> = ({ children }
         privacySettingsForm.setFieldValue('confirmPassword', '');
       } else {
         showErrorNotification(res.error.code);
+        console.log();
       }
     }
   };
@@ -82,7 +82,7 @@ export const SettingsProvider: React.FC<{ children: ReactNode }> = ({ children }
   }, []);
 
   return (
-    <SettingsContext.Provider value={{ showDetailsId, setShowDetailsId, privacySettingsForm, changePassword }}>
+    <SettingsContext.Provider value={{ showDetailsId, setShowDetailsId, privacySettingsForm, changeCurrentPassword }}>
       {children}
     </SettingsContext.Provider>
   );

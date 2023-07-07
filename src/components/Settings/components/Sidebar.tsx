@@ -1,4 +1,3 @@
-import { useLocalStorage } from '@mantine/hooks';
 import { sidebarStyles } from '../styles/sidebarStyles';
 import { Box, List } from '@mantine/core';
 import { BiUserCircle } from 'react-icons/bi';
@@ -7,6 +6,7 @@ import { MdExitToApp, MdOutlineLock } from 'react-icons/md';
 import { useSettingsContext } from '../context/SettingsContext';
 import { useGlobalContext } from '../../../context/GlobalContext';
 import { showLoadingNotification, showSuccessNotification } from '../../../utils/functions/showNotification';
+import { useNavigate } from 'react-router-dom';
 const settingsOptionsList = [
   {
     icon: <BiUserCircle />,
@@ -25,9 +25,10 @@ const settingsOptionsList = [
 export const Sidebar = (): JSX.Element => {
   const { classes } = sidebarStyles();
   const { showDetailsId, setShowDetailsId } = useSettingsContext();
+  const { authClient } = useGlobalContext();
+  const navigate = useNavigate();
 
   const removeAuthTokens = () => {
-    setIsLoading(true);
     showLoadingNotification({ title: 'Signing Out', message: 'Please wait while we sign you out' });
 
     setTimeout(() => {

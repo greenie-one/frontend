@@ -19,6 +19,7 @@ export class AuthClient {
   private constructor() {
     const tokens = localStorage.getItem('auth-tokens');
     if (!tokens) {
+      console.log('No tokens found in local storage');
       this.accessToken = null;
       this.refreshToken = null;
     } else {
@@ -75,6 +76,11 @@ export class AuthClient {
     if (resp.ok) {
       await this.setTokens(resp.value.accessToken, resp.value.refreshToken);
     } else {
+      if (resp.error.status === 401) {
+        console.error('Refresh token is expired or invalid, deleting tokens');
+        console.error(resp.error);
+        await this.deleteTokens();
+      }
       throw new Error(JSON.stringify(resp.error));
     }
     return resp;

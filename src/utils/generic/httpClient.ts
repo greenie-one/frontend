@@ -5,6 +5,8 @@ type Error = {
   message: string;
 };
 
+type PostBody = string | string[] | number | boolean | { [key: string]: PostBody };
+
 type HttpRequest = {
   url: string;
   headers?:
@@ -14,7 +16,7 @@ type HttpRequest = {
   toJSON?: boolean;
 } & (
   | {
-      body?: Record<string, string | string[] | number | boolean | object>;
+      body?: Record<string, PostBody>;
       method: 'POST';
     }
   | {
@@ -22,11 +24,11 @@ type HttpRequest = {
       query?: Record<string, string>;
     }
   | {
-      body?: Record<string, string | string[] | number | boolean | object>;
+      body?: Record<string, PostBody>;
       method: 'PUT';
     }
   | {
-      body?: Record<string, string | string[] | number | boolean | object>;
+      body?: Record<string, PostBody>;
       method: 'PATCH';
     }
   | {
@@ -104,6 +106,7 @@ export class HttpClient {
     if (resp.ok) {
       return resp;
     } else if (resp.error.status === 401) {
+      console.log('Refreshing token for request: ', request.url);
       const status = await authClient.refreshAccessToken();
 
       if (!status.ok) {

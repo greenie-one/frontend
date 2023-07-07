@@ -4,7 +4,7 @@ import '../styles/global.scss';
 import location from '../assets/location.png';
 import { CgSandClock } from 'react-icons/cg';
 
-interface CardProps {
+interface IResidentialInfoCardProps {
   address_line_1: string;
   address_line_2: string;
   landmark: string;
@@ -15,7 +15,7 @@ interface CardProps {
   city: string;
 }
 
-export const ResidentialInfoCard: React.FC<CardProps> = ({
+export const ResidentialInfoCard: React.FC<IResidentialInfoCardProps> = ({
   address_line_1,
   address_line_2,
   landmark,

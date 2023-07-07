@@ -1,13 +1,12 @@
 import { useState } from 'react';
-import { Text, Box, Button, em, Modal, Textarea, Select } from '@mantine/core';
-import { MdVerified } from 'react-icons/md';
-import ProfilePic from '../../../Profile/assets/johnMarston.png';
+import { Text, Box, Button, Modal, Textarea, Select } from '@mantine/core';
 import { CgSandClock } from 'react-icons/cg';
 import { BsPersonCheckFill } from 'react-icons/bs';
 import { HiOutlineBan } from 'react-icons/hi';
 import { useVBMContext } from '../context/VBMContext';
 import pdfIcon from '../../../Profile/assets/pdfIcon.png';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
+import { ProfileDetailsBox } from '../../VerificationByHR/components';
 
 const documents = [
   { fileName: 'Letter of appointment 2021', status: 'pending' },
@@ -115,18 +114,7 @@ export const VBMStepThree = () => {
         </Modal>
       )}
 
-      <Box className="profile-details-top">
-        <Box className="candidate-profile">
-          <img src={ProfilePic} alt="" />
-        </Box>
-        <Box className="profile-details-text-box">
-          <Text className="name">Abhishek Deshmukh</Text>
-          <Text className="designation">Software Engieer</Text>
-          <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
-            Verified
-          </Button>
-        </Box>
-      </Box>
+      <ProfileDetailsBox />
       <Box className="verify-documents-box">
         <Box className="verify-documents-header">
           <Text>File</Text>

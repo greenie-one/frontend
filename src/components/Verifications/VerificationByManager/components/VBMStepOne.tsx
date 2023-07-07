@@ -1,7 +1,6 @@
 import { Text, Box, Button } from '@mantine/core';
-import { MdVerified } from 'react-icons/md';
-import ProfilePic from '../../../Profile/assets/johnMarston.png';
 import { useVBMContext } from '../context/VBMContext';
+import { ProfileDetailsBox } from '../../VerificationByHR/components';
 
 const candidateDetails = [
   { label: 'Candidate Company ID', detail: 'INFO001308' },
@@ -15,18 +14,7 @@ export const VBMStepOne = () => {
   const { NextActiveStep } = useVBMContext();
   return (
     <section className="verification-step">
-      <Box className="profile-details-top">
-        <Box className="candidate-profile">
-          <img src={ProfilePic} alt="" />
-        </Box>
-        <Box className="profile-details-text-box">
-          <Text className="name">Abhishek Deshmukh</Text>
-          <Text className="designation">Software Engieer</Text>
-          <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
-            Verified
-          </Button>
-        </Box>
-      </Box>
+      <ProfileDetailsBox />
       <Box className="profile-details-action-section">
         {candidateDetails.map(({ label, detail }, index) => {
           return (

@@ -82,7 +82,7 @@ const LoginStepThree = () => {
             <Text className="tabHeading">Login using OTP</Text>
           </Flex>
           <Text className="profileTextBold">Enter the one-time passowrd sent to your phone number</Text>
-          <TextInput classNames={inputClasses} maxLength={6} pattern="[0-9]{6}" {...loginForm.getInputProps('otp')} />
+          <TextInput className="inputClass" maxLength={6} pattern="[0-9]{6}" {...loginForm.getInputProps('otp')} />
 
           {secondsRemaining === 0 ? (
             <Button compact color="gray" variant="subtle" onClick={resendOtp} className="resendLink">

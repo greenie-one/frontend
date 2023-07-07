@@ -123,13 +123,13 @@ const Profile = () => {
           <Text className="profileText">Enter Name As Per Aadhar Card</Text>
           <TextInput
             label="First Name"
-            classNames={inputClasses}
+            className="inputClass"
             {...profileForm.getInputProps('firstName')}
             ref={firstNameRef}
           />
           <TextInput
             label="Last Name"
-            classNames={inputClasses}
+            className="inputClass"
             {...profileForm.getInputProps('lastName')}
             ref={lastNameRef}
           />

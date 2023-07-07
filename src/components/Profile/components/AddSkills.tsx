@@ -1,4 +1,4 @@
-import { Text, Box, Title, TextInput, createStyles, em, rem, Select, Button, Divider } from '@mantine/core';
+import { Text, Box, Title, TextInput, Select, Button, Divider } from '@mantine/core';
 import { useState } from 'react';
 import { BsArrowLeft } from 'react-icons/bs';
 import { useProfileContext } from '../context/ProfileContext';
@@ -11,14 +11,9 @@ import {
   showLoadingNotification,
 } from '../../../utils/functions/showNotification';
 import { HttpClient, Result } from '../../../utils/generic/httpClient';
-
-type Skill = {
-  skillName: string;
-  expertise: string;
-};
+import { ISkill } from '../types/APICalls';
 
 const skillRate = [
-  { value: 'AMATEUR', label: 'Amature' },
   { value: 'BEGINEER', label: 'Begineer/Novice' },
   { value: 'INTERMEDIATE', label: 'Intermediate' },
   { value: 'HIGHLY COMPETANT', label: 'Highly Competant' },
@@ -29,15 +24,15 @@ const skillRate = [
 
 export const AddSkills = () => {
   const { detailsPage, dispatchDetailsPage, getSkills, skillForm, scrollToTop } = useProfileContext();
-  const [skills, setSkills] = useState<Skill[]>([]);
-  const { classes: inputClasses } = inputStyles();
+  const [skills, setSkills] = useState<ISkill[]>([]);
   const { authClient } = useGlobalContext();
 
   const handleAddSkill = () => {
     if (!skillForm.validateField('skillName').hasError && !skillForm.validateField('expertise').hasError) {
-      const newSkill: Skill = {
+      const newSkill: ISkill = {
         skillName: skillForm.values.skillName,
         expertise: skillForm.values.expertise,
+        workExperience: '',
       };
       setSkills((prevSkills) => [...prevSkills, newSkill]);
       skillForm.values.skillName = '';
@@ -57,7 +52,7 @@ export const AddSkills = () => {
     });
 
     if (skills.length < 1) {
-      showErrorNotification('NOSKILL');
+      showErrorNotification('NO_SKILL');
     }
     if (skills.length > 0) {
       for (const skill of skills) {
@@ -65,7 +60,7 @@ export const AddSkills = () => {
           {
             url: `${skillsAPIList.postSkill}`,
             method: 'POST',
-            body: skill,
+            body: { skillName: skill.skillName, expertise: skill.expertise },
           },
           authClient
         );
@@ -101,7 +96,7 @@ export const AddSkills = () => {
             withAsterisk
             data-autofocus
             label="Eg. Frontend, Backend"
-            classNames={inputClasses}
+            className="inputClass"
             {...skillForm.getInputProps('skillName')}
           />
         </Box>
@@ -111,7 +106,7 @@ export const AddSkills = () => {
             withAsterisk
             data={skillRate}
             label="Select your expertise"
-            classNames={inputClasses}
+            className="inputClass"
             {...skillForm.getInputProps('expertise')}
             styles={() => ({
               item: {
@@ -160,58 +155,3 @@ export const AddSkills = () => {
     </section>
   );
 };
-
-const inputStyles = createStyles((theme) => ({
-  root: {
-    position: 'relative',
-    marginTop: '10px',
-    marginBottom: '10px',
-  },
-
-  input: {
-    height: '58px',
-    paddingTop: '18px',
-    fontSize: '16px',
-    fontWeight: 500,
-    borderRadius: '8px',
-    border: '1px solid #D1D4DB',
-    lineHeight: '19px',
-    letterSpacing: '-0.02em',
-    color: '#697082',
-
-    [`@media screen and (max-width: ${em(1024)})`]: {
-      height: '46px',
-      borderRadius: '6px',
-      fontSize: '10px',
-      lineHeight: '12px',
-      margin: '0 auto',
-    },
-  },
-
-  innerInput: {
-    height: rem(54),
-    paddingTop: rem(28),
-
-    [`@media screen and (max-width: ${em(1024)})`]: {
-      paddingTop: rem(8),
-    },
-  },
-
-  label: {
-    position: 'absolute',
-    pointerEvents: 'none',
-    fontSize: '12px',
-    paddingLeft: '14px',
-    paddingTop: '7px',
-    lineHeight: '14.52px',
-    letterSpacing: '-0.02em',
-    zIndex: 1,
-    color: '#697082',
-
-    [`@media screen and (max-width: ${em(1024)})`]: {
-      fontSize: '10px',
-      lineHeight: '10px',
-      paddingTop: '8px',
-    },
-  },
-}));

@@ -1,5 +1,4 @@
-import React from 'react';
-import { Text, Box, Button } from '@mantine/core';
+import { Text, Box } from '@mantine/core';
 import { useProfileContext } from '../../Profile/context/ProfileContext';
 import profileImg from '../../Profile/assets/johnMarston.png';
 import starImg from '../assets/star.png';

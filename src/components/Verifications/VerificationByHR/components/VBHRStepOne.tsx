@@ -1,7 +1,7 @@
-import { Text, Box, Button } from '@mantine/core';
-import { MdVerified } from 'react-icons/md';
-import ProfilePic from '../../../Profile/assets/johnMarston.png';
+import { Text, Box, Button, Modal } from '@mantine/core';
+import { ProfileDetailsBox } from './ProfileDetailsBox';
 import { useVBHRContext } from '../context/VBHRContext';
+import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 
 const candidateDetails = [
   { label: 'Candidate Company ID', detail: 'INFO001308' },
@@ -12,21 +12,13 @@ const candidateDetails = [
 ];
 
 export const VBHRStepOne = () => {
+  const isMobile = useMediaQuery('(max-width: 768px)');
+  const [opened, { open, close }] = useDisclosure(false);
   const { NextActiveStep } = useVBHRContext();
   return (
     <section className="verification-step">
-      <Box className="profile-details-top">
-        <Box className="candidate-profile">
-          <img src={ProfilePic} alt="" />
-        </Box>
-        <Box className="profile-details-text-box">
-          <Text className="name">Abhishek Deshmukh</Text>
-          <Text className="designation">Software Engieer</Text>
-          <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
-            Verified
-          </Button>
-        </Box>
-      </Box>
+      <Modal centered size={'75%'} fullScreen={isMobile} opened={opened} onClose={close}></Modal>
+      <ProfileDetailsBox />
       <Box className="profile-details-action-section">
         {candidateDetails.map(({ label, detail }, index) => {
           return (
