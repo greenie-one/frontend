@@ -1,23 +1,29 @@
-import { TextInput, createStyles, em, rem, Text, Button, Box, Flex, PasswordInput } from '@mantine/core';
-import { useAuthContext } from '../../context/AuthContext';
-import { BsArrowLeft } from 'react-icons/bs';
-import '../../styles/global.scss';
-import { authApiList } from '../../../../assets/api/ApiList';
 import { useState, useEffect } from 'react';
+import { TextInput, createStyles, em, rem, Text, Button, Box, Flex, PasswordInput } from '@mantine/core';
+
+import { useGlobalContext } from '../../../../context/GlobalContext';
+import { useAuthContext } from '../../context/AuthContext';
+
+import { HttpClient } from '../../../../utils/generic/httpClient';
+import { authApiList } from '../../../../assets/api/ApiList';
 import {
   showErrorNotification,
   showLoadingNotification,
   showSuccessNotification,
 } from '../../../../utils/functions/showNotification';
-import { useGlobalContext } from '../../../../context/GlobalContext';
-import { HttpClient, Result } from '../../../../utils/generic/httpClient';
+
+import { BsArrowLeft } from 'react-icons/bs';
+import '../../styles/global.scss';
 
 const ForgotPassword = () => {
-  const { classes: otpInputClasses } = OtpInputStyles();
+  const { authClient, OtpInputStyles } = useGlobalContext();
   const { loginForm, state, dispatch, isPhoneNumber, isValidEmail } = useAuthContext();
+
+  const { classes: inputClasses } = inputStyles();
+  const { classes: otpInputClasses } = OtpInputStyles();
+
   const [validateOTPId, setValidateOTP] = useState<string>('');
   const [secondsRemaining, setSecondsRemaining] = useState<number>(60);
-  const { authClient } = useGlobalContext();
 
   const handleClick = () => {
     if (state.resetPasswordStep === 1) {
@@ -34,27 +40,32 @@ const ForgotPassword = () => {
     }
   };
 
-  const handleRequestOTP = async (event: React.FormEvent) => {
-    event.preventDefault();
+  const handleRequestOTP = async (e: React.FormEvent) => {
+    e.preventDefault();
+
     if (!loginForm.validateField('emailPhoneGreenieId').hasError) {
       showLoadingNotification({
         title: 'Sending OTP...',
         message: 'Please wait while we send OTP to your email.',
       });
-      const res: Result<any> = await HttpClient.callApiAuth(
+
+      const reqestBody: ForgotPasswordBody = { email: loginForm.values.emailPhoneGreenieId };
+      const res = await HttpClient.callApiAuth<ForgotPasswordResponse>(
         {
           url: `${authApiList.forgotpasswordOtp}`,
           method: 'POST',
-          body: { email: loginForm.values.emailPhoneGreenieId },
+          body: reqestBody,
         },
         authClient
       );
+
       if (res.ok) {
         showSuccessNotification({
           title: 'Success !',
           message: 'An OTP has been sent to your email.',
         });
-        setValidateOTP(res.data.validationId);
+
+        setValidateOTP(res.value.validationId);
         dispatch({ type: 'NEXTRESETPASSWRDSTEP' });
       } else {
         showErrorNotification(res.error.code);
@@ -62,15 +73,16 @@ const ForgotPassword = () => {
     }
   };
 
-  const handleResendOTP = async (event: React.FormEvent) => {
-    event.preventDefault();
+  const handleResendOTP = async (e: React.FormEvent) => {
+    e.preventDefault();
+
     if (!loginForm.validateField('emailPhoneGreenieId').hasError) {
       showLoadingNotification({
         title: 'Sending OTP...',
         message: 'Please wait while we send OTP to your email.',
       });
 
-      const res: Result<any> = await HttpClient.callApiAuth(
+      const res = await HttpClient.callApiAuth<ForgotPasswordResponse>(
         {
           url: `${authApiList.forgotpasswordOtp}`,
           method: 'POST',
@@ -78,27 +90,29 @@ const ForgotPassword = () => {
         },
         authClient
       );
+
       if (res.ok) {
         showSuccessNotification({
           title: 'Success !',
           message: 'An OTP has been sent to your email.',
         });
-        setValidateOTP(res.data.validationId);
+        setValidateOTP(res.value.validationId);
       } else {
         showErrorNotification(res.error.code);
       }
     }
   };
 
-  const verifyOTP = async (event: React.FormEvent) => {
-    event.preventDefault();
+  const verifyOTP = async (e: React.FormEvent) => {
+    e.preventDefault();
+
     if (!loginForm.validateField('otp').hasError) {
       showLoadingNotification({
         title: 'Verifying OTP...',
         message: 'Please wait while we verify your OTP.',
       });
 
-      const res: Result<any> = await HttpClient.callApiAuth(
+      const res = await HttpClient.callApiAuth(
         {
           url: `${authApiList.forgotpasswordValidate}`,
           method: 'POST',
@@ -106,6 +120,7 @@ const ForgotPassword = () => {
         },
         authClient
       );
+
       if (res.ok) {
         showSuccessNotification({
           title: 'Success !',
@@ -277,34 +292,6 @@ const inputStyles = createStyles((theme) => ({
       fontSize: '10px',
       lineHeight: '10px',
       paddingTop: '8px',
-    },
-  },
-}));
-
-const OtpInputStyles = createStyles((theme) => ({
-  root: {
-    position: 'relative',
-    marginBlock: '24px',
-  },
-
-  input: {
-    width: '458px',
-    height: '68px',
-    fontSize: '16px',
-    fontWeight: 500,
-    borderRadius: '8px',
-    border: '1px solid #D1D4DB',
-    lineHeight: '19px',
-    letterSpacing: '24px',
-    color: '#697082',
-
-    [`@media screen and (max-width: ${em(1024)})`]: {
-      width: '350px',
-      height: '46px',
-      borderRadius: '6px',
-      fontSize: '14px',
-      lineHeight: '12px',
-      margin: '0 auto',
     },
   },
 }));

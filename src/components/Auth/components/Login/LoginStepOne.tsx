@@ -1,15 +1,20 @@
-import { TextInput, Text, Button, Divider, Box } from '@mantine/core';
+import { TextInput, createStyles, rem, Text, Button, Divider, Box, em } from '@mantine/core';
+import { useGlobalContext } from '../../../../context/GlobalContext';
 import { useAuthContext } from '../../context/AuthContext';
 import GoogleButton from '../Google/GoogleButton';
+
 import TermsAndConditions from '../../assets/terms_and_conditions-greenie.pdf';
 import PrivacyPolicy from '../../assets/Privacy Policy-Greenie.pdf';
 import '../../styles/global.scss';
 
 const LoginStepOne = () => {
+  const { inputStyles } = useGlobalContext();
+
+  const { classes: inputClasses } = inputStyles();
   const { loginForm, state, dispatch } = useAuthContext();
 
-  const loginStep = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
+  const loginStep = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
 
     if (state.loginStep === 1 && !loginForm.validateField('emailPhoneGreenieId').hasError) {
       dispatch({ type: 'NEXTLOGINSTEP' });
@@ -26,6 +31,7 @@ const LoginStepOne = () => {
             className="inputClass"
             {...loginForm.getInputProps('emailPhoneGreenieId')}
           />
+
           <Text className="tearms-condition">
             By continuing with your account, you agree to our{' '}
             <a href={TermsAndConditions} download={'Terms and Conditions'}>
@@ -38,6 +44,7 @@ const LoginStepOne = () => {
             </a>
             .
           </Text>
+
           <Button type="submit" onClick={loginStep} className="primaryBtn">
             Continue
           </Button>

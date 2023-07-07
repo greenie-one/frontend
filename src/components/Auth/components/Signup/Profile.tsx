@@ -1,15 +1,18 @@
 import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { TextInput, Text, Button, Box, Flex, Chip, Group } from '@mantine/core';
-import { useAuthContext } from '../../context/AuthContext';
-import { profileAPIList } from '../../../../assets/api/ApiList';
+import { TextInput, Text, Button, Box, Flex, em, Chip, Group } from '@mantine/core';
+
 import { useGlobalContext } from '../../../../context/GlobalContext';
-import { HttpClient, Result } from '../../../../utils/generic/httpClient';
+import { useAuthContext } from '../../context/AuthContext';
+
+import { profileAPIList } from '../../../../assets/api/ApiList';
+import { HttpClient } from '../../../../utils/generic/httpClient';
 import {
   showErrorNotification,
   showLoadingNotification,
   showSuccessNotification,
 } from '../../../../utils/functions/showNotification';
+
 import { BsArrowLeft } from 'react-icons/bs';
 import linkedInLogo from '../../assets/linkedIn-logo.png';
 import linkedInGreenieLogo from '../../assets/linkedInGreenieLogo.png';
@@ -30,13 +33,14 @@ const skillSetOne = [
 
 const Profile = () => {
   const navigate = useNavigate();
+  const { authClient, inputStyles } = useGlobalContext();
   const { profileForm, dispatch } = useAuthContext();
+  const { classes: inputClasses } = inputStyles();
 
   const [active, setActive] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const firstNameRef = useRef<HTMLInputElement>(null);
   const lastNameRef = useRef<HTMLInputElement>(null);
-  const { authClient } = useGlobalContext();
 
   const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
   const handleGoBack = () => {
@@ -47,8 +51,8 @@ const Profile = () => {
     }
   };
 
-  const nextStep = (event: React.MouseEvent<HTMLButtonElement> | React.MouseEvent<HTMLDivElement>) => {
-    event.preventDefault();
+  const nextStep = (e: React.MouseEvent<HTMLButtonElement> | React.MouseEvent<HTMLDivElement>) => {
+    e.preventDefault();
     if (
       active === 1 &&
       !profileForm.validateField('firstName').hasError &&
@@ -63,19 +67,22 @@ const Profile = () => {
     }
   };
 
-  const submitProfile = async (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
+  const submitProfile = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     if (isLoading) {
       return Promise.resolve(null);
     }
+
     if (active === 3) {
       setIsLoading(true);
       profileForm.clearErrors();
+
       showLoadingNotification({
         title: 'Adding Profile Details...',
         message: 'Please wait while we add your profile details.',
       });
-      const res: Result<any> = await HttpClient.callApiAuth(
+
+      const res = await HttpClient.callApiAuth(
         {
           url: `${profileAPIList.createProfile}`,
           method: 'POST',
@@ -83,9 +90,10 @@ const Profile = () => {
         },
         authClient
       );
+
       if (res.ok) {
         showSuccessNotification({ title: 'Success !', message: 'Your profile details have been added successfully.' });
-        navigate('/profile');
+        // navigate('/profile');
       } else {
         showErrorNotification(res.error.code);
       }
@@ -203,3 +211,60 @@ const Profile = () => {
 };
 
 export default Profile;
+
+// const inputStyles = createStyles((theme) => ({
+//   root: {
+//     position: 'relative',
+//     marginBottom: '16px',
+//   },
+
+//   input: {
+//     width: '458px',
+//     height: '68px',
+//     paddingTop: '18px',
+//     fontSize: '16px',
+//     fontWeight: 500,
+//     borderRadius: '8px',
+//     border: '1px solid #D1D4DB',
+//     lineHeight: '19px',
+//     letterSpacing: '-0.02em',
+//     color: '#697082',
+
+//     [`@media screen and (max-width: ${em(1024)})`]: {
+//       width: '350px',
+//       height: '46px',
+//       borderRadius: '6px',
+//       fontSize: '12px',
+//       lineHeight: '12px',
+//       margin: '0 auto',
+//     },
+//   },
+
+//   // for password field
+//   innerInput: {
+//     height: rem(54),
+//     paddingTop: rem(28),
+
+//     [`@media screen and (max-width: ${em(1024)})`]: {
+//       paddingTop: rem(8),
+//     },
+//   },
+
+//   label: {
+//     position: 'absolute',
+//     pointerEvents: 'none',
+//     fontSize: '12px',
+//     paddingLeft: '14px',
+//     paddingTop: '7px',
+//     lineHeight: '14.52px',
+//     letterSpacing: '-0.02em',
+//     zIndex: 1,
+//     color: '#697082',
+
+//     [`@media screen and (max-width: ${em(1024)})`]: {
+//       fontSize: '10px',
+//       lineHeight: '10px',
+//       paddingLeft: '11.54px',
+//     },
+//   },
+// }));

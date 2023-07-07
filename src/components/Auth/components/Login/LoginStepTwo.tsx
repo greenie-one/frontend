@@ -1,29 +1,29 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-import { createStyles, rem, Text, Button, Divider, PasswordInput, Flex, Box, em } from '@mantine/core';
-import { useAuthContext } from '../../context/AuthContext';
-import { authApiList } from '../../../../assets/api/ApiList';
-import { useProfileContext } from '../../../Profile/context/ProfileContext';
-import GoogleButton from '../Google/GoogleButton';
-import { BsArrowLeft } from 'react-icons/bs';
-import '../../styles/global.scss';
+import { Text, Button, Divider, PasswordInput, Flex, Box } from '@mantine/core';
 
 import { useGlobalContext } from '../../../../context/GlobalContext';
+import { useAuthContext } from '../../context/AuthContext';
+import GoogleButton from '../Google/GoogleButton';
+
+import { HttpClient, Result } from '../../../../utils/generic/httpClient';
+import { authApiList } from '../../../../assets/api/ApiList';
 import {
   showErrorNotification,
   showLoadingNotification,
   showSuccessNotification,
 } from '../../../../utils/functions/showNotification';
-import { HttpClient, Result } from '../../../../utils/generic/httpClient';
+
+import { BsArrowLeft } from 'react-icons/bs';
+import '../../styles/global.scss';
 
 const LoginStepTwo = () => {
   const navigate = useNavigate();
-  const { classes: inputClasses } = inputStyles();
+  const { authClient, inputStyles } = useGlobalContext();
   const { loginForm, state, dispatch, isValidEmail, isPhoneNumber, setValidationId, setForceRender } = useAuthContext();
-  const { authClient } = useGlobalContext();
+
+  const { classes: inputClasses } = inputStyles();
   const [isLoading, setIsLoading] = useState(false);
-  const {} = useProfileContext();
 
   const handleLoginWithPhoneNo = () => {
     loginForm.setFieldValue('emailPhoneGreenieId', '');
@@ -40,8 +40,8 @@ const LoginStepTwo = () => {
     dispatch({ type: 'RESETLOGINSTEP' });
   };
 
-  const handleEmailLogin = async (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
+  const handleEmailLogin = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     if (isLoading) {
       return Promise.resolve(null);
     }
@@ -49,32 +49,47 @@ const LoginStepTwo = () => {
     if (!loginForm.validateField('password').hasError) {
       loginForm.clearErrors();
       setIsLoading(true);
+
       showLoadingNotification({
         title: 'Loading...',
         message: 'Please wait while we log you in...',
       });
-      const res: Result<any> = await HttpClient.callApi({
+
+      const requestBody: LoginRequestBody = {
+        email: loginForm.values.emailPhoneGreenieId,
+        password: loginForm.values.password,
+      };
+      const res = await HttpClient.callApi<LoginResponse>({
         url: `${authApiList.login}`,
         method: 'POST',
-        body: { email: loginForm.values.emailPhoneGreenieId, password: loginForm.values.password },
+        body: requestBody,
       });
+
       if (res.ok) {
-        setValidationId(res.value.validationId);
+        setValidationId(res.value?.validationId);
+
+        const requestBody: ValidateOtpBody = {
+          validationId: res.value?.validationId,
+          otp: loginForm.values.otp as string,
+        };
         const resp = await HttpClient.callApi({
           url: `${authApiList.validateOtp}`,
           method: 'POST',
-          body: { validationId: res.value.validationId, otp: '123456' },
+          body: requestBody,
         });
+
         if (resp.ok) {
+          loginForm.setFieldValue('password', '');
           showSuccessNotification({
             title: 'Success !',
             message: 'You have been logged in successfully.',
           });
-          authClient.setTokens(resp.value.accessToken, resp.value.refreshToken);
+
           setForceRender((prev) => !prev);
-          navigate('/profile');
-          loginForm.setFieldValue('password', '');
-          dispatch({ type: 'PREVLOGINSTEP' });
+          // authClient.setTokens(resp.value.accessToken, resp.value.refreshToken);
+
+          // navigate('/profile');
+          // dispatch({ type: 'PREVLOGINSTEP' });
         } else {
           showErrorNotification(resp.error.code);
           dispatch({ type: 'PREVLOGINSTEP' });
@@ -87,8 +102,8 @@ const LoginStepTwo = () => {
     }
   };
 
-  const sendLoginOTP = async (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
+  const sendLoginOTP = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     if (isLoading) {
       return Promise.resolve(null);
     }
@@ -96,18 +111,23 @@ const LoginStepTwo = () => {
     if (state.loginStep === 2) {
       loginForm.clearErrors();
       setIsLoading(true);
+
       showLoadingNotification({ title: 'Sending...', message: 'Please wait while we send you an OTP.' });
-      const res = await HttpClient.callApi({
+
+      const requestBody: LoginRequestBody = { mobileNumber: `${loginForm.values.emailPhoneGreenieId}` };
+      const res = await HttpClient.callApi<LoginResponse>({
         url: `${authApiList.login}`,
         method: 'POST',
-        body: { mobileNumber: `${loginForm.values.emailPhoneGreenieId}` },
+        body: requestBody,
       });
+
       if (res.ok) {
-        setValidationId(res.value);
+        setValidationId(res.value?.validationId);
         showSuccessNotification({
           title: 'Success !',
           message: 'An OTP has been sent to your mobile number.',
         });
+
         dispatch({ type: 'NEXTLOGINSTEP' });
       } else {
         showErrorNotification(res.error.code);
@@ -161,60 +181,3 @@ const LoginStepTwo = () => {
 };
 
 export default LoginStepTwo;
-
-const inputStyles = createStyles((theme) => ({
-  root: {
-    position: 'relative',
-    marginBottom: '24px',
-    marginTop: '24px',
-  },
-
-  input: {
-    width: '458px',
-    height: '68px',
-    paddingTop: '18px',
-    fontSize: '16px',
-    fontWeight: 500,
-    borderRadius: '8px',
-    border: '1px solid #D1D4DB',
-    lineHeight: '19px',
-    letterSpacing: '-0.02em',
-    color: '#697082',
-
-    [`@media screen and (max-width: ${em(1024)})`]: {
-      width: '350px',
-      height: '46px',
-      borderRadius: '6px',
-      fontSize: '10px',
-      lineHeight: '12px',
-      margin: '0 auto',
-    },
-  },
-
-  innerInput: {
-    height: rem(54),
-    paddingTop: rem(28),
-
-    [`@media screen and (max-width: ${em(1024)})`]: {
-      paddingTop: rem(8),
-    },
-  },
-
-  label: {
-    position: 'absolute',
-    pointerEvents: 'none',
-    fontSize: '12px',
-    paddingLeft: '14px',
-    paddingTop: '7px',
-    lineHeight: '14.52px',
-    letterSpacing: '-0.02em',
-    zIndex: 1,
-    color: '#697082',
-
-    [`@media screen and (max-width: ${em(1024)})`]: {
-      fontSize: '10px',
-      lineHeight: '10px',
-      paddingTop: '8px',
-    },
-  },
-}));

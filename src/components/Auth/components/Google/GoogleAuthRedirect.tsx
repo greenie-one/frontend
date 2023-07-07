@@ -4,26 +4,34 @@ import axios from 'axios';
 
 import { useLocalStorage } from '@mantine/hooks';
 import { authApiList } from '../../../../assets/api/ApiList';
+import { HttpClient } from '../../../../utils/generic/httpClient';
 
 export const GoogleAuthRedirect = () => {
   const [searchParams] = useSearchParams();
-  const [authTokens, setAuthTokens] = useLocalStorage({ key: 'auth-tokens' });
+  const [authTokens, setAuthTokens] = useLocalStorage<AuthTokens>({ key: 'auth-tokens' });
 
-  useEffect(() => {
+  const getAuthTokens = async () => {
     if (searchParams) {
       const code = searchParams.get('client_id');
 
       if (code) {
-        axios
-          .get(`${authApiList.googleCallback}`, { params: { code: code } })
-          .then((res) => {
-            setAuthTokens(res.data);
-          })
-          .catch((err) => {
-            console.log(err.response.data);
-          });
+        const res = await HttpClient.callApi<AuthTokens>({
+          url: `${authApiList.googleCallback}`,
+          method: 'GET',
+          query: { code: code },
+        });
+
+        if (res.ok) {
+          setAuthTokens(res.value);
+        } else {
+          console.log(res.error.code);
+        }
       }
     }
+  };
+
+  useEffect(() => {
+    getAuthTokens();
   }, []);
 
   return (
