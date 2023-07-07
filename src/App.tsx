@@ -13,11 +13,11 @@ import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage';
 import { TermsAndConditionsPage } from './pages/TermsAndConditionsPage';
 
 import { AuthVerificationLayout } from './utils/constants/AuthVerification';
-import { GoogleAuthRedirect } from './components/Auth/components/Google/GoogleAuthRedirect';
+import { GoogleAuthRedirect } from './components/auth/components/google/GoogleAuthRedirect';
 import { AppLayout } from './components/layouts/AppLayout';
 
 import { VerificationByHRPage } from './pages/VerificationByHRPage';
-import { VerificationByManagerPage } from './pages/verificationByManagerPage';
+import { VerificationByManagerPage } from './pages/VerificationByManagerPage';
 
 const App = () => {
   return (

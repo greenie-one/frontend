@@ -11,7 +11,7 @@ import {
   showSuccessNotification,
 } from '../../../../utils/functions/showNotification';
 
-import GoogleButton from '../Google/GoogleButton';
+import GoogleButton from '../google/GoogleButton';
 import TermsAndConditions from '../../assets/terms_and_conditions-greenie.pdf';
 import PrivacyPolicy from '../../assets/Privacy Policy-Greenie.pdf';
 import '../../styles/global.scss';
