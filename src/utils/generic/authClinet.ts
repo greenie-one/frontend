@@ -4,8 +4,7 @@
 // If the refresh token is expired, it will delete the tokens from local storage and throw an error
 
 import { authApiList } from '../../assets/api/ApiList';
-import { ErrorMessage, Error } from '../../assets/api/ApiErrors';
-import { APIError, HttpClient, Result } from './httpClient';
+import { HttpClient, Result } from './httpClient';
 
 type TokensDTO = {
   accessToken: string;
@@ -30,14 +29,9 @@ export class AuthClient {
     }
   }
 
-  public static getInstance(): AuthClient | Error {
+  public static getInstance(): AuthClient {
     if (!AuthClient.instance) {
       AuthClient.instance = new AuthClient();
-    }
-
-    if (!AuthClient.instance.accessToken || !AuthClient.instance.refreshToken) {
-      console.log('No tokens found in local storage');
-      return ErrorMessage.AUTH_TOKENS_NOT_SET
     }
 
     return AuthClient.instance;

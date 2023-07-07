@@ -210,7 +210,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       {
         url: `${authApiList.resendOtp}`,
         method: 'POST',
-        body: validationId,
+        body: { validationId },
       },
       authClient
     );
