@@ -1,9 +1,9 @@
 import { BsArrowLeft } from 'react-icons/bs';
 import { Text, Box } from '@mantine/core';
-import { useProfileContext } from '../../Profile/context/ProfileContext';
-import AadharImg from '../../Profile/assets/aadhar-logo.png';
-import PanImg from '../../Profile/assets/pan-logo.png';
-import licenceImg from '../../Profile/assets/licence-logo.png';
+import { useProfileContext } from '../../profile/context/ProfileContext';
+import AadharImg from '../../profile/assets/aadhar-logo.png';
+import PanImg from '../../profile/assets/pan-logo.png';
+import licenceImg from '../../profile/assets/licence-logo.png';
 
 export const DocDepotIDsPage = () => {
   const { setDocDepotActivePage, documentsData } = useProfileContext();

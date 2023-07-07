@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Text, Box, Modal, Button } from '@mantine/core';
 import folderImage from '../assets/folderImg.png';
-import pdfImage from '../../Profile/assets/pdfIcon.png';
+import pdfImage from '../../profile/assets/pdfIcon.png';
 import threeDots from '../assets/threeDots.png';
 import { MdMoveDown, MdDeleteOutline } from 'react-icons/md';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';

@@ -4,7 +4,7 @@ import { CgSandClock } from 'react-icons/cg';
 import { BsPersonCheckFill } from 'react-icons/bs';
 import { HiOutlineBan } from 'react-icons/hi';
 import { useVBMContext } from '../context/VBMContext';
-import pdfIcon from '../../../Profile/assets/pdfIcon.png';
+import pdfIcon from '../../../profile/assets/pdfIcon.png';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 import { ProfileDetailsBox } from '../../verification_by_hr/components';
 

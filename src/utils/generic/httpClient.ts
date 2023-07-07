@@ -4,7 +4,10 @@ type PostBody = string | string[] | number | boolean | { [key: string]: PostBody
 
 type HttpRequest = {
   url: string;
-  headers?: Record<string, string>;
+  headers?:
+    | {
+        'Content-Type'?: 'application/json' | 'application/x-www-form-urlencoded';
+      } & Record<string, string>;
   toJSON?: boolean;
 } & (
   | {
@@ -43,11 +46,7 @@ export class HttpClient {
 
     let body: string | undefined = undefined;
     if (request.method === 'POST' && request.body) {
-      if (request.headers?.['Content-Type'] === 'application/x-www-form-urlencoded') {
-        body = new URLSearchParams(JSON.stringify(request.body)).toString();
-      } else {
-        body = JSON.stringify(request.body);
-      }
+      body = JSON.stringify(request.body);
     }
 
     if ((request.method === 'PUT' || request.method === 'PATCH') && request.body) {
@@ -56,19 +55,29 @@ export class HttpClient {
 
     const resp = await fetch(url, {
       method: request.method,
-      headers: request.headers,
+      headers: {
+        'Content-Type': request.method === 'GET' ? 'application/x-www-form-urlencoded' : 'application/json',
+        ...(request.headers ?? {}),
+      },
       body,
     });
 
     let response: T;
-    if (request.toJSON !== false) {
-      response = (await resp.json()) as T;
-    } else {
-      response = (await resp.text()) as T;
-    }
 
-    if (!resp.ok) {
-      const error = response as APIError;
+    if (resp.ok) {
+      if (request.toJSON !== false) {
+        response = (await resp.json()) as T;
+      } else {
+        response = (await resp.text()) as T;
+      }
+    } else {
+      let error: APIError;
+      if (resp.headers.get('Content-Type')?.includes('application/json')) {
+        error = (await resp.json()) as APIError;
+      } else {
+        error = { status: resp.status, message: await resp.text(), code: 'SOMETHING_WENT_WRONG' };
+      }
+
       return { ok: false, error: error };
     }
 
@@ -76,8 +85,9 @@ export class HttpClient {
   }
 
   static async callApiAuth<T = unknown>(request: HttpRequest, authClient: AuthClient): Promise<Result<T>> {
+    console.log(authClient.getAccessToken());
     if (!authClient.getAccessToken()) {
-      throw new Error('Access token is not set');
+      return { ok: false, error: { status: 401, message: 'await resp.text()', code: 'SOMETHING_WENT_WRONG' } };
     }
 
     const headers = {

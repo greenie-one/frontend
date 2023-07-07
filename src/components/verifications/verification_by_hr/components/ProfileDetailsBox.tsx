@@ -1,5 +1,5 @@
 import { MdVerified } from 'react-icons/md';
-import ProfilePic from '../../../Profile/assets/johnMarston.png';
+import ProfilePic from '../../../profile/assets/johnMarston.png';
 import { Text, Box, Button } from '@mantine/core';
 
 export const ProfileDetailsBox = () => {

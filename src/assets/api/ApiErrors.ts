@@ -55,5 +55,6 @@ export const ErrorMessage: Record<string, CustomError> = {
   // CUSTOM ERRORS
   ["NO_SKILL"]: {title: "Error !", message: "Please add atleast one skill."},
   ["MISSING_TAGS"]: {title: "Error !", message: "Please select document tags for all the documents."},
-  ["AUTH_TOKENS_NOT_SET"]: {title: "Error !", message: "Please Login"}
+  ["AUTH_TOKENS_NOT_SET"]: {title: "Error !", message: "Please Login"},
+  ["SOMETHING_WENT_WRONG"]: {title: "Error !", message: "Something went wrong. Please try again later."},
 };

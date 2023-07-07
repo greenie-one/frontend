@@ -56,8 +56,7 @@ export class AuthClient {
     this.accessToken = null;
     this.refreshToken = null;
 
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('auth-tokens');
   }
 
   public async refreshAccessToken(): Promise<Result<TokensDTO>> {

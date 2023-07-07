@@ -1,6 +1,6 @@
 import { Text, Box } from '@mantine/core';
-import { useProfileContext } from '../../Profile/context/ProfileContext';
-import profileImg from '../../Profile/assets/johnMarston.png';
+import { useProfileContext } from '../../profile/context/ProfileContext';
+import profileImg from '../../profile/assets/johnMarston.png';
 import starImg from '../assets/star.png';
 import { MdVerified } from 'react-icons/md';
 

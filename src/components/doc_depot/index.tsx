@@ -12,7 +12,7 @@ import {
 } from './components';
 import './styles/global.scss';
 
-import { useProfileContext } from '../Profile/context/ProfileContext';
+import { useProfileContext } from '../profile/context/ProfileContext';
 
 type docDepotData = {
   name: string;

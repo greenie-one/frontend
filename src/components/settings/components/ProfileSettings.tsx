@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Chip, Group, Title, TextInput, Textarea, Button, Modal, Text } from '@mantine/core';
-import { useProfileContext } from '../../Profile/context/ProfileContext';
+import { useProfileContext } from '../../profile/context/ProfileContext';
 import { useDisclosure } from '@mantine/hooks';
 import { confirmationModalStyle } from '../styles/articleContentStyles';
 import { detailsFormStyles, profileSettingsStyles } from '../styles/articleContentStyles';

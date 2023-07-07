@@ -1,6 +1,6 @@
 import { BsArrowLeft } from 'react-icons/bs';
 import { Text, Box } from '@mantine/core';
-import { useProfileContext } from '../../Profile/context/ProfileContext';
+import { useProfileContext } from '../../profile/context/ProfileContext';
 import { Folder } from './Folder';
 
 type docDepotData = {
