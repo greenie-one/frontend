@@ -17,7 +17,7 @@ import { GoogleAuthRedirect } from './components/auth/components/google/GoogleAu
 import { AppLayout } from './components/layouts/AppLayout';
 
 import { VerificationByHRPage } from './pages/VerificationByHRPage';
-import { VerificationByManagerPage } from './pages/VerificationByManagerPage';
+import { VerificationByManagerPage } from './pages/VerificationByManagerPage_';
 
 const App = () => {
   return (
