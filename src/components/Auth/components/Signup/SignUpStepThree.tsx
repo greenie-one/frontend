@@ -1,26 +1,26 @@
 import { useEffect, useState } from 'react';
 import { TextInput, createStyles, em, Text, Button, Flex, Box } from '@mantine/core';
-import { notifications } from '@mantine/notifications';
 
-import { useAuthContext } from '../../context/AuthContext';
-import { authApiList } from '../../../../assets/api/ApiList';
-
-import { BsArrowLeft } from 'react-icons/bs';
-import '../../styles/global.scss';
+import { HttpClient, Result } from '../../../../utils/generic/httpClient';
 import { useGlobalContext } from '../../../../context/GlobalContext';
+import { authApiList } from '../../../../assets/api/ApiList';
+import { useAuthContext } from '../../context/AuthContext';
 import {
   showErrorNotification,
   showLoadingNotification,
   showSuccessNotification,
 } from '../../../../utils/functions/showNotification';
-import { HttpClient, Result } from '../../../../utils/generic/httpClient';
+
+import { BsArrowLeft } from 'react-icons/bs';
+import '../../styles/global.scss';
 
 const SignUpStepThree = () => {
   const { signupForm, state, dispatch, isPhoneNumber, isValidEmail, validationId, resendOtp, setForceRender } =
     useAuthContext();
-  const { classes: inputClasses } = inputStyles();
+  const { authClient, inputStyles } = useGlobalContext();
+
   const { signUpStep } = state;
-  const { authClient } = useGlobalContext();
+  const { classes: inputClasses } = inputStyles();
   const [isLoading, setIsLoading] = useState(false);
   const [secondsRemaining, setSecondsRemaining] = useState<number>(60);
 
@@ -36,8 +36,8 @@ const SignUpStepThree = () => {
     return () => clearInterval(timer);
   }, [secondsRemaining]);
 
-  const VerifyOTP = async (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
+  const VerifyOTP = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     if (isLoading) {
       return Promise.resolve(null);
     }
@@ -45,18 +45,22 @@ const SignUpStepThree = () => {
     if (signUpStep === 3 && !signupForm.validateField('otp').hasError) {
       setIsLoading(true);
       signupForm.clearErrors();
+
       showLoadingNotification({ title: 'Creating your account', message: 'Please wait while we create your account.' });
 
-      const res: Result<any> = await HttpClient.callApi({
+      const requestBody: ValidateOtpBody = { validationId, otp: signupForm.values.otp };
+      const res = await HttpClient.callApi({
         url: `${authApiList.validateOtp}`,
         method: 'POST',
-        body: { validationId, otp: signupForm.values.otp },
+        body: requestBody,
       });
+
       if (res.ok) {
-        authClient.setTokens(res.value.accessToken, res.value.refreshToken);
-        dispatch({ type: 'NEXTSIGNUPSTEP' });
-        setForceRender((prev) => !prev);
+        // authClient.setTokens(res.value.accessToken, res.value.refreshToken);
         showSuccessNotification({ title: 'Success !', message: 'Your account has been successfully created.' });
+
+        setForceRender((prev) => !prev);
+        dispatch({ type: 'NEXTSIGNUPSTEP' });
       } else {
         showErrorNotification(res.error.code);
       }
@@ -131,31 +135,31 @@ const SignUpStepThree = () => {
 
 export default SignUpStepThree;
 
-const inputStyles = createStyles((theme) => ({
-  root: {
-    position: 'relative',
-    marginBottom: '24px',
-    marginTop: '24px',
-  },
+// const inputStyles = createStyles((theme) => ({
+//   root: {
+//     position: 'relative',
+//     marginBottom: '24px',
+//     marginTop: '24px',
+//   },
 
-  input: {
-    width: '458px',
-    height: '68px',
-    fontSize: '16px',
-    fontWeight: 500,
-    borderRadius: '8px',
-    border: '1px solid #D1D4DB',
-    lineHeight: '19px',
-    letterSpacing: '24px',
-    color: '#697082',
+//   input: {
+//     width: '458px',
+//     height: '68px',
+//     fontSize: '16px',
+//     fontWeight: 500,
+//     borderRadius: '8px',
+//     border: '1px solid #D1D4DB',
+//     lineHeight: '19px',
+//     letterSpacing: '24px',
+//     color: '#697082',
 
-    [`@media screen and (max-width: ${em(1024)})`]: {
-      width: '350px',
-      height: '46px',
-      borderRadius: '6px',
-      fontSize: '14px',
-      lineHeight: '12px',
-      margin: '0 auto',
-    },
-  },
-}));
+//     [`@media screen and (max-width: ${em(1024)})`]: {
+//       width: '350px',
+//       height: '46px',
+//       borderRadius: '6px',
+//       fontSize: '14px',
+//       lineHeight: '12px',
+//       margin: '0 auto',
+//     },
+//   },
+// }));

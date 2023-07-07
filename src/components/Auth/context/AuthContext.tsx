@@ -1,78 +1,17 @@
 import React, { createContext, useContext, useEffect, useReducer, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { em } from '@mantine/core';
-import { useForm, UseFormReturnType, isNotEmpty, matchesField, hasLength } from '@mantine/form';
-import { useLocalStorage } from '@mantine/hooks';
+import { useForm, isNotEmpty, matchesField, hasLength } from '@mantine/form';
 
 import { authApiList, profileAPIList } from '../../../assets/api/ApiList';
 import { useGlobalContext } from '../../../context/GlobalContext';
 
-import { HttpClient, Result } from '../../../utils/generic/httpClient';
+import { HttpClient } from '../../../utils/generic/httpClient';
 import {
   showErrorNotification,
   showLoadingNotification,
   showSuccessNotification,
 } from '../../../utils/functions/showNotification';
-
-type signUpFormType = {
-  emailPhone: string;
-  password?: string;
-  confirmPassword?: string;
-  otp?: string;
-};
-
-type loginFormType = {
-  emailPhoneGreenieId: string;
-  password?: string;
-  otp?: string;
-};
-
-type ProfileFormType = {
-  firstName: string;
-  lastName: string;
-  descriptionTags: string[];
-};
-
-interface CounterState {
-  signUpStep: number;
-  loginStep: number;
-  resetPasswordStep: number;
-  loginWithOTPStep: number;
-}
-
-type CounterAction =
-  | { type: 'NEXTSIGNUPSTEP' }
-  | { type: 'PREVSIGNUPSTEP' }
-  | { type: 'RESETSIGNUPSTEP' }
-  | { type: 'NEXTLOGINSTEP' }
-  | { type: 'PREVLOGINSTEP' }
-  | { type: 'RESETLOGINSTEP' }
-  | { type: 'NEXTRESETPASSWRDSTEP' }
-  | { type: 'PREVRESETPASSWORDSTEP' }
-  | { type: 'NEXTLOGINWITHOTPSTEP' }
-  | { type: 'PREVLOGINWITHOTPSTEP' }
-  | { type: 'CREATEPROFILE' }
-  | { type: 'RESETRESETPASSWORDSTEP' };
-
-type AuthContextType = {
-  signupForm: UseFormReturnType<signUpFormType>;
-  loginForm: UseFormReturnType<loginFormType>;
-  profileForm: UseFormReturnType<ProfileFormType>;
-  state: CounterState;
-  dispatch: React.Dispatch<CounterAction>;
-
-  isPhoneNumber: (input: string) => boolean;
-  isValidEmail: (input: string) => boolean;
-
-  validationId: string;
-  setValidationId: React.Dispatch<React.SetStateAction<string>>;
-
-  resendOtp: () => Promise<void | null>;
-
-  forceRender: boolean;
-  setForceRender: React.Dispatch<React.SetStateAction<boolean>>;
-};
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 export const useAuthContext = () => useContext(AuthContext);
@@ -86,8 +25,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [forceRender, setForceRender] = useState<boolean>(false);
   const { authClient } = useGlobalContext();
   const authTokens = authClient.getAccessToken();
-
-  const token = localStorage.getItem('auth-tokens');
 
   const signupForm = useForm<signUpFormType>({
     initialValues: {
@@ -202,18 +139,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
     setIsLoading(true);
     signupForm.clearErrors();
+
     showLoadingNotification({
       title: 'Resending...',
       message: 'Please wait while we send you an OTP.',
     });
-    const res: Result<any> = await HttpClient.callApiAuth(
+
+    const res = await HttpClient.callApiAuth<ValidateOtpBody>(
       {
         url: `${authApiList.resendOtp}`,
         method: 'POST',
-        body: validationId,
+        body: { validationId },
       },
       authClient
     );
+
     if (res.ok) {
       showSuccessNotification({
         title: 'Success !',
@@ -225,17 +165,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const getMyProfile = async () => {
-    const res: Result<any> = await HttpClient.callApiAuth(
+    const res = await HttpClient.callApiAuth(
       {
         url: `${profileAPIList.getMyProfile}`,
         method: 'GET',
       },
       authClient
     );
+
     if (res.ok) {
       navigate('/profile');
-    } else {
-      showErrorNotification(res.error.code);
     }
   };
 

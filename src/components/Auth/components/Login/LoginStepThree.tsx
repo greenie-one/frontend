@@ -1,34 +1,35 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Text, Button, Flex, Box, TextInput } from '@mantine/core';
+
 import { useGlobalContext } from '../../../../context/GlobalContext';
+import { useAuthContext } from '../../context/AuthContext';
+
+import { HttpClient } from '../../../../utils/generic/httpClient';
+import { authApiList } from '../../../../assets/api/ApiList';
 import {
   showErrorNotification,
   showLoadingNotification,
   showSuccessNotification,
 } from '../../../../utils/functions/showNotification';
-import { HttpClient, Result } from '../../../../utils/generic/httpClient';
-
-import { Text, Button, Flex, Box, TextInput, createStyles, em } from '@mantine/core';
-
-import { useAuthContext } from '../../context/AuthContext';
-import { authApiList } from '../../../../assets/api/ApiList';
 
 import { BsArrowLeft } from 'react-icons/bs';
 import '../../styles/global.scss';
 
 const LoginStepThree = () => {
   const navigate = useNavigate();
+
+  const { inputStyles } = useGlobalContext();
   const { loginForm, state, dispatch, isPhoneNumber, validationId, resendOtp, setForceRender } = useAuthContext();
+
   const { classes: inputClasses } = inputStyles();
-  const [secondsRemaining, setSecondsRemaining] = useState<number>(60);
+  const [secondsRemaining, setSecondsRemaining] = useState<number>(30);
   const [isLoading, setIsLoading] = useState(false);
-  const { authClient } = useGlobalContext();
 
   useEffect(() => {
     const timer = setInterval(() => {
       setSecondsRemaining((prevSecondsRemaining) => prevSecondsRemaining - 1);
     }, 1000);
-
     if (secondsRemaining === 0) {
       clearInterval(timer);
     }
@@ -36,8 +37,8 @@ const LoginStepThree = () => {
     return () => clearInterval(timer);
   }, [secondsRemaining]);
 
-  const handleMobileLogin = async (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
+  const handleMobileLogin = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     if (isLoading) {
       return Promise.resolve(null);
     }
@@ -48,19 +49,22 @@ const LoginStepThree = () => {
         message: 'Please wait while we log you in...',
       });
 
-      const res: Result<any> = await HttpClient.callApi({
+      const requestBody: ValidateOtpBody = { validationId, otp: loginForm.values.otp as string };
+      const res = await HttpClient.callApi({
         url: `${authApiList.validateOtp}`,
         method: 'POST',
-        body: { validationId, otp: loginForm.values.otp },
+        body: requestBody,
       });
+
       if (res.ok) {
-        authClient.setTokens(res.value.accessToken, res.value.refreshToken);
+        // authClient.setTokens(res.value.accessToken, res.value.refreshToken);
         showSuccessNotification({
           title: 'Success !',
           message: 'You have been logged in successfully.',
         });
+
         setForceRender((prev) => !prev);
-        navigate('/profile');
+        // navigate('/profile');
       } else {
         showErrorNotification(res.error.code);
       }
@@ -103,32 +107,3 @@ const LoginStepThree = () => {
 };
 
 export default LoginStepThree;
-
-const inputStyles = createStyles((theme) => ({
-  root: {
-    position: 'relative',
-    marginBottom: '24px',
-    marginTop: '24px',
-  },
-
-  input: {
-    width: '458px',
-    height: '68px',
-    fontSize: '16px',
-    fontWeight: 500,
-    borderRadius: '8px',
-    border: '1px solid #D1D4DB',
-    lineHeight: '19px',
-    letterSpacing: '24px',
-    color: '#697082',
-
-    [`@media screen and (max-width: ${em(1024)})`]: {
-      width: '350px',
-      height: '46px',
-      borderRadius: '6px',
-      fontSize: '12px',
-      lineHeight: '12px',
-      margin: '0 auto',
-    },
-  },
-}));

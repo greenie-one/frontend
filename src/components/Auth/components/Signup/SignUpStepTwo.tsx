@@ -1,29 +1,31 @@
 import { useState } from 'react';
-
 import { createStyles, em, rem, Text, Button, Divider, PasswordInput, Box } from '@mantine/core';
 
-import { useAuthContext } from '../../context/AuthContext';
+import { HttpClient, Result } from '../../../../utils/generic/httpClient';
 import { authApiList } from '../../../../assets/api/ApiList';
-
-import GoogleButton from '../Google/GoogleButton';
-import TermsAndConditions from '../../assets/terms_and_conditions-greenie.pdf';
-import PrivacyPolicy from '../../assets/Privacy Policy-Greenie.pdf';
-import '../../styles/global.scss';
+import { useGlobalContext } from '../../../../context/GlobalContext';
+import { useAuthContext } from '../../context/AuthContext';
 import {
   showErrorNotification,
   showLoadingNotification,
   showSuccessNotification,
 } from '../../../../utils/functions/showNotification';
-import { HttpClient, Result } from '../../../../utils/generic/httpClient';
+
+import GoogleButton from '../Google/GoogleButton';
+import TermsAndConditions from '../../assets/terms_and_conditions-greenie.pdf';
+import PrivacyPolicy from '../../assets/Privacy Policy-Greenie.pdf';
+import '../../styles/global.scss';
 
 const SignUpStepTwo = () => {
+  const { inputStyles } = useGlobalContext();
   const { signupForm, state, dispatch, isPhoneNumber, isValidEmail, setValidationId } = useAuthContext();
-  const { classes: inputClasses } = inputStyles();
+
   const { signUpStep } = state;
+  const { classes: inputClasses } = inputStyles();
   const [isLoading, setIsLoading] = useState(false);
 
-  const EmailSignupStep = async (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
+  const EmailSignupStep = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     if (isLoading) {
       return Promise.resolve(null);
     }
@@ -36,15 +38,22 @@ const SignUpStepTwo = () => {
       signupForm.clearErrors();
       setIsLoading(true);
       showLoadingNotification({ title: 'Sending...', message: 'Please wait while we send you an OTP' });
-      const res: Result<any> = await HttpClient.callApi({
+
+      const requestBody: SignupRequestBody = {
+        email: signupForm.values.emailPhone,
+        password: signupForm.values.password,
+      };
+      const res = await HttpClient.callApi<SignupResponse>({
         url: `${authApiList.signup}`,
         method: 'POST',
-        body: { email: signupForm.values.emailPhone, password: signupForm.values.password },
+        body: requestBody,
       });
+
       if (res.ok) {
-        dispatch({ type: 'NEXTSIGNUPSTEP' });
         setValidationId(res.value.validationId);
         showSuccessNotification({ title: 'Success !', message: 'An OTP has been sent to your email.' });
+
+        dispatch({ type: 'NEXTSIGNUPSTEP' });
       } else {
         showErrorNotification(res.error.code);
       }
@@ -52,8 +61,8 @@ const SignUpStepTwo = () => {
     }
   };
 
-  const MobileSignupStep = async (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
+  const MobileSignupStep = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     if (isLoading) {
       return Promise.resolve(null);
     }
@@ -63,15 +72,19 @@ const SignUpStepTwo = () => {
       setIsLoading(true);
 
       showLoadingNotification({ title: 'Sending...', message: 'Please wait while we send you an OTP' });
-      const res: Result<any> = await HttpClient.callApi({
+
+      const requestBody: SignupRequestBody = { mobileNumber: `${signupForm.values.emailPhone}` };
+      const res = await HttpClient.callApi<SignupResponse>({
         url: `${authApiList.signup}`,
         method: 'POST',
-        body: { mobileNumber: `${signupForm.values.emailPhone}` },
+        body: requestBody,
       });
+
       if (res.ok) {
-        dispatch({ type: 'NEXTSIGNUPSTEP' });
         setValidationId(res.value.validationId);
         showSuccessNotification({ title: 'Success !', message: 'An OTP has been sent to your email.' });
+
+        dispatch({ type: 'NEXTSIGNUPSTEP' });
       } else {
         showErrorNotification(res.error.code);
       }
@@ -138,65 +151,65 @@ const SignUpStepTwo = () => {
 
 export default SignUpStepTwo;
 
-const inputStyles = createStyles((theme) => ({
-  root: {
-    position: 'relative',
-    marginBlock: '12px',
-  },
+// const inputStyles = createStyles((theme) => ({
+//   root: {
+//     position: 'relative',
+//     marginBlock: '12px',
+//   },
 
-  input: {
-    width: '458px',
-    height: '68px',
-    paddingTop: '18px',
-    fontSize: '16px',
-    fontWeight: 500,
-    borderRadius: '8px',
-    border: '1px solid #D1D4DB',
-    lineHeight: '19px',
-    letterSpacing: '-0.02em',
-    color: '#697082',
+//   input: {
+//     width: '458px',
+//     height: '68px',
+//     paddingTop: '18px',
+//     fontSize: '16px',
+//     fontWeight: 500,
+//     borderRadius: '8px',
+//     border: '1px solid #D1D4DB',
+//     lineHeight: '19px',
+//     letterSpacing: '-0.02em',
+//     color: '#697082',
 
-    [`@media screen and (max-width: ${em(1024)})`]: {
-      width: '350px',
-      height: '46px',
-      borderRadius: '6px',
-      fontSize: '10px',
-      lineHeight: '12px',
-      margin: '0 auto',
-    },
-  },
+//     [`@media screen and (max-width: ${em(1024)})`]: {
+//       width: '350px',
+//       height: '46px',
+//       borderRadius: '6px',
+//       fontSize: '10px',
+//       lineHeight: '12px',
+//       margin: '0 auto',
+//     },
+//   },
 
-  passwordInput: {
-    '& input': {
-      color: '#697082',
-    },
-  },
+//   passwordInput: {
+//     '& input': {
+//       color: '#697082',
+//     },
+//   },
 
-  // for password field
-  innerInput: {
-    height: rem(54),
-    paddingTop: rem(28),
+//   // for password field
+//   innerInput: {
+//     height: rem(54),
+//     paddingTop: rem(28),
 
-    [`@media screen and (max-width: ${em(1024)})`]: {
-      paddingTop: rem(8),
-    },
-  },
+//     [`@media screen and (max-width: ${em(1024)})`]: {
+//       paddingTop: rem(8),
+//     },
+//   },
 
-  label: {
-    position: 'absolute',
-    pointerEvents: 'none',
-    fontSize: '12px',
-    paddingLeft: '14px',
-    paddingTop: '7px',
-    lineHeight: '14.52px',
-    letterSpacing: '-0.02em',
-    zIndex: 1,
-    color: '#697082',
+//   label: {
+//     position: 'absolute',
+//     pointerEvents: 'none',
+//     fontSize: '12px',
+//     paddingLeft: '14px',
+//     paddingTop: '7px',
+//     lineHeight: '14.52px',
+//     letterSpacing: '-0.02em',
+//     zIndex: 1,
+//     color: '#697082',
 
-    [`@media screen and (max-width: ${em(1024)})`]: {
-      fontSize: '10px',
-      lineHeight: '10px',
-      paddingTop: '8px',
-    },
-  },
-}));
+//     [`@media screen and (max-width: ${em(1024)})`]: {
+//       fontSize: '10px',
+//       lineHeight: '10px',
+//       paddingTop: '8px',
+//     },
+//   },
+// }));

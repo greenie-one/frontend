@@ -76,6 +76,7 @@ export class HttpClient {
       response = (await resp.text()) as T;
     }
 
+    console.log(response.value);
     if (!resp.ok) {
       const error = response as APIError;
       return { ok: false, error: error };
