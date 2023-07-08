@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { TextInput, createStyles, em, rem, Text, Button, Box, Flex, PasswordInput } from '@mantine/core';
+import { TextInput, Text, Button, Box, Flex, PasswordInput } from '@mantine/core';
 
 import { useGlobalContext } from '../../../../context/GlobalContext';
 import { useAuthContext } from '../../context/AuthContext';
@@ -16,13 +16,26 @@ import { BsArrowLeft } from 'react-icons/bs';
 import '../../styles/global.scss';
 
 const ForgotPassword = () => {
-  const { OtpInputStyles } = useGlobalContext();
-  const { loginForm, state, dispatch, isPhoneNumber, isValidEmail, secondsRemaining } = useAuthContext();
+  const { OtpInputStyles, inputStyles } = useGlobalContext();
+  const { loginForm, state, dispatch, isPhoneNumber, isValidEmail } = useAuthContext();
 
   const { classes: inputClasses } = inputStyles();
   const { classes: otpInputClasses } = OtpInputStyles();
 
   const [validateOTPId, setValidateOTP] = useState<string>('');
+  const [secondsRemaining, setSecondsRemaining] = useState<number>(30);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setSecondsRemaining((prevSecondsRemaining) => prevSecondsRemaining - 1);
+    }, 1000);
+
+    if (secondsRemaining === 0) {
+      clearInterval(timer);
+    }
+
+    return () => clearInterval(timer);
+  }, [secondsRemaining]);
 
   const handleClick = () => {
     if (state.resetPasswordStep === 1) {
@@ -219,58 +232,58 @@ const ForgotPassword = () => {
 
 export default ForgotPassword;
 
-const inputStyles = createStyles((theme) => ({
-  root: {
-    position: 'relative',
-    marginBlock: '24px',
-  },
+// const inputStyles = createStyles((theme) => ({
+//   root: {
+//     position: 'relative',
+//     marginBlock: '24px',
+//   },
 
-  input: {
-    width: '458px',
-    height: '68px',
-    paddingTop: '18px',
-    fontSize: '16px',
-    fontWeight: 500,
-    borderRadius: '8px',
-    border: '1px solid #D1D4DB',
-    lineHeight: '19px',
-    letterSpacing: '-0.02em',
-    color: '#697082',
+//   input: {
+//     width: '458px',
+//     height: '68px',
+//     paddingTop: '18px',
+//     fontSize: '16px',
+//     fontWeight: 500,
+//     borderRadius: '8px',
+//     border: '1px solid #D1D4DB',
+//     lineHeight: '19px',
+//     letterSpacing: '-0.02em',
+//     color: '#697082',
 
-    [`@media screen and (max-width: ${em(1024)})`]: {
-      width: '350px',
-      height: '46px',
-      borderRadius: '6px',
-      fontSize: '10px',
-      lineHeight: '12px',
-      margin: '0 auto',
-    },
-  },
+//     [`@media screen and (max-width: ${em(1024)})`]: {
+//       width: '350px',
+//       height: '46px',
+//       borderRadius: '6px',
+//       fontSize: '10px',
+//       lineHeight: '12px',
+//       margin: '0 auto',
+//     },
+//   },
 
-  innerInput: {
-    height: rem(54),
-    paddingTop: rem(28),
+//   innerInput: {
+//     height: rem(54),
+//     paddingTop: rem(28),
 
-    [`@media screen and (max-width: ${em(1024)})`]: {
-      paddingTop: rem(8),
-    },
-  },
+//     [`@media screen and (max-width: ${em(1024)})`]: {
+//       paddingTop: rem(8),
+//     },
+//   },
 
-  label: {
-    position: 'absolute',
-    pointerEvents: 'none',
-    fontSize: '12px',
-    paddingLeft: '14px',
-    paddingTop: '7px',
-    lineHeight: '14.52px',
-    letterSpacing: '-0.02em',
-    zIndex: 1,
-    color: '#697082',
+//   label: {
+//     position: 'absolute',
+//     pointerEvents: 'none',
+//     fontSize: '12px',
+//     paddingLeft: '14px',
+//     paddingTop: '7px',
+//     lineHeight: '14.52px',
+//     letterSpacing: '-0.02em',
+//     zIndex: 1,
+//     color: '#697082',
 
-    [`@media screen and (max-width: ${em(1024)})`]: {
-      fontSize: '10px',
-      lineHeight: '10px',
-      paddingTop: '8px',
-    },
-  },
-}));
+//     [`@media screen and (max-width: ${em(1024)})`]: {
+//       fontSize: '10px',
+//       lineHeight: '10px',
+//       paddingTop: '8px',
+//     },
+//   },
+// }));

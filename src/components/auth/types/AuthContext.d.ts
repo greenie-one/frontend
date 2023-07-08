@@ -15,6 +15,4 @@ type AuthContextType = {
 
   forceRender: boolean;
   setForceRender: React.Dispatch<React.SetStateAction<boolean>>;
-
-  secondsRemaining: number;
 };

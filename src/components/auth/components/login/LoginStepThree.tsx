@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Text, Button, Flex, Box, TextInput } from '@mantine/core';
 
 import { useGlobalContext } from '../../../../context/GlobalContext';
@@ -17,10 +17,22 @@ import '../../styles/global.scss';
 
 const LoginStepThree = () => {
   const { authClient } = useGlobalContext();
-  const { loginForm, state, dispatch, isPhoneNumber, validationId, resendOtp, setForceRender, secondsRemaining } =
-    useAuthContext();
+  const { loginForm, state, dispatch, isPhoneNumber, validationId, resendOtp, setForceRender } = useAuthContext();
 
   const [isLoading, setIsLoading] = useState(false);
+  const [secondsRemaining, setSecondsRemaining] = useState<number>(30);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setSecondsRemaining((prevSecondsRemaining) => prevSecondsRemaining - 1);
+    }, 1000);
+
+    if (secondsRemaining === 0) {
+      clearInterval(timer);
+    }
+
+    return () => clearInterval(timer);
+  }, [secondsRemaining]);
 
   const handleMobileLogin = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
