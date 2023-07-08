@@ -1,12 +1,11 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Text, Button, Divider, PasswordInput, Flex, Box } from '@mantine/core';
 
 import { useGlobalContext } from '../../../../context/GlobalContext';
 import { useAuthContext } from '../../context/AuthContext';
 import GoogleButton from '../google/GoogleButton';
 
-import { HttpClient, Result } from '../../../../utils/generic/httpClient';
+import { HttpClient } from '../../../../utils/generic/httpClient';
 import { authApiList } from '../../../../assets/api/ApiList';
 import {
   showErrorNotification,
@@ -18,7 +17,6 @@ import { BsArrowLeft } from 'react-icons/bs';
 import '../../styles/global.scss';
 
 const LoginStepTwo = () => {
-  const navigate = useNavigate();
   const { authClient, inputStyles } = useGlobalContext();
   const { loginForm, state, dispatch, isValidEmail, isPhoneNumber, setValidationId, setForceRender } = useAuthContext();
 
@@ -72,7 +70,7 @@ const LoginStepTwo = () => {
           validationId: res.value?.validationId,
           otp: loginForm.values.otp as string,
         };
-        const resp = await HttpClient.callApi({
+        const resp = await HttpClient.callApi<AuthTokens>({
           url: `${authApiList.validateOtp}`,
           method: 'POST',
           body: requestBody,
@@ -80,13 +78,13 @@ const LoginStepTwo = () => {
 
         if (resp.ok) {
           loginForm.setFieldValue('password', '');
+          authClient.setTokens(resp.value.accessToken, resp.value.refreshToken);
+          setForceRender((prev) => !prev);
+
           showSuccessNotification({
             title: 'Success !',
             message: 'You have been logged in successfully.',
           });
-
-          setForceRender((prev) => !prev);
-          // authClient.setTokens(resp.value.accessToken, resp.value.refreshToken);
 
           // navigate('/profile');
           // dispatch({ type: 'PREVLOGINSTEP' });

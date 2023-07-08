@@ -66,7 +66,8 @@ export class HttpClient {
 
     if (resp.ok) {
       if (request.toJSON !== false) {
-        response = (await resp.json()) as T;
+        let json_body = await resp.json().catch(() => "Can't parse response to json");
+        response = json_body as T;
       } else {
         response = (await resp.text()) as T;
       }

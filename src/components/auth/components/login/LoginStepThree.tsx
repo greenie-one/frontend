@@ -19,7 +19,7 @@ import '../../styles/global.scss';
 const LoginStepThree = () => {
   const navigate = useNavigate();
 
-  const { inputStyles } = useGlobalContext();
+  const { inputStyles, authClient } = useGlobalContext();
   const { loginForm, state, dispatch, isPhoneNumber, validationId, resendOtp, setForceRender } = useAuthContext();
 
   const { classes: inputClasses } = inputStyles();
@@ -50,14 +50,14 @@ const LoginStepThree = () => {
       });
 
       const requestBody: ValidateOtpBody = { validationId, otp: loginForm.values.otp as string };
-      const res = await HttpClient.callApi({
+      const res = await HttpClient.callApi<AuthTokens>({
         url: `${authApiList.validateOtp}`,
         method: 'POST',
         body: requestBody,
       });
 
       if (res.ok) {
-        // authClient.setTokens(res.value.accessToken, res.value.refreshToken);
+        authClient.setTokens(res.value.accessToken, res.value.refreshToken);
         showSuccessNotification({
           title: 'Success !',
           message: 'You have been logged in successfully.',
