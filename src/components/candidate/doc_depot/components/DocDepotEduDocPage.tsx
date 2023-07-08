@@ -8,19 +8,20 @@ type docDepotData = {
   isFolder: boolean;
 };
 
-export const DocDepotOthersPage = () => {
+export const DocDepotEduDocPage = () => {
   const { setDocDepotActivePage } = useProfileContext();
+
   const docDepotData: docDepotData[] = [
     { name: '10th Marksheet', isFolder: false },
     { name: '12th Marksheet', isFolder: false },
   ];
+
   return (
     <Box>
       <Box className="doc-depo-header" onClick={() => setDocDepotActivePage(0)}>
         <BsArrowLeft className="arrow-left-icon" size={'16px'} />
-        <Text className="text">Other documents({docDepotData.length})</Text>
+        <Text className="text">Educational documents(2)</Text>
       </Box>
-
       <Box className="folder-wrapper">
         {docDepotData.map(({ name, isFolder }, index) => {
           return (

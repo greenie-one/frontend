@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navbar } from '../profile/sections/Navbar';
+import { Navbar } from '../candidate/profile/sections/Navbar';
 import { settingsStyles } from './styles/settingsStyles';
 import { Sidebar } from './components/Sidebar';
 import { ArticleContent } from './components/ArticleContents';

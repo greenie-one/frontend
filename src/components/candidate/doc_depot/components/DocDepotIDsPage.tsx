@@ -7,6 +7,7 @@ import licenceImg from '../../profile/assets/licence-logo.png';
 
 export const DocDepotIDsPage = () => {
   const { setDocDepotActivePage, documentsData } = useProfileContext();
+
   return (
     <Box>
       <Box className="doc-depo-header" onClick={() => setDocDepotActivePage(0)}>

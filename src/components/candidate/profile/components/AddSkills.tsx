@@ -3,14 +3,14 @@ import { useState } from 'react';
 import { BsArrowLeft } from 'react-icons/bs';
 import { useProfileContext } from '../context/ProfileContext';
 import { GrAdd } from 'react-icons/gr';
-import { skillsAPIList } from '../../../assets/api/ApiList';
-import { useGlobalContext } from '../../../context/GlobalContext';
+import { skillsAPIList } from '../../../../assets/api/ApiList';
+import { useGlobalContext } from '../../../../context/GlobalContext';
 import {
   showErrorNotification,
   showSuccessNotification,
   showLoadingNotification,
-} from '../../../utils/functions/showNotification';
-import { HttpClient, Result } from '../../../utils/generic/httpClient';
+} from '../../../../utils/functions/showNotification';
+import { HttpClient, Result } from '../../../../utils/generic/httpClient';
 import { ISkill } from '../types/APICalls';
 
 const skillRate = [

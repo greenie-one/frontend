@@ -6,14 +6,14 @@ import { BsArrowLeft } from 'react-icons/bs';
 import { AiOutlineRight } from 'react-icons/ai';
 import PanImg from '../assets/Pan.png';
 import john from '../assets/johnMarston.png';
-import { PANAPIList } from '../../../assets/api/ApiList';
-import { useGlobalContext } from '../../../context/GlobalContext';
-import { HttpClient, Result } from '../../../utils/generic/httpClient';
+import { PANAPIList } from '../../../../assets/api/ApiList';
+import { useGlobalContext } from '../../../../context/GlobalContext';
+import { HttpClient, Result } from '../../../../utils/generic/httpClient';
 import {
   showErrorNotification,
   showLoadingNotification,
   showSuccessNotification,
-} from '../../../utils/functions/showNotification';
+} from '../../../../utils/functions/showNotification';
 
 export const SeePanCard = () => {
   const {

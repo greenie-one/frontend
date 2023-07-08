@@ -8,15 +8,15 @@ import { MdVerified, MdOutlineContentCopy } from 'react-icons/md';
 import { AiOutlineRight } from 'react-icons/ai';
 import AadharImg from '../assets/Aadhar.png';
 import john from '../assets/johnMarston.png';
-import { aadharAPIList } from '../../../assets/api/ApiList';
+import { aadharAPIList } from '../../../../assets/api/ApiList';
 import checkImg from '../assets/check.png';
-import { useGlobalContext } from '../../../context/GlobalContext';
-import { HttpClient, Result } from '../../../utils/generic/httpClient';
+import { useGlobalContext } from '../../../../context/GlobalContext';
+import { HttpClient, Result } from '../../../../utils/generic/httpClient';
 import {
   showErrorNotification,
   showLoadingNotification,
   showSuccessNotification,
-} from '../../../utils/functions/showNotification';
+} from '../../../../utils/functions/showNotification';
 import { IAadharVerificationData } from '../types/APICalls';
 
 export const SeeAadharCard = () => {

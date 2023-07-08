@@ -3,10 +3,10 @@ import { useState, useRef, CSSProperties, ChangeEvent } from 'react';
 import emptyProfile from '../assets/emptyProfile.png';
 import { MdOutlineEdit } from 'react-icons/md';
 import axios from 'axios';
-import { profileAPIList } from '../../../assets/api/ApiList';
+import { profileAPIList } from '../../../../assets/api/ApiList';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
-import profileIllustration from '../../Auth/assets/profileillustration.png';
-import { useGlobalContext } from '../../../context/GlobalContext';
+import profileIllustration from '../../../auth/assets/profileillustration.png';
+import { useGlobalContext } from '../../../../context/GlobalContext';
 
 export const ProfilePhotos = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
