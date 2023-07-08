@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import axios from 'axios';
 
 import { useLocalStorage } from '@mantine/hooks';
 import { authApiList } from '../../../../assets/api/ApiList';
@@ -26,6 +25,10 @@ export const GoogleAuthRedirect = () => {
         } else {
           console.log(res.error.code);
         }
+
+        if (authTokens) {
+          window.close();
+        }
       }
     }
   };
@@ -34,9 +37,5 @@ export const GoogleAuthRedirect = () => {
     getAuthTokens();
   }, []);
 
-  return (
-    <>
-      <h1>Jay Shree Ganesh</h1>
-    </>
-  );
+  return <></>;
 };

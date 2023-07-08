@@ -1,5 +1,4 @@
-import { TextInput, createStyles, rem, Text, Button, Divider, Box, em } from '@mantine/core';
-import { useGlobalContext } from '../../../../context/GlobalContext';
+import { TextInput, Text, Button, Divider, Box } from '@mantine/core';
 import { useAuthContext } from '../../context/AuthContext';
 import GoogleButton from '../google/GoogleButton';
 
@@ -8,9 +7,6 @@ import PrivacyPolicy from '../../assets/Privacy Policy-Greenie.pdf';
 import '../../styles/global.scss';
 
 const LoginStepOne = () => {
-  const { inputStyles } = useGlobalContext();
-
-  const { classes: inputClasses } = inputStyles();
   const { loginForm, state, dispatch } = useAuthContext();
 
   const loginStep = (e: React.MouseEvent<HTMLButtonElement>) => {

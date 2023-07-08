@@ -27,7 +27,7 @@ const GoogleButton = () => {
     });
 
     if (res.ok) {
-      window.open(res.value?.url, '_blank');
+      window.open(res.value?.redirectUrl, '_blank');
     } else {
       console.log(res.error.code);
     }

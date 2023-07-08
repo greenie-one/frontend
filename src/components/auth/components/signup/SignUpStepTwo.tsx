@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { createStyles, em, rem, Text, Button, Divider, PasswordInput, Box } from '@mantine/core';
+import { Text, Button, Divider, PasswordInput, Box } from '@mantine/core';
 
-import { HttpClient, Result } from '../../../../utils/generic/httpClient';
+import { HttpClient } from '../../../../utils/generic/httpClient';
 import { authApiList } from '../../../../assets/api/ApiList';
 import { useGlobalContext } from '../../../../context/GlobalContext';
 import { useAuthContext } from '../../context/AuthContext';
@@ -82,7 +82,7 @@ const SignUpStepTwo = () => {
 
       if (res.ok) {
         setValidationId(res.value.validationId);
-        showSuccessNotification({ title: 'Success !', message: 'An OTP has been sent to your email.' });
+        showSuccessNotification({ title: 'Success !', message: 'An OTP has been sent to your mobile number.' });
 
         dispatch({ type: 'NEXTSIGNUPSTEP' });
       } else {

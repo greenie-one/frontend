@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Text, Button, Divider, PasswordInput, Flex, Box } from '@mantine/core';
 
 import { useGlobalContext } from '../../../../context/GlobalContext';
