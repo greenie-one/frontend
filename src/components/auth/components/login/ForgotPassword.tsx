@@ -130,7 +130,8 @@ const ForgotPassword = () => {
           message: 'OTP has been verified successfully.',
         });
 
-        dispatch({ type: 'NEXTRESETPASSWORDSTEP' });
+        dispatch({ type: 'RESETLOGINSTEP' });
+        dispatch({ type: 'RESETRESETPASSWORDSTEP' });
       } else {
         showErrorNotification(res.error.code);
       }
