@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
-import { TextInput, createStyles, em, Text, Button, Flex, Box } from '@mantine/core';
+import { useState } from 'react';
+import { TextInput, Text, Button, Flex, Box } from '@mantine/core';
 
-import { HttpClient, Result } from '../../../../utils/generic/httpClient';
+import { HttpClient } from '../../../../utils/generic/httpClient';
 import { useGlobalContext } from '../../../../context/GlobalContext';
 import { authApiList } from '../../../../assets/api/ApiList';
 import { useAuthContext } from '../../context/AuthContext';
@@ -15,26 +15,22 @@ import { BsArrowLeft } from 'react-icons/bs';
 import '../../styles/global.scss';
 
 const SignUpStepThree = () => {
-  const { signupForm, state, dispatch, isPhoneNumber, isValidEmail, validationId, resendOtp, setForceRender } =
-    useAuthContext();
   const { authClient, inputStyles } = useGlobalContext();
+  const {
+    signupForm,
+    state,
+    dispatch,
+    isPhoneNumber,
+    isValidEmail,
+    validationId,
+    resendOtp,
+    setForceRender,
+    secondsRemaining,
+  } = useAuthContext();
 
   const { signUpStep } = state;
   const { classes: inputClasses } = inputStyles();
   const [isLoading, setIsLoading] = useState(false);
-  const [secondsRemaining, setSecondsRemaining] = useState<number>(60);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setSecondsRemaining((prevSecondsRemaining) => prevSecondsRemaining - 1);
-    }, 1000);
-
-    if (secondsRemaining === 0) {
-      clearInterval(timer);
-    }
-
-    return () => clearInterval(timer);
-  }, [secondsRemaining]);
 
   const VerifyOTP = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();

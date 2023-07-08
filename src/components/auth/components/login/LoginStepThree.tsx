@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import { Text, Button, Flex, Box, TextInput } from '@mantine/core';
 
 import { useGlobalContext } from '../../../../context/GlobalContext';
@@ -17,25 +16,11 @@ import { BsArrowLeft } from 'react-icons/bs';
 import '../../styles/global.scss';
 
 const LoginStepThree = () => {
-  const navigate = useNavigate();
+  const { authClient } = useGlobalContext();
+  const { loginForm, state, dispatch, isPhoneNumber, validationId, resendOtp, setForceRender, secondsRemaining } =
+    useAuthContext();
 
-  const { inputStyles, authClient } = useGlobalContext();
-  const { loginForm, state, dispatch, isPhoneNumber, validationId, resendOtp, setForceRender } = useAuthContext();
-
-  const { classes: inputClasses } = inputStyles();
-  const [secondsRemaining, setSecondsRemaining] = useState<number>(30);
   const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setSecondsRemaining((prevSecondsRemaining) => prevSecondsRemaining - 1);
-    }, 1000);
-    if (secondsRemaining === 0) {
-      clearInterval(timer);
-    }
-
-    return () => clearInterval(timer);
-  }, [secondsRemaining]);
 
   const handleMobileLogin = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
