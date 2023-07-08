@@ -30,7 +30,7 @@ const LoginStepTwo = () => {
 
   const handleForgotPassowrd = () => {
     loginForm.setFieldValue('emailPhoneGreenieId', '');
-    dispatch({ type: 'NEXTRESETPASSWRDSTEP' });
+    dispatch({ type: 'NEXTRESETPASSWORDSTEP' });
     dispatch({ type: 'NEXTLOGINSTEP' });
   };
 

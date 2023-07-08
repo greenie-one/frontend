@@ -108,7 +108,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return { ...state, loginStep: state.loginStep - 1 };
       case 'RESETLOGINSTEP':
         return { ...state, loginStep: 1 };
-      case 'NEXTRESETPASSWRDSTEP':
+      case 'NEXTRESETPASSWORDSTEP':
         return { ...state, resetPasswordStep: state.resetPasswordStep + 1 };
       case 'PREVRESETPASSWORDSTEP':
         return { ...state, resetPasswordStep: state.resetPasswordStep - 1 };

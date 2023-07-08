@@ -48,7 +48,7 @@ const ForgotPassword = () => {
 
   const handleNextStep = () => {
     if (!loginForm.validateField('emailPhoneGreenieId').hasError) {
-      dispatch({ type: 'NEXTRESETPASSWRDSTEP' });
+      dispatch({ type: 'NEXTRESETPASSWORDSTEP' });
     }
   };
 
@@ -75,7 +75,7 @@ const ForgotPassword = () => {
         });
 
         setValidateOTP(res.value.validationId);
-        dispatch({ type: 'NEXTRESETPASSWRDSTEP' });
+        dispatch({ type: 'NEXTRESETPASSWORDSTEP' });
       } else {
         showErrorNotification(res.error.code);
       }
@@ -130,7 +130,7 @@ const ForgotPassword = () => {
           message: 'OTP has been verified successfully.',
         });
 
-        dispatch({ type: 'NEXTRESETPASSWRDSTEP' });
+        dispatch({ type: 'NEXTRESETPASSWORDSTEP' });
       } else {
         showErrorNotification(res.error.code);
       }
