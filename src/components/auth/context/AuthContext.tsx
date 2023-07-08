@@ -145,14 +145,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       message: 'Please wait while we send you an OTP.',
     });
 
-    const res = await HttpClient.callApiAuth<ValidateOtpBody>(
-      {
-        url: `${authApiList.resendOtp}`,
-        method: 'POST',
-        body: { validationId },
-      },
-      authClient
-    );
+    const res = await HttpClient.callApi<ValidateOtpBody>({
+      url: `${authApiList.resendOtp}`,
+      method: 'POST',
+      body: { validationId },
+    });
 
     if (res.ok) {
       showSuccessNotification({
@@ -175,6 +172,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     if (res.ok) {
       navigate('/profile');
+    } else {
+      dispatch({ type: 'CREATEPROFILE' });
     }
   };
 
@@ -182,7 +181,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (authTokens) {
       getMyProfile();
     }
-  }, [authTokens, forceRender]);
+  }, [forceRender]);
 
   return (
     <AuthContext.Provider

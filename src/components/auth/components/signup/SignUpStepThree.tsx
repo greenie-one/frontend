@@ -49,14 +49,14 @@ const SignUpStepThree = () => {
       showLoadingNotification({ title: 'Creating your account', message: 'Please wait while we create your account.' });
 
       const requestBody: ValidateOtpBody = { validationId, otp: signupForm.values.otp };
-      const res = await HttpClient.callApi({
+      const res = await HttpClient.callApi<AuthTokens>({
         url: `${authApiList.validateOtp}`,
         method: 'POST',
         body: requestBody,
       });
 
       if (res.ok) {
-        // authClient.setTokens(res.value.accessToken, res.value.refreshToken);
+        authClient.setTokens(res.value.accessToken, res.value.refreshToken);
         showSuccessNotification({ title: 'Success !', message: 'Your account has been successfully created.' });
 
         setForceRender((prev) => !prev);

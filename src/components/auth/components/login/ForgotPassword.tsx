@@ -50,14 +50,11 @@ const ForgotPassword = () => {
       });
 
       const reqestBody: ForgotPasswordBody = { email: loginForm.values.emailPhoneGreenieId };
-      const res = await HttpClient.callApiAuth<ForgotPasswordResponse>(
-        {
-          url: `${authApiList.forgotpasswordOtp}`,
-          method: 'POST',
-          body: reqestBody,
-        },
-        authClient
-      );
+      const res = await HttpClient.callApi<ForgotPasswordResponse>({
+        url: `${authApiList.forgotpasswordOtp}`,
+        method: 'POST',
+        body: reqestBody,
+      });
 
       if (res.ok) {
         showSuccessNotification({
@@ -82,14 +79,11 @@ const ForgotPassword = () => {
         message: 'Please wait while we send OTP to your email.',
       });
 
-      const res = await HttpClient.callApiAuth<ForgotPasswordResponse>(
-        {
-          url: `${authApiList.forgotpasswordOtp}`,
-          method: 'POST',
-          body: { email: loginForm.values.emailPhoneGreenieId },
-        },
-        authClient
-      );
+      const res = await HttpClient.callApi<ForgotPasswordResponse>({
+        url: `${authApiList.forgotpasswordOtp}`,
+        method: 'POST',
+        body: { email: loginForm.values.emailPhoneGreenieId },
+      });
 
       if (res.ok) {
         showSuccessNotification({
@@ -112,25 +106,23 @@ const ForgotPassword = () => {
         message: 'Please wait while we verify your OTP.',
       });
 
-      const res = await HttpClient.callApiAuth(
-        {
-          url: `${authApiList.forgotpasswordValidate}`,
-          method: 'POST',
-          body: { validationId: validateOTPId, otp: loginForm.values.otp, newPassword: loginForm.values.password },
-        },
-        authClient
-      );
+      const res = await HttpClient.callApi({
+        url: `${authApiList.forgotpasswordValidate}`,
+        method: 'POST',
+        body: { validationId: validateOTPId, otp: loginForm.values.otp, newPassword: loginForm.values.password },
+      });
 
       if (res.ok) {
         showSuccessNotification({
           title: 'Success !',
           message: 'OTP has been verified successfully.',
         });
+
+        dispatch({ type: 'NEXTRESETPASSWRDSTEP' });
       } else {
         showErrorNotification(res.error.code);
       }
     }
-    // dispatch({ type: 'NEXTRESETPASSWRDSTEP' });
   };
 
   useEffect(() => {

@@ -34,7 +34,7 @@ const skillSetOne = [
 const Profile = () => {
   const navigate = useNavigate();
   const { authClient, inputStyles } = useGlobalContext();
-  const { profileForm, dispatch } = useAuthContext();
+  const { profileForm, dispatch, setForceRender } = useAuthContext();
   const { classes: inputClasses } = inputStyles();
 
   const [active, setActive] = useState(1);
@@ -93,6 +93,7 @@ const Profile = () => {
 
       if (res.ok) {
         showSuccessNotification({ title: 'Success !', message: 'Your profile details have been added successfully.' });
+        setForceRender((prev) => !prev);
         // navigate('/profile');
       } else {
         showErrorNotification(res.error.code);
