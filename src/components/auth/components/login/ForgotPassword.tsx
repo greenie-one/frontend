@@ -16,14 +16,13 @@ import { BsArrowLeft } from 'react-icons/bs';
 import '../../styles/global.scss';
 
 const ForgotPassword = () => {
-  const { authClient, OtpInputStyles } = useGlobalContext();
-  const { loginForm, state, dispatch, isPhoneNumber, isValidEmail } = useAuthContext();
+  const { OtpInputStyles } = useGlobalContext();
+  const { loginForm, state, dispatch, isPhoneNumber, isValidEmail, secondsRemaining } = useAuthContext();
 
   const { classes: inputClasses } = inputStyles();
   const { classes: otpInputClasses } = OtpInputStyles();
 
   const [validateOTPId, setValidateOTP] = useState<string>('');
-  const [secondsRemaining, setSecondsRemaining] = useState<number>(60);
 
   const handleClick = () => {
     if (state.resetPasswordStep === 1) {
@@ -124,18 +123,6 @@ const ForgotPassword = () => {
       }
     }
   };
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setSecondsRemaining((prevSecondsRemaining) => prevSecondsRemaining - 1);
-    }, 1000);
-
-    if (secondsRemaining === 0) {
-      clearInterval(timer);
-    }
-
-    return () => clearInterval(timer);
-  }, [secondsRemaining]);
 
   return (
     <Box className="authRightContainer">

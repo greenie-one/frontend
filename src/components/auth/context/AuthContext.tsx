@@ -18,13 +18,13 @@ export const useAuthContext = () => useContext(AuthContext);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const navigate = useNavigate();
-
-  const [validationId, setValidationId] = useState<string>('');
-
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [forceRender, setForceRender] = useState<boolean>(false);
   const { authClient } = useGlobalContext();
   const authTokens = authClient.getAccessToken();
+
+  const [validationId, setValidationId] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [forceRender, setForceRender] = useState<boolean>(false);
+  const [secondsRemaining, setSecondsRemaining] = useState<number>(30);
 
   const signupForm = useForm<signUpFormType>({
     initialValues: {
@@ -183,6 +183,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, [forceRender]);
 
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setSecondsRemaining((prevSecondsRemaining) => prevSecondsRemaining - 1);
+    }, 1000);
+
+    if (secondsRemaining === 0) {
+      clearInterval(timer);
+    }
+
+    return () => clearInterval(timer);
+  }, [secondsRemaining]);
+
   return (
     <AuthContext.Provider
       value={{
@@ -198,6 +210,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         resendOtp,
         forceRender,
         setForceRender,
+        secondsRemaining,
       }}
     >
       {children}
