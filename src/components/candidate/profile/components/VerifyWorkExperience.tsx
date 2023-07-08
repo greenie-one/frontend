@@ -14,7 +14,7 @@ import {
   showErrorNotification,
   showLoadingNotification,
   showSuccessNotification,
-} from '../../../utils/functions/showNotification';
+} from '../../../../utils/functions/showNotification';
 import { ISkill } from '../types/APICalls';
 import { PeerVerificationFormType } from '../types/forms';
 

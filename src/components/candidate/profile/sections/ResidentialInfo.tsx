@@ -12,11 +12,11 @@ import {
   showErrorNotification,
   showLoadingNotification,
   showSuccessNotification,
-} from '../../../utils/functions/showNotification';
-import { HttpClient, Result } from '../../../utils/generic/httpClient';
+} from '../../../../utils/functions/showNotification';
+import { HttpClient, Result } from '../../../../utils/generic/httpClient';
 import { ResidentialInfoCard } from '../components/ResidentialInfoCard';
-import { useGlobalContext } from '../../../context/GlobalContext';
-import { residentialInfoAPIList } from '../../../assets/api/ApiList';
+import { useGlobalContext } from '../../../../context/GlobalContext';
+import { residentialInfoAPIList } from '../../../../assets/api/ApiList';
 
 const states = [
   { value: 'Andhra Pradesh', label: 'Andhra Pradesh' },

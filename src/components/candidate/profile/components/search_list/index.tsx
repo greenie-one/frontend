@@ -3,10 +3,10 @@ import { Box, createStyles, rem } from '@mantine/core';
 import profileThumbnail from '../../assets/johnMarston.png';
 import { SearchResult } from './SearchListContent';
 import { NoResultContent } from './NoResultContent';
-import { profileAPIList } from '../../../../assets/api/ApiList';
-import { useGlobalContext } from '../../../../context/GlobalContext';
+import { profileAPIList } from '../../../../../assets/api/ApiList';
+import { useGlobalContext } from '../../../../../context/GlobalContext';
 
-import { HttpClient, Result } from '../../../../utils/generic/httpClient';
+import { HttpClient, Result } from '../../../../../utils/generic/httpClient';
 
 const searchResults = [
   {

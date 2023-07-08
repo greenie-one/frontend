@@ -6,14 +6,14 @@ import { BsArrowLeft } from 'react-icons/bs';
 import { AiOutlineRight } from 'react-icons/ai';
 import DrivingLicenceImg from '../assets/DrivingLicence.png';
 import john from '../assets/johnMarston.png';
-import { drivinglicenseAPIList } from '../../../assets/api/ApiList';
-import { useGlobalContext } from '../../../context/GlobalContext';
+import { drivinglicenseAPIList } from '../../../../assets/api/ApiList';
+import { useGlobalContext } from '../../../../context/GlobalContext';
 import {
   showErrorNotification,
   showLoadingNotification,
   showSuccessNotification,
-} from '../../../utils/functions/showNotification';
-import { HttpClient, Result } from '../../../utils/generic/httpClient';
+} from '../../../../utils/functions/showNotification';
+import { HttpClient, Result } from '../../../../utils/generic/httpClient';
 
 export const SeeDrivingLicence = () => {
   const [checked, setChecked] = useState(false);

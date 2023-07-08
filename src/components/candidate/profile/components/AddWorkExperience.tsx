@@ -7,20 +7,20 @@ import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 import '../styles/global.scss';
 import { useProfileContext } from '../context/ProfileContext';
 import { GrAdd } from 'react-icons/gr';
-import linkedInImg from '../../Auth/assets/linkedIn-logo.png';
+import linkedInImg from '../../../auth/assets/linkedIn-logo.png';
 import { BsArrowLeft, BsCheckLg } from 'react-icons/bs';
-import { skillsAPIList } from '../../../assets/api/ApiList';
+import { skillsAPIList } from '../../../../assets/api/ApiList';
 import uploadIcon from '../assets/upload.png';
 import checkedIcon from '../assets/check.png';
-import { workExperienceAPiList } from '../../../assets/api/ApiList';
+import { workExperienceAPiList } from '../../../../assets/api/ApiList';
 import { CgSandClock } from 'react-icons/cg';
-import { useGlobalContext } from '../../../context/GlobalContext';
-import { HttpClient, Result } from '../../../utils/generic/httpClient';
+import { useGlobalContext } from '../../../../context/GlobalContext';
+import { HttpClient, Result } from '../../../../utils/generic/httpClient';
 import {
   showErrorNotification,
   showLoadingNotification,
   showSuccessNotification,
-} from '../../../utils/functions/showNotification';
+} from '../../../../utils/functions/showNotification';
 
 import { ISkill, IWorkExperience } from '../types/APICalls';
 

@@ -7,14 +7,14 @@ import { GoSearch } from 'react-icons/go';
 import { AiOutlineBell, AiFillCaretDown } from 'react-icons/ai';
 import JohnMarston from '../assets/johnMarston.png';
 import { SearchList } from '../components/search_list';
-import { useDebounce } from '../../../utils/hooks/useDebounce';
+import { useDebounce } from '../../../../utils/hooks/useDebounce';
 import { BiUserCircle } from 'react-icons/bi';
 import { RiSettings3Line } from 'react-icons/ri';
 import { MdExitToApp, MdOutlineLiveHelp, MdOutlineLock } from 'react-icons/md';
-import { useSettingsContext } from '../../settings/context/SettingsContext';
+import { useSettingsContext } from '../../../settings/context/SettingsContext';
 import { useProfileContext } from '../context/ProfileContext';
-import { showLoadingNotification, showSuccessNotification } from '../../../utils/functions/showNotification';
-import { useGlobalContext } from '../../../context/GlobalContext';
+import { showLoadingNotification, showSuccessNotification } from '../../../../utils/functions/showNotification';
+import { useGlobalContext } from '../../../../context/GlobalContext';
 import { DrawerAction, DrawerState } from '../types/reducers';
 
 const notificationsData = [

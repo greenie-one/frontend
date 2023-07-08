@@ -7,15 +7,15 @@ import {
   documentsAPIList,
   workExperienceAPiList,
   residentialInfoAPIList,
-} from '../../../assets/api/ApiList';
-import { useGlobalContext } from '../../../context/GlobalContext';
+} from '../../../../assets/api/ApiList';
+import { useGlobalContext } from '../../../../context/GlobalContext';
 
-import { HttpClient, Result } from '../../../utils/generic/httpClient';
+import { HttpClient, Result } from '../../../../utils/generic/httpClient';
 import {
   showErrorNotification,
   showLoadingNotification,
   showSuccessNotification,
-} from '../../../utils/functions/showNotification';
+} from '../../../../utils/functions/showNotification';
 import { DetailsPageAction, DetailsPageState } from '../types/reducers';
 import {
   IDocument,
