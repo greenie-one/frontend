@@ -11,7 +11,6 @@ import {
   showLoadingNotification,
 } from '../../../../utils/functions/showNotification';
 import { HttpClient, Result } from '../../../../utils/generic/httpClient';
-import { ISkill } from '../types/APICalls';
 
 const skillRate = [
   { value: 'BEGINEER', label: 'Begineer/Novice' },

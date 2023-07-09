@@ -1,4 +1,4 @@
-export type profileFormType = {
+type profileFormType = {
   [key: string]: string | string[];
   firstName: string;
   lastName: string;
@@ -6,19 +6,21 @@ export type profileFormType = {
   descriptionTags: string[];
 };
 
-export type verifyAadharFormType = {
+type verifyAadharFormType = {
   aadharNo: string;
   otp: string;
 };
-export type verifyPANFormType = {
+
+type verifyPANFormType = {
   panNo: string;
 };
-export type verifyLicenceFormType = {
+
+type verifyLicenceFormType = {
   licenceNo: string;
   dateOfBirth: Date | null;
 };
 
-export type workExperienceFormType = {
+type workExperienceFormType = {
   [key: string]: string | Date | null;
   designation: string;
   companyType: string;
@@ -32,7 +34,7 @@ export type workExperienceFormType = {
   modeOfWork: string;
 };
 
-export type residentialInfoFormType = {
+type residentialInfoFormType = {
   [key: string]: string | number | Date | null;
   address_line_1: string;
   address_line_2: string;
@@ -46,7 +48,7 @@ export type residentialInfoFormType = {
   end_date: Date | null;
 };
 
-export type skillFormType = {
+type skillFormType = {
   [key: string]: string | null;
   skillName: string;
   expertise: string;

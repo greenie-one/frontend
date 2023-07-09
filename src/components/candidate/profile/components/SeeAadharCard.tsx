@@ -17,7 +17,6 @@ import {
   showLoadingNotification,
   showSuccessNotification,
 } from '../../../../utils/functions/showNotification';
-import { IAadharVerificationData } from '../types/APICalls';
 
 export const SeeAadharCard = () => {
   const [opened, { open, close }] = useDisclosure(false);

@@ -15,7 +15,6 @@ import { useSettingsContext } from '../../../settings/context/SettingsContext';
 import { useProfileContext } from '../context/ProfileContext';
 import { showLoadingNotification, showSuccessNotification } from '../../../../utils/functions/showNotification';
 import { useGlobalContext } from '../../../../context/GlobalContext';
-import { DrawerAction, DrawerState } from '../types/reducers';
 
 const notificationsData = [
   {

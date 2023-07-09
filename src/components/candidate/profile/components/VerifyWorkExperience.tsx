@@ -15,8 +15,6 @@ import {
   showLoadingNotification,
   showSuccessNotification,
 } from '../../../../utils/functions/showNotification';
-import { ISkill } from '../types/APICalls';
-import { PeerVerificationFormType } from '../types/forms';
 
 export enum ReviewActionType {
   NEXT_STEP,

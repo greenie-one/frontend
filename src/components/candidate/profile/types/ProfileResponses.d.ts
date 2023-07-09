@@ -1,21 +1,21 @@
-export interface IDocument {
+type IDocument = {
   id_type: string;
   isVerified: boolean;
-}
+};
 
-export type DocumentsRes = {
+type DocumentsRes = {
   ids: IDocument[];
 };
 
-export interface IUserProfile {
+type IUserProfile = {
   _id: string;
   firstName: string;
   lastName: string;
   bio: string;
   descriptionTags: string[];
-}
+};
 
-export interface IWorkExperience {
+type IWorkExperience = {
   _id: string;
   image: string | null;
   designation: string;
@@ -29,9 +29,9 @@ export interface IWorkExperience {
   isVerified: boolean;
   verifiedBy: [] | null;
   companyType: string;
-}
+};
 
-export interface IResidendialInfoDataType {
+type IResidendialInfoDataType = {
   _id: string;
   address_line_1: string;
   address_line_2: string;
@@ -44,13 +44,13 @@ export interface IResidendialInfoDataType {
   start_date: Date;
   end_date: Date;
   isVerified: boolean;
-}
+};
 
-export type ResidentialInfoRes = {
+type ResidentialInfoRes = {
   residentialInfo: IResidendialInfoDataType[];
 };
 
-export interface ISkillDataType {
+type ISkillDataType = {
   _id: string;
   createdAt: string;
   skillName: string;
@@ -58,15 +58,15 @@ export interface ISkillDataType {
   updatedAt: string;
   user: string;
   __v: number;
-}
+};
 
-export interface ISkill {
+type ISkill = {
   skillName: string;
   expertise: string;
   workExperience: string;
-}
+};
 
-export interface IAadharVerificationData {
+type IAadharVerificationData = {
   requestId: string;
   taskId: string;
-}
+};

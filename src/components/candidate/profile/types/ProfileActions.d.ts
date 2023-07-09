@@ -1,4 +1,4 @@
-export type DetailsPageState = {
+type DetailsPageState = {
   seeAllWorkExperience: boolean;
   seeAllResidentialInfo: boolean;
   seeAllSkills: boolean;
@@ -10,7 +10,7 @@ export type DetailsPageState = {
   seeAddSkills: boolean;
 };
 
-export type DetailsPageAction =
+type DetailsPageAction =
   | { type: 'SET_SEE_ALL_WORKEXPERIENCE'; payload: boolean }
   | { type: 'SET_SEE_ALL_RESIDENTIALINFO'; payload: boolean }
   | { type: 'SET_SEE_ALL_SKILLS'; payload: boolean }
@@ -21,12 +21,12 @@ export type DetailsPageAction =
   | { type: 'SET_SEE_ADD_WORK_EXPERIENCE'; payload: boolean }
   | { type: 'SET_SEE_ADD_SKILLS'; payload: boolean };
 
-export type DrawerState = {
+type DrawerState = {
   firstDrawerOpened: boolean;
   secondDrawerOpened: boolean;
 };
 
-export type DrawerAction =
+type DrawerAction =
   | { type: 'OPEN_FIRST_DRAWER' }
   | { type: 'CLOSE_FIRST_DRAWER' }
   | { type: 'OPEN_SECOND_DRAWER' }
