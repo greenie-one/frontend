@@ -22,7 +22,6 @@ import {
   showSuccessNotification,
 } from '../../../../utils/functions/showNotification';
 
-import { ISkill, IWorkExperience } from '../types/APICalls';
 
 type Document = {
   document: File | undefined;

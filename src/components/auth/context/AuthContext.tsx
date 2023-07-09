@@ -24,7 +24,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [validationId, setValidationId] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [forceRender, setForceRender] = useState<boolean>(false);
-  const [secondsRemaining, setSecondsRemaining] = useState<number>(30);
 
   const signupForm = useForm<signUpFormType>({
     initialValues: {
@@ -109,7 +108,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return { ...state, loginStep: state.loginStep - 1 };
       case 'RESETLOGINSTEP':
         return { ...state, loginStep: 1 };
-      case 'NEXTRESETPASSWRDSTEP':
+      case 'NEXTRESETPASSWORDSTEP':
         return { ...state, resetPasswordStep: state.resetPasswordStep + 1 };
       case 'PREVRESETPASSWORDSTEP':
         return { ...state, resetPasswordStep: state.resetPasswordStep - 1 };
@@ -137,6 +136,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (isLoading) {
       return Promise.resolve(null);
     }
+
     setIsLoading(true);
     signupForm.clearErrors();
 
@@ -149,6 +149,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       url: `${authApiList.resendOtp}`,
       method: 'POST',
       body: { validationId },
+      toJSON: false,
     });
 
     if (res.ok) {
@@ -183,18 +184,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, [forceRender]);
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setSecondsRemaining((prevSecondsRemaining) => prevSecondsRemaining - 1);
-    }, 1000);
-
-    if (secondsRemaining === 0) {
-      clearInterval(timer);
-    }
-
-    return () => clearInterval(timer);
-  }, [secondsRemaining]);
-
   return (
     <AuthContext.Provider
       value={{
@@ -210,7 +199,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         resendOtp,
         forceRender,
         setForceRender,
-        secondsRemaining,
       }}
     >
       {children}

@@ -1,25 +1,26 @@
-export type profileFormType = {
-  [key: string]: string | string[];
+type profileFormType = {
   firstName: string;
   lastName: string;
   bio: string;
   descriptionTags: string[];
+  profilePic: string;
 };
 
-export type verifyAadharFormType = {
+type verifyAadharFormType = {
   aadharNo: string;
   otp: string;
 };
-export type verifyPANFormType = {
+
+type verifyPANFormType = {
   panNo: string;
 };
-export type verifyLicenceFormType = {
+
+type verifyLicenceFormType = {
   licenceNo: string;
   dateOfBirth: Date | null;
 };
 
-export type workExperienceFormType = {
-  [key: string]: string | Date | null;
+type workExperienceFormType = {
   designation: string;
   companyType: string;
   companyName: string;
@@ -27,13 +28,12 @@ export type workExperienceFormType = {
   workEmail: string;
   companyId: string;
   startDate: Date | null;
-  endDate: Date | null;
+  endDate?: Date | null;
   workType: string;
   modeOfWork: string;
 };
 
-export type residentialInfoFormType = {
-  [key: string]: string | number | Date | null;
+type residentialInfoFormType = {
   address_line_1: string;
   address_line_2: string;
   landmark: string;
@@ -42,12 +42,11 @@ export type residentialInfoFormType = {
   typeOfAddress: string;
   state: '';
   country: '';
-  start_date: Date | null;
-  end_date: Date | null;
+  start_date: Date;
+  end_date?: Date;
 };
 
-export type skillFormType = {
-  [key: string]: string | null;
+type skillFormType = {
   skillName: string;
   expertise: string;
 };

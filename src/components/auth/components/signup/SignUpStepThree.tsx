@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { TextInput, Text, Button, Flex, Box } from '@mantine/core';
 
 import { HttpClient } from '../../../../utils/generic/httpClient';
@@ -16,21 +16,25 @@ import '../../styles/global.scss';
 
 const SignUpStepThree = () => {
   const { authClient, inputStyles } = useGlobalContext();
-  const {
-    signupForm,
-    state,
-    dispatch,
-    isPhoneNumber,
-    isValidEmail,
-    validationId,
-    resendOtp,
-    setForceRender,
-    secondsRemaining,
-  } = useAuthContext();
+  const { signupForm, state, dispatch, isPhoneNumber, isValidEmail, validationId, resendOtp, setForceRender } =
+    useAuthContext();
 
   const { signUpStep } = state;
   const { classes: inputClasses } = inputStyles();
   const [isLoading, setIsLoading] = useState(false);
+  const [secondsRemaining, setSecondsRemaining] = useState<number>(30);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setSecondsRemaining((prevSecondsRemaining) => prevSecondsRemaining - 1);
+    }, 1000);
+
+    if (secondsRemaining === 0) {
+      clearInterval(timer);
+    }
+
+    return () => clearInterval(timer);
+  }, [secondsRemaining]);
 
   const VerifyOTP = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();

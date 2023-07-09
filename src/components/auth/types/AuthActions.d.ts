@@ -12,7 +12,7 @@ type CounterAction =
   | { type: 'NEXTLOGINSTEP' }
   | { type: 'PREVLOGINSTEP' }
   | { type: 'RESETLOGINSTEP' }
-  | { type: 'NEXTRESETPASSWRDSTEP' }
+  | { type: 'NEXTRESETPASSWORDSTEP' }
   | { type: 'PREVRESETPASSWORDSTEP' }
   | { type: 'NEXTLOGINWITHOTPSTEP' }
   | { type: 'PREVLOGINWITHOTPSTEP' }
