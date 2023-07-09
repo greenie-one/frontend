@@ -1,7 +1,7 @@
 import { MdVerified } from 'react-icons/md';
 import { LandingSectionHeading } from './SectionHeading';
 import { Box, Text, Title } from '@mantine/core';
-import '../Landing/styles/_solutions.scss';
+import '../landing/styles/_solutions.scss';
 
 import cost from '../../assets/images/Landing/cost.png';
 import speedometer from '../../assets/images/Landing/speedometer.png';
