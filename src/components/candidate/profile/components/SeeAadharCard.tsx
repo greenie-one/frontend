@@ -349,7 +349,7 @@ export const SeeAadharCard = () => {
   );
 };
 
-const OtpInputStyles = createStyles((theme) => ({
+const OtpInputStyles = createStyles(() => ({
   root: {
     position: 'relative',
     marginBlock: '8px',

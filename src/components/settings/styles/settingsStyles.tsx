@@ -1,6 +1,6 @@
 import { createStyles, rem } from '@mantine/core';
 
-export const settingsStyles = createStyles((theme) => ({
+export const settingsStyles = createStyles(() => ({
   settingsMain: {
     paddingBlockStart: rem(128),
     paddingBlockEnd: '4.5rem',

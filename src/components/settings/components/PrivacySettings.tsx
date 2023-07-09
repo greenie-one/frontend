@@ -141,7 +141,7 @@ export const PrivacySettings: React.FC = (): JSX.Element => {
   );
 };
 
-const inputStyles = createStyles((theme) => ({
+const inputStyles = createStyles(() => ({
   root: {
     position: 'relative',
   },

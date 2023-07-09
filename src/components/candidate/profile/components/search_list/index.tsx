@@ -127,7 +127,7 @@ export const SearchList: React.FC<ISearchListPropsType> = ({ searchQuery, setSho
   );
 };
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(() => ({
   searchListContainer: {
     position: 'absolute',
     top: `calc(100% + ${rem(5)})`,

@@ -35,7 +35,7 @@ export const LoadingState: React.FC = (): JSX.Element => {
   );
 };
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(() => ({
   loadingOverlay: {
     position: 'absolute',
     left: '0',

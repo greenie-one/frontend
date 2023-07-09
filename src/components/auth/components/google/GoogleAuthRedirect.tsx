@@ -25,7 +25,7 @@ export const GoogleAuthRedirect = () => {
         if (res.ok) {
           setAuthTokens(res.value);
         } else {
-          console.log(res.error.code);
+          console.error(res.error.code);
         }
 
         if (authTokens) {

@@ -20,7 +20,7 @@ export const LandingSectionHeading: React.FC<LandingSectionHeadingProps> = ({ he
   );
 };
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(() => ({
   root: {
     display: 'flex',
     flexDirection: 'column',

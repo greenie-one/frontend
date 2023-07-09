@@ -16,7 +16,7 @@ export const NoResultContent: React.FC = (): JSX.Element => {
   );
 };
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(() => ({
   NoResultContainer: {
     position: 'absolute',
     top: `calc(100% + ${rem(5)})`,

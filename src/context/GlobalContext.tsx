@@ -19,7 +19,7 @@ export const GlobalContextProvider: React.FC<{
   const [forceRender, setForceRender] = useState<boolean>(true);
   const authClient = AuthClient.getInstance();
 
-  const inputStyles = createStyles((theme) => ({
+  const inputStyles = createStyles(() => ({
     root: {
       position: 'relative',
       marginBottom: '24px',
@@ -82,7 +82,7 @@ export const GlobalContextProvider: React.FC<{
     },
   }));
 
-  const OtpInputStyles = createStyles((theme) => ({
+  const OtpInputStyles = createStyles(() => ({
     root: {
       position: 'relative',
       marginBlock: '24px',

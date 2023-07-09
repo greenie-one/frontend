@@ -339,7 +339,7 @@ export const Navbar = () => {
   );
 };
 
-const inputStyles = createStyles((theme) => ({
+const inputStyles = createStyles(() => ({
   input: {
     background: '#F8F8F8',
     borderRadius: '90px',
@@ -361,7 +361,7 @@ const inputStyles = createStyles((theme) => ({
   },
 }));
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(() => ({
   logo: {
     paddingInline: '2rem',
     paddingBlock: '1rem',

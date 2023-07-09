@@ -216,7 +216,7 @@ const Profile = () => {
 
 export default Profile;
 
-// const inputStyles = createStyles((theme) => ({
+// const inputStyles = createStyles(() => ({
 //   root: {
 //     position: 'relative',
 //     marginBottom: '16px',

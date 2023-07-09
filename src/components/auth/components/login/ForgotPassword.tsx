@@ -239,7 +239,7 @@ const ForgotPassword = () => {
 
 export default ForgotPassword;
 
-// const inputStyles = createStyles((theme) => ({
+// const inputStyles = createStyles(() => ({
 //   root: {
 //     position: 'relative',
 //     marginBlock: '24px',

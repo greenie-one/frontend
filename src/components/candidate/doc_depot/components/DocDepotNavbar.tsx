@@ -14,7 +14,7 @@ export const DocDepotNavbar = () => {
   );
 };
 
-const inputStyles = createStyles((theme) => ({
+const inputStyles = createStyles(() => ({
   input: {
     background: '#ffffff',
     border: '1px solid #ebebeb',
