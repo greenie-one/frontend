@@ -1,11 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { createStyles, List, Title, Text, em, rem, Box, Flex, TextInput } from '@mantine/core';
+import { createStyles, List, Title, Text, em, rem, Box, Flex } from '@mantine/core';
 import { BsInstagram } from 'react-icons/bs';
 import { FiLinkedin } from 'react-icons/fi';
-import { MdOutlineMail, MdOutlineFacebook, MdVerified } from 'react-icons/md';
-
-import { Button } from './Button';
+import { MdOutlineMail, MdVerified } from 'react-icons/md';
 
 export const Footer: React.FC = (): JSX.Element => {
   const { classes } = useStyles();

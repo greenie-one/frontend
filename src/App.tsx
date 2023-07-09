@@ -13,8 +13,11 @@ import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage';
 import { TermsAndConditionsPage } from './pages/TermsAndConditionsPage';
 
 import { AuthVerificationLayout } from './utils/constants/AuthVerification';
-import { GoogleAuthRedirect } from './components/Auth/components/Google/GoogleAuthRedirect';
+import { GoogleAuthRedirect } from './components/auth/components/google/GoogleAuthRedirect';
 import { AppLayout } from './components/layouts/AppLayout';
+
+import { VerificationByHRPage } from './pages/VerificationByHRPage';
+import { VerificationByManagerPage } from './pages/VerificationByManagerPage';
 
 const App = () => {
   return (
@@ -28,12 +31,15 @@ const App = () => {
             <Route path="auth" element={<AuthPage />} />
             <Route path="waitlist" element={<Waitlist />} />
             <Route path="oauth/google/callback" element={<GoogleAuthRedirect />} />
+            <Route path="/hr" element={<VerificationByHRPage />} />
+            <Route path="/manager" element={<VerificationByManagerPage />} />
 
             <Route element={<AuthVerificationLayout />}>
               <Route path="profile">
                 <Route index element={<ProfilePage />} />
                 <Route path="settings" element={<SettingsPage />} />
               </Route>
+              R
             </Route>
             <Route path="privacy" element={<PrivacyPolicyPage />} />
             <Route path="tos" element={<TermsAndConditionsPage />} />

@@ -1,11 +1,14 @@
-import { Profile } from '../components/Profile/index';
-import { ProfileProvider } from '../components/Profile/context/ProfileContext';
+import { Profile } from '../components/candidate/profile/index';
+import { ProfileProvider } from '../components/candidate/profile/context/ProfileContext';
+import { DocDepotContextProvider } from '../components/candidate/doc_depot/context/DocDepotContext';
 
 export const ProfilePage = () => {
   return (
     <>
       <ProfileProvider>
-        <Profile />
+        <DocDepotContextProvider>
+          <Profile />
+        </DocDepotContextProvider>
       </ProfileProvider>
     </>
   );

@@ -1,0 +1,3 @@
+type GoogleAuthResponse = {
+  redirectUrl: string;
+};

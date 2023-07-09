@@ -1,7 +1,7 @@
 import React from 'react';
-import { ProfileProvider } from '../components/Profile/context/ProfileContext';
-import { SettingsProvider } from '../components/Settings/context/SettingsContext';
-import { Settings } from '../components/Settings';
+import { ProfileProvider } from '../components/candidate/profile/context/ProfileContext';
+import { SettingsProvider } from '../components/settings/context/SettingsContext';
+import { Settings } from '../components/settings';
 
 export const SettingsPage: React.FC = (): JSX.Element => {
   return (

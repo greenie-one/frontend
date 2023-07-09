@@ -5,12 +5,12 @@ import Autoplay from 'embla-carousel-autoplay';
 import { Carousel } from '@mantine/carousel';
 import { useWindowScroll } from '@mantine/hooks';
 import { Affix, Button, Transition } from '@mantine/core';
-import { LandingHero } from '../components/Landing/Hero';
-import { LandingSolutions } from '../components/Landing/Solutions';
-import { LandingFeatures } from '../components/Landing/Features';
-import { LandingGreenieWorkings } from '../components/Landing/GreenieWorking';
-import { LandingHiring } from '../components/Landing/Hiring';
-import { LandingTestimonials } from '../components/Landing/Testimonials';
+import { LandingHero } from '../components/landing/Hero';
+import { LandingSolutions } from '../components/landing/Solutions';
+import { LandingFeatures } from '../components/landing/Features';
+import { LandingGreenieWorkings } from '../components/landing/GreenieWorking';
+import { LandingHiring } from '../components/landing/Hiring';
+import { LandingTestimonials } from '../components/landing/Testimonials';
 import { FaChevronUp } from 'react-icons/fa';
 
 type TestimonialCardPropsType = {
@@ -25,7 +25,7 @@ const TestimonialCard: React.FC<TestimonialCardPropsType> = ({ statement, name, 
 
   useEffect(() => {
     if (location.hash) {
-      let elem = document.getElementById(location.hash.slice(1));
+      const elem = document.getElementById(location.hash.slice(1));
       if (elem) {
         elem.scrollIntoView({ behavior: 'smooth' });
       }

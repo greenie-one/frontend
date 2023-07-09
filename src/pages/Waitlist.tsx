@@ -1,23 +1,23 @@
 import { useNavigate } from 'react-router-dom';
 import { Box, TextInput, createStyles, rem, em, Button, Title, Text, Image } from '@mantine/core';
 import { useForm, isEmail, isNotEmpty } from '@mantine/form';
-import { notifications } from '@mantine/notifications';
 
-import useApi from '../utils/hooks/useApi';
 import { authApiList } from '../assets/api/ApiList';
+import { HttpClient, Result } from '../utils/generic/httpClient';
+import {
+  showErrorNotification,
+  showLoadingNotification,
+  showSuccessNotification,
+} from '../utils/functions/showNotification';
 
 import { Navbar } from '../components/common/Navbar';
 import waitlist_img from '../assets/images/waitlist/waitlist_img.png';
 import { MdVerified } from 'react-icons/md';
-import { BsCheckLg } from 'react-icons/bs';
-import { FaExclamation } from 'react-icons/fa';
 
 export const Waitlist = () => {
   const navigate = useNavigate();
   const { classes } = useStyles();
   const { classes: inputClasses } = inputStyles();
-
-  const { isLoading, sendRequest } = useApi();
 
   const waitlistForm = useForm({
     initialValues: {
@@ -40,45 +40,31 @@ export const Waitlist = () => {
     },
   });
 
-  const handleWaitlistSubmit = () => {
-    waitlistForm.reset();
+  const handleWaitlistSubmit = async () => {
+    showLoadingNotification({
+      title: 'Loading !',
+      message: 'Please wait while we add you to the waitlist.',
+    });
 
-    sendRequest(`${authApiList.waitlist}`, 'POST', waitlistForm.getTransformedValues())
-      .then((res: any) => {
-        if (res.message === 'added to waitlist') {
-          notifications.show({
-            title: isLoading ? 'Sending...' : 'Success !',
-            message: isLoading
-              ? 'Please wait while we add you to the waitlist.'
-              : 'You have been added to the waitlist! We will notify you when we launch.',
-            autoClose: 2200,
-            color: isLoading ? 'blue' : 'teal',
-            icon: !isLoading && <BsCheckLg />,
-            loading: isLoading,
-          });
-        }
-      })
-      .catch((err) => {
-        if (err) {
-          notifications.show({
-            title: isLoading ? 'Sending...' : 'Email already in waitlist',
-            message: isLoading
-              ? 'Please wait while we add you to the waitlist.'
-              : 'Please check your email for more information.',
-            autoClose: 2200,
-            color: isLoading ? 'blue' : 'red',
-            icon: !isLoading && <FaExclamation />,
-            loading: isLoading,
-          });
-        }
-      })
-      .finally(() => {
-        if (!isLoading) {
-          setTimeout(() => {
-            navigate('/');
-          }, 2200);
-        }
+    const res: Result<any> = await HttpClient.callApi({
+      url: `${authApiList.waitlist}`,
+      method: 'POST',
+      body: waitlistForm.getTransformedValues(),
+    });
+
+    waitlistForm.reset();
+    if (res.ok) {
+      showSuccessNotification({
+        title: 'Success !',
+        message: 'You have been added to the waitlist! We will notify you when we launch.',
       });
+
+      setTimeout(() => {
+        navigate('/');
+      }, 2200);
+    } else {
+      showErrorNotification(res.error.code);
+    }
   };
 
   return (
