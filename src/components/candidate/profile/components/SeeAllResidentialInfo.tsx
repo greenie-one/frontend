@@ -223,7 +223,7 @@ export const SeeAllResidentialInfo = () => {
               label="End date"
               withAsterisk
               className="inputClass"
-              {...residentialInfoForm.getInputProps('endDate')}
+              {...residentialInfoForm.getInputProps('end_date')}
             />
 
             <Checkbox

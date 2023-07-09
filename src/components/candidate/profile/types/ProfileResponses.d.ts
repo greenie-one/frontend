@@ -55,6 +55,7 @@ type ISkillDataType = {
   createdAt: string;
   skillName: string;
   expertise: string;
+  isVerified?: boolean;
   updatedAt: string;
   user: string;
   __v: number;
@@ -63,7 +64,7 @@ type ISkillDataType = {
 type ISkill = {
   skillName: string;
   expertise: string;
-  workExperience: string;
+  workExperience?: string;
 };
 
 type IAadharVerificationData = {

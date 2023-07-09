@@ -15,23 +15,25 @@ import {
   showLoadingNotification,
   showSuccessNotification,
 } from '../../../../utils/functions/showNotification';
-import {
-  profileForm,
-  verifyAadharForm,
-  verifyPANForm,
-  verifyLicenceForm,
-  workExperienceForm,
-  residentialInfoForm,
-  skillForm,
-} from './ProfileForms.ts';
+import { useProfileForms } from './ProfileForms';
 
 const ProfileContext = createContext<ProfileContextType>({} as ProfileContextType);
-const { authClient } = useGlobalContext();
 export const useProfileContext = () => useContext(ProfileContext);
 
 export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [forceRender, setForceRender] = useState<boolean>(false);
+  const { authClient } = useGlobalContext();
+  const authTokens = authClient.getAccessToken();
+  const {
+    profileForm,
+    verifyAadharForm,
+    verifyPANForm,
+    verifyLicenceForm,
+    workExperienceForm,
+    residentialInfoForm,
+    skillForm,
+  } = useProfileForms();
 
+  const [forceRender, setForceRender] = useState<boolean>(false);
   const [aadharIsVerified, setAadharIsVerified] = useState<boolean>(false);
   const [panIsVerified, setPanIsVerified] = useState<boolean>(false);
   const [licenseIsVerified, setLicenseIsVerified] = useState<boolean>(false);
@@ -40,8 +42,6 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const [selectedSkills, setSelectedSkills] = useState<ISkill[]>([]);
   const [docDepotActivePage, setDocDepotActivePage] = useState<number>(0);
   const [isLoading, setIsLoading] = useState(false);
-
-  const authTokens = authClient.getAccessToken();
 
   //------------------------------PROFILE/BIO----------------------------------------
   const [profileData, setProfileData] = useState<IUserProfile>({
@@ -216,20 +216,24 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
     });
 
     const data = residentialInfoForm.values;
-    const filteredData: any = {};
+    let filteredData: residentialInfoFormType;
 
-    for (const key in data) {
-      const value = data[key];
-      if (value !== '' && value !== null) {
-        filteredData[key] = value;
-      }
+    // for (const key in data) {
+    //   const value = data[key];
+    //   if (value !== '' && value !== null) {
+    //     filteredData[key] = value;
+    //   }
+    // }
+
+    if (typeof data.start_date == 'string') {
+      console.log('show error notification: start date null');
     }
 
-    const res: Result<any> = await HttpClient.callApiAuth(
+    const res = await HttpClient.callApiAuth(
       {
         url: `${residentialInfoAPIList.updateResidentialInfo}/${id}`,
         method: 'PATCH',
-        body: filteredData,
+        body: data,
       },
       authClient
     );

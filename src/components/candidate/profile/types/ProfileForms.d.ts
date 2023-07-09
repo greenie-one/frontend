@@ -1,9 +1,9 @@
 type profileFormType = {
-  [key: string]: string | string[];
   firstName: string;
   lastName: string;
   bio: string;
   descriptionTags: string[];
+  profilePic: string;
 };
 
 type verifyAadharFormType = {
@@ -21,7 +21,6 @@ type verifyLicenceFormType = {
 };
 
 type workExperienceFormType = {
-  [key: string]: string | Date | null;
   designation: string;
   companyType: string;
   companyName: string;
@@ -29,13 +28,12 @@ type workExperienceFormType = {
   workEmail: string;
   companyId: string;
   startDate: Date | null;
-  endDate: Date | null;
+  endDate?: Date | null;
   workType: string;
   modeOfWork: string;
 };
 
 type residentialInfoFormType = {
-  [key: string]: string | number | Date | null;
   address_line_1: string;
   address_line_2: string;
   landmark: string;
@@ -44,12 +42,11 @@ type residentialInfoFormType = {
   typeOfAddress: string;
   state: '';
   country: '';
-  start_date: Date | null;
-  end_date: Date | null;
+  start_date: Date;
+  end_date?: Date;
 };
 
 type skillFormType = {
-  [key: string]: string | null;
   skillName: string;
   expertise: string;
 };
