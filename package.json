@@ -9,7 +9,8 @@
     "build:dev": "vite build --mode development",
     "build:prod": "vite build --mode production",
     "preview": "vite preview",
-    "serve": "serve -s dist -p 3000"
+    "serve": "serve -s dist -p 3000",
+    "lint": "eslint ./src"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
