@@ -110,9 +110,14 @@ const LoginStepTwo = () => {
       loginForm.clearErrors();
       setIsLoading(true);
 
-      showLoadingNotification({ title: 'Sending...', message: 'Please wait while we send you an OTP.' });
+      showLoadingNotification({
+        title: 'Sending...',
+        message: 'Please wait while we send you an OTP.',
+      });
 
-      const requestBody: LoginRequestBody = { mobileNumber: `${loginForm.values.emailPhoneGreenieId}` };
+      const requestBody: LoginRequestBody = {
+        mobileNumber: `${loginForm.values.emailPhoneGreenieId}`,
+      };
       const res = await HttpClient.callApi<LoginResponse>({
         url: `${authApiList.login}`,
         method: 'POST',

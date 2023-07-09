@@ -8,7 +8,11 @@ import { ProfileDetailsBox } from '../../verification_by_hr/components';
 export const VBMStepFour = () => {
   const { PrevActiveStep, NextActiveStep } = useVBMContext();
   const [skills, setSkills] = useState([
-    { skillName: 'Software Engineer', expertise: 'Master Pro', status: 'pending' },
+    {
+      skillName: 'Software Engineer',
+      expertise: 'Master Pro',
+      status: 'pending',
+    },
     { skillName: 'ReactJs', expertise: 'Master Pro', status: 'pending' },
     { skillName: 'Express', expertise: 'Master Pro', status: 'pending' },
   ]);

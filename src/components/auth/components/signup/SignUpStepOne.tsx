@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextInput, createStyles, em, rem, Text, Button, Divider, Box } from '@mantine/core';
+import { TextInput, Text, Button, Divider, Box } from '@mantine/core';
 
 import { useAuthContext } from '../../context/AuthContext';
 import GoogleButton from '../google/GoogleButton';

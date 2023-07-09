@@ -23,11 +23,17 @@ export const VerificationIDSection = () => {
   const [checked, setChecked] = useState<boolean>(false);
   const handlePageChange = (documentsType: string) => {
     if (documentsType === 'AADHAR') {
-      dispatchDetailsPage({ type: 'SET_SEE_AADHAR_CARD', payload: !detailsPage.seeAadharCard });
+      dispatchDetailsPage({
+        type: 'SET_SEE_AADHAR_CARD',
+        payload: !detailsPage.seeAadharCard,
+      });
       scrollToTop();
     }
     if (documentsType === 'PAN') {
-      dispatchDetailsPage({ type: 'SET_SEE_PAN_CARD', payload: !detailsPage.seePanCard });
+      dispatchDetailsPage({
+        type: 'SET_SEE_PAN_CARD',
+        payload: !detailsPage.seePanCard,
+      });
       scrollToTop();
     }
     if (documentsType === 'DRIVING_LICENSE') {

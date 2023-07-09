@@ -11,7 +11,6 @@ import smartContract from '../../assets/images/Landing/smart-contract.png';
 import fileSharing from '../../assets/images/Landing/file-sharing.png';
 import userProfile from '../../assets/images/Landing/user-profile.png';
 import socialMedia from '../../assets/images/Landing/social-media.png';
-import solutionsBg from '../../assets/images/Landing/solutionsBg.png';
 
 const forEnterPrice = [
   'Reduce cost of background verification by 73%.',

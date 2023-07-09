@@ -41,7 +41,10 @@ export const AddSkills = () => {
 
   const handleAddSkillPage = () => {
     scrollToTop();
-    dispatchDetailsPage({ type: 'SET_SEE_ADD_SKILLS', payload: !detailsPage.seeAddSkills });
+    dispatchDetailsPage({
+      type: 'SET_SEE_ADD_SKILLS',
+      payload: !detailsPage.seeAddSkills,
+    });
   };
 
   const handleSkillContinue = async () => {

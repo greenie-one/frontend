@@ -46,7 +46,10 @@ const LoginStepThree = () => {
         message: 'Please wait while we log you in...',
       });
 
-      const requestBody: ValidateOtpBody = { validationId, otp: loginForm.values.otp as string };
+      const requestBody: ValidateOtpBody = {
+        validationId,
+        otp: loginForm.values.otp as string,
+      };
       const res = await HttpClient.callApi<AuthTokens>({
         url: `${authApiList.validateOtp}`,
         method: 'POST',

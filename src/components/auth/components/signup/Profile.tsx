@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { TextInput, Text, Button, Box, Flex, em, Chip, Group } from '@mantine/core';
+import { TextInput, Text, Button, Box, Flex, Chip, Group } from '@mantine/core';
 
 import { useGlobalContext } from '../../../../context/GlobalContext';
 import { useAuthContext } from '../../context/AuthContext';
@@ -92,7 +92,10 @@ const Profile = () => {
       );
 
       if (res.ok) {
-        showSuccessNotification({ title: 'Success !', message: 'Your profile details have been added successfully.' });
+        showSuccessNotification({
+          title: 'Success !',
+          message: 'Your profile details have been added successfully.',
+        });
         setForceRender((prev) => !prev);
         // navigate('/profile');
       } else {

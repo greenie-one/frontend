@@ -4,7 +4,7 @@ import hiringDocuments from '../../assets/images/Landing/hiring-documents.png';
 import cap from '../../assets/images/Landing/cap.svg';
 import { MdVerified } from 'react-icons/md';
 import { motion } from 'framer-motion';
-import { useAnimate, useTransform, useInView } from 'framer-motion';
+import { useAnimate, useInView } from 'framer-motion';
 import { useEffect } from 'react';
 
 export const LandingHiring: React.FC = (): JSX.Element => {
@@ -17,7 +17,13 @@ export const LandingHiring: React.FC = (): JSX.Element => {
       animate(
         scope.current,
         { y: [20, 0], opacity: [0, 1] },
-        { type: 'spring', bounce: 0.8, bounceStiffness: 200, duration: 1.5, delay: 0.2 }
+        {
+          type: 'spring',
+          bounce: 0.8,
+          bounceStiffness: 200,
+          duration: 1.5,
+          delay: 0.2,
+        }
       );
     }
   }, [isInView]);

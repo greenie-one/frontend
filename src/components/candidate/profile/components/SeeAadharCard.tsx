@@ -1,7 +1,7 @@
 import '../styles/global.scss';
 import { useState } from 'react';
 import { useProfileContext } from '../context/ProfileContext';
-import { Text, Box, Button, Modal, Checkbox, createStyles, em, rem, TextInput, Title, CopyButton } from '@mantine/core';
+import { Text, Box, Button, Modal, Checkbox, createStyles, em, TextInput, Title, CopyButton } from '@mantine/core';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 import { BsArrowLeft } from 'react-icons/bs';
 import { MdVerified, MdOutlineContentCopy } from 'react-icons/md';
@@ -49,7 +49,10 @@ export const SeeAadharCard = () => {
       {
         url: `${aadharAPIList.requestOTPForAadhar}`,
         method: 'POST',
-        body: { id_type: 'AADHAR', id_number: verifyAadharForm.values.aadharNo },
+        body: {
+          id_type: 'AADHAR',
+          id_number: verifyAadharForm.values.aadharNo,
+        },
       },
       authClient
     );
@@ -61,7 +64,10 @@ export const SeeAadharCard = () => {
         taskId: taskId,
       }));
       open();
-      showSuccessNotification({ title: 'Success !', message: 'OTP Sent to your linked phone number' });
+      showSuccessNotification({
+        title: 'Success !',
+        message: 'OTP Sent to your linked phone number',
+      });
     } else {
       showErrorNotification(res.error.code);
     }
@@ -100,12 +106,19 @@ export const SeeAadharCard = () => {
         {
           url: `${aadharAPIList.verifyOTPForAadhar}`,
           method: 'POST',
-          body: { otp: verifyAadharForm.values.otp, request_id: requestId, task_id: taskId },
+          body: {
+            otp: verifyAadharForm.values.otp,
+            request_id: requestId,
+            task_id: taskId,
+          },
         },
         authClient
       );
       if (res.ok) {
-        showSuccessNotification({ title: 'Success !', message: 'OTP Verified Successfully' });
+        showSuccessNotification({
+          title: 'Success !',
+          message: 'OTP Verified Successfully',
+        });
         close();
         setAadharIsVerified(true);
         verifyAadharForm.values.otp = '';
@@ -118,14 +131,20 @@ export const SeeAadharCard = () => {
   };
 
   const handlePageChange = () => {
-    dispatchDetailsPage({ type: 'SET_SEE_AADHAR_CARD', payload: !detailsPage.seeAadharCard });
+    dispatchDetailsPage({
+      type: 'SET_SEE_AADHAR_CARD',
+      payload: !detailsPage.seeAadharCard,
+    });
     verifyAadharForm.values.aadharNo = '';
     verifyAadharForm.values.otp = '';
   };
 
   const handleContinue = () => {
     scrollToTop();
-    dispatchDetailsPage({ type: 'SET_SEE_AADHAR_CARD', payload: !detailsPage.seeAadharCard });
+    dispatchDetailsPage({
+      type: 'SET_SEE_AADHAR_CARD',
+      payload: !detailsPage.seeAadharCard,
+    });
     dispatchDetailsPage({
       type: 'SET_SEE_CONGRATULATIONS_SCREEN',
       payload: !detailsPage.seeCongratulations,

@@ -32,12 +32,18 @@ export const SeeDrivingLicence = () => {
         {
           url: `${drivinglicenseAPIList.verifylicense}`,
           method: 'POST',
-          body: { id_type: 'DRIVING_LICENSE', id_number: verifyLicenceForm.values.licenceNo },
+          body: {
+            id_type: 'DRIVING_LICENSE',
+            id_number: verifyLicenceForm.values.licenceNo,
+          },
         },
         authClient
       );
       if (res.ok) {
-        showSuccessNotification({ title: 'Success !', message: 'Verified your Licence successfully' });
+        showSuccessNotification({
+          title: 'Success !',
+          message: 'Verified your Licence successfully',
+        });
         setLicenseIsVerified(true);
         getDocuments();
       } else {

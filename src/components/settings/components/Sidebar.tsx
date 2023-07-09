@@ -29,7 +29,10 @@ export const Sidebar = (): JSX.Element => {
   const navigate = useNavigate();
 
   const removeAuthTokens = () => {
-    showLoadingNotification({ title: 'Signing Out', message: 'Please wait while we sign you out' });
+    showLoadingNotification({
+      title: 'Signing Out',
+      message: 'Please wait while we sign you out',
+    });
 
     setTimeout(() => {
       authClient.deleteTokens();

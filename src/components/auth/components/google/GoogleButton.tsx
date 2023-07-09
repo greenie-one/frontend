@@ -12,7 +12,9 @@ import '../../styles/global.scss';
 const GoogleButton = () => {
   const { setForceRender } = useAuthContext();
 
-  const [authTokens, setAuthTokens] = useLocalStorage<AuthTokens>({ key: 'auth-tokens' });
+  const [authTokens, setAuthTokens] = useLocalStorage<AuthTokens>({
+    key: 'auth-tokens',
+  });
   const [isLoading, setIsLoading] = useState(false);
 
   const handleGoogleAuth = async () => {

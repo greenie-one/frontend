@@ -37,7 +37,10 @@ const SignUpStepTwo = () => {
     ) {
       signupForm.clearErrors();
       setIsLoading(true);
-      showLoadingNotification({ title: 'Sending...', message: 'Please wait while we send you an OTP' });
+      showLoadingNotification({
+        title: 'Sending...',
+        message: 'Please wait while we send you an OTP',
+      });
 
       const requestBody: SignupRequestBody = {
         email: signupForm.values.emailPhone,
@@ -51,7 +54,10 @@ const SignUpStepTwo = () => {
 
       if (res.ok) {
         setValidationId(res.value.validationId);
-        showSuccessNotification({ title: 'Success !', message: 'An OTP has been sent to your email.' });
+        showSuccessNotification({
+          title: 'Success !',
+          message: 'An OTP has been sent to your email.',
+        });
 
         dispatch({ type: 'NEXTSIGNUPSTEP' });
       } else {
@@ -71,9 +77,14 @@ const SignUpStepTwo = () => {
       signupForm.clearErrors();
       setIsLoading(true);
 
-      showLoadingNotification({ title: 'Sending...', message: 'Please wait while we send you an OTP' });
+      showLoadingNotification({
+        title: 'Sending...',
+        message: 'Please wait while we send you an OTP',
+      });
 
-      const requestBody: SignupRequestBody = { mobileNumber: `${signupForm.values.emailPhone}` };
+      const requestBody: SignupRequestBody = {
+        mobileNumber: `${signupForm.values.emailPhone}`,
+      };
       const res = await HttpClient.callApi<SignupResponse>({
         url: `${authApiList.signup}`,
         method: 'POST',
@@ -82,7 +93,10 @@ const SignUpStepTwo = () => {
 
       if (res.ok) {
         setValidationId(res.value.validationId);
-        showSuccessNotification({ title: 'Success !', message: 'An OTP has been sent to your mobile number.' });
+        showSuccessNotification({
+          title: 'Success !',
+          message: 'An OTP has been sent to your mobile number.',
+        });
 
         dispatch({ type: 'NEXTSIGNUPSTEP' });
       } else {

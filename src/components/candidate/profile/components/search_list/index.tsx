@@ -58,7 +58,13 @@ const searchResults = [
     designation: 'Software Engineer at Wipro',
     rating: 1,
   },
-  { thumbnail: profileThumbnail, name: 'JCB', verified: true, designation: 'Pune', rating: 4.5 },
+  {
+    thumbnail: profileThumbnail,
+    name: 'JCB',
+    verified: true,
+    designation: 'Pune',
+    rating: 4.5,
+  },
 ];
 
 interface ISearchListPropsType {

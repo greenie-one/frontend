@@ -1,4 +1,4 @@
-import { createStyles, Title, Text, em, rem, Box, Image } from '@mantine/core';
+import { createStyles, Title, Text, em, rem, Box } from '@mantine/core';
 
 type LandingSectionHeadingProps = {
   heading: string;

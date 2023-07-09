@@ -2,7 +2,7 @@ import React from 'react';
 import { createStyles, keyframes, rem } from '@mantine/core';
 
 const getLoadingElements = (elementClass: string): JSX.Element[] => {
-  let loadingElementsList = [];
+  const loadingElementsList = [];
 
   for (let i = 0; i < 12; i++) {
     loadingElementsList.push(<div className={elementClass}></div>);

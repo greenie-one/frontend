@@ -32,7 +32,10 @@ export const SeePanCard = () => {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     if (!verifyPANForm.validateField('panNo').hasError && checked) {
-      showLoadingNotification({ title: 'Verifying your PAN Card...', message: 'Please wait while we verify your PAN' });
+      showLoadingNotification({
+        title: 'Verifying your PAN Card...',
+        message: 'Please wait while we verify your PAN',
+      });
       const res: Result<any> = await HttpClient.callApiAuth(
         {
           url: `${PANAPIList.verifyPAN}`,
@@ -42,7 +45,10 @@ export const SeePanCard = () => {
         authClient
       );
       if (res.ok) {
-        showSuccessNotification({ title: 'Success !', message: 'Verified your PAN successfully' });
+        showSuccessNotification({
+          title: 'Success !',
+          message: 'Verified your PAN successfully',
+        });
         setPanIsVerified(true);
         getDocuments();
         scrollToTop();
@@ -54,7 +60,10 @@ export const SeePanCard = () => {
 
   const handlePageChange = () => {
     scrollToTop();
-    dispatchDetailsPage({ type: 'SET_SEE_PAN_CARD', payload: !detailsPage.seePanCard });
+    dispatchDetailsPage({
+      type: 'SET_SEE_PAN_CARD',
+      payload: !detailsPage.seePanCard,
+    });
     verifyPANForm.values.panNo = '';
     setPanIsVerified(false);
   };

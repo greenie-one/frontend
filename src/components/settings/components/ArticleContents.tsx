@@ -5,7 +5,7 @@ import { useSettingsContext } from '../context/SettingsContext';
 
 import { articleContentStyles } from '../styles/articleContentStyles';
 
-export const ArticleContent = ({}): JSX.Element => {
+export const ArticleContent = (): JSX.Element => {
   const { classes } = articleContentStyles();
   const { showDetailsId } = useSettingsContext();
 

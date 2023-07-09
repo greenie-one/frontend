@@ -4,10 +4,9 @@ type PostBody = string | string[] | number | boolean | Date | { [key: string]: P
 
 type HttpRequest = {
   url: string;
-  headers?:
-    | {
-        'Content-Type'?: 'application/json' | 'application/x-www-form-urlencoded';
-      } & Record<string, string>;
+  headers?: {
+    'Content-Type'?: 'application/json' | 'application/x-www-form-urlencoded';
+  } & Record<string, string>;
   toJSON?: boolean;
 } & (
   | {
@@ -66,7 +65,7 @@ export class HttpClient {
 
     if (resp.ok) {
       if (request.toJSON !== false) {
-        let json_body = await resp.json().catch(() => "Can't parse response to json");
+        const json_body = await resp.json().catch(() => "Can't parse response to json");
         response = json_body as T;
       } else {
         response = (await resp.text()) as T;

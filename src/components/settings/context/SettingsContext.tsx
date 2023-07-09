@@ -7,7 +7,7 @@ import {
   showLoadingNotification,
   showSuccessNotification,
 } from '../../../utils/functions/showNotification';
-import { HttpClient, Result } from '../../../utils/generic/httpClient';
+import { HttpClient } from '../../../utils/generic/httpClient';
 
 type ShowDetailsIdContextType = {
   showDetailsId: number;
@@ -66,7 +66,10 @@ export const SettingsProvider: React.FC<{ children: ReactNode }> = ({ children }
         authClient
       );
       if (res.ok) {
-        showSuccessNotification({ title: 'Success !', message: 'Password changed successfully.' });
+        showSuccessNotification({
+          title: 'Success !',
+          message: 'Password changed successfully.',
+        });
         privacySettingsForm.setFieldValue('currentPassword', '');
         privacySettingsForm.setFieldValue('newPassword', '');
         privacySettingsForm.setFieldValue('confirmPassword', '');
@@ -82,7 +85,14 @@ export const SettingsProvider: React.FC<{ children: ReactNode }> = ({ children }
   }, []);
 
   return (
-    <SettingsContext.Provider value={{ showDetailsId, setShowDetailsId, privacySettingsForm, changeCurrentPassword }}>
+    <SettingsContext.Provider
+      value={{
+        showDetailsId,
+        setShowDetailsId,
+        privacySettingsForm,
+        changeCurrentPassword,
+      }}
+    >
       {children}
     </SettingsContext.Provider>
   );

@@ -64,7 +64,7 @@ export class AuthClient {
       throw new Error('Refresh token is not set');
     }
 
-    let resp: Result<TokensDTO> = await HttpClient.callApi({
+    const resp: Result<TokensDTO> = await HttpClient.callApi({
       url: authApiList.refreshToken,
       method: 'GET',
       query: {

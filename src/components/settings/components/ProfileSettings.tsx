@@ -51,7 +51,11 @@ export const ProfileSettings: React.FC = (): JSX.Element => {
 
           <Box className={modalStyles.modalBtnsContainer}>
             {[
-              { variant: 'filled', text: 'Confirm', action: handleConfirmation },
+              {
+                variant: 'filled',
+                text: 'Confirm',
+                action: handleConfirmation,
+              },
               { variant: 'outline', text: 'Cancel', action: close },
             ].map((btns, idx) => (
               <Button

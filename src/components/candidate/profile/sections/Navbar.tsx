@@ -51,7 +51,10 @@ export const Navbar = () => {
 
   const removeAuthTokens = () => {
     setIsLoading(true);
-    showLoadingNotification({ title: 'Signing Out', message: 'Please wait while we sign you out' });
+    showLoadingNotification({
+      title: 'Signing Out',
+      message: 'Please wait while we sign you out',
+    });
 
     setTimeout(() => {
       authClient.deleteTokens();
@@ -70,7 +73,7 @@ export const Navbar = () => {
   const currentUrl = location.pathname + location.search;
   const isProfilePage = currentUrl === '/profile';
   const isProfileSettingsPage = currentUrl === '/profile/settings';
-  let debouncedValue = useDebounce(searchQuery, 250);
+  const debouncedValue = useDebounce(searchQuery, 250);
 
   const drawerReducer = (state: DrawerState, action: DrawerAction): DrawerState => {
     switch (action.type) {

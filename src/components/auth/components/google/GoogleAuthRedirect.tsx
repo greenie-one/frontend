@@ -7,7 +7,9 @@ import { HttpClient } from '../../../../utils/generic/httpClient';
 
 export const GoogleAuthRedirect = () => {
   const [searchParams] = useSearchParams();
-  const [authTokens, setAuthTokens] = useLocalStorage<AuthTokens>({ key: 'auth-tokens' });
+  const [authTokens, setAuthTokens] = useLocalStorage<AuthTokens>({
+    key: 'auth-tokens',
+  });
 
   const getAuthTokens = async () => {
     if (searchParams) {

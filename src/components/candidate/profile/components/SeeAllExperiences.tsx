@@ -10,7 +10,6 @@ import { VerifyWorkExperience } from './VerifyWorkExperience';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 import { useState } from 'react';
 
-
 export const SeeAllExperiences = () => {
   const { dispatchDetailsPage, detailsPage, workExperienceData, selectedCard, setSelectedCard } = useProfileContext();
   const isMobile = useMediaQuery('(max-width: 768px)');

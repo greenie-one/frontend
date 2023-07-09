@@ -22,7 +22,6 @@ import {
   showSuccessNotification,
 } from '../../../../utils/functions/showNotification';
 
-
 type Document = {
   document: File | undefined;
   documentTag: string | null;
@@ -44,7 +43,10 @@ const companyTypes = [
   { value: 'Startup', label: 'Start-up (Funded)' },
   { value: 'Early Stage Startup', label: 'Early Stage Startup' },
   { value: 'Startup (Profitable)', label: 'Startup (Profitable)' },
-  { value: 'Startup (Unicorn, Not Profitable)', label: 'Startup (Unicorn, Not Profitable)' },
+  {
+    value: 'Startup (Unicorn, Not Profitable)',
+    label: 'Startup (Unicorn, Not Profitable)',
+  },
   { value: 'Family Owned Business', label: 'Family Owned Business' },
   { value: 'Private Limited (India)', label: 'Private Limited (India)' },
   { value: 'Partnership (LLP/LLC)', label: 'Partnership (LLP/LLC)' },
@@ -91,7 +93,10 @@ const departments = [
   { value: 'CorporateCommunications', label: 'Corporate Communications' },
   { value: 'InternalAudit', label: 'Internal Audit' },
   { value: 'HealthSafety', label: 'Health and Safety' },
-  { value: 'Sustainability', label: 'Sustainability or Corporate Social Responsibility' },
+  {
+    value: 'Sustainability',
+    label: 'Sustainability or Corporate Social Responsibility',
+  },
   { value: 'DataAnalytics', label: 'Data Analytics or Business Intelligence' },
 ];
 
@@ -170,7 +175,10 @@ export const AddWorkExperience = () => {
       !workExperienceForm.validateField('workType').hasError &&
       !workExperienceForm.validateField('modeOfwork').hasError
     ) {
-      showLoadingNotification({ title: 'Please wait !', message: 'We are adding your work experience.' });
+      showLoadingNotification({
+        title: 'Please wait !',
+        message: 'We are adding your work experience.',
+      });
       workExperienceForm.clearErrors();
       const res: Result<any> = await HttpClient.callApiAuth(
         {
@@ -193,7 +201,10 @@ export const AddWorkExperience = () => {
       );
       if (res.ok) {
         setWorkExperienceData(res.value);
-        showSuccessNotification({ title: 'Success !', message: 'New experience added to your profile.' });
+        showSuccessNotification({
+          title: 'Success !',
+          message: 'New experience added to your profile.',
+        });
         getWorkExperience();
         setActive(2);
         scrollToTop();
@@ -225,7 +236,10 @@ export const AddWorkExperience = () => {
       showErrorNotification('NO_SKILL');
     }
     if (selectedSkills.length > 0) {
-      showLoadingNotification({ title: 'Please wait !', message: 'We are adding your skill' });
+      showLoadingNotification({
+        title: 'Please wait !',
+        message: 'We are adding your skill',
+      });
       for (const skill of selectedSkills) {
         const res = await HttpClient.callApiAuth(
           {
@@ -236,7 +250,10 @@ export const AddWorkExperience = () => {
           authClient
         );
         if (res.ok) {
-          showSuccessNotification({ title: 'Success !', message: 'New skills added to your profile.' });
+          showSuccessNotification({
+            title: 'Success !',
+            message: 'New skills added to your profile.',
+          });
 
           setActive(3);
         }
@@ -277,7 +294,10 @@ export const AddWorkExperience = () => {
   const handleSelectTag = (index: number, value: string | null) => {
     setDocuments((prevDocuments) => {
       const updatedDocuments = [...prevDocuments];
-      updatedDocuments[index] = { ...updatedDocuments[index], documentTag: value };
+      updatedDocuments[index] = {
+        ...updatedDocuments[index],
+        documentTag: value,
+      };
       return updatedDocuments;
     });
   };
@@ -286,7 +306,10 @@ export const AddWorkExperience = () => {
     if (documents.length > 0 && documentsChecked) {
       for (const document of documents) {
         if (document.documentTag === '') {
-          showLoadingNotification({ title: 'Please wait !', message: 'Adding your documents' });
+          showLoadingNotification({
+            title: 'Please wait !',
+            message: 'Adding your documents',
+          });
           showErrorNotification('MISSING_TAGS');
           return;
         }

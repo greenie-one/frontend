@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
-import { createStyles, rem, em, Selectors } from '@mantine/core';
+import { createStyles, rem, em } from '@mantine/core';
 import { AuthClient } from '../utils/generic/authClinet';
 
 type GlobalContextType = {
@@ -111,7 +111,15 @@ export const GlobalContextProvider: React.FC<{
   }));
 
   return (
-    <GlobalContext.Provider value={{ forceRender, setForceRender, authClient, inputStyles, OtpInputStyles }}>
+    <GlobalContext.Provider
+      value={{
+        forceRender,
+        setForceRender,
+        authClient,
+        inputStyles,
+        OtpInputStyles,
+      }}
+    >
       {children}
     </GlobalContext.Provider>
   );

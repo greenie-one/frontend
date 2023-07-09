@@ -4,7 +4,7 @@ import { createStyles, Title, Text, rem, Box, keyframes, em } from '@mantine/cor
 import { _2ColumnLayout } from '../layouts/_2ColumnLayout';
 import { Button } from '../common/Button';
 import { motion } from 'framer-motion';
-import { useAnimate, useTransform, useInView } from 'framer-motion';
+import { useAnimate, useInView } from 'framer-motion';
 
 import girlCheckingPhone from '../../assets/images/Landing/girl-checking-phone.png';
 import popup1 from '../../assets/images/Landing/popup-illustration-1.svg';
@@ -59,7 +59,7 @@ export const LandingHero = () => {
           </Title>
           <Text className={classes.heroText}>
             Experience verifications, document storage, contract creation, sharing of verification reports on our secure
-            encrypted platform.
+            encrypted platform.
           </Text>
           <Box className={classes.heroActionBtn}>
             <Link to="/waitlist">

@@ -188,14 +188,20 @@ export const VerifyWorkExperience: React.FC<IWorkExperienceVerification> = ({
   };
 
   const handleProceed = () => {
-    showLoadingNotification({ title: 'Please wait !', message: 'We are adding your peers' });
+    showLoadingNotification({
+      title: 'Please wait !',
+      message: 'We are adding your peers',
+    });
     if (addedPeers.length < 2) {
       showErrorNotification('NO_PEERS');
     }
     if (addedPeers.length >= 2) {
       scrollToProfileNav();
       verificationStepDispatch({ type: ReviewActionType.NEXT_STEP });
-      showSuccessNotification({ title: 'Success !', message: 'Your Peers have been added sucessfully' });
+      showSuccessNotification({
+        title: 'Success !',
+        message: 'Your Peers have been added sucessfully',
+      });
     }
   };
 

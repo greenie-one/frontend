@@ -1,7 +1,7 @@
 import React from 'react';
 import { Title, TextInput, Button, Modal, Text, Box } from '@mantine/core';
 import { useGeneralSettingsForm } from '../hooks/useGeneralSettings';
-import { detailsFormStyles, detailsInputStyles } from '../styles/articleContentStyles';
+import { detailsFormStyles } from '../styles/articleContentStyles';
 import { confirmationModalStyle } from '../styles/articleContentStyles';
 import { useDisclosure } from '@mantine/hooks';
 
@@ -37,7 +37,11 @@ export const GeneralSettings: React.FC = (): JSX.Element => {
 
           <Box className={modalStyles.modalBtnsContainer}>
             {[
-              { variant: 'filled', text: 'Confirm', action: handleConfirmation },
+              {
+                variant: 'filled',
+                text: 'Confirm',
+                action: handleConfirmation,
+              },
               { variant: 'outline', text: 'Cancel', action: close },
             ].map((btns, idx) => (
               <Button

@@ -61,7 +61,9 @@ const ForgotPassword = () => {
         message: 'Please wait while we send OTP to your email.',
       });
 
-      const reqestBody: ForgotPasswordBody = { email: loginForm.values.emailPhoneGreenieId };
+      const reqestBody: ForgotPasswordBody = {
+        email: loginForm.values.emailPhoneGreenieId,
+      };
       const res = await HttpClient.callApi<ForgotPasswordResponse>({
         url: `${authApiList.forgotpasswordOtp}`,
         method: 'POST',
@@ -121,7 +123,11 @@ const ForgotPassword = () => {
       const res = await HttpClient.callApi({
         url: `${authApiList.forgotpasswordValidate}`,
         method: 'POST',
-        body: { validationId: validateOTPId, otp: loginForm.values.otp, newPassword: loginForm.values.password },
+        body: {
+          validationId: validateOTPId,
+          otp: loginForm.values.otp,
+          newPassword: loginForm.values.password,
+        },
       });
 
       if (res.ok) {

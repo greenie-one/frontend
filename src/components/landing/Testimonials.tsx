@@ -1,5 +1,5 @@
 import React from 'react';
-import { createStyles, Title, Text, rem, Box, Flex, em } from '@mantine/core';
+import { createStyles, Title, Text, rem, Box, em } from '@mantine/core';
 
 import { _2ColumnLayout } from '../layouts/_2ColumnLayout';
 import testimonialIllustration from '../../assets/images/Landing/young-indian-manager.png';
