@@ -115,7 +115,7 @@ export const LandingHero = () => {
   );
 };
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(() => ({
   root: {
     alignItems: 'start',
   },

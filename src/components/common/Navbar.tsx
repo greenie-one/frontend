@@ -100,7 +100,7 @@ export const Navbar = () => {
   );
 };
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(() => ({
   root: {
     position: 'relative',
     inset: 0,

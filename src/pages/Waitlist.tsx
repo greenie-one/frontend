@@ -130,7 +130,7 @@ export const Waitlist = () => {
   );
 };
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(() => ({
   headerContainer: {
     display: 'none',
 

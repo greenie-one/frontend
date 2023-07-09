@@ -12,7 +12,7 @@ export const _2ColumnLayout: React.FC<_2ColumnLayoutProps> = ({ children }): JSX
   return <Box className={classes.root}>{children}</Box>;
 };
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(() => ({
   root: {
     width: '100%',
     display: 'grid',

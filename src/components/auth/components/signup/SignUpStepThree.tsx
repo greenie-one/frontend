@@ -144,7 +144,7 @@ const SignUpStepThree = () => {
 
 export default SignUpStepThree;
 
-// const inputStyles = createStyles((theme) => ({
+// const inputStyles = createStyles(() => ({
 //   root: {
 //     position: 'relative',
 //     marginBottom: '24px',

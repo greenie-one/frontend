@@ -1,4 +1,3 @@
-
 export const ErrorMessage: Record<string, CustomError> = {
   // AUTH ERRORS
   "GRA0000": {title:'Error !',message:'Failed to validate request'},

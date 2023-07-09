@@ -112,7 +112,7 @@ export const TermsAndConditionsPage = () => {
   );
 };
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(() => ({
   tosPrivacyPage: {
     width: '70%',
     maxWidth: '1440px',

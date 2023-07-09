@@ -115,7 +115,7 @@ export const Footer: React.FC = (): JSX.Element => {
   );
 };
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(() => ({
   root: {
     backgroundColor: '#191819',
     color: '#FFFFFF',

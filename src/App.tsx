@@ -39,7 +39,6 @@ const App = () => {
                 <Route index element={<ProfilePage />} />
                 <Route path="settings" element={<SettingsPage />} />
               </Route>
-              R
             </Route>
             <Route path="privacy" element={<PrivacyPolicyPage />} />
             <Route path="tos" element={<TermsAndConditionsPage />} />

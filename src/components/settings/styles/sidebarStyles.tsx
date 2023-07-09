@@ -1,6 +1,6 @@
 import { createStyles, rem, em } from '@mantine/core';
 
-export const sidebarStyles = createStyles((theme) => ({
+export const sidebarStyles = createStyles(() => ({
   settingsSidebar: {
     padding: '1rem',
     background: '#FFFFFF',
