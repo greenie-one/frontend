@@ -1,6 +1,6 @@
 import { AuthClient } from './authClinet';
 
-type PostBody = string | string[] | number | boolean | { [key: string]: PostBody };
+type PostBody = string | string[] | number | boolean | Date | { [key: string]: PostBody };
 
 type HttpRequest = {
   url: string;

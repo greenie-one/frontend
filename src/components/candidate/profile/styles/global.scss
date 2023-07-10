@@ -379,6 +379,7 @@
 @import '_verificationId';
 @import '_seeAll';
 @import '_workExperience';
+@import '_residentialInfo';
 @import '_congratsScreen';
 @import '_verifyWorkExperience';
 
@@ -432,6 +433,16 @@
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
+  }
+
+  .residential-info-wrapper {
+    grid-template-columns: repeat(2, 49%);
+  }
+}
+
+@media screen and (max-width: 512px) {
+  .residential-info-wrapper {
+    grid-template-columns: 100%;
   }
 }
 

@@ -5,11 +5,7 @@ import pdfImage from '../../profile/assets/pdfIcon.png';
 import threeDots from '../assets/threeDots.png';
 import { MdMoveDown, MdDeleteOutline } from 'react-icons/md';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
-
-interface IFolderProps {
-  name: string;
-  isFolder: boolean;
-}
+import { IFolderProps } from '../types/DocDepotCardProps';
 
 export const Folder: React.FC<IFolderProps> = ({ name, isFolder }) => {
   const [isDropdownVisible, setDropdownVisible] = useState(false);

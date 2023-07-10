@@ -2,11 +2,7 @@ import { BsArrowLeft } from 'react-icons/bs';
 import { Text, Box } from '@mantine/core';
 import { useProfileContext } from '../../profile/context/ProfileContext';
 import { Folder } from './Folder';
-
-type docDepotData = {
-  name: string;
-  isFolder: boolean;
-};
+import { docDepotData } from '../types/DocDepotGeneral';
 
 export const DocDepotOthersPage = () => {
   const { setDocDepotActivePage } = useProfileContext();

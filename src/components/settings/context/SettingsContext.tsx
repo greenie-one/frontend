@@ -1,5 +1,5 @@
 import React, { createContext, useState, ReactNode, useContext, useEffect } from 'react';
-import { useForm, matchesField, hasLength, UseFormReturnType } from '@mantine/form';
+import { useForm, matchesField, hasLength } from '@mantine/form';
 import { authApiList } from '../../../assets/api/ApiList';
 import { useGlobalContext } from '../../../context/GlobalContext';
 import {
@@ -8,21 +8,11 @@ import {
   showSuccessNotification,
 } from '../../../utils/functions/showNotification';
 import { HttpClient, Result } from '../../../utils/generic/httpClient';
+import { ChangePasswordRequest } from '../types/SettingsRequests';
+import { privacySettingsFormType } from '../types/SettingsForms';
+import { SettingsContextType } from '../types/SettingsContext';
 
-type ShowDetailsIdContextType = {
-  showDetailsId: number;
-  setShowDetailsId: React.Dispatch<React.SetStateAction<number>>;
-  privacySettingsForm: UseFormReturnType<privacySettingsFormType>;
-  changeCurrentPassword: () => void;
-};
-
-type privacySettingsFormType = {
-  currentPassword: string;
-  newPassword: string;
-  confirmPassword: string;
-};
-
-export const SettingsContext = createContext<ShowDetailsIdContextType>({} as ShowDetailsIdContextType);
+export const SettingsContext = createContext<SettingsContextType>({} as SettingsContextType);
 
 export const useSettingsContext = () => useContext(SettingsContext);
 
@@ -54,14 +44,15 @@ export const SettingsProvider: React.FC<{ children: ReactNode }> = ({ children }
         title: 'Changing your password',
         message: 'Please wait while we change your password.',
       });
-      const res = await HttpClient.callApiAuth(
+      const requestBody: ChangePasswordRequest = {
+        currentPassword: privacySettingsForm.values.currentPassword,
+        newPassword: privacySettingsForm.values.newPassword,
+      };
+      const res: Result<any> = await HttpClient.callApiAuth(
         {
           url: `${authApiList.changePassword}`,
           method: 'POST',
-          body: {
-            currentPassword: privacySettingsForm.values.currentPassword,
-            newPassword: privacySettingsForm.values.newPassword,
-          },
+          body: requestBody,
         },
         authClient
       );
