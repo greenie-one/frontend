@@ -14,7 +14,6 @@ export const GoogleAuthRedirect = () => {
   const getAuthTokens = async () => {
     if (searchParams) {
       const code = searchParams.get('code');
-      console.log(code);
       if (code) {
         const res = await HttpClient.callApi<AuthTokens>({
           url: `${authApiList.googleCallback}`,
@@ -25,7 +24,7 @@ export const GoogleAuthRedirect = () => {
         console.log(res);
         if (res.ok) {
           setAuthTokens(res.value);
-          // window.close();
+          window.close();
         } else {
           console.error(res.error.code);
         }
@@ -34,9 +33,7 @@ export const GoogleAuthRedirect = () => {
   };
 
   useEffect(() => {
-    console.log('hee 1');
     getAuthTokens();
-    console.log('hee 2');
   }, []);
 
   return <></>;
