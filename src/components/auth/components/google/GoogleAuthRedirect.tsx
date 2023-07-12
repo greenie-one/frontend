@@ -14,7 +14,7 @@ export const GoogleAuthRedirect = () => {
   const getAuthTokens = async () => {
     if (searchParams) {
       const code = searchParams.get('client_id');
-
+      console.log(code);
       if (code) {
         const res = await HttpClient.callApi<AuthTokens>({
           url: `${authApiList.googleCallback}`,
