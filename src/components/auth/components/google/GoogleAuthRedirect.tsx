@@ -22,14 +22,12 @@ export const GoogleAuthRedirect = () => {
           query: { code: code },
         });
 
+        console.log(res);
         if (res.ok) {
           setAuthTokens(res.value);
+          // window.close();
         } else {
           console.error(res.error.code);
-        }
-
-        if (authTokens) {
-          window.close();
         }
       }
     }
