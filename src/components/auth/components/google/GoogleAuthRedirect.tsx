@@ -34,7 +34,9 @@ export const GoogleAuthRedirect = () => {
   };
 
   useEffect(() => {
+    console.log('hee 1');
     getAuthTokens();
+    console.log('hee 2');
   }, []);
 
   return <></>;
