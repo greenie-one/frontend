@@ -3,7 +3,7 @@ import React from 'react';
 
 type _2ColumnLayoutProps = {
   children: string | JSX.Element | JSX.Element[];
-  onClick?: () => any;
+  onClick?: () => void;
 };
 
 export const _2ColumnLayout: React.FC<_2ColumnLayoutProps> = ({ children }): JSX.Element => {

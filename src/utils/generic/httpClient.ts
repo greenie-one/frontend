@@ -85,7 +85,6 @@ export class HttpClient {
   }
 
   static async callApiAuth<T = unknown>(request: HttpRequest, authClient: AuthClient): Promise<Result<T>> {
-    console.log(authClient.getAccessToken());
     if (!authClient.getAccessToken()) {
       return { ok: false, error: { status: 401, message: 'await resp.text()', code: 'SOMETHING_WENT_WRONG' } };
     }
@@ -104,7 +103,6 @@ export class HttpClient {
     if (resp.ok) {
       return resp;
     } else if (resp.error.status === 401) {
-      console.log('Refreshing token for request: ', request.url);
       const status = await authClient.refreshAccessToken();
 
       if (!status.ok) {

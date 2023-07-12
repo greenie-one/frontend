@@ -33,9 +33,8 @@ const skillSetOne = [
 
 const Profile = () => {
   const navigate = useNavigate();
-  const { authClient, inputStyles } = useGlobalContext();
+  const { authClient } = useGlobalContext();
   const { profileForm, dispatch, setForceRender } = useAuthContext();
-  const { classes: inputClasses } = inputStyles();
 
   const [active, setActive] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
@@ -97,7 +96,7 @@ const Profile = () => {
           message: 'Your profile details have been added successfully.',
         });
         setForceRender((prev) => !prev);
-        // navigate('/profile');
+        navigate('/profile');
       } else {
         showErrorNotification(res.error.code);
       }
@@ -215,60 +214,3 @@ const Profile = () => {
 };
 
 export default Profile;
-
-// const inputStyles = createStyles(() => ({
-//   root: {
-//     position: 'relative',
-//     marginBottom: '16px',
-//   },
-
-//   input: {
-//     width: '458px',
-//     height: '68px',
-//     paddingTop: '18px',
-//     fontSize: '16px',
-//     fontWeight: 500,
-//     borderRadius: '8px',
-//     border: '1px solid #D1D4DB',
-//     lineHeight: '19px',
-//     letterSpacing: '-0.02em',
-//     color: '#697082',
-
-//     [`@media screen and (max-width: ${em(1024)})`]: {
-//       width: '350px',
-//       height: '46px',
-//       borderRadius: '6px',
-//       fontSize: '12px',
-//       lineHeight: '12px',
-//       margin: '0 auto',
-//     },
-//   },
-
-//   // for password field
-//   innerInput: {
-//     height: rem(54),
-//     paddingTop: rem(28),
-
-//     [`@media screen and (max-width: ${em(1024)})`]: {
-//       paddingTop: rem(8),
-//     },
-//   },
-
-//   label: {
-//     position: 'absolute',
-//     pointerEvents: 'none',
-//     fontSize: '12px',
-//     paddingLeft: '14px',
-//     paddingTop: '7px',
-//     lineHeight: '14.52px',
-//     letterSpacing: '-0.02em',
-//     zIndex: 1,
-//     color: '#697082',
-
-//     [`@media screen and (max-width: ${em(1024)})`]: {
-//       fontSize: '10px',
-//       lineHeight: '10px',
-//       paddingLeft: '11.54px',
-//     },
-//   },
-// }));

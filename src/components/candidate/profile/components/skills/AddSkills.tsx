@@ -1,28 +1,22 @@
 import { Text, Box, Title, TextInput, Select, Button, Divider } from '@mantine/core';
 import { useState } from 'react';
 import { BsArrowLeft } from 'react-icons/bs';
-import { useProfileContext } from '../context/ProfileContext';
+import { useProfileContext } from '../../context/ProfileContext';
 import { GrAdd } from 'react-icons/gr';
-import { skillsAPIList } from '../../../../assets/api/ApiList';
-import { useGlobalContext } from '../../../../context/GlobalContext';
+import { skillsAPIList } from '../../../../../assets/api/ApiList';
+import { useGlobalContext } from '../../../../../context/GlobalContext';
 import {
   showErrorNotification,
   showSuccessNotification,
   showLoadingNotification,
-} from '../../../../utils/functions/showNotification';
-import { HttpClient, Result } from '../../../../utils/generic/httpClient';
-
-const skillRate = [
-  { value: 'BEGINEER', label: 'Begineer/Novice' },
-  { value: 'INTERMEDIATE', label: 'Intermediate' },
-  { value: 'HIGHLY COMPETANT', label: 'Highly Competant' },
-  { value: 'ADVANCED', label: 'Advanced Proficiency' },
-  { value: 'EXPERT', label: 'Expert' },
-  { value: 'MASTER', label: 'Master - Pro(Global Recognition)' },
-];
+} from '../../../../../utils/functions/showNotification';
+import { HttpClient, Result } from '../../../../../utils/generic/httpClient';
+import { ISkill, createSkill } from '../../types/ProfileResponses';
+import { skillRate } from '../../constants/SelectionOptions';
+import { SkillRequestBody } from '../../types/ProfileRequests';
 
 export const AddSkills = () => {
-  const { detailsPage, dispatchDetailsPage, getSkills, skillForm, scrollToTop } = useProfileContext();
+  const { setCandidateActivePage, getSkills, skillForm, scrollToTop } = useProfileContext();
   const [skills, setSkills] = useState<ISkill[]>([]);
   const { authClient } = useGlobalContext();
 
@@ -41,10 +35,7 @@ export const AddSkills = () => {
 
   const handleAddSkillPage = () => {
     scrollToTop();
-    dispatchDetailsPage({
-      type: 'SET_SEE_ADD_SKILLS',
-      payload: !detailsPage.seeAddSkills,
-    });
+    setCandidateActivePage('Profile');
   };
 
   const handleSkillContinue = async () => {
@@ -58,11 +49,12 @@ export const AddSkills = () => {
     }
     if (skills.length > 0) {
       for (const skill of skills) {
-        const res: Result<any> = await HttpClient.callApiAuth(
+        const requestBody: SkillRequestBody = { skillName: skill.skillName, expertise: skill.expertise };
+        const res: Result<createSkill> = await HttpClient.callApiAuth(
           {
             url: `${skillsAPIList.postSkill}`,
             method: 'POST',
-            body: { skillName: skill.skillName, expertise: skill.expertise },
+            body: requestBody,
           },
           authClient
         );

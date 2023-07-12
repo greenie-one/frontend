@@ -11,8 +11,6 @@ export const GeneralSettings: React.FC = (): JSX.Element => {
   const [opened, { open, close }] = useDisclosure(false);
   const onFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    console.log('Form submitted successfully!');
   };
   const { classes: modalStyles } = confirmationModalStyle();
 

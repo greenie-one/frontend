@@ -1,10 +1,10 @@
 import { Box, Text, TextInput, Chip, Group, CopyButton, Button, Modal, Title, Textarea, Divider } from '@mantine/core';
-import level from '../assets/level.png';
-import levelFilled from '../assets/levelFilled.png';
-import medal from '../assets/medal.png';
+import level from '../../assets/level.png';
+import levelFilled from '../../assets/levelFilled.png';
+import medal from '../../assets/medal.png';
 import { MdVerified, MdOutlineEdit, MdOutlineContentCopy } from 'react-icons/md';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
-import { useProfileContext } from '../context/ProfileContext';
+import { useProfileContext } from '../../context/ProfileContext';
 
 const skillSetOne = [
   'Lone Wolf',
@@ -131,7 +131,7 @@ export const BioSection = () => {
       <Box className="chips">
         <Chip.Group>
           <Group>
-            {profileData.descriptionTags.map((tag) => (
+            {profileData.descriptionTags.map((tag: string) => (
               <Chip key={tag} size={screenSize ? 'sm' : 'xs'}>
                 {tag}
               </Chip>

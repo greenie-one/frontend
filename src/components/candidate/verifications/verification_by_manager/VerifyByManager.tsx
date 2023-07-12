@@ -1,4 +1,4 @@
-import { Navbar } from '../../profile/sections/Navbar';
+import { Navbar } from '../../profile/components/Navbar';
 import { Text, Box, Title } from '@mantine/core';
 import { VBMStepOne, VBMStepTwo, VBMStepThree, VBMStepFour, VBMStepFive } from './components';
 import { useVBMContext } from './context/VBMContext';

@@ -3,75 +3,34 @@ import { Text, Modal, Box, Title, TextInput, Select, Checkbox, Button, Divider }
 import { DateInput } from '@mantine/dates';
 import { Carousel } from '@mantine/carousel';
 import { MdOutlineEdit } from 'react-icons/md';
-import '../styles/global.scss';
-import noData from '../assets/noData.png';
+import noData from '../../assets/noData.png';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
-import { useProfileContext } from '../context/ProfileContext';
+import { useProfileContext } from '../../context/ProfileContext';
 import { AiOutlinePlus } from 'react-icons/ai';
 import {
   showErrorNotification,
   showLoadingNotification,
   showSuccessNotification,
-} from '../../../../utils/functions/showNotification';
-import { HttpClient, Result } from '../../../../utils/generic/httpClient';
-import { ResidentialInfoCard } from '../components/ResidentialInfoCard';
-import { useGlobalContext } from '../../../../context/GlobalContext';
-import { residentialInfoAPIList } from '../../../../assets/api/ApiList';
+} from '../../../../../utils/functions/showNotification';
+import { HttpClient, Result } from '../../../../../utils/generic/httpClient';
+import { ResidentialInfoCard } from './ResidentialInfoCard';
+import { useGlobalContext } from '../../../../../context/GlobalContext';
+import { residentialInfoAPIList } from '../../../../../assets/api/ApiList';
+import { states, countries } from '../../constants/SelectionOptions';
+import { ResidentialInfoRequestBody } from '../../types/ProfileRequests';
+import { createResidentialInfo } from '../../types/ProfileResponses';
 
-const states = [
-  { value: 'Andhra Pradesh', label: 'Andhra Pradesh' },
-  { value: 'Arunachal Pradesh', label: 'Arunachal Pradesh' },
-  { value: 'Assam', label: 'Assam' },
-  { value: 'Bihar', label: 'Bihar' },
-  { value: 'Chhattisgarh', label: 'Chhattisgarh' },
-  { value: 'Goa', label: 'Goa' },
-  { value: 'Gujarat', label: 'Gujarat' },
-  { value: 'Haryana', label: 'Haryana' },
-  { value: 'Himachal Pradesh', label: 'Himachal Pradesh' },
-  { value: 'Jammu and Kashmir', label: 'Jammu and Kashmir' },
-  { value: 'Jharkhand', label: 'Jharkhand' },
-  { value: 'Karnataka', label: 'Karnataka' },
-  { value: 'Kerala', label: 'Kerala' },
-  { value: 'Madhya Pradesh', label: 'Madhya Pradesh' },
-  { value: 'Maharashtra', label: 'Maharashtra' },
-  { value: 'Manipur', label: 'Manipur' },
-  { value: 'Meghalaya', label: 'Meghalaya' },
-  { value: 'Mizoram', label: 'Mizoram' },
-  { value: 'Nagaland', label: 'Nagaland' },
-  { value: 'Odisha', label: 'Odisha' },
-  { value: 'Punjab', label: 'Punjab' },
-  { value: 'Rajasthan', label: 'Rajasthan' },
-  { value: 'Sikkim', label: 'Sikkim' },
-  { value: 'Tamil Nadu', label: 'Tamil Nadu' },
-  { value: 'Telangana', label: 'Telangana' },
-  { value: 'Tripura', label: 'Tripura' },
-  { value: 'Uttar Pradesh', label: 'Uttar Pradesh' },
-  { value: 'Uttarakhand', label: 'Uttarakhand' },
-  { value: 'West Bengal', label: 'West Bengal' },
-];
-
-const countries = [{ value: 'India', label: 'India' }];
-
-export const ResidentialInfo = () => {
+export const ResidentialInfoSection = () => {
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
-  const {
-    residentialInfoData,
-    residentialInfoForm,
-    detailsPage,
-    dispatchDetailsPage,
-    scrollToProfileNav,
-    getResidentialInfo,
-  } = useProfileContext();
+  const { residentialInfoData, residentialInfoForm, setCandidateActivePage, scrollToProfileNav, getResidentialInfo } =
+    useProfileContext();
   const { authClient } = useGlobalContext();
   const [checked, setChecked] = useState(false);
 
   const handleToggleResidentialDetails = (): void => {
     scrollToProfileNav();
-    dispatchDetailsPage({
-      type: 'SET_SEE_ALL_RESIDENTIALINFO',
-      payload: !detailsPage.seeAllResidentialInfo,
-    });
+    setCandidateActivePage('All Residential Info');
   };
 
   const handleCheck = () => {
@@ -114,7 +73,7 @@ export const ResidentialInfo = () => {
       title: 'Wait !',
       message: 'Please wait while we update your residential information.',
     });
-    const data = {
+    const requestBody: ResidentialInfoRequestBody = {
       address_line_1: residentialInfoForm.values.address_line_1,
       address_line_2: residentialInfoForm.values.address_line_2,
       landmark: residentialInfoForm.values.landmark,
@@ -125,11 +84,11 @@ export const ResidentialInfo = () => {
       start_date: residentialInfoForm.values.start_date,
       end_date: residentialInfoForm.values.end_date,
     };
-    const res: Result<any> = await HttpClient.callApiAuth(
+    const res: Result<createResidentialInfo> = await HttpClient.callApiAuth(
       {
         url: `${residentialInfoAPIList.postResidentialInfo}`,
         method: 'POST',
-        body: data,
+        body: requestBody,
       },
       authClient
     );
@@ -287,7 +246,7 @@ export const ResidentialInfo = () => {
               onChange={handleCheck}
               className="checkbox"
               color="teal"
-              label="I currently work here"
+              label="I currently live here"
             />
           </Box>
           <Divider />
@@ -345,29 +304,24 @@ export const ResidentialInfo = () => {
             { maxWidth: 'md', slideSize: '50%' },
           ]}
         >
-          {residentialInfoData
-            .reverse()
-            .map(
-              (
-                { address_line_1, address_line_2, landmark, pincode, start_date, end_date, isVerified, city },
-                index
-              ) => {
-                return (
-                  <Carousel.Slide key={index}>
-                    <ResidentialInfoCard
-                      city={city}
-                      address_line_1={address_line_1}
-                      address_line_2={address_line_2}
-                      landmark={landmark}
-                      pincode={pincode}
-                      start_date={start_date}
-                      end_date={end_date}
-                      isVerified={isVerified}
-                    />
-                  </Carousel.Slide>
-                );
-              }
-            )}
+          {residentialInfoData.map(
+            ({ address_line_1, address_line_2, landmark, pincode, start_date, end_date, isVerified, city }, index) => {
+              return (
+                <Carousel.Slide key={index}>
+                  <ResidentialInfoCard
+                    city={city}
+                    address_line_1={address_line_1}
+                    address_line_2={address_line_2}
+                    landmark={landmark}
+                    pincode={pincode}
+                    start_date={start_date}
+                    end_date={end_date}
+                    isVerified={isVerified}
+                  />
+                </Carousel.Slide>
+              );
+            }
+          )}
         </Carousel>
       )}
       {residentialInfoData.length > 0 && (

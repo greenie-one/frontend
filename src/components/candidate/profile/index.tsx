@@ -1,22 +1,20 @@
 import { useState } from 'react';
 import { useProfileContext } from './context/ProfileContext';
-import { Footer } from './sections/Footer';
-import { BioSection } from './sections/BioSection';
-import { Navbar } from './sections/Navbar';
-import { ProfilePhotos } from './sections/ProfilePhotos';
-import { ProfileSection } from './sections/ProfileSection';
+import { Footer } from './components/Footer';
+import { Navbar } from './components/Navbar';
+import { ProfileSection } from './components/ProfileSection';
 import { DocDepot } from '../doc_depot';
-import { MyVerifications } from './sections/MyVerifications';
+import { MyVerifications } from '../my_verifications';
 import { Box, Button } from '@mantine/core';
-import { SeeCongratulations } from './components/SeeCongratulations';
-import { AddWorkExperience } from './components/AddWorkExperience';
-import { AddSkills } from './components/AddSkills';
+import { CongratulationsScreen } from './components/IDs/CongratulationsScreen';
+import { AddExperience } from './components/experience/AddExperience';
+import { AddSkills } from './components/skills/AddSkills';
 import './styles/global.scss';
+import { Userprofile } from './components/user_profile/Userprofile';
 
 export const Profile = () => {
   const [activeButton, setActiveButton] = useState(1);
-  const { detailsPage, aadharIsVerified, panIsVerified, licenseIsVerified } = useProfileContext();
-  const { seeAddWorkExperience, seeAadharCard, seePanCard, seeDrivingLicence, seeCongratulations } = detailsPage;
+  const { candidateActivePage } = useProfileContext();
 
   const handleButtonClick = (buttonId: number) => {
     setActiveButton(buttonId);
@@ -27,42 +25,29 @@ export const Profile = () => {
       <header>
         <Navbar />
       </header>
-      {seeAddWorkExperience ? (
+      {candidateActivePage === 'Add Experience' && (
         <main className="profile">
-          <AddWorkExperience />
+          <AddExperience />
         </main>
-      ) : detailsPage.seeAddSkills ? (
+      )}
+      {candidateActivePage === 'Add Skills' && (
         <main className="profile">
           <AddSkills />
         </main>
-      ) : (
+      )}
+      {candidateActivePage === 'Congratulation Screen' && (
         <main className="profile">
-          {!seeCongratulations &&
-            !aadharIsVerified &&
-            !panIsVerified &&
-            !licenseIsVerified &&
-            seeAadharCard === false &&
-            seePanCard === false &&
-            seeDrivingLicence === false && (
-              <Box>
-                <ProfilePhotos />
-                <BioSection />
-              </Box>
-            )}
+          <CongratulationsScreen />
+        </main>
+      )}
+      {candidateActivePage !== 'Add Experience' && candidateActivePage !== 'Add Skills' && (
+        <main className="profile">
+          {candidateActivePage === 'Profile' && <Userprofile />}
 
           <Box
             className="profileNav"
             style={{
-              marginTop:
-                detailsPage.seeCongratulations ||
-                aadharIsVerified ||
-                panIsVerified ||
-                licenseIsVerified ||
-                seeAadharCard === true ||
-                seePanCard === true ||
-                seeDrivingLicence === true
-                  ? '7rem'
-                  : '0rem',
+              marginTop: candidateActivePage === 'Profile' ? '0rem' : '7rem',
             }}
           >
             <Box className="profile-btn-wrapper">
@@ -89,7 +74,7 @@ export const Profile = () => {
               </Button>
             </Box>
           </Box>
-          {seeCongratulations && activeButton === 1 && <SeeCongratulations />}
+
           {activeButton === 1 && <ProfileSection />}
           {activeButton === 2 && <DocDepot />}
           {activeButton === 3 && <MyVerifications />}
