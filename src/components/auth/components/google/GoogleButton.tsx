@@ -1,11 +1,7 @@
 import { useState } from 'react';
 import { Button } from '@mantine/core';
 import { useLocalStorage } from '@mantine/hooks';
-import {
-  showErrorNotification,
-  showLoadingNotification,
-  showSuccessNotification,
-} from '../../../../utils/functions/showNotification';
+import { showErrorNotification, showLoadingNotification } from '../../../../utils/functions/showNotification';
 import { HttpClient } from '../../../../utils/generic/httpClient';
 import { authApiList } from '../../../../assets/api/ApiList';
 import { useAuthContext } from '../../context/AuthContext';
@@ -36,7 +32,6 @@ const GoogleButton = () => {
 
     if (res.ok) {
       window.open(res.value?.redirectUrl, '_blank');
-      showSuccessNotification({ title: 'Success !', message: '' });
     } else {
       showErrorNotification(res.error.code);
     }
