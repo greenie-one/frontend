@@ -1,13 +1,44 @@
 import React, { createContext, useContext, useState } from 'react';
-import { createStyles, rem, em } from '@mantine/core';
+import { createStyles, rem, em, UseStylesOptions, MantineTheme } from '@mantine/core';
 import { AuthClient } from '../utils/generic/authClinet';
+
+type InputStyles = {
+  root: string;
+  input: string;
+  innerInput: string;
+  passwordInput: string;
+  label: string;
+};
+
+type OtpInputStyles = {
+  root: string;
+  input: string;
+};
+
+type OtpInputStylesType = (
+  params: void,
+  options?: UseStylesOptions<string>
+) => {
+  classes: OtpInputStyles;
+  cx: (...args: string[]) => string;
+  theme: MantineTheme;
+};
+
+type InputStylesType = (
+  params: void,
+  options?: UseStylesOptions<string>
+) => {
+  classes: InputStyles;
+  cx: (...args: string[]) => string;
+  theme: MantineTheme;
+};
 
 type GlobalContextType = {
   forceRender: boolean;
   setForceRender: React.Dispatch<React.SetStateAction<boolean>>;
   authClient: AuthClient;
-  inputStyles: any;
-  OtpInputStyles: any;
+  inputStyles: InputStylesType;
+  OtpInputStyles: OtpInputStylesType;
 };
 
 const GlobalContext = createContext<GlobalContextType>({} as GlobalContextType);
@@ -19,7 +50,7 @@ export const GlobalContextProvider: React.FC<{
   const [forceRender, setForceRender] = useState<boolean>(true);
   const authClient = AuthClient.getInstance();
 
-  const inputStyles = createStyles(() => ({
+  const inputStyles: InputStylesType = createStyles(() => ({
     root: {
       position: 'relative',
       marginBottom: '24px',
@@ -82,7 +113,7 @@ export const GlobalContextProvider: React.FC<{
     },
   }));
 
-  const OtpInputStyles = createStyles(() => ({
+  const OtpInputStyles: OtpInputStylesType = createStyles(() => ({
     root: {
       position: 'relative',
       marginBlock: '24px',

@@ -5,7 +5,7 @@ type ButtonProps = {
   variant: 'fill' | 'outline';
   classNames: string | null;
   outline: boolean;
-  onClick?: () => any;
+  onClick?: () => void;
 };
 
 export const Button: React.FC<ButtonProps> = ({ children, variant, classNames, outline, onClick }) => {

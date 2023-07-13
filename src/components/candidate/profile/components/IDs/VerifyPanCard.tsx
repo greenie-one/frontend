@@ -1,54 +1,42 @@
-import '../styles/global.scss';
 import { useState } from 'react';
-import { useProfileContext } from '../context/ProfileContext';
+import { useProfileContext } from '../../context/ProfileContext';
 import { Text, Box, Button, TextInput, Title, Checkbox } from '@mantine/core';
 import { BsArrowLeft } from 'react-icons/bs';
 import { AiOutlineRight } from 'react-icons/ai';
-import PanImg from '../assets/Pan.png';
-import john from '../assets/johnMarston.png';
-import { PANAPIList } from '../../../../assets/api/ApiList';
-import { useGlobalContext } from '../../../../context/GlobalContext';
-import { HttpClient, Result } from '../../../../utils/generic/httpClient';
+import PanImg from '../../assets/Pan.png';
+import john from '../../assets/johnMarston.png';
+import { PANAPIList } from '../../../../../assets/api/ApiList';
+import { useGlobalContext } from '../../../../../context/GlobalContext';
+import { HttpClient, Result } from '../../../../../utils/generic/httpClient';
 import {
   showErrorNotification,
   showLoadingNotification,
   showSuccessNotification,
-} from '../../../../utils/functions/showNotification';
+} from '../../../../../utils/functions/showNotification';
+import { IDRequestBody } from '../../types/ProfileRequests';
+import { verifyPan } from '../../types/ProfileResponses';
 
-export const SeePanCard = () => {
-  const {
-    detailsPage,
-    dispatchDetailsPage,
-    verifyPANForm,
-    getDocuments,
-
-    panIsVerified,
-    setPanIsVerified,
-    scrollToTop,
-  } = useProfileContext();
+export const VerifyPanCard = () => {
+  const { setCandidateActivePage, verifyPANForm, getDocuments, panIsVerified, setPanIsVerified, scrollToTop } =
+    useProfileContext();
   const [checked, setChecked] = useState<boolean>(false);
   const { authClient } = useGlobalContext();
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     if (!verifyPANForm.validateField('panNo').hasError && checked) {
-      showLoadingNotification({
-        title: 'Verifying your PAN Card...',
-        message: 'Please wait while we verify your PAN',
-      });
-      const res: Result<any> = await HttpClient.callApiAuth(
+      showLoadingNotification({ title: 'Verifying your PAN Card...', message: 'Please wait while we verify your PAN' });
+      const requestBody: IDRequestBody = { id_type: 'PAN', id_number: verifyPANForm.values.panNo };
+      const res: Result<verifyPan> = await HttpClient.callApiAuth(
         {
           url: `${PANAPIList.verifyPAN}`,
           method: 'POST',
-          body: { id_type: 'PAN', id_number: verifyPANForm.values.panNo },
+          body: requestBody,
         },
         authClient
       );
       if (res.ok) {
-        showSuccessNotification({
-          title: 'Success !',
-          message: 'Verified your PAN successfully',
-        });
+        showSuccessNotification({ title: 'Success !', message: 'Verified your PAN successfully' });
         setPanIsVerified(true);
         getDocuments();
         scrollToTop();
@@ -60,10 +48,7 @@ export const SeePanCard = () => {
 
   const handlePageChange = () => {
     scrollToTop();
-    dispatchDetailsPage({
-      type: 'SET_SEE_PAN_CARD',
-      payload: !detailsPage.seePanCard,
-    });
+    setCandidateActivePage('Profile');
     verifyPANForm.values.panNo = '';
     setPanIsVerified(false);
   };

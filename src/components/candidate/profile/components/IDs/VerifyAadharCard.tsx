@@ -1,41 +1,36 @@
-import '../styles/global.scss';
 import { useState } from 'react';
-import { useProfileContext } from '../context/ProfileContext';
+import { useProfileContext } from '../../context/ProfileContext';
 import { Text, Box, Button, Modal, Checkbox, createStyles, em, TextInput, Title, CopyButton } from '@mantine/core';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 import { BsArrowLeft } from 'react-icons/bs';
 import { MdVerified, MdOutlineContentCopy } from 'react-icons/md';
 import { AiOutlineRight } from 'react-icons/ai';
-import AadharImg from '../assets/Aadhar.png';
-import john from '../assets/johnMarston.png';
-import { aadharAPIList } from '../../../../assets/api/ApiList';
-import checkImg from '../assets/check.png';
-import { useGlobalContext } from '../../../../context/GlobalContext';
-import { HttpClient, Result } from '../../../../utils/generic/httpClient';
+import AadharImg from '../../assets/Aadhar.png';
+import john from '../../assets/johnMarston.png';
+import { aadharAPIList } from '../../../../../assets/api/ApiList';
+import checkImg from '../../assets/check.png';
+import { useGlobalContext } from '../../../../../context/GlobalContext';
+import { HttpClient, Result } from '../../../../../utils/generic/httpClient';
 import {
   showErrorNotification,
   showLoadingNotification,
   showSuccessNotification,
-} from '../../../../utils/functions/showNotification';
+} from '../../../../../utils/functions/showNotification';
+import { IAadharVerificationResponse, verifyAadhar, IAddAadhar } from '../../types/ProfileResponses';
+import { IDRequestBody, IDVerificationOtpRequestBody } from '../../types/ProfileRequests';
+import { APIError } from '../../../../../utils/generic/httpClient';
 
-export const SeeAadharCard = () => {
+export const VerifyAadharCard = () => {
   const [opened, { open, close }] = useDisclosure(false);
   const [checked, setChecked] = useState<boolean>(false);
   const [secondsRemaining, setSecondsRemaining] = useState<number>(60);
   const { classes: otpInputClasses } = OtpInputStyles();
   const isMobile = useMediaQuery('(max-width: 768px)');
   const greeneId = 'GRN788209';
-  const {
-    detailsPage,
-    dispatchDetailsPage,
-    verifyAadharForm,
-    getDocuments,
-    aadharIsVerified,
-    setAadharIsVerified,
-    scrollToTop,
-  } = useProfileContext();
+  const { setCandidateActivePage, verifyAadharForm, getDocuments, aadharIsVerified, setAadharIsVerified, scrollToTop } =
+    useProfileContext();
   const { authClient } = useGlobalContext();
-  const [verificationData, setVerificationData] = useState<IAadharVerificationData>({
+  const [verificationData, setVerificationData] = useState<IAadharVerificationResponse>({
     requestId: '',
     taskId: '',
   });
@@ -45,14 +40,12 @@ export const SeeAadharCard = () => {
       title: 'Sending OTP to linked phone number...',
       message: 'Please wait while we send OTP to your linked number.',
     });
-    const res: Result<any> = await HttpClient.callApiAuth(
+    const requestBody: IDRequestBody = { id_type: 'AADHAR', id_number: verifyAadharForm.values.aadharNo };
+    const res: Result<IAddAadhar> = await HttpClient.callApiAuth(
       {
         url: `${aadharAPIList.requestOTPForAadhar}`,
         method: 'POST',
-        body: {
-          id_type: 'AADHAR',
-          id_number: verifyAadharForm.values.aadharNo,
-        },
+        body: requestBody,
       },
       authClient
     );
@@ -64,10 +57,7 @@ export const SeeAadharCard = () => {
         taskId: taskId,
       }));
       open();
-      showSuccessNotification({
-        title: 'Success !',
-        message: 'OTP Sent to your linked phone number',
-      });
+      showSuccessNotification({ title: 'Success !', message: 'OTP Sent to your linked phone number' });
     } else {
       showErrorNotification(res.error.code);
     }
@@ -102,23 +92,21 @@ export const SeeAadharCard = () => {
         message: 'Please wait while we verify your OTP',
       });
       const { taskId, requestId } = verificationData;
-      const res: Result<any> = await HttpClient.callApiAuth(
+      const requestBody: IDVerificationOtpRequestBody = {
+        otp: verifyAadharForm.values.otp,
+        request_id: requestId,
+        task_id: taskId,
+      };
+      const res: Result<verifyAadhar | APIError> = await HttpClient.callApiAuth(
         {
           url: `${aadharAPIList.verifyOTPForAadhar}`,
           method: 'POST',
-          body: {
-            otp: verifyAadharForm.values.otp,
-            request_id: requestId,
-            task_id: taskId,
-          },
+          body: requestBody,
         },
         authClient
       );
       if (res.ok) {
-        showSuccessNotification({
-          title: 'Success !',
-          message: 'OTP Verified Successfully',
-        });
+        showSuccessNotification({ title: 'Success !', message: 'OTP Verified Successfully' });
         close();
         setAadharIsVerified(true);
         verifyAadharForm.values.otp = '';
@@ -131,24 +119,14 @@ export const SeeAadharCard = () => {
   };
 
   const handlePageChange = () => {
-    dispatchDetailsPage({
-      type: 'SET_SEE_AADHAR_CARD',
-      payload: !detailsPage.seeAadharCard,
-    });
+    setCandidateActivePage('Profile');
     verifyAadharForm.values.aadharNo = '';
     verifyAadharForm.values.otp = '';
   };
 
   const handleContinue = () => {
     scrollToTop();
-    dispatchDetailsPage({
-      type: 'SET_SEE_AADHAR_CARD',
-      payload: !detailsPage.seeAadharCard,
-    });
-    dispatchDetailsPage({
-      type: 'SET_SEE_CONGRATULATIONS_SCREEN',
-      payload: !detailsPage.seeCongratulations,
-    });
+    setCandidateActivePage('Congratulation Screen');
   };
 
   return (

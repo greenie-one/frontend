@@ -1,29 +1,22 @@
 import { Text, Box, Button } from '@mantine/core';
-import noData from '../assets/noData.png';
+import noData from '../../assets/noData.png';
 import { MdOutlineEdit } from 'react-icons/md';
 import { Carousel } from '@mantine/carousel';
-import '../styles/global.scss';
-import { WorkExperienceCard } from '../components/WorkExperienceCard';
-import { useProfileContext } from '../context/ProfileContext';
+import { ExperienceCard } from './ExperienceCard';
+import { useProfileContext } from '../../context/ProfileContext';
 import { AiOutlinePlus } from 'react-icons/ai';
 
-export const Experience = () => {
-  const { workExperienceData, dispatchDetailsPage, detailsPage, scrollToTop, scrollToProfileNav } = useProfileContext();
+export const ExperienceSection = () => {
+  const { workExperienceData, scrollToTop, scrollToProfileNav, setCandidateActivePage } = useProfileContext();
 
   const handleToggleWorkExperienceDetails = (): void => {
     scrollToProfileNav();
-    dispatchDetailsPage({
-      type: 'SET_SEE_ALL_WORKEXPERIENCE',
-      payload: !detailsPage.seeAllWorkExperience,
-    });
+    setCandidateActivePage('All Experiences');
   };
 
   const handleWorkExperiencePage = () => {
     scrollToTop();
-    dispatchDetailsPage({
-      type: 'SET_SEE_ADD_WORK_EXPERIENCE',
-      payload: !detailsPage.seeAllWorkExperience,
-    });
+    setCandidateActivePage('Add Experience');
   };
 
   return (
@@ -74,7 +67,7 @@ export const Experience = () => {
           {workExperienceData.reverse().map((workExperience, index) => {
             return (
               <Carousel.Slide key={index}>
-                <WorkExperienceCard
+                <ExperienceCard
                   position={workExperience.designation}
                   companyName={workExperience.companyName}
                   isVerified={workExperience.isVerified}

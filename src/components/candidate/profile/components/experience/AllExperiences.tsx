@@ -1,40 +1,37 @@
-import '../styles/global.scss';
-import { useProfileContext } from '../context/ProfileContext';
+import { useProfileContext } from '../../context/ProfileContext';
 import { Text, Box, Button, Modal, Title, Checkbox } from '@mantine/core';
 import { BsArrowLeft } from 'react-icons/bs';
 import { AiOutlineRight } from 'react-icons/ai';
 import { MdVerified } from 'react-icons/md';
 import { CgSandClock } from 'react-icons/cg';
-import tscLogo from '../assets/tscLogo.png';
-import { VerifyWorkExperience } from './VerifyWorkExperience';
+import tscLogo from '../../assets/tscLogo.png';
+import { VerifyExperience } from './VerifyExperience';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 import { useState } from 'react';
+import { ExperienceDetails } from './ExperienceDetails';
 
-export const SeeAllExperiences = () => {
-  const { dispatchDetailsPage, detailsPage, workExperienceData, selectedCard, setSelectedCard } = useProfileContext();
+import { IWorkExperienceResponse } from '../../types/ProfileResponses';
+
+export const AllExperiences = () => {
+  const { workExperienceData, selectedCard, setSelectedCard, setCandidateActivePage } = useProfileContext();
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
   const [checked, setChecked] = useState<boolean>(false);
-  const [selectedExperience, setSelectedExperience] = useState<IWorkExperience | null>(null);
-
+  const [experienceDetails, setExperienceDetails] = useState<IWorkExperienceResponse | null>(null);
   const handleToggleWorkExperienceDetails = (): void => {
-    dispatchDetailsPage({
-      type: 'SET_SEE_ALL_WORKEXPERIENCE',
-      payload: !detailsPage.seeAllWorkExperience,
-    });
-  };
-
-  const handleOpenModal = (workExperience: IWorkExperience) => {
-    open();
-    setSelectedExperience(workExperience);
+    setCandidateActivePage('Profile');
   };
 
   const handleGoToVerification = () => {
-    if (selectedExperience !== null) {
-      setSelectedCard(selectedExperience);
-      setChecked(!checked);
-      close();
-    }
+    setSelectedCard(experienceDetails);
+    setExperienceDetails(null);
+    setChecked(!checked);
+    close();
+  };
+
+  const handleAllExperience = () => {
+    setExperienceDetails(null);
+    setSelectedCard(null);
   };
 
   return (
@@ -57,19 +54,32 @@ export const SeeAllExperiences = () => {
           <Text className="policy">Click to view Data and Privacy Policy</Text>
         </Box>
       </Modal>
-      <Box className="see-all-header">
-        <Box className="go-back-btn" onClick={handleToggleWorkExperienceDetails}>
-          <BsArrowLeft className="arrow-left-icon" size={'16px'} />
-          <Text>Profile</Text>
-          <AiOutlineRight className="arrow-right-icon" size={'16px'} />
+      <Box className="top-header">
+        <Box className="see-all-header">
+          <Box className="go-back-btn" onClick={handleToggleWorkExperienceDetails}>
+            <BsArrowLeft className="arrow-left-icon" size={'16px'} />
+            <Text>Profile</Text>
+            <AiOutlineRight className="arrow-right-icon" size={'16px'} />
+          </Box>
+          <Text onClick={handleAllExperience}>{`Work Experience (${workExperienceData.length})`}</Text>
+          {experienceDetails !== null && (
+            <Box className="go-back-btn">
+              <AiOutlineRight className="arrow-right-icon" size={'16px'} />
+              <Text>{experienceDetails.companyName}</Text>
+            </Box>
+          )}
         </Box>
-        <Text onClick={() => setSelectedCard(null)}>{`Work Experience (${workExperienceData.length})`}</Text>
+        {experienceDetails !== null && (
+          <Button className="green-btn" onClick={open}>
+            Get verified
+          </Button>
+        )}
       </Box>
-      {selectedCard === null ? (
+      {experienceDetails === null && selectedCard === null && (
         <Box className="see-all-experiences-wrapper">
           {workExperienceData.reverse().map((workExperience) => {
             return (
-              <Box key={workExperience._id} onClick={() => handleOpenModal(workExperience)}>
+              <Box key={workExperience._id} onClick={() => setExperienceDetails(workExperience)}>
                 <Box className="experience-card">
                   <img className="companyLogo" src={tscLogo} />
                   <Text className="position">{workExperience.designation}</Text>
@@ -96,16 +106,32 @@ export const SeeAllExperiences = () => {
             );
           })}
         </Box>
-      ) : (
-        <Box>
-          <VerifyWorkExperience
-            _id={selectedCard._id}
-            image={selectedCard.image}
-            companyName={selectedCard.companyName}
-            designation={selectedCard.designation}
-            isVerified={selectedCard.isVerified}
-          />
-        </Box>
+      )}
+      {experienceDetails !== null && selectedCard === null && (
+        <ExperienceDetails
+          _id={experienceDetails._id}
+          verifiedBy={experienceDetails.verifiedBy}
+          image={experienceDetails.image}
+          designation={experienceDetails.designation}
+          companyName={experienceDetails.companyName}
+          companyId={experienceDetails.companyId}
+          companyType={experienceDetails.companyType}
+          companyStartDate={experienceDetails.companyStartDate}
+          companyEndDate={experienceDetails.companyEndDate}
+          workMode={experienceDetails.workMode}
+          workType={experienceDetails.workType}
+          email={experienceDetails.email}
+          isVerified={experienceDetails.isVerified}
+        />
+      )}
+      {selectedCard !== null && experienceDetails === null && (
+        <VerifyExperience
+          _id={selectedCard._id}
+          image={selectedCard.image}
+          companyName={selectedCard.companyName}
+          designation={selectedCard.designation}
+          isVerified={selectedCard.isVerified}
+        />
       )}
     </section>
   );

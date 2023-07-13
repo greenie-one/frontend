@@ -6,7 +6,7 @@ import { MdVerified, MdOutlineMenuOpen, MdOutlineClose } from 'react-icons/md';
 import { GoSearch } from 'react-icons/go';
 import { AiOutlineBell, AiFillCaretDown } from 'react-icons/ai';
 import JohnMarston from '../assets/johnMarston.png';
-import { SearchList } from '../components/search_list';
+import { SearchList } from './search_list';
 import { useDebounce } from '../../../../utils/hooks/useDebounce';
 import { BiUserCircle } from 'react-icons/bi';
 import { RiSettings3Line } from 'react-icons/ri';
@@ -15,6 +15,7 @@ import { useSettingsContext } from '../../../settings/context/SettingsContext';
 import { useProfileContext } from '../context/ProfileContext';
 import { showLoadingNotification, showSuccessNotification } from '../../../../utils/functions/showNotification';
 import { useGlobalContext } from '../../../../context/GlobalContext';
+import { DrawerAction, DrawerState } from '../types/ProfileActions';
 
 const notificationsData = [
   {
@@ -51,10 +52,7 @@ export const Navbar = () => {
 
   const removeAuthTokens = () => {
     setIsLoading(true);
-    showLoadingNotification({
-      title: 'Signing Out',
-      message: 'Please wait while we sign you out',
-    });
+    showLoadingNotification({ title: 'Signing Out', message: 'Please wait while we sign you out' });
 
     setTimeout(() => {
       authClient.deleteTokens();

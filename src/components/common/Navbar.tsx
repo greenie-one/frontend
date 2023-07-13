@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { useDisclosure } from '@mantine/hooks';
@@ -11,11 +11,10 @@ import { Button } from './Button';
 export const Navbar = () => {
   const { classes } = useStyles();
   const [opened, { open, close }] = useDisclosure(false);
-  const ref = useRef(null);
   const { scrollY } = useScroll();
   const [scrollPos, setScrollPos] = useState(0);
 
-  useMotionValueEvent(scrollY, 'change', (latest) => {
+  useMotionValueEvent(scrollY, 'change', () => {
     setScrollPos(scrollY.get());
   });
 

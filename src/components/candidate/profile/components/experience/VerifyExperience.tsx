@@ -1,4 +1,4 @@
-import React, { useReducer, useState, CSSProperties, useRef } from 'react';
+import React, { useReducer, useState, useRef } from 'react';
 import { Title, Text, Box, Button, TextInput, Select, Modal, Divider } from '@mantine/core';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 import { useForm, isNotEmpty, isEmail, hasLength } from '@mantine/form';
@@ -6,67 +6,29 @@ import { MdVerified, MdOutlineDelete, MdDriveFolderUpload } from 'react-icons/md
 import { AiOutlinePlus, AiFillInfoCircle } from 'react-icons/ai';
 import { RiAddCircleLine } from 'react-icons/ri';
 import { CgSandClock, CgProfile } from 'react-icons/cg';
-import tscLogo from '../assets/tscLogo.png';
-import noData from '../assets/noData.png';
-import { useProfileContext } from '../context/ProfileContext';
-import pdfIcon from '../assets/pdfIcon.png';
+import tscLogo from '../../assets/tscLogo.png';
+import noData from '../../assets/noData.png';
+import { useProfileContext } from '../../context/ProfileContext';
+import pdfIcon from '../../assets/pdfIcon.png';
 import {
   showErrorNotification,
   showLoadingNotification,
   showSuccessNotification,
-} from '../../../../utils/functions/showNotification';
-
+} from '../../../../../utils/functions/showNotification';
+import { ISkill } from '../../types/ProfileResponses';
+import { skillRate, peerType } from '../../constants/SelectionOptions';
+import { Peer, IWorkExperienceVerification } from '../../types/ProfileGeneral';
+import { ReviewStepAction, ReviewStepState } from '../../types/ProfileActions';
 export enum ReviewActionType {
   NEXT_STEP,
   PREVIOUS_STEP,
   RESET_STEP,
 }
 
-export type ReviewStepState = {
-  currentStep: number;
-};
-
-export type ReviewStepAction = { type: ReviewActionType };
 enum ModalType {
   AddSkill = 'Add skill',
   ConfirmRequest = 'Confirm request',
   SeeRequest = 'See request',
-}
-
-const peerType = [
-  { value: 'Line Manager', label: 'Line Manager' },
-  { value: 'Reporting Manager', label: 'Reporting Manager' },
-  { value: 'HR', label: 'HR' },
-  { value: 'Colleague', label: 'Colleague' },
-  { value: 'CXO', label: 'CXO' },
-];
-
-const skillRate = [
-  { value: 'AMATEUR', label: 'Begineer/Novice' },
-  { value: 'EXPERT', label: 'Intermediate' },
-  { value: 'HIGHLY-COMPENENT', label: 'Highly Competant' },
-  { value: 'ADVANCED', label: 'Advanced Proficiency' },
-  { value: 'EXPERT-2', label: 'Expert' },
-  { value: 'MASTER', label: 'Master - Pro(Global Recognition)' },
-];
-
-type Peer = {
-  index: number;
-  name: string;
-  email: string;
-  status: string;
-  peerType: string;
-  contactNumber: string;
-  documents: File[];
-  skills: ISkill[];
-};
-
-interface IWorkExperienceVerification {
-  _id: string;
-  image: string | null;
-  designation: string;
-  companyName: string;
-  isVerified: boolean;
 }
 
 const VerifiationStepReducer = (state: ReviewStepState, action: ReviewStepAction): ReviewStepState => {
@@ -82,13 +44,7 @@ const VerifiationStepReducer = (state: ReviewStepState, action: ReviewStepAction
   }
 };
 
-export const VerifyWorkExperience: React.FC<IWorkExperienceVerification> = ({
-  _id,
-  image,
-  designation,
-  companyName,
-  isVerified,
-}) => {
+export const VerifyExperience: React.FC<IWorkExperienceVerification> = ({ designation, companyName, isVerified }) => {
   const [verifificationStepState, verificationStepDispatch] = useReducer(VerifiationStepReducer, {
     currentStep: 0,
   });
@@ -97,22 +53,21 @@ export const VerifyWorkExperience: React.FC<IWorkExperienceVerification> = ({
   const isTablet = useMediaQuery('(max-width: 1024px)');
   const [opened, { open, close }] = useDisclosure(false);
   const [addedPeers, setAddedPeers] = useState<Peer[]>([]);
-  const [addedPeersDocument, setAddedPeersDoucment] = useState<File[]>([]);
   const [openModalType, setOpenModalType] = useState<ModalType | null>(null);
   const [activePeer, setActivePeer] = useState<number>(0);
   const [selectionPage, setSelectionPage] = useState<'Document' | 'Skill'>('Document');
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [backgroundStyle, setBackgroundStyle] = useState<CSSProperties>({
+
+  const backgroundStyle = {
     backgroundImage: `url(${tscLogo})`,
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
-  });
+  };
+
   const {
-    detailsPage,
-    dispatchDetailsPage,
+    setCandidateActivePage,
     setSelectedCard,
     scrollToTop,
-    skillData,
     scrollToProfileNav,
     selectedSkills,
     setSelectedSkills,
@@ -188,29 +143,20 @@ export const VerifyWorkExperience: React.FC<IWorkExperienceVerification> = ({
   };
 
   const handleProceed = () => {
-    showLoadingNotification({
-      title: 'Please wait !',
-      message: 'We are adding your peers',
-    });
+    showLoadingNotification({ title: 'Please wait !', message: 'We are adding your peers' });
     if (addedPeers.length < 2) {
       showErrorNotification('NO_PEERS');
     }
     if (addedPeers.length >= 2) {
       scrollToProfileNav();
       verificationStepDispatch({ type: ReviewActionType.NEXT_STEP });
-      showSuccessNotification({
-        title: 'Success !',
-        message: 'Your Peers have been added sucessfully',
-      });
+      showSuccessNotification({ title: 'Success !', message: 'Your Peers have been added sucessfully' });
     }
   };
 
   const handleSeeRequest = () => {
     setSelectedCard(null);
-    dispatchDetailsPage({
-      type: 'SET_SEE_ALL_WORKEXPERIENCE',
-      payload: !detailsPage.seeAllWorkExperience,
-    });
+    setCandidateActivePage('Profile');
     close();
     scrollToTop();
     setSelectedSkills([]);
@@ -219,8 +165,6 @@ export const VerifyWorkExperience: React.FC<IWorkExperienceVerification> = ({
   const handleUploadDocument = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      const newDocument: File = file;
-      setAddedPeersDoucment((prevDoc) => [...prevDoc, newDocument]);
       addedPeers[activePeer].documents.push(file);
       event.target.value = '';
     }
@@ -232,6 +176,7 @@ export const VerifyWorkExperience: React.FC<IWorkExperienceVerification> = ({
       const newSkill: ISkill = {
         skillName: skillForm.values.skillName,
         expertise: skillForm.values.expertise,
+        workExperience: '',
       };
       setSelectedSkills((prevSkills) => [...prevSkills, newSkill]);
       skillForm.values.skillName = '';

@@ -1,122 +1,56 @@
 import { useState, useRef } from 'react';
-import { Text, Modal, Box, Title, TextInput, Select, Checkbox, Button, Divider, Textarea } from '@mantine/core';
+import { Text, Box, Title, TextInput, Select, Checkbox, Button, Divider, Textarea } from '@mantine/core';
+import pdfIcon from '../../assets/pdfIcon.png';
 import { DateInput } from '@mantine/dates';
-import { MdOutlineDelete } from 'react-icons/md';
+import { MdOutlineDelete, MdVerified } from 'react-icons/md';
 import { VscDebugRestart } from 'react-icons/vsc';
-import { useMediaQuery, useDisclosure } from '@mantine/hooks';
-import '../styles/global.scss';
-import { useProfileContext } from '../context/ProfileContext';
+import { useProfileContext } from '../../context/ProfileContext';
 import { GrAdd } from 'react-icons/gr';
-import linkedInImg from '../../../auth/assets/linkedIn-logo.png';
+import linkedInImg from '../../../../auth/assets/linkedIn-logo.png';
 import { BsArrowLeft, BsCheckLg } from 'react-icons/bs';
-import { skillsAPIList } from '../../../../assets/api/ApiList';
-import uploadIcon from '../assets/upload.png';
-import checkedIcon from '../assets/check.png';
-import { workExperienceAPiList } from '../../../../assets/api/ApiList';
+import { skillsAPIList } from '../../../../../assets/api/ApiList';
+import uploadIcon from '../../assets/upload.png';
+import checkedIcon from '../../assets/check.png';
+import tcsLogo from '../../assets/tscLogo.png';
+import { workExperienceAPiList } from '../../../../../assets/api/ApiList';
 import { CgSandClock } from 'react-icons/cg';
-import { useGlobalContext } from '../../../../context/GlobalContext';
-import { HttpClient, Result } from '../../../../utils/generic/httpClient';
+import { useGlobalContext } from '../../../../../context/GlobalContext';
+import { HttpClient, Result } from '../../../../../utils/generic/httpClient';
 import {
   showErrorNotification,
   showLoadingNotification,
   showSuccessNotification,
-} from '../../../../utils/functions/showNotification';
+} from '../../../../../utils/functions/showNotification';
+import {
+  workType,
+  modeOfWork,
+  departments,
+  companyTypes,
+  skillRate,
+  documentTags,
+} from '../../constants/SelectionOptions';
+import { Document } from '../../types/ProfileGeneral';
+import { ISkill, createExperience } from '../../types/ProfileResponses';
+import { ExperienceRequestBody, SkillRequestBody } from '../../types/ProfileRequests';
+import { APIError } from '../../../../../utils/generic/httpClient';
 
-type Document = {
-  document: File | undefined;
-  documentTag: string | null;
-};
-
-const workType = [
-  { value: 'Work from office', label: 'Work From Office' },
-  { value: 'Work from home', label: 'Work From Home' },
-  { value: 'Hybrid', label: 'Hybrid' },
-];
-const modeOfWork = [
-  { value: 'Full-time', label: 'Full-time' },
-  { value: 'Part-time', label: 'Part-time' },
-  { value: 'Internship', label: 'Intership' },
-  { value: 'Contract', label: 'Contract' },
-];
-
-const companyTypes = [
-  { value: 'Startup', label: 'Start-up (Funded)' },
-  { value: 'Early Stage Startup', label: 'Early Stage Startup' },
-  { value: 'Startup (Profitable)', label: 'Startup (Profitable)' },
-  {
-    value: 'Startup (Unicorn, Not Profitable)',
-    label: 'Startup (Unicorn, Not Profitable)',
-  },
-  { value: 'Family Owned Business', label: 'Family Owned Business' },
-  { value: 'Private Limited (India)', label: 'Private Limited (India)' },
-  { value: 'Partnership (LLP/LLC)', label: 'Partnership (LLP/LLC)' },
-  { value: 'Public Limited Company', label: 'Public Limited Company' },
-];
-
-const skillRate = [
-  { value: 'BEGINEER', label: 'Begineer/Novice' },
-  { value: 'INTERMEDIATE', label: 'Intermediate' },
-  { value: 'HIGHLY COMPETANT', label: 'Highly Competant' },
-  { value: 'ADVANCED', label: 'Advanced Proficiency' },
-  { value: 'EXPERT', label: 'Expert' },
-  { value: 'MASTER', label: 'Master - Pro(Global Recognition)' },
-];
-
-const documentTags = [
-  { value: 'Appointsment Letter', label: 'Appointsment Letter' },
-  { value: 'Payment Slip', label: 'Payment Slip' },
-  { value: 'Cerificate', label: 'Cerificate' },
-  { value: 'Other', label: 'Other' },
-];
-
-const departments = [
-  { value: 'HR', label: 'Human Resources' },
-  { value: 'Finance', label: 'Finance and Accounting' },
-  { value: 'Sales', label: 'Sales and Marketing' },
-  { value: 'Operations', label: 'Operations' },
-  { value: 'IT', label: 'Information Technology' },
-  { value: 'CustomerService', label: 'Customer Service' },
-  { value: 'R&D', label: 'Research and Development' },
-  { value: 'Production', label: 'Production or Manufacturing' },
-  { value: 'SupplyChain', label: 'Supply Chain or Logistics' },
-  { value: 'Administration', label: 'Administration' },
-  { value: 'Legal', label: 'Legal and Compliance' },
-  { value: 'QA', label: 'Quality Assurance' },
-  { value: 'ProjectManagement', label: 'Project Management' },
-  { value: 'Procurement', label: 'Procurement or Purchasing' },
-  { value: 'PR', label: 'Public Relations' },
-  { value: 'Training', label: 'Training and Development' },
-  { value: 'Facilities', label: 'Facilities Management' },
-  { value: 'RiskManagement', label: 'Risk Management' },
-  { value: 'BusinessDevelopment', label: 'Business Development' },
-  { value: 'StrategicPlanning', label: 'Strategic Planning' },
-  { value: 'CorporateCommunications', label: 'Corporate Communications' },
-  { value: 'InternalAudit', label: 'Internal Audit' },
-  { value: 'HealthSafety', label: 'Health and Safety' },
-  {
-    value: 'Sustainability',
-    label: 'Sustainability or Corporate Social Responsibility',
-  },
-  { value: 'DataAnalytics', label: 'Data Analytics or Business Intelligence' },
-];
-
-export const AddWorkExperience = () => {
-  const isMobile = useMediaQuery('(max-width: 768px)');
-  const isTablet = useMediaQuery('(max-width: 1024px)');
-  const [opened, { open, close }] = useDisclosure(false);
+export const AddExperience = () => {
   const [experienceChecked, setExperienceChecked] = useState(false);
   const [documentsChecked, setDocumentsChecked] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | undefined>(undefined);
   const [documents, setDocuments] = useState<Document[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [workExperienceData, setWorkExperienceData] = useState<IWorkExperience | null>(null);
+  const [workExperienceId, setworkExperienceId] = useState<createExperience | null>(null);
   const { authClient } = useGlobalContext();
+  const backgroundStyle = {
+    backgroundImage: `url(${tcsLogo})`,
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+  };
 
   const {
     workExperienceForm,
     getWorkExperience,
-    dispatchDetailsPage,
-    detailsPage,
     skillForm,
     getSkills,
     scrollToTop,
@@ -124,11 +58,14 @@ export const AddWorkExperience = () => {
     setSelectedCard,
     selectedSkills,
     setSelectedSkills,
+    setCandidateActivePage,
+    workExperienceData,
   } = useProfileContext();
   const [active, setActive] = useState<number>(1);
+  const addedWorkExperience = workExperienceData[workExperienceData.length - 1];
 
   const handleCheck = () => {
-    workExperienceForm.values.endDate = null;
+    workExperienceForm.values.endDate = '';
     setExperienceChecked(!experienceChecked);
   };
 
@@ -139,10 +76,7 @@ export const AddWorkExperience = () => {
         behavior: 'smooth',
       });
     if (active === 1) {
-      dispatchDetailsPage({
-        type: 'SET_SEE_ADD_WORK_EXPERIENCE',
-        payload: !detailsPage.seeAddWorkExperience,
-      });
+      setCandidateActivePage('Profile');
       workExperienceForm.values.designation = '';
       workExperienceForm.values.companyId = '';
       workExperienceForm.values.companyName = '';
@@ -151,8 +85,8 @@ export const AddWorkExperience = () => {
       workExperienceForm.values.workEmail = '';
       workExperienceForm.values.workType = '';
       workExperienceForm.values.modeOfwork = '';
-      workExperienceForm.values.startDate = null;
-      workExperienceForm.values.endDate = null;
+      workExperienceForm.values.startDate = '';
+      workExperienceForm.values.endDate = '';
     }
     if (active === 2) {
       setActive(1);
@@ -170,41 +104,36 @@ export const AddWorkExperience = () => {
       !workExperienceForm.validateField('companyType').hasError &&
       !workExperienceForm.validateField('companyName').hasError &&
       !workExperienceForm.validateField('workEmail').hasError &&
-      !workExperienceForm.validateField('companyId').hasError &&
       !workExperienceForm.validateField('startDate').hasError &&
       !workExperienceForm.validateField('workType').hasError &&
       !workExperienceForm.validateField('modeOfwork').hasError
     ) {
-      showLoadingNotification({
-        title: 'Please wait !',
-        message: 'We are adding your work experience.',
-      });
+      showLoadingNotification({ title: 'Please wait !', message: 'We are adding your work experience.' });
       workExperienceForm.clearErrors();
-      const res: Result<any> = await HttpClient.callApiAuth(
+      const requestBody: ExperienceRequestBody = {
+        designation: workExperienceForm.values.designation,
+        companyType: workExperienceForm.values.companyType,
+        email: workExperienceForm.values.workEmail,
+        workMode: workExperienceForm.values.modeOfWork,
+        workType: workExperienceForm.values.workType,
+        companyName: workExperienceForm.values.companyName,
+        companyId: workExperienceForm.values.companyId,
+        companyStartDate: workExperienceForm.values.startDate,
+        companyEndDate: workExperienceForm.values.endDate,
+        isVerified: false,
+      };
+      const res: Result<createExperience, APIError> = await HttpClient.callApiAuth(
         {
           url: `${workExperienceAPiList.postWorkExperience}`,
           method: 'POST',
-          body: {
-            designation: workExperienceForm.values.designation,
-            companyType: workExperienceForm.values.companyType,
-            email: workExperienceForm.values.workEmail,
-            workMode: workExperienceForm.values.modeOfWork,
-            workType: workExperienceForm.values.workType,
-            companyName: workExperienceForm.values.companyName,
-            companyId: workExperienceForm.values.companyId,
-            companyStartDate: workExperienceForm.values.startDate,
-            companyEndDate: workExperienceForm.values.endDate,
-            isVerified: false,
-          },
+          body: requestBody,
         },
         authClient
       );
       if (res.ok) {
-        setWorkExperienceData(res.value);
-        showSuccessNotification({
-          title: 'Success !',
-          message: 'New experience added to your profile.',
-        });
+        setworkExperienceId(res.value);
+        setSelectedCard(addedWorkExperience);
+        showSuccessNotification({ title: 'Success !', message: 'New experience added to your profile.' });
         getWorkExperience();
         setActive(2);
         scrollToTop();
@@ -218,14 +147,14 @@ export const AddWorkExperience = () => {
     if (
       !skillForm.validateField('skillName').hasError &&
       !skillForm.validateField('expertise').hasError &&
-      workExperienceData !== null
+      workExperienceId !== null
     ) {
       const newSkill: ISkill = {
         skillName: skillForm.values.skillName,
         expertise: skillForm.values.expertise,
-        workExperience: workExperienceData?._id,
+        workExperience: workExperienceId.workExperienceId,
       };
-      setSelectedSkills((prevSkills) => [...prevSkills, newSkill]);
+      setSelectedSkills((prevSkills: ISkill[]) => [...prevSkills, newSkill]);
       skillForm.values.skillName = '';
       skillForm.values.expertise = '';
     }
@@ -236,24 +165,20 @@ export const AddWorkExperience = () => {
       showErrorNotification('NO_SKILL');
     }
     if (selectedSkills.length > 0) {
-      showLoadingNotification({
-        title: 'Please wait !',
-        message: 'We are adding your skill',
-      });
+      showLoadingNotification({ title: 'Please wait !', message: 'We are adding your skill' });
+
       for (const skill of selectedSkills) {
+        const requestBody: SkillRequestBody = { skillName: skill.skillName, expertise: skill.expertise };
         const res = await HttpClient.callApiAuth(
           {
             url: `${skillsAPIList.postSkill}`,
             method: 'POST',
-            body: { skillName: skill.skillName, expertise: skill.expertise },
+            body: requestBody,
           },
           authClient
         );
         if (res.ok) {
-          showSuccessNotification({
-            title: 'Success !',
-            message: 'New skills added to your profile.',
-          });
+          showSuccessNotification({ title: 'Success !', message: 'New skills added to your profile.' });
 
           setActive(3);
         }
@@ -294,10 +219,7 @@ export const AddWorkExperience = () => {
   const handleSelectTag = (index: number, value: string | null) => {
     setDocuments((prevDocuments) => {
       const updatedDocuments = [...prevDocuments];
-      updatedDocuments[index] = {
-        ...updatedDocuments[index],
-        documentTag: value,
-      };
+      updatedDocuments[index] = { ...updatedDocuments[index], documentTag: value };
       return updatedDocuments;
     });
   };
@@ -306,87 +228,46 @@ export const AddWorkExperience = () => {
     if (documents.length > 0 && documentsChecked) {
       for (const document of documents) {
         if (document.documentTag === '') {
-          showLoadingNotification({
-            title: 'Please wait !',
-            message: 'Adding your documents',
-          });
+          showLoadingNotification({ title: 'Please wait !', message: 'Adding your documents' });
           showErrorNotification('MISSING_TAGS');
           return;
         }
-        open();
+        setActive(4);
       }
     }
   };
 
   const handleModalContinue = () => {
     scrollToProfileNav();
-    dispatchDetailsPage({
-      type: 'SET_SEE_ADD_WORK_EXPERIENCE',
-      payload: !detailsPage.seeAddWorkExperience,
-    });
-    dispatchDetailsPage({
-      type: 'SET_SEE_ALL_WORKEXPERIENCE',
-      payload: !detailsPage.seeAllWorkExperience,
-    });
+    setCandidateActivePage('All Experiences');
     close();
   };
 
   const handleGoToVerification = () => {
     handleModalContinue();
-    setSelectedCard(workExperienceData);
+    // setSelectedCard(workExperienceId);
   };
 
   return (
     <section className="container add-work-experience">
-      <Modal
-        className="modal"
-        size={isTablet ? '70%' : '50%'}
-        fullScreen={isMobile}
-        opened={opened}
-        onClose={close}
-        centered
-      >
-        <Box className="experience-modal">
-          <img src={checkedIcon} alt="Verified-Icon" />
-          <Title className="title">Your Work Experience is added</Title>
-          <Text className="sub-title">Let's get it verified</Text>
-          <Box className="info-box">
-            <Box className="designation-company-name">
-              <Text className="designation">{workExperienceData?.designation}</Text>
-              <Text className="company-name">{workExperienceData?.companyName}</Text>
-            </Box>
-            <Box className="buttons-wrapper">
-              <Button leftIcon={<CgSandClock color="#FF7272" size={'16px'} />} className="pending">
-                Pending
-              </Button>
-              <Button className="go-to-verfication" onClick={handleGoToVerification}>
-                Go to verification
-              </Button>
+      {active < 4 && (
+        <>
+          <Box className="see-all-header">
+            <Box className="go-back-btn" onClick={handlePrevPage}>
+              <BsArrowLeft className="arrow-left-icon" size={'16px'} />
+              {active === 1 && <Text>Add Work Experience</Text>}
+              {active === 2 && <Text>Add Skills</Text>}
+              {active === 3 && <Text>Upload work document</Text>}
             </Box>
           </Box>
-          <Button className="primaryBtn" onClick={handleModalContinue}>
-            Continue
-          </Button>
-          <Box className="fact-box">
-            <Text className="fact-heading">Did you know!</Text>
-            <Text className="fact">Getting Work Experience verified increases your profile rating on Greenie</Text>
+          <Box className="progress-bar-wrapper">
+            <Box className="progress-bar" bg={'#9fe870'}></Box>
+            <Box className="progress-bar" bg={active === 2 || active === 3 ? '#9fe870' : '#F3F3F3'}></Box>
+            <Box className="progress-bar" bg={active === 3 ? '#9fe870' : '#F3F3F3'}></Box>
           </Box>
-        </Box>
-      </Modal>
-      <Box className="see-all-header">
-        <Box className="go-back-btn" onClick={handlePrevPage}>
-          <BsArrowLeft className="arrow-left-icon" size={'16px'} />
-          {active === 1 && <Text>Add Work Experience</Text>}
-          {active === 2 && <Text>Add Skills</Text>}
-          {active === 3 && <Text>Upload work document</Text>}
-        </Box>
-      </Box>
-      <Box className="progress-bar-wrapper">
-        <Box className="progress-bar" bg={'#9fe870'}></Box>
-        <Box className="progress-bar" bg={active === 2 || active === 3 ? '#9fe870' : '#F3F3F3'}></Box>
-        <Box className="progress-bar" bg={active === 3 ? '#9fe870' : '#F3F3F3'}></Box>
-      </Box>
-      <Text className="step-identifier">Step {active}/3</Text>
+          <Text className="step-identifier">Step {active}/3</Text>
+        </>
+      )}
       {active === 1 && (
         <Box>
           <Box className="input-section">
@@ -467,7 +348,6 @@ export const AddWorkExperience = () => {
           <Box className="input-section">
             <Title className="title">Work email</Title>
             <TextInput
-              withAsterisk
               label="Previous work email"
               className="inputClass"
               {...workExperienceForm.getInputProps('workEmail')}
@@ -477,7 +357,6 @@ export const AddWorkExperience = () => {
           <Box className="input-section">
             <Title className="title">Company ID</Title>
             <TextInput
-              withAsterisk
               label="Enter your unique company id"
               className="inputClass"
               {...workExperienceForm.getInputProps('companyId')}
@@ -607,7 +486,7 @@ export const AddWorkExperience = () => {
 
           <Divider color="#ebebeb" />
           <Box className="add-skills-wrapper">
-            {selectedSkills.map((skill, index) => {
+            {selectedSkills.map((skill: ISkill, index: number) => {
               const { expertise, skillName } = skill;
               return (
                 <Box key={index} className="add-skill-box">
@@ -643,7 +522,7 @@ export const AddWorkExperience = () => {
             {typeof selectedFile !== 'undefined' && (
               <Box className="inpute-file-name-box">
                 <Text className="label">File upload</Text>
-                <Text className="input-file-name">{selectedFile.name}</Text>
+                <Text className="input-file-name">{selectedFile.name.substring(0, 15)}...</Text>
                 <Box className="icon-box">
                   <VscDebugRestart className="add-document-icon" onClick={() => fileInputRef.current?.click()} />
                   <MdOutlineDelete className="add-document-icon" onClick={() => setSelectedFile(undefined)} />
@@ -669,6 +548,8 @@ export const AddWorkExperience = () => {
                         value={documentTag}
                         onChange={(value) => handleSelectTag(index, value)}
                         data={documentTags}
+                        className="inputClass"
+                        label={'Select document type'}
                         styles={() => ({
                           item: {
                             '&[data-selected]': {
@@ -721,6 +602,64 @@ export const AddWorkExperience = () => {
             >
               Continue
             </Button>
+          </Box>
+        </Box>
+      )}
+      {active === 4 && (
+        <Box className="experience-congrats-screen">
+          <img src={checkedIcon} alt="Chekced Icon" className="checked-icon" />
+          <Title className="main-heading">Your Work Experience is added.</Title>
+          <Text className="main-sub-heading">Let's get it verified</Text>
+          <Box className="experience-details">
+            <Box className="company-logo" style={backgroundStyle}>
+              <MdVerified className="verified-icon" color="#17a672" size="22px" />
+            </Box>
+            <Box className="experience-details-text-box">
+              <Text className="designation">{addedWorkExperience.designation}</Text>
+              <Text className="company-name">{addedWorkExperience.companyName}</Text>
+              {addedWorkExperience.isVerified ? (
+                <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
+                  Verified
+                </Button>
+              ) : (
+                <Button leftIcon={<CgSandClock size={'16px'} />} className="pending">
+                  Pending
+                </Button>
+              )}
+            </Box>
+          </Box>
+          <Box className="docs-box">
+            <Title className="heading">With documents</Title>
+            <Box className="docs-wrapper">
+              {documents.map(({ document }, index) => {
+                return (
+                  <Box className="folder" key={index}>
+                    <img src={pdfIcon} alt="folder-image" />
+                    <Text className="folder-text">{document?.name.substring(0, 10)}...</Text>
+                  </Box>
+                );
+              })}
+            </Box>
+          </Box>
+          <Box className="docs-box">
+            <Title className="heading">Skills</Title>
+            <Box className="add-skills-wrapper">
+              {selectedSkills.map((skill: ISkill, index: number) => {
+                const { expertise, skillName } = skill;
+                return (
+                  <Box key={index} className="add-skill-box">
+                    <Text className="add-skill-name">{skillName}</Text>
+                    <Text className="add-skill-rate">{expertise}</Text>
+                  </Box>
+                );
+              })}
+            </Box>
+          </Box>
+          <Box>
+            <Button className="green-btn btn" onClick={handleGoToVerification}>
+              Go to verification
+            </Button>
+            <Button className="cancel-btn btn">Cancel</Button>
           </Box>
         </Box>
       )}

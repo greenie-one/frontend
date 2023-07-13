@@ -19,7 +19,6 @@ export class AuthClient {
   private constructor() {
     const tokens = localStorage.getItem('auth-tokens');
     if (!tokens) {
-      console.log('No tokens found in local storage');
       this.accessToken = null;
       this.refreshToken = null;
     } else {

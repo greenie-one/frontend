@@ -1,4 +1,3 @@
-import '../styles/global.scss';
 import { Box, Text, List } from '@mantine/core';
 import { RiFacebookCircleLine } from 'react-icons/ri';
 import { FaInstagram } from 'react-icons/fa';
