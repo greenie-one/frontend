@@ -78,7 +78,7 @@ const LoginStepTwo = () => {
 
         if (resp.ok) {
           loginForm.setFieldValue('password', '');
-          authClient.setTokens(resp.value.access_token, resp.value.refresh_token);
+          authClient.setTokens(resp.value.accessToken, resp.value.refreshToken);
           setForceRender((prev) => !prev);
 
           showSuccessNotification({

@@ -62,7 +62,7 @@ const SignUpStepThree = () => {
       });
 
       if (res.ok) {
-        authClient.setTokens(res.value.access_token, res.value.refresh_token);
+        authClient.setTokens(res.value.accessToken, res.value.refreshToken);
         showSuccessNotification({
           title: 'Success !',
           message: 'Your account has been successfully created.',
