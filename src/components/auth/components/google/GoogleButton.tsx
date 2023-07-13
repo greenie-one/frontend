@@ -36,7 +36,7 @@ const GoogleButton = () => {
       showErrorNotification(res.error.code);
     }
 
-    if (authTokens?.accessToken) setForceRender((prev) => !prev);
+    if (authTokens?.access_token) setForceRender((prev) => !prev);
   };
 
   return (

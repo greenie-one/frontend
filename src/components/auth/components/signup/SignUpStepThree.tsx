@@ -62,7 +62,7 @@ const SignUpStepThree = () => {
       });
 
       if (res.ok) {
-        authClient.setTokens(res.value.accessToken, res.value.refreshToken);
+        authClient.setTokens(res.value.access_token, res.value.refresh_token);
         showSuccessNotification({
           title: 'Success !',
           message: 'Your account has been successfully created.',
@@ -143,32 +143,3 @@ const SignUpStepThree = () => {
 };
 
 export default SignUpStepThree;
-
-// const inputStyles = createStyles(() => ({
-//   root: {
-//     position: 'relative',
-//     marginBottom: '24px',
-//     marginTop: '24px',
-//   },
-
-//   input: {
-//     width: '458px',
-//     height: '68px',
-//     fontSize: '16px',
-//     fontWeight: 500,
-//     borderRadius: '8px',
-//     border: '1px solid #D1D4DB',
-//     lineHeight: '19px',
-//     letterSpacing: '24px',
-//     color: '#697082',
-
-//     [`@media screen and (max-width: ${em(1024)})`]: {
-//       width: '350px',
-//       height: '46px',
-//       borderRadius: '6px',
-//       fontSize: '14px',
-//       lineHeight: '12px',
-//       margin: '0 auto',
-//     },
-//   },
-// }));

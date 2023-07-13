@@ -57,7 +57,7 @@ const LoginStepThree = () => {
       });
 
       if (res.ok) {
-        authClient.setTokens(res.value.accessToken, res.value.refreshToken);
+        authClient.setTokens(res.value.access_token, res.value.refresh_token);
         showSuccessNotification({
           title: 'Success !',
           message: 'You have been logged in successfully.',
