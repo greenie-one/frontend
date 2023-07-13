@@ -1,18 +1,15 @@
 import { Text, Box, Title, Button } from '@mantine/core';
-import { useProfileContext } from '../context/ProfileContext';
-import { BioSection } from '../sections/BioSection';
-import checkGif from '../assets/94109-confirmation 1.gif';
+import { useProfileContext } from '../../context/ProfileContext';
+import { BioSection } from '../user_profile/BioSection';
+import checkGif from '../../assets/94109-confirmation 1.gif';
 
-export const SeeCongratulations = () => {
-  const { detailsPage, dispatchDetailsPage, setAadharIsVerified, scrollToTop } = useProfileContext();
+export const CongratulationsScreen = () => {
+  const { setAadharIsVerified, scrollToTop, setCandidateActivePage } = useProfileContext();
 
   const handleContinue = () => {
     scrollToTop();
     setAadharIsVerified(false);
-    dispatchDetailsPage({
-      type: 'SET_SEE_CONGRATULATIONS_SCREEN',
-      payload: !detailsPage.seeCongratulations,
-    });
+    setCandidateActivePage('Congratulation Screen');
   };
 
   return (

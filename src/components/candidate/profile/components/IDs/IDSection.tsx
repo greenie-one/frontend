@@ -1,46 +1,36 @@
 import { Text, Box, Button, Modal, Title, Checkbox } from '@mantine/core';
-import '../styles/global.scss';
-import { VerificationIDCard } from '../components/VerificationIDCard';
+import { IDCard } from './IDCard';
 import { MdOutlineEdit, MdVerified } from 'react-icons/md';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
-import { useProfileContext } from '../context/ProfileContext';
+import { useProfileContext } from '../../context/ProfileContext';
 import { Carousel } from '@mantine/carousel';
-import janeCooper from '../assets/janeCooper.png';
-import johnMarston from '../assets/johnMarston.png';
-import flyoMiles from '../assets/flyodMiles.png';
+import janeCooper from '../../assets/janeCooper.png';
+import johnMarston from '../../assets/johnMarston.png';
+import flyoMiles from '../../assets/flyodMiles.png';
 import { AiOutlinePlus } from 'react-icons/ai';
-import aadharLogo from '../assets/aadhar-logo.png';
-import panLogo from '../assets/pan-logo.png';
-import licenceLogo from '../assets/licence-logo.png';
-import updateIdTrophy from '../assets/updateIdTrophy.png';
-import { useState } from 'react';
+import aadharLogo from '../../assets/aadhar-logo.png';
+import panLogo from '../../assets/pan-logo.png';
+import licenceLogo from '../../assets/licence-logo.png';
+import updateIdTrophy from '../../assets/updateIdTrophy.png';
+import React, { useState } from 'react';
 
-export const VerificationIDSection = () => {
+export const IDSection: React.FC = () => {
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
-  const { detailsPage, dispatchDetailsPage, documentsData, scrollToTop } = useProfileContext();
+  const { documentsData, scrollToTop, setCandidateActivePage } = useProfileContext();
   const [isAgreed, setIsAgreed] = useState<boolean>(false);
   const [checked, setChecked] = useState<boolean>(false);
   const handlePageChange = (documentsType: string) => {
     if (documentsType === 'AADHAR') {
-      dispatchDetailsPage({
-        type: 'SET_SEE_AADHAR_CARD',
-        payload: !detailsPage.seeAadharCard,
-      });
+      setCandidateActivePage('Verify Aadhar Card');
       scrollToTop();
     }
     if (documentsType === 'PAN') {
-      dispatchDetailsPage({
-        type: 'SET_SEE_PAN_CARD',
-        payload: !detailsPage.seePanCard,
-      });
+      setCandidateActivePage('Verify PAN Card');
       scrollToTop();
     }
     if (documentsType === 'DRIVING_LICENSE') {
-      dispatchDetailsPage({
-        type: 'SET_SEE_DRIVER_LICENCE',
-        payload: !detailsPage.seeDrivingLicence,
-      });
+      setCandidateActivePage('Verify Licence');
       scrollToTop();
     }
   };
@@ -160,7 +150,7 @@ export const VerificationIDSection = () => {
 
       {documentsData.length === 1 && (
         <Box className="singleData-wrapper">
-          <VerificationIDCard documentName={documentsData[0].id_type} isVerified={true} />
+          <IDCard documentName={documentsData[0].id_type} isVerified={true} />
           <Box className="single-data-box">
             <img src={updateIdTrophy} alt="Update Id" />
             <Box className="verify-id-text">
@@ -189,7 +179,7 @@ export const VerificationIDSection = () => {
           {documentsData.map(({ id_type }, index) => (
             <Carousel.Slide key={index}>
               <Box>
-                <VerificationIDCard documentName={id_type} isVerified={true} />
+                <IDCard documentName={id_type} isVerified={true} />
               </Box>
             </Carousel.Slide>
           ))}

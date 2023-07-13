@@ -1,23 +1,24 @@
-import '../styles/global.scss';
 import { useState } from 'react';
-import { useProfileContext } from '../context/ProfileContext';
+import { useProfileContext } from '../../context/ProfileContext';
 import { Text, Box, Button, TextInput, Title, Checkbox } from '@mantine/core';
 import { BsArrowLeft } from 'react-icons/bs';
 import { AiOutlineRight } from 'react-icons/ai';
-import DrivingLicenceImg from '../assets/DrivingLicence.png';
-import john from '../assets/johnMarston.png';
-import { drivinglicenseAPIList } from '../../../../assets/api/ApiList';
-import { useGlobalContext } from '../../../../context/GlobalContext';
+import DrivingLicenceImg from '../../assets/DrivingLicence.png';
+import john from '../../assets/johnMarston.png';
+import { drivinglicenseAPIList } from '../../../../../assets/api/ApiList';
+import { useGlobalContext } from '../../../../../context/GlobalContext';
 import {
   showErrorNotification,
   showLoadingNotification,
   showSuccessNotification,
-} from '../../../../utils/functions/showNotification';
-import { HttpClient, Result } from '../../../../utils/generic/httpClient';
+} from '../../../../../utils/functions/showNotification';
+import { HttpClient, Result } from '../../../../../utils/generic/httpClient';
+import { IDRequestBody } from '../../types/ProfileRequests';
+import { verifyLicence } from '../../types/ProfileResponses';
 
-export const SeeDrivingLicence = () => {
+export const VerifyDrivingLicence = () => {
   const [checked, setChecked] = useState(false);
-  const { detailsPage, dispatchDetailsPage, verifyLicenceForm, getDocuments, licenseIsVerified, setLicenseIsVerified } =
+  const { setCandidateActivePage, verifyLicenceForm, getDocuments, licenseIsVerified, setLicenseIsVerified } =
     useProfileContext();
   const { authClient } = useGlobalContext();
 
@@ -28,22 +29,17 @@ export const SeeDrivingLicence = () => {
         title: 'Verifying your Driving Licence...',
         message: 'Please wait while we verify your licence',
       });
-      const res: Result<any> = await HttpClient.callApiAuth(
+      const requestBody: IDRequestBody = { id_type: 'DRIVING_LICENSE', id_number: verifyLicenceForm.values.licenceNo };
+      const res: Result<verifyLicence> = await HttpClient.callApiAuth(
         {
           url: `${drivinglicenseAPIList.verifylicense}`,
           method: 'POST',
-          body: {
-            id_type: 'DRIVING_LICENSE',
-            id_number: verifyLicenceForm.values.licenceNo,
-          },
+          body: requestBody,
         },
         authClient
       );
       if (res.ok) {
-        showSuccessNotification({
-          title: 'Success !',
-          message: 'Verified your Licence successfully',
-        });
+        showSuccessNotification({ title: 'Success !', message: 'Verified your Licence successfully' });
         setLicenseIsVerified(true);
         getDocuments();
       } else {
@@ -52,10 +48,7 @@ export const SeeDrivingLicence = () => {
     }
   };
   const handlePageChange = () => {
-    dispatchDetailsPage({
-      type: 'SET_SEE_DRIVER_LICENCE',
-      payload: !detailsPage.seeDrivingLicence,
-    });
+    setCandidateActivePage('Profile');
     verifyLicenceForm.values.licenceNo = '';
     verifyLicenceForm.values.dateOfBirth = null;
     setLicenseIsVerified(false);

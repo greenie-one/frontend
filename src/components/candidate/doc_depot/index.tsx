@@ -25,7 +25,7 @@ export const DocDepot = () => {
   const docDepotData: docDepotData[] = [
     { name: 'IDs', isFolder: true },
     { name: 'Work Documents', isFolder: true },
-    { name: 'Education documentsz', isFolder: true },
+    { name: 'Education documents', isFolder: true },
     { name: 'Others', isFolder: true },
   ];
 

@@ -1,19 +1,8 @@
 import { Text, Box, Button } from '@mantine/core';
 import { MdVerified } from 'react-icons/md';
-import '../styles/global.scss';
-import location from '../assets/location.png';
+import location from '../../assets/location.png';
 import { CgSandClock } from 'react-icons/cg';
-
-interface IResidentialInfoCardProps {
-  address_line_1: string;
-  address_line_2: string;
-  landmark: string;
-  pincode: number;
-  start_date: Date;
-  end_date: Date;
-  isVerified: boolean;
-  city: string;
-}
+import { IResidentialInfoCardProps } from '../../types/ProfileCardProps';
 
 export const ResidentialInfoCard: React.FC<IResidentialInfoCardProps> = ({
   address_line_1,

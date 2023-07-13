@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { createStyles, Title, Text, rem, Box, keyframes, em } from '@mantine/core';
+import { createStyles, Title, Text, rem, Box, em } from '@mantine/core';
 import { _2ColumnLayout } from '../layouts/_2ColumnLayout';
 import { Button } from '../common/Button';
 import { motion } from 'framer-motion';
@@ -14,30 +14,10 @@ import popup4 from '../../assets/images/Landing/upload-documents-hero.svg';
 import popup5 from '../../assets/images/Landing/popup-illustration-5.svg';
 import popup6 from '../../assets/images/Landing/popup-illustration-6.svg';
 
-const popupAnimation = keyframes({
-  from: { scale: '0.25' },
-  to: { scale: '1' },
-});
-
 export const LandingHero = () => {
   const { classes } = useStyles();
-  const [popupNo, setPopupNo] = useState<number>(-1);
   const [scope, animate] = useAnimate();
   const isInView = useInView(scope);
-
-  const activatePopups = () => {
-    let activePopup = 0;
-
-    const activatePopupInterval = setInterval(() => {
-      if (activePopup === 5) {
-        clearInterval(activatePopupInterval);
-        return;
-      }
-
-      setPopupNo(activePopup);
-      activePopup = activePopup + 1;
-    }, 1000);
-  };
 
   useEffect(() => {
     if (isInView) {

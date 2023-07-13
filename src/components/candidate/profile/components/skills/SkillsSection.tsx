@@ -1,27 +1,20 @@
 import { Text, Box, Button } from '@mantine/core';
-import '../styles/global.scss';
-import noData from '../assets/noData.png';
+import noData from '../../assets/noData.png';
 import { MdOutlineEdit } from 'react-icons/md';
-import { useProfileContext } from '../context/ProfileContext';
+import { useProfileContext } from '../../context/ProfileContext';
 import { AiOutlinePlus } from 'react-icons/ai';
 
 export const SkillsSection = () => {
-  const { detailsPage, dispatchDetailsPage, skillData, scrollToTop, scrollToProfileNav } = useProfileContext();
+  const { setCandidateActivePage, skillData, scrollToTop, scrollToProfileNav } = useProfileContext();
 
   const handleToggleSkillsDetails = (): void => {
     scrollToProfileNav();
-    dispatchDetailsPage({
-      type: 'SET_SEE_ALL_SKILLS',
-      payload: !detailsPage.seeAllSkills,
-    });
+    setCandidateActivePage('All Skills');
   };
 
   const handleAddSkillPage = () => {
     scrollToTop();
-    dispatchDetailsPage({
-      type: 'SET_SEE_ADD_SKILLS',
-      payload: !detailsPage.seeAddSkills,
-    });
+    setCandidateActivePage('Add Skills');
   };
 
   return (

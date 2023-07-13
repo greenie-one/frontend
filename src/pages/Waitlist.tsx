@@ -14,6 +14,10 @@ import { Navbar } from '../components/common/Navbar';
 import waitlist_img from '../assets/images/waitlist/waitlist_img.png';
 import { MdVerified } from 'react-icons/md';
 
+type WaitListResponse = {
+  success: boolean;
+};
+
 export const Waitlist = () => {
   const navigate = useNavigate();
   const { classes } = useStyles();
@@ -46,7 +50,7 @@ export const Waitlist = () => {
       message: 'Please wait while we add you to the waitlist.',
     });
 
-    const res: Result<any> = await HttpClient.callApi({
+    const res: Result<WaitListResponse> = await HttpClient.callApi({
       url: `${authApiList.waitlist}`,
       method: 'POST',
       body: waitlistForm.getTransformedValues(),

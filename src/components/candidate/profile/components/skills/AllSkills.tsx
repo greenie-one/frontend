@@ -1,20 +1,15 @@
+import { useProfileContext } from '../../context/ProfileContext';
 import { Text, Box, Button } from '@mantine/core';
-import { useProfileContext } from '../context/ProfileContext';
-
 import { BsArrowLeft } from 'react-icons/bs';
 import { AiOutlineRight } from 'react-icons/ai';
 import { MdVerified } from 'react-icons/md';
 import { CgSandClock } from 'react-icons/cg';
-import '../styles/global.scss';
 
-export const SeeAllSkills = () => {
-  const { detailsPage, dispatchDetailsPage, skillData } = useProfileContext();
+export const AllSkills = () => {
+  const { setCandidateActivePage, skillData } = useProfileContext();
 
   const handleToggleSkillsDetails = (): void => {
-    dispatchDetailsPage({
-      type: 'SET_SEE_ALL_SKILLS',
-      payload: !detailsPage.seeAllSkills,
-    });
+    setCandidateActivePage('Profile');
   };
 
   return (
@@ -27,7 +22,6 @@ export const SeeAllSkills = () => {
         </Box>
         <Text>{`Skills (${skillData.length})`}</Text>
       </Box>
-
       <Box className="skills-card-wrapper">
         {skillData.reverse().map(({ skillName, expertise, isVerified }, index) => {
           return (
@@ -44,12 +38,10 @@ export const SeeAllSkills = () => {
                   </Button>
                 )}
               </Box>
-
               <Text className="skill-rate">
                 {expertise === 'AMATEUR' && 'Amature'}
                 {expertise === 'EXPERT' && 'Expert'}
               </Text>
-
               <Box className="skill-btn-wrapper">
                 {isVerified ? (
                   <Button className="view-details-btn">View details</Button>
