@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useReducer, useState } fro
 import { useNavigate } from 'react-router-dom';
 
 import { useForm, isNotEmpty, matchesField, hasLength } from '@mantine/form';
+import { useLocalStorage } from '@mantine/hooks';
 
 import { authApiList, profileAPIList } from '../../../assets/api/ApiList';
 import { useGlobalContext } from '../../../context/GlobalContext';
@@ -19,8 +20,9 @@ export const useAuthContext = () => useContext(AuthContext);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const navigate = useNavigate();
   const { authClient } = useGlobalContext();
-  const authTokens = authClient.getAccessToken();
-
+  const [authTokens] = useLocalStorage<AuthTokens>({
+    key: 'auth-tokens',
+  });
   const [validationId, setValidationId] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [forceRender, setForceRender] = useState<boolean>(false);
@@ -182,7 +184,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (authTokens) {
       getMyProfile();
     }
-  }, [forceRender]);
+  }, [authTokens, forceRender]);
 
   return (
     <AuthContext.Provider

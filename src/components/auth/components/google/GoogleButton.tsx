@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '@mantine/core';
 import { useLocalStorage } from '@mantine/hooks';
+import { useNavigate } from 'react-router-dom';
+
 import { showErrorNotification, showLoadingNotification } from '../../../../utils/functions/showNotification';
 import { HttpClient } from '../../../../utils/generic/httpClient';
 import { authApiList } from '../../../../assets/api/ApiList';
@@ -10,13 +12,17 @@ import GoogleLogo from '../../assets/g-logo.png';
 import '../../styles/global.scss';
 
 const GoogleButton = () => {
+  const navigate = useNavigate();
   const { setForceRender } = useAuthContext();
 
+  const [isLoading, setIsLoading] = useState(false);
   const [authTokens] = useLocalStorage<AuthTokens>({
     key: 'auth-tokens',
   });
 
-  const [isLoading, setIsLoading] = useState(false);
+  useEffect(() => {
+    if (authTokens?.accessToken) setForceRender((prev) => !prev);
+  }, [authTokens]);
 
   const handleGoogleAuth = async () => {
     showLoadingNotification({ title: 'Wait !', message: 'Please wait' });
@@ -35,8 +41,6 @@ const GoogleButton = () => {
     } else {
       showErrorNotification(res.error.code);
     }
-
-    if (authTokens?.accessToken) setForceRender((prev) => !prev);
   };
 
   return (
