@@ -24,12 +24,18 @@ export const AllResidentialInfo = () => {
   const [checked, setChecked] = useState<boolean>(false);
   const handleToggleResidentialDetails = (): void => {
     setCandidateActivePage('Profile');
+    handleAllAddressesScreen();
   };
 
   const handleAggree = () => {
     if (checked) {
       setModalStep(2);
     }
+  };
+
+  const handleAllAddressesScreen = () => {
+    setInfoDetails(null);
+    setSelectedResidentialInfo(null);
   };
 
   const handleGoToVerification = (choice: VerificationType) => {
@@ -103,7 +109,7 @@ export const AllResidentialInfo = () => {
             <Text>Profile</Text>
             <AiOutlineRight className="arrow-right-icon" size={'16px'} />
           </Box>
-          <Text onClick={() => setInfoDetails(null)}>{`Residential Information (${residentialInfoData.length})`}</Text>
+          <Text onClick={handleAllAddressesScreen}>{`Residential Information (${residentialInfoData.length})`}</Text>
         </Box>
         {infoDetails !== null && (
           <Button className="green-btn" onClick={open}>
