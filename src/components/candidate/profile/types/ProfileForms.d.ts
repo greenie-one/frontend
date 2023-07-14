@@ -45,8 +45,8 @@ type residentialInfoFormType = {
   typeOfAddress: string;
   state: '';
   country: '';
-  start_date: Date;
-  end_date?: Date;
+  start_date: Date | null;
+  end_date?: Date | null;
 };
 
 type skillFormType = {
@@ -66,4 +66,8 @@ type residentialInfoVerificationFormType = {
   peerType: string;
   email: string;
   phone: string;
+};
+
+type peerAddressVerificationFromType = {
+  otp: string;
 };

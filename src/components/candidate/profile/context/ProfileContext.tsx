@@ -50,6 +50,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
     residentialInfoForm,
     skillForm,
     residentialInfoVerificationForm,
+    peerAddressVerificationForm,
   } = useProfileForms();
 
   const [forceRender, setForceRender] = useState<boolean>(false);
@@ -298,6 +299,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
         selectedResidentialInfo,
         setSelectedResidentialInfo,
         residentialInfoVerificationForm,
+        peerAddressVerificationForm,
       }}
     >
       {children}

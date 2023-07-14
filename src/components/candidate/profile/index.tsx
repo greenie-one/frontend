@@ -9,6 +9,7 @@ import { Box, Button } from '@mantine/core';
 import { CongratulationsScreen } from './components/IDs/CongratulationsScreen';
 import { AddExperience } from './components/experience/AddExperience';
 import { AddSkills } from './components/skills/AddSkills';
+import { AddressVerification } from './components/residential_info/AddressVerification';
 import './styles/global.scss';
 import { Userprofile } from './components/user_profile/Userprofile';
 
@@ -40,9 +41,11 @@ export const Profile = () => {
           <CongratulationsScreen />
         </main>
       )}
+      {candidateActivePage === 'Verify Address' && <AddressVerification />}
       {candidateActivePage !== 'Add Experience' &&
         candidateActivePage !== 'Add Skills' &&
-        candidateActivePage !== 'Congratulation Screen' && (
+        candidateActivePage !== 'Congratulation Screen' &&
+        candidateActivePage !== 'Verify Address' && (
           <main className="profile">
             {candidateActivePage === 'Profile' && <Userprofile />}
 

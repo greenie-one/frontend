@@ -8,7 +8,8 @@ export type candidateActivePageState =
   | 'All Residential Info'
   | 'All Skills'
   | 'Add Skills'
-  | 'Congratulation Screen';
+  | 'Congratulation Screen'
+  | 'Verify Address';
 
 export type DrawerState = {
   firstDrawerOpened: boolean;

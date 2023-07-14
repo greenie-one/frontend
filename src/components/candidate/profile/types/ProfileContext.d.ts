@@ -59,4 +59,5 @@ export type ProfileContextType = {
   candidateActivePage: string;
   setCandidateActivePage: React.Dispatch<React.SetStateAction<candidateActivePageState>>;
   residentialInfoVerificationForm: UseFormReturnType<residentialInfoVerificationFormType>;
+  peerAddressVerificationForm: UseFormReturnType<peerAddressVerificationFromType>;
 };
