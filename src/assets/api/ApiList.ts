@@ -62,3 +62,19 @@ export const skillsAPIList = {
   updateSkill: `${BASE_URL}/skill`,
 }
 
+export const docDepotAPIList = {
+  uploadDocument: `${BASE_URL}/utils/doc_depot`,
+  addDocument: `${BASE_URL}/documents/create`,
+  getDocument: `${BASE_URL}/documents/`,
+  getAllDocuments: `${BASE_URL}/documents/me`,
+  deleteDocument: `${BASE_URL}/documents`,
+  updateDocument: `${BASE_URL}/documents`
+}
+
+export const peerVerificationAPIList = {
+  createPeer : `${BASE_URL}/peer/create`,
+  getPeer: `${BASE_URL}/peer`,
+  getSinglePeer: `${BASE_URL}/peer`,
+  getPeerSkills: `${BASE_URL}/peer`
+}
+

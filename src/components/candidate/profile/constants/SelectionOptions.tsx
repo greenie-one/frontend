@@ -21,12 +21,12 @@ export const companyTypes = [
 ];
 
 export const skillRate = [
-  { value: 'Beginner', label: 'Begineer/Novice' },
-  { value: 'Intermediate', label: 'Intermediate' },
-  { value: 'Highly Competant', label: 'Highly Competant' },
-  { value: 'Advanced', label: 'Advanced Proficiency' },
-  { value: 'Expert', label: 'Expert' },
-  { value: 'Master', label: 'Master - Pro(Global Recognition)' },
+  { value: 'AMATEUR', label: 'Amature' },
+  { value: 'BEGINNER', label: 'Begineer/Novice' },
+  { value: 'HIGHLY_COMPETENT', label: 'Highly Competant' },
+  { value: 'EXPERT', label: 'Expert' },
+  { value: 'SUPER_SPECIALIST', label: 'Super Specialist' },
+  { value: 'MASTER', label: 'Master - Pro(Global Recognition)' },
 ];
 
 export const documentTags = [
@@ -67,10 +67,10 @@ export const departments = [
 //------------------------------------------------------------
 
 export const peerType = [
-  { value: 'Line Manager', label: 'Line Manager' },
-  { value: 'Reporting Manager', label: 'Reporting Manager' },
+  { value: 'LINE_MANAGER', label: 'Line Manager' },
+  { value: 'REPORTING_MANAGER', label: 'Reporting Manager' },
   { value: 'HR', label: 'HR' },
-  { value: 'Colleague', label: 'Colleague' },
+  { value: 'COLLEAGUE', label: 'Colleague' },
   { value: 'CXO', label: 'CXO' },
 ];
 
@@ -111,3 +111,21 @@ export const states = [
 export const countries = [{ value: 'India', label: 'India' }];
 
 //-------------------------------------------------------------------
+
+export const relations = [
+  { value: 'FATHER', label: 'Father' },
+  { value: 'MOTHER', label: 'Mother' },
+  { value: 'SON', label: 'Son' },
+  { value: 'DAUGHTER', label: 'Daughter' },
+  { value: 'GRANDPARENT', label: 'Grandparent' },
+  { value: 'GRANDCHILD', label: 'Grandchild' },
+  { value: 'AUNT', label: 'Aunt' },
+  { value: 'UNCLE', label: 'Uncle' },
+  { value: 'NIECE', label: 'Niece' },
+  { value: 'NEPHEW', label: 'Nephew' },
+  { value: 'COUSIN', label: 'Cousin' },
+  { value: 'SPOUSE', label: 'Spouse' },
+  { value: 'SISTER', label: 'Sister' },
+  { value: 'BROTHER', label: 'Brother' },
+  { value: 'INLAW', label: 'In-law' },
+];

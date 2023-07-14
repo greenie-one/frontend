@@ -29,19 +29,21 @@ import {
   skillRate,
   documentTags,
 } from '../../constants/SelectionOptions';
-import { Document } from '../../types/ProfileGeneral';
 import { ISkill, createExperience } from '../../types/ProfileResponses';
 import { ExperienceRequestBody, SkillRequestBody } from '../../types/ProfileRequests';
 import { APIError } from '../../../../../utils/generic/httpClient';
+import axios from 'axios';
+import { docDepotAPIList } from '../../../../../assets/api/ApiList';
 
 export const AddExperience = () => {
   const [experienceChecked, setExperienceChecked] = useState(false);
   const [documentsChecked, setDocumentsChecked] = useState(false);
-  const [selectedFile, setSelectedFile] = useState<File | undefined>(undefined);
-  const [documents, setDocuments] = useState<Document[]>([]);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [documents, setDocuments] = useState<string[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [workExperienceId, setworkExperienceId] = useState<createExperience | null>(null);
+  const [workExperienceId, setworkExperienceId] = useState<string>('');
   const { authClient } = useGlobalContext();
+  const authToken = authClient.getAccessToken();
   const backgroundStyle = {
     backgroundImage: `url(${tcsLogo})`,
     backgroundPosition: 'center',
@@ -54,15 +56,13 @@ export const AddExperience = () => {
     skillForm,
     getSkills,
     scrollToTop,
-    scrollToProfileNav,
-    setSelectedCard,
+    setSelectedExperience,
     selectedSkills,
     setSelectedSkills,
     setCandidateActivePage,
     workExperienceData,
   } = useProfileContext();
   const [active, setActive] = useState<number>(1);
-  const addedWorkExperience = workExperienceData[workExperienceData.length - 1];
 
   const handleCheck = () => {
     workExperienceForm.values.endDate = '';
@@ -106,7 +106,8 @@ export const AddExperience = () => {
       !workExperienceForm.validateField('workEmail').hasError &&
       !workExperienceForm.validateField('startDate').hasError &&
       !workExperienceForm.validateField('workType').hasError &&
-      !workExperienceForm.validateField('modeOfwork').hasError
+      !workExperienceForm.validateField('modeOfwork').hasError &&
+      !workExperienceForm.validateField('department').hasError
     ) {
       showLoadingNotification({ title: 'Please wait !', message: 'We are adding your work experience.' });
       workExperienceForm.clearErrors();
@@ -115,13 +116,17 @@ export const AddExperience = () => {
         companyType: workExperienceForm.values.companyType,
         email: workExperienceForm.values.workEmail,
         workMode: workExperienceForm.values.modeOfWork,
+        department: workExperienceForm.values.department,
         workType: workExperienceForm.values.workType,
         companyName: workExperienceForm.values.companyName,
         companyId: workExperienceForm.values.companyId,
         companyStartDate: workExperienceForm.values.startDate,
-        companyEndDate: workExperienceForm.values.endDate,
         isVerified: false,
+        reasonForLeaving: workExperienceForm.values.reasonForLeaving,
       };
+      if (workExperienceForm.values.endDate !== '') {
+        requestBody.companyEndDate = workExperienceForm.values.endDate;
+      }
       const res: Result<createExperience, APIError> = await HttpClient.callApiAuth(
         {
           url: `${workExperienceAPiList.postWorkExperience}`,
@@ -131,8 +136,8 @@ export const AddExperience = () => {
         authClient
       );
       if (res.ok) {
-        setworkExperienceId(res.value);
-        setSelectedCard(addedWorkExperience);
+        setworkExperienceId(res.value.workExperienceId);
+        setSelectedExperience(workExperienceData[workExperienceData.length - 1]);
         showSuccessNotification({ title: 'Success !', message: 'New experience added to your profile.' });
         getWorkExperience();
         setActive(2);
@@ -152,7 +157,7 @@ export const AddExperience = () => {
       const newSkill: ISkill = {
         skillName: skillForm.values.skillName,
         expertise: skillForm.values.expertise,
-        workExperience: workExperienceId.workExperienceId,
+        workExperience: workExperienceId,
       };
       setSelectedSkills((prevSkills: ISkill[]) => [...prevSkills, newSkill]);
       skillForm.values.skillName = '';
@@ -168,7 +173,11 @@ export const AddExperience = () => {
       showLoadingNotification({ title: 'Please wait !', message: 'We are adding your skill' });
 
       for (const skill of selectedSkills) {
-        const requestBody: SkillRequestBody = { skillName: skill.skillName, expertise: skill.expertise };
+        const requestBody: SkillRequestBody = {
+          skillName: skill.skillName,
+          expertise: skill.expertise,
+          workExperience: skill.workExperience,
+        };
         const res = await HttpClient.callApiAuth(
           {
             url: `${skillsAPIList.postSkill}`,
@@ -192,17 +201,48 @@ export const AddExperience = () => {
   };
 
   const handleUploadDocument = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    setSelectedFile(file);
+    if (event.target.files && event.target.files[0]) {
+      setSelectedFile(event.target.files[0]);
+    }
   };
 
-  const handleAddDocument = () => {
-    const newDocument: Document = {
-      document: selectedFile,
-      documentTag: '',
-    };
-    setDocuments((prevDocument) => [...prevDocument, newDocument]);
-    setSelectedFile(undefined);
+  const handleAddDocument = async () => {
+    if (selectedFile) {
+      const formData = new FormData();
+      formData.append('document', selectedFile);
+      try {
+        const res = await axios.post(`${docDepotAPIList.uploadDocument}`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${authToken}`,
+          },
+        });
+        if (res.status === 2000) {
+          const resp: Result<updateDocumentResponseType> = await HttpClient.callApiAuth(
+            {
+              url: `${docDepotAPIList.addDocument}`,
+              method: 'POST',
+              body: {
+                name: selectedFile.name,
+                type: 'work',
+                private_url: res.data.url,
+              },
+            },
+            authClient
+          );
+          if (resp.ok) {
+            showSuccessNotification({ title: 'Success !', message: 'Document added successfully !' });
+            const newDocument: string = selectedFile.name;
+            setDocuments((prevDocument) => [...prevDocument, newDocument]);
+            setSelectedFile(null);
+          } else {
+            showErrorNotification(resp.error.code);
+          }
+        }
+      } catch (error: unknown) {
+        showErrorNotification('GR0000');
+      }
+    }
   };
 
   const handleRemoveDocument = (index: number) => {
@@ -216,36 +256,19 @@ export const AddExperience = () => {
     });
   };
 
-  const handleSelectTag = (index: number, value: string | null) => {
-    setDocuments((prevDocuments) => {
-      const updatedDocuments = [...prevDocuments];
-      updatedDocuments[index] = { ...updatedDocuments[index], documentTag: value };
-      return updatedDocuments;
-    });
-  };
-
   const handleDocumentContinue = () => {
-    if (documents.length > 0 && documentsChecked) {
-      for (const document of documents) {
-        if (document.documentTag === '') {
-          showLoadingNotification({ title: 'Please wait !', message: 'Adding your documents' });
-          showErrorNotification('MISSING_TAGS');
-          return;
-        }
-        setActive(4);
-      }
-    }
+    setActive(4);
   };
 
   const handleModalContinue = () => {
-    scrollToProfileNav();
+    scrollToTop();
     setCandidateActivePage('All Experiences');
     close();
   };
 
   const handleGoToVerification = () => {
     handleModalContinue();
-    // setSelectedCard(workExperienceId);
+    // setSelectedExperience(workExperienceId);
   };
 
   return (
@@ -324,6 +347,7 @@ export const AddExperience = () => {
           <Box className="input-section">
             <Title className="title">Department</Title>
             <Select
+              {...workExperienceForm.getInputProps('department')}
               withAsterisk
               data={departments}
               label="Select department"
@@ -342,7 +366,12 @@ export const AddExperience = () => {
           </Box>
           <Box className="input-section">
             <Title className="title">Salary (CTC)</Title>
-            <TextInput withAsterisk label="Enter your CTC in Rs." className="inputClass" />
+            <TextInput
+              {...workExperienceForm.getInputProps('salary')}
+              withAsterisk
+              label="Enter your CTC in Rs."
+              className="inputClass"
+            />
           </Box>
 
           <Box className="input-section">
@@ -364,7 +393,11 @@ export const AddExperience = () => {
           </Box>
           <Box className="input-section">
             <Title className="title">Reason for leaving</Title>
-            <Textarea label="Write down the reason for leaving" className="text-area-input" />
+            <Textarea
+              {...workExperienceForm.getInputProps('reasonForLeaving')}
+              label="Write down the reason for leaving"
+              className="text-area-input"
+            />
           </Box>
           <Divider mb={'10px'} color="#e1e1e1" />
 
@@ -439,9 +472,15 @@ export const AddExperience = () => {
             <Button variant="default" className="cancel-btn" onClick={handlePrevPage}>
               Back
             </Button>
-            <Button type="submit" className="green-btn" onClick={handleExperienceContinue}>
-              Save
-            </Button>
+            {workExperienceForm.values.endDate !== '' || experienceChecked !== false ? (
+              <Button type="submit" className="green-btn" onClick={handleExperienceContinue}>
+                Save
+              </Button>
+            ) : (
+              <Button type="submit" disabled className="disabled-btn">
+                Save
+              </Button>
+            )}
           </Box>
         </Box>
       )}
@@ -491,7 +530,12 @@ export const AddExperience = () => {
               return (
                 <Box key={index} className="add-skill-box">
                   <Text className="add-skill-name">{skillName}</Text>
-                  <Text className="add-skill-rate">{expertise}</Text>
+                  {expertise === 'AMATEUR' && <Text className="add-skill-rate">Amature</Text>}
+                  {expertise === 'BEGINNER' && <Text className="add-skill-rate">Beginner</Text>}
+                  {expertise === 'HIGHLY_COMPETENT' && <Text className="add-skill-rate">Highly Competent</Text>}
+                  {expertise === 'EXPERT' && <Text className="add-skill-rate">Expert</Text>}
+                  {expertise === 'SUPER_SPECIALIST' && <Text className="add-skill-rate">Super Specialist</Text>}
+                  {expertise === 'MASTER' && <Text className="add-skill-rate">Master</Text>}
                 </Box>
               );
             })}
@@ -502,9 +546,15 @@ export const AddExperience = () => {
             <Button type="button" className="cancel-btn" variant="default" onClick={handlePrevPage}>
               Back
             </Button>
-            <Button className="green-btn" onClick={handleSkillContinue}>
-              Continue
-            </Button>
+            {selectedSkills.length > 0 ? (
+              <Button className="green-btn" onClick={handleSkillContinue}>
+                Continue
+              </Button>
+            ) : (
+              <Button disabled className="disabled-btn">
+                Continue
+              </Button>
+            )}
           </Box>
         </form>
       )}
@@ -514,39 +564,36 @@ export const AddExperience = () => {
             <img src={uploadIcon} alt="upload icon" />
             <input type="file" ref={fileInputRef} style={{ display: 'none' }} onChange={handleUploadDocument} />
             <Text className="add-document-heading">Add your work documents</Text>
-            {typeof selectedFile === 'undefined' && (
+            {typeof selectedFile === null && (
               <Button className="add-document-sub-heading" onClick={() => fileInputRef.current?.click()}>
                 Select document
               </Button>
             )}
-            {typeof selectedFile !== 'undefined' && (
+            {typeof selectedFile !== null && (
               <Box className="inpute-file-name-box">
                 <Text className="label">File upload</Text>
-                <Text className="input-file-name">{selectedFile.name.substring(0, 15)}...</Text>
+                <Text className="input-file-name">{selectedFile?.name.substring(0, 15)}...</Text>
                 <Box className="icon-box">
                   <VscDebugRestart className="add-document-icon" onClick={() => fileInputRef.current?.click()} />
-                  <MdOutlineDelete className="add-document-icon" onClick={() => setSelectedFile(undefined)} />
+                  <MdOutlineDelete className="add-document-icon" onClick={() => setSelectedFile(null)} />
                 </Box>
               </Box>
             )}
-            {typeof selectedFile !== 'undefined' && (
+            {typeof selectedFile !== null && (
               <Button className="add-document-sub-heading" onClick={handleAddDocument}>
                 Add
               </Button>
             )}
-
             <Text className="limit">(max 5 MB)</Text>
           </Box>
           {documents.length > 0 && (
             <Box className="added-documents-wrapper">
-              {documents.map(({ document, documentTag }, index) => {
+              {documents.map((document, index) => {
                 return (
                   <Box key={index}>
                     <Box className="added-documents">
-                      <Text>{document?.name}</Text>
+                      <Text>{document}</Text>
                       <Select
-                        value={documentTag}
-                        onChange={(value) => handleSelectTag(index, value)}
                         data={documentTags}
                         className="inputClass"
                         label={'Select document type'}
@@ -595,13 +642,15 @@ export const AddExperience = () => {
             <Button type="button" className="cancel-btn" variant="default" onClick={handlePrevPage}>
               Back
             </Button>
-            <Button
-              className={documentsChecked ? 'green-btn' : 'disabled-btn'}
-              onClick={handleDocumentContinue}
-              disabled={!documentsChecked}
-            >
-              Continue
-            </Button>
+            {documentsChecked ? (
+              <Button className="green-btn" onClick={handleDocumentContinue}>
+                Continue
+              </Button>
+            ) : (
+              <Button className="disabled-btn" disabled>
+                Continue
+              </Button>
+            )}
           </Box>
         </Box>
       )}
@@ -615,9 +664,9 @@ export const AddExperience = () => {
               <MdVerified className="verified-icon" color="#17a672" size="22px" />
             </Box>
             <Box className="experience-details-text-box">
-              <Text className="designation">{addedWorkExperience.designation}</Text>
-              <Text className="company-name">{addedWorkExperience.companyName}</Text>
-              {addedWorkExperience.isVerified ? (
+              <Text className="designation">{workExperienceData[workExperienceData.length - 1].designation}</Text>
+              <Text className="company-name">{workExperienceData[workExperienceData.length - 1].companyName}</Text>
+              {workExperienceData[0].isVerified ? (
                 <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
                   Verified
                 </Button>
@@ -631,11 +680,11 @@ export const AddExperience = () => {
           <Box className="docs-box">
             <Title className="heading">With documents</Title>
             <Box className="docs-wrapper">
-              {documents.map(({ document }, index) => {
+              {documents.map((document, index) => {
                 return (
                   <Box className="folder" key={index}>
                     <img src={pdfIcon} alt="folder-image" />
-                    <Text className="folder-text">{document?.name.substring(0, 10)}...</Text>
+                    <Text className="folder-text">{document?.substring(0, 10)}...</Text>
                   </Box>
                 );
               })}
@@ -649,7 +698,12 @@ export const AddExperience = () => {
                 return (
                   <Box key={index} className="add-skill-box">
                     <Text className="add-skill-name">{skillName}</Text>
-                    <Text className="add-skill-rate">{expertise}</Text>
+                    {expertise === 'AMATEUR' && <Text className="add-skill-rate">Amature</Text>}
+                    {expertise === 'BEGINNER' && <Text className="add-skill-rate">Beginner</Text>}
+                    {expertise === 'HIGHLY_COMPETENT' && <Text className="add-skill-rate">Highly Competent</Text>}
+                    {expertise === 'EXPERT' && <Text className="add-skill-rate">Expert</Text>}
+                    {expertise === 'SUPER_SPECIALIST' && <Text className="add-skill-rate">Super Specialist</Text>}
+                    {expertise === 'MASTER' && <Text className="add-skill-rate">Master</Text>}
                   </Box>
                 );
               })}

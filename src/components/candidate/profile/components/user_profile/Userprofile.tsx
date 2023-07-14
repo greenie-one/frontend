@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Box, Button, Modal, Text, Title, Textarea, Divider, TextInput, Chip, Group, CopyButton } from '@mantine/core';
+import { Box, Button, Modal, Text, Chip, Group, CopyButton, Title, TextInput, Divider, Textarea } from '@mantine/core';
 import axios from 'axios';
 import emptyProfile from '../../assets/emptyProfile.png';
 import level from '../../assets/level.png';
@@ -163,11 +163,7 @@ export const Userprofile = () => {
       </Modal>
 
       <section className="profile-section">
-        <Box className="cover-photo">
-          <Button leftIcon={<MdOutlineEdit />} className="edit-btn">
-            Update Cover
-          </Button>
-        </Box>
+        <Box className="cover-photo"></Box>
 
         <Box className="profile-photo">
           <img src={src} alt="emptyProfile" className="profile-image" />

@@ -23,13 +23,13 @@ import { createResidentialInfo } from '../../types/ProfileResponses';
 export const ResidentialInfoSection = () => {
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
-  const { residentialInfoData, residentialInfoForm, setCandidateActivePage, scrollToProfileNav, getResidentialInfo } =
+  const { residentialInfoData, residentialInfoForm, setCandidateActivePage, scrollToTop, getResidentialInfo } =
     useProfileContext();
   const { authClient } = useGlobalContext();
   const [checked, setChecked] = useState(false);
 
   const handleToggleResidentialDetails = (): void => {
-    scrollToProfileNav();
+    scrollToTop();
     setCandidateActivePage('All Residential Info');
   };
 

@@ -29,18 +29,16 @@ export type Document = {
 };
 
 export type Peer = {
-  index: number;
-  name: string;
   email: string;
-  status: string;
+  name: string;
   peerType: string;
-  contactNumber: string;
-  documents: File[];
-  skills: ISkill[];
+  phone: string;
+  workExperience: string;
+  _id: string;
 };
 
 export interface IWorkExperienceVerification {
-  _id: string;
+  workExId: string;
   image: string | null;
   designation: string;
   companyName: string;
@@ -69,4 +67,11 @@ export interface ISearchListContentType {
 
 export type SearchResponse = {
   profiles: ISearchListObject[];
+};
+
+export type ResidentialInfoPeerType = {
+  name: string;
+  email: string;
+  peerType: string;
+  phone: string;
 };
