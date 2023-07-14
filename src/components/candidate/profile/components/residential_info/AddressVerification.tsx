@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Navbar } from '../../profile/components/Navbar';
+import { Navbar } from '../Navbar';
 import {
   Text,
   Box,
@@ -12,12 +12,12 @@ import {
   MantineTheme,
   Modal,
 } from '@mantine/core';
-import './styles/global.scss';
-import johnMarston from '../../../candidate/profile/assets/johnMarston.png';
+import johnMarston from '../../assets/johnMarston.png';
 import { MdVerified } from 'react-icons/md';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
-import checkGif from '../../profile/assets/94109-confirmation 1.gif';
-import location from '../../profile/assets/location.png';
+import checkGif from '../../assets/94109-confirmation 1.gif';
+import location from '../../assets/location.png';
+import { useProfileContext } from '../../context/ProfileContext';
 
 type OtpInputStyles = {
   root: string;
@@ -37,9 +37,7 @@ export const AddressVerification = () => {
   const [activeStep, setActiveStep] = useState<number>(1);
   const { classes: inputClasses } = OtpInputStyles();
   const [secondsRemaining, setSecondsRemaining] = useState<number>(30);
-  const address = '1901 Thornridge Circle, Baner, Pune - 411006';
-  const addressType = 'Permanent';
-  const residenceSince = 'August 2006';
+  const { selectedResidentialInfo, peerAddressVerificationForm, profileData } = useProfileContext();
 
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
@@ -74,7 +72,10 @@ export const AddressVerification = () => {
             </Box>
 
             <Box className="residential-details-text-box">
-              <Text className="address">{address}</Text>
+              <Text className="address">
+                {selectedResidentialInfo?.address_line_1}, {selectedResidentialInfo?.address_line_2},{' '}
+                {selectedResidentialInfo?.landmark}, {selectedResidentialInfo?.city}, {selectedResidentialInfo?.pincode}
+              </Text>
 
               <Button leftIcon={<MdVerified size={'16px'} />} className="verified">
                 Verified
@@ -94,8 +95,15 @@ export const AddressVerification = () => {
             <Box className="address-verification-container">
               <Title className="address-verification-details-main-title">Please confirm the peer identity</Title>
               <Box className="address-verification-details">
-                <Title className="address-verification-details-title">Ashok Deshmukh</Title>
-                <Text className="address-verification-details-address">{address}</Text>
+                <Title className="address-verification-details-title">
+                  {profileData.firstName} {profileData.lastName}
+                </Title>
+                <Text className="address-verification-details-address">
+                  {' '}
+                  {selectedResidentialInfo?.address_line_1}, {selectedResidentialInfo?.address_line_2},{' '}
+                  {selectedResidentialInfo?.landmark}, {selectedResidentialInfo?.city},{' '}
+                  {selectedResidentialInfo?.pincode}
+                </Text>
               </Box>
 
               <Button className="green-outline-btn" onClick={NextActiveStep}>
@@ -112,12 +120,23 @@ export const AddressVerification = () => {
             <Box className="address-verification-container">
               <Title className="address-verification-details-main-title">Please confirm the peer identity</Title>
               <Box className="address-verification-details">
-                <Title className="address-verification-details-title">Ashok Deshmukh</Title>
-                <Text className="address-verification-details-address">{address}</Text>
+                <Title className="address-verification-details-title">
+                  {' '}
+                  {profileData.firstName} {profileData.lastName}
+                </Title>
+                <Text className="address-verification-details-address">
+                  {selectedResidentialInfo?.address_line_1}, {selectedResidentialInfo?.address_line_2},{' '}
+                  {selectedResidentialInfo?.landmark}, {selectedResidentialInfo?.city},
+                  {selectedResidentialInfo?.pincode}
+                </Text>
               </Box>
               <Text className="address-verification-bold-title">Enter the one-time password sent to your Email.</Text>
               <Box className="input-section">
-                <TextInput maxLength={6} classNames={inputClasses} />
+                <TextInput
+                  maxLength={6}
+                  classNames={inputClasses}
+                  {...peerAddressVerificationForm.getInputProps('otp')}
+                />
               </Box>
               {secondsRemaining === 0 ? (
                 <Button compact color="gray" variant="subtle" className="resendLink">
@@ -143,8 +162,16 @@ export const AddressVerification = () => {
           <Box className="container" style={{ marginTop: '7rem' }}>
             <Box className="address-verification-container">
               <Box className="address-verification-details">
-                <Title className="address-verification-details-title">Ashok Deshmukh</Title>
-                <Text className="address-verification-details-address">{address}</Text>
+                <Title className="address-verification-details-title">
+                  {' '}
+                  {profileData.firstName} {profileData.lastName}
+                </Title>
+                <Text className="address-verification-details-address">
+                  {' '}
+                  {selectedResidentialInfo?.address_line_1}, {selectedResidentialInfo?.address_line_2},{' '}
+                  {selectedResidentialInfo?.landmark}, {selectedResidentialInfo?.city},{' '}
+                  {selectedResidentialInfo?.pincode}
+                </Text>
               </Box>
               <Title className="address-verification-bold-title">We are trying to verify residential address of</Title>
               <Box className="profile-details">
@@ -154,7 +181,9 @@ export const AddressVerification = () => {
                     <MdVerified />
                   </Box>
                 </Box>
-                <Title className="address-verification-details-name">Ashok Deshmukh</Title>
+                <Title className="address-verification-details-name">
+                  {profileData.firstName} {profileData.lastName}
+                </Title>
               </Box>
               <Box className="address-verification-details-box-header">
                 <Text>Sr. No.</Text>
@@ -164,9 +193,13 @@ export const AddressVerification = () => {
               </Box>
               <Box className="address-verification-details-added-peers">
                 <Text>1</Text>
-                <Text className="peer-email">{address}</Text>
-                <Text>{addressType}</Text>
-                <Text>{residenceSince}</Text>
+                <Text className="peer-email">
+                  {selectedResidentialInfo?.address_line_1}, {selectedResidentialInfo?.address_line_2},{' '}
+                  {selectedResidentialInfo?.landmark}, {selectedResidentialInfo?.city},{' '}
+                  {selectedResidentialInfo?.pincode}
+                </Text>
+                <Text>{selectedResidentialInfo?.typeOfAddress}</Text>
+                <Text>{selectedResidentialInfo?.end_date.toString().substring(0, 10)}</Text>
               </Box>
               <Title className="address-verification-details-main-title">
                 Please allow permission to capture location to confirm the verificationh

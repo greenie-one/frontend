@@ -94,8 +94,8 @@ export const useProfileForms = () => {
       typeOfAddress: '',
       state: '',
       country: '',
-      start_date: new Date(),
-      end_date: undefined,
+      start_date: null,
+      end_date: null,
     },
 
     validate: {
@@ -138,6 +138,15 @@ export const useProfileForms = () => {
     },
   });
 
+  const peerAddressVerificationForm = useForm<peerAddressVerificationFromType>({
+    initialValues: {
+      otp: '',
+    },
+    validate: {
+      otp: hasLength(6, 'Please provide valid OTP'),
+    },
+  });
+
   return {
     profileForm,
     verifyAadharForm,
@@ -147,5 +156,6 @@ export const useProfileForms = () => {
     residentialInfoForm,
     skillForm,
     residentialInfoVerificationForm,
+    peerAddressVerificationForm,
   };
 };

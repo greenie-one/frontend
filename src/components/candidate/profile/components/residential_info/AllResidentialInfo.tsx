@@ -11,6 +11,8 @@ import { IResidendialInfoResponse } from '../../types/ProfileResponses';
 import { VerifyResidentialInfo } from './VerifyResidentialInfo';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 
+type VerificationType = 'MySelf' | 'Peer';
+
 export const AllResidentialInfo = () => {
   const { setCandidateActivePage, residentialInfoData, selectedResidentialInfo, setSelectedResidentialInfo } =
     useProfileContext();
@@ -30,10 +32,18 @@ export const AllResidentialInfo = () => {
     }
   };
 
-  const handleGoToVerification = () => {
-    setSelectedResidentialInfo(infoDetails);
-    setInfoDetails(null);
-    close();
+  const handleGoToVerification = (choice: VerificationType) => {
+    if (choice === 'MySelf') {
+      setSelectedResidentialInfo(infoDetails);
+      setInfoDetails(null);
+      close();
+      setCandidateActivePage('Verify Address');
+    }
+    if (choice === 'Peer') {
+      setSelectedResidentialInfo(infoDetails);
+      setInfoDetails(null);
+      close();
+    }
   };
 
   return (
@@ -67,14 +77,14 @@ export const AllResidentialInfo = () => {
               , {infoDetails?.pincode}
             </Text>
             <Box className="residential-info-modal-box">
-              <Box className="residential-info-modal-choice-box" onClick={handleGoToVerification}>
+              <Box className="residential-info-modal-choice-box" onClick={() => handleGoToVerification('MySelf')}>
                 <Box className="residential-info-modal-icon">
                   <AiOutlineHome size={'20px'} />
                 </Box>
 
                 <Text className="text">Yes, I will verify myself</Text>
               </Box>
-              <Box className="residential-info-modal-choice-box" onClick={handleGoToVerification}>
+              <Box className="residential-info-modal-choice-box" onClick={() => handleGoToVerification('Peer')}>
                 <Box className="residential-info-modal-icon">
                   <MdAddLocationAlt size={'20px'} />
                 </Box>

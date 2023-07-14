@@ -18,7 +18,6 @@ import { AppLayout } from './components/layouts/AppLayout';
 
 import { VerificationByHRPage } from './pages/VerificationByHRPage';
 import { VerificationByManagerPage } from './pages/VerificationByManagerPage';
-import { AddressVerificationPage } from './pages/AddressVerificationPage';
 
 const App = () => {
   return (
@@ -32,9 +31,8 @@ const App = () => {
             <Route path="auth" element={<AuthPage />} />
             <Route path="waitlist" element={<Waitlist />} />
             <Route path="oauth/google/callback" element={<GoogleAuthRedirect />} />
-            <Route path="/hr" element={<VerificationByHRPage />} />
-            <Route path="/manager" element={<VerificationByManagerPage />} />
-            <Route path="/addressVerification" element={<AddressVerificationPage />} />
+            <Route path="/verification/experience/hr" element={<VerificationByHRPage />} />
+            <Route path="/verification/experience/manager" element={<VerificationByManagerPage />} />
 
             <Route element={<AuthVerificationLayout />}>
               <Route path="profile">

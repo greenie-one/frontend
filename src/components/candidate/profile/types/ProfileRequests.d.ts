@@ -40,6 +40,7 @@ export type ResidentialInfoRequestBody = {
   country: string;
   start_date: Date;
   end_date: Date;
+  typeOfAddress: string;
 };
 
 export type updateProfileRequestBody = {
