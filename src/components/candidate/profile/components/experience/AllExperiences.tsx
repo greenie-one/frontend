@@ -13,7 +13,7 @@ import { ExperienceDetails } from './ExperienceDetails';
 import { IWorkExperienceResponse } from '../../types/ProfileResponses';
 
 export const AllExperiences = () => {
-  const { workExperienceData, selectedCard, setSelectedCard, setCandidateActivePage } = useProfileContext();
+  const { workExperienceData, selectedExperience, setSelectedExperience, setCandidateActivePage } = useProfileContext();
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
   const [checked, setChecked] = useState<boolean>(false);
@@ -23,7 +23,7 @@ export const AllExperiences = () => {
   };
 
   const handleGoToVerification = () => {
-    setSelectedCard(experienceDetails);
+    setSelectedExperience(experienceDetails);
     setExperienceDetails(null);
     setChecked(!checked);
     close();
@@ -31,7 +31,7 @@ export const AllExperiences = () => {
 
   const handleAllExperience = () => {
     setExperienceDetails(null);
-    setSelectedCard(null);
+    setSelectedExperience(null);
   };
 
   return (
@@ -75,11 +75,11 @@ export const AllExperiences = () => {
           </Button>
         )}
       </Box>
-      {experienceDetails === null && selectedCard === null && (
+      {experienceDetails === null && selectedExperience === null && (
         <Box className="see-all-experiences-wrapper">
-          {workExperienceData.reverse().map((workExperience) => {
+          {workExperienceData.reverse().map((workExperience, index) => {
             return (
-              <Box key={workExperience._id} onClick={() => setExperienceDetails(workExperience)}>
+              <Box key={index} onClick={() => setExperienceDetails(workExperience)}>
                 <Box className="experience-card">
                   <img className="companyLogo" src={tscLogo} />
                   <Text className="position">{workExperience.designation}</Text>
@@ -107,9 +107,9 @@ export const AllExperiences = () => {
           })}
         </Box>
       )}
-      {experienceDetails !== null && selectedCard === null && (
+      {experienceDetails !== null && selectedExperience === null && (
         <ExperienceDetails
-          _id={experienceDetails._id}
+          workExpId={experienceDetails.workExpId}
           verifiedBy={experienceDetails.verifiedBy}
           image={experienceDetails.image}
           designation={experienceDetails.designation}
@@ -124,13 +124,13 @@ export const AllExperiences = () => {
           isVerified={experienceDetails.isVerified}
         />
       )}
-      {selectedCard !== null && experienceDetails === null && (
+      {selectedExperience !== null && experienceDetails === null && (
         <VerifyExperience
-          _id={selectedCard._id}
-          image={selectedCard.image}
-          companyName={selectedCard.companyName}
-          designation={selectedCard.designation}
-          isVerified={selectedCard.isVerified}
+          workExId={selectedExperience.workExpId}
+          image={selectedExperience.image}
+          companyName={selectedExperience.companyName}
+          designation={selectedExperience.designation}
+          isVerified={selectedExperience.isVerified}
         />
       )}
     </section>

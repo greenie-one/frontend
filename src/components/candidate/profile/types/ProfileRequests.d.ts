@@ -7,13 +7,16 @@ export type ExperienceRequestBody = {
   companyName: string;
   companyId: string;
   companyStartDate: Date;
-  companyEndDate: Date;
+  companyEndDate?: Date;
   isVerified: boolean;
+  department: string;
+  reasonForLeaving: string;
 };
 
 export type SkillRequestBody = {
   skillName: string;
   expertise: string;
+  workExperience: string;
 };
 
 export type IDRequestBody = {
@@ -37,6 +40,7 @@ export type ResidentialInfoRequestBody = {
   country: string;
   start_date: Date;
   end_date: Date;
+  typeOfAddress: string;
 };
 
 export type updateProfileRequestBody = {

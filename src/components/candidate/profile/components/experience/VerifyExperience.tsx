@@ -1,22 +1,21 @@
 import React, { useReducer, useState, useRef } from 'react';
-import { Title, Text, Box, Button, TextInput, Select, Modal, Divider } from '@mantine/core';
+import { Title, Text, Box, Button, TextInput, Select, Divider, Checkbox, Modal } from '@mantine/core';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 import { useForm, isNotEmpty, isEmail, hasLength } from '@mantine/form';
-import { MdVerified, MdOutlineDelete, MdDriveFolderUpload } from 'react-icons/md';
+import { MdVerified, MdOutlineDelete } from 'react-icons/md';
 import { AiOutlinePlus, AiFillInfoCircle } from 'react-icons/ai';
 import { RiAddCircleLine } from 'react-icons/ri';
 import { CgSandClock, CgProfile } from 'react-icons/cg';
 import tscLogo from '../../assets/tscLogo.png';
 import noData from '../../assets/noData.png';
 import { useProfileContext } from '../../context/ProfileContext';
-import pdfIcon from '../../assets/pdfIcon.png';
+// import pdfIcon from '../../assets/pdfIcon.png';
 import {
   showErrorNotification,
   showLoadingNotification,
   showSuccessNotification,
 } from '../../../../../utils/functions/showNotification';
-import { ISkill } from '../../types/ProfileResponses';
-import { skillRate, peerType } from '../../constants/SelectionOptions';
+import { peerType } from '../../constants/SelectionOptions';
 import { Peer, IWorkExperienceVerification } from '../../types/ProfileGeneral';
 import { ReviewStepAction, ReviewStepState } from '../../types/ProfileActions';
 export enum ReviewActionType {
@@ -24,39 +23,35 @@ export enum ReviewActionType {
   PREVIOUS_STEP,
   RESET_STEP,
 }
+import { ISkill, addPeerResponse } from '../../types/ProfileResponses';
+import { peerVerificationAPIList } from '../../../../../assets/api/ApiList';
+import { HttpClient, Result } from '../../../../../utils/generic/httpClient';
+import { useGlobalContext } from '../../../../../context/GlobalContext';
 
-enum ModalType {
-  AddSkill = 'Add skill',
-  ConfirmRequest = 'Confirm request',
-  SeeRequest = 'See request',
-}
+const attributes = [
+  { send: false, attribute: 'Job title' },
+  { send: false, attribute: 'Reporting Manager' },
+  { send: false, attribute: 'Work Experience in years' },
+  { send: false, attribute: 'Attitude' },
+  { send: false, attribute: 'Rehire status' },
+  { send: false, attribute: 'Exit formalities' },
+];
 
-const VerifiationStepReducer = (state: ReviewStepState, action: ReviewStepAction): ReviewStepState => {
-  switch (action.type) {
-    case ReviewActionType.NEXT_STEP:
-      return { currentStep: state.currentStep + 1 };
-    case ReviewActionType.PREVIOUS_STEP:
-      return { currentStep: state.currentStep - 1 };
-    case ReviewActionType.RESET_STEP:
-      return { currentStep: 0 };
-    default:
-      return state;
-  }
-};
+export const VerifyExperience: React.FC<IWorkExperienceVerification> = ({
+  workExId,
+  designation,
+  companyName,
+  isVerified,
+}) => {
+  const [addedPeers, setAddedPeers] = useState<Peer[]>([]);
+  const [activePeer, setActivePeer] = useState<number>(0);
+  const [selectionPage, setSelectionPage] = useState<'Document' | 'Skill' | 'Attributes'>('Document');
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const { authClient } = useGlobalContext();
 
-export const VerifyExperience: React.FC<IWorkExperienceVerification> = ({ designation, companyName, isVerified }) => {
-  const [verifificationStepState, verificationStepDispatch] = useReducer(VerifiationStepReducer, {
-    currentStep: 0,
-  });
-  const { currentStep } = verifificationStepState;
   const isMobile = useMediaQuery('(max-width: 768px)');
   const isTablet = useMediaQuery('(max-width: 1024px)');
   const [opened, { open, close }] = useDisclosure(false);
-  const [addedPeers, setAddedPeers] = useState<Peer[]>([]);
-  const [openModalType, setOpenModalType] = useState<ModalType | null>(null);
-  const [activePeer, setActivePeer] = useState<number>(0);
-  const [selectionPage, setSelectionPage] = useState<'Document' | 'Skill'>('Document');
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const backgroundStyle = {
     backgroundImage: `url(${tscLogo})`,
@@ -64,15 +59,27 @@ export const VerifyExperience: React.FC<IWorkExperienceVerification> = ({ design
     backgroundRepeat: 'no-repeat',
   };
 
-  const {
-    setCandidateActivePage,
-    setSelectedCard,
-    scrollToTop,
-    scrollToProfileNav,
-    selectedSkills,
-    setSelectedSkills,
-    skillForm,
-  } = useProfileContext();
+  const VerifiationStepReducer = (state: ReviewStepState, action: ReviewStepAction): ReviewStepState => {
+    switch (action.type) {
+      case ReviewActionType.NEXT_STEP:
+        return { currentStep: state.currentStep + 1 };
+      case ReviewActionType.PREVIOUS_STEP:
+        return { currentStep: state.currentStep - 1 };
+      case ReviewActionType.RESET_STEP:
+        return { currentStep: 0 };
+      default:
+        return state;
+    }
+  };
+
+  const [verifificationStepState, verificationStepDispatch] = useReducer(VerifiationStepReducer, {
+    currentStep: 0,
+  });
+
+  const { currentStep } = verifificationStepState;
+
+  const { setCandidateActivePage, setSelectedExperience, scrollToTop, selectedSkills, setSelectedSkills } =
+    useProfileContext();
 
   const peerVerificationForm = useForm<PeerVerificationFormType>({
     initialValues: {
@@ -90,29 +97,40 @@ export const VerifyExperience: React.FC<IWorkExperienceVerification> = ({ design
     },
   });
 
-  const handleAddPeer = () => {
+  const handleCreatePeer = async () => {
     if (
       !peerVerificationForm.validateField('name').hasError &&
       !peerVerificationForm.validateField('email').hasError &&
       !peerVerificationForm.validateField('peerType').hasError &&
       !peerVerificationForm.validateField('contactNumber').hasError
     ) {
-      const newPeer: Peer = {
-        index: addedPeers.length,
+      const requestBody = {
         name: peerVerificationForm.values.name,
         email: peerVerificationForm.values.email,
+        phone: peerVerificationForm.values.contactNumber,
         peerType: peerVerificationForm.values.peerType,
-        status: 'Waiting',
-        contactNumber: peerVerificationForm.values.contactNumber,
-        documents: [],
-        skills: selectedSkills,
+        workExperience: workExId,
       };
-
-      setAddedPeers((prevPeers) => [...prevPeers, newPeer]);
-      peerVerificationForm.values.name = '';
-      peerVerificationForm.values.email = '';
-      peerVerificationForm.values.peerType = '';
-      peerVerificationForm.values.contactNumber = '';
+      showLoadingNotification({ title: 'Please wait !', message: 'Please wait while we add peer to the list' });
+      const res: Result<addPeerResponse> = await HttpClient.callApiAuth(
+        {
+          url: `${peerVerificationAPIList.createPeer}`,
+          method: 'POST',
+          body: requestBody,
+        },
+        authClient
+      );
+      if (res.ok) {
+        showSuccessNotification({ title: 'Success !', message: 'Peer added succesfully' });
+        const newPeer: Peer = res.value;
+        setAddedPeers((prevPeers) => [...prevPeers, newPeer]);
+        peerVerificationForm.values.name = '';
+        peerVerificationForm.values.contactNumber = '';
+        peerVerificationForm.values.email = '';
+        peerVerificationForm.values.peerType = '';
+      } else {
+        showErrorNotification(res.error.code);
+      }
     }
   };
 
@@ -126,21 +144,6 @@ export const VerifyExperience: React.FC<IWorkExperienceVerification> = ({ design
       return newPeer;
     });
   };
-  const handleRemoveSkill = (index: number) => {
-    if (index < 0 || index >= addedPeers[activePeer].skills.length) {
-      return;
-    }
-    setSelectedSkills((prevSkill) => {
-      const newSkill = [...prevSkill];
-      newSkill.splice(index, 1);
-      return newSkill;
-    });
-  };
-
-  const handleOpenModal = (modal: ModalType) => {
-    setOpenModalType(modal);
-    open();
-  };
 
   const handleProceed = () => {
     showLoadingNotification({ title: 'Please wait !', message: 'We are adding your peers' });
@@ -148,166 +151,69 @@ export const VerifyExperience: React.FC<IWorkExperienceVerification> = ({ design
       showErrorNotification('NO_PEERS');
     }
     if (addedPeers.length >= 2) {
-      scrollToProfileNav();
+      scrollToTop();
       verificationStepDispatch({ type: ReviewActionType.NEXT_STEP });
       showSuccessNotification({ title: 'Success !', message: 'Your Peers have been added sucessfully' });
     }
   };
 
   const handleSeeRequest = () => {
-    setSelectedCard(null);
+    setSelectedExperience(null);
     setCandidateActivePage('Profile');
     close();
     scrollToTop();
     setSelectedSkills([]);
   };
 
-  const handleUploadDocument = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      addedPeers[activePeer].documents.push(file);
-      event.target.value = '';
-    }
-  };
+  // const getPeer = async () => {
+  //   const res = await HttpClient.callApiAuth(
+  //     { url: `${peerVerificationAPIList.getSinglePeer}/64b0cecd27491902aaa1c1d5`, method: 'GET' },
+  //     authClient
+  //   );
+  //   if (res.ok) {
+  //     console.log(res.value);
+  //   } else {
+  //     console.log(res.error.message);
+  //   }
+  // };
 
-  const handleAddSkill = (event: React.FormEvent) => {
-    event.preventDefault();
-    if (!skillForm.validateField('skillName').hasError && !skillForm.validateField('expertise').hasError) {
-      const newSkill: ISkill = {
-        skillName: skillForm.values.skillName,
-        expertise: skillForm.values.expertise,
-        workExperience: '',
-      };
-      setSelectedSkills((prevSkills) => [...prevSkills, newSkill]);
-      skillForm.values.skillName = '';
-      skillForm.values.expertise = '';
-      close();
-    }
-  };
+  // const handleUploadDocument = () => {};
 
   return (
     <>
-      {openModalType === ModalType.SeeRequest && (
-        <Modal size={isTablet ? '85%' : '65%'} fullScreen={isMobile} opened={opened} onClose={close} centered>
-          <Box className="verify-experience-modal">
-            <Title className="heading">Your request has been sent</Title>
-            <Text className="subHeading">Verifying your work experience</Text>
-            <Box className="modal-experience-details">
-              <Box className="company-logo" style={backgroundStyle}>
-                <MdVerified className="verified-icon" color="#17a672" size="22px" />
-              </Box>
+      <Modal size={isTablet ? '80%' : '60%'} fullScreen={isMobile} opened={opened} onClose={close} centered>
+        <Box className="verify-experience-modal">
+          <Title className="heading">Your request has been sent</Title>
+          <Text className="subHeading">Verifying your work experience</Text>
+          <Box className="modal-experience-details">
+            <Box className="company-logo" style={backgroundStyle}>
+              <MdVerified className="verified-icon" color="#17a672" size="22px" />
+            </Box>
 
-              <Box className="experience-details-text-box">
-                <Text className="designation">{designation}</Text>
-                <Text className="company-name">{companyName}</Text>
-                {isVerified ? (
-                  <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
-                    Verified
-                  </Button>
-                ) : (
-                  <Button leftIcon={<CgSandClock size={'16px'} />} className="pending">
-                    Pending
-                  </Button>
-                )}
-              </Box>
-            </Box>
-            <Button className="green-btn" onClick={handleSeeRequest}>
-              See request
-            </Button>
-            <Box className="note">
-              <AiFillInfoCircle className="info-icon" size={'18px'} />
-              <Text className="note-heading">Note</Text>
-              <Text className="text">Candidates cannot see this verification process or its results.</Text>
-            </Box>
-          </Box>
-        </Modal>
-      )}
-      {openModalType === ModalType.ConfirmRequest && (
-        <Modal size={isTablet ? '85%' : '65%'} fullScreen={isMobile} opened={opened} onClose={close} centered>
-          <Box className="verify-experience-modal">
-            <Title className="heading">Review and Confirm Your Request</Title>
-            <Text className="subHeading">Please confirm sending experience for verification</Text>
-            <Box className="modal-experience-details">
-              <Box className="company-logo" style={backgroundStyle}>
-                <MdVerified className="verified-icon" color="#17a672" size="22px" />
-              </Box>
-
-              <Box className="experience-details-text-box">
-                <Text className="designation">{designation}</Text>
-                <Text className="company-name">{companyName}</Text>
-                {isVerified ? (
-                  <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
-                    Verified
-                  </Button>
-                ) : (
-                  <Button leftIcon={<CgSandClock size={'16px'} />} className="pending">
-                    Pending
-                  </Button>
-                )}
-              </Box>
-            </Box>
-            <Button className="green-btn" onClick={() => setOpenModalType(ModalType.SeeRequest)}>
-              Send request
-            </Button>
-            <Box className="note">
-              <AiFillInfoCircle className="info-icon" size={'18px'} />
-              <Text className="note-heading">Note</Text>
-              <Text className="text">Candidates cannot see this verification process or its results.</Text>
-            </Box>
-          </Box>
-        </Modal>
-      )}
-      {openModalType === ModalType.AddSkill && (
-        <Modal size={isTablet ? '65%' : '50%'} fullScreen={isMobile} opened={opened} onClose={close} centered>
-          <Box className="add-skill-form">
-            <Box className="add-skill-header">
-              <Text className="heading">Add Skills</Text>
-              <Text className="sub-heading">Select the skill you want the peer to review</Text>
-            </Box>
-            <form onSubmit={handleAddSkill}>
-              <Box className="input-section">
-                <Title className="title">Skill name</Title>
-                <TextInput
-                  withAsterisk
-                  data-autofocus
-                  label="Eg. Frontend, Backend"
-                  className="inputClass"
-                  {...skillForm.getInputProps('skillName')}
-                />
-              </Box>
-              <Box className="input-section">
-                <Title className="title">Expertise</Title>
-                <Select
-                  withAsterisk
-                  data={skillRate}
-                  label="Select your expertise"
-                  className="inputClass"
-                  {...skillForm.getInputProps('expertise')}
-                  styles={() => ({
-                    item: {
-                      '&[data-selected]': {
-                        '&, &:hover': {
-                          backgroundColor: '#17a672',
-                          color: 'white',
-                        },
-                      },
-                    },
-                  })}
-                />
-              </Box>
-
-              <Divider color="#ebebeb" />
-
-              <Box className="btn-wrapper">
-                <Button className="green-btn" type="submit" onClick={handleAddSkill}>
-                  Add Skill
+            <Box className="experience-details-text-box">
+              <Text className="designation">{designation}</Text>
+              <Text className="company-name">{companyName}</Text>
+              {isVerified ? (
+                <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
+                  Verified
                 </Button>
-              </Box>
-            </form>
+              ) : (
+                <Button leftIcon={<CgSandClock size={'16px'} />} className="pending">
+                  Pending
+                </Button>
+              )}
+            </Box>
           </Box>
-        </Modal>
-      )}
-
+          <Button className="green-btn" onClick={handleSeeRequest}>
+            See request
+          </Button>
+          <Box className="note">
+            <AiFillInfoCircle className="info-icon" size={'18px'} />
+            <Text className="note-heading">Note</Text>
+            <Text className="text">Candidates cannot see this verification process or its results.</Text>
+          </Box>
+        </Box>
+      </Modal>
       {currentStep === 0 && (
         <Box className="add-peer-box">
           <Box className="experience-details">
@@ -369,28 +275,27 @@ export const VerifyExperience: React.FC<IWorkExperienceVerification> = ({ design
               {...peerVerificationForm.getInputProps('contactNumber')}
             />
           </Box>
-          <Button className="add-peer-btn" leftIcon={<AiOutlinePlus size={'18px'} />} onClick={handleAddPeer}>
+          <Button className="add-peer-btn" leftIcon={<AiOutlinePlus size={'18px'} />} onClick={handleCreatePeer}>
             Add Peer
           </Button>
           <Box className="add-peer-header">
             <Text>Peer</Text>
             <Text>Email</Text>
-            <Text>Status</Text>
             <Text>Peer Type</Text>
             <Text>Action</Text>
           </Box>
           <Box className="added-peer-box">
             {addedPeers.length > 0 ? (
               <Box className="add-peers">
-                {addedPeers.reverse().map(({ name, email, status, peerType, index }) => {
+                {addedPeers.reverse().map(({ name, email, peerType, _id }, index) => {
                   return (
-                    <Box key={index} className="added-peers">
+                    <Box key={_id} className="added-peers">
                       <Text className="peer-name">
                         <CgProfile className="profile-icon" />
                         <span>{name}</span>
                       </Text>
                       <Text className="peer-email">{email}</Text>
-                      <Text className="peer-response">{status}</Text>
+
                       <Text className="peer-type">{peerType}</Text>
                       <Text className="peer-remove" onClick={() => handleRemovePeer(index)}>
                         <MdOutlineDelete size={'20px'} />
@@ -450,39 +355,43 @@ export const VerifyExperience: React.FC<IWorkExperienceVerification> = ({ design
                   >
                     Skill
                   </Box>
+                  <Box
+                    onClick={() => setSelectionPage('Attributes')}
+                    className={selectionPage === 'Attributes' ? 'selector active' : 'selector'}
+                  >
+                    Arrtibutes
+                  </Box>
                 </Box>
                 {selectionPage === 'Document' && (
                   <Box className="documents-action-section">
-                    <input type="file" ref={fileInputRef} style={{ display: 'none' }} onChange={handleUploadDocument} />
+                    <input type="file" ref={fileInputRef} style={{ display: 'none' }} />
                     <Box className="documents-action-nav">
                       <Box className="document-action-heading-box">
                         <Text className="document-action-heading">Documents</Text>
                         <Text className="document-action-sub-heading">
-                          {' '}
                           Select the documents you want the peer to review
                         </Text>
                       </Box>
 
                       <Box className="document-action-selector">
-                        <Box className="document-action" onClick={() => fileInputRef.current?.click()}>
-                          <RiAddCircleLine className="action-icon" />
-                          <Text className="action-text">Upload</Text>
-                        </Box>
-                        <Box className="document-action">
-                          <MdDriveFolderUpload className="action-icon" />
-                          <Text className="action-text">Import</Text>
-                        </Box>
+                        <Button
+                          leftIcon={<AiOutlinePlus />}
+                          className="document-action"
+                          onClick={() => fileInputRef.current?.click()}
+                        >
+                          Add files
+                        </Button>
                       </Box>
                     </Box>
                     <Box className="selected-documents">
-                      {addedPeers[activePeer].documents.map((document, index) => {
+                      {/* {addedPeers[activePeer].map((peer: Peer, index: number) => {
                         return (
                           <Box className="document" key={index}>
                             <img className="pdf-icon" src={pdfIcon} alt="pdf icon" />
-                            <Text className="document-name">{document.name}</Text>
+                            <Text className="document-name">{peer.name.substring(0, 15)}...</Text>
                           </Box>
                         );
-                      })}
+                      })} */}
                     </Box>
                   </Box>
                 )}
@@ -495,36 +404,22 @@ export const VerifyExperience: React.FC<IWorkExperienceVerification> = ({ design
                           Select the skill you want the peer to review
                         </Text>
                       </Box>
-
-                      <Box className="document-action-selector">
-                        <Box className="document-action" onClick={() => handleOpenModal(ModalType.AddSkill)}>
-                          <RiAddCircleLine className="action-icon" />
-                          <Text className="action-text">Add more</Text>
-                        </Box>
-                        <Box className="document-action" onClick={() => setSelectedSkills([])}>
-                          <MdOutlineDelete className="action-icon" />
-                          <Text className="action-text">Remove all</Text>
-                        </Box>
-                      </Box>
                     </Box>
-                    {addedPeers[activePeer].skills.length > 0 && (
+                    {/* {addedPeers[activePeer].skills.length > 0 && (
                       <Box>
                         <Box className="selected-skills-header">
-                          <Text>Skill Name</Text>
+                          <Checkbox checked readOnly />
+                          <Text>Name</Text>
                           <Text>Expertise</Text>
-                          <Text>Remove</Text>
                         </Box>
                         <Box className="selected-skills">
                           {addedPeers[activePeer].skills.map(({ skillName, expertise }, index) => {
                             return (
                               <Box key={index}>
                                 <Box className="selected-skill">
+                                  <Checkbox />
                                   <Text>{skillName}</Text>
                                   <Text>{expertise}</Text>
-                                  <Text className="peer-remove" onClick={() => handleRemoveSkill(index)}>
-                                    <MdOutlineDelete size={'20px'} />
-                                    <span>Remove</span>
-                                  </Text>
                                 </Box>
                                 {addedPeers[activePeer].skills.length - 1 !== index && <Divider color="#ebebeb" />}
                               </Box>
@@ -536,17 +431,149 @@ export const VerifyExperience: React.FC<IWorkExperienceVerification> = ({ design
                           <Text className="action-text">Add more</Text>
                         </Box>
                       </Box>
-                    )}
+                    )} */}
+                  </Box>
+                )}
+                {selectionPage === 'Attributes' && (
+                  <Box className="documents-action-section">
+                    <Box className="documents-action-nav">
+                      <Box className="document-action-heading-box">
+                        <Text className="document-action-heading">Skills</Text>
+                        <Text className="document-action-sub-heading">
+                          Select the skill you want the peer to review
+                        </Text>
+                      </Box>
+                    </Box>
+
+                    <Box>
+                      <Box className="selected-attribute-header">
+                        <Checkbox checked indeterminate readOnly />
+                        <Text>Name</Text>
+                      </Box>
+                      <Box className="selected-attributes">
+                        {attributes.map(({ attribute }, index) => {
+                          return (
+                            <Box key={index}>
+                              <Box className="selected-attribute">
+                                <Checkbox />
+                                <Text>{attribute}</Text>
+                              </Box>
+                              {attributes.length - 1 !== index && <Divider color="#ebebeb" />}
+                            </Box>
+                          );
+                        })}
+                      </Box>
+                      <Box className="action-btn">
+                        <RiAddCircleLine className="action-icon" />
+                        <Text className="action-text">Add more</Text>
+                      </Box>
+                    </Box>
                   </Box>
                 )}
               </Box>
             )}
           </Box>
           <Box className="see-peers-btn-wrapper">
-            <Button className="green-btn" onClick={() => handleOpenModal(ModalType.ConfirmRequest)}>
+            <Button
+              className="green-btn"
+              onClick={() => verificationStepDispatch({ type: ReviewActionType.NEXT_STEP })}
+            >
               Confirm and send request
             </Button>
             <Button className="cancel-btn">Cancel</Button>
+          </Box>
+        </Box>
+      )}
+      {currentStep === 2 && (
+        <Box className="confirm-request-box">
+          <Box className="document-action-heading-box">
+            <Text className="document-action-heading">Confirm your work experience</Text>
+            <Text className="document-action-sub-heading">The following skills are part of your work experience</Text>
+          </Box>
+
+          <Box className="peers-list">
+            <Text className="document-action-heading">Requesting</Text>
+            <Box className="requesting-peers">
+              {addedPeers.map((peer, index) => {
+                return (
+                  <Box key={index} className="requesting-peer">
+                    <Box className="profile-picture"></Box>
+                    <Box className="requesting-peer-text-box">
+                      <Text className="name">{peer.name}</Text> <Text className="designation">{peer.peerType}</Text>{' '}
+                    </Box>
+                  </Box>
+                );
+              })}
+            </Box>
+          </Box>
+          <Box className="details-box">
+            <Text className="document-action-heading">To verify</Text>
+            <Box className="experience-details">
+              <Box className="company-logo" style={backgroundStyle}>
+                <MdVerified className="verified-icon" color="#17a672" size="22px" />
+              </Box>
+
+              <Box className="experience-details-text-box">
+                <Text className="designation">{designation}</Text>
+                <Text className="company-name">{companyName}</Text>
+                {isVerified ? (
+                  <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
+                    Verified
+                  </Button>
+                ) : (
+                  <Button leftIcon={<CgSandClock size={'16px'} />} className="pending">
+                    Pending
+                  </Button>
+                )}
+              </Box>
+            </Box>
+          </Box>
+          <Box className="document-list">
+            <Text className="document-action-heading">With Documents</Text>
+            <Box>
+              {addedPeers.map((peer, index) => {
+                return (
+                  <Box key={index} className="docs-wrapper">
+                    {/* {peer.documents.map((document, index) => {
+                      return (
+                        <Box className="document" key={index}>
+                          <img className="pdf-icon" src={pdfIcon} alt="pdf icon" />
+                          <Text className="document-name">{document.name.substring(0, 15)}...</Text>
+                        </Box>
+                      );
+                    })} */}
+                  </Box>
+                );
+              })}
+            </Box>
+          </Box>
+          <Box className="skills-list">
+            <Text className="document-action-heading">Skills</Text>
+            <Box className="add-skills-wrapper">
+              {selectedSkills.map((skill: ISkill, index: number) => {
+                const { expertise, skillName } = skill;
+                return (
+                  <Box key={index} className="add-skill-box">
+                    <Text className="add-skill-name">{skillName}</Text>
+                    {expertise === 'AMATEUR' && <Text className="add-skill-rate">Amature</Text>}
+                    {expertise === 'BEGINNER' && <Text className="add-skill-rate">Beginner</Text>}
+                    {expertise === 'HIGHLY_COMPETENT' && <Text className="add-skill-rate">Highly Competent</Text>}
+                    {expertise === 'EXPERT' && <Text className="add-skill-rate">Expert</Text>}
+                    {expertise === 'SUPER_SPECIALIST' && <Text className="add-skill-rate">Super Specialist</Text>}
+                    {expertise === 'MASTER' && <Text className="add-skill-rate">Master</Text>}
+                  </Box>
+                );
+              })}
+            </Box>
+          </Box>
+
+          <Box className="see-peers-btn-wrapper">
+            <Button className="green-btn" onClick={open}>
+              Confirm and send request
+            </Button>
+            <Button className="cancel-btn" onClick={() => setSelectedExperience(null)}>
+              Cancel
+            </Button>
           </Box>
         </Box>
       )}

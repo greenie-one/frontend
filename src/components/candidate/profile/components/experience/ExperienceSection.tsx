@@ -7,10 +7,10 @@ import { useProfileContext } from '../../context/ProfileContext';
 import { AiOutlinePlus } from 'react-icons/ai';
 
 export const ExperienceSection = () => {
-  const { workExperienceData, scrollToTop, scrollToProfileNav, setCandidateActivePage } = useProfileContext();
+  const { workExperienceData, scrollToTop, setCandidateActivePage } = useProfileContext();
 
   const handleToggleWorkExperienceDetails = (): void => {
-    scrollToProfileNav();
+    scrollToTop();
     setCandidateActivePage('All Experiences');
   };
 

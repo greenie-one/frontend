@@ -5,10 +5,10 @@ import { useProfileContext } from '../../context/ProfileContext';
 import { AiOutlinePlus } from 'react-icons/ai';
 
 export const SkillsSection = () => {
-  const { setCandidateActivePage, skillData, scrollToTop, scrollToProfileNav } = useProfileContext();
+  const { setCandidateActivePage, skillData, scrollToTop } = useProfileContext();
 
   const handleToggleSkillsDetails = (): void => {
-    scrollToProfileNav();
+    scrollToTop();
     setCandidateActivePage('All Skills');
   };
 
@@ -55,7 +55,12 @@ export const SkillsSection = () => {
             return (
               <Box key={index} className="add-skill-box">
                 <Text className="add-skill-name">{skillName}</Text>
-                <Text className="add-skill-rate">{expertise}</Text>
+                {expertise === 'AMATEUR' && <Text className="add-skill-rate">Amature</Text>}
+                {expertise === 'BEGINNER' && <Text className="add-skill-rate">Beginner</Text>}
+                {expertise === 'HIGHLY_COMPETENT' && <Text className="add-skill-rate">Highly Competent</Text>}
+                {expertise === 'EXPERT' && <Text className="add-skill-rate">Expert</Text>}
+                {expertise === 'SUPER_SPECIALIST' && <Text className="add-skill-rate">Super Specialist</Text>}
+                {expertise === 'MASTER' && <Text className="add-skill-rate">Master</Text>}
               </Box>
             );
           })}

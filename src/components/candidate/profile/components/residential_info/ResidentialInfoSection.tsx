@@ -23,18 +23,18 @@ import { createResidentialInfo } from '../../types/ProfileResponses';
 export const ResidentialInfoSection = () => {
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
-  const { residentialInfoData, residentialInfoForm, setCandidateActivePage, scrollToProfileNav, getResidentialInfo } =
+  const { residentialInfoData, residentialInfoForm, setCandidateActivePage, scrollToTop, getResidentialInfo } =
     useProfileContext();
   const { authClient } = useGlobalContext();
   const [checked, setChecked] = useState(false);
 
   const handleToggleResidentialDetails = (): void => {
-    scrollToProfileNav();
+    scrollToTop();
     setCandidateActivePage('All Residential Info');
   };
 
   const handleCheck = () => {
-    residentialInfoForm.values.endDate = null;
+    residentialInfoForm.values.end_date = null;
     setChecked(!checked);
   };
 
@@ -83,6 +83,7 @@ export const ResidentialInfoSection = () => {
       country: residentialInfoForm.values.country,
       start_date: residentialInfoForm.values.start_date,
       end_date: residentialInfoForm.values.end_date,
+      typeOfAddress: residentialInfoForm.values.typeOfAddress,
     };
     const res: Result<createResidentialInfo> = await HttpClient.callApiAuth(
       {
@@ -98,10 +99,24 @@ export const ResidentialInfoSection = () => {
         message: 'We have added your residential information.',
       });
       getResidentialInfo();
-      close();
+      onClose();
     } else {
       showErrorNotification(res.error.code);
     }
+  };
+
+  const onClose = () => {
+    residentialInfoForm.values.address_line_1 = '';
+    residentialInfoForm.values.address_line_2 = '';
+    residentialInfoForm.values.typeOfAddress = '';
+    residentialInfoForm.values.landmark = '';
+    residentialInfoForm.values.city = '';
+    residentialInfoForm.values.pincode = '';
+    residentialInfoForm.values.state = '';
+    residentialInfoForm.values.country = '';
+    residentialInfoForm.values.start_date = '';
+    residentialInfoForm.values.end_date = '';
+    close();
   };
 
   return (
@@ -111,7 +126,7 @@ export const ResidentialInfoSection = () => {
         size={'65%'}
         fullScreen={isMobile}
         opened={opened}
-        onClose={close}
+        onClose={onClose}
         title="Add residential information"
       >
         <form onSubmit={handleSubmit}>
@@ -239,7 +254,12 @@ export const ResidentialInfoSection = () => {
           <Box className="input-section">
             <Title className="title">End Date</Title>
 
-            <DateInput label="End date" className="inputClass" {...residentialInfoForm.getInputProps('end_date')} />
+            <DateInput
+              disabled={checked}
+              label="End date"
+              className="inputClass"
+              {...residentialInfoForm.getInputProps('end_date')}
+            />
 
             <Checkbox
               checked={checked}
@@ -251,7 +271,7 @@ export const ResidentialInfoSection = () => {
           </Box>
           <Divider />
           <Box className="btn-wrapper">
-            <Button variant="default" onClick={close}>
+            <Button variant="default" onClick={onClose}>
               Cancel
             </Button>
             <Button color="teal" type="submit">

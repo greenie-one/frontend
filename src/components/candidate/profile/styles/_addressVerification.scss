@@ -1,0 +1,182 @@
+$offWhite: #f9f9f9;
+$white: #ffffff;
+$green: #17a672;
+$limeGreen: #8cf078;
+$bgGreen: #a5fbc9;
+$lightGray: #ebebeb;
+$lighterGray: #e1e1e1;
+$red: #ff7272;
+
+$black: #282828;
+$gray: #697082;
+$dark: #191919;
+
+.address-verification-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 4rem;
+
+  .primaryBtn {
+    width: 400px;
+  }
+
+  .address-verification-details-main-title {
+    font-family: Inter;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 27px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: $dark;
+    margin-bottom: 2rem;
+  }
+
+  .address-verification-bold-title {
+    font-family: Inter;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 27px;
+    letter-spacing: 0em;
+    text-align: center;
+    color: $dark;
+  }
+
+  .address-verification-details {
+    .address-verification-details-title {
+      font-family: Inter;
+      font-size: 20px;
+      font-weight: 500;
+      line-height: 28px;
+      letter-spacing: -0.800000011920929px;
+      text-align: left;
+      color: $dark;
+    }
+    .address-verification-details-address {
+      font-family: Inter;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 20px;
+      letter-spacing: -0.10000000149011612px;
+      text-align: left;
+      color: $gray;
+      width: 151px;
+      margin-block: 0.5rem;
+      margin-bottom: 2rem;
+    }
+  }
+
+  .profile-details {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-block: 1rem;
+    position: relative;
+
+    img {
+      width: 64px;
+      height: 64px;
+    }
+
+    .verified-icon {
+      position: absolute;
+      color: $green;
+      border-radius: 50%;
+      bottom: 0;
+      background-color: $white;
+      left: 45px;
+      width: 1.25rem;
+      height: 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .address-verification-details-name {
+      font-family: Inter;
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 19px;
+      letter-spacing: -0.02em;
+      text-align: left;
+      color: $dark;
+      margin-left: 1rem;
+    }
+  }
+}
+
+.address-verification-details-link {
+  font-family: Inter;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 27px;
+  letter-spacing: 0em;
+  text-align: left;
+  color: $gray;
+  text-decoration: underline;
+  margin-block: 1rem;
+}
+
+.address-verification-details-box-header {
+  border: 1px solid $lightGray;
+  border-radius: 16px 16px 0px 0px;
+  display: grid;
+  grid-template-columns: 10% 50% 20% 20%;
+  margin: 0rem auto;
+  margin-top: 2rem;
+  padding: 1rem;
+  font-weight: 500;
+  width: 90%;
+}
+.address-verification-details-added-peers {
+  border: 1px solid $lightGray;
+  border-radius: 0px 0px 16px 16px;
+  display: grid;
+  grid-template-columns: 10% 50% 20% 20%;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 1rem;
+  font-size: 14px;
+  width: 90%;
+  margin-bottom: 2rem;
+}
+
+.address-verification-modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+
+  .address-verification-modal-title {
+    font-family: Inter;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 24px;
+    letter-spacing: -0.02em;
+    text-align: left;
+    color: $dark;
+    margin-bottom: 1rem;
+  }
+  .address-verification-modal-text {
+    font-family: Inter;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 17px;
+    letter-spacing: -0.02em;
+    text-align: left;
+    color: $dark;
+    margin-bottom: 1.5rem;
+  }
+  .residential-details {
+    margin-bottom: 2rem;
+  }
+  .green-btn {
+    margin-bottom: 2.5rem;
+  }
+
+  .verified {
+    border: none;
+    outline: none;
+  }
+}

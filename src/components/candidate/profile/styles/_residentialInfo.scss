@@ -1,0 +1,297 @@
+.residential-info-wrapper {
+  display: grid;
+  grid-template-columns: repeat(3, 32%);
+  align-items: center;
+  justify-content: space-between;
+}
+
+.info-detail-box {
+  .info-detail-top-box {
+    display: grid;
+    grid-template-columns: 100px 300px;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 2rem;
+    .location {
+      border: 1px solid $lighterGray;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      border-radius: 50%;
+      color: $lighterGray;
+    }
+
+    .address-box {
+      margin-left: 1rem;
+      .address {
+        margin-bottom: 1rem;
+      }
+    }
+  }
+
+  .wrapper {
+    margin-bottom: 1rem;
+  }
+
+  .title {
+    font-family: Inter;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 27px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: $dark;
+    margin-bottom: 0.25rem;
+  }
+
+  .detail {
+    font-family: Inter;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 27px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: $gray;
+  }
+  .detail-box {
+    border: 1px solid $lighterGray;
+    border-radius: 1rem;
+    padding: 1rem;
+    margin-block: 0.25rem;
+  }
+
+  .experience-details-links {
+    margin-block: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 220px;
+  }
+
+  .details-link {
+    color: $gray;
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: underline;
+  }
+
+  .other-info-box {
+    display: flex;
+    align-items: center;
+    column-gap: 0.5rem;
+    justify-content: flex-start;
+  }
+  .about-info-box {
+    display: flex;
+    align-items: center;
+    column-gap: 0.5rem;
+    justify-content: flex-start;
+  }
+  .geo-info-box {
+    display: flex;
+    align-items: center;
+    column-gap: 0.5rem;
+    justify-content: flex-start;
+  }
+}
+
+.residential-details {
+  display: grid;
+  grid-template-columns: 80px 250px;
+  margin-bottom: 2.5rem;
+  width: 350px;
+
+  .location {
+    border: 1px solid $lighterGray;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    height: 80px;
+  }
+
+  .residential-details-text-box {
+    margin-left: 1rem;
+    .address {
+      margin-bottom: 0.5rem;
+    }
+    .pending {
+      border: none;
+      outline: none;
+    }
+  }
+}
+
+.add-peer-text {
+  font-family: Inter;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: -0.02em;
+  text-align: center;
+  color: $gray;
+  width: 350px;
+  margin-bottom: 1rem;
+}
+
+.add-peer-sub-text {
+  font-family: Inter;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: -0.02em;
+  text-align: center;
+  color: $gray;
+  width: 320px;
+}
+
+.copy-box {
+  height: 58px;
+  padding-top: 1rem;
+  padding-inline: 0.75rem;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 8px;
+  border: 1px solid #d1d4db;
+  line-height: 19px;
+  letter-spacing: -0.02em;
+  width: 350px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+
+  label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    font-size: 12px;
+    padding-left: 14px;
+    padding-top: 7px;
+    line-height: 14.52px;
+    letter-spacing: -0.02em;
+    z-index: 1;
+    color: #697082;
+  }
+
+  .copy-btn {
+    background: transparent;
+    color: $gray;
+    border-radius: 34px;
+    border: 1px solid $lighterGray;
+    height: 25px;
+    font-size: 12px;
+    width: 100px;
+  }
+}
+
+.residential-info-modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .residential-info-modal-title {
+    font-family: Inter;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 27px;
+    letter-spacing: 0em;
+    text-align: center;
+    color: $dark;
+    margin-bottom: 2rem;
+  }
+  .address {
+    font-family: Inter;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 23px;
+    letter-spacing: -0.02em;
+    text-align: center;
+    color: $dark;
+    margin-bottom: 2rem;
+    width: 250px;
+  }
+  .residential-info-modal-box {
+    width: 90%;
+    max-width: 400px;
+    display: grid;
+    grid-template-columns: repeat(2, 49%);
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    .residential-info-modal-choice-box {
+      border: 1px solid $lighterGray;
+      border-radius: 1rem;
+      height: 150px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 0.75rem;
+
+      .residential-info-modal-icon {
+        height: 80px;
+        width: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background-color: $lightGray;
+      }
+      .text {
+        font-family: Inter;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 17px;
+        letter-spacing: -0.02em;
+        text-align: left;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 850px) {
+  .info-detail-box {
+    .geo-info-box {
+      display: grid;
+      grid-template-columns: repeat(3, 32%);
+    }
+  }
+}
+@media screen and (max-width: 700px) {
+  .info-detail-box {
+    .geo-info-box {
+      display: grid;
+      grid-template-columns: repeat(2, 49%);
+    }
+  }
+}
+@media screen and (max-width: 512px) {
+  .info-detail-box {
+    .info-detail-top-box {
+      grid-template-columns: 20% 70%;
+      .location {
+        height: 100%;
+      }
+    }
+    .geo-info-box,
+    .other-info-box,
+    .about-info-box {
+      display: grid;
+      grid-template-columns: 100%;
+    }
+  }
+}
+@media screen and (max-width: 414px) {
+  .info-detail-box {
+    .info-detail-top-box {
+      grid-template-columns: 30% 60%;
+      .location {
+        height: 80%;
+      }
+    }
+  }
+}

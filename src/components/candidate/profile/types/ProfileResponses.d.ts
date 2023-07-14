@@ -16,7 +16,7 @@ export interface IUserProfileResponse {
 }
 
 export interface IWorkExperienceResponse {
-  _id: string;
+  workExpId: string;
   image: string | null;
   designation: string;
   companyName: string;
@@ -119,4 +119,13 @@ export type UpdateResponse = {
 export type DeleteResponse = {
   success: boolean;
   message: string;
+};
+
+type addPeerResponse = {
+  email: string;
+  name: string;
+  peerType: string;
+  phone: string;
+  workExperience: string;
+  _id: string;
 };

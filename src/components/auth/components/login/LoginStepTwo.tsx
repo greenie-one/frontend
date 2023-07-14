@@ -91,7 +91,6 @@ const LoginStepTwo = () => {
             message: 'You have been logged in successfully.',
           });
 
-          // navigate('/profile');
           // dispatch({ type: 'PREVLOGINSTEP' });
         } else {
           showErrorNotification(resp.error.code);
