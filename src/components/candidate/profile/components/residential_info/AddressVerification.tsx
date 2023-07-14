@@ -37,7 +37,13 @@ export const AddressVerification = () => {
   const [activeStep, setActiveStep] = useState<number>(1);
   const { classes: inputClasses } = OtpInputStyles();
   const [secondsRemaining, setSecondsRemaining] = useState<number>(30);
-  const { selectedResidentialInfo, peerAddressVerificationForm, profileData } = useProfileContext();
+  const {
+    selectedResidentialInfo,
+    peerAddressVerificationForm,
+    profileData,
+    setCandidateActivePage,
+    setSelectedResidentialInfo,
+  } = useProfileContext();
 
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
@@ -46,6 +52,12 @@ export const AddressVerification = () => {
     if (activeStep !== 7) {
       setActiveStep(activeStep + 1);
     }
+  };
+
+  const handleGoToProfile = () => {
+    setCandidateActivePage('Profile');
+    setSelectedResidentialInfo(null);
+    close();
   };
 
   useEffect(() => {
@@ -82,7 +94,7 @@ export const AddressVerification = () => {
               </Button>
             </Box>
           </Box>
-          <Button className="green-btn" onClick={close}>
+          <Button className="green-btn" onClick={handleGoToProfile}>
             Continue
           </Button>
         </Box>
