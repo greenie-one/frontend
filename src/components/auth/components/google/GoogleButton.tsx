@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Button } from '@mantine/core';
 import { useLocalStorage } from '@mantine/hooks';
+import { useNavigate } from 'react-router-dom';
 
 import { showErrorNotification, showLoadingNotification } from '../../../../utils/functions/showNotification';
 import { HttpClient } from '../../../../utils/generic/httpClient';
@@ -21,7 +21,7 @@ const GoogleButton = () => {
   });
 
   useEffect(() => {
-    if (authTokens?.accessToken) navigate('/profile');
+    if (authTokens?.accessToken) setForceRender((prev) => !prev);
   }, [authTokens]);
 
   const handleGoogleAuth = async () => {
