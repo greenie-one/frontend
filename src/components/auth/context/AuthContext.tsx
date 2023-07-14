@@ -182,7 +182,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (authTokens) {
       getMyProfile();
     }
-  }, [forceRender]);
+  }, [authTokens, forceRender]);
 
   return (
     <AuthContext.Provider
