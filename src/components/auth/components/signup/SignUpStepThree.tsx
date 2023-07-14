@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { TextInput, Text, Button, Flex, Box } from '@mantine/core';
+import { useLocalStorage } from '@mantine/hooks';
 
 import { HttpClient } from '../../../../utils/generic/httpClient';
 import { useGlobalContext } from '../../../../context/GlobalContext';
@@ -23,6 +24,9 @@ const SignUpStepThree = () => {
   const { classes: inputClasses } = inputStyles();
   const [isLoading, setIsLoading] = useState(false);
   const [secondsRemaining, setSecondsRemaining] = useState<number>(30);
+  const [, setTokens] = useLocalStorage<AuthTokens>({
+    key: 'auth-tokens',
+  });
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -62,7 +66,8 @@ const SignUpStepThree = () => {
       });
 
       if (res.ok) {
-        authClient.setTokens(res.value.accessToken, res.value.refreshToken);
+        setTokens(res.value);
+        authClient.updateTokens(res.value.accessToken, res.value.refreshToken);
         showSuccessNotification({
           title: 'Success !',
           message: 'Your account has been successfully created.',

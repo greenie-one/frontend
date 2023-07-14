@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Text, Button, Divider, PasswordInput, Flex, Box } from '@mantine/core';
+import { useLocalStorage } from '@mantine/hooks';
 
 import { useGlobalContext } from '../../../../context/GlobalContext';
 import { useAuthContext } from '../../context/AuthContext';
@@ -22,6 +23,9 @@ const LoginStepTwo = () => {
 
   const { classes: inputClasses } = inputStyles();
   const [isLoading, setIsLoading] = useState(false);
+  const [, setTokens] = useLocalStorage<AuthTokens>({
+    key: 'auth-tokens',
+  });
 
   const handleLoginWithPhoneNo = () => {
     loginForm.setFieldValue('emailPhoneGreenieId', '');
@@ -78,9 +82,10 @@ const LoginStepTwo = () => {
 
         if (resp.ok) {
           loginForm.setFieldValue('password', '');
-          authClient.setTokens(resp.value.accessToken, resp.value.refreshToken);
-          setForceRender((prev) => !prev);
+          setTokens(resp.value);
+          authClient.updateTokens(resp.value.accessToken, resp.value.refreshToken);
 
+          setForceRender((prev) => !prev);
           showSuccessNotification({
             title: 'Success !',
             message: 'You have been logged in successfully.',
