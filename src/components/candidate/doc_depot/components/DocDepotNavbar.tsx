@@ -40,7 +40,6 @@ export const DocDepotNavbar = () => {
         documentForm.values.private_url = res.data.url;
         showSuccessNotification({ title: 'Success !', message: 'Profile picture is updated !' });
       } catch (error: unknown) {
-        console.log(error);
         showErrorNotification('GR0000');
       }
     }
@@ -65,7 +64,6 @@ export const DocDepotNavbar = () => {
       showSuccessNotification({ title: 'Success !', message: 'Document added to successfully' });
     } else {
       showErrorNotification(res.error.code);
-      console.log(res.error);
     }
   };
 

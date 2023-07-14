@@ -128,7 +128,6 @@ export const VerifyExperience: React.FC<IWorkExperienceVerification> = ({
         peerVerificationForm.values.contactNumber = '';
         peerVerificationForm.values.email = '';
         peerVerificationForm.values.peerType = '';
-        console.log(res.value);
       } else {
         showErrorNotification(res.error.code);
       }
@@ -166,17 +165,17 @@ export const VerifyExperience: React.FC<IWorkExperienceVerification> = ({
     setSelectedSkills([]);
   };
 
-  const getPeer = async () => {
-    const res = await HttpClient.callApiAuth(
-      { url: `${peerVerificationAPIList.getSinglePeer}/64b0cecd27491902aaa1c1d5`, method: 'GET' },
-      authClient
-    );
-    if (res.ok) {
-      console.log(res.value);
-    } else {
-      console.log(res.error.message);
-    }
-  };
+  // const getPeer = async () => {
+  //   const res = await HttpClient.callApiAuth(
+  //     { url: `${peerVerificationAPIList.getSinglePeer}/64b0cecd27491902aaa1c1d5`, method: 'GET' },
+  //     authClient
+  //   );
+  //   if (res.ok) {
+  //     console.log(res.value);
+  //   } else {
+  //     console.log(res.error.message);
+  //   }
+  // };
 
   // const handleUploadDocument = () => {};
 
@@ -230,7 +229,7 @@ export const VerifyExperience: React.FC<IWorkExperienceVerification> = ({
                   Verified
                 </Button>
               ) : (
-                <Button onClick={getPeer} leftIcon={<CgSandClock size={'16px'} />} className="pending">
+                <Button leftIcon={<CgSandClock size={'16px'} />} className="pending">
                   Pending
                 </Button>
               )}
