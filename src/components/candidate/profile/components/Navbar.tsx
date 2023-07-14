@@ -114,7 +114,7 @@ export const Navbar = () => {
     <header>
       <Box className="navbar">
         <Box className="nav-container">
-          <Link to={'/'} className="logo">
+          <Link to={'/profile'} className="logo">
             <span className="greenie">Greenie</span>
             <span className="nav-verified">
               <MdVerified size={'20px'} color="#9fe870" />
@@ -284,7 +284,7 @@ export const Navbar = () => {
         <nav className={classes.mobileNavOptionsContainer}>
           <Flex justify="space-between" align="center" direction="row" className={classes.logo}>
             <Box>
-              <Link to={'/'}>
+              <Link to={'/profile'}>
                 <span className={classes.mobileGreenie}>Greenie</span>
                 <span className={classes.mobileVerified}>
                   <MdVerified />

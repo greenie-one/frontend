@@ -49,7 +49,11 @@ export const AddSkills = () => {
     }
     if (skills.length > 0) {
       for (const skill of skills) {
-        const requestBody: SkillRequestBody = { skillName: skill.skillName, expertise: skill.expertise };
+        const requestBody: SkillRequestBody = {
+          skillName: skill.skillName,
+          expertise: skill.expertise,
+          workExperience: skill.workExperience,
+        };
         const res: Result<createSkill> = await HttpClient.callApiAuth(
           {
             url: `${skillsAPIList.postSkill}`,
@@ -128,7 +132,12 @@ export const AddSkills = () => {
             return (
               <Box key={index} className="add-skill-box">
                 <Text className="add-skill-name">{skillName}</Text>
-                <Text className="add-skill-rate">{expertise}</Text>
+                {expertise === 'AMATEUR' && <Text className="add-skill-rate">Amature</Text>}
+                {expertise === 'BEGINNER' && <Text className="add-skill-rate">Beginner</Text>}
+                {expertise === 'HIGHLY_COMPETENT' && <Text className="add-skill-rate">Highly Competent</Text>}
+                {expertise === 'EXPERT' && <Text className="add-skill-rate">Expert</Text>}
+                {expertise === 'SUPER_SPECIALIST' && <Text className="add-skill-rate">Super Specialist</Text>}
+                {expertise === 'MASTER' && <Text className="add-skill-rate">Master</Text>}
               </Box>
             );
           })}
@@ -140,9 +149,15 @@ export const AddSkills = () => {
             <Button type="button" className="cancel-btn" variant="default" onClick={handleAddSkillPage}>
               Back
             </Button>
-            <Button className="green-btn" onClick={handleSkillContinue}>
-              Continue
-            </Button>
+            {skills.length > 0 ? (
+              <Button className="green-btn" onClick={handleSkillContinue}>
+                Continue
+              </Button>
+            ) : (
+              <Button disabled className="disabled-btn">
+                Continue
+              </Button>
+            )}
           </Box>
         </Box>
       </form>

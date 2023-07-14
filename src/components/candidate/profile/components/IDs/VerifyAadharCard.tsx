@@ -19,6 +19,8 @@ import {
 import { IAadharVerificationResponse, verifyAadhar, IAddAadhar } from '../../types/ProfileResponses';
 import { IDRequestBody, IDVerificationOtpRequestBody } from '../../types/ProfileRequests';
 import { APIError } from '../../../../../utils/generic/httpClient';
+// import errorIcon from '../../assets/errorIcon.png';
+// import { GrPowerReset } from 'react-icons/gr';
 
 export const VerifyAadharCard = () => {
   const [opened, { open, close }] = useDisclosure(false);
@@ -112,6 +114,7 @@ export const VerifyAadharCard = () => {
         verifyAadharForm.values.otp = '';
         verifyAadharForm.values.aadharNo = '';
         getDocuments();
+        setCandidateActivePage('Congratulation Screen');
       } else {
         showErrorNotification(res.error.code);
       }
@@ -131,6 +134,17 @@ export const VerifyAadharCard = () => {
 
   return (
     <section className="container documents-container">
+      {/* <Modal className="modal" size={'40%'} fullScreen={isMobile} opened={opened} onClose={close} centered>
+        <Box className="error-modal">
+          <Text className="error-modal-title">Failed to connect to your Aadhaar</Text>
+          <img src={errorIcon} alt="Error Icon" />
+          <Button className="error-modal-btn">
+            <GrPowerReset size={'18px'} className="error-modal-icon" />
+            <Text>Retry</Text>
+          </Button>
+          <Text className="error-modal-text">Ff the problem persists, Please try again after few minutes</Text>
+        </Box>
+      </Modal> */}
       {aadharIsVerified ? (
         <Modal centered className="modal" size={'55%'} fullScreen={isMobile} opened={opened} onClose={close}>
           <Box className="congratulations-modal">

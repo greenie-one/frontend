@@ -1,5 +1,4 @@
 import { useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { TextInput, Text, Button, Box, Flex, Chip, Group } from '@mantine/core';
 
 import { useGlobalContext } from '../../../../context/GlobalContext';
@@ -32,7 +31,6 @@ const skillSetOne = [
 ];
 
 const Profile = () => {
-  const navigate = useNavigate();
   const { authClient } = useGlobalContext();
   const { profileForm, dispatch, setForceRender } = useAuthContext();
 
@@ -96,7 +94,6 @@ const Profile = () => {
           message: 'Your profile details have been added successfully.',
         });
         setForceRender((prev) => !prev);
-        navigate('/profile');
       } else {
         showErrorNotification(res.error.code);
       }

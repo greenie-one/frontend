@@ -49,6 +49,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
     workExperienceForm,
     residentialInfoForm,
     skillForm,
+    residentialInfoVerificationForm,
   } = useProfileForms();
 
   const [forceRender, setForceRender] = useState<boolean>(false);
@@ -56,7 +57,8 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const [panIsVerified, setPanIsVerified] = useState<boolean>(false);
   const [licenseIsVerified, setLicenseIsVerified] = useState<boolean>(false);
 
-  const [selectedCard, setSelectedCard] = useState<IWorkExperienceResponse | null>(null);
+  const [selectedExperience, setSelectedExperience] = useState<IWorkExperienceResponse | null>(null);
+  const [selectedResidentialInfo, setSelectedResidentialInfo] = useState<IResidendialInfoResponse | null>(null);
   const [selectedSkills, setSelectedSkills] = useState<ISkill[]>([]);
   const [docDepotActivePage, setDocDepotActivePage] = useState<number>(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -243,13 +245,6 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
     });
   };
 
-  const scrollToProfileNav = () => {
-    document.documentElement.scrollTo({
-      top: 800,
-      behavior: 'smooth',
-    });
-  };
-
   useEffect(() => {
     if (authTokens) {
       getProfile();
@@ -292,15 +287,17 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
         setAadharIsVerified,
         setPanIsVerified,
         setLicenseIsVerified,
-        scrollToProfileNav,
         scrollToTop,
-        selectedCard,
-        setSelectedCard,
+        selectedExperience,
+        setSelectedExperience,
         selectedSkills,
         setSelectedSkills,
         getResidentialInfo,
         candidateActivePage,
         setCandidateActivePage,
+        selectedResidentialInfo,
+        setSelectedResidentialInfo,
+        residentialInfoVerificationForm,
       }}
     >
       {children}

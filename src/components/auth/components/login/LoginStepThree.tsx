@@ -64,7 +64,6 @@ const LoginStepThree = () => {
         });
 
         setForceRender((prev) => !prev);
-        // navigate('/profile');
       } else {
         showErrorNotification(res.error.code);
       }

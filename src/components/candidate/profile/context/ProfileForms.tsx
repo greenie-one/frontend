@@ -64,6 +64,9 @@ export const useProfileForms = () => {
       endDate: undefined,
       workType: '',
       modeOfWork: '',
+      department: '',
+      reasonForLeaving: '',
+      salary: '',
     },
 
     validate: {
@@ -76,6 +79,8 @@ export const useProfileForms = () => {
       startDate: isNotEmpty('Please enter start date'),
       workType: isNotEmpty('Enter valid work types'),
       modeOfWork: isNotEmpty('Please provide mode of work'),
+      department: isNotEmpty('Please provide the department'),
+      salary: isNotEmpty('Please provide your salary'),
     },
   });
 
@@ -118,6 +123,21 @@ export const useProfileForms = () => {
     },
   });
 
+  const residentialInfoVerificationForm = useForm<residentialInfoVerificationFormType>({
+    initialValues: {
+      name: '',
+      email: '',
+      peerType: '',
+      phone: '',
+    },
+    validate: {
+      name: isNotEmpty("Please enter peer's name"),
+      email: isEmail('Please provide valid email'),
+      peerType: isNotEmpty('Please select peer type'),
+      phone: hasLength(10, 'Please enter valid phone number'),
+    },
+  });
+
   return {
     profileForm,
     verifyAadharForm,
@@ -126,5 +146,6 @@ export const useProfileForms = () => {
     workExperienceForm,
     residentialInfoForm,
     skillForm,
+    residentialInfoVerificationForm,
   };
 };

@@ -16,6 +16,7 @@ import {
   verifyLicenceFormType,
   verifyPANFormType,
 } from '../types/CandidateForms';
+import { UseFormReturnType } from '@mantine/form';
 
 export type ProfileContextType = {
   profileData: IUserProfileResponse;
@@ -47,13 +48,15 @@ export type ProfileContextType = {
   getSkills: () => void;
   getResidentialInfo: () => void;
   scrollToTop: () => void;
-  scrollToProfileNav: () => void;
-  selectedCard: IWorkExperienceResponse | null;
-  setSelectedCard: React.Dispatch<React.SetStateAction<IWorkExperienceResponse | null>>;
+  selectedExperience: IWorkExperienceResponse | null;
+  setSelectedExperience: React.Dispatch<React.SetStateAction<IWorkExperienceResponse | null>>;
+  selectedResidentialInfo: IResidendialInfoResponse | null;
+  setSelectedResidentialInfo: React.Dispatch<React.SetStateAction<IResidendialInfoResponse | null>>;
   selectedSkills: ISkill[];
   setSelectedSkills: React.Dispatch<React.SetStateAction<ISkill[]>>;
   docDepotActivePage: number;
   setDocDepotActivePage: React.Dispatch<React.SetStateAction<number>>;
   candidateActivePage: string;
   setCandidateActivePage: React.Dispatch<React.SetStateAction<candidateActivePageState>>;
+  residentialInfoVerificationForm: UseFormReturnType<residentialInfoVerificationFormType>;
 };

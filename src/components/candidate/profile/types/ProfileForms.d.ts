@@ -25,12 +25,15 @@ type workExperienceFormType = {
   companyType: string;
   companyName: string;
   linkedInUrl: string;
+  department: string;
   workEmail: string;
   companyId: string;
+  reasonForLeaving: string;
   startDate: Date | null;
   endDate?: Date | null;
   workType: string;
   modeOfWork: string;
+  salary: string;
 };
 
 type residentialInfoFormType = {
@@ -56,4 +59,11 @@ type PeerVerificationFormType = {
   peerType: string;
   email: string;
   contactNumber: string;
+};
+
+type residentialInfoVerificationFormType = {
+  name: string;
+  peerType: string;
+  email: string;
+  phone: string;
 };

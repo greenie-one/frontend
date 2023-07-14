@@ -5,18 +5,19 @@ import pdfImage from '../../profile/assets/pdfIcon.png';
 import threeDots from '../assets/threeDots.png';
 import { MdMoveDown, MdDeleteOutline } from 'react-icons/md';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
-
+import { useDocDepotContext } from '../context/DocDepotContext';
 interface IFolderProps {
+  id: string;
   name: string;
   isFolder: boolean;
 }
 
-export const Folder: React.FC<IFolderProps> = ({ name, isFolder }) => {
+export const Folder: React.FC<IFolderProps> = ({ id, name, isFolder }) => {
   const [isDropdownVisible, setDropdownVisible] = useState(false);
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
   const [modalType, setModalType] = useState<'Move' | 'Delete' | null>(null);
-
+  const { deleteDocument, moveDocument } = useDocDepotContext();
   const handleOpenModal = (modal: 'Move' | 'Delete') => {
     setModalType(modal);
     open();
@@ -40,22 +41,22 @@ export const Folder: React.FC<IFolderProps> = ({ name, isFolder }) => {
         >
           <Box className="folder-move-modal">
             <Box className="move-folder-wrapper">
-              <Box className="folder">
+              <Box className="folder" onClick={() => moveDocument(id, 'ID')}>
                 <img src={folderImage} className="folder-img" alt="folder-image" />
 
                 <Text className="folder-text">IDs</Text>
               </Box>
-              <Box className="folder">
+              <Box className="folder" onClick={() => moveDocument(id, 'education')}>
                 <img src={folderImage} className="folder-img" alt="folder-image" />
 
                 <Text className="folder-text">Educational documents</Text>
               </Box>
-              <Box className="folder">
+              <Box className="folder" onClick={() => moveDocument(id, 'work')}>
                 <img src={folderImage} className="folder-img" alt="folder-image" />
 
                 <Text className="folder-text">Work documents</Text>
               </Box>
-              <Box className="folder">
+              <Box className="folder" onClick={() => moveDocument(id, 'other')}>
                 <img src={folderImage} className="folder-img" alt="folder-image" />
 
                 <Text className="folder-text">Others</Text>
@@ -87,8 +88,12 @@ export const Folder: React.FC<IFolderProps> = ({ name, isFolder }) => {
             <Text className="heading">You are about to delete this file</Text>
             <Text className="sub-heading">You cannot revert this action</Text>
             <Box className="delete-btn-wrapper">
-              <Button className="delete-btn">Delete</Button>
-              <Button className="cancel-btn">Cancel</Button>
+              <Button className="delete-btn" onClick={() => deleteDocument(id)}>
+                Delete
+              </Button>
+              <Button className="cancel-btn" onClick={close}>
+                Cancel
+              </Button>
             </Box>
           </Box>
         </Modal>

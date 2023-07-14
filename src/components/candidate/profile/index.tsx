@@ -40,46 +40,48 @@ export const Profile = () => {
           <CongratulationsScreen />
         </main>
       )}
-      {candidateActivePage !== 'Add Experience' && candidateActivePage !== 'Add Skills' && (
-        <main className="profile">
-          {candidateActivePage === 'Profile' && <Userprofile />}
+      {candidateActivePage !== 'Add Experience' &&
+        candidateActivePage !== 'Add Skills' &&
+        candidateActivePage !== 'Congratulation Screen' && (
+          <main className="profile">
+            {candidateActivePage === 'Profile' && <Userprofile />}
 
-          <Box
-            className="profileNav"
-            style={{
-              marginTop: candidateActivePage === 'Profile' ? '0rem' : '7rem',
-            }}
-          >
-            <Box className="profile-btn-wrapper">
-              <Button
-                variant="outline"
-                className={activeButton === 1 ? 'active' : ''}
-                onClick={() => handleButtonClick(1)}
-              >
-                Profile
-              </Button>
-              <Button
-                variant="outline"
-                className={activeButton === 2 ? 'active' : ''}
-                onClick={() => handleButtonClick(2)}
-              >
-                Doc Depot
-              </Button>
-              <Button
-                variant="outline"
-                className={activeButton === 3 ? 'active' : ''}
-                onClick={() => handleButtonClick(3)}
-              >
-                My Verification
-              </Button>
+            <Box
+              className="profileNav"
+              style={{
+                marginTop: candidateActivePage === 'Profile' ? '0rem' : '7rem',
+              }}
+            >
+              <Box className="profile-btn-wrapper">
+                <Button
+                  variant="outline"
+                  className={activeButton === 1 ? 'active' : ''}
+                  onClick={() => handleButtonClick(1)}
+                >
+                  Profile
+                </Button>
+                <Button
+                  variant="outline"
+                  className={activeButton === 2 ? 'active' : ''}
+                  onClick={() => handleButtonClick(2)}
+                >
+                  Doc Depot
+                </Button>
+                <Button
+                  variant="outline"
+                  className={activeButton === 3 ? 'active' : ''}
+                  onClick={() => handleButtonClick(3)}
+                >
+                  My Verification
+                </Button>
+              </Box>
             </Box>
-          </Box>
 
-          {activeButton === 1 && <ProfileSection />}
-          {activeButton === 2 && <DocDepot />}
-          {activeButton === 3 && <MyVerifications />}
-        </main>
-      )}
+            {activeButton === 1 && <ProfileSection />}
+            {activeButton === 2 && <DocDepot />}
+            {activeButton === 3 && <MyVerifications />}
+          </main>
+        )}
 
       <Footer />
     </>
