@@ -217,7 +217,7 @@ export const AddExperience = () => {
             Authorization: `Bearer ${authToken}`,
           },
         });
-        if (res.status === 2000) {
+        if (res.data) {
           const resp: Result<updateDocumentResponseType> = await HttpClient.callApiAuth(
             {
               url: `${docDepotAPIList.addDocument}`,
@@ -564,12 +564,12 @@ export const AddExperience = () => {
             <img src={uploadIcon} alt="upload icon" />
             <input type="file" ref={fileInputRef} style={{ display: 'none' }} onChange={handleUploadDocument} />
             <Text className="add-document-heading">Add your work documents</Text>
-            {typeof selectedFile === null && (
+            {selectedFile === null && (
               <Button className="add-document-sub-heading" onClick={() => fileInputRef.current?.click()}>
                 Select document
               </Button>
             )}
-            {typeof selectedFile !== null && (
+            {selectedFile !== null && (
               <Box className="inpute-file-name-box">
                 <Text className="label">File upload</Text>
                 <Text className="input-file-name">{selectedFile?.name.substring(0, 15)}...</Text>
@@ -579,11 +579,12 @@ export const AddExperience = () => {
                 </Box>
               </Box>
             )}
-            {typeof selectedFile !== null && (
+            {selectedFile !== null && (
               <Button className="add-document-sub-heading" onClick={handleAddDocument}>
                 Add
               </Button>
             )}
+
             <Text className="limit">(max 5 MB)</Text>
           </Box>
           {documents.length > 0 && (

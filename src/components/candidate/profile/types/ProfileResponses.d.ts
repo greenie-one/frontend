@@ -13,6 +13,7 @@ export interface IUserProfileResponse {
   lastName: string;
   bio: string;
   descriptionTags: string[];
+  profilePic: string;
 }
 
 export interface IWorkExperienceResponse {
