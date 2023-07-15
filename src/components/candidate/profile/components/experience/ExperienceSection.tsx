@@ -1,13 +1,13 @@
 import { Text, Box, Button } from '@mantine/core';
 import noData from '../../assets/noData.png';
 import { MdOutlineEdit } from 'react-icons/md';
-import { Carousel } from '@mantine/carousel';
 import { ExperienceCard } from './ExperienceCard';
 import { useProfileContext } from '../../context/ProfileContext';
 import { AiOutlinePlus } from 'react-icons/ai';
+import { IWorkExperienceResponse } from '../../types/ProfileResponses';
 
 export const ExperienceSection = () => {
-  const { workExperienceData, scrollToTop, setCandidateActivePage } = useProfileContext();
+  const { workExperienceData, scrollToTop, setCandidateActivePage, setSelectedExperience } = useProfileContext();
 
   const handleToggleWorkExperienceDetails = (): void => {
     scrollToTop();
@@ -17,6 +17,12 @@ export const ExperienceSection = () => {
   const handleWorkExperiencePage = () => {
     scrollToTop();
     setCandidateActivePage('Add Experience');
+  };
+
+  const handleGoToVerification = (experience: IWorkExperienceResponse) => {
+    setCandidateActivePage('All Experiences');
+    setSelectedExperience(experience);
+    scrollToTop();
   };
 
   return (
@@ -52,32 +58,24 @@ export const ExperienceSection = () => {
           </Button>
         </Box>
       ) : (
-        <Carousel
-          withIndicators={false}
-          slideSize="33.30%"
-          slideGap={24}
-          slidesToScroll={1}
-          align="start"
-          styles={{ control: { display: 'none' } }}
-          breakpoints={[
-            { maxWidth: 'xs', slideSize: '80%' },
-            { maxWidth: 'md', slideSize: '50%' },
-          ]}
-        >
-          {workExperienceData.reverse().map((workExperience, index) => {
-            return (
-              <Carousel.Slide key={index}>
-                <ExperienceCard
-                  position={workExperience.designation}
-                  companyName={workExperience.companyName}
-                  isVerified={workExperience.isVerified}
-                  companyStartYear={workExperience.companyStartDate}
-                  companyEndYear={workExperience.companyEndDate}
-                />
-              </Carousel.Slide>
-            );
-          })}
-        </Carousel>
+        <Box className="section-cards-wrapper">
+          {workExperienceData
+            .reverse()
+            .slice(0, 3)
+            .map((workExperience, index) => {
+              return (
+                <Box key={index} onClick={() => handleGoToVerification(workExperience)}>
+                  <ExperienceCard
+                    position={workExperience.designation}
+                    companyName={workExperience.companyName}
+                    isVerified={workExperience.isVerified}
+                    companyStartYear={workExperience.companyStartDate}
+                    companyEndYear={workExperience.companyEndDate}
+                  />
+                </Box>
+              );
+            })}
+        </Box>
       )}
       {workExperienceData.length > 0 && (
         <Button onClick={handleToggleWorkExperienceDetails} className="see-all-btn">

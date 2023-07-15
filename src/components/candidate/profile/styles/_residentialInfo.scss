@@ -253,6 +253,42 @@
   }
 }
 
+.add-residential-info {
+  margin-top: 7rem;
+  width: 94%;
+  .input-section {
+    display: grid;
+    align-items: center;
+    justify-content: space-between;
+    grid-template-columns: 40% 60%;
+
+    .title {
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 27px;
+      color: $dark;
+      width: 100%;
+      color: $dark;
+    }
+
+    .checkbox {
+      margin-block: 1rem;
+
+      label {
+        font-size: 1rem;
+        margin-top: -2.5px;
+      }
+    }
+
+    .inner-input-section {
+      display: grid;
+      grid-template-columns: 49% 49%;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+}
+
 @media screen and (max-width: 850px) {
   .info-detail-box {
     .geo-info-box {
@@ -261,6 +297,21 @@
     }
   }
 }
+
+@media screen and (max-width: 768px) {
+  .add-residential-info {
+    .input-section {
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr;
+      align-items: flex-start;
+    }
+
+    .border-bottom {
+      margin-bottom: 0.5rem;
+    }
+  }
+}
+
 @media screen and (max-width: 700px) {
   .info-detail-box {
     .geo-info-box {
