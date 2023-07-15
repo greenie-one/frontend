@@ -31,15 +31,14 @@ const App = () => {
             <Route path="auth" element={<AuthPage />} />
             <Route path="waitlist" element={<Waitlist />} />
             <Route path="oauth/google/callback" element={<GoogleAuthRedirect />} />
-            <Route path="/hr" element={<VerificationByHRPage />} />
-            <Route path="/manager" element={<VerificationByManagerPage />} />
+            <Route path="/verification/experience/hr" element={<VerificationByHRPage />} />
+            <Route path="/verification/experience/manager" element={<VerificationByManagerPage />} />
 
             <Route element={<AuthVerificationLayout />}>
               <Route path="profile">
                 <Route index element={<ProfilePage />} />
                 <Route path="settings" element={<SettingsPage />} />
               </Route>
-              R
             </Route>
             <Route path="privacy" element={<PrivacyPolicyPage />} />
             <Route path="tos" element={<TermsAndConditionsPage />} />

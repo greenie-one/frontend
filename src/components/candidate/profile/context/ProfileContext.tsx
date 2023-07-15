@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useReducer } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useGlobalContext } from '../../../../context/GlobalContext';
 
 import {
@@ -17,6 +17,24 @@ import {
 } from '../../../../utils/functions/showNotification';
 import { useProfileForms } from './ProfileForms';
 
+import {
+  IDocument,
+  DocumentsResponse,
+  IUserProfileResponse,
+  IWorkExperienceResponse,
+  workExperienceResponse,
+  IResidendialInfoResponse,
+  ResidentialInfoRes,
+  ISkill,
+  SkillResponse,
+  ISkillResponse,
+  UpdateResponse,
+  DeleteResponse,
+} from '../types/ProfileResponses';
+import { ProfileContextType } from '../types/ProfileContext';
+import { candidateActivePageState } from '../types/ProfileActions';
+import { updateProfileRequestBody } from '../types/ProfileRequests';
+
 const ProfileContext = createContext<ProfileContextType>({} as ProfileContextType);
 export const useProfileContext = () => useContext(ProfileContext);
 
@@ -31,6 +49,8 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
     workExperienceForm,
     residentialInfoForm,
     skillForm,
+    residentialInfoVerificationForm,
+    peerAddressVerificationForm,
   } = useProfileForms();
 
   const [forceRender, setForceRender] = useState<boolean>(false);
@@ -38,13 +58,16 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const [panIsVerified, setPanIsVerified] = useState<boolean>(false);
   const [licenseIsVerified, setLicenseIsVerified] = useState<boolean>(false);
 
-  const [selectedCard, setSelectedCard] = useState<IWorkExperience | null>(null);
+  const [selectedExperience, setSelectedExperience] = useState<IWorkExperienceResponse | null>(null);
+  const [selectedResidentialInfo, setSelectedResidentialInfo] = useState<IResidendialInfoResponse | null>(null);
   const [selectedSkills, setSelectedSkills] = useState<ISkill[]>([]);
   const [docDepotActivePage, setDocDepotActivePage] = useState<number>(0);
   const [isLoading, setIsLoading] = useState(false);
 
+  const [candidateActivePage, setCandidateActivePage] = useState<candidateActivePageState>('Profile');
+
   //------------------------------PROFILE/BIO----------------------------------------
-  const [profileData, setProfileData] = useState<IUserProfile>({
+  const [profileData, setProfileData] = useState<IUserProfileResponse>({
     firstName: '',
     lastName: '',
     bio: '',
@@ -53,7 +76,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
   });
 
   const getProfile = async () => {
-    const res: Result<IUserProfile> = await HttpClient.callApiAuth(
+    const res: Result<IUserProfileResponse> = await HttpClient.callApiAuth(
       {
         url: `${profileAPIList.getMyProfile}`,
         method: 'GET',
@@ -74,7 +97,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
       message: 'We are updating your profile.',
     });
 
-    const requestData: any = {};
+    const requestData: updateProfileRequestBody = {};
     if (profileForm.values.firstName !== '') {
       requestData.firstName = profileForm.values.firstName;
     }
@@ -88,7 +111,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
       requestData.descriptionTags = profileForm.values.descriptionTags;
     }
 
-    const res: Result<any> = await HttpClient.callApiAuth(
+    const res: Result<UpdateResponse> = await HttpClient.callApiAuth(
       {
         url: `${profileAPIList.updateProfile}`,
         method: 'PATCH',
@@ -116,7 +139,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const [documentsData, setDocumentsData] = useState<IDocument[]>([]);
 
   const getDocuments = async () => {
-    const res: Result<DocumentsRes> = await HttpClient.callApiAuth(
+    const res: Result<DocumentsResponse> = await HttpClient.callApiAuth(
       {
         url: `${documentsAPIList.getDocuments}`,
         method: 'GET',
@@ -132,10 +155,10 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
   };
 
   //------------------------------WORK EXPERIENCE----------------------------------------
-  const [workExperienceData, setWorkExperienceData] = useState<IWorkExperience[]>([]);
+  const [workExperienceData, setWorkExperienceData] = useState<IWorkExperienceResponse[]>([]);
 
   const getWorkExperience = async () => {
-    const res: Result<IWorkExperience[]> = await HttpClient.callApiAuth(
+    const res: Result<workExperienceResponse> = await HttpClient.callApiAuth(
       {
         url: `${workExperienceAPiList.getWorkExperience}`,
         method: 'GET',
@@ -144,14 +167,14 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
     );
 
     if (res.ok) {
-      setWorkExperienceData(res.value);
+      setWorkExperienceData(res.value.workExperinces);
     } else {
       showErrorNotification(res.error.code);
     }
   };
 
   //------------------------------RESIDENTIAL INFO----------------------------------------
-  const [residentialInfoData, setResidentialInfoData] = useState<IResidendialInfoDataType[]>([]);
+  const [residentialInfoData, setResidentialInfoData] = useState<IResidendialInfoResponse[]>([]);
 
   const getResidentialInfo = async () => {
     const res: Result<ResidentialInfoRes> = await HttpClient.callApiAuth(
@@ -163,24 +186,10 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
     );
 
     if (res.ok) {
-      setResidentialInfoData(res.value.residentialInfo);
+      setResidentialInfoData(res.value.residentialInfo.residentialInfos);
     } else {
       showErrorNotification(res.error.code);
     }
-  };
-
-  const validateFormFields = (requiredField: string[]) => {
-    const listLength = requiredField.length;
-
-    for (let i = 0; i < listLength; i++) {
-      residentialInfoForm.validateField(requiredField[i]);
-    }
-
-    for (let i = 0; i < listLength; i++) {
-      if (residentialInfoForm.validateField(requiredField[i]).hasError) return false;
-    }
-
-    return true;
   };
 
   const deleteResidentialInfo = async (id: string) => {
@@ -189,7 +198,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
       message: 'Please wait while we delete your residential information.',
     });
 
-    const res: Result<any> = await HttpClient.callApiAuth(
+    const res: Result<DeleteResponse> = await HttpClient.callApiAuth(
       {
         url: `${residentialInfoAPIList.deleteResidentialInfo}/${id}`,
         method: 'DELETE',
@@ -209,52 +218,11 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
     }
   };
 
-  const updateResidentialInfo = async (id: string) => {
-    showLoadingNotification({
-      title: 'Wait !',
-      message: 'Please wait while we update your residential information.',
-    });
-
-    const data = residentialInfoForm.values;
-    let filteredData: residentialInfoFormType;
-
-    // for (const key in data) {
-    //   const value = data[key];
-    //   if (value !== '' && value !== null) {
-    //     filteredData[key] = value;
-    //   }
-    // }
-
-    if (typeof data.start_date == 'string') {
-      console.log('show error notification: start date null');
-    }
-
-    const res = await HttpClient.callApiAuth(
-      {
-        url: `${residentialInfoAPIList.updateResidentialInfo}/${id}`,
-        method: 'PATCH',
-        body: data,
-      },
-      authClient
-    );
-
-    if (res.ok) {
-      showSuccessNotification({
-        title: 'Success !',
-        message: 'Your residential information have been updated.',
-      });
-
-      getResidentialInfo();
-    } else {
-      showErrorNotification(res.error.code);
-    }
-  };
-
   //------------------------------SKILLS----------------------------------------
-  const [skillData, setSkillData] = useState<ISkillDataType[]>([]);
+  const [skillData, setSkillData] = useState<ISkillResponse[]>([]);
 
   const getSkills = async () => {
-    const res: Result<ISkillDataType[]> = await HttpClient.callApiAuth(
+    const res: Result<SkillResponse> = await HttpClient.callApiAuth(
       {
         url: `${skillsAPIList.getSkill}`,
         method: 'GET',
@@ -263,60 +231,17 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
     );
 
     if (res.ok) {
-      setSkillData(res.value);
+      setSkillData(res.value.skills);
     } else {
       showErrorNotification(res.error.code);
     }
   };
 
   //------------------Details Page States--------------------------------
-  const detailsPageReducer = (state: DetailsPageState, action: DetailsPageAction): DetailsPageState => {
-    switch (action.type) {
-      case 'SET_SEE_ALL_WORKEXPERIENCE':
-        return { ...state, seeAllWorkExperience: action.payload };
-      case 'SET_SEE_ALL_RESIDENTIALINFO':
-        return { ...state, seeAllResidentialInfo: action.payload };
-      case 'SET_SEE_ALL_SKILLS':
-        return { ...state, seeAllSkills: action.payload };
-      case 'SET_SEE_AADHAR_CARD':
-        return { ...state, seeAadharCard: action.payload };
-      case 'SET_SEE_PAN_CARD':
-        return { ...state, seePanCard: action.payload };
-      case 'SET_SEE_DRIVER_LICENCE':
-        return { ...state, seeDrivingLicence: action.payload };
-      case 'SET_SEE_CONGRATULATIONS_SCREEN':
-        return { ...state, seeCongratulations: action.payload };
-      case 'SET_SEE_ADD_WORK_EXPERIENCE':
-        return { ...state, seeAddWorkExperience: action.payload };
-      case 'SET_SEE_ADD_SKILLS':
-        return { ...state, seeAddSkills: action.payload };
-      default:
-        return state;
-    }
-  };
-
-  const [detailsPage, dispatchDetailsPage] = useReducer(detailsPageReducer, {
-    seeAllWorkExperience: false,
-    seeAllResidentialInfo: false,
-    seeAllSkills: false,
-    seeAadharCard: false,
-    seePanCard: false,
-    seeDrivingLicence: false,
-    seeCongratulations: false,
-    seeAddWorkExperience: false,
-    seeAddSkills: false,
-  });
 
   const scrollToTop = () => {
     document.documentElement.scrollTo({
       top: 0,
-      behavior: 'smooth',
-    });
-  };
-
-  const scrollToProfileNav = () => {
-    document.documentElement.scrollTo({
-      top: 800,
       behavior: 'smooth',
     });
   };
@@ -345,7 +270,6 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
         skillData,
         getWorkExperience,
         deleteResidentialInfo,
-        updateResidentialInfo,
         verifyAadharForm,
         verifyPANForm,
         verifyLicenceForm,
@@ -355,8 +279,6 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
         skillForm,
         forceRender,
         setForceRender,
-        detailsPage,
-        dispatchDetailsPage,
         docDepotActivePage,
         setDocDepotActivePage,
         getDocuments,
@@ -366,13 +288,18 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
         setAadharIsVerified,
         setPanIsVerified,
         setLicenseIsVerified,
-        scrollToProfileNav,
         scrollToTop,
-        selectedCard,
-        setSelectedCard,
+        selectedExperience,
+        setSelectedExperience,
         selectedSkills,
         setSelectedSkills,
         getResidentialInfo,
+        candidateActivePage,
+        setCandidateActivePage,
+        selectedResidentialInfo,
+        setSelectedResidentialInfo,
+        residentialInfoVerificationForm,
+        peerAddressVerificationForm,
       }}
     >
       {children}

@@ -29,7 +29,9 @@ export const VBHRStepOne = () => {
               </Box>
               <Box className="profile-details-actions">
                 <Button className="green-outline-btn">Approve</Button>
-                <Button className="dispute-btn">Dispute</Button>
+                <Button className="dispute-btn" onClick={open}>
+                  Dispute
+                </Button>
               </Box>
             </Box>
           );

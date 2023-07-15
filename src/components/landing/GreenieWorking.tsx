@@ -133,7 +133,7 @@ export const LandingGreenieWorkings = () => {
   );
 };
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(() => ({
   root: {
     display: 'flex',
     flexDirection: 'column',

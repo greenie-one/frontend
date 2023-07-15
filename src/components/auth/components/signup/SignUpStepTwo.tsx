@@ -165,7 +165,7 @@ const SignUpStepTwo = () => {
 
 export default SignUpStepTwo;
 
-// const inputStyles = createStyles((theme) => ({
+// const inputStyles = createStyles(() => ({
 //   root: {
 //     position: 'relative',
 //     marginBlock: '12px',

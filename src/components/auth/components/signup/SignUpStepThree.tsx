@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { TextInput, Text, Button, Flex, Box } from '@mantine/core';
+import { useLocalStorage } from '@mantine/hooks';
 
 import { HttpClient } from '../../../../utils/generic/httpClient';
 import { useGlobalContext } from '../../../../context/GlobalContext';
@@ -23,6 +24,9 @@ const SignUpStepThree = () => {
   const { classes: inputClasses } = inputStyles();
   const [isLoading, setIsLoading] = useState(false);
   const [secondsRemaining, setSecondsRemaining] = useState<number>(30);
+  const [, setAuthTokens] = useLocalStorage<AuthTokens>({
+    key: 'auth-tokens',
+  });
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -62,7 +66,8 @@ const SignUpStepThree = () => {
       });
 
       if (res.ok) {
-        authClient.setTokens(res.value.accessToken, res.value.refreshToken);
+        setAuthTokens(res.value);
+        authClient.updateTokens(res.value.accessToken, res.value.refreshToken);
         showSuccessNotification({
           title: 'Success !',
           message: 'Your account has been successfully created.',
@@ -143,32 +148,3 @@ const SignUpStepThree = () => {
 };
 
 export default SignUpStepThree;
-
-// const inputStyles = createStyles((theme) => ({
-//   root: {
-//     position: 'relative',
-//     marginBottom: '24px',
-//     marginTop: '24px',
-//   },
-
-//   input: {
-//     width: '458px',
-//     height: '68px',
-//     fontSize: '16px',
-//     fontWeight: 500,
-//     borderRadius: '8px',
-//     border: '1px solid #D1D4DB',
-//     lineHeight: '19px',
-//     letterSpacing: '24px',
-//     color: '#697082',
-
-//     [`@media screen and (max-width: ${em(1024)})`]: {
-//       width: '350px',
-//       height: '46px',
-//       borderRadius: '6px',
-//       fontSize: '14px',
-//       lineHeight: '12px',
-//       margin: '0 auto',
-//     },
-//   },
-// }));

@@ -1,33 +1,29 @@
-type DetailsPageState = {
-  seeAllWorkExperience: boolean;
-  seeAllResidentialInfo: boolean;
-  seeAllSkills: boolean;
-  seeAadharCard: boolean;
-  seePanCard: boolean;
-  seeDrivingLicence: boolean;
-  seeCongratulations: boolean;
-  seeAddWorkExperience: boolean;
-  seeAddSkills: boolean;
-};
+export type candidateActivePageState =
+  | 'Profile'
+  | 'All Experiences'
+  | 'Add Experience'
+  | 'Verify Aadhar Card'
+  | 'Verify PAN Card'
+  | 'Verify Licence'
+  | 'All Residential Info'
+  | 'All Skills'
+  | 'Add Skills'
+  | 'Congratulation Screen'
+  | 'Verify Address';
 
-type DetailsPageAction =
-  | { type: 'SET_SEE_ALL_WORKEXPERIENCE'; payload: boolean }
-  | { type: 'SET_SEE_ALL_RESIDENTIALINFO'; payload: boolean }
-  | { type: 'SET_SEE_ALL_SKILLS'; payload: boolean }
-  | { type: 'SET_SEE_AADHAR_CARD'; payload: boolean }
-  | { type: 'SET_SEE_PAN_CARD'; payload: boolean }
-  | { type: 'SET_SEE_DRIVER_LICENCE'; payload: boolean }
-  | { type: 'SET_SEE_CONGRATULATIONS_SCREEN'; payload: boolean }
-  | { type: 'SET_SEE_ADD_WORK_EXPERIENCE'; payload: boolean }
-  | { type: 'SET_SEE_ADD_SKILLS'; payload: boolean };
-
-type DrawerState = {
+export type DrawerState = {
   firstDrawerOpened: boolean;
   secondDrawerOpened: boolean;
 };
 
-type DrawerAction =
+export type DrawerAction =
   | { type: 'OPEN_FIRST_DRAWER' }
   | { type: 'CLOSE_FIRST_DRAWER' }
   | { type: 'OPEN_SECOND_DRAWER' }
   | { type: 'CLOSE_SECOND_DRAWER' };
+
+export type ReviewStepState = {
+  currentStep: number;
+};
+
+export type ReviewStepAction = { type: ReviewActionType };

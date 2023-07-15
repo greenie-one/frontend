@@ -1,81 +1,23 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Box, createStyles, rem } from '@mantine/core';
-import profileThumbnail from '../../assets/johnMarston.png';
 import { SearchResult } from './SearchListContent';
 import { NoResultContent } from './NoResultContent';
 import { profileAPIList } from '../../../../../assets/api/ApiList';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
-
+import { UseStylesType } from '../../types/ProfileGeneral';
 import { HttpClient, Result } from '../../../../../utils/generic/httpClient';
-
-const searchResults = [
-  {
-    thumbnail: profileThumbnail,
-    name: 'John Doe',
-    verified: true,
-    designation: 'Software Engineer at Wipro',
-    rating: 4.5,
-  },
-  {
-    thumbnail: profileThumbnail,
-    name: 'John Ive',
-    verified: true,
-    designation: 'Software Engineer at Wipro',
-    rating: 3.5,
-  },
-  {
-    thumbnail: profileThumbnail,
-    name: 'John M.',
-    verified: false,
-    designation: 'Software Engineer at Wipro',
-    rating: 0,
-  },
-  {
-    thumbnail: profileThumbnail,
-    name: 'John Jacob',
-    verified: true,
-    designation: 'Software Engineer at Wipro',
-    rating: 1,
-  },
-  {
-    thumbnail: profileThumbnail,
-    name: 'John Ive',
-    verified: true,
-    designation: 'Software Engineer at Wipro',
-    rating: 3.5,
-  },
-  {
-    thumbnail: profileThumbnail,
-    name: 'John M.',
-    verified: false,
-    designation: 'Software Engineer at Wipro',
-    rating: 0,
-  },
-  {
-    thumbnail: profileThumbnail,
-    name: 'John Jacob',
-    verified: true,
-    designation: 'Software Engineer at Wipro',
-    rating: 1,
-  },
-  {
-    thumbnail: profileThumbnail,
-    name: 'JCB',
-    verified: true,
-    designation: 'Pune',
-    rating: 4.5,
-  },
-];
+import { ISearchListObject } from '../../types/ProfileGeneral';
+import { SearchResponse } from '../../types/ProfileGeneral';
 
 interface ISearchListPropsType {
   searchQuery: string;
   setShowSearchList: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const SearchList: React.FC<ISearchListPropsType> = ({ searchQuery, setShowSearchList }): JSX.Element => {
+export const SearchList: React.FC<ISearchListPropsType> = ({ searchQuery }): JSX.Element => {
   const { classes } = useStyles();
 
-  const [profilesData, setProfilesData] = useState([]);
+  const [profilesData, setProfilesData] = useState<ISearchListObject[]>([]);
   const [fetchingData, setFetchingData] = useState<boolean>(true);
   const [error, setError] = useState<boolean>(false);
   const { authClient } = useGlobalContext();
@@ -83,7 +25,7 @@ export const SearchList: React.FC<ISearchListPropsType> = ({ searchQuery, setSho
 
   const fetchProfiles = useMemo(
     () => async () => {
-      const res: Result<any> = await HttpClient.callApiAuth(
+      const res: Result<SearchResponse> = await HttpClient.callApiAuth(
         {
           url: `${profileAPIList.searchProfile}${searchQuery}`,
           method: 'GET',
@@ -91,7 +33,7 @@ export const SearchList: React.FC<ISearchListPropsType> = ({ searchQuery, setSho
         authClient
       );
       if (res.ok) {
-        setProfilesData(res.value);
+        setProfilesData(res.value.profiles);
         setError(false);
         setFetchingData(false);
       } else {
@@ -127,7 +69,7 @@ export const SearchList: React.FC<ISearchListPropsType> = ({ searchQuery, setSho
   );
 };
 
-const useStyles = createStyles((theme) => ({
+const useStyles: UseStylesType = createStyles(() => ({
   searchListContainer: {
     position: 'absolute',
     top: `calc(100% + ${rem(5)})`,

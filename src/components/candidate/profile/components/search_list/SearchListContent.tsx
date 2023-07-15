@@ -3,33 +3,13 @@ import { Link } from 'react-router-dom';
 import { Box } from '@mantine/core';
 import { MdVerified } from 'react-icons/md';
 import { GrStar } from 'react-icons/gr';
-
+import { ISearchListContentType, ISearchListObject } from '../../types/ProfileGeneral';
 import dummyThumbnail from '../../assets/johnMarston.png';
-
-interface ISearchListObject {
-  createdAt: string;
-  descriptionTags: string[];
-  firstName: string;
-  lastName: string;
-  updatedAt: string;
-  user: string;
-  __v: number;
-  _id: string;
-  thumbnail: string | undefined;
-  designation: string | undefined;
-  rating: number | undefined;
-  verified: boolean | undefined;
-}
-
-interface ISearchListContentType {
-  results: ISearchListObject[];
-  classes: any;
-}
 
 export const SearchResult: React.FC<ISearchListContentType> = ({ results, classes }): JSX.Element => {
   return (
     <ul className={classes.searchList}>
-      {results.map((profile, idx) => {
+      {results.map((profile: ISearchListObject, idx: number) => {
         return (
           <Link to="/profile" key={idx}>
             <li className={classes.searchListItem}>

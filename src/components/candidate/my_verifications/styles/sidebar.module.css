@@ -1,0 +1,38 @@
+.sidebar {
+  background: #ffffff;
+  padding: 1rem;
+  border-radius: 1rem;
+}
+
+.option_list {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.option_list_items {
+  padding-inline: 1.25rem;
+  padding-block: 0.75rem;
+  border-radius: 8px;
+  font-size: 0.9235rem;
+  font-weight: 500;
+  color: #697082;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background 150ms linear;
+}
+
+.option_list_items:hover {
+  background: hsl(0, 0%, 96%, 0.5);
+}
+
+.option_list_items.active {
+  background: #f4f4f4;
+}
+
+.option_icons {
+  display: inline-grid;
+  place-items: center;
+  font-size: 1.25rem;
+}

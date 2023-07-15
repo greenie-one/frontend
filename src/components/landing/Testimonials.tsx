@@ -35,7 +35,7 @@ export const LandingTestimonials: React.FC = (): JSX.Element => {
   );
 };
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(() => ({
   root: {
     paddingBlockEnd: '0 !important',
   },

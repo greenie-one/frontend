@@ -1,19 +1,22 @@
 import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-
 import { useLocalStorage } from '@mantine/hooks';
-import { authApiList } from '../../../../assets/api/ApiList';
+
+import { useGlobalContext } from '../../../../context/GlobalContext';
 import { HttpClient } from '../../../../utils/generic/httpClient';
+import { authApiList } from '../../../../assets/api/ApiList';
 
 export const GoogleAuthRedirect = () => {
   const [searchParams] = useSearchParams();
-  const [authTokens, setAuthTokens] = useLocalStorage<AuthTokens>({
+  const { authClient } = useGlobalContext();
+
+  const [, setAuthTokens] = useLocalStorage<AuthTokens>({
     key: 'auth-tokens',
   });
 
   const getAuthTokens = async () => {
     if (searchParams) {
-      const code = searchParams.get('client_id');
+      const code = searchParams.get('code');
 
       if (code) {
         const res = await HttpClient.callApi<AuthTokens>({
@@ -24,12 +27,13 @@ export const GoogleAuthRedirect = () => {
 
         if (res.ok) {
           setAuthTokens(res.value);
-        } else {
-          console.log(res.error.code);
-        }
+          authClient.updateTokens(res.value.accessToken, res.value.refreshToken);
 
-        if (authTokens) {
+          window.opener = null;
+          window.open('', '_self');
           window.close();
+        } else {
+          console.error(res.error.code);
         }
       }
     }

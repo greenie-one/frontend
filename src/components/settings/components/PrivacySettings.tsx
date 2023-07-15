@@ -10,22 +10,12 @@ export const PrivacySettings: React.FC = (): JSX.Element => {
   const [opened, { open, close }] = useDisclosure(false);
   const { changeCurrentPassword, privacySettingsForm } = useSettingsContext();
 
-  const deactivateAccount = () => {
-    console.log('Account deactivated!');
-  };
-
-  const closeAccount = () => {
-    console.log('Account closed!');
-  };
-
   const accountActions = [
     {
       action: 'Deactivate Account',
-      cb: deactivateAccount,
     },
     {
       action: 'Close Account',
-      cb: closeAccount,
     },
   ];
 
@@ -118,7 +108,7 @@ export const PrivacySettings: React.FC = (): JSX.Element => {
         />
         <Box className={privacyClasses.accountActionBtnsContainer}>
           {accountActions.map((actions, idx) => (
-            <button key={idx} onClick={actions.cb} className={privacyClasses.accountActionBtns}>
+            <button key={idx} className={privacyClasses.accountActionBtns}>
               <span className={privacyClasses.accountActionIcon}>
                 <MdOutlineHelpCenter />
               </span>
@@ -141,7 +131,7 @@ export const PrivacySettings: React.FC = (): JSX.Element => {
   );
 };
 
-const inputStyles = createStyles((theme) => ({
+const inputStyles = createStyles(() => ({
   root: {
     position: 'relative',
   },

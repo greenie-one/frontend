@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '@mantine/core';
 import { useLocalStorage } from '@mantine/hooks';
 
+import { showErrorNotification, showLoadingNotification } from '../../../../utils/functions/showNotification';
 import { HttpClient } from '../../../../utils/generic/httpClient';
 import { authApiList } from '../../../../assets/api/ApiList';
 import { useAuthContext } from '../../context/AuthContext';
@@ -12,12 +13,17 @@ import '../../styles/global.scss';
 const GoogleButton = () => {
   const { setForceRender } = useAuthContext();
 
-  const [authTokens, setAuthTokens] = useLocalStorage<AuthTokens>({
+  const [isLoading, setIsLoading] = useState(false);
+  const [authTokens] = useLocalStorage<AuthTokens>({
     key: 'auth-tokens',
   });
-  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (authTokens?.accessToken) setForceRender((prev) => !prev);
+  }, [authTokens]);
 
   const handleGoogleAuth = async () => {
+    showLoadingNotification({ title: 'Wait !', message: 'Please wait' });
     if (isLoading) {
       return Promise.resolve(null);
     }
@@ -31,10 +37,8 @@ const GoogleButton = () => {
     if (res.ok) {
       window.open(res.value?.redirectUrl, '_blank');
     } else {
-      console.log(res.error.code);
+      showErrorNotification(res.error.code);
     }
-
-    if (authTokens?.accessToken) setForceRender((prev) => !prev);
   };
 
   return (

@@ -5,7 +5,7 @@ type ButtonProps = {
   variant: 'fill' | 'outline';
   classNames: string | null;
   outline: boolean;
-  onClick?: () => any;
+  onClick?: () => void;
 };
 
 export const Button: React.FC<ButtonProps> = ({ children, variant, classNames, outline, onClick }) => {
@@ -21,7 +21,7 @@ export const Button: React.FC<ButtonProps> = ({ children, variant, classNames, o
   );
 };
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(() => ({
   customButton: {
     borderRadius: '3rem',
     fontSize: rem(13),

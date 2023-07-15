@@ -1,6 +1,6 @@
 import { createStyles, rem, em } from '@mantine/core';
 
-export const articleContentStyles = createStyles((theme) => ({
+export const articleContentStyles = createStyles(() => ({
   settingsArticleContent: {
     padding: '2rem',
     background: '#FFFFFF',
@@ -8,7 +8,7 @@ export const articleContentStyles = createStyles((theme) => ({
   },
 }));
 
-export const detailsFormStyles = createStyles((theme) => ({
+export const detailsFormStyles = createStyles(() => ({
   detailsForm: {
     display: 'grid',
     alignItems: 'start',
@@ -51,7 +51,7 @@ export const detailsFormStyles = createStyles((theme) => ({
   },
 }));
 
-export const detailsInputStyles = createStyles((theme) => ({
+export const detailsInputStyles = createStyles(() => ({
   input: {
     maxWidth: rem(420),
     paddingBlockStart: rem(18),
@@ -89,7 +89,7 @@ export const detailsInputStyles = createStyles((theme) => ({
   },
 }));
 
-export const confirmationModalStyle = createStyles((theme) => ({
+export const confirmationModalStyle = createStyles(() => ({
   body: {
     display: 'grid',
     placeItems: 'center',
@@ -130,7 +130,7 @@ export const confirmationModalStyle = createStyles((theme) => ({
   },
 }));
 
-export const profileSettingsStyles = createStyles((theme) => ({
+export const profileSettingsStyles = createStyles(() => ({
   profileChipsWrapper: {
     maxWidth: rem(640),
   },
@@ -152,9 +152,9 @@ export const profileSettingsStyles = createStyles((theme) => ({
   },
 }));
 
-export const generalSettingsStyles = createStyles((theme) => ({}));
+export const generalSettingsStyles = createStyles(() => ({}));
 
-export const privacySettingsStyles = createStyles((theme) => ({
+export const privacySettingsStyles = createStyles(() => ({
   accountActionBtnsContainer: {
     display: 'grid',
     gap: rem(12),

@@ -1,4 +1,4 @@
-import { Navbar } from '../../profile/sections/Navbar';
+import { Navbar } from '../../profile/components/Navbar';
 import { Text, Box, Title } from '@mantine/core';
 import {
   VBHRStepOne,

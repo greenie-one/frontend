@@ -1,5 +1,4 @@
 import { Text, Box } from '@mantine/core';
-
 import {
   ProfileBar,
   DocDepotExpPage,
@@ -17,16 +16,17 @@ import { useProfileContext } from '../profile/context/ProfileContext';
 type docDepotData = {
   name: string;
   isFolder: boolean;
+  id: string;
 };
 
 export const DocDepot = () => {
   const { docDepotActivePage, setDocDepotActivePage } = useProfileContext();
 
   const docDepotData: docDepotData[] = [
-    { name: 'IDs', isFolder: true },
-    { name: 'Work Documents', isFolder: true },
-    { name: 'Education documentsz', isFolder: true },
-    { name: 'Others', isFolder: true },
+    { name: 'IDs', isFolder: true, id: '0' },
+    { name: 'Work Documents', isFolder: true, id: '1' },
+    { name: 'Education documents', isFolder: true, id: '2' },
+    { name: 'Others', isFolder: true, id: '3' },
   ];
 
   return (
@@ -42,10 +42,10 @@ export const DocDepot = () => {
             <DocDepotFilter />
             <Text className="doc-depot-heading">Folders</Text>
             <Box className="folder-wrapper">
-              {docDepotData.map(({ name, isFolder }, index) => {
+              {docDepotData.map(({ id, name, isFolder }, index) => {
                 return (
                   <Box key={index} onClick={() => setDocDepotActivePage(index + 1)}>
-                    <Folder name={name} isFolder={isFolder} />
+                    <Folder id={id} name={name} isFolder={isFolder} />
                   </Box>
                 );
               })}

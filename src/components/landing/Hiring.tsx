@@ -63,7 +63,7 @@ export const LandingHiring: React.FC = (): JSX.Element => {
   );
 };
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(() => ({
   root: {
     alignItems: 'start',
     marginBlockEnd: '-6rem',
