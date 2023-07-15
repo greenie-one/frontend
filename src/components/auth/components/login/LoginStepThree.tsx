@@ -22,7 +22,7 @@ const LoginStepThree = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [secondsRemaining, setSecondsRemaining] = useState<number>(30);
-  const [, setTokens] = useLocalStorage<AuthTokens>({
+  const [, setAuthTokens] = useLocalStorage<AuthTokens>({
     key: 'auth-tokens',
   });
 
@@ -61,7 +61,7 @@ const LoginStepThree = () => {
       });
 
       if (res.ok) {
-        setTokens(res.value);
+        setAuthTokens(res.value);
         authClient.updateTokens(res.value.accessToken, res.value.refreshToken);
         showSuccessNotification({
           title: 'Success !',
