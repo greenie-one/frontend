@@ -16,29 +16,15 @@ import { useProfileContext } from '../context/ProfileContext';
 import { showLoadingNotification, showSuccessNotification } from '../../../../utils/functions/showNotification';
 import { useGlobalContext } from '../../../../context/GlobalContext';
 import { DrawerAction, DrawerState } from '../types/ProfileActions';
+import noNotification from '../assets/noNotifications.png';
 
-const notificationsData = [
-  {
-    imgUrl: emptyProfile,
-    heading: 'Your request to verify skill sent',
-    subHeading: 'Honestrly, your energy is infections. I wish I could work with someone like you.',
-  },
-  {
-    imgUrl: emptyProfile,
-    heading: 'Request to verify address',
-    subHeading: 'Albert Mereno is asking you to verify your account',
-  },
-  {
-    imgUrl: emptyProfile,
-    heading: 'Help Jeremy verify his skills',
-    subHeading: 'Verify his skills as a colleague and help Jeremy grow on Greenie',
-  },
-  {
-    imgUrl: emptyProfile,
-    heading: 'Request to verify your ID',
-    subHeading: 'Esther Smith is asking you to verify your address proof',
-  },
-];
+type notificationType = {
+  imgUrl: string;
+  heading: string;
+  subHeading: string;
+};
+
+const notificationsData: notificationType[] = [];
 
 export const Navbar = () => {
   const { classes } = useStyles();
@@ -163,7 +149,10 @@ export const Navbar = () => {
                     })}
                   </Box>
                 ) : (
-                  <Box>No Notifications yet</Box>
+                  <Box className="no-notification-box">
+                    <img src={noNotification} alt="" />
+                    <Text className="no-notification-text">Comming soon</Text>
+                  </Box>
                 )}
               </Menu.Dropdown>
             </Menu>
@@ -298,12 +287,21 @@ export const Navbar = () => {
                 </span>
               </Link>
             </Box>
-            <Box className="drawer-right-section">
-              <AiOutlineBell size={'22px'} className="bell-icon" />
-              <Link to={'/profile'}>
-                <img className="profile-picture" src={emptyProfile} alt="Profile Piture" />
-              </Link>
-            </Box>
+            {profileData.profilePic ? (
+              <Box className="drawer-right-section">
+                <AiOutlineBell size={'22px'} className="bell-icon" />
+                <Link to={'/profile'}>
+                  <img className="profile-picture" src={profileData.profilePic} alt="Profile Piture" />
+                </Link>
+              </Box>
+            ) : (
+              <Box className="drawer-right-section">
+                <AiOutlineBell size={'22px'} className="bell-icon" />
+                <Link to={'/profile'}>
+                  <img className="profile-picture" src={emptyProfile} alt="Profile Piture" />
+                </Link>
+              </Box>
+            )}
 
             <span className={classes.menuCloseBtn}>
               <MdOutlineClose role="button" onClick={() => dispatch({ type: 'CLOSE_SECOND_DRAWER' })} />
@@ -440,8 +438,8 @@ const useStyles = createStyles(() => ({
     flexDirection: 'row',
     alignItems: 'center',
     gap: '8px',
-    paddingInline: em(15),
-    paddingBlock: em(12),
+    paddingInline: em(8),
+    paddingBlock: em(8),
     borderRadius: em(8),
     transition: 'background 150ms linear',
 

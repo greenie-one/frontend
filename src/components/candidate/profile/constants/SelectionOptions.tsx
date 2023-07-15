@@ -62,6 +62,7 @@ export const departments = [
   { value: 'HealthSafety', label: 'Health and Safety' },
   { value: 'Sustainability', label: 'Sustainability or Corporate Social Responsibility' },
   { value: 'DataAnalytics', label: 'Data Analytics or Business Intelligence' },
+  { value: 'Other', label: 'Other' },
 ];
 
 //------------------------------------------------------------

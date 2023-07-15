@@ -19,6 +19,7 @@ import {
 import { UseFormReturnType } from '@mantine/form';
 
 export type ProfileContextType = {
+  getProfile: () => void;
   profileData: IUserProfileResponse;
   profileForm: UseFormReturnType<profileFormType>;
   updateProfile: () => void;
