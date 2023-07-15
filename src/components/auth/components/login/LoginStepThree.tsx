@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Text, Button, Flex, Box, TextInput } from '@mantine/core';
+import { useLocalStorage } from '@mantine/hooks';
 
 import { useGlobalContext } from '../../../../context/GlobalContext';
 import { useAuthContext } from '../../context/AuthContext';
@@ -21,6 +22,9 @@ const LoginStepThree = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [secondsRemaining, setSecondsRemaining] = useState<number>(30);
+  const [, setAuthTokens] = useLocalStorage<AuthTokens>({
+    key: 'auth-tokens',
+  });
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -57,7 +61,8 @@ const LoginStepThree = () => {
       });
 
       if (res.ok) {
-        authClient.setTokens(res.value.accessToken, res.value.refreshToken);
+        setAuthTokens(res.value);
+        authClient.updateTokens(res.value.accessToken, res.value.refreshToken);
         showSuccessNotification({
           title: 'Success !',
           message: 'You have been logged in successfully.',

@@ -51,6 +51,11 @@ export class AuthClient {
     localStorage.setItem('auth-tokens', JSON.stringify({ accessToken, refreshToken }));
   }
 
+  public async updateTokens(accessToken: string, refreshToken: string): Promise<void> {
+    this.accessToken = accessToken;
+    this.refreshToken = refreshToken;
+  }
+
   public async deleteTokens(): Promise<void> {
     this.accessToken = null;
     this.refreshToken = null;
