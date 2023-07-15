@@ -23,7 +23,7 @@ const LoginStepTwo = () => {
 
   const { classes: inputClasses } = inputStyles();
   const [isLoading, setIsLoading] = useState(false);
-  const [, setTokens] = useLocalStorage<AuthTokens>({
+  const [, setAuthTokens] = useLocalStorage<AuthTokens>({
     key: 'auth-tokens',
   });
 
@@ -82,7 +82,7 @@ const LoginStepTwo = () => {
 
         if (resp.ok) {
           loginForm.setFieldValue('password', '');
-          setTokens(resp.value);
+          setAuthTokens(resp.value);
           authClient.updateTokens(resp.value.accessToken, resp.value.refreshToken);
 
           setForceRender((prev) => !prev);
