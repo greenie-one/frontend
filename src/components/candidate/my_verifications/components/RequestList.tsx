@@ -32,7 +32,7 @@ const RequestListArray: Array<{
     profileImg: '',
     name: 'John Marston',
     title: 'Request to verify your work experience',
-    message: 'is asking you to verify your address proof',
+    message: 'is asking you to verify your address proof.',
   },
   {
     id: 1,
