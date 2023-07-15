@@ -5,7 +5,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { MdVerified, MdOutlineMenuOpen, MdOutlineClose } from 'react-icons/md';
 import { GoSearch } from 'react-icons/go';
 import { AiOutlineBell, AiFillCaretDown } from 'react-icons/ai';
-import JohnMarston from '../assets/johnMarston.png';
+import emptyProfile from '../assets/emptyProfile.png';
 import { SearchList } from './search_list';
 import { useDebounce } from '../../../../utils/hooks/useDebounce';
 import { BiUserCircle } from 'react-icons/bi';
@@ -19,22 +19,22 @@ import { DrawerAction, DrawerState } from '../types/ProfileActions';
 
 const notificationsData = [
   {
-    imgUrl: JohnMarston,
+    imgUrl: emptyProfile,
     heading: 'Your request to verify skill sent',
     subHeading: 'Honestrly, your energy is infections. I wish I could work with someone like you.',
   },
   {
-    imgUrl: JohnMarston,
+    imgUrl: emptyProfile,
     heading: 'Request to verify address',
     subHeading: 'Albert Mereno is asking you to verify your account',
   },
   {
-    imgUrl: JohnMarston,
+    imgUrl: emptyProfile,
     heading: 'Help Jeremy verify his skills',
     subHeading: 'Verify his skills as a colleague and help Jeremy grow on Greenie',
   },
   {
-    imgUrl: JohnMarston,
+    imgUrl: emptyProfile,
     heading: 'Request to verify your ID',
     subHeading: 'Esther Smith is asking you to verify your address proof',
   },
@@ -46,7 +46,7 @@ export const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [showSearchList, setShowSearchList] = useState<boolean>(false);
   const { setShowDetailsId } = useSettingsContext();
-  const { setIsLoading, scrollToTop } = useProfileContext();
+  const { setIsLoading, scrollToTop, profileData } = useProfileContext();
   const navigate = useNavigate();
   const { authClient } = useGlobalContext();
 
@@ -169,10 +169,17 @@ export const Navbar = () => {
             </Menu>
             <Menu trigger="hover" position="bottom-end">
               <Menu.Target>
-                <Group>
-                  <img className="profile-picture" src={JohnMarston} alt="Profile Piture" />
-                  <AiFillCaretDown className="down-arrow-icon" />
-                </Group>
+                {profileData.profilePic ? (
+                  <Group>
+                    <img className="profile-picture" src={profileData.profilePic} alt="Profile Piture" />
+                    <AiFillCaretDown className="down-arrow-icon" />
+                  </Group>
+                ) : (
+                  <Group>
+                    <img className="profile-picture" src={emptyProfile} alt="Profile Piture" />
+                    <AiFillCaretDown className="down-arrow-icon" />
+                  </Group>
+                )}
               </Menu.Target>
               <Menu.Dropdown className="profile-dropdown-menu">
                 <List className="navOptionsList">
@@ -294,7 +301,7 @@ export const Navbar = () => {
             <Box className="drawer-right-section">
               <AiOutlineBell size={'22px'} className="bell-icon" />
               <Link to={'/profile'}>
-                <img className="profile-picture" src={JohnMarston} alt="Profile Piture" />
+                <img className="profile-picture" src={emptyProfile} alt="Profile Piture" />
               </Link>
             </Box>
 

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import { Box, Button, Modal, Text, Chip, Group, CopyButton, Title, TextInput, Divider, Textarea } from '@mantine/core';
 import axios from 'axios';
 import emptyProfile from '../../assets/emptyProfile.png';
@@ -10,7 +10,13 @@ import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
 import { useProfileContext } from '../../context/ProfileContext';
 import { MdVerified, MdOutlineEdit, MdOutlineContentCopy } from 'react-icons/md';
-import { showLoadingNotification, showSuccessNotification } from '../../../../../utils/functions/showNotification';
+import {
+  showErrorNotification,
+  showLoadingNotification,
+  showSuccessNotification,
+} from '../../../../../utils/functions/showNotification';
+import { HttpClient, Result } from '../../../../../utils/generic/httpClient';
+import { UpdateResponse } from '../../types/ProfileResponses';
 
 const skillSetOne = [
   'Lone Wolf',
@@ -27,9 +33,9 @@ const skillSetOne = [
 export const Userprofile = () => {
   const { authClient } = useGlobalContext();
   const authToken = authClient.getAccessToken();
+  const { profileData, profileForm, updateProfile, documentsData, setForceRender, forceRender } = useProfileContext();
   //-------------profile photo------------------------
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [src, setSrc] = useState<string>(emptyProfile);
 
   const openFileInput = () => {
     if (fileInputRef.current) {
@@ -48,8 +54,20 @@ export const Userprofile = () => {
           Authorization: `Bearer ${authToken}`,
         },
       });
-      setSrc(res.data.url);
-      showSuccessNotification({ title: 'Success !', message: 'Profile picture is updated !' });
+      const resp: Result<UpdateResponse> = await HttpClient.callApiAuth(
+        {
+          url: `${profileAPIList.updateProfile}`,
+          method: 'PATCH',
+          body: { profilePic: res.data.url },
+        },
+        authClient
+      );
+      if (resp.ok) {
+        showSuccessNotification({ title: 'Success !', message: 'Profile picture is updated !' });
+        setForceRender(!forceRender);
+      } else {
+        showErrorNotification(resp.error.code);
+      }
     }
   };
 
@@ -60,7 +78,6 @@ export const Userprofile = () => {
   const screenSize = useMediaQuery('(min-width: 768px)');
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
-  const { profileData, profileForm, updateProfile, documentsData } = useProfileContext();
 
   const onClose = () => {
     profileForm.values.firstName = '';
@@ -166,7 +183,12 @@ export const Userprofile = () => {
         <Box className="cover-photo"></Box>
 
         <Box className="profile-photo">
-          <img src={src} alt="emptyProfile" className="profile-image" />
+          {profileData.profilePic ? (
+            <img src={profileData.profilePic} alt="emptyProfile" className="profile-image" />
+          ) : (
+            <img src={emptyProfile} alt="emptyProfile" className="profile-image" />
+          )}
+
           <Button leftIcon={<MdOutlineEdit />} className="edit-btn" onClick={openFileInput}>
             Change picture
           </Button>

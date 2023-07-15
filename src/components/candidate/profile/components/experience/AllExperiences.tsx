@@ -20,6 +20,8 @@ export const AllExperiences = () => {
   const [experienceDetails, setExperienceDetails] = useState<IWorkExperienceResponse | null>(null);
   const handleToggleWorkExperienceDetails = (): void => {
     setCandidateActivePage('Profile');
+    setSelectedExperience(null);
+    setExperienceDetails(null);
   };
 
   const handleGoToVerification = () => {

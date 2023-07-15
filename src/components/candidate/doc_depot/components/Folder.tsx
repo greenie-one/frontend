@@ -64,7 +64,6 @@ export const Folder: React.FC<IFolderProps> = ({ id, name, isFolder }) => {
             </Box>
             <Box className="move-modal-btns-wrapper">
               <Button className="btn green-btn">Move</Button>
-              <Button className="btn green-btn-outline">Move a copy</Button>
               <Button className="btn cancel-btn">Cancel</Button>
             </Box>
           </Box>
