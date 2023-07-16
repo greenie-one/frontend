@@ -9,6 +9,7 @@ type ProfileContextType = {
   documentsData: DocsType[];
   workExperienceData: WorkExperienceResponse[];
   residentialInfoData: ResidentialInfoResponse[];
+  setResidentialInfoData: React.Dispatch<React.SetStateAction<ResidentialInfoResponse[]>>;
   skillData: SkillResponse[];
   getWorkExperience: () => void;
   verifyAadharForm: UseFormReturnType<verifyAadharFormType>;

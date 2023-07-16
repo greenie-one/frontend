@@ -3,23 +3,31 @@ import { useProfileContext } from '../../context/ProfileContext';
 import { Text, Box, Button, Modal, Title, Checkbox } from '@mantine/core';
 import { BsArrowLeft } from 'react-icons/bs';
 import { AiOutlineRight, AiOutlineHome } from 'react-icons/ai';
-import { MdVerified, MdAddLocationAlt } from 'react-icons/md';
+import { MdVerified, MdAddLocationAlt, MdDelete } from 'react-icons/md';
 import { CgSandClock } from 'react-icons/cg';
 import location from '../../assets/location.png';
 import { ResidentialInfoDetails } from './ResidentialInfoDetails';
 import { VerifyResidentialInfo } from './VerifyResidentialInfo';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
+import { DeleteConfirmationModal } from '../../../../common/GenericModals';
 
 type VerificationType = 'MySelf' | 'Peer';
 
 export const AllResidentialInfo = () => {
-  const { setCandidateActivePage, residentialInfoData, selectedResidentialInfo, setSelectedResidentialInfo } =
-    useProfileContext();
+  const {
+    setCandidateActivePage,
+    residentialInfoData,
+    deleteResidentialInfo,
+    getResidentialInfo,
+    selectedResidentialInfo,
+    setSelectedResidentialInfo,
+  } = useProfileContext();
   const [infoDetails, setInfoDetails] = useState<ResidentialInfoResponse | null>(null);
 
   const [modalStep, setModalStep] = useState<number>(1);
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
+  const [deleteModalOpened, { open: deleteModalOpen, close: deleteModalClose }] = useDisclosure(false);
   const [checked, setChecked] = useState<boolean>(false);
   const handleToggleResidentialDetails = (): void => {
     setCandidateActivePage('Profile');
@@ -49,6 +57,13 @@ export const AllResidentialInfo = () => {
       setInfoDetails(null);
       close();
     }
+  };
+
+  const handleDeleteResidentialInfo = (_id: string): void => {
+    deleteResidentialInfo(_id);
+    getResidentialInfo();
+    deleteModalClose();
+    setCandidateActivePage('Profile');
   };
 
   return (
@@ -145,12 +160,29 @@ export const AllResidentialInfo = () => {
                     )}
                   </Box>
                 </Box>
-                <Box>
-                  <Text className="since-text">Since</Text>
-                  <Text className="tenure">
-                    {info.start_date.toString().substring(0, 4)} - {info.end_date.toString().substring(0, 4)}
-                  </Text>
+                <Box className="card-footer">
+                  <Box>
+                    <Text className="since-text">Since</Text>
+                    <Text className="tenure">
+                      {info.start_date.toString().substring(0, 4)} - {info.end_date.toString().substring(0, 4)}
+                    </Text>
+                  </Box>
+
+                  <Button
+                    className="delete-btn"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      deleteModalOpen();
+                    }}
+                  >
+                    <MdDelete />
+                  </Button>
                 </Box>
+                <DeleteConfirmationModal
+                  opened={deleteModalOpened}
+                  close={deleteModalClose}
+                  cb={() => handleDeleteResidentialInfo(info.residentialInfoId)}
+                />
               </Box>
             );
           })}
