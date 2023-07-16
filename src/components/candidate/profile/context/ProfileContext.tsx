@@ -251,6 +251,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
         documentsData,
         workExperienceData,
         residentialInfoData,
+        setResidentialInfoData,
         skillData,
         getWorkExperience,
         deleteResidentialInfo,

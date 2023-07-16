@@ -37,7 +37,7 @@ type workExperienceResponse = {
 };
 
 type ResidentialInfoResponse = {
-  _id: string;
+  residentialInfoId: string;
   address_line_1: string;
   address_line_2: string;
   typeOfAddress: string;
