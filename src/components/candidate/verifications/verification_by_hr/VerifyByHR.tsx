@@ -1,4 +1,3 @@
-import { Navbar } from '../../profile/components/Navbar';
 import { Text, Box, Title } from '@mantine/core';
 import {
   VBHRStepOne,
@@ -16,8 +15,6 @@ export const VerifyByHR = () => {
   const { activeStep } = useVBHRContext();
   return (
     <>
-      <Navbar />
-
       <main className="profile">
         <section className="container" style={{ marginTop: '7rem' }}>
           <Title className="verification-title">Background verification request</Title>

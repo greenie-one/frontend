@@ -1,4 +1,3 @@
-import { Navbar } from '../../profile/components/Navbar';
 import { Text, Box, Title } from '@mantine/core';
 import { VBMStepOne, VBMStepTwo, VBMStepThree, VBMStepFour, VBMStepFive } from './components';
 import { useVBMContext } from './context/VBMContext';
@@ -9,8 +8,6 @@ export const VerifyByManager = () => {
   const { activeStep } = useVBMContext();
   return (
     <>
-      <Navbar />
-
       <main className="profile">
         <section className="container" style={{ marginTop: '7rem' }}>
           <Title className="verification-title">Background verification request</Title>

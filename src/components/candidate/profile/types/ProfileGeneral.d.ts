@@ -34,7 +34,7 @@ type Peer = {
   peerType: string;
   phone: string;
   workExperience: string;
-  _id: string;
+  _id?: string;
 };
 
 type WorkExperienceVerification = {

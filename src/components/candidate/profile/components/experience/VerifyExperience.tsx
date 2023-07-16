@@ -9,11 +9,11 @@ import { CgSandClock, CgProfile } from 'react-icons/cg';
 import tscLogo from '../../assets/tscLogo.png';
 import noData from '../../assets/noData.png';
 import { useProfileContext } from '../../context/ProfileContext';
-// import pdfIcon from '../../assets/pdfIcon.png';
+import pdfIcon from '../../assets/pdfIcon.png';
 import {
   showErrorNotification,
-  showLoadingNotification,
-  showSuccessNotification,
+  // showLoadingNotification,
+  // showSuccessNotification,
 } from '../../../../../utils/functions/showNotification';
 import { peerType } from '../../constants/SelectionOptions';
 import { Peer, WorkExperienceVerification } from '../../types/ProfileGeneral';
@@ -27,7 +27,6 @@ import { HttpClient, Result } from '../../../../../utils/generic/httpClient';
 import { docDepotAPIList } from '../../../../../assets/api/ApiList';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
 import { ExperienceDocuments } from '../../types/ProfileGeneral';
-import pdfIcon from '../../assets/pdfIcon.png';
 
 const attributes = [
   { send: false, attribute: 'Job title' },
@@ -100,43 +99,50 @@ export const VerifyExperience: React.FC<WorkExperienceVerification> = ({
     },
   });
 
-  const handleCreatePeer = async () => {
-    if (!peerVerificationForm.validate().hasErrors) {
-      // const requestBody = {
-      //   name: peerVerificationForm.values.name,
-      //   email: peerVerificationForm.values.email,
-      //   phone: peerVerificationForm.values.contactNumber,
-      //   peerType: peerVerificationForm.values.peerType,
-      //   workExperience: workExpId,
-      // };
-      // showLoadingNotification({ title: 'Please wait !', message: 'Please wait while we add peer to the list' });
-      // const res: Result<addPeerResponse> = await HttpClient.callApiAuth(
-      //   {
-      //     url: `${peerVerificationAPIList.createPeer}`,
-      //     method: 'POST',
-      //     body: requestBody,
-      //   },
-      //   authClient
-      // );
-      // if (res.ok) {
-      //   showSuccessNotification({ title: 'Success !', message: 'Peer added succesfully' });
-      //   const newPeer: Peer = res.value;
-      //   setAddedPeers((prevPeers) => [...prevPeers, newPeer]);
-      //   peerVerificationForm.reset();
-      // } else {
-      //   showErrorNotification(res.error.code);
-      // }
-      const newPeer: Peer = {
-        _id: '4578',
-        name: peerVerificationForm.values.name,
-        email: peerVerificationForm.values.email,
-        phone: peerVerificationForm.values.contactNumber,
-        peerType: peerVerificationForm.values.peerType,
-        workExperience: workExpId,
-      };
-      setAddedPeers((prevPeers) => [...prevPeers, newPeer]);
-      peerVerificationForm.reset();
+  const handleProceed = async () => {
+    if (addedPeers.length < 2) {
+      showErrorNotification('NO_PEERS');
     }
+    // if (addedPeers.length > 1) {
+    //   for (const peer of addedPeers) {
+    //     const requestBody = {
+    //       name: peer.name,
+    //       email: peer.email,
+    //       phone: peer.phone,
+    //       peerType: peer.peerType,
+    //       workExperience: peer.workExperience,
+    //     };
+    //     showLoadingNotification({ title: 'Please wait !', message: 'Please wait while we add peers to the list' });
+    //     const res: Result<addPeerResponse> = await HttpClient.callApiAuth(
+    //       {
+    //         url: `${peerVerificationAPIList.createPeer}`,
+    //         method: 'POST',
+    //         body: requestBody,
+    //       },
+    //       authClient
+    //     );
+    //     if (res.ok) {
+
+    //       showSuccessNotification({ title: 'Success !', message: 'Your Peers have been added sucessfully' });
+    //     } else {
+    //       showErrorNotification(res.error.code);
+    //     }
+    //   }
+    // }
+    scrollToTop();
+    verificationStepDispatch({ type: ReviewActionType.NEXT_STEP });
+  };
+
+  const handleCreatePeer = async () => {
+    const newPeer: Peer = {
+      name: peerVerificationForm.values.name,
+      email: peerVerificationForm.values.email,
+      phone: peerVerificationForm.values.contactNumber,
+      peerType: peerVerificationForm.values.peerType,
+      workExperience: workExpId,
+    };
+    setAddedPeers((prevPeers) => [...prevPeers, newPeer]);
+    peerVerificationForm.reset();
   };
 
   const handleRemovePeer = (index: number) => {
@@ -148,18 +154,6 @@ export const VerifyExperience: React.FC<WorkExperienceVerification> = ({
       newPeer.splice(index, 1);
       return newPeer;
     });
-  };
-
-  const handleProceed = () => {
-    showLoadingNotification({ title: 'Please wait !', message: 'We are adding your peers' });
-    if (addedPeers.length < 2) {
-      showErrorNotification('NO_PEERS');
-    }
-    if (addedPeers.length >= 2) {
-      scrollToTop();
-      verificationStepDispatch({ type: ReviewActionType.NEXT_STEP });
-      showSuccessNotification({ title: 'Success !', message: 'Your Peers have been added sucessfully' });
-    }
   };
 
   const handleSeeRequest = () => {
@@ -441,9 +435,17 @@ export const VerifyExperience: React.FC<WorkExperienceVerification> = ({
                                 <Box className="selected-skill">
                                   <Checkbox />
                                   <Text>{skill.skillName}</Text>
-                                  <Text>{skill.expertise}</Text>
+                                  {skill.expertise === 'AMATEUR' && <Text className="add-skill-rate">Amature</Text>}
+                                  {skill.expertise === 'BEGINNER' && <Text className="add-skill-rate">Beginner</Text>}
+                                  {skill.expertise === 'HIGHLY_COMPETENT' && (
+                                    <Text className="add-skill-rate">Highly Competent</Text>
+                                  )}
+                                  {skill.expertise === 'EXPERT' && <Text className="add-skill-rate">Expert</Text>}
+                                  {skill.expertise === 'SUPER_SPECIALIST' && (
+                                    <Text className="add-skill-rate">Super Specialist</Text>
+                                  )}
+                                  {skill.expertise === 'MASTER' && <Text className="add-skill-rate">Master</Text>}
                                 </Box>
-                                {/* {addedPeers[activePeer].skills.length - 1 !== index && <Divider color="#ebebeb" />} */}
                               </Box>
                             );
                           })}
@@ -455,9 +457,9 @@ export const VerifyExperience: React.FC<WorkExperienceVerification> = ({
                   <Box className="documents-action-section">
                     <Box className="documents-action-nav">
                       <Box className="document-action-heading-box">
-                        <Text className="document-action-heading">Skills</Text>
+                        <Text className="document-action-heading">Attributes</Text>
                         <Text className="document-action-sub-heading">
-                          Select the skill you want the peer to review
+                          Select the attributes you want the peer to review
                         </Text>
                       </Box>
                     </Box>
@@ -511,12 +513,17 @@ export const VerifyExperience: React.FC<WorkExperienceVerification> = ({
           <Box className="peers-list">
             <Text className="document-action-heading">Requesting</Text>
             <Box className="requesting-peers">
-              {addedPeers.map((peer, index) => {
+              {addedPeers.map(({ name, peerType }, index) => {
                 return (
                   <Box key={index} className="requesting-peer">
                     <Box className="profile-picture"></Box>
                     <Box className="requesting-peer-text-box">
-                      <Text className="name">{peer.name}</Text> <Text className="designation">{peer.peerType}</Text>{' '}
+                      <Text className="name">{name}</Text>
+                      {peerType === 'LINE_MANAGER' && <Text className="peer-type">Line Manager</Text>}
+                      {peerType === 'REPORTING_MANAGER' && <Text className="peer-type">Reporting Manager</Text>}
+                      {peerType === 'HR' && <Text className="peer-type">HR</Text>}
+                      {peerType === 'COLLEAGUE' && <Text className="peer-type">Colleague</Text>}
+                      {peerType === 'CXO' && <Text className="peer-type">CXO</Text>}
                     </Box>
                   </Box>
                 );
