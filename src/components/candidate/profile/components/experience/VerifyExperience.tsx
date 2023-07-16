@@ -1,4 +1,4 @@
-import React, { useReducer, useState, useRef } from 'react';
+import React, { useReducer, useState, useRef, useEffect } from 'react';
 import { Title, Text, Box, Button, TextInput, Select, Divider, Checkbox, Modal } from '@mantine/core';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 import { useForm, isNotEmpty, isEmail, hasLength } from '@mantine/form';
@@ -22,9 +22,12 @@ export enum ReviewActionType {
   PREVIOUS_STEP,
   RESET_STEP,
 }
-import { peerVerificationAPIList } from '../../../../../assets/api/ApiList';
+// import { peerVerificationAPIList } from '../../../../../assets/api/ApiList';
 import { HttpClient, Result } from '../../../../../utils/generic/httpClient';
+import { docDepotAPIList } from '../../../../../assets/api/ApiList';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
+import { ExperienceDocuments } from '../../types/ProfileGeneral';
+import pdfIcon from '../../assets/pdfIcon.png';
 
 const attributes = [
   { send: false, attribute: 'Job title' },
@@ -46,10 +49,12 @@ export const VerifyExperience: React.FC<WorkExperienceVerification> = ({
   const [selectionPage, setSelectionPage] = useState<'Document' | 'Skill' | 'Attributes'>('Document');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { authClient } = useGlobalContext();
+  const authToken = authClient.getAccessToken();
 
   const isMobile = useMediaQuery('(max-width: 768px)');
   const isTablet = useMediaQuery('(max-width: 1024px)');
   const [opened, { open, close }] = useDisclosure(false);
+  const [experienceDocuments, setExperienceDocuments] = useState<ExperienceDocuments[]>([]);
 
   const backgroundStyle = {
     backgroundImage: `url(${tscLogo})`,
@@ -96,39 +101,41 @@ export const VerifyExperience: React.FC<WorkExperienceVerification> = ({
   });
 
   const handleCreatePeer = async () => {
-    if (
-      !peerVerificationForm.validateField('name').hasError &&
-      !peerVerificationForm.validateField('email').hasError &&
-      !peerVerificationForm.validateField('peerType').hasError &&
-      !peerVerificationForm.validateField('contactNumber').hasError
-    ) {
-      const requestBody = {
+    if (!peerVerificationForm.validate().hasErrors) {
+      // const requestBody = {
+      //   name: peerVerificationForm.values.name,
+      //   email: peerVerificationForm.values.email,
+      //   phone: peerVerificationForm.values.contactNumber,
+      //   peerType: peerVerificationForm.values.peerType,
+      //   workExperience: workExpId,
+      // };
+      // showLoadingNotification({ title: 'Please wait !', message: 'Please wait while we add peer to the list' });
+      // const res: Result<addPeerResponse> = await HttpClient.callApiAuth(
+      //   {
+      //     url: `${peerVerificationAPIList.createPeer}`,
+      //     method: 'POST',
+      //     body: requestBody,
+      //   },
+      //   authClient
+      // );
+      // if (res.ok) {
+      //   showSuccessNotification({ title: 'Success !', message: 'Peer added succesfully' });
+      //   const newPeer: Peer = res.value;
+      //   setAddedPeers((prevPeers) => [...prevPeers, newPeer]);
+      //   peerVerificationForm.reset();
+      // } else {
+      //   showErrorNotification(res.error.code);
+      // }
+      const newPeer: Peer = {
+        _id: '4578',
         name: peerVerificationForm.values.name,
         email: peerVerificationForm.values.email,
         phone: peerVerificationForm.values.contactNumber,
         peerType: peerVerificationForm.values.peerType,
         workExperience: workExpId,
       };
-      showLoadingNotification({ title: 'Please wait !', message: 'Please wait while we add peer to the list' });
-      const res: Result<addPeerResponse> = await HttpClient.callApiAuth(
-        {
-          url: `${peerVerificationAPIList.createPeer}`,
-          method: 'POST',
-          body: requestBody,
-        },
-        authClient
-      );
-      if (res.ok) {
-        showSuccessNotification({ title: 'Success !', message: 'Peer added succesfully' });
-        const newPeer: Peer = res.value;
-        setAddedPeers((prevPeers) => [...prevPeers, newPeer]);
-        peerVerificationForm.values.name = '';
-        peerVerificationForm.values.contactNumber = '';
-        peerVerificationForm.values.email = '';
-        peerVerificationForm.values.peerType = '';
-      } else {
-        showErrorNotification(res.error.code);
-      }
+      setAddedPeers((prevPeers) => [...prevPeers, newPeer]);
+      peerVerificationForm.reset();
     }
   };
 
@@ -163,19 +170,27 @@ export const VerifyExperience: React.FC<WorkExperienceVerification> = ({
     setSelectedSkills([]);
   };
 
-  // const getPeer = async () => {
-  //   const res = await HttpClient.callApiAuth(
-  //     { url: `${peerVerificationAPIList.getSinglePeer}/64b0cecd27491902aaa1c1d5`, method: 'GET' },
-  //     authClient
-  //   );
-  //   if (res.ok) {
-  //     console.log(res.value);
-  //   } else {
-  //     console.log(res.error.message);
-  //   }
-  // };
+  const getExperienceDocument = async () => {
+    const res: Result<ExperienceDocuments[]> = await HttpClient.callApiAuth(
+      {
+        url: `${docDepotAPIList.getAllDocuments}/work`,
+        method: 'GET',
+      },
+      authClient
+    );
+    if (res.ok) {
+      const filtered = res.value.filter((document) => document.workExperience === workExpId);
+      setExperienceDocuments(filtered);
+    } else {
+      showErrorNotification(res.error.code);
+    }
+  };
 
-  // const handleUploadDocument = () => {};
+  useEffect(() => {
+    if (authToken) {
+      getExperienceDocument();
+    }
+  }, []);
 
   return (
     <>
@@ -293,8 +308,12 @@ export const VerifyExperience: React.FC<WorkExperienceVerification> = ({
                         <span>{name}</span>
                       </Text>
                       <Text className="peer-email">{email}</Text>
+                      {peerType === 'LINE_MANAGER' && <Text className="peer-type">Line Manager</Text>}
+                      {peerType === 'REPORTING_MANAGER' && <Text className="peer-type">Reporting Manager</Text>}
+                      {peerType === 'HR' && <Text className="peer-type">HR</Text>}
+                      {peerType === 'COLLEAGUE' && <Text className="peer-type">Colleague</Text>}
+                      {peerType === 'CXO' && <Text className="peer-type">CXO</Text>}
 
-                      <Text className="peer-type">{peerType}</Text>
                       <Text className="peer-remove" onClick={() => handleRemovePeer(index)}>
                         <MdOutlineDelete size={'20px'} />
                         <span>Remove</span>
@@ -326,7 +345,11 @@ export const VerifyExperience: React.FC<WorkExperienceVerification> = ({
                     <Box className={activePeer === index ? 'peer active' : 'peer'}>
                       <Box className="border-left"></Box>
                       <Text className="peer-name">{name}</Text>
-                      <Text className="peer-type">{peerType}</Text>
+                      {peerType === 'LINE_MANAGER' && <Text className="peer-type">Line Manager</Text>}
+                      {peerType === 'REPORTING_MANAGER' && <Text className="peer-type">Reporting Manager</Text>}
+                      {peerType === 'HR' && <Text className="peer-type">HR</Text>}
+                      {peerType === 'COLLEAGUE' && <Text className="peer-type">Colleague</Text>}
+                      {peerType === 'CXO' && <Text className="peer-type">CXO</Text>}
                     </Box>
                     {addedPeers.length - 1 !== index && <Divider color="#ebebeb" />}
                   </Box>
@@ -383,14 +406,14 @@ export const VerifyExperience: React.FC<WorkExperienceVerification> = ({
                       </Box>
                     </Box>
                     <Box className="selected-documents">
-                      {/* {addedPeers[activePeer].map((peer: Peer, index: number) => {
+                      {experienceDocuments.map(({ name, _id }, index) => {
                         return (
                           <Box className="document" key={index}>
                             <img className="pdf-icon" src={pdfIcon} alt="pdf icon" />
-                            <Text className="document-name">{peer.name.substring(0, 15)}...</Text>
+                            <Text className="document-name">{name.substring(0, 15)}...</Text>
                           </Box>
                         );
-                      })} */}
+                      })}
                     </Box>
                   </Box>
                 )}
