@@ -1,3 +1,10 @@
+.section-cards-wrapper {
+  display: grid;
+  grid-template-columns: repeat(3, 32%);
+  align-items: center;
+  justify-content: space-between;
+}
+
 .verificationId-section {
   .verificationIdCard {
     cursor: pointer;

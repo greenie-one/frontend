@@ -5,7 +5,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { MdVerified, MdOutlineMenuOpen, MdOutlineClose } from 'react-icons/md';
 import { GoSearch } from 'react-icons/go';
 import { AiOutlineBell, AiFillCaretDown } from 'react-icons/ai';
-import JohnMarston from '../assets/johnMarston.png';
+import emptyProfile from '../assets/emptyProfile.png';
 import { SearchList } from './search_list';
 import { useDebounce } from '../../../../utils/hooks/useDebounce';
 import { BiUserCircle } from 'react-icons/bi';
@@ -16,29 +16,15 @@ import { useProfileContext } from '../context/ProfileContext';
 import { showLoadingNotification, showSuccessNotification } from '../../../../utils/functions/showNotification';
 import { useGlobalContext } from '../../../../context/GlobalContext';
 import { DrawerAction, DrawerState } from '../types/ProfileActions';
+import noNotification from '../assets/noNotifications.png';
 
-const notificationsData = [
-  {
-    imgUrl: JohnMarston,
-    heading: 'Your request to verify skill sent',
-    subHeading: 'Honestrly, your energy is infections. I wish I could work with someone like you.',
-  },
-  {
-    imgUrl: JohnMarston,
-    heading: 'Request to verify address',
-    subHeading: 'Albert Mereno is asking you to verify your account',
-  },
-  {
-    imgUrl: JohnMarston,
-    heading: 'Help Jeremy verify his skills',
-    subHeading: 'Verify his skills as a colleague and help Jeremy grow on Greenie',
-  },
-  {
-    imgUrl: JohnMarston,
-    heading: 'Request to verify your ID',
-    subHeading: 'Esther Smith is asking you to verify your address proof',
-  },
-];
+type notificationType = {
+  imgUrl: string;
+  heading: string;
+  subHeading: string;
+};
+
+const notificationsData: notificationType[] = [];
 
 export const Navbar = () => {
   const { classes } = useStyles();
@@ -46,7 +32,7 @@ export const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [showSearchList, setShowSearchList] = useState<boolean>(false);
   const { setShowDetailsId } = useSettingsContext();
-  const { setIsLoading, scrollToTop } = useProfileContext();
+  const { setIsLoading, scrollToTop, profileData } = useProfileContext();
   const navigate = useNavigate();
   const { authClient } = useGlobalContext();
 
@@ -163,16 +149,26 @@ export const Navbar = () => {
                     })}
                   </Box>
                 ) : (
-                  <Box>No Notifications yet</Box>
+                  <Box className="no-notification-box">
+                    <img src={noNotification} alt="" />
+                    <Text className="no-notification-text">Comming soon</Text>
+                  </Box>
                 )}
               </Menu.Dropdown>
             </Menu>
             <Menu trigger="hover" position="bottom-end">
               <Menu.Target>
-                <Group>
-                  <img className="profile-picture" src={JohnMarston} alt="Profile Piture" />
-                  <AiFillCaretDown className="down-arrow-icon" />
-                </Group>
+                {profileData.profilePic ? (
+                  <Group>
+                    <img className="profile-picture" src={profileData.profilePic} alt="Profile Piture" />
+                    <AiFillCaretDown className="down-arrow-icon" />
+                  </Group>
+                ) : (
+                  <Group>
+                    <img className="profile-picture" src={emptyProfile} alt="Profile Piture" />
+                    <AiFillCaretDown className="down-arrow-icon" />
+                  </Group>
+                )}
               </Menu.Target>
               <Menu.Dropdown className="profile-dropdown-menu">
                 <List className="navOptionsList">
@@ -291,12 +287,21 @@ export const Navbar = () => {
                 </span>
               </Link>
             </Box>
-            <Box className="drawer-right-section">
-              <AiOutlineBell size={'22px'} className="bell-icon" />
-              <Link to={'/profile'}>
-                <img className="profile-picture" src={JohnMarston} alt="Profile Piture" />
-              </Link>
-            </Box>
+            {profileData.profilePic ? (
+              <Box className="drawer-right-section">
+                <AiOutlineBell size={'22px'} className="bell-icon" />
+                <Link to={'/profile'}>
+                  <img className="profile-picture" src={profileData.profilePic} alt="Profile Piture" />
+                </Link>
+              </Box>
+            ) : (
+              <Box className="drawer-right-section">
+                <AiOutlineBell size={'22px'} className="bell-icon" />
+                <Link to={'/profile'}>
+                  <img className="profile-picture" src={emptyProfile} alt="Profile Piture" />
+                </Link>
+              </Box>
+            )}
 
             <span className={classes.menuCloseBtn}>
               <MdOutlineClose role="button" onClick={() => dispatch({ type: 'CLOSE_SECOND_DRAWER' })} />
@@ -433,8 +438,8 @@ const useStyles = createStyles(() => ({
     flexDirection: 'row',
     alignItems: 'center',
     gap: '8px',
-    paddingInline: em(15),
-    paddingBlock: em(12),
+    paddingInline: em(8),
+    paddingBlock: em(8),
     borderRadius: em(8),
     transition: 'background 150ms linear',
 

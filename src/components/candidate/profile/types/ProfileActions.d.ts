@@ -5,6 +5,7 @@ export type candidateActivePageState =
   | 'Verify Aadhar Card'
   | 'Verify PAN Card'
   | 'Verify Licence'
+  | 'Add Address'
   | 'All Residential Info'
   | 'All Skills'
   | 'Add Skills'

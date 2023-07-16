@@ -359,7 +359,7 @@ export const VerifyExperience: React.FC<IWorkExperienceVerification> = ({
                     onClick={() => setSelectionPage('Attributes')}
                     className={selectionPage === 'Attributes' ? 'selector active' : 'selector'}
                   >
-                    Arrtibutes
+                    Attributes
                   </Box>
                 </Box>
                 {selectionPage === 'Document' && (

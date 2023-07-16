@@ -1,6 +1,7 @@
 import { Text, Box } from '@mantine/core';
 import { useProfileContext } from '../../profile/context/ProfileContext';
-import profileImg from '../../profile/assets/johnMarston.png';
+import emptyProfile from '../../profile/assets/emptyProfile.png';
+
 import starImg from '../assets/star.png';
 import { MdVerified } from 'react-icons/md';
 
@@ -10,10 +11,17 @@ export const ProfileBar = () => {
     <Box>
       <Box className="profile-bar-profile-details">
         <Box className="left-box">
-          <Box className="image-box">
-            <img src={profileImg} alt="Profile Image" />
-            <MdVerified color="#17a672" className="verified-icon" size={'24px'} />
-          </Box>
+          {profileData.profilePic ? (
+            <Box className="image-box">
+              <img src={profileData.profilePic} alt="Profile Image" />
+              <MdVerified color="#17a672" className="verified-icon" size={'24px'} />
+            </Box>
+          ) : (
+            <Box className="image-box">
+              <img src={emptyProfile} alt="Profile Image" />
+              <MdVerified color="#17a672" className="verified-icon" size={'24px'} />
+            </Box>
+          )}
 
           <Box className="name-box">
             <Text className="name">

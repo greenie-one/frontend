@@ -1,0 +1,82 @@
+.requestList_container {
+  background: #ffffff;
+  padding: 1rem;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.request_item {
+  display: flex;
+  gap: 10px;
+}
+
+.profile_image {
+  border: 1px solid;
+  width: 4rem;
+  height: 4rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+}
+
+.request_item_body {
+  display: flex;
+  flex-direction: column;
+}
+
+.request_title {
+  font-size: 0.9235rem;
+  font-weight: 600;
+}
+
+.request_msg {
+  color: #7f7f7f;
+  font-size: 0.9rem;
+}
+
+.request_actions {
+  margin-inline-start: 1rem;
+  display: flex;
+  align-self: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.request_action_btns {
+  height: 2rem;
+}
+
+.request_action_btns:first-of-type {
+  background: #17a672;
+}
+
+.request_action_btns:last-of-type {
+  background: transparent;
+  border: 1px solid #697082;
+  color: #697082;
+}
+
+.request_sent_info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 0.9rem;
+  gap: 2px;
+}
+
+.check_icon {
+  color: #17a672;
+  margin-right: 2px;
+  font-size: 0.95rem;
+}
+
+.sent_msg {
+  color: #17a672;
+}
+
+.sent_date {
+  text-align: center;
+  font-size: 0.75rem;
+  color: #697082;
+}

@@ -73,6 +73,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
     bio: '',
     descriptionTags: [],
     _id: '',
+    profilePic: '',
   });
 
   const getProfile = async () => {
@@ -254,7 +255,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
       getSkills();
       getResidentialInfo();
     }
-  }, []);
+  }, [forceRender]);
 
   return (
     <ProfileContext.Provider
@@ -264,6 +265,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
         profileData,
         profileForm,
         updateProfile,
+        getProfile,
         documentsData,
         workExperienceData,
         residentialInfoData,

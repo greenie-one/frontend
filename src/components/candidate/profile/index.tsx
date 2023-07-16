@@ -12,6 +12,7 @@ import { AddSkills } from './components/skills/AddSkills';
 import { AddressVerification } from './components/residential_info/AddressVerification';
 import './styles/global.scss';
 import { Userprofile } from './components/user_profile/Userprofile';
+import { AddResidentialInfo } from './components/residential_info/AddResidentialInfo';
 
 export const Profile = () => {
   const [activeButton, setActiveButton] = useState(1);
@@ -41,11 +42,17 @@ export const Profile = () => {
           <CongratulationsScreen />
         </main>
       )}
+      {candidateActivePage === 'Add Address' && (
+        <main className="profile">
+          <AddResidentialInfo />
+        </main>
+      )}
       {candidateActivePage === 'Verify Address' && <AddressVerification />}
       {candidateActivePage !== 'Add Experience' &&
         candidateActivePage !== 'Add Skills' &&
         candidateActivePage !== 'Congratulation Screen' &&
-        candidateActivePage !== 'Verify Address' && (
+        candidateActivePage !== 'Verify Address' &&
+        candidateActivePage !== 'Add Address' && (
           <main className="profile">
             {candidateActivePage === 'Profile' && <Userprofile />}
 
