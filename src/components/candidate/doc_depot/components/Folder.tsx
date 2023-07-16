@@ -6,13 +6,16 @@ import threeDots from '../assets/threeDots.png';
 import { MdMoveDown, MdDeleteOutline } from 'react-icons/md';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { useDocDepotContext } from '../context/DocDepotContext';
+import { Link } from 'react-router-dom';
+
 type FolderProps = {
   id: string;
   name: string;
   isFolder: boolean;
+  private_url: string;
 };
 
-export const Folder: React.FC<FolderProps> = ({ id, name, isFolder }) => {
+export const Folder: React.FC<FolderProps> = ({ id, name, isFolder, private_url }) => {
   const [isDropdownVisible, setDropdownVisible] = useState(false);
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
@@ -25,6 +28,11 @@ export const Folder: React.FC<FolderProps> = ({ id, name, isFolder }) => {
 
   const handleDeleteDocument = () => {
     deleteDocument(id);
+    close();
+  };
+
+  const handleMoveDocument = (folderName: string) => {
+    moveDocument(id, folderName);
     close();
   };
 
@@ -46,22 +54,22 @@ export const Folder: React.FC<FolderProps> = ({ id, name, isFolder }) => {
         >
           <Box className="folder-move-modal">
             <Box className="move-folder-wrapper">
-              <Box className="folder" onClick={() => moveDocument(id, 'ID')}>
+              <Box className="folder" onClick={() => handleMoveDocument('ID')}>
                 <img src={folderImage} className="folder-img" alt="folder-image" />
 
                 <Text className="folder-text">IDs</Text>
               </Box>
-              <Box className="folder" onClick={() => moveDocument(id, 'education')}>
+              <Box className="folder" onClick={() => handleMoveDocument('education')}>
                 <img src={folderImage} className="folder-img" alt="folder-image" />
 
                 <Text className="folder-text">Educational documents</Text>
               </Box>
-              <Box className="folder" onClick={() => moveDocument(id, 'work')}>
+              <Box className="folder" onClick={() => handleMoveDocument('work')}>
                 <img src={folderImage} className="folder-img" alt="folder-image" />
 
                 <Text className="folder-text">Work documents</Text>
               </Box>
-              <Box className="folder" onClick={() => moveDocument(id, 'other')}>
+              <Box className="folder" onClick={() => handleMoveDocument('other')}>
                 <img src={folderImage} className="folder-img" alt="folder-image" />
 
                 <Text className="folder-text">Others</Text>
@@ -102,39 +110,41 @@ export const Folder: React.FC<FolderProps> = ({ id, name, isFolder }) => {
           </Box>
         </Modal>
       )}
-      <Box className="folder">
-        {isFolder ? (
-          <img src={folderImage} className="folder-img" alt="folder-image" />
-        ) : (
-          <img src={pdfImage} alt="folder-image" />
-        )}
-        {isFolder ? (
-          <Text className="folder-text">{name}</Text>
-        ) : (
-          <Text className="folder-text">{name.substring(0, 12)}</Text>
-        )}
+      {}
 
-        {!isFolder && (
+      {isFolder ? (
+        <Box className="folder">
+          <img src={folderImage} className="folder-img" alt="folder-image" />
+          <Text className="folder-text">{name}</Text>
+        </Box>
+      ) : (
+        <Box className="pdf">
+          <Link target="_blank" className="pdf-box" to={private_url}>
+            <img src={pdfImage} alt="folder-image" />
+            <Text className="folder-text">{name.substring(0, 12)}</Text>
+          </Link>
+
           <img
             className="three-dots-menu"
             src={threeDots}
             alt="three-dots-menu"
             onClick={() => setDropdownVisible(!isDropdownVisible)}
           />
-        )}
-        {!isFolder && isDropdownVisible && (
-          <Box className="folder-dropdown-menu" onClick={() => setDropdownVisible(!isDropdownVisible)}>
-            <Box className="folder-action" onClick={() => handleOpenModal('Move')}>
-              <MdMoveDown className="folder-action-icon" />
-              <Text className="folder-action-text">Move</Text>
+
+          {isDropdownVisible && (
+            <Box className="folder-dropdown-menu" onClick={() => setDropdownVisible(!isDropdownVisible)}>
+              <Box className="folder-action" onClick={() => handleOpenModal('Move')}>
+                <MdMoveDown className="folder-action-icon" />
+                <Text className="folder-action-text">Move</Text>
+              </Box>
+              <Box className="folder-action" onClick={() => handleOpenModal('Delete')}>
+                <MdDeleteOutline size={'16px'} className="folder-action-icon" />
+                <Text className="folder-action-text">Delete</Text>
+              </Box>
             </Box>
-            <Box className="folder-action" onClick={() => handleOpenModal('Delete')}>
-              <MdDeleteOutline size={'16px'} className="folder-action-icon" />
-              <Text className="folder-action-text">Delete</Text>
-            </Box>
-          </Box>
-        )}
-      </Box>
+          )}
+        </Box>
+      )}
     </>
   );
 };

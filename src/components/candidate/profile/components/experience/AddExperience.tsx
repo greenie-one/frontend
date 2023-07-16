@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Text, Box, Title, TextInput, Select, Checkbox, Button, Divider, Textarea } from '@mantine/core';
 import pdfIcon from '../../assets/pdfIcon.png';
 import { DateInput } from '@mantine/dates';
@@ -29,15 +29,16 @@ import {
   skillRate,
   documentTags,
 } from '../../constants/SelectionOptions';
-import { APIError } from '../../../../../utils/generic/httpClient';
 import axios from 'axios';
 import { docDepotAPIList } from '../../../../../assets/api/ApiList';
+import { ExperienceDocuments } from '../../types/ProfileGeneral';
 
 export const AddExperience = () => {
+  const [forceRender, setForceRender] = useState<boolean>(false);
   const [experienceChecked, setExperienceChecked] = useState(false);
   const [documentsChecked, setDocumentsChecked] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [documents, setDocuments] = useState<string[]>([]);
+  const [documents, setDocuments] = useState<ExperienceDocuments[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [workExperienceId, setworkExperienceId] = useState<string>('');
   const { authClient } = useGlobalContext();
@@ -68,23 +69,10 @@ export const AddExperience = () => {
   };
 
   const handlePrevPage = () => {
-    if (active < 4 && active > 0)
-      document.documentElement.scrollTo({
-        top: 0,
-        behavior: 'smooth',
-      });
+    if (active < 4 && active > 0) scrollToTop();
     if (active === 1) {
       setCandidateActivePage('Profile');
-      workExperienceForm.values.designation = '';
-      workExperienceForm.values.companyId = '';
-      workExperienceForm.values.companyName = '';
-      workExperienceForm.values.companyType = '';
-      workExperienceForm.values.linkedInUrl = '';
-      workExperienceForm.values.workEmail = '';
-      workExperienceForm.values.workType = '';
-      workExperienceForm.values.modeOfWork = '';
-      workExperienceForm.values.startDate = '';
-      workExperienceForm.values.endDate = '';
+      workExperienceForm.reset();
     }
     if (active === 2) {
       setActive(1);
@@ -97,16 +85,7 @@ export const AddExperience = () => {
   const handleExperienceContinue = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    if (
-      !workExperienceForm.validateField('designation').hasError &&
-      !workExperienceForm.validateField('companyType').hasError &&
-      !workExperienceForm.validateField('companyName').hasError &&
-      !workExperienceForm.validateField('workEmail').hasError &&
-      !workExperienceForm.validateField('startDate').hasError &&
-      !workExperienceForm.validateField('workType').hasError &&
-      !workExperienceForm.validateField('modeOfwork').hasError &&
-      !workExperienceForm.validateField('department').hasError
-    ) {
+    if (!workExperienceForm.validate().hasErrors) {
       showLoadingNotification({ title: 'Please wait !', message: 'We are adding your work experience.' });
       workExperienceForm.clearErrors();
       const requestBody: ExperienceRequestBody = {
@@ -125,7 +104,7 @@ export const AddExperience = () => {
       if (workExperienceForm.values.endDate !== '') {
         requestBody.companyEndDate = workExperienceForm.values.endDate;
       }
-      const res: Result<createExperience, APIError> = await HttpClient.callApiAuth(
+      const res: Result<createExperience> = await HttpClient.callApiAuth(
         {
           url: `${workExperienceAPiList.postWorkExperience}`,
           method: 'POST',
@@ -147,19 +126,14 @@ export const AddExperience = () => {
   };
 
   const handleAddSkill = () => {
-    if (
-      !skillForm.validateField('skillName').hasError &&
-      !skillForm.validateField('expertise').hasError &&
-      workExperienceId !== null
-    ) {
+    if (!skillForm.validate().hasErrors && workExperienceId !== null) {
       const newSkill: Skill = {
         skillName: skillForm.values.skillName,
         expertise: skillForm.values.expertise,
         workExperience: workExperienceId,
       };
       setSelectedSkills((prevSkills: Skill[]) => [...prevSkills, newSkill]);
-      skillForm.values.skillName = '';
-      skillForm.values.expertise = '';
+      skillForm.reset();
     }
   };
 
@@ -205,6 +179,7 @@ export const AddExperience = () => {
   };
 
   const handleAddDocument = async () => {
+    showLoadingNotification({ title: 'Please Wait !', message: 'Please wait while we add your documents' });
     if (selectedFile) {
       const formData = new FormData();
       formData.append('document', selectedFile);
@@ -216,22 +191,23 @@ export const AddExperience = () => {
           },
         });
         if (res.data) {
+          const requestBody = {
+            name: selectedFile.name,
+            type: 'work',
+            private_url: res.data.url,
+            workExperience: workExperienceId,
+          };
           const resp: Result<UpdateDocumentResponseType> = await HttpClient.callApiAuth(
             {
               url: `${docDepotAPIList.addDocument}`,
               method: 'POST',
-              body: {
-                name: selectedFile.name,
-                type: 'work',
-                private_url: res.data.url,
-              },
+              body: requestBody,
             },
             authClient
           );
           if (resp.ok) {
             showSuccessNotification({ title: 'Success !', message: 'Document added successfully !' });
-            const newDocument: string = selectedFile.name;
-            setDocuments((prevDocument) => [...prevDocument, newDocument]);
+            setForceRender(!forceRender);
             setSelectedFile(null);
           } else {
             showErrorNotification(resp.error.code);
@@ -243,31 +219,55 @@ export const AddExperience = () => {
     }
   };
 
-  const handleRemoveDocument = (index: number) => {
-    if (index < 0 || index >= documents.length) {
-      return;
+  const handleRemoveDocument = async (id: string) => {
+    showLoadingNotification({ title: 'Please Wait', message: 'Wait while we delete the document' });
+    const res: Result<DeleteDocumentResponseType> = await HttpClient.callApiAuth(
+      {
+        url: `${docDepotAPIList.deleteDocument}/${id}`,
+        method: 'DELETE',
+      },
+      authClient
+    );
+    if (res.ok) {
+      showSuccessNotification({ title: 'Success !', message: 'Document deleted successfully !' });
+      setForceRender(!forceRender);
+    } else {
+      showErrorNotification(res.error.code);
     }
-    setDocuments((prevDocuments) => {
-      const newDocuments = [...prevDocuments];
-      newDocuments.splice(index, 1);
-      return newDocuments;
-    });
   };
 
   const handleDocumentContinue = () => {
+    scrollToTop();
     setActive(4);
   };
 
-  const handleModalContinue = () => {
+  const handleGoToVerification = () => {
     scrollToTop();
     setCandidateActivePage('All Experiences');
-    close();
+    setSelectedExperience(workExperienceId);
   };
 
-  const handleGoToVerification = () => {
-    handleModalContinue();
-    // setSelectedExperience(workExperienceId);
+  const getExperienceDocument = async () => {
+    const res: Result<ExperienceDocuments[]> = await HttpClient.callApiAuth(
+      {
+        url: `${docDepotAPIList.getAllDocuments}/work`,
+        method: 'GET',
+      },
+      authClient
+    );
+    if (res.ok) {
+      const filtered = res.value.filter((document) => document.workExperience === workExperienceId);
+      setDocuments(filtered);
+    } else {
+      showErrorNotification(res.error.code);
+    }
   };
+
+  useEffect(() => {
+    if (authToken) {
+      getExperienceDocument();
+    }
+  }, [forceRender]);
 
   return (
     <section className="container add-work-experience">
@@ -560,7 +560,13 @@ export const AddExperience = () => {
         <Box>
           <Box className="documents-input-box">
             <img src={uploadIcon} alt="upload icon" />
-            <input type="file" ref={fileInputRef} style={{ display: 'none' }} onChange={handleUploadDocument} />
+            <input
+              type="file"
+              ref={fileInputRef}
+              style={{ display: 'none' }}
+              accept=".pdf,.doc,.docx"
+              onChange={handleUploadDocument}
+            />
             <Text className="add-document-heading">Add your work documents</Text>
             {selectedFile === null && (
               <Button className="add-document-sub-heading" onClick={() => fileInputRef.current?.click()}>
@@ -587,11 +593,11 @@ export const AddExperience = () => {
           </Box>
           {documents.length > 0 && (
             <Box className="added-documents-wrapper">
-              {documents.map((document, index) => {
+              {documents.map(({ _id, name }, index) => {
                 return (
-                  <Box key={index}>
+                  <Box key={_id}>
                     <Box className="added-documents">
-                      <Text>{document}</Text>
+                      <Text>{name.substring(0, 25)}...</Text>
                       <Select
                         data={documentTags}
                         className="inputClass"
@@ -611,7 +617,7 @@ export const AddExperience = () => {
                         <BsCheckLg color="#17a672" size={'16px'} />
                         <Text color="#17a672">Added</Text>
                       </Box>
-                      <Box className="add-document-icon" onClick={() => handleRemoveDocument(index)}>
+                      <Box className="add-document-icon" onClick={() => handleRemoveDocument(_id)}>
                         <MdOutlineDelete size={'18px'} color="#697082" />
                         <Text color="#697082">Remove</Text>
                       </Box>
@@ -683,7 +689,7 @@ export const AddExperience = () => {
                 return (
                   <Box className="folder" key={index}>
                     <img src={pdfIcon} alt="folder-image" />
-                    <Text className="folder-text">{document?.substring(0, 10)}...</Text>
+                    <Text className="folder-text">{document.name.substring(0, 10)}...</Text>
                   </Box>
                 );
               })}
