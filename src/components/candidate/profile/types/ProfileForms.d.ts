@@ -29,8 +29,8 @@ type workExperienceFormType = {
   workEmail: string;
   companyId: string;
   reasonForLeaving: string;
-  startDate: Date | null;
-  endDate?: Date | null;
+  startDate: string;
+  endDate?: string;
   workType: string;
   modeOfWork: string;
   salary: string;
@@ -45,8 +45,8 @@ type residentialInfoFormType = {
   typeOfAddress: string;
   state: '';
   country: '';
-  start_date: Date | null;
-  end_date?: Date | null;
+  start_date: string;
+  end_date?: string;
 };
 
 type skillFormType = {

@@ -1,5 +1,4 @@
 import { Title, Text, Box, Button, TextInput, Select, CopyButton } from '@mantine/core';
-import { IResidentialInfoDetailsCardProps } from '../../types/ProfileCardProps';
 import React, { useState } from 'react';
 import { MdOutlineDelete, MdOutlineContentCopy } from 'react-icons/md';
 import { CgSandClock, CgProfile } from 'react-icons/cg';
@@ -10,7 +9,7 @@ import { relations } from '../../constants/SelectionOptions';
 import noData from '../../assets/noData.png';
 import { ResidentialInfoPeerType } from '../../types/ProfileGeneral';
 import { useProfileContext } from '../../context/ProfileContext';
-export const VerifyResidentialInfo: React.FC<IResidentialInfoDetailsCardProps> = ({
+export const VerifyResidentialInfo: React.FC<ResidentialInfoDetailsCardProps> = ({
   address_line_1,
   address_line_2,
   landmark,

@@ -1,22 +1,22 @@
-export interface IDocument {
+type DocsType = {
   id_type: string;
   isVerified: boolean;
-}
-
-export type DocumentsResponse = {
-  ids: IDocument[];
 };
 
-export interface IUserProfileResponse {
+type DocumentsResponse = {
+  ids: DocsType[];
+};
+
+type UserProfileResponse = {
   _id: string;
   firstName: string;
   lastName: string;
   bio: string;
   descriptionTags: string[];
   profilePic: string;
-}
+};
 
-export interface IWorkExperienceResponse {
+type WorkExperience = {
   workExpId: string;
   image: string | null;
   designation: string;
@@ -30,13 +30,13 @@ export interface IWorkExperienceResponse {
   isVerified: boolean;
   verifiedBy: [] | null;
   companyType: string;
-}
-
-export type workExperienceResponse = {
-  workExperinces: IWorkExperienceResponse[];
 };
 
-export interface IResidendialInfoResponse {
+type workExperienceResponse = {
+  workExperinces: WorkExperience[];
+};
+
+type ResidentialInfoResponse = {
   _id: string;
   address_line_1: string;
   address_line_2: string;
@@ -49,75 +49,73 @@ export interface IResidendialInfoResponse {
   start_date: Date;
   end_date: Date;
   isVerified: boolean;
-}
+};
 
-export type ResidentialInfoRes = {
+type ResidentialInfoRes = {
   residentialInfo: {
-    residentialInfos: IResidendialInfoResponse[];
+    residentialInfos: ResidentialInfoResponse[];
   };
 };
 
-export interface ISkillResponse {
-  _id: string;
+type SkillResponse = {
+  skillId: string;
   skillName: string;
   expertise: string;
   isVerified: boolean;
-}
-
-export type SkillResponse = {
-  skills: ISkillResponse[];
+  workExperience: string;
 };
 
-export interface ISkill {
+type Skill = {
   skillName: string;
   expertise: string;
   workExperience: string;
-}
+};
 
-export interface IAadharVerificationResponse {
+type AadharVerificationResponse = {
   requestId: string;
   taskId: string;
-}
+};
 
-export type IAddAadhar = {
+type AddAadhar = {
   request_id: string;
   taskId: string;
 };
 
-export type verifyAadhar = {
+type verifyAadhar = {
   success: boolean;
   aadhar: string;
 };
 
-export type verifyPan = {
+type verifyPan = {
   success: boolean;
   pan: string;
 };
-export type verifyLicence = {
+
+type verifyLicence = {
   success: boolean;
   driving_licence: string;
 };
 
-export type createExperience = {
+type createExperience = {
   success: boolean;
   workExperienceId: string;
 };
 
-export type createResidentialInfo = {
+type createResidentialInfo = {
   success: boolean;
   residentialInfo: string;
 };
 
-export type createSkill = {
+type createSkill = {
   success: boolean;
   skill: string;
 };
 
-export type UpdateResponse = {
+type UpdateResponse = {
   success: boolean;
   message: string;
 };
-export type DeleteResponse = {
+type DeleteResponse = {
   success: boolean;
   message: string;
 };

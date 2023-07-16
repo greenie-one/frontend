@@ -1,9 +1,8 @@
 import { Text, Box, Button } from '@mantine/core';
 import { MdVerified } from 'react-icons/md';
 import { CgSandClock } from 'react-icons/cg';
-import { IVerificationIdCardProp } from '../../types/ProfileCardProps';
 
-export const IDCard: React.FC<IVerificationIdCardProp> = ({ documentName, isVerified }) => {
+export const IDCard: React.FC<VerificationIdCardProp> = ({ documentName, isVerified }) => {
   return (
     <Box className="verificationIdCard">
       <Box className="verificationIdImg"></Box>

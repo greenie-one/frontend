@@ -1,4 +1,4 @@
-export type candidateActivePageState =
+type candidateActivePageState =
   | 'Profile'
   | 'All Experiences'
   | 'Add Experience'
@@ -12,19 +12,19 @@ export type candidateActivePageState =
   | 'Congratulation Screen'
   | 'Verify Address';
 
-export type DrawerState = {
+type DrawerState = {
   firstDrawerOpened: boolean;
   secondDrawerOpened: boolean;
 };
 
-export type DrawerAction =
+type DrawerAction =
   | { type: 'OPEN_FIRST_DRAWER' }
   | { type: 'CLOSE_FIRST_DRAWER' }
   | { type: 'OPEN_SECOND_DRAWER' }
   | { type: 'CLOSE_SECOND_DRAWER' };
 
-export type ReviewStepState = {
+type ReviewStepState = {
   currentStep: number;
 };
 
-export type ReviewStepAction = { type: ReviewActionType };
+type ReviewStepAction = { type: ReviewActionType };

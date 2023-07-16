@@ -16,14 +16,12 @@ import {
   showSuccessNotification,
 } from '../../../../../utils/functions/showNotification';
 import { peerType } from '../../constants/SelectionOptions';
-import { Peer, IWorkExperienceVerification } from '../../types/ProfileGeneral';
-import { ReviewStepAction, ReviewStepState } from '../../types/ProfileActions';
+import { Peer, WorkExperienceVerification } from '../../types/ProfileGeneral';
 export enum ReviewActionType {
   NEXT_STEP,
   PREVIOUS_STEP,
   RESET_STEP,
 }
-import { ISkill, addPeerResponse } from '../../types/ProfileResponses';
 import { peerVerificationAPIList } from '../../../../../assets/api/ApiList';
 import { HttpClient, Result } from '../../../../../utils/generic/httpClient';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
@@ -37,8 +35,8 @@ const attributes = [
   { send: false, attribute: 'Exit formalities' },
 ];
 
-export const VerifyExperience: React.FC<IWorkExperienceVerification> = ({
-  workExId,
+export const VerifyExperience: React.FC<WorkExperienceVerification> = ({
+  workExpId,
   designation,
   companyName,
   isVerified,
@@ -78,7 +76,7 @@ export const VerifyExperience: React.FC<IWorkExperienceVerification> = ({
 
   const { currentStep } = verifificationStepState;
 
-  const { setCandidateActivePage, setSelectedExperience, scrollToTop, selectedSkills, setSelectedSkills } =
+  const { setCandidateActivePage, skillData, setSelectedExperience, scrollToTop, selectedSkills, setSelectedSkills } =
     useProfileContext();
 
   const peerVerificationForm = useForm<PeerVerificationFormType>({
@@ -109,7 +107,7 @@ export const VerifyExperience: React.FC<IWorkExperienceVerification> = ({
         email: peerVerificationForm.values.email,
         phone: peerVerificationForm.values.contactNumber,
         peerType: peerVerificationForm.values.peerType,
-        workExperience: workExId,
+        workExperience: workExpId,
       };
       showLoadingNotification({ title: 'Please wait !', message: 'Please wait while we add peer to the list' });
       const res: Result<addPeerResponse> = await HttpClient.callApiAuth(
@@ -349,6 +347,7 @@ export const VerifyExperience: React.FC<IWorkExperienceVerification> = ({
                   >
                     Document
                   </Box>
+                  {/* --- Check Here --- */}
                   <Box
                     onClick={() => setSelectionPage('Skill')}
                     className={selectionPage === 'Skill' ? 'selector active' : 'selector'}
@@ -405,33 +404,28 @@ export const VerifyExperience: React.FC<IWorkExperienceVerification> = ({
                         </Text>
                       </Box>
                     </Box>
-                    {/* {addedPeers[activePeer].skills.length > 0 && (
-                      <Box>
-                        <Box className="selected-skills-header">
-                          <Checkbox checked readOnly />
-                          <Text>Name</Text>
-                          <Text>Expertise</Text>
-                        </Box>
-                        <Box className="selected-skills">
-                          {addedPeers[activePeer].skills.map(({ skillName, expertise }, index) => {
+                    <Box>
+                      <Box className="selected-attribute-header">
+                        <Checkbox checked indeterminate readOnly />
+                        <Text>Select Skills To Verify</Text>
+                      </Box>
+                      <Box className="selected-skills">
+                        {skillData
+                          .filter((skill) => skill.workExperience === workExpId)
+                          .map((skill, idx) => {
                             return (
-                              <Box key={index}>
+                              <Box key={idx}>
                                 <Box className="selected-skill">
                                   <Checkbox />
-                                  <Text>{skillName}</Text>
-                                  <Text>{expertise}</Text>
+                                  <Text>{skill.skillName}</Text>
+                                  <Text>{skill.expertise}</Text>
                                 </Box>
-                                {addedPeers[activePeer].skills.length - 1 !== index && <Divider color="#ebebeb" />}
+                                {/* {addedPeers[activePeer].skills.length - 1 !== index && <Divider color="#ebebeb" />} */}
                               </Box>
                             );
                           })}
-                        </Box>
-                        <Box className="action-btn">
-                          <RiAddCircleLine className="action-icon" />
-                          <Text className="action-text">Add more</Text>
-                        </Box>
                       </Box>
-                    )} */}
+                    </Box>
                   </Box>
                 )}
                 {selectionPage === 'Attributes' && (
@@ -550,7 +544,7 @@ export const VerifyExperience: React.FC<IWorkExperienceVerification> = ({
           <Box className="skills-list">
             <Text className="document-action-heading">Skills</Text>
             <Box className="add-skills-wrapper">
-              {selectedSkills.map((skill: ISkill, index: number) => {
+              {selectedSkills.map((skill: Skill, index: number) => {
                 const { expertise, skillName } = skill;
                 return (
                   <Box key={index} className="add-skill-box">

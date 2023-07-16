@@ -10,14 +10,12 @@ import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 import { useState } from 'react';
 import { ExperienceDetails } from './ExperienceDetails';
 
-import { IWorkExperienceResponse } from '../../types/ProfileResponses';
-
 export const AllExperiences = () => {
   const { workExperienceData, selectedExperience, setSelectedExperience, setCandidateActivePage } = useProfileContext();
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
   const [checked, setChecked] = useState<boolean>(false);
-  const [experienceDetails, setExperienceDetails] = useState<IWorkExperienceResponse | null>(null);
+  const [experienceDetails, setExperienceDetails] = useState<WorkExperience | null>(null);
   const handleToggleWorkExperienceDetails = (): void => {
     setCandidateActivePage('Profile');
     setSelectedExperience(null);
@@ -128,7 +126,7 @@ export const AllExperiences = () => {
       )}
       {selectedExperience !== null && experienceDetails === null && (
         <VerifyExperience
-          workExId={selectedExperience.workExpId}
+          workExpId={selectedExperience.workExpId}
           image={selectedExperience.image}
           companyName={selectedExperience.companyName}
           designation={selectedExperience.designation}
