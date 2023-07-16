@@ -1,15 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Outlet, Navigate } from 'react-router-dom';
-
 import { LoadingState } from '../../components/common/LoadingState';
 
-type AuthTokensType = {
-  accessToken: string | undefined;
-  refreshToken: string | undefined;
-};
-
 export const AuthVerificationLayout: React.FC = (): JSX.Element => {
-  const [authTokens, setAuthTokens] = useState<AuthTokensType>({} as AuthTokensType);
+  const [authTokens, setAuthTokens] = useState<AuthTokens>({} as AuthTokens);
   const [fetchingToken, setFetchingToken] = useState<boolean>(true);
 
   const getAuthTokens = () => {
