@@ -3,6 +3,8 @@ import { Text, Box, Button, Title } from '@mantine/core';
 import tcsLogo from '../../assets/tscLogo.png';
 import { CgSandClock } from 'react-icons/cg';
 import { MdVerified } from 'react-icons/md';
+import { BiEditAlt } from 'react-icons/bi';
+import { AiOutlineDelete } from 'react-icons/ai';
 
 export const ExperienceDetails: React.FC<WorkExperience> = ({
   designation,
@@ -24,23 +26,33 @@ export const ExperienceDetails: React.FC<WorkExperience> = ({
 
   return (
     <Box className="experience-details-screen">
-      <Box className="experience-details">
-        <Box className="company-logo" style={backgroundStyle}>
-          <MdVerified className="verified-icon" color="#17a672" size="22px" />
-        </Box>
+      <Box className="experience-details-wrapper">
+        <Box className="experience-details">
+          <Box className="company-logo" style={backgroundStyle}>
+            <MdVerified className="verified-icon" color="#17a672" size="22px" />
+          </Box>
 
-        <Box className="experience-details-text-box">
-          <Text className="designation">{designation}</Text>
-          <Text className="company-name">{companyName}</Text>
-          {isVerified ? (
-            <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
-              Verified
-            </Button>
-          ) : (
-            <Button leftIcon={<CgSandClock size={'16px'} />} className="pending">
-              Pending
-            </Button>
-          )}
+          <Box className="experience-details-text-box">
+            <Text className="designation">{designation}</Text>
+            <Text className="company-name">{companyName}</Text>
+            {isVerified ? (
+              <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
+                Verified
+              </Button>
+            ) : (
+              <Button leftIcon={<CgSandClock size={'16px'} />} className="pending">
+                Pending
+              </Button>
+            )}
+          </Box>
+        </Box>
+        <Box className="actions-icons">
+          <Box className="action-icon">
+            <BiEditAlt />
+          </Box>
+          <Box className="action-icon">
+            <AiOutlineDelete />
+          </Box>
         </Box>
       </Box>
       <Box className="about-company">
