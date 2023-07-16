@@ -45,4 +45,5 @@ type ProfileContextType = {
   setCandidateActivePage: React.Dispatch<React.SetStateAction<candidateActivePageState>>;
   residentialInfoVerificationForm: UseFormReturnType<residentialInfoVerificationFormType>;
   peerAddressVerificationForm: UseFormReturnType<peerAddressVerificationFromType>;
+  deleteWorkExperience: (id: string) => void;
 };

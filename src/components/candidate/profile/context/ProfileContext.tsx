@@ -156,6 +156,23 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
     }
   };
 
+  const deleteWorkExperience = async (id: string) => {
+    showLoadingNotification({ title: 'Please wait !', message: 'Wait while we delete your Work Experience' });
+    const res = await HttpClient.callApiAuth(
+      {
+        url: `${workExperienceAPiList.deleteWorkExperience}/${id}`,
+        method: 'DELETE',
+      },
+      authClient
+    );
+    if (res.ok) {
+      setForceRender(!forceRender);
+      showSuccessNotification({ title: 'Success !', message: 'Work Experience deleted successfully' });
+    } else {
+      showErrorNotification(res.error.code);
+    }
+  };
+
   //------------------------------RESIDENTIAL INFO----------------------------------------
   const [residentialInfoData, setResidentialInfoData] = useState<ResidentialInfoResponse[]>([]);
 
@@ -285,6 +302,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
         setSelectedResidentialInfo,
         residentialInfoVerificationForm,
         peerAddressVerificationForm,
+        deleteWorkExperience,
       }}
     >
       {children}
