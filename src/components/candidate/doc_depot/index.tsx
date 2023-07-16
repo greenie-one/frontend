@@ -33,7 +33,7 @@ export const DocDepot = () => {
     <main>
       <ProfileBar />
       <Box className="container">
-        <Box onClick={() => setDocDepotActivePage(0)}>
+        <Box>
           <DocDepotNavbar />
         </Box>
 
