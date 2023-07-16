@@ -5,4 +5,6 @@ type DocDepotContextType = {
   experienceDocuments: IDocumentType[];
   educationDocuments: IDocumentType[];
   otherDocuments: IDocumentType[];
+  setForceRender: React.Dispatch<React.SetStateAction<boolean>>;
+  forceRender: boolean;
 };
