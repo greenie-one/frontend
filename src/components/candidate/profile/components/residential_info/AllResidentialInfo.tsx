@@ -18,7 +18,6 @@ export const AllResidentialInfo = () => {
     setCandidateActivePage,
     residentialInfoData,
     deleteResidentialInfo,
-    getResidentialInfo,
     selectedResidentialInfo,
     setSelectedResidentialInfo,
   } = useProfileContext();
@@ -61,7 +60,6 @@ export const AllResidentialInfo = () => {
 
   const handleDeleteResidentialInfo = (_id: string): void => {
     deleteResidentialInfo(_id);
-    getResidentialInfo();
     deleteModalClose();
     setCandidateActivePage('Profile');
   };
