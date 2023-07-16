@@ -32,10 +32,10 @@ export const ExperienceCard: React.FC<ExperienceCardProp> = ({
         <Text className="since-text">Since</Text>
 
         {companyEndYear === null ? (
-          <Text> {companyStartYear?.toString().substring(0, 4)}-Present</Text>
+          <Text> {companyStartYear?.toString().substring(11, 15)} - Present</Text>
         ) : (
           <Text className="tenure">
-            {companyStartYear?.toString().substring(0, 4)}-{companyEndYear?.toString().substring(0, 4)}
+            {companyStartYear?.toString().substring(11, 15)} - {companyEndYear?.toString().substring(11, 15)}
           </Text>
         )}
       </Box>
