@@ -53,9 +53,9 @@ export const Navbar = () => {
           </List>
         </nav>
         <Group className={classes.headerBtnsContainer}>
-          <Link to="/waitlist">
+          <Link to="/auth">
             <Button variant={'fill'} outline={true} classNames={classes.tryBtn}>
-              Join The Waitlist
+              Signup
             </Button>
           </Link>
         </Group>
@@ -86,9 +86,9 @@ export const Navbar = () => {
               </Link>
             </List>
             <Group className={classes.mobileHeaderBtnsContainer}>
-              <Link to="/waitlist" onClick={close}>
+              <Link to="/auth" onClick={close}>
                 <Button variant={'fill'} outline={true} classNames={classes.mobileTryBtn}>
-                  Join The Waitlist
+                  Signup
                 </Button>
               </Link>
             </Group>
