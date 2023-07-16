@@ -97,8 +97,8 @@ export const AllExperiences = () => {
                   <Box className="tenure-box">
                     <Text className="since-text">Since</Text>
                     <Text className="tenure">
-                      {workExperience.companyStartDate?.toString().substring(0, 4)}-
-                      {workExperience.companyEndDate?.toString().substring(0, 4)}
+                      {workExperience.companyStartDate?.toString().substring(11, 15)} -{' '}
+                      {workExperience.companyEndDate?.toString().substring(11, 15)}
                     </Text>
                   </Box>
                 </Box>
