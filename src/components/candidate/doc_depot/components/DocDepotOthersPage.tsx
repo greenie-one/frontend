@@ -16,10 +16,10 @@ export const DocDepotOthersPage = () => {
       </Box>
 
       <Box className="folder-wrapper">
-        {otherDocuments.map(({ _id, name }, index) => {
+        {otherDocuments.map(({ _id, name, private_url }, index) => {
           return (
             <Box key={index}>
-              <Folder id={_id} name={name} isFolder={false} />
+              <Folder id={_id} name={name} isFolder={false} private_url={private_url} />
             </Box>
           );
         })}

@@ -11,7 +11,7 @@ export const modeOfWork = [
 ];
 
 export const companyTypes = [
-  { value: 'Startup', label: 'Start-up (Funded)' },
+  { value: 'Start-up (Funded)', label: 'Start-up (Funded)' },
   { value: 'Early Stage Startup', label: 'Early Stage Startup' },
   { value: 'Startup (Profitable)', label: 'Startup (Profitable)' },
   { value: 'Family Owned Business', label: 'Family Owned Business' },

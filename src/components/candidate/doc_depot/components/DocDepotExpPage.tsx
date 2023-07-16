@@ -15,10 +15,10 @@ export const DocDepotExpPage = () => {
         <Text className="text">Work Experience({experienceDocuments.length})</Text>
       </Box>
       <Box className="folder-wrapper">
-        {experienceDocuments.map(({ _id, name }, index) => {
+        {experienceDocuments.map(({ _id, name, private_url }, index) => {
           return (
             <Box key={index}>
-              <Folder id={_id} name={name} isFolder={false} />
+              <Folder id={_id} name={name} isFolder={false} private_url={private_url} />
             </Box>
           );
         })}

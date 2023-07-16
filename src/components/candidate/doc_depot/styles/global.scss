@@ -48,20 +48,27 @@ $dark: #191919;
   margin-bottom: 4rem;
 }
 
-.folder {
+.pdf {
   border: 1px solid $lighterGray;
   border-radius: 0.5rem;
-  display: grid;
-  grid-template-columns: 20% 60% 5%;
-  align-items: center;
-  justify-content: space-between;
   padding: 1rem 0.5rem;
   font-size: 16px;
   height: 80px;
   cursor: pointer;
-  margin-bottom: 1rem;
-  transition: all 0.2s ease-in-out;
+  display: grid;
+  grid-template-columns: 90% 5%;
+  align-items: center;
+  justify-content: space-between;
   position: relative;
+  margin-block: 0.5rem;
+
+  .pdf-box {
+    display: grid;
+    grid-template-columns: 20% 60% 10%;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.2s ease-in-out;
+  }
 
   .three-dots-menu {
     visibility: hidden;
@@ -73,20 +80,6 @@ $dark: #191919;
     .three-dots-menu {
       visibility: visible;
     }
-  }
-
-  .folder-img {
-    width: 45px;
-    margin-right: 0.5rem;
-  }
-
-  .folder-text {
-    font-family: Inter;
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 24px;
-    letter-spacing: -0.02em;
-    text-align: left;
   }
 
   .folder-dropdown-menu {
@@ -115,6 +108,36 @@ $dark: #191919;
         background-color: $lightGray;
       }
     }
+  }
+}
+
+.folder {
+  border: 1px solid $lighterGray;
+  border-radius: 0.5rem;
+  display: grid;
+  grid-template-columns: 20% 60% 5%;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 0.5rem;
+  font-size: 16px;
+  height: 80px;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  transition: all 0.2s ease-in-out;
+  position: relative;
+
+  .folder-img {
+    width: 45px;
+    margin-right: 0.5rem;
+  }
+
+  .folder-text {
+    font-family: Inter;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: -0.02em;
+    text-align: left;
   }
 }
 

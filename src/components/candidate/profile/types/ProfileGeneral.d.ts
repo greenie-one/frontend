@@ -75,3 +75,11 @@ type ResidentialInfoPeerType = {
   peerType: string;
   phone: string;
 };
+
+type ExperienceDocuments = {
+  _id: string;
+  name: string;
+  type: string;
+  private_url: string;
+  workExperience: string;
+};
