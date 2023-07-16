@@ -4,7 +4,6 @@ import noData from '../../assets/noData.png';
 import { useProfileContext } from '../../context/ProfileContext';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { ResidentialInfoCard } from './ResidentialInfoCard';
-import { IResidendialInfoResponse } from '../../types/ProfileResponses';
 
 export const ResidentialInfoSection = () => {
   const { residentialInfoData, setCandidateActivePage, scrollToTop, setSelectedResidentialInfo } = useProfileContext();
@@ -19,7 +18,7 @@ export const ResidentialInfoSection = () => {
     scrollToTop();
   };
 
-  const handleGoToVerification = (info: IResidendialInfoResponse) => {
+  const handleGoToVerification = (info: ResidentialInfoResponse) => {
     setCandidateActivePage('All Residential Info');
     setSelectedResidentialInfo(info);
     scrollToTop();

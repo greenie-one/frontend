@@ -3,13 +3,13 @@ import { Outlet, Navigate } from 'react-router-dom';
 
 import { LoadingState } from '../../components/common/LoadingState';
 
-interface IAuthTokensType {
+type AuthTokensType = {
   accessToken: string | undefined;
   refreshToken: string | undefined;
-}
+};
 
 export const AuthVerificationLayout: React.FC = (): JSX.Element => {
-  const [authTokens, setAuthTokens] = useState<IAuthTokensType>({} as IAuthTokensType);
+  const [authTokens, setAuthTokens] = useState<AuthTokensType>({} as AuthTokensType);
   const [fetchingToken, setFetchingToken] = useState<boolean>(true);
 
   const getAuthTokens = () => {

@@ -3,13 +3,13 @@ import { Link } from 'react-router-dom';
 import { Box } from '@mantine/core';
 import { MdVerified } from 'react-icons/md';
 import { GrStar } from 'react-icons/gr';
-import { ISearchListContentType, ISearchListObject } from '../../types/ProfileGeneral';
+import { SearchListContentType, SearchListObject } from '../../types/ProfileGeneral';
 import dummyThumbnail from '../../assets/johnMarston.png';
 
-export const SearchResult: React.FC<ISearchListContentType> = ({ results, classes }): JSX.Element => {
+export const SearchResult: React.FC<SearchListContentType> = ({ results, classes }): JSX.Element => {
   return (
     <ul className={classes.searchList}>
-      {results.map((profile: ISearchListObject, idx: number) => {
+      {results.map((profile: SearchListObject, idx: number) => {
         return (
           <Link to="/profile" key={idx}>
             <li className={classes.searchListItem}>

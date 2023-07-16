@@ -11,18 +11,16 @@ import {
   showLoadingNotification,
 } from '../../../../../utils/functions/showNotification';
 import { HttpClient, Result } from '../../../../../utils/generic/httpClient';
-import { ISkill, createSkill } from '../../types/ProfileResponses';
 import { skillRate } from '../../constants/SelectionOptions';
-import { SkillRequestBody } from '../../types/ProfileRequests';
 
 export const AddSkills = () => {
   const { setCandidateActivePage, getSkills, skillForm, scrollToTop } = useProfileContext();
-  const [skills, setSkills] = useState<ISkill[]>([]);
+  const [skills, setSkills] = useState<Skill[]>([]);
   const { authClient } = useGlobalContext();
 
   const handleAddSkill = () => {
     if (!skillForm.validateField('skillName').hasError && !skillForm.validateField('expertise').hasError) {
-      const newSkill: ISkill = {
+      const newSkill: Skill = {
         skillName: skillForm.values.skillName,
         expertise: skillForm.values.expertise,
         workExperience: '',

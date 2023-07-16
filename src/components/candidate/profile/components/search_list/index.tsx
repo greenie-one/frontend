@@ -6,18 +6,18 @@ import { profileAPIList } from '../../../../../assets/api/ApiList';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
 import { UseStylesType } from '../../types/ProfileGeneral';
 import { HttpClient, Result } from '../../../../../utils/generic/httpClient';
-import { ISearchListObject } from '../../types/ProfileGeneral';
+import { SearchListObject } from '../../types/ProfileGeneral';
 import { SearchResponse } from '../../types/ProfileGeneral';
 
-interface ISearchListPropsType {
+type SearchListPropsType = {
   searchQuery: string;
   setShowSearchList: React.Dispatch<React.SetStateAction<boolean>>;
-}
+};
 
-export const SearchList: React.FC<ISearchListPropsType> = ({ searchQuery }): JSX.Element => {
+export const SearchList: React.FC<SearchListPropsType> = ({ searchQuery }): JSX.Element => {
   const { classes } = useStyles();
 
-  const [profilesData, setProfilesData] = useState<ISearchListObject[]>([]);
+  const [profilesData, setProfilesData] = useState<SearchListObject[]>([]);
   const [fetchingData, setFetchingData] = useState<boolean>(true);
   const [error, setError] = useState<boolean>(false);
   const { authClient } = useGlobalContext();

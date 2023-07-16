@@ -7,7 +7,6 @@ import { MdVerified, MdAddLocationAlt } from 'react-icons/md';
 import { CgSandClock } from 'react-icons/cg';
 import location from '../../assets/location.png';
 import { ResidentialInfoDetails } from './ResidentialInfoDetails';
-import { IResidendialInfoResponse } from '../../types/ProfileResponses';
 import { VerifyResidentialInfo } from './VerifyResidentialInfo';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 
@@ -16,7 +15,7 @@ type VerificationType = 'MySelf' | 'Peer';
 export const AllResidentialInfo = () => {
   const { setCandidateActivePage, residentialInfoData, selectedResidentialInfo, setSelectedResidentialInfo } =
     useProfileContext();
-  const [infoDetails, setInfoDetails] = useState<IResidendialInfoResponse | null>(null);
+  const [infoDetails, setInfoDetails] = useState<ResidentialInfoResponse | null>(null);
 
   const [modalStep, setModalStep] = useState<number>(1);
   const isMobile = useMediaQuery('(max-width: 768px)');

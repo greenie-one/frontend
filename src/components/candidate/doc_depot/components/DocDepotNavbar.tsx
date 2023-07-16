@@ -4,7 +4,11 @@ import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 import { docDepotAPIList } from '../../../../assets/api/ApiList';
 import { useGlobalContext } from '../../../../context/GlobalContext';
 import { useRef } from 'react';
-import { showErrorNotification, showSuccessNotification } from '../../../../utils/functions/showNotification';
+import {
+  showErrorNotification,
+  showSuccessNotification,
+  showLoadingNotification,
+} from '../../../../utils/functions/showNotification';
 import axios from 'axios';
 import { HttpClient, Result } from '../../../../utils/generic/httpClient';
 import { useDocDepotContext } from '../context/DocDepotContext';
@@ -13,7 +17,7 @@ export const DocDepotNavbar = () => {
   const { classes: inputClasses } = inputStyles();
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
-  const { documentForm } = useDocDepotContext();
+  const { documentForm, setForceRender, forceRender } = useDocDepotContext();
   const { authClient } = useGlobalContext();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const openFileInput = () => {
@@ -27,7 +31,7 @@ export const DocDepotNavbar = () => {
   const uploadDocument = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       const formData = new FormData();
-      formData.append('profilePicture', event.target.files[0]);
+      formData.append('document', event.target.files[0]);
       open();
       documentForm.values.name = event.target.files[0].name;
       try {
@@ -37,8 +41,7 @@ export const DocDepotNavbar = () => {
             Authorization: `Bearer ${authToken}`,
           },
         });
-        documentForm.values.private_url = res.data.url;
-        showSuccessNotification({ title: 'Success !', message: 'Profile picture is updated !' });
+        documentForm.setFieldValue('private_url', res.data.url);
       } catch (error: unknown) {
         showErrorNotification('GR0000');
       }
@@ -46,12 +49,13 @@ export const DocDepotNavbar = () => {
   };
 
   const handleCreateDocument = async () => {
+    showLoadingNotification({ title: 'Please wait !', message: 'Wait while we upload your document' });
     const requestBody = {
       name: documentForm.values.name,
       type: documentForm.values.type,
       private_url: documentForm.values.private_url,
     };
-    const res: Result<updateDocumentResponseType> = await HttpClient.callApiAuth(
+    const res: Result<UpdateDocumentResponseType> = await HttpClient.callApiAuth(
       {
         url: `${docDepotAPIList.addDocument}`,
         method: 'POST',
@@ -61,6 +65,7 @@ export const DocDepotNavbar = () => {
     );
     if (res.ok) {
       close();
+      setForceRender(!forceRender);
       showSuccessNotification({ title: 'Success !', message: 'Document added to successfully' });
     } else {
       showErrorNotification(res.error.code);

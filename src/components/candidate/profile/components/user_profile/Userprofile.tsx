@@ -16,7 +16,6 @@ import {
   showSuccessNotification,
 } from '../../../../../utils/functions/showNotification';
 import { HttpClient, Result } from '../../../../../utils/generic/httpClient';
-import { UpdateResponse } from '../../types/ProfileResponses';
 
 const skillSetOne = [
   'Lone Wolf',

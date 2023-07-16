@@ -1,4 +1,4 @@
-export type ExperienceRequestBody = {
+type ExperienceRequestBody = {
   designation: string;
   companyType: string;
   email: string;
@@ -6,31 +6,31 @@ export type ExperienceRequestBody = {
   workType: string;
   companyName: string;
   companyId: string;
-  companyStartDate: Date;
-  companyEndDate?: Date;
+  companyStartDate: string;
+  companyEndDate?: string;
   isVerified: boolean;
   department: string;
   reasonForLeaving: string;
 };
 
-export type SkillRequestBody = {
+type SkillRequestBody = {
   skillName: string;
   expertise: string;
   workExperience: string;
 };
 
-export type IDRequestBody = {
+type IDRequestBody = {
   id_type: 'AADHAR' | 'PAN' | 'DRIVING_LICENSE';
   id_number: string;
 };
 
-export type IDVerificationOtpRequestBody = {
+type IDVerificationOtpRequestBody = {
   otp: string;
   request_id: string;
   task_id: string;
 };
 
-export type ResidentialInfoRequestBody = {
+type ResidentialInfoRequestBody = {
   address_line_1: string;
   address_line_2: string;
   landmark: string;
@@ -38,12 +38,12 @@ export type ResidentialInfoRequestBody = {
   city: string;
   state: string;
   country: string;
-  start_date: Date;
-  end_date: Date;
+  start_date: string;
+  end_date?: string;
   typeOfAddress: string;
 };
 
-export type updateProfileRequestBody = {
+type updateProfileRequestBody = {
   firstName?: string;
   lastName?: string;
   bio?: string;

@@ -1,22 +1,23 @@
-type uploadDocumentResponseType = {
+type UploadDocumentResponseType = {
   message: string;
   url: string;
 };
 
-type deleteDocumentResponseType = {
+type DeleteDocumentResponseType = {
   ok: boolean;
   value: {
     message: string;
   };
 };
 
-interface IDocumentType {
+type DocumentResponseType = {
   _id: string;
   name: string;
   type: string;
-}
+  private_url: string;
+};
 
-type updateDocumentResponseType = {
+type UpdateDocumentResponseType = {
   success: boolean;
   message: string;
 };
