@@ -8,7 +8,7 @@ import {
   workExperienceAPiList,
   residentialInfoAPIList,
 } from '../../../../assets/api/ApiList';
-import { HttpClient, Result } from '../../../../utils/generic/httpClient';
+import { HttpClient } from '../../../../utils/generic/httpClient';
 
 import {
   showErrorNotification,
@@ -16,24 +16,6 @@ import {
   showSuccessNotification,
 } from '../../../../utils/functions/showNotification';
 import { useProfileForms } from './ProfileForms';
-
-import {
-  IDocument,
-  DocumentsResponse,
-  IUserProfileResponse,
-  IWorkExperienceResponse,
-  workExperienceResponse,
-  IResidendialInfoResponse,
-  ResidentialInfoRes,
-  ISkill,
-  SkillResponse,
-  ISkillResponse,
-  UpdateResponse,
-  DeleteResponse,
-} from '../types/ProfileResponses';
-import { ProfileContextType } from '../types/ProfileContext';
-import { candidateActivePageState } from '../types/ProfileActions';
-import { updateProfileRequestBody } from '../types/ProfileRequests';
 
 const ProfileContext = createContext<ProfileContextType>({} as ProfileContextType);
 export const useProfileContext = () => useContext(ProfileContext);
@@ -58,16 +40,16 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const [panIsVerified, setPanIsVerified] = useState<boolean>(false);
   const [licenseIsVerified, setLicenseIsVerified] = useState<boolean>(false);
 
-  const [selectedExperience, setSelectedExperience] = useState<IWorkExperienceResponse | null>(null);
-  const [selectedResidentialInfo, setSelectedResidentialInfo] = useState<IResidendialInfoResponse | null>(null);
-  const [selectedSkills, setSelectedSkills] = useState<ISkill[]>([]);
+  const [selectedExperience, setSelectedExperience] = useState<WorkExperience | null>(null);
+  const [selectedResidentialInfo, setSelectedResidentialInfo] = useState<ResidentialInfoResponse | null>(null);
+  const [selectedSkills, setSelectedSkills] = useState<Skill[]>([]);
   const [docDepotActivePage, setDocDepotActivePage] = useState<number>(0);
   const [isLoading, setIsLoading] = useState(false);
 
   const [candidateActivePage, setCandidateActivePage] = useState<candidateActivePageState>('Profile');
 
   //------------------------------PROFILE/BIO----------------------------------------
-  const [profileData, setProfileData] = useState<IUserProfileResponse>({
+  const [profileData, setProfileData] = useState<UserProfileResponse>({
     firstName: '',
     lastName: '',
     bio: '',
@@ -77,7 +59,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
   });
 
   const getProfile = async () => {
-    const res: Result<IUserProfileResponse> = await HttpClient.callApiAuth(
+    const res = await HttpClient.callApiAuth<UserProfileResponse>(
       {
         url: `${profileAPIList.getMyProfile}`,
         method: 'GET',
@@ -112,7 +94,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
       requestData.descriptionTags = profileForm.values.descriptionTags;
     }
 
-    const res: Result<UpdateResponse> = await HttpClient.callApiAuth(
+    const res = await HttpClient.callApiAuth<UpdateResponse>(
       {
         url: `${profileAPIList.updateProfile}`,
         method: 'PATCH',
@@ -137,10 +119,10 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
   };
 
   //------------------------------DOCUMENTS----------------------------------------
-  const [documentsData, setDocumentsData] = useState<IDocument[]>([]);
+  const [documentsData, setDocumentsData] = useState<DocsType[]>([]);
 
   const getDocuments = async () => {
-    const res: Result<DocumentsResponse> = await HttpClient.callApiAuth(
+    const res = await HttpClient.callApiAuth<DocumentsResponse>(
       {
         url: `${documentsAPIList.getDocuments}`,
         method: 'GET',
@@ -156,10 +138,10 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
   };
 
   //------------------------------WORK EXPERIENCE----------------------------------------
-  const [workExperienceData, setWorkExperienceData] = useState<IWorkExperienceResponse[]>([]);
+  const [workExperienceData, setWorkExperienceData] = useState<WorkExperience[]>([]);
 
   const getWorkExperience = async () => {
-    const res: Result<workExperienceResponse> = await HttpClient.callApiAuth(
+    const res = await HttpClient.callApiAuth<workExperienceResponse>(
       {
         url: `${workExperienceAPiList.getWorkExperience}`,
         method: 'GET',
@@ -175,10 +157,10 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
   };
 
   //------------------------------RESIDENTIAL INFO----------------------------------------
-  const [residentialInfoData, setResidentialInfoData] = useState<IResidendialInfoResponse[]>([]);
+  const [residentialInfoData, setResidentialInfoData] = useState<ResidentialInfoResponse[]>([]);
 
   const getResidentialInfo = async () => {
-    const res: Result<ResidentialInfoRes> = await HttpClient.callApiAuth(
+    const res = await HttpClient.callApiAuth<ResidentialInfoRes>(
       {
         url: `${residentialInfoAPIList.getResidentialInfo}`,
         method: 'GET',
@@ -199,7 +181,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
       message: 'Please wait while we delete your residential information.',
     });
 
-    const res: Result<DeleteResponse> = await HttpClient.callApiAuth(
+    const res = await HttpClient.callApiAuth<DeleteResponse>(
       {
         url: `${residentialInfoAPIList.deleteResidentialInfo}/${id}`,
         method: 'DELETE',
@@ -220,10 +202,10 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
   };
 
   //------------------------------SKILLS----------------------------------------
-  const [skillData, setSkillData] = useState<ISkillResponse[]>([]);
+  const [skillData, setSkillData] = useState<SkillResponse[]>([]);
 
   const getSkills = async () => {
-    const res: Result<SkillResponse> = await HttpClient.callApiAuth(
+    const res = await HttpClient.callApiAuth<{ skills: SkillResponse[] }>(
       {
         url: `${skillsAPIList.getSkill}`,
         method: 'GET',

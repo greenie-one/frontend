@@ -2,13 +2,13 @@ import React from 'react';
 import { Box, Modal, Button, Text } from '@mantine/core';
 import { confirmationModalStyle } from '../styles/articleContentStyles';
 
-interface IModalPropsType {
+type ModalPropsType = {
   formRef: React.MutableRefObject<HTMLFormElement | null>;
   modalOpened: boolean;
   modalClose: () => void;
-}
+};
 
-export const ConfirmationModal: React.FC<IModalPropsType> = ({ formRef, modalOpened, modalClose }) => {
+export const ConfirmationModal: React.FC<ModalPropsType> = ({ formRef, modalOpened, modalClose }) => {
   const { classes: modalStyles } = confirmationModalStyle();
 
   const handleConfirmation = () => {

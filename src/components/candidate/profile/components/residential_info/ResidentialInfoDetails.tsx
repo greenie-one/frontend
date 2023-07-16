@@ -2,9 +2,8 @@ import { Box, Text, Title, Button } from '@mantine/core';
 import { MdVerified } from 'react-icons/md';
 import { CgSandClock } from 'react-icons/cg';
 import location from '../../assets/location.png';
-import { IResidentialInfoDetailsCardProps } from '../../types/ProfileCardProps';
 
-export const ResidentialInfoDetails: React.FC<IResidentialInfoDetailsCardProps> = ({
+export const ResidentialInfoDetails: React.FC<ResidentialInfoDetailsCardProps> = ({
   address_line_1,
   address_line_2,
   landmark,

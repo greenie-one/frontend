@@ -13,8 +13,6 @@ import {
   showLoadingNotification,
   showSuccessNotification,
 } from '../../../../../utils/functions/showNotification';
-import { IDRequestBody } from '../../types/ProfileRequests';
-import { verifyPan } from '../../types/ProfileResponses';
 
 export const VerifyPanCard = () => {
   const { setCandidateActivePage, verifyPANForm, getDocuments, panIsVerified, setPanIsVerified, scrollToTop } =

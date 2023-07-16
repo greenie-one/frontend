@@ -29,8 +29,6 @@ import {
   skillRate,
   documentTags,
 } from '../../constants/SelectionOptions';
-import { ISkill, createExperience } from '../../types/ProfileResponses';
-import { ExperienceRequestBody, SkillRequestBody } from '../../types/ProfileRequests';
 import { APIError } from '../../../../../utils/generic/httpClient';
 import axios from 'axios';
 import { docDepotAPIList } from '../../../../../assets/api/ApiList';
@@ -84,7 +82,7 @@ export const AddExperience = () => {
       workExperienceForm.values.linkedInUrl = '';
       workExperienceForm.values.workEmail = '';
       workExperienceForm.values.workType = '';
-      workExperienceForm.values.modeOfwork = '';
+      workExperienceForm.values.modeOfWork = '';
       workExperienceForm.values.startDate = '';
       workExperienceForm.values.endDate = '';
     }
@@ -154,12 +152,12 @@ export const AddExperience = () => {
       !skillForm.validateField('expertise').hasError &&
       workExperienceId !== null
     ) {
-      const newSkill: ISkill = {
+      const newSkill: Skill = {
         skillName: skillForm.values.skillName,
         expertise: skillForm.values.expertise,
         workExperience: workExperienceId,
       };
-      setSelectedSkills((prevSkills: ISkill[]) => [...prevSkills, newSkill]);
+      setSelectedSkills((prevSkills: Skill[]) => [...prevSkills, newSkill]);
       skillForm.values.skillName = '';
       skillForm.values.expertise = '';
     }
@@ -218,7 +216,7 @@ export const AddExperience = () => {
           },
         });
         if (res.data) {
-          const resp: Result<updateDocumentResponseType> = await HttpClient.callApiAuth(
+          const resp: Result<UpdateDocumentResponseType> = await HttpClient.callApiAuth(
             {
               url: `${docDepotAPIList.addDocument}`,
               method: 'POST',
@@ -472,7 +470,7 @@ export const AddExperience = () => {
             <Button variant="default" className="cancel-btn" onClick={handlePrevPage}>
               Back
             </Button>
-            {workExperienceForm.values.endDate !== '' || experienceChecked !== false ? (
+            {workExperienceForm.values.endDate || experienceChecked !== false ? (
               <Button type="submit" className="green-btn" onClick={handleExperienceContinue}>
                 Save
               </Button>
@@ -525,7 +523,7 @@ export const AddExperience = () => {
 
           <Divider color="#ebebeb" />
           <Box className="add-skills-wrapper">
-            {selectedSkills.map((skill: ISkill, index: number) => {
+            {selectedSkills.map((skill: Skill, index: number) => {
               const { expertise, skillName } = skill;
               return (
                 <Box key={index} className="add-skill-box">
@@ -694,7 +692,7 @@ export const AddExperience = () => {
           <Box className="docs-box">
             <Title className="heading">Skills</Title>
             <Box className="add-skills-wrapper">
-              {selectedSkills.map((skill: ISkill, index: number) => {
+              {selectedSkills.map((skill: Skill, index: number) => {
                 const { expertise, skillName } = skill;
                 return (
                   <Box key={index} className="add-skill-box">

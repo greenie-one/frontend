@@ -15,7 +15,7 @@ export const useDocDepotContext = () => useContext(DocDepotContext);
 export const DocDepotContextProvider: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
-  const documentForm = useForm<docDepotFormType>({
+  const documentForm = useForm<DocDepotFormType>({
     initialValues: {
       name: '',
       type: '',
@@ -29,13 +29,13 @@ export const DocDepotContextProvider: React.FC<{
   });
   const { authClient } = useGlobalContext();
   const authTokens = authClient.getAccessToken();
-  const [educationDocuments, setEducationDocument] = useState<IDocumentType[]>([]);
-  const [experienceDocuments, setExperienceDocument] = useState<IDocumentType[]>([]);
-  const [otherDocuments, setOtherDocument] = useState<IDocumentType[]>([]);
+  const [educationDocuments, setEducationDocument] = useState<DocumentResponseType[]>([]);
+  const [experienceDocuments, setExperienceDocument] = useState<DocumentResponseType[]>([]);
+  const [otherDocuments, setOtherDocument] = useState<DocumentResponseType[]>([]);
   const [forceRender, setForceRender] = useState<boolean>(false);
 
   const getExperienceDocument = async () => {
-    const res: Result<IDocumentType[]> = await HttpClient.callApiAuth(
+    const res: Result<DocumentResponseType[]> = await HttpClient.callApiAuth(
       {
         url: `${docDepotAPIList.getAllDocuments}/work`,
         method: 'GET',
@@ -50,7 +50,7 @@ export const DocDepotContextProvider: React.FC<{
   };
 
   const getEducationDocument = async () => {
-    const res: Result<IDocumentType[]> = await HttpClient.callApiAuth(
+    const res: Result<DocumentResponseType[]> = await HttpClient.callApiAuth(
       {
         url: `${docDepotAPIList.getAllDocuments}/education`,
         method: 'GET',
@@ -65,7 +65,7 @@ export const DocDepotContextProvider: React.FC<{
   };
 
   const getOtherDocument = async () => {
-    const res: Result<IDocumentType[]> = await HttpClient.callApiAuth(
+    const res: Result<DocumentResponseType[]> = await HttpClient.callApiAuth(
       {
         url: `${docDepotAPIList.getAllDocuments}/other`,
         method: 'GET',
@@ -81,7 +81,7 @@ export const DocDepotContextProvider: React.FC<{
 
   const moveDocument = async (id: string, type: string) => {
     showLoadingNotification({ title: 'Please Wait', message: 'Wait while we move your document' });
-    const res: Result<updateDocumentResponseType> = await HttpClient.callApiAuth(
+    const res: Result<UpdateDocumentResponseType> = await HttpClient.callApiAuth(
       {
         url: `${docDepotAPIList.updateDocument}/${id}`,
         method: 'PATCH',
@@ -99,7 +99,7 @@ export const DocDepotContextProvider: React.FC<{
 
   const deleteDocument = async (id: string) => {
     showLoadingNotification({ title: 'Please Wait', message: 'Wait while we delete the document' });
-    const res: Result<deleteDocumentResponseType> = await HttpClient.callApiAuth(
+    const res: Result<DeleteDocumentResponseType> = await HttpClient.callApiAuth(
       {
         url: `${docDepotAPIList.deleteDocument}/${id}`,
         method: 'DELETE',

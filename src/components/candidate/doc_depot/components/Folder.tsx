@@ -6,16 +6,14 @@ import threeDots from '../assets/threeDots.png';
 import { MdMoveDown, MdDeleteOutline } from 'react-icons/md';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { useDocDepotContext } from '../context/DocDepotContext';
-import { Link } from 'react-router-dom';
 
-type IFolderProps = {
+type FolderProps = {
   id: string;
   name: string;
   isFolder: boolean;
-  private_url: string;
 };
 
-export const Folder: React.FC<IFolderProps> = ({ id, name, isFolder, private_url }) => {
+export const Folder: React.FC<FolderProps> = ({ id, name, isFolder }) => {
   const [isDropdownVisible, setDropdownVisible] = useState(false);
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
@@ -114,10 +112,8 @@ export const Folder: React.FC<IFolderProps> = ({ id, name, isFolder, private_url
         </Box>
       ) : (
         <Box className="pdf">
-          <Link target="_blank" to={private_url} className="pdf-box">
-            <img src={pdfImage} alt="folder-image" />
-            <Text className="folder-text">{name.substring(0, 12)}</Text>
-          </Link>
+          <img src={pdfImage} alt="folder-image" />
+          <Text className="folder-text">{name.substring(0, 12)}</Text>
 
           <img
             className="three-dots-menu"

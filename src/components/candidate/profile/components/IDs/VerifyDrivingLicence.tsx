@@ -13,8 +13,6 @@ import {
   showSuccessNotification,
 } from '../../../../../utils/functions/showNotification';
 import { HttpClient, Result } from '../../../../../utils/generic/httpClient';
-import { IDRequestBody } from '../../types/ProfileRequests';
-import { verifyLicence } from '../../types/ProfileResponses';
 
 export const VerifyDrivingLicence = () => {
   const [checked, setChecked] = useState(false);

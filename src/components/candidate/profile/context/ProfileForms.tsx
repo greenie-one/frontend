@@ -60,7 +60,7 @@ export const useProfileForms = () => {
       linkedInUrl: '',
       workEmail: '',
       companyId: '',
-      startDate: null,
+      startDate: '',
       endDate: undefined,
       workType: '',
       modeOfWork: '',
@@ -91,8 +91,8 @@ export const useProfileForms = () => {
       typeOfAddress: '',
       state: '',
       country: '',
-      start_date: null,
-      end_date: null,
+      start_date: '',
+      end_date: '',
     },
 
     validate: {
