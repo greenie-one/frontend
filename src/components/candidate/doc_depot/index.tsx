@@ -45,7 +45,7 @@ export const DocDepot = () => {
               {docDepotData.map(({ id, name, isFolder }, index) => {
                 return (
                   <Box key={index} onClick={() => setDocDepotActivePage(index + 1)}>
-                    <Folder id={id} name={name} isFolder={isFolder} />
+                    <Folder id={id} name={name} isFolder={isFolder} private_url="" />
                   </Box>
                 );
               })}
