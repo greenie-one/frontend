@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { Title, Text, Box } from '@mantine/core';
 
 import greenieLogo from '../assets/greenieLogo.png';
@@ -8,7 +9,9 @@ export const AuthInfo = () => {
   return (
     <>
       <Box className="logo">
-        <img src={greenieLogo} alt="greenie-logo" />
+        <Link to="/">
+          <img src={greenieLogo} alt="greenie-logo" />
+        </Link>
       </Box>
 
       <Title className="authInfoHeading">Welcome to Greenie, your professional community </Title>
