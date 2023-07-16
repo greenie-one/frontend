@@ -18,6 +18,7 @@ export const ResidentialInfoDetails: React.FC<ResidentialInfoDetailsCardProps> =
 }) => {
   return (
     <Box className="info-detail-box">
+      <Box className=""></Box>
       <Box className="info-detail-top-box">
         <Box className="location">
           <img className="location=img" src={location} alt="Location" />
