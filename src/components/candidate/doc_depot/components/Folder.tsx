@@ -6,13 +6,13 @@ import threeDots from '../assets/threeDots.png';
 import { MdMoveDown, MdDeleteOutline } from 'react-icons/md';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { useDocDepotContext } from '../context/DocDepotContext';
-interface IFolderProps {
+type FolderProps = {
   id: string;
   name: string;
   isFolder: boolean;
-}
+};
 
-export const Folder: React.FC<IFolderProps> = ({ id, name, isFolder }) => {
+export const Folder: React.FC<FolderProps> = ({ id, name, isFolder }) => {
   const [isDropdownVisible, setDropdownVisible] = useState(false);
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);

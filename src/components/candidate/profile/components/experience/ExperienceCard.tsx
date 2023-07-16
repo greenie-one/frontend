@@ -2,9 +2,8 @@ import { Text, Box, Button } from '@mantine/core';
 import { MdVerified } from 'react-icons/md';
 import { CgSandClock } from 'react-icons/cg';
 import tscLogo from '../../assets/tscLogo.png';
-import { IExperienceCardProp } from '../../types/ProfileCardProps';
 
-export const ExperienceCard: React.FC<IExperienceCardProp> = ({
+export const ExperienceCard: React.FC<ExperienceCardProp> = ({
   position,
   companyName,
   isVerified,

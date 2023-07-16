@@ -3,9 +3,8 @@ import { Text, Box, Button, Title } from '@mantine/core';
 import tcsLogo from '../../assets/tscLogo.png';
 import { CgSandClock } from 'react-icons/cg';
 import { MdVerified } from 'react-icons/md';
-import { IWorkExperienceResponse } from '../../types/ProfileResponses';
 
-export const ExperienceDetails: React.FC<IWorkExperienceResponse> = ({
+export const ExperienceDetails: React.FC<WorkExperience> = ({
   designation,
   companyName,
   companyId,

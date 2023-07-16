@@ -4,7 +4,6 @@ import { MdOutlineEdit } from 'react-icons/md';
 import { ExperienceCard } from './ExperienceCard';
 import { useProfileContext } from '../../context/ProfileContext';
 import { AiOutlinePlus } from 'react-icons/ai';
-import { IWorkExperienceResponse } from '../../types/ProfileResponses';
 
 export const ExperienceSection = () => {
   const { workExperienceData, scrollToTop, setCandidateActivePage, setSelectedExperience } = useProfileContext();
@@ -19,7 +18,7 @@ export const ExperienceSection = () => {
     setCandidateActivePage('Add Experience');
   };
 
-  const handleGoToVerification = (experience: IWorkExperienceResponse) => {
+  const handleGoToVerification = (experience: WorkExperience) => {
     setCandidateActivePage('All Experiences');
     setSelectedExperience(experience);
     scrollToTop();

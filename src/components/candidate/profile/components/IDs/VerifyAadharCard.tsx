@@ -16,8 +16,6 @@ import {
   showLoadingNotification,
   showSuccessNotification,
 } from '../../../../../utils/functions/showNotification';
-import { IAadharVerificationResponse, verifyAadhar, IAddAadhar } from '../../types/ProfileResponses';
-import { IDRequestBody, IDVerificationOtpRequestBody } from '../../types/ProfileRequests';
 import { APIError } from '../../../../../utils/generic/httpClient';
 // import errorIcon from '../../assets/errorIcon.png';
 // import { GrPowerReset } from 'react-icons/gr';
@@ -32,7 +30,7 @@ export const VerifyAadharCard = () => {
   const { setCandidateActivePage, verifyAadharForm, getDocuments, aadharIsVerified, setAadharIsVerified, scrollToTop } =
     useProfileContext();
   const { authClient } = useGlobalContext();
-  const [verificationData, setVerificationData] = useState<IAadharVerificationResponse>({
+  const [verificationData, setVerificationData] = useState<AadharVerificationResponse>({
     requestId: '',
     taskId: '',
   });
@@ -43,7 +41,7 @@ export const VerifyAadharCard = () => {
       message: 'Please wait while we send OTP to your linked number.',
     });
     const requestBody: IDRequestBody = { id_type: 'AADHAR', id_number: verifyAadharForm.values.aadharNo };
-    const res: Result<IAddAadhar> = await HttpClient.callApiAuth(
+    const res: Result<AddAadhar> = await HttpClient.callApiAuth(
       {
         url: `${aadharAPIList.requestOTPForAadhar}`,
         method: 'POST',

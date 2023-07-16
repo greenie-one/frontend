@@ -1,32 +1,15 @@
-import { candidateActivePageState } from './ProfileActions';
-import {
-  IDocument,
-  IUserProfileResponse,
-  IWorkExperienceResponse,
-  IResidendialInfoResponse,
-  ISkill,
-  ISkillResponse,
-} from '../types/ProfileResponses';
-import {
-  profileFormType,
-  workExperienceFormType,
-  residentialInfoFormType,
-  skillFormType,
-  verifyAadharFormType,
-  verifyLicenceFormType,
-  verifyPANFormType,
-} from '../types/CandidateForms';
-import { UseFormReturnType } from '@mantine/form';
+// import { candidateActivePageState } from './ProfileActions';
+// import { UseFormReturnType } from '@mantine/form';
 
-export type ProfileContextType = {
+type ProfileContextType = {
   getProfile: () => void;
-  profileData: IUserProfileResponse;
+  profileData: UserProfileResponse;
   profileForm: UseFormReturnType<profileFormType>;
   updateProfile: () => void;
-  documentsData: IDocument[];
-  workExperienceData: IWorkExperienceResponse[];
-  residentialInfoData: IResidendialInfoResponse[];
-  skillData: ISkillResponse[];
+  documentsData: DocsType[];
+  workExperienceData: WorkExperienceResponse[];
+  residentialInfoData: ResidentialInfoResponse[];
+  skillData: SkillResponse[];
   getWorkExperience: () => void;
   verifyAadharForm: UseFormReturnType<verifyAadharFormType>;
   verifyPANForm: UseFormReturnType<verifyPANFormType>;
@@ -49,12 +32,12 @@ export type ProfileContextType = {
   getSkills: () => void;
   getResidentialInfo: () => void;
   scrollToTop: () => void;
-  selectedExperience: IWorkExperienceResponse | null;
-  setSelectedExperience: React.Dispatch<React.SetStateAction<IWorkExperienceResponse | null>>;
-  selectedResidentialInfo: IResidendialInfoResponse | null;
-  setSelectedResidentialInfo: React.Dispatch<React.SetStateAction<IResidendialInfoResponse | null>>;
-  selectedSkills: ISkill[];
-  setSelectedSkills: React.Dispatch<React.SetStateAction<ISkill[]>>;
+  selectedExperience: WorkExperienceResponse | null;
+  setSelectedExperience: React.Dispatch<React.SetStateAction<WorkExperienceResponse | null>>;
+  selectedResidentialInfo: ResidentialInfoResponse | null;
+  setSelectedResidentialInfo: React.Dispatch<React.SetStateAction<ResidentialInfoResponse | null>>;
+  selectedSkills: Skill[];
+  setSelectedSkills: React.Dispatch<React.SetStateAction<Skill[]>>;
   docDepotActivePage: number;
   setDocDepotActivePage: React.Dispatch<React.SetStateAction<number>>;
   candidateActivePage: string;

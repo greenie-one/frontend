@@ -23,12 +23,12 @@ type UseStylesType = (
   theme: MantineTheme;
 };
 
-export type Document = {
+type Document = {
   document: File | undefined;
   documentTag: string | null;
 };
 
-export type Peer = {
+type Peer = {
   email: string;
   name: string;
   peerType: string;
@@ -37,15 +37,15 @@ export type Peer = {
   _id: string;
 };
 
-export interface IWorkExperienceVerification {
-  workExId: string;
+type WorkExperienceVerification = {
+  workExpId: string;
   image: string | null;
   designation: string;
   companyName: string;
   isVerified: boolean;
-}
+};
 
-export interface ISearchListObject {
+type SearchListObject = {
   createdAt: string;
   descriptionTags: string[];
   firstName: string;
@@ -58,18 +58,18 @@ export interface ISearchListObject {
   designation: string | undefined;
   rating: number | undefined;
   verified: boolean | undefined;
-}
-
-export interface ISearchListContentType {
-  results: ISearchListObject[];
-  classes: UseStyles;
-}
-
-export type SearchResponse = {
-  profiles: ISearchListObject[];
 };
 
-export type ResidentialInfoPeerType = {
+type SearchListContentType = {
+  results: SearchListObject[];
+  classes: UseStyles;
+};
+
+type SearchResponse = {
+  profiles: SearchListObject[];
+};
+
+type ResidentialInfoPeerType = {
   name: string;
   email: string;
   peerType: string;

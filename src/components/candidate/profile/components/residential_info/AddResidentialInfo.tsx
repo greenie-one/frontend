@@ -3,8 +3,6 @@ import { DateInput } from '@mantine/dates';
 import { useProfileContext } from '../../context/ProfileContext';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
 import { useState } from 'react';
-import { ResidentialInfoRequestBody } from '../../types/ProfileRequests';
-import { createResidentialInfo } from '../../types/ProfileResponses';
 import { BsArrowLeft } from 'react-icons/bs';
 import {
   showErrorNotification,
@@ -36,7 +34,7 @@ export const AddResidentialInfo = () => {
   };
 
   const handleCheck = () => {
-    residentialInfoForm.values.end_date = null;
+    residentialInfoForm.values.end_date = '';
     setChecked(!checked);
   };
 
@@ -79,7 +77,7 @@ export const AddResidentialInfo = () => {
       address_line_1: residentialInfoForm.values.address_line_1,
       address_line_2: residentialInfoForm.values.address_line_2,
       landmark: residentialInfoForm.values.landmark,
-      pincode: residentialInfoForm.values.pincode,
+      pincode: String(residentialInfoForm.values.pincode),
       city: residentialInfoForm.values.city,
       state: residentialInfoForm.values.state,
       country: residentialInfoForm.values.country,

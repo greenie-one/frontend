@@ -51,7 +51,7 @@ export const DocDepotNavbar = () => {
       type: documentForm.values.type,
       private_url: documentForm.values.private_url,
     };
-    const res: Result<updateDocumentResponseType> = await HttpClient.callApiAuth(
+    const res: Result<UpdateDocumentResponseType> = await HttpClient.callApiAuth(
       {
         url: `${docDepotAPIList.addDocument}`,
         method: 'POST',
