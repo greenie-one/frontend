@@ -14,6 +14,7 @@ interface IDocumentType {
   _id: string;
   name: string;
   type: string;
+  private_url: string;
 }
 
 type updateDocumentResponseType = {

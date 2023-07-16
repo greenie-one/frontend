@@ -23,6 +23,11 @@ export const Folder: React.FC<IFolderProps> = ({ id, name, isFolder }) => {
     open();
   };
 
+  const handleDeleteDocument = () => {
+    deleteDocument(id);
+    close();
+  };
+
   return (
     <>
       {modalType === 'Move' && (
@@ -87,7 +92,7 @@ export const Folder: React.FC<IFolderProps> = ({ id, name, isFolder }) => {
             <Text className="heading">You are about to delete this file</Text>
             <Text className="sub-heading">You cannot revert this action</Text>
             <Box className="delete-btn-wrapper">
-              <Button className="delete-btn" onClick={() => deleteDocument(id)}>
+              <Button className="delete-btn" onClick={handleDeleteDocument}>
                 Delete
               </Button>
               <Button className="cancel-btn" onClick={close}>
@@ -103,7 +108,12 @@ export const Folder: React.FC<IFolderProps> = ({ id, name, isFolder }) => {
         ) : (
           <img src={pdfImage} alt="folder-image" />
         )}
-        <Text className="folder-text">{name}</Text>
+        {isFolder ? (
+          <Text className="folder-text">{name}</Text>
+        ) : (
+          <Text className="folder-text">{name.substring(0, 12)}</Text>
+        )}
+
         {!isFolder && (
           <img
             className="three-dots-menu"
