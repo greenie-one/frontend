@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styles from '../styles/sidebar.module.css';
 import { MdOutlineAccountCircle, MdOutlineLock, MdOutlineNotificationsNone } from 'react-icons/md';
 
 const { sidebar, option_list, option_list_items, active, option_icons } = styles;
 
-export const Sidebar: React.FC = (): JSX.Element => {
-  const [activeListItem, setActiveListItem] = useState<number>(0);
-
+export const Sidebar: React.FC<{
+  activeListItem: number;
+  setActiveListItem: React.Dispatch<React.SetStateAction<number>>;
+}> = ({ activeListItem, setActiveListItem }): JSX.Element => {
   return (
     <aside className={sidebar}>
       <ul className={option_list}>
