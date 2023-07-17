@@ -40,7 +40,7 @@ type ResidentialInfoRequestBody = {
   country: string;
   start_date: string;
   end_date?: string;
-  typeOfAddress: string;
+  address_type: string;
 };
 
 type updateProfileRequestBody = {

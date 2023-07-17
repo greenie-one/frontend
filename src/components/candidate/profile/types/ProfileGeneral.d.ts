@@ -80,6 +80,6 @@ type ExperienceDocuments = {
   _id: string;
   name: string;
   type: string;
-  private_url: string;
+  privateUrl: string;
   workExperience: string;
 };

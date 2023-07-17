@@ -45,11 +45,7 @@ export const SettingsProvider: React.FC<{ children: ReactNode }> = ({ children }
   });
 
   const changeCurrentPassword = async () => {
-    if (
-      !privacySettingsForm.validateField('currentPassword').hasError &&
-      !privacySettingsForm.validateField('newPassword').hasError &&
-      !privacySettingsForm.validateField('confirmPassword').hasError
-    ) {
+    if (!privacySettingsForm.validate().hasErrors) {
       showLoadingNotification({
         title: 'Changing your password',
         message: 'Please wait while we change your password.',

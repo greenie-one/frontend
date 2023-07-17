@@ -13,12 +13,13 @@ import {
   showSuccessNotification,
 } from '../../../../../utils/functions/showNotification';
 import { HttpClient, Result } from '../../../../../utils/generic/httpClient';
+import { useNavigate } from 'react-router-dom';
 
 export const VerifyDrivingLicence = () => {
+  const navigate = useNavigate();
   const [checked, setChecked] = useState(false);
-  const { setCandidateActivePage, verifyLicenceForm, getDocuments, licenseIsVerified, setLicenseIsVerified } =
-    useProfileContext();
-  const { authClient } = useGlobalContext();
+  const { licenseIsVerified, setLicenseIsVerified } = useProfileContext();
+  const { authClient, verifyLicenceForm, setForceRender } = useGlobalContext();
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -39,17 +40,17 @@ export const VerifyDrivingLicence = () => {
       if (res.ok) {
         showSuccessNotification({ title: 'Success !', message: 'Verified your Licence successfully' });
         setLicenseIsVerified(true);
-        getDocuments();
+        setForceRender((prev) => !prev);
       } else {
         showErrorNotification(res.error.code);
       }
     }
   };
   const handlePageChange = () => {
-    setCandidateActivePage('Profile');
-    verifyLicenceForm.values.licenceNo = '';
-    verifyLicenceForm.values.dateOfBirth = null;
+    verifyLicenceForm.setFieldValue('licenceNo', '');
+    verifyLicenceForm.setFieldValue('dateOfBirth', null);
     setLicenseIsVerified(false);
+    navigate('/candidate/profile');
   };
   return (
     <section className="container">

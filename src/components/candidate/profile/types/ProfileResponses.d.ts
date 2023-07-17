@@ -18,6 +18,7 @@ type UserProfileResponse = {
 
 type WorkExperience = {
   workExpId: string;
+  department: string;
   image: string | null;
   designation: string;
   companyName: string;
@@ -40,14 +41,14 @@ type ResidentialInfoResponse = {
   residentialInfoId: string;
   address_line_1: string;
   address_line_2: string;
-  typeOfAddress: string;
+  address_type: string;
   landmark: string;
   pincode: number;
   city: string;
   state: string;
   country: string;
-  start_date: Date;
-  end_date: Date;
+  start_date: Date | null;
+  end_date: Date | null;
   isVerified: boolean;
 };
 

@@ -8,7 +8,6 @@ import medal from '../../assets/medal.png';
 import { profileAPIList } from '../../../../../assets/api/ApiList';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
-import { useProfileContext } from '../../context/ProfileContext';
 import { MdVerified, MdOutlineEdit, MdOutlineContentCopy } from 'react-icons/md';
 import {
   showErrorNotification,
@@ -30,9 +29,8 @@ const skillSetOne = [
 ];
 
 export const Userprofile = () => {
-  const { authClient } = useGlobalContext();
+  const { authClient, setForceRender, forceRender, profileData, profileForm, updateProfile, IDs } = useGlobalContext();
   const authToken = authClient.getAccessToken();
-  const { profileData, profileForm, updateProfile, documentsData, setForceRender, forceRender } = useProfileContext();
   //-------------profile photo------------------------
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -79,10 +77,10 @@ export const Userprofile = () => {
   const [opened, { open, close }] = useDisclosure(false);
 
   const onClose = () => {
-    profileForm.values.firstName = '';
-    profileForm.values.lastName = '';
-    profileForm.values.bio = '';
-    profileForm.values.descriptionTags = [];
+    profileForm.setFieldValue('firstName', '');
+    profileForm.setFieldValue('lastName', '');
+    profileForm.setFieldValue('bio', '');
+    profileForm.setFieldValue('descriptionTags', []);
     close();
   };
 
@@ -202,7 +200,7 @@ export const Userprofile = () => {
           <Text className="bio-name">
             {profileData.firstName} {profileData.lastName}
           </Text>
-          {documentsData.length > 0 && <MdVerified className="name-verified" size={'20px'} />}
+          {IDs.length > 0 && <MdVerified className="name-verified" size={'20px'} />}
         </Box>
 
         <Box className="chips">
@@ -271,7 +269,7 @@ export const Userprofile = () => {
           </Box>
           <Box className="border-left"></Box>
           <Box className="right-section">
-            {documentsData.length > 0 ? (
+            {IDs.length > 0 ? (
               <CopyButton value={greeneId} timeout={2000}>
                 {({ copied, copy }) => (
                   <Box className="greenie-id" onClick={copy}>

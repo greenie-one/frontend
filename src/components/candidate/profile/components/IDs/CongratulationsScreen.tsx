@@ -6,9 +6,11 @@ import level from '../../assets/level.png';
 import levelFilled from '../../assets/levelFilled.png';
 import medal from '../../assets/medal.png';
 import { useMediaQuery } from '@mantine/hooks';
+import { useGlobalContext } from '../../../../../context/GlobalContext';
 
 export const CongratulationsScreen = () => {
-  const { setAadharIsVerified, scrollToTop, setCandidateActivePage, profileData, documentsData } = useProfileContext();
+  const { setAadharIsVerified } = useProfileContext();
+  const { scrollToTop, profileData, IDs } = useGlobalContext();
 
   const userLevel = 0;
   const greeneId = 'GRN788209';
@@ -16,7 +18,6 @@ export const CongratulationsScreen = () => {
   const handleContinue = () => {
     scrollToTop();
     setAadharIsVerified(false);
-    setCandidateActivePage('Profile');
   };
 
   return (
@@ -36,7 +37,7 @@ export const CongratulationsScreen = () => {
               <Text className="bio-name">
                 {profileData.firstName} {profileData.lastName}
               </Text>
-              {documentsData.length > 0 && <MdVerified className="name-verified" size={'20px'} />}
+              {IDs.length > 0 && <MdVerified className="name-verified" size={'20px'} />}
             </Box>
 
             <Box className="chips">
@@ -105,7 +106,7 @@ export const CongratulationsScreen = () => {
               </Box>
               <Box className="border-left"></Box>
               <Box className="right-section">
-                {documentsData.length > 0 ? (
+                {IDs.length > 0 ? (
                   <CopyButton value={greeneId} timeout={2000}>
                     {({ copied, copy }) => (
                       <Box className="greenie-id" onClick={copy}>

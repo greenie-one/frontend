@@ -24,11 +24,7 @@ export const PrivacySettings: React.FC = (): JSX.Element => {
   const { classes: inputClasses } = inputStyles();
 
   const handleOpenModal = () => {
-    if (
-      !privacySettingsForm.validateField('currentPassword').hasError &&
-      !privacySettingsForm.validateField('newPassword').hasError &&
-      !privacySettingsForm.validateField('confirmPassword').hasError
-    ) {
+    if (!privacySettingsForm.validate().hasErrors) {
       open();
     }
   };
@@ -39,9 +35,9 @@ export const PrivacySettings: React.FC = (): JSX.Element => {
   };
 
   const onClose = () => {
-    privacySettingsForm.values.currentPassword = '';
-    privacySettingsForm.values.newPassword = '';
-    privacySettingsForm.values.confirmPassword = '';
+    privacySettingsForm.setFieldValue('currentPassword', '');
+    privacySettingsForm.setFieldValue('newPassword', '');
+    privacySettingsForm.setFieldValue('confirmPassword', '');
     close();
   };
 

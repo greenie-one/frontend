@@ -1,26 +1,22 @@
 import { Text, Box, Button } from '@mantine/core';
 import { MdOutlineEdit } from 'react-icons/md';
 import noData from '../../assets/noData.png';
-import { useProfileContext } from '../../context/ProfileContext';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { ResidentialInfoCard } from './ResidentialInfoCard';
+import { useGlobalContext } from '../../../../../context/GlobalContext';
+import { useNavigate } from 'react-router-dom';
 
 export const ResidentialInfoSection = () => {
-  const { residentialInfoData, setCandidateActivePage, scrollToTop, setSelectedResidentialInfo } = useProfileContext();
+  const navigate = useNavigate();
+  const { residentialInfoData, scrollToTop } = useGlobalContext();
 
   const handleToggleResidentialDetails = (): void => {
+    navigate('/candidate/profile/address/allAddresses');
     scrollToTop();
-    setCandidateActivePage('All Residential Info');
   };
 
   const handleAddAddressScreen = () => {
-    setCandidateActivePage('Add Address');
-    scrollToTop();
-  };
-
-  const handleGoToVerification = (info: ResidentialInfoResponse) => {
-    setCandidateActivePage('All Residential Info');
-    setSelectedResidentialInfo(info);
+    navigate('/candidate/profile/address/addResidentialInfo');
     scrollToTop();
   };
 
@@ -63,7 +59,7 @@ export const ResidentialInfoSection = () => {
             .slice(0, 3)
             .map((info, index) => {
               return (
-                <Box key={index} onClick={() => handleGoToVerification(info)}>
+                <Box key={index}>
                   <ResidentialInfoCard {...info} />
                 </Box>
               );

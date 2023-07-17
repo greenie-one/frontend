@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Chip, Group, Title, TextInput, Textarea, Button, Modal, Text } from '@mantine/core';
-import { useProfileContext } from '../../candidate/profile/context/ProfileContext';
+import { useGlobalContext } from '../../../context/GlobalContext';
 import { useDisclosure } from '@mantine/hooks';
 import { confirmationModalStyle } from '../styles/articleContentStyles';
 import { detailsFormStyles, profileSettingsStyles } from '../styles/articleContentStyles';
@@ -21,7 +21,7 @@ export const ProfileSettings: React.FC = (): JSX.Element => {
   const { classes: formClasses } = detailsFormStyles();
   const { classes: profileClasses } = profileSettingsStyles();
   const { classes: modalStyles } = confirmationModalStyle();
-  const { profileForm, updateProfile } = useProfileContext();
+  const { profileForm, updateProfile } = useGlobalContext();
   const [opened, { open, close }] = useDisclosure(false);
 
   const onFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {

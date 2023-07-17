@@ -17,8 +17,8 @@ export const DocDepotNavbar = () => {
   const { classes: inputClasses } = inputStyles();
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
-  const { documentForm, setForceRender, forceRender } = useDocDepotContext();
-  const { authClient } = useGlobalContext();
+  const { documentForm } = useDocDepotContext();
+  const { authClient, setForceRender, forceRender } = useGlobalContext();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const openFileInput = () => {
     if (fileInputRef.current) {
@@ -41,7 +41,7 @@ export const DocDepotNavbar = () => {
             Authorization: `Bearer ${authToken}`,
           },
         });
-        documentForm.setFieldValue('private_url', res.data.url);
+        documentForm.setFieldValue('privateUrl', res.data.url);
       } catch (error: unknown) {
         showErrorNotification('GR0000');
       }
@@ -53,7 +53,7 @@ export const DocDepotNavbar = () => {
     const requestBody = {
       name: documentForm.values.name,
       type: documentForm.values.type,
-      private_url: documentForm.values.private_url,
+      privateUrl: documentForm.values.privateUrl,
     };
     const res: Result<UpdateDocumentResponseType> = await HttpClient.callApiAuth(
       {

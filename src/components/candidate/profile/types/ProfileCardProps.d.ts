@@ -16,8 +16,8 @@ type ResidentialInfoCardProps = {
   address_line_2: string;
   landmark: string;
   pincode: number;
-  start_date: Date;
-  end_date: Date;
+  start_date: Date | null;
+  end_date: Date | null;
   isVerified: boolean;
   city: string;
 };
@@ -27,8 +27,8 @@ type ResidentialInfoDetailsCardProps = {
   address_line_2: string;
   landmark: string;
   pincode: number;
-  start_date: Date;
-  end_date: Date;
+  start_date: Date | null;
+  end_date: Date | null;
   isVerified: boolean;
   city: string;
   state: string;

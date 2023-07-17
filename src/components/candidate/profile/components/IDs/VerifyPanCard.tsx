@@ -13,12 +13,13 @@ import {
   showLoadingNotification,
   showSuccessNotification,
 } from '../../../../../utils/functions/showNotification';
+import { useNavigate } from 'react-router-dom';
 
 export const VerifyPanCard = () => {
-  const { setCandidateActivePage, verifyPANForm, getDocuments, panIsVerified, setPanIsVerified, scrollToTop } =
-    useProfileContext();
+  const navigate = useNavigate();
+  const { panIsVerified, setPanIsVerified } = useProfileContext();
   const [checked, setChecked] = useState<boolean>(false);
-  const { authClient } = useGlobalContext();
+  const { authClient, scrollToTop, verifyPANForm, setForceRender } = useGlobalContext();
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -36,7 +37,7 @@ export const VerifyPanCard = () => {
       if (res.ok) {
         showSuccessNotification({ title: 'Success !', message: 'Verified your PAN successfully' });
         setPanIsVerified(true);
-        getDocuments();
+        setForceRender((prev) => !prev);
         scrollToTop();
       } else {
         showErrorNotification(res.error.code);
@@ -45,10 +46,9 @@ export const VerifyPanCard = () => {
   };
 
   const handlePageChange = () => {
-    scrollToTop();
-    setCandidateActivePage('Profile');
-    verifyPANForm.values.panNo = '';
+    verifyPANForm.setFieldValue('panNo', '');
     setPanIsVerified(false);
+    navigate('/candidate/profile');
   };
 
   return (
