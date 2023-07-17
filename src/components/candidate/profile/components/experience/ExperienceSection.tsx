@@ -2,26 +2,27 @@ import { Text, Box, Button } from '@mantine/core';
 import noData from '../../assets/noData.png';
 import { MdOutlineEdit } from 'react-icons/md';
 import { ExperienceCard } from './ExperienceCard';
-import { useProfileContext } from '../../context/ProfileContext';
+import { useGlobalContext } from '../../../../../context/GlobalContext';
 import { AiOutlinePlus } from 'react-icons/ai';
+import { useNavigate } from 'react-router-dom';
 
 export const ExperienceSection = () => {
-  const { workExperienceData, scrollToTop, setCandidateActivePage, setSelectedExperience } = useProfileContext();
+  const { workExperienceData, scrollToTop } = useGlobalContext();
+  const navigate = useNavigate();
 
-  const handleToggleWorkExperienceDetails = (): void => {
+  const handleAllExperiencePage = (): void => {
+    navigate('/candidate/profile/experience/allExperiences');
     scrollToTop();
-    setCandidateActivePage('All Experiences');
   };
 
-  const handleWorkExperiencePage = () => {
+  const handleAddWorkExperiencePage = () => {
+    navigate('/candidate/profile/experience/addExperience');
     scrollToTop();
-    setCandidateActivePage('Add Experience');
   };
 
-  const handleGoToVerification = (experience: WorkExperience) => {
-    setCandidateActivePage('All Experiences');
-    setSelectedExperience(experience);
+  const handleGoToVerification = (id: string) => {
     scrollToTop();
+    navigate(`/candidate/profile/experience/${id}/verify`);
   };
 
   return (
@@ -35,14 +36,14 @@ export const ExperienceSection = () => {
         {workExperienceData.length > 0 && (
           <>
             <Box className="header-links">
-              <Text className="link" onClick={handleToggleWorkExperienceDetails}>
+              <Text className="link" onClick={handleAllExperiencePage}>
                 See All Experiences
               </Text>
-              <Button leftIcon={<MdOutlineEdit />} onClick={handleWorkExperiencePage} className="edit-btn">
+              <Button leftIcon={<MdOutlineEdit />} onClick={handleAddWorkExperiencePage} className="edit-btn">
                 Edit Section
               </Button>
             </Box>
-            <Box className="edit-icon" onClick={handleWorkExperiencePage}>
+            <Box className="edit-icon" onClick={handleAddWorkExperiencePage}>
               <MdOutlineEdit size={'22px'} className="btn" />
             </Box>
           </>
@@ -52,7 +53,8 @@ export const ExperienceSection = () => {
       {workExperienceData.length === 0 ? (
         <Box className="no-data-wrapper">
           <img className="no-data" src={noData} alt="No data" />
-          <Button leftIcon={<AiOutlinePlus />} onClick={handleWorkExperiencePage} className="add-records">
+
+          <Button leftIcon={<AiOutlinePlus />} onClick={handleAddWorkExperiencePage} className="add-records">
             Add records
           </Button>
         </Box>
@@ -63,7 +65,7 @@ export const ExperienceSection = () => {
             .slice(0, 3)
             .map((workExperience, index) => {
               return (
-                <Box key={index} onClick={() => handleGoToVerification(workExperience)}>
+                <Box key={index} onClick={() => handleGoToVerification(workExperience.workExpId)}>
                   <ExperienceCard
                     position={workExperience.designation}
                     companyName={workExperience.companyName}
@@ -77,7 +79,7 @@ export const ExperienceSection = () => {
         </Box>
       )}
       {workExperienceData.length > 0 && (
-        <Button onClick={handleToggleWorkExperienceDetails} className="see-all-btn">
+        <Button onClick={handleAllExperiencePage} className="see-all-btn">
           See All
         </Button>
       )}

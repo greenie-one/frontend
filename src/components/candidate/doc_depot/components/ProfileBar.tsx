@@ -1,12 +1,12 @@
 import { Text, Box } from '@mantine/core';
-import { useProfileContext } from '../../profile/context/ProfileContext';
 import emptyProfile from '../../profile/assets/emptyProfile.png';
 
 import starImg from '../assets/star.png';
 import { MdVerified } from 'react-icons/md';
+import { useGlobalContext } from '../../../../context/GlobalContext';
 
 export const ProfileBar = () => {
-  const { profileData } = useProfileContext();
+  const { profileData } = useGlobalContext();
   return (
     <Box>
       <Box className="profile-bar-profile-details">

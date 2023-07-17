@@ -14,7 +14,7 @@ type DocumentResponseType = {
   _id: string;
   name: string;
   type: string;
-  private_url: string;
+  privateUrl: string;
 };
 
 type UpdateDocumentResponseType = {

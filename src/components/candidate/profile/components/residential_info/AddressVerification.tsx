@@ -17,7 +17,8 @@ import { MdVerified } from 'react-icons/md';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 import checkGif from '../../assets/94109-confirmation 1.gif';
 import location from '../../assets/location.png';
-import { useProfileContext } from '../../context/ProfileContext';
+import { useGlobalContext } from '../../../../../context/GlobalContext';
+import { useParams } from 'react-router-dom';
 
 type OtpInputStyles = {
   root: string;
@@ -37,16 +38,23 @@ export const AddressVerification = () => {
   const [activeStep, setActiveStep] = useState<number>(1);
   const { classes: inputClasses } = OtpInputStyles();
   const [secondsRemaining, setSecondsRemaining] = useState<number>(30);
-  const {
-    selectedResidentialInfo,
-    peerAddressVerificationForm,
-    profileData,
-    setCandidateActivePage,
-    setSelectedResidentialInfo,
-  } = useProfileContext();
-
+  const { peerAddressVerificationForm, profileData, residentialInfoData } = useGlobalContext();
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
+  const [residentialInfo, setResidentialInfo] = useState<ResidentialInfoResponse>({
+    address_line_1: '',
+    address_line_2: '',
+    landmark: '',
+    pincode: 0,
+    city: '',
+    start_date: null,
+    end_date: null,
+    state: '',
+    country: '',
+    address_type: '',
+    isVerified: false,
+    residentialInfoId: '',
+  });
 
   const NextActiveStep = () => {
     if (activeStep !== 7) {
@@ -55,10 +63,11 @@ export const AddressVerification = () => {
   };
 
   const handleGoToProfile = () => {
-    setCandidateActivePage('Profile');
-    setSelectedResidentialInfo(null);
     close();
   };
+
+  const { id } = useParams();
+  const filteredInfo = residentialInfoData.find((info) => info.residentialInfoId === id);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -67,6 +76,9 @@ export const AddressVerification = () => {
 
     if (secondsRemaining === 0) {
       clearInterval(timer);
+    }
+    if (filteredInfo) {
+      setResidentialInfo(filteredInfo);
     }
 
     return () => clearInterval(timer);
@@ -85,8 +97,8 @@ export const AddressVerification = () => {
 
             <Box className="residential-details-text-box">
               <Text className="address">
-                {selectedResidentialInfo?.address_line_1}, {selectedResidentialInfo?.address_line_2},{' '}
-                {selectedResidentialInfo?.landmark}, {selectedResidentialInfo?.city}, {selectedResidentialInfo?.pincode}
+                {residentialInfo?.address_line_1}, {residentialInfo?.address_line_2}, {residentialInfo?.landmark},{' '}
+                {residentialInfo?.city}, {residentialInfo?.pincode}
               </Text>
 
               <Button leftIcon={<MdVerified size={'16px'} />} className="verified">
@@ -112,9 +124,8 @@ export const AddressVerification = () => {
                 </Title>
                 <Text className="address-verification-details-address">
                   {' '}
-                  {selectedResidentialInfo?.address_line_1}, {selectedResidentialInfo?.address_line_2},{' '}
-                  {selectedResidentialInfo?.landmark}, {selectedResidentialInfo?.city},{' '}
-                  {selectedResidentialInfo?.pincode}
+                  {residentialInfo?.address_line_1}, {residentialInfo?.address_line_2}, {residentialInfo?.landmark},{' '}
+                  {residentialInfo?.city}, {residentialInfo?.pincode}
                 </Text>
               </Box>
 
@@ -137,9 +148,8 @@ export const AddressVerification = () => {
                   {profileData.firstName} {profileData.lastName}
                 </Title>
                 <Text className="address-verification-details-address">
-                  {selectedResidentialInfo?.address_line_1}, {selectedResidentialInfo?.address_line_2},{' '}
-                  {selectedResidentialInfo?.landmark}, {selectedResidentialInfo?.city},
-                  {selectedResidentialInfo?.pincode}
+                  {residentialInfo?.address_line_1}, {residentialInfo?.address_line_2}, {residentialInfo?.landmark},{' '}
+                  {residentialInfo?.city},{residentialInfo?.pincode}
                 </Text>
               </Box>
               <Text className="address-verification-bold-title">Enter the one-time password sent to your Email.</Text>
@@ -180,9 +190,8 @@ export const AddressVerification = () => {
                 </Title>
                 <Text className="address-verification-details-address">
                   {' '}
-                  {selectedResidentialInfo?.address_line_1}, {selectedResidentialInfo?.address_line_2},{' '}
-                  {selectedResidentialInfo?.landmark}, {selectedResidentialInfo?.city},{' '}
-                  {selectedResidentialInfo?.pincode}
+                  {residentialInfo?.address_line_1}, {residentialInfo?.address_line_2}, {residentialInfo?.landmark},{' '}
+                  {residentialInfo?.city}, {residentialInfo?.pincode}
                 </Text>
               </Box>
               <Title className="address-verification-bold-title">We are trying to verify residential address of</Title>
@@ -206,12 +215,11 @@ export const AddressVerification = () => {
               <Box className="address-verification-details-added-peers">
                 <Text>1</Text>
                 <Text className="peer-email">
-                  {selectedResidentialInfo?.address_line_1}, {selectedResidentialInfo?.address_line_2},{' '}
-                  {selectedResidentialInfo?.landmark}, {selectedResidentialInfo?.city},{' '}
-                  {selectedResidentialInfo?.pincode}
+                  {residentialInfo?.address_line_1}, {residentialInfo?.address_line_2}, {residentialInfo?.landmark},{' '}
+                  {residentialInfo?.city}, {residentialInfo?.pincode}
                 </Text>
-                <Text>{selectedResidentialInfo?.typeOfAddress}</Text>
-                <Text>{selectedResidentialInfo?.end_date.toString().substring(0, 10)}</Text>
+                <Text>{residentialInfo?.address_type}</Text>
+                <Text>{residentialInfo?.end_date?.toString().substring(0, 10)}</Text>
               </Box>
               <Title className="address-verification-details-main-title">
                 Please allow permission to capture location to confirm the verificationh

@@ -1,20 +1,22 @@
 import { Text, Box, Button } from '@mantine/core';
 import noData from '../../assets/noData.png';
 import { MdOutlineEdit } from 'react-icons/md';
-import { useProfileContext } from '../../context/ProfileContext';
 import { AiOutlinePlus } from 'react-icons/ai';
+import { useGlobalContext } from '../../../../../context/GlobalContext';
+import { useNavigate } from 'react-router-dom';
 
 export const SkillsSection = () => {
-  const { setCandidateActivePage, skillData, scrollToTop } = useProfileContext();
+  const navigate = useNavigate();
+  const { skillData, scrollToTop } = useGlobalContext();
 
-  const handleToggleSkillsDetails = (): void => {
+  const handleAllSkillsScreen = (): void => {
     scrollToTop();
-    setCandidateActivePage('All Skills');
+    navigate('/candidate/profile/skills/allSkills');
   };
 
   const handleAddSkillPage = () => {
     scrollToTop();
-    setCandidateActivePage('Add Skills');
+    navigate('/candidate/profile/skills/addSkills');
   };
 
   return (
@@ -27,7 +29,7 @@ export const SkillsSection = () => {
         {skillData.length > 0 && (
           <>
             <Box className="header-links">
-              <Text className="link" onClick={handleToggleSkillsDetails}>
+              <Text className="link" onClick={handleAllSkillsScreen}>
                 See All Skills
               </Text>
               <Button leftIcon={<MdOutlineEdit />} onClick={handleAddSkillPage} className="edit-btn">
@@ -67,7 +69,7 @@ export const SkillsSection = () => {
         </Box>
       )}
       {skillData.length > 0 && (
-        <Button onClick={handleToggleSkillsDetails} className="see-all-btn">
+        <Button onClick={handleAllSkillsScreen} className="see-all-btn">
           See All
         </Button>
       )}

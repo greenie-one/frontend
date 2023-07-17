@@ -12,7 +12,6 @@ import { BiUserCircle } from 'react-icons/bi';
 import { RiSettings3Line } from 'react-icons/ri';
 import { MdExitToApp, MdOutlineLiveHelp, MdOutlineLock } from 'react-icons/md';
 import { useSettingsContext } from '../../../settings/context/SettingsContext';
-import { useProfileContext } from '../context/ProfileContext';
 import { showLoadingNotification, showSuccessNotification } from '../../../../utils/functions/showNotification';
 import { useGlobalContext } from '../../../../context/GlobalContext';
 import noNotification from '../assets/noNotifications.png';
@@ -31,12 +30,10 @@ export const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [showSearchList, setShowSearchList] = useState<boolean>(false);
   const { setShowDetailsId } = useSettingsContext();
-  const { setIsLoading, scrollToTop, profileData } = useProfileContext();
   const navigate = useNavigate();
-  const { authClient } = useGlobalContext();
+  const { authClient, scrollToTop, profileData } = useGlobalContext();
 
   const removeAuthTokens = () => {
-    setIsLoading(true);
     showLoadingNotification({ title: 'Signing Out', message: 'Please wait while we sign you out' });
 
     setTimeout(() => {
@@ -54,8 +51,8 @@ export const Navbar = () => {
 
   const location = useLocation();
   const currentUrl = location.pathname + location.search;
-  const isProfilePage = currentUrl === '/profile';
-  const isProfileSettingsPage = currentUrl === '/profile/settings';
+  const isProfilePage = currentUrl === 'candidate/profile';
+  const isProfileSettingsPage = currentUrl === 'candidate/profile/settings';
   const debouncedValue = useDebounce(searchQuery, 250);
 
   const drawerReducer = (state: DrawerState, action: DrawerAction): DrawerState => {
@@ -99,7 +96,7 @@ export const Navbar = () => {
     <header>
       <Box className="navbar">
         <Box className="nav-container">
-          <Link to={'/profile'} className="logo">
+          <Link to={'/candidate/profile'} className="logo">
             <span className="greenie">Greenie</span>
             <span className="nav-verified">
               <MdVerified size={'20px'} color="#9fe870" />
@@ -150,7 +147,7 @@ export const Navbar = () => {
                 ) : (
                   <Box className="no-notification-box">
                     <img src={noNotification} alt="" />
-                    <Text className="no-notification-text">Comming soon</Text>
+                    <Text className="no-notification-text">Coming soon</Text>
                   </Box>
                 )}
               </Menu.Dropdown>
@@ -172,7 +169,7 @@ export const Navbar = () => {
               <Menu.Dropdown className="profile-dropdown-menu">
                 <List className="navOptionsList">
                   <li>
-                    <Link to={'/profile'} className="navOptionItems">
+                    <Link to={'/candidate/profile'} className="navOptionItems">
                       <span className="navOptionsIcon">
                         <BiUserCircle />
                       </span>
@@ -181,7 +178,7 @@ export const Navbar = () => {
                   </li>
 
                   <li>
-                    <Link to={'/profile/settings'} className="navOptionItems">
+                    <Link to={'/candidate/profile/settings'} className="navOptionItems">
                       <span className="navOptionsIcon">
                         <RiSettings3Line />
                       </span>
@@ -236,7 +233,7 @@ export const Navbar = () => {
           </Flex>
           <List className={classes.navOptionsList}>
             <li>
-              <Link to={'/profile'} className={classes.navOptionItems}>
+              <Link to={'/candidate/profile'} className={classes.navOptionItems}>
                 <span className={classes.navOptionsIcon}>
                   <BiUserCircle />
                 </span>
@@ -245,7 +242,7 @@ export const Navbar = () => {
             </li>
 
             <li>
-              <Link to={'/profile/settings'} className={classes.navOptionItems}>
+              <Link to={'/candidate/profile/settings'} className={classes.navOptionItems}>
                 <span className={classes.navOptionsIcon}>
                   <RiSettings3Line />
                 </span>
@@ -279,7 +276,7 @@ export const Navbar = () => {
         <nav className={classes.mobileNavOptionsContainer}>
           <Flex justify="space-between" align="center" direction="row" className={classes.logo}>
             <Box>
-              <Link to={'/profile'}>
+              <Link to={'/candidate/profile'}>
                 <span className={classes.mobileGreenie}>Greenie</span>
                 <span className={classes.mobileVerified}>
                   <MdVerified />
@@ -289,14 +286,14 @@ export const Navbar = () => {
             {profileData.profilePic ? (
               <Box className="drawer-right-section">
                 <AiOutlineBell size={'22px'} className="bell-icon" />
-                <Link to={'/profile'}>
+                <Link to={'/candidate/profile'}>
                   <img className="profile-picture" src={profileData.profilePic} alt="Profile Piture" />
                 </Link>
               </Box>
             ) : (
               <Box className="drawer-right-section">
                 <AiOutlineBell size={'22px'} className="bell-icon" />
-                <Link to={'/profile'}>
+                <Link to={'/candidate/profile'}>
                   <img className="profile-picture" src={emptyProfile} alt="Profile Piture" />
                 </Link>
               </Box>

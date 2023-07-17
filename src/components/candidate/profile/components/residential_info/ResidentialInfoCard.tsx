@@ -37,7 +37,7 @@ export const ResidentialInfoCard: React.FC<ResidentialInfoCardProps> = ({
       <Box>
         <Text className="since-text">Since</Text>
         <Text className="tenure">
-          {start_date.toString().substring(0, 4)} - {end_date.toString().substring(0, 4)}
+          {start_date?.toString().substring(0, 4)} - {end_date?.toString().substring(0, 4)}
         </Text>
       </Box>
     </Box>

@@ -10,8 +10,9 @@ import {
   Folder,
 } from './components';
 import './styles/global.scss';
-
-import { useProfileContext } from '../profile/context/ProfileContext';
+import { Navbar } from '../profile/components/Navbar';
+import { useDocDepotContext } from './context/DocDepotContext';
+import { ProfileNav } from '../profile/components/ProfileNav';
 
 type docDepotData = {
   name: string;
@@ -20,8 +21,6 @@ type docDepotData = {
 };
 
 export const DocDepot = () => {
-  const { docDepotActivePage, setDocDepotActivePage } = useProfileContext();
-
   const docDepotData: docDepotData[] = [
     { name: 'IDs', isFolder: true, id: '0' },
     { name: 'Work Documents', isFolder: true, id: '1' },
@@ -29,34 +28,43 @@ export const DocDepot = () => {
     { name: 'Others', isFolder: true, id: '3' },
   ];
 
+  const { docDepotActivePage, setDocDepotActivePage } = useDocDepotContext();
+
   return (
-    <main>
-      <ProfileBar />
-      <Box className="container">
+    <>
+      <Navbar />
+      <main className="profile">
+        <Box style={{ marginTop: '7rem' }}>
+          <ProfileNav />
+        </Box>
         <Box>
-          <DocDepotNavbar />
+          <ProfileBar />
         </Box>
 
-        {docDepotActivePage === 0 && (
-          <Box>
-            <DocDepotFilter />
-            <Text className="doc-depot-heading">Folders</Text>
-            <Box className="folder-wrapper">
-              {docDepotData.map(({ id, name, isFolder }, index) => {
-                return (
-                  <Box key={index} onClick={() => setDocDepotActivePage(index + 1)}>
-                    <Folder id={id} name={name} isFolder={isFolder} private_url="" />
-                  </Box>
-                );
-              })}
+        <Box className="container">
+          <DocDepotNavbar />
+
+          {docDepotActivePage === 0 && (
+            <Box>
+              <DocDepotFilter />
+              <Text className="doc-depot-heading">Folders</Text>
+              <Box className="folder-wrapper">
+                {docDepotData.map(({ id, name, isFolder }, index) => {
+                  return (
+                    <Box key={index} onClick={() => setDocDepotActivePage(index + 1)}>
+                      <Folder id={id} name={name} isFolder={isFolder} privateUrl="" />
+                    </Box>
+                  );
+                })}
+              </Box>
             </Box>
-          </Box>
-        )}
-        {docDepotActivePage === 1 && <DocDepotIDsPage />}
-        {docDepotActivePage === 2 && <DocDepotExpPage />}
-        {docDepotActivePage === 3 && <DocDepotEduDocPage />}
-        {docDepotActivePage === 4 && <DocDepotOthersPage />}
-      </Box>
-    </main>
+          )}
+          {docDepotActivePage === 1 && <DocDepotIDsPage />}
+          {docDepotActivePage === 2 && <DocDepotExpPage />}
+          {docDepotActivePage === 3 && <DocDepotEduDocPage />}
+          {docDepotActivePage === 4 && <DocDepotOthersPage />}
+        </Box>
+      </main>
+    </>
   );
 };

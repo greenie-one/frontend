@@ -42,7 +42,7 @@ type residentialInfoFormType = {
   landmark: string;
   city: string;
   pincode: number | string;
-  typeOfAddress: string;
+  address_type: string;
   state: '';
   country: '';
   start_date: string;

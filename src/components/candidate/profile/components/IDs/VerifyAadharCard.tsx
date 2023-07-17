@@ -16,20 +16,21 @@ import {
   showLoadingNotification,
   showSuccessNotification,
 } from '../../../../../utils/functions/showNotification';
+import { useNavigate } from 'react-router-dom';
 import { APIError } from '../../../../../utils/generic/httpClient';
 // import errorIcon from '../../assets/errorIcon.png';
 // import { GrPowerReset } from 'react-icons/gr';
 
 export const VerifyAadharCard = () => {
+  const navigate = useNavigate();
   const [opened, { open, close }] = useDisclosure(false);
   const [checked, setChecked] = useState<boolean>(false);
   const [secondsRemaining, setSecondsRemaining] = useState<number>(60);
   const { classes: otpInputClasses } = OtpInputStyles();
   const isMobile = useMediaQuery('(max-width: 768px)');
   const greeneId = 'GRN788209';
-  const { setCandidateActivePage, verifyAadharForm, getDocuments, aadharIsVerified, setAadharIsVerified, scrollToTop } =
-    useProfileContext();
-  const { authClient } = useGlobalContext();
+  const { aadharIsVerified, setAadharIsVerified } = useProfileContext();
+  const { authClient, setForceRender, scrollToTop, verifyAadharForm } = useGlobalContext();
   const [verificationData, setVerificationData] = useState<AadharVerificationResponse>({
     requestId: '',
     taskId: '',
@@ -109,10 +110,8 @@ export const VerifyAadharCard = () => {
         showSuccessNotification({ title: 'Success !', message: 'OTP Verified Successfully' });
         close();
         setAadharIsVerified(true);
-        verifyAadharForm.values.otp = '';
-        verifyAadharForm.values.aadharNo = '';
-        getDocuments();
-        setCandidateActivePage('Congratulation Screen');
+        verifyAadharForm.reset();
+        setForceRender((prev) => !prev);
       } else {
         showErrorNotification(res.error.code);
       }
@@ -120,14 +119,14 @@ export const VerifyAadharCard = () => {
   };
 
   const handlePageChange = () => {
-    setCandidateActivePage('Profile');
     verifyAadharForm.values.aadharNo = '';
     verifyAadharForm.values.otp = '';
+    navigate('/candidate/profile');
+    setAadharIsVerified(false);
   };
 
   const handleContinue = () => {
     scrollToTop();
-    setCandidateActivePage('Congratulation Screen');
   };
 
   return (

@@ -12,10 +12,10 @@ type FolderProps = {
   id: string;
   name: string;
   isFolder: boolean;
-  private_url: string;
+  privateUrl: string;
 };
 
-export const Folder: React.FC<FolderProps> = ({ id, name, isFolder, private_url }) => {
+export const Folder: React.FC<FolderProps> = ({ id, name, isFolder, privateUrl }) => {
   const [isDropdownVisible, setDropdownVisible] = useState(false);
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
@@ -119,7 +119,7 @@ export const Folder: React.FC<FolderProps> = ({ id, name, isFolder, private_url 
         </Box>
       ) : (
         <Box className="pdf">
-          <Link target="_blank" className="pdf-box" to={private_url}>
+          <Link target="_blank" className="pdf-box" to={privateUrl}>
             <img src={pdfImage} alt="folder-image" />
             <Text className="folder-text">{name.substring(0, 12)}</Text>
           </Link>

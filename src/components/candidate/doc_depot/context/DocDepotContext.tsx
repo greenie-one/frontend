@@ -19,7 +19,7 @@ export const DocDepotContextProvider: React.FC<{
     initialValues: {
       name: '',
       type: '',
-      private_url: '',
+      privateUrl: '',
     },
 
     validate: {
@@ -27,12 +27,12 @@ export const DocDepotContextProvider: React.FC<{
       type: isNotEmpty('Please select document type'),
     },
   });
-  const { authClient } = useGlobalContext();
+  const { authClient, forceRender, setForceRender } = useGlobalContext();
   const authTokens = authClient.getAccessToken();
   const [educationDocuments, setEducationDocument] = useState<DocumentResponseType[]>([]);
   const [experienceDocuments, setExperienceDocument] = useState<DocumentResponseType[]>([]);
   const [otherDocuments, setOtherDocument] = useState<DocumentResponseType[]>([]);
-  const [forceRender, setForceRender] = useState<boolean>(false);
+  const [docDepotActivePage, setDocDepotActivePage] = useState<number>(0);
 
   const getExperienceDocument = async () => {
     const res: Result<DocumentResponseType[]> = await HttpClient.callApiAuth(
@@ -131,8 +131,8 @@ export const DocDepotContextProvider: React.FC<{
         experienceDocuments,
         educationDocuments,
         otherDocuments,
-        forceRender,
-        setForceRender,
+        docDepotActivePage,
+        setDocDepotActivePage,
       }}
     >
       {children}
