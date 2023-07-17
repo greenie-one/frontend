@@ -47,8 +47,8 @@ export const VerifyDrivingLicence = () => {
     }
   };
   const handlePageChange = () => {
-    verifyLicenceForm.values.licenceNo = '';
-    verifyLicenceForm.values.dateOfBirth = null;
+    verifyLicenceForm.setFieldValue('licenceNo', '');
+    verifyLicenceForm.setFieldValue('dateOfBirth', null);
     setLicenseIsVerified(false);
     navigate('/candidate/profile');
   };

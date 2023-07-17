@@ -7,6 +7,17 @@ import { useGlobalContext } from '../../../../../context/GlobalContext';
 import { Navbar } from '../Navbar';
 import { useNavigate } from 'react-router-dom';
 
+const expertiseList: {
+  [key: string]: string;
+} = {
+  AMATEUR: 'Amateur',
+  BEGINNER: 'Beginner',
+  HIGHLY_COMPETENT: 'Highly Competent',
+  EXPERT: 'Expert',
+  SUPER_SPECIALIST: 'Super Specialist',
+  MASTER: 'Master',
+};
+
 export const AllSkills = () => {
   const navigate = useNavigate();
   const { skillData } = useGlobalContext();
@@ -14,6 +25,8 @@ export const AllSkills = () => {
   const handleProfilePage = () => {
     navigate('/candidate/profile');
   };
+
+  const uniqueSkills = [...new Set(skillData.map((skill) => skill.skillName))];
 
   return (
     <>
@@ -26,10 +39,14 @@ export const AllSkills = () => {
               <Text>Profile</Text>
               <AiOutlineRight className="arrow-right-icon" size={'16px'} />
             </Box>
-            <Text>{`Skills (${skillData.length})`}</Text>
+            <Text>{`Skills (${uniqueSkills.length})`}</Text>
           </Box>
           <Box className="skills-card-wrapper">
-            {skillData.reverse().map(({ skillName, expertise, isVerified }, index) => {
+            {uniqueSkills.reverse().map((skillName, index) => {
+              const skill = skillData.find((skill) => skill.skillName === skillName);
+              const expertise = skill?.expertise;
+              const isVerified = skill?.isVerified;
+
               return (
                 <Box className="skill-card" key={index}>
                   <Box className="skill-card-header">
@@ -44,10 +61,7 @@ export const AllSkills = () => {
                       </Button>
                     )}
                   </Box>
-                  <Text className="skill-rate">
-                    {expertise === 'AMATEUR' && 'Amature'}
-                    {expertise === 'EXPERT' && 'Expert'}
-                  </Text>
+                  {expertise && <Text className="skill-rate">{expertiseList[expertise]}</Text>}
                   <Box className="skill-btn-wrapper">
                     {isVerified ? (
                       <Button className="view-details-btn">View details</Button>

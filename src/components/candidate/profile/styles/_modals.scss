@@ -331,6 +331,15 @@
     padding: 1rem;
     margin: 0.5rem;
     border-radius: 24px;
+    position: relative;
+
+    .remove-skills-btn {
+      position: absolute;
+      top: 0.6rem;
+      right: 1rem;
+      font-size: 1.25rem;
+      color: rgb(255, 74, 110);
+    }
 
     .add-skill-name {
       margin-bottom: 0.5rem;

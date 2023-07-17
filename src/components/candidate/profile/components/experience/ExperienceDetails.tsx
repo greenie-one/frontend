@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { ActionIcon, Text, Box, Button, Title, Modal, Checkbox } from '@mantine/core';
 import tcsLogo from '../../assets/tscLogo.png';
 import { CgSandClock } from 'react-icons/cg';
@@ -20,23 +20,8 @@ export const ExperienceDetails: React.FC = () => {
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
   };
+
   const { deleteWorkExperience, workExperienceData } = useGlobalContext();
-  const [experience, setExperience] = useState<WorkExperience>({
-    workExpId: '',
-    department: '',
-    image: null,
-    designation: '',
-    companyName: '',
-    email: '',
-    companyId: '',
-    companyStartDate: '',
-    companyEndDate: '',
-    workMode: '',
-    workType: '',
-    isVerified: false,
-    verifiedBy: null,
-    companyType: '',
-  });
 
   const [checked, setChecked] = useState<boolean>(false);
 
@@ -48,6 +33,7 @@ export const ExperienceDetails: React.FC = () => {
   const handleDeleteWorkInfo = (_id: string): void => {
     deleteWorkExperience(_id);
     deleteModalClose();
+    navigate('/candidate/profile');
   };
 
   const { id } = useParams();
@@ -60,10 +46,6 @@ export const ExperienceDetails: React.FC = () => {
   const handleGoToVerification = () => {
     navigate(`/candidate/profile/experience/${id}/verify`);
   };
-
-  useEffect(() => {
-    setExperience(filteredExperience);
-  }, []);
 
   return (
     <>
@@ -106,9 +88,9 @@ export const ExperienceDetails: React.FC = () => {
                 </Box>
 
                 <Box className="experience-details-text-box">
-                  <Text className="designation">{experience?.designation}</Text>
-                  <Text className="company-name">{experience?.companyName}</Text>
-                  {experience?.isVerified ? (
+                  <Text className="designation">{filteredExperience?.designation}</Text>
+                  <Text className="company-name">{filteredExperience?.companyName}</Text>
+                  {filteredExperience?.isVerified ? (
                     <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
                       Verified
                     </Button>
@@ -140,11 +122,22 @@ export const ExperienceDetails: React.FC = () => {
               <Box className="about-company-box-wrapper">
                 <Box className="comapny-type-box">
                   <Text className="experience-details-box-heading">Company Type</Text>
-                  <Text className="experience-details-box-text">{experience?.companyType}</Text>
+                  <Text className="experience-details-box-text">{filteredExperience?.companyType}</Text>
                 </Box>
                 <Box className="comapny-type-box">
                   <Text className="experience-details-box-heading">Linked In</Text>
-                  <Text className="details-link">{experience?.companyName}</Text>
+                  {filteredExperience?.linkedInUrl ? (
+                    <a
+                      href={filteredExperience?.linkedInUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="details-link"
+                    >
+                      {filteredExperience?.companyName}
+                    </a>
+                  ) : (
+                    '-'
+                  )}
                 </Box>
               </Box>
             </Box>
@@ -153,23 +146,23 @@ export const ExperienceDetails: React.FC = () => {
               <Box className="basic-info-box-wrapper">
                 <Box className="comapny-type-box">
                   <Text className="experience-details-box-heading">Company ID</Text>
-                  <Text className="experience-details-box-text">{experience?.companyId}</Text>
+                  <Text className="experience-details-box-text">{filteredExperience?.companyId}</Text>
                 </Box>
                 <Box className="comapny-type-box">
                   <Text className="experience-details-box-heading">Work Email</Text>
-                  <Text className="experience-details-box-text">{experience?.email}</Text>
+                  <Text className="experience-details-box-text">{filteredExperience?.email}</Text>
                 </Box>
                 <Box className="comapny-type-box">
                   <Text className="experience-details-box-heading">Tenure</Text>
                   <Text className="experience-details-box-text">
-                    {experience?.companyStartDate?.toString().substring(0, 4)}-
-                    {experience?.companyEndDate?.toString().substring(0, 4)}
+                    {filteredExperience?.companyStartDate?.toString().substring(11, 15)}-
+                    {filteredExperience?.companyEndDate?.toString().substring(11, 15)}
                   </Text>
                 </Box>
                 <Box className="comapny-type-box">
                   <Text className="experience-details-box-heading">Work Type</Text>
                   <Text className="experience-details-box-text">
-                    {experience?.workType} - {experience?.workMode}
+                    {filteredExperience?.workType} - {filteredExperience?.workMode}
                   </Text>
                 </Box>
               </Box>
@@ -186,7 +179,7 @@ export const ExperienceDetails: React.FC = () => {
           <DeleteConfirmationModal
             opened={deleteModalOpened}
             close={deleteModalClose}
-            cb={() => handleDeleteWorkInfo(experience?.workExpId)}
+            cb={() => handleDeleteWorkInfo(filteredExperience?.workExpId)}
           />
         </Box>
       </main>

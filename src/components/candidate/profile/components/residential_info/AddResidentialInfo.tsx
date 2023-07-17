@@ -8,7 +8,7 @@ import {
   showLoadingNotification,
   showSuccessNotification,
 } from '../../../../../utils/functions/showNotification';
-import { HttpClient, Result } from '../../../../../utils/generic/httpClient';
+import { HttpClient } from '../../../../../utils/generic/httpClient';
 import { residentialInfoAPIList } from '../../../../../assets/api/ApiList';
 import { states, countries } from '../../constants/SelectionOptions';
 import { Navbar } from '../Navbar';
@@ -16,68 +16,30 @@ import { useNavigate } from 'react-router-dom';
 
 export const AddResidentialInfo = () => {
   const navigate = useNavigate();
-  const { authClient, residentialInfoForm, scrollToTop, setForceRender } = useGlobalContext();
+  const { authClient, residentialInfoForm, setForceRender } = useGlobalContext();
   const [checked, setChecked] = useState(false);
 
   const handleToggleScreen = () => {
     residentialInfoForm.reset();
-    scrollToTop();
     navigate('/candidate/profile');
   };
 
   const handleCheck = () => {
-    residentialInfoForm.values.end_date = '';
+    residentialInfoForm.setFieldValue('end_date', '');
     setChecked(!checked);
-  };
-
-  const validateFormFields = (requiredField: string[]) => {
-    const listLength = requiredField.length;
-
-    for (let i = 0; i < listLength; i++) {
-      residentialInfoForm.validateField(requiredField[i]);
-    }
-
-    for (let i = 0; i < listLength; i++) {
-      if (residentialInfoForm.validateField(requiredField[i]).hasError) return false;
-    }
-
-    return true;
   };
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    const requiredField = [
-      'address_line_1',
-      'address_line_2',
-      'landmark',
-      'city',
-      'pincode',
-      'address_type',
-      'state',
-      'country',
-      'start_date',
-      'end_date',
-      'currentLocation',
-    ];
+    if (residentialInfoForm.validate().hasErrors) return;
 
-    if (!validateFormFields(requiredField)) return;
     showLoadingNotification({
       title: 'Wait !',
       message: 'Please wait while we update your residential information.',
     });
-    const requestBody: ResidentialInfoRequestBody = {
-      address_line_1: residentialInfoForm.values.address_line_1,
-      address_line_2: residentialInfoForm.values.address_line_2,
-      landmark: residentialInfoForm.values.landmark,
-      pincode: String(residentialInfoForm.values.pincode),
-      city: residentialInfoForm.values.city,
-      state: residentialInfoForm.values.state,
-      country: residentialInfoForm.values.country,
-      start_date: residentialInfoForm.values.start_date,
-      end_date: residentialInfoForm.values.end_date,
-      address_type: residentialInfoForm.values.address_type,
-    };
-    const res: Result<createResidentialInfo> = await HttpClient.callApiAuth(
+
+    const requestBody: ResidentialInfoRequestBody = residentialInfoForm.values;
+    const res = await HttpClient.callApiAuth<createResidentialInfo>(
       {
         url: `${residentialInfoAPIList.postResidentialInfo}`,
         method: 'POST',
@@ -96,6 +58,7 @@ export const AddResidentialInfo = () => {
       showErrorNotification(res.error.code);
     }
   };
+
   return (
     <>
       <Navbar />

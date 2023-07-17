@@ -46,10 +46,9 @@ export const VerifyPanCard = () => {
   };
 
   const handlePageChange = () => {
-    scrollToTop();
-    navigate('/candidate/profile');
-    verifyPANForm.values.panNo = '';
+    verifyPANForm.setFieldValue('panNo', '');
     setPanIsVerified(false);
+    navigate('/candidate/profile');
   };
 
   return (

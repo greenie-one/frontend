@@ -26,7 +26,7 @@ export enum ReviewActionType {
 }
 // import { peerVerificationAPIList } from '../../../../../assets/api/ApiList';
 import { HttpClient, Result } from '../../../../../utils/generic/httpClient';
-import { docDepotAPIList } from '../../../../../assets/api/ApiList';
+import { docDepotAPIList, workExperienceAPiList } from '../../../../../assets/api/ApiList';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
 import { ExperienceDocuments } from '../../types/ProfileGeneral';
 import { Navbar } from '../Navbar';
@@ -40,24 +40,20 @@ const attributes = [
   { send: false, attribute: 'Exit formalities' },
 ];
 
+const expertiseList: {
+  [key: string]: string;
+} = {
+  AMATEUR: 'Amateur',
+  BEGINNER: 'Beginner',
+  HIGHLY_COMPETENT: 'Highly Competent',
+  EXPERT: 'Expert',
+  SUPER_SPECIALIST: 'Super Specialist',
+  MASTER: 'Master',
+};
+
 export const VerifyExperience: React.FC = () => {
   const navigate = useNavigate();
-  const [experience, setExperience] = useState<WorkExperience>({
-    workExpId: '',
-    department: '',
-    image: null,
-    designation: '',
-    companyName: '',
-    email: '',
-    companyId: '',
-    companyStartDate: '',
-    companyEndDate: '',
-    workMode: '',
-    workType: '',
-    isVerified: false,
-    verifiedBy: null,
-    companyType: '',
-  });
+  const [experience, setExperience] = useState<WorkExperience | undefined>({} as WorkExperience);
 
   const [addedPeers, setAddedPeers] = useState<Peer[]>([]);
   const [activePeer, setActivePeer] = useState<number>(0);
@@ -152,7 +148,7 @@ export const VerifyExperience: React.FC = () => {
       email: peerVerificationForm.values.email,
       phone: peerVerificationForm.values.contactNumber,
       peerType: peerVerificationForm.values.peerType,
-      workExperience: experience.workExpId,
+      workExperience: String(experience?.workExpId),
     };
     setAddedPeers((prevPeers) => [...prevPeers, newPeer]);
     peerVerificationForm.reset();
@@ -184,8 +180,27 @@ export const VerifyExperience: React.FC = () => {
       authClient
     );
     if (res.ok) {
-      const filtered = res.value.filter((document) => document.workExperience === experience.workExpId);
+      const filtered = res.value.filter((document) => document.workExperience === experience?.workExpId);
       setExperienceDocuments(filtered);
+    } else {
+      showErrorNotification(res.error.code);
+    }
+  };
+
+  const getWorkExperience = async () => {
+    const res = await HttpClient.callApiAuth<workExperienceResponse>(
+      {
+        url: `${workExperienceAPiList.getWorkExperience}`,
+        method: 'GET',
+      },
+      authClient
+    );
+
+    if (res.ok) {
+      const workExperiences = res.value.workExperinces;
+      const filteredExperience = workExperiences.find((exp: WorkExperience) => exp.workExpId === id);
+
+      setExperience(filteredExperience);
     } else {
       showErrorNotification(res.error.code);
     }
@@ -196,12 +211,12 @@ export const VerifyExperience: React.FC = () => {
   };
 
   const { id } = useParams();
-  const filteredExperience = workExperienceData.find((exp: WorkExperience) => exp.workExpId === id);
+  // const filteredExperience = workExperienceData.find((exp: WorkExperience) => exp.workExpId === id);
 
   useEffect(() => {
     if (authToken) {
+      getWorkExperience();
       getExperienceDocument();
-      setExperience(filteredExperience);
     }
   }, []);
 
@@ -217,9 +232,9 @@ export const VerifyExperience: React.FC = () => {
             </Box>
 
             <Box className="experience-details-text-box">
-              <Text className="designation">{experience.designation}</Text>
-              <Text className="company-name">{experience.companyName}</Text>
-              {experience.isVerified ? (
+              <Text className="designation">{experience?.designation}</Text>
+              <Text className="company-name">{experience?.companyName}</Text>
+              {experience?.isVerified ? (
                 <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
                   Verified
                 </Button>
@@ -261,9 +276,9 @@ export const VerifyExperience: React.FC = () => {
                 </Box>
 
                 <Box className="experience-details-text-box">
-                  <Text className="designation">{experience.designation}</Text>
-                  <Text className="company-name">{experience.companyName}</Text>
-                  {experience.isVerified ? (
+                  <Text className="designation">{experience?.designation}</Text>
+                  <Text className="company-name">{experience?.companyName}</Text>
+                  {experience?.isVerified ? (
                     <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
                       Verified
                     </Button>
@@ -458,27 +473,19 @@ export const VerifyExperience: React.FC = () => {
                             <Checkbox checked indeterminate readOnly />
                             <Text>Select Skills To Verify</Text>
                           </Box>
+
                           <Box className="selected-skills">
                             {skillData
-                              .filter((skill) => skill.workExperience === experience.workExpId)
+                              .filter((skill) => skill.workExperience === experience?.workExpId)
                               .map((skill, idx) => {
                                 return (
                                   <Box key={idx}>
                                     <Box className="selected-skill">
                                       <Checkbox />
                                       <Text>{skill.skillName}</Text>
-                                      {skill.expertise === 'AMATEUR' && <Text className="add-skill-rate">Amature</Text>}
-                                      {skill.expertise === 'BEGINNER' && (
-                                        <Text className="add-skill-rate">Beginner</Text>
+                                      {skill.expertise && (
+                                        <Text className="add-skill-rate">{expertiseList[skill.expertise]}</Text>
                                       )}
-                                      {skill.expertise === 'HIGHLY_COMPETENT' && (
-                                        <Text className="add-skill-rate">Highly Competent</Text>
-                                      )}
-                                      {skill.expertise === 'EXPERT' && <Text className="add-skill-rate">Expert</Text>}
-                                      {skill.expertise === 'SUPER_SPECIALIST' && (
-                                        <Text className="add-skill-rate">Super Specialist</Text>
-                                      )}
-                                      {skill.expertise === 'MASTER' && <Text className="add-skill-rate">Master</Text>}
                                     </Box>
                                   </Box>
                                 );
@@ -579,9 +586,9 @@ export const VerifyExperience: React.FC = () => {
                   </Box>
 
                   <Box className="experience-details-text-box">
-                    <Text className="designation">{experience.designation}</Text>
-                    <Text className="company-name">{experience.companyName}</Text>
-                    {experience.isVerified ? (
+                    <Text className="designation">{experience?.designation}</Text>
+                    <Text className="company-name">{experience?.companyName}</Text>
+                    {experience?.isVerified ? (
                       <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
                         Verified
                       </Button>
@@ -616,18 +623,13 @@ export const VerifyExperience: React.FC = () => {
                 <Text className="document-action-heading">Skills</Text>
                 <Box className="add-skills-wrapper">
                   {skillData
-                    .filter((skill) => skill.workExperience === experience.workExpId)
+                    .filter((skill) => skill.workExperience === experience?.workExpId)
                     .map((skill: Skill, index: number) => {
                       const { expertise, skillName } = skill;
                       return (
                         <Box key={index} className="add-skill-box">
                           <Text className="add-skill-name">{skillName}</Text>
-                          {expertise === 'AMATEUR' && <Text className="add-skill-rate">Amature</Text>}
-                          {expertise === 'BEGINNER' && <Text className="add-skill-rate">Beginner</Text>}
-                          {expertise === 'HIGHLY_COMPETENT' && <Text className="add-skill-rate">Highly Competent</Text>}
-                          {expertise === 'EXPERT' && <Text className="add-skill-rate">Expert</Text>}
-                          {expertise === 'SUPER_SPECIALIST' && <Text className="add-skill-rate">Super Specialist</Text>}
-                          {expertise === 'MASTER' && <Text className="add-skill-rate">Master</Text>}
+                          {expertise && <Text className="add-skill-rate">{expertiseList[expertise]}</Text>}
                         </Box>
                       );
                     })}

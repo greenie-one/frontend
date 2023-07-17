@@ -216,9 +216,9 @@ export const GlobalContextProvider: React.FC<{
     }
 
     getProfile();
-    profileForm.values.firstName = '';
-    profileForm.values.lastName = '';
-    profileForm.values.bio = '';
+    profileForm.setFieldValue('firstName', '');
+    profileForm.setFieldValue('lastName', '');
+    profileForm.setFieldValue('bio', '');
   };
 
   //--------------------------------------------------------------------

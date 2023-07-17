@@ -33,6 +33,18 @@ import axios from 'axios';
 import { docDepotAPIList } from '../../../../../assets/api/ApiList';
 import { ExperienceDocuments } from '../../types/ProfileGeneral';
 import { Navbar } from '../Navbar';
+import { MdRemoveCircle } from 'react-icons/md';
+
+const expertiseList: {
+  [key: string]: string;
+} = {
+  AMATEUR: 'Amateur',
+  BEGINNER: 'Beginner',
+  HIGHLY_COMPETENT: 'Highly Competent',
+  EXPERT: 'Expert',
+  SUPER_SPECIALIST: 'Super Specialist',
+  MASTER: 'Master',
+};
 
 export const AddExperience = () => {
   const navigate = useNavigate();
@@ -54,8 +66,13 @@ export const AddExperience = () => {
   const [selectedSkills, setSelectedSkills] = useState<Skill[]>([]);
   const [active, setActive] = useState<number>(1);
 
+  const handleRemoveSkills = (_id: number) => {
+    const newSkillsList = selectedSkills.filter((skill, id) => id !== _id);
+    setSelectedSkills(newSkillsList);
+  };
+
   const handleCheck = () => {
-    workExperienceForm.values.endDate = '';
+    workExperienceForm.setFieldValue('companyEndDate', '');
     setExperienceChecked(!experienceChecked);
   };
 
@@ -79,23 +96,9 @@ export const AddExperience = () => {
     if (!workExperienceForm.validate().hasErrors) {
       showLoadingNotification({ title: 'Please wait !', message: 'We are adding your work experience.' });
       workExperienceForm.clearErrors();
-      const requestBody: ExperienceRequestBody = {
-        designation: workExperienceForm.values.designation,
-        companyType: workExperienceForm.values.companyType,
-        email: workExperienceForm.values.workEmail,
-        workMode: workExperienceForm.values.modeOfWork,
-        department: workExperienceForm.values.department,
-        workType: workExperienceForm.values.workType,
-        companyName: workExperienceForm.values.companyName,
-        companyId: workExperienceForm.values.companyId,
-        companyStartDate: workExperienceForm.values.startDate,
-        isVerified: false,
-        reasonForLeaving: workExperienceForm.values.reasonForLeaving,
-      };
-      if (workExperienceForm.values.endDate !== '') {
-        requestBody.companyEndDate = workExperienceForm.values.endDate;
-      }
-      const res: Result<createExperience> = await HttpClient.callApiAuth(
+      const requestBody: ExperienceRequestBody = workExperienceForm.values;
+
+      const res = await HttpClient.callApiAuth<createExperience>(
         {
           url: `${workExperienceAPiList.postWorkExperience}`,
           method: 'POST',
@@ -108,7 +111,6 @@ export const AddExperience = () => {
         showSuccessNotification({ title: 'Success !', message: 'New experience added to your profile.' });
         setForceRender((prev) => !prev);
         setActive(2);
-        scrollToTop();
       } else {
         showErrorNotification(res.error.code);
       }
@@ -117,12 +119,13 @@ export const AddExperience = () => {
 
   const handleAddSkill = () => {
     if (!skillForm.validate().hasErrors && workExperienceId !== null) {
-      const newSkill: Skill = {
-        skillName: skillForm.values.skillName,
-        expertise: skillForm.values.expertise,
-        workExperience: workExperienceId,
-      };
-      setSelectedSkills((prevSkills: Skill[]) => [...prevSkills, newSkill]);
+      setSelectedSkills((prevSkills: Skill[]) => [
+        ...prevSkills,
+        {
+          ...skillForm.values,
+          workExperience: workExperienceId,
+        },
+      ]);
       skillForm.reset();
     }
   };
@@ -135,11 +138,7 @@ export const AddExperience = () => {
       showLoadingNotification({ title: 'Please wait !', message: 'We are adding your skill' });
 
       for (const skill of selectedSkills) {
-        const requestBody: SkillRequestBody = {
-          skillName: skill.skillName,
-          expertise: skill.expertise,
-          workExperience: skill.workExperience,
-        };
+        const requestBody: SkillRequestBody = skill;
         const res = await HttpClient.callApiAuth(
           {
             url: `${skillsAPIList.postSkill}`,
@@ -156,9 +155,8 @@ export const AddExperience = () => {
       }
 
       setForceRender((prev) => !prev);
-      scrollToTop();
-      skillForm.values.skillName = '';
-      skillForm.values.expertise = '';
+      skillForm.setFieldValue('skillName', '');
+      skillForm.setFieldValue('expertise', '');
     }
   };
 
@@ -371,9 +369,10 @@ export const AddExperience = () => {
               <Box className="input-section">
                 <Title className="title">Work email</Title>
                 <TextInput
+                  withAsterisk
                   label="Previous work email"
                   className="inputClass"
-                  {...workExperienceForm.getInputProps('workEmail')}
+                  {...workExperienceForm.getInputProps('email')}
                 />
               </Box>
 
@@ -388,7 +387,7 @@ export const AddExperience = () => {
               <Box className="input-section">
                 <Title className="title">Reason for leaving</Title>
                 <Textarea
-                  {...workExperienceForm.getInputProps('reasonForLeaving')}
+                  {...workExperienceForm.getInputProps('description')}
                   label="Write down the reason for leaving"
                   className="text-area-input"
                 />
@@ -401,7 +400,7 @@ export const AddExperience = () => {
                   label="Start date"
                   className="inputClass"
                   withAsterisk
-                  {...workExperienceForm.getInputProps('startDate')}
+                  {...workExperienceForm.getInputProps('companyStartDate')}
                 />
               </Box>
               <Divider mb={'10px'} color="#e1e1e1" />
@@ -411,7 +410,7 @@ export const AddExperience = () => {
                   label="End date"
                   className="inputClass"
                   disabled={experienceChecked}
-                  {...workExperienceForm.getInputProps('endDate')}
+                  {...workExperienceForm.getInputProps('companyEndDate')}
                 />
 
                 <Checkbox
@@ -431,7 +430,7 @@ export const AddExperience = () => {
                     data={workType}
                     label="Mode of Work"
                     className="inputClass"
-                    {...workExperienceForm.getInputProps('modeOfWork')}
+                    {...workExperienceForm.getInputProps('workMode')}
                     styles={() => ({
                       item: {
                         '&[data-selected]': {
@@ -466,15 +465,9 @@ export const AddExperience = () => {
                 <Button variant="default" className="cancel-btn" onClick={handlePrevPage}>
                   Back
                 </Button>
-                {workExperienceForm.values.endDate || experienceChecked !== false ? (
-                  <Button type="submit" className="green-btn" onClick={handleExperienceContinue}>
-                    Save
-                  </Button>
-                ) : (
-                  <Button type="submit" disabled className="disabled-btn">
-                    Save
-                  </Button>
-                )}
+                <Button type="submit" className="green-btn" onClick={handleExperienceContinue}>
+                  Save
+                </Button>
               </Box>
             </Box>
           )}
@@ -523,13 +516,11 @@ export const AddExperience = () => {
                   const { expertise, skillName } = skill;
                   return (
                     <Box key={index} className="add-skill-box">
+                      <button className="remove-skills-btn" type="button" onClick={() => handleRemoveSkills(index)}>
+                        <MdRemoveCircle />
+                      </button>
                       <Text className="add-skill-name">{skillName}</Text>
-                      {expertise === 'AMATEUR' && <Text className="add-skill-rate">Amature</Text>}
-                      {expertise === 'BEGINNER' && <Text className="add-skill-rate">Beginner</Text>}
-                      {expertise === 'HIGHLY_COMPETENT' && <Text className="add-skill-rate">Highly Competent</Text>}
-                      {expertise === 'EXPERT' && <Text className="add-skill-rate">Expert</Text>}
-                      {expertise === 'SUPER_SPECIALIST' && <Text className="add-skill-rate">Super Specialist</Text>}
-                      {expertise === 'MASTER' && <Text className="add-skill-rate">Master</Text>}
+                      {expertise && <Text className="add-skill-rate">{expertiseList[expertise]}</Text>}
                     </Box>
                   );
                 })}
@@ -552,6 +543,7 @@ export const AddExperience = () => {
               </Box>
             </Box>
           )}
+
           {active === 3 && (
             <Box>
               <Box className="documents-input-box">
@@ -699,12 +691,7 @@ export const AddExperience = () => {
                     return (
                       <Box key={index} className="add-skill-box">
                         <Text className="add-skill-name">{skillName}</Text>
-                        {expertise === 'AMATEUR' && <Text className="add-skill-rate">Amature</Text>}
-                        {expertise === 'BEGINNER' && <Text className="add-skill-rate">Beginner</Text>}
-                        {expertise === 'HIGHLY_COMPETENT' && <Text className="add-skill-rate">Highly Competent</Text>}
-                        {expertise === 'EXPERT' && <Text className="add-skill-rate">Expert</Text>}
-                        {expertise === 'SUPER_SPECIALIST' && <Text className="add-skill-rate">Super Specialist</Text>}
-                        {expertise === 'MASTER' && <Text className="add-skill-rate">Master</Text>}
+                        {expertise && <Text className="add-skill-rate">{expertiseList[expertise]}</Text>}
                       </Box>
                     );
                   })}
@@ -712,10 +699,10 @@ export const AddExperience = () => {
               </Box>
               <Box>
                 <Button className="green-btn btn" onClick={handleGoToVerification}>
-                  Go to verification
+                  Go to Verification
                 </Button>
                 <Button className="cancel-btn btn" onClick={handleProfilePage}>
-                  Go to profile
+                  Go to Profile
                 </Button>
               </Box>
             </Box>

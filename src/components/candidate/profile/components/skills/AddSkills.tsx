@@ -9,26 +9,45 @@ import {
   showSuccessNotification,
   showLoadingNotification,
 } from '../../../../../utils/functions/showNotification';
-import { HttpClient, Result } from '../../../../../utils/generic/httpClient';
+import { HttpClient } from '../../../../../utils/generic/httpClient';
 import { skillRate } from '../../constants/SelectionOptions';
 import { Navbar } from '../Navbar';
 import { useNavigate } from 'react-router-dom';
+import { MdRemoveCircle } from 'react-icons/md';
+
+const expertiseList: {
+  [key: string]: string;
+} = {
+  AMATEUR: 'Amateur',
+  BEGINNER: 'Beginner',
+  HIGHLY_COMPETENT: 'Highly Competent',
+  EXPERT: 'Expert',
+  SUPER_SPECIALIST: 'Super Specialist',
+  MASTER: 'Master',
+};
 
 export const AddSkills = () => {
   const navigate = useNavigate();
   const [skills, setSkills] = useState<Skill[]>([]);
   const { authClient, skillForm, scrollToTop, setForceRender } = useGlobalContext();
 
+  const handleRemoveSkills = (_id: number) => {
+    const newSkillsList = skills.filter((skill, id) => id !== _id);
+    setSkills(newSkillsList);
+  };
+
   const handleAddSkill = () => {
-    if (!skillForm.validateField('skillName').hasError && !skillForm.validateField('expertise').hasError) {
-      const newSkill: Skill = {
-        skillName: skillForm.values.skillName,
-        expertise: skillForm.values.expertise,
-        workExperience: '',
-      };
-      setSkills((prevSkills) => [...prevSkills, newSkill]);
-      skillForm.values.skillName = '';
-      skillForm.values.expertise = '';
+    if (!skillForm.validate().hasErrors) {
+      setSkills((prevSkills) => [
+        ...prevSkills,
+        {
+          ...skillForm.values,
+          workExperience: '',
+        },
+      ]);
+
+      skillForm.setFieldValue('skillName', '');
+      skillForm.setFieldValue('expertise', '');
     }
   };
 
@@ -45,38 +64,32 @@ export const AddSkills = () => {
 
     if (skills.length < 1) {
       showErrorNotification('NO_SKILL');
+      return;
     }
-    if (skills.length > 0) {
-      for (const skill of skills) {
-        const requestBody: SkillRequestBody = {
-          skillName: skill.skillName,
-          expertise: skill.expertise,
-          workExperience: skill.workExperience,
-        };
-        const res: Result<createSkill> = await HttpClient.callApiAuth(
-          {
-            url: `${skillsAPIList.postSkill}`,
-            method: 'POST',
-            body: requestBody,
-          },
-          authClient
-        );
-        if (res.ok) {
-          showSuccessNotification({
-            title: 'Success !',
-            message: 'Skills have been added successfully !',
-          });
-        } else {
-          showErrorNotification(res.error.code);
-        }
+    for (const skill of skills) {
+      const requestBody: SkillRequestBody = skill;
+      const res = await HttpClient.callApiAuth<createSkill>(
+        {
+          url: `${skillsAPIList.postSkill}`,
+          method: 'POST',
+          body: requestBody,
+        },
+        authClient
+      );
+      if (res.ok) {
+        showSuccessNotification({
+          title: 'Success !',
+          message: 'Skills have been added successfully !',
+        });
+      } else {
+        showErrorNotification(res.error.code);
       }
-      scrollToTop();
-      setForceRender((prev) => !prev);
-      setSkills([]);
-      skillForm.values.skillName = '';
-      skillForm.values.expertise = '';
-      handleProfilePage();
     }
+
+    setForceRender((prev) => !prev);
+    setSkills([]);
+    skillForm.reset();
+    handleProfilePage();
   };
   return (
     <>
@@ -133,13 +146,11 @@ export const AddSkills = () => {
                 const { expertise, skillName } = skill;
                 return (
                   <Box key={index} className="add-skill-box">
+                    <button className="remove-skills-btn" type="button" onClick={() => handleRemoveSkills(index)}>
+                      <MdRemoveCircle />
+                    </button>
                     <Text className="add-skill-name">{skillName}</Text>
-                    {expertise === 'AMATEUR' && <Text className="add-skill-rate">Amature</Text>}
-                    {expertise === 'BEGINNER' && <Text className="add-skill-rate">Beginner</Text>}
-                    {expertise === 'HIGHLY_COMPETENT' && <Text className="add-skill-rate">Highly Competent</Text>}
-                    {expertise === 'EXPERT' && <Text className="add-skill-rate">Expert</Text>}
-                    {expertise === 'SUPER_SPECIALIST' && <Text className="add-skill-rate">Super Specialist</Text>}
-                    {expertise === 'MASTER' && <Text className="add-skill-rate">Master</Text>}
+                    {expertise && <Text className="add-skill-rate">{expertiseList[expertise]}</Text>}
                   </Box>
                 );
               })}

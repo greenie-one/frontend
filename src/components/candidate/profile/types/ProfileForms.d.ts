@@ -22,17 +22,19 @@ type verifyLicenceFormType = {
 
 type workExperienceFormType = {
   designation: string;
-  companyType: string;
+  companyType?: string;
+  email: string;
+  workMode?: string;
+  workType?: string;
   companyName: string;
-  linkedInUrl: string;
-  department: string;
-  workEmail: string;
   companyId: string;
-  reasonForLeaving: string;
-  startDate: string;
-  endDate?: string;
-  workType: string;
-  modeOfWork: string;
+  isVerified?: boolean;
+  description?: string;
+  verifiedBy?: string;
+  companyStartDate?: string;
+  linkedInUrl?: string;
+  companyEndDate?: string;
+  department: string;
   salary: string;
 };
 
@@ -40,13 +42,13 @@ type residentialInfoFormType = {
   address_line_1: string;
   address_line_2: string;
   landmark: string;
+  pincode: string;
   city: string;
-  pincode: number | string;
-  address_type: string;
-  state: '';
-  country: '';
+  state: string;
+  country: string;
   start_date: string;
   end_date?: string;
+  address_type: string;
 };
 
 type skillFormType = {

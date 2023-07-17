@@ -5,6 +5,17 @@ import { AiOutlinePlus } from 'react-icons/ai';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
 import { useNavigate } from 'react-router-dom';
 
+const expertiseList: {
+  [key: string]: string;
+} = {
+  AMATEUR: 'Amateur',
+  BEGINNER: 'Beginner',
+  HIGHLY_COMPETENT: 'Highly Competent',
+  EXPERT: 'Expert',
+  SUPER_SPECIALIST: 'Super Specialist',
+  MASTER: 'Master',
+};
+
 export const SkillsSection = () => {
   const navigate = useNavigate();
   const { skillData, scrollToTop } = useGlobalContext();
@@ -19,14 +30,16 @@ export const SkillsSection = () => {
     navigate('/candidate/profile/skills/addSkills');
   };
 
+  const uniqueSkills = [...new Set(skillData.map((skill) => skill.skillName))];
+
   return (
     <section className="skills-section container">
       <Box className="header">
         <Box>
-          <Text className="heading">{`Skills (${skillData.length})`}</Text>
+          <Text className="heading">{`Skills (${uniqueSkills.length})`}</Text>
           <Text className="subheading">All your skills, certifications and expertise</Text>
         </Box>
-        {skillData.length > 0 && (
+        {uniqueSkills.length > 0 && (
           <>
             <Box className="header-links">
               <Text className="link" onClick={handleAllSkillsScreen}>
@@ -43,7 +56,7 @@ export const SkillsSection = () => {
         )}
       </Box>
 
-      {skillData.length === 0 ? (
+      {uniqueSkills.length === 0 ? (
         <Box className="no-data-wrapper">
           <img className="no-data" src={noData} alt="No data" />
           <Button leftIcon={<AiOutlinePlus />} onClick={handleAddSkillPage} className="add-records">
@@ -52,23 +65,20 @@ export const SkillsSection = () => {
         </Box>
       ) : (
         <Box className="add-skills-wrapper">
-          {skillData.map((skill, index) => {
-            const { expertise, skillName } = skill;
+          {uniqueSkills.map((skillName, index) => {
+            const skill = skillData.find((skill) => skill.skillName === skillName);
+
+            const expertise = skill?.expertise;
             return (
               <Box key={index} className="add-skill-box">
                 <Text className="add-skill-name">{skillName}</Text>
-                {expertise === 'AMATEUR' && <Text className="add-skill-rate">Amature</Text>}
-                {expertise === 'BEGINNER' && <Text className="add-skill-rate">Beginner</Text>}
-                {expertise === 'HIGHLY_COMPETENT' && <Text className="add-skill-rate">Highly Competent</Text>}
-                {expertise === 'EXPERT' && <Text className="add-skill-rate">Expert</Text>}
-                {expertise === 'SUPER_SPECIALIST' && <Text className="add-skill-rate">Super Specialist</Text>}
-                {expertise === 'MASTER' && <Text className="add-skill-rate">Master</Text>}
+                {expertise && <Text className="add-skill-rate">{expertiseList[expertise]}</Text>}
               </Box>
             );
           })}
         </Box>
       )}
-      {skillData.length > 0 && (
+      {uniqueSkills.length > 0 && (
         <Button onClick={handleAllSkillsScreen} className="see-all-btn">
           See All
         </Button>

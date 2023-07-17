@@ -119,10 +119,10 @@ export const VerifyAadharCard = () => {
   };
 
   const handlePageChange = () => {
-    verifyAadharForm.values.aadharNo = '';
-    verifyAadharForm.values.otp = '';
-    navigate('/candidate/profile');
+    verifyAadharForm.setFieldValue('aadharNo', '');
+    verifyAadharForm.setFieldValue('otp', '');
     setAadharIsVerified(false);
+    navigate('/candidate/profile');
   };
 
   const handleContinue = () => {

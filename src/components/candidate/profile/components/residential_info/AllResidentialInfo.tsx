@@ -32,6 +32,7 @@ export const AllResidentialInfo = () => {
   const handleDeleteResidentialInfo = (_id: string): void => {
     deleteResidentialInfo(_id);
     deleteModalClose();
+    navigate('/candidate/profile');
   };
 
   return (

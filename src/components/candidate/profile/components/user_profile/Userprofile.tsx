@@ -77,10 +77,10 @@ export const Userprofile = () => {
   const [opened, { open, close }] = useDisclosure(false);
 
   const onClose = () => {
-    profileForm.values.firstName = '';
-    profileForm.values.lastName = '';
-    profileForm.values.bio = '';
-    profileForm.values.descriptionTags = [];
+    profileForm.setFieldValue('firstName', '');
+    profileForm.setFieldValue('lastName', '');
+    profileForm.setFieldValue('bio', '');
+    profileForm.setFieldValue('descriptionTags', []);
     close();
   };
 
