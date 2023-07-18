@@ -13,7 +13,7 @@ import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage';
 import { TermsAndConditionsPage } from './pages/TermsAndConditionsPage';
 
 import { AuthVerificationLayout } from './utils/constants/AuthVerification';
-// import { GoogleAuthRedirect } from './components/auth/components/google/GoogleAuthRedirect';
+import { GoogleAuthRedirect } from './components/auth/components/google/GoogleAuthRedirect';
 import { AppLayout } from './components/layouts/AppLayout';
 
 import { VerificationByHRPage } from './pages/VerificationByHRPage';
@@ -47,7 +47,7 @@ const App = () => {
             <Route index element={<Landing />} />
             <Route path="auth" element={<AuthPage />} />
             <Route path="waitlist" element={<Waitlist />} />
-            {/* <Route path="oauth/google/callback" element={<GoogleAuthRedirect />} /> */}
+            <Route path="oauth/google/callback" element={<GoogleAuthRedirect />} />
             <Route path="/verification/experience/hr" element={<VerificationByHRPage />} />
             <Route path="/verification/experience/manager" element={<VerificationByManagerPage />} />
 

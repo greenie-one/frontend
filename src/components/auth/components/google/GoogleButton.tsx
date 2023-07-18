@@ -1,10 +1,6 @@
-import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
-
+import { useState } from 'react';
 import { Button } from '@mantine/core';
-import { useLocalStorage } from '@mantine/hooks';
 import { useAuthContext } from '../../context/AuthContext';
-import { useGlobalContext } from '../../../../context/GlobalContext';
 
 import { showErrorNotification, showLoadingNotification } from '../../../../utils/functions/showNotification';
 import { HttpClient } from '../../../../utils/generic/httpClient';
@@ -14,16 +10,9 @@ import GoogleLogo from '../../assets/g-logo.png';
 import '../../styles/global.scss';
 
 const GoogleButton = () => {
-  const { authClient } = useGlobalContext();
   const { setForceRender } = useAuthContext();
-  const [searchParams] = useSearchParams();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [authTokens, setAuthTokens] = useLocalStorage<AuthTokens>({ key: 'auth-tokens' });
-
-  useEffect(() => {
-    getAuthTokens();
-  }, [window.location]);
 
   const handleGoogleAuth = async () => {
     showLoadingNotification({ title: 'Wait !', message: 'Please wait' });
@@ -45,30 +34,6 @@ const GoogleButton = () => {
       showErrorNotification(res.error.code);
     }
     setIsLoading(false);
-  };
-
-  const getAuthTokens = async () => {
-    if (searchParams) {
-      const code = searchParams.get('code');
-
-      if (code) {
-        const res = await HttpClient.callApi<AuthTokens>({
-          url: `${authApiList.googleCallback}`,
-          method: 'GET',
-          query: { code: code },
-        });
-
-        if (res.ok) {
-          setAuthTokens(res.value);
-          authClient.updateTokens(res.value.accessToken, res.value.refreshToken);
-
-          window.history.back();
-          setForceRender((prev) => !prev);
-        } else {
-          console.error(res.error.code);
-        }
-      }
-    }
   };
 
   return (
