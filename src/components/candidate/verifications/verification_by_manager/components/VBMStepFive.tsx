@@ -1,9 +1,17 @@
 import { useState } from 'react';
 import { Text, Box, Button, Textarea } from '@mantine/core';
 import { ProfileDetailsBox } from '../../verification_by_hr/components';
+import { DisclaimerText } from './DisclaimerText';
+import { useVBMContext } from '../context/VBMContext';
+import { PolicyText } from './PolicyText';
 
 export const VBMStepFive = () => {
   const [review, setReview] = useState<string>('');
+  const { NextActiveStep } = useVBMContext();
+
+  const handleSubmit = () => {
+    NextActiveStep();
+  };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const inputValue = event.target.value;
@@ -28,13 +36,11 @@ export const VBMStepFive = () => {
         <Text className="word-limit">{review.trim().split(' ').length} / 150 words</Text>
       </Box>
 
-      <Button className="green-outline-btn">End Verification</Button>
-      <Text className="verification-disclaimer">
-        I understand that during the sign-up process and while using this website, I may be required to provide certain
-        personal information, including but not limited to my name, email address, contact details, and any other
-        information deemed necessary for registration and website usage.
-      </Text>
-      <Text className="policy">Click to view Data and Privacy Policy</Text>
+      <Button className="green-outline-btn" onClick={handleSubmit}>
+        End Verification
+      </Button>
+      <DisclaimerText />
+      <PolicyText />
     </section>
   );
 };
