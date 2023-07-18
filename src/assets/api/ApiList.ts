@@ -72,6 +72,6 @@ export const docDepotAPIList = {
 }
 
 export const peerVerificationAPIList = {
-  createPeer : `${BASE_URL}/peer/work/create`,
+  createPeer : `${BASE_URL}/peer/work`,
 }
 

@@ -13,7 +13,7 @@ import { BsArrowLeft } from 'react-icons/bs';
 import { AiOutlineRight } from 'react-icons/ai';
 import { showErrorNotification } from '../../../../../utils/functions/showNotification';
 import { peerType } from '../../constants/SelectionOptions';
-import { Peer } from '../../types/ProfileGeneral';
+import { CreatePeerResponseType, Peer } from '../../types/ProfileGeneral';
 import { PeerVerification } from './peer_verfication/PeerVerification';
 
 export enum ReviewActionType {
@@ -23,7 +23,7 @@ export enum ReviewActionType {
 }
 
 import { HttpClient, Result } from '../../../../../utils/generic/httpClient';
-import { docDepotAPIList, workExperienceAPiList } from '../../../../../assets/api/ApiList';
+import { docDepotAPIList, peerVerificationAPIList, workExperienceAPiList } from '../../../../../assets/api/ApiList';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
 import { ExperienceDocuments } from '../../types/ProfileGeneral';
 import { Navbar } from '../Navbar';
@@ -42,6 +42,7 @@ const expertiseList: {
 export const VerifyExperience: React.FC = () => {
   const navigate = useNavigate();
   const [experience, setExperience] = useState<WorkExperience | undefined>({} as WorkExperience);
+  const [createPeerResponse, setCreatePeerResponse] = useState<CreatePeerResponseType[]>([]);
 
   const [addedPeers, setAddedPeers] = useState<Peer[]>([]);
   const [activePeer, setActivePeer] = useState<number>(0);
@@ -195,6 +196,26 @@ export const VerifyExperience: React.FC = () => {
 
   const handleAllExperiencesPage = (): void => {
     navigate('/candidate/profile/experience/allExperiences');
+  };
+
+  const handleCreatePeerRequest = async () => {
+    for (const response of createPeerResponse) {
+      const res = await HttpClient.callApiAuth<unknown>(
+        {
+          url: peerVerificationAPIList.createPeer,
+          method: 'POST',
+          body: response,
+        },
+        authClient
+      );
+      if (res.ok) {
+        console.log(res.value);
+
+        // const filtered = res.value.filter((document) => document.workExperience === experience?.id);
+      } else {
+        showErrorNotification(res.error.code);
+      }
+    }
   };
 
   const { id } = useParams();
@@ -393,6 +414,8 @@ export const VerifyExperience: React.FC = () => {
                   addedPeers={addedPeers}
                   setActivePeer={setActivePeer}
                   verificationStepDispatch={verificationStepDispatch}
+                  createPeerResponse={createPeerResponse}
+                  setCreatePeerResponse={setCreatePeerResponse}
                 />
               </Box>
               <Box className="see-peers-btn-wrapper">
@@ -462,45 +485,65 @@ export const VerifyExperience: React.FC = () => {
                   </Box>
                 </Box>
               </Box>
-              <Box className="document-list">
-                <Text className="document-action-heading">With Documents</Text>
-                <Box>
-                  {addedPeers.map((peer, index) => {
-                    return (
-                      <Box key={index} className="docs-wrapper">
-                        {experienceDocuments.map((document, index) => {
-                          return (
-                            <Box className="document" key={index}>
-                              <img className="pdf-icon" src={pdfIcon} alt="pdf icon" />
-                              <Text className="document-name">{document.name.substring(0, 15)}...</Text>
-                            </Box>
-                          );
-                        })}
-                      </Box>
-                    );
-                  })}
-                </Box>
-              </Box>
-              <Box className="skills-list">
-                <Text className="document-action-heading">Skills</Text>
-                <Box className="add-skills-wrapper">
-                  {skillData
-                    .filter((skill) => skill.workExperience === experience?.id)
-                    .map((skill: Skill, index: number) => {
-                      const { expertise, skillName } = skill;
-                      return (
-                        <Box key={index} className="add-skill-box">
-                          <Text className="add-skill-name">{skillName}</Text>
-                          {expertise && <Text className="add-skill-rate">{expertiseList[expertise]}</Text>}
+              <Box>
+                {createPeerResponse.map((response, idx) => {
+                  return (
+                    <React.Fragment key={idx}>
+                      <Box className="document-list">
+                        <Text className="document-action-heading">With Documents</Text>
+                        <Box>
+                          {addedPeers.map((peer, index) => {
+                            return (
+                              <Box key={index} className="docs-wrapper">
+                                {experienceDocuments.map((document, index) => {
+                                  return (
+                                    <Box className="document" key={index}>
+                                      <img className="pdf-icon" src={pdfIcon} alt="pdf icon" />
+                                      <Text className="document-name">{document.name.substring(0, 15)}...</Text>
+                                    </Box>
+                                  );
+                                })}
+                              </Box>
+                            );
+                          })}
                         </Box>
-                      );
-                    })}
-                </Box>
+                      </Box>
+                      <Box className="skills-list">
+                        <Text className="document-action-heading">Skills</Text>
+                        <Box className="add-skills-wrapper">
+                          {skillData
+                            .filter((skill) => skill.workExperience === experience?.id)
+                            .map((skill: Skill, index: number) => {
+                              const { expertise, skillName } = skill;
+                              return (
+                                <Box key={index} className="add-skill-box">
+                                  <Text className="add-skill-name">{skillName}</Text>
+                                  {expertise && <Text className="add-skill-rate">{expertiseList[expertise]}</Text>}
+                                </Box>
+                              );
+                            })}
+                        </Box>
+                      </Box>
+                      <Box className="skills-list">
+                        <Text className="document-action-heading">Attributes</Text>
+                        <Box className="add-skills-wrapper">
+                          {response.verificationFields.map((attr, index: number) => {
+                            return (
+                              <Text key={index} className="add-skill-name">
+                                {attr}
+                              </Text>
+                            );
+                          })}
+                        </Box>
+                      </Box>
+                    </React.Fragment>
+                  );
+                })}
               </Box>
 
               <Box className="see-peers-btn-wrapper">
-                <Button className="green-btn" onClick={open}>
-                  Confirm and send request
+                <Button className="green-btn" onClick={handleCreatePeerRequest}>
+                  Confirm and send
                 </Button>
                 <Button
                   className="cancel-btn"

@@ -63,7 +63,7 @@ type ResidentialInfoRes = {
 };
 
 type SkillResponse = {
-  skillId: string;
+  id: string;
   skillName: string;
   expertise: string;
   isVerified: boolean;
