@@ -36,6 +36,7 @@ const GoogleButton = () => {
 
     if (res.ok) {
       window.open(res.value?.redirectUrl, '_blank');
+      setForceRender((prev) => !prev);
     } else {
       showErrorNotification(res.error.code);
     }
