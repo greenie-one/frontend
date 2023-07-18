@@ -34,14 +34,8 @@ export const GoogleAuthRedirect = () => {
           setAuthTokens(res.value);
           authClient.updateTokens(res.value.accessToken, res.value.refreshToken);
 
-          console.log('above');
           navigate('/auth');
-          console.log('below');
           setForceRender((prev) => !prev);
-
-          // window.opener = null;
-          // window.open('', '_self');
-          // window.close();
         } else {
           console.error(res.error.code);
         }
