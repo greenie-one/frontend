@@ -79,11 +79,12 @@ const Profile = () => {
         message: 'Please wait while we add your profile details.',
       });
 
+      const requestBody: ProfileFormType = profileForm.values;
       const res = await HttpClient.callApiAuth(
         {
           url: `${profileAPIList.createProfile}`,
           method: 'POST',
-          body: profileForm.values,
+          body: requestBody,
         },
         authClient
       );
