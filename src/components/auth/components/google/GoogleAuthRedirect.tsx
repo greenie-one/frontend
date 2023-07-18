@@ -34,7 +34,8 @@ export const GoogleAuthRedirect = () => {
           authClient.updateTokens(res.value.accessToken, res.value.refreshToken);
 
           setForceRender((prev) => !prev);
-          window.history.back();
+          window.location.href = document.referrer;
+
           // window.opener = null;
           // window.open('', '_self');
           // window.close();
