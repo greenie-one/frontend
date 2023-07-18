@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useLocalStorage } from '@mantine/hooks';
 
 import { useGlobalContext } from '../../../../context/GlobalContext';
@@ -8,6 +8,7 @@ import { HttpClient } from '../../../../utils/generic/httpClient';
 import { authApiList } from '../../../../assets/api/ApiList';
 
 export const GoogleAuthRedirect = () => {
+  const navigate = useNavigate;
   const [searchParams] = useSearchParams();
   const { authClient } = useGlobalContext();
   const { setForceRender } = useAuthContext();
@@ -34,7 +35,7 @@ export const GoogleAuthRedirect = () => {
           authClient.updateTokens(res.value.accessToken, res.value.refreshToken);
 
           setForceRender((prev) => !prev);
-          window.location.href = document.referrer;
+          navigate('/auth');
 
           // window.opener = null;
           // window.open('', '_self');
