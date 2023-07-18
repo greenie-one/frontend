@@ -148,7 +148,7 @@ export const VerifyExperience: React.FC = () => {
       email: peerVerificationForm.values.email,
       phone: peerVerificationForm.values.contactNumber,
       peerType: peerVerificationForm.values.peerType,
-      workExperience: String(experience?.workExpId),
+      workExperience: String(experience?.id),
     };
     setAddedPeers((prevPeers) => [...prevPeers, newPeer]);
     peerVerificationForm.reset();
@@ -180,7 +180,7 @@ export const VerifyExperience: React.FC = () => {
       authClient
     );
     if (res.ok) {
-      const filtered = res.value.filter((document) => document.workExperience === experience?.workExpId);
+      const filtered = res.value.filter((document) => document.workExperience === experience?.id);
       setExperienceDocuments(filtered);
     } else {
       showErrorNotification(res.error.code);
@@ -198,7 +198,7 @@ export const VerifyExperience: React.FC = () => {
 
     if (res.ok) {
       const workExperiences = res.value.workExperiences;
-      const filteredExperience = workExperiences.find((exp: WorkExperience) => exp.workExpId === id);
+      const filteredExperience = workExperiences.find((exp: WorkExperience) => exp.id === id);
 
       setExperience(filteredExperience);
     } else {
@@ -211,7 +211,6 @@ export const VerifyExperience: React.FC = () => {
   };
 
   const { id } = useParams();
-  // const filteredExperience = workExperienceData.find((exp: WorkExperience) => exp.workExpId === id);
 
   useEffect(() => {
     if (authToken) {
@@ -476,7 +475,7 @@ export const VerifyExperience: React.FC = () => {
 
                           <Box className="selected-skills">
                             {skillData
-                              .filter((skill) => skill.workExperience === experience?.workExpId)
+                              .filter((skill) => skill.workExperience === experience?.id)
                               .map((skill, idx) => {
                                 return (
                                   <Box key={idx}>
@@ -623,7 +622,7 @@ export const VerifyExperience: React.FC = () => {
                 <Text className="document-action-heading">Skills</Text>
                 <Box className="add-skills-wrapper">
                   {skillData
-                    .filter((skill) => skill.workExperience === experience?.workExpId)
+                    .filter((skill) => skill.workExperience === experience?.id)
                     .map((skill: Skill, index: number) => {
                       const { expertise, skillName } = skill;
                       return (

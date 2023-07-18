@@ -65,7 +65,7 @@ export const ExperienceSection = () => {
             .slice(0, 3)
             .map((workExperience, index) => {
               return (
-                <Box key={index} onClick={() => handleGoToVerification(workExperience.workExpId)}>
+                <Box key={index} onClick={() => handleGoToVerification(workExperience.id)}>
                   <ExperienceCard
                     position={workExperience.designation}
                     companyName={workExperience.companyName}

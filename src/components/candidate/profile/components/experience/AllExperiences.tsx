@@ -39,9 +39,9 @@ export const AllExperiences = () => {
           <Box className="see-all-experiences-wrapper">
             {workExperienceData
               .reverse()
-              .map(({ designation, companyName, workExpId, isVerified, companyStartDate, companyEndDate }, index) => {
+              .map(({ designation, companyName, id, isVerified, companyStartDate, companyEndDate }, index) => {
                 return (
-                  <Box key={index} onClick={() => handleExperienceDetailsPage(workExpId)}>
+                  <Box key={index} onClick={() => handleExperienceDetailsPage(id)}>
                     <Box className="experience-card">
                       <img className="companyLogo" src={tscLogo} />
                       <Text className="position">{designation}</Text>

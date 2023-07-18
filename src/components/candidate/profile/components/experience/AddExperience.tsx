@@ -107,7 +107,7 @@ export const AddExperience = () => {
         authClient
       );
       if (res.ok) {
-        setworkExperienceId(res.value.workExperienceId);
+        setworkExperienceId(res.value.id);
         showSuccessNotification({ title: 'Success !', message: 'New experience added to your profile.' });
         setForceRender((prev) => !prev);
         setActive(2);
@@ -185,6 +185,7 @@ export const AddExperience = () => {
             privateUrl: res.data.url,
             workExperience: workExperienceId,
           };
+
           const resp: Result<UpdateDocumentResponseType> = await HttpClient.callApiAuth(
             {
               url: `${docDepotAPIList.addDocument}`,

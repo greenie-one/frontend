@@ -38,7 +38,7 @@ type Peer = {
 };
 
 type WorkExperienceVerification = {
-  workExpId: string;
+  id: string;
   image: string | null;
   designation: string;
   companyName: string;
