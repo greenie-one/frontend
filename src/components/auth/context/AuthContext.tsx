@@ -59,8 +59,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const profileForm = useForm<ProfileFormType>({
     initialValues: {
-      firstName: '',
-      lastName: '',
+      firstName: authTokens?.profile_hints?.first_name ?? '',
+      lastName: authTokens?.profile_hints?.last_name ?? '',
       descriptionTags: [],
     },
 
@@ -162,6 +162,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } else {
       showErrorNotification(res.error.code);
     }
+    setIsLoading(false);
   };
 
   const getMyProfile = async () => {
