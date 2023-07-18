@@ -198,7 +198,7 @@ export const VerifyExperience: React.FC = () => {
     );
 
     if (res.ok) {
-      const workExperiences = res.value.workExperinces;
+      const workExperiences = res.value.workExperiences;
       const filteredExperience = workExperiences.find((exp: WorkExperience) => exp.workExpId === id);
 
       setExperience(filteredExperience);

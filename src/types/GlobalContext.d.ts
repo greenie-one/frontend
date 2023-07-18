@@ -15,7 +15,7 @@ type GlobalContextType = {
   residentialInfoVerificationForm: UseFormReturnType<residentialInfoFormType>;
   peerAddressVerificationForm: UseFormReturnType<peerAddressVerificationFromType>;
   IDs: DocsType[];
-  profileData: UserProfileResponse;
+  profileData: UserProfileType;
   updateProfile: () => void;
   workExperienceData: WorkExperienceResponse[];
   residentialInfoData: ResidentialInfoResponse[];
