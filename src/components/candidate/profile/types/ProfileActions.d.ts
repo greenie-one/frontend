@@ -1,17 +1,3 @@
-type candidateActivePageState =
-  | 'Profile'
-  | 'All Experiences'
-  | 'Add Experience'
-  | 'Verify Aadhar Card'
-  | 'Verify PAN Card'
-  | 'Verify Licence'
-  | 'Add Address'
-  | 'All Residential Info'
-  | 'All Skills'
-  | 'Add Skills'
-  | 'Congratulation Screen'
-  | 'Verify Address';
-
 type DrawerState = {
   firstDrawerOpened: boolean;
   secondDrawerOpened: boolean;

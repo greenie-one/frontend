@@ -12,6 +12,7 @@ import pdfIcon from '../../assets/pdfIcon.png';
 import { useParams, useNavigate } from 'react-router-dom';
 import { BsArrowLeft } from 'react-icons/bs';
 import { AiOutlineRight } from 'react-icons/ai';
+import { FcInfo } from 'react-icons/fc';
 import {
   showErrorNotification,
   // showLoadingNotification,
@@ -168,7 +169,7 @@ export const VerifyExperience: React.FC = () => {
   const handleSeeRequest = () => {
     close();
     scrollToTop();
-    navigate('/candidate/profile');
+    navigate('/candidate/profile/myVerification');
   };
 
   const getExperienceDocument = async () => {
@@ -382,7 +383,7 @@ export const VerifyExperience: React.FC = () => {
                   <Text className="select-peer-heading">Select Peer</Text>
                   {addedPeers.map(({ name, peerType }, index) => {
                     return (
-                      <Box key={index} onClick={() => setActivePeer(index)}>
+                      <Box key={index}>
                         <Box className={activePeer === index ? 'peer active' : 'peer'}>
                           <Box className="border-left"></Box>
                           <Text className="peer-name">{name}</Text>
@@ -425,6 +426,30 @@ export const VerifyExperience: React.FC = () => {
                         Attributes
                       </Box>
                     </Box>
+                    <Box className="verify-experience-progress-bars">
+                      <Box className="progress-bar active"></Box>
+                      <Box
+                        className={
+                          selectionPage === 'Skill' || selectionPage === 'Attributes'
+                            ? 'progress-bar active'
+                            : 'progress-bar'
+                        }
+                      ></Box>
+                      <Box className={selectionPage === 'Attributes' ? 'progress-bar active' : ' progress-bar'}></Box>
+                    </Box>
+
+                    <Text className="selection-page">{selectionPage}</Text>
+                    <Box className="pro-tip-box">
+                      <Box className="icon-box">
+                        <FcInfo color="#1991ff" />
+                        <Text className="pro-tip">Pro tip</Text>
+                      </Box>
+                      <Text className="tip">
+                        To receive the best review, carefully choose the documents, skills, and attributes that your
+                        peers are familiar with. This will ensure a more accurate and insightful assessment of your
+                        profile on Greenie
+                      </Text>
+                    </Box>
                     {selectionPage === 'Document' && (
                       <Box className="documents-action-section">
                         <input type="file" ref={fileInputRef} style={{ display: 'none' }} />
@@ -446,15 +471,29 @@ export const VerifyExperience: React.FC = () => {
                             </Button>
                           </Box>
                         </Box>
-                        <Box className="selected-documents">
+                        <Box className="selected-attribute-header">
+                          <Checkbox checked indeterminate readOnly />
+                          <Text>Select documents To Verify</Text>
+                        </Box>
+                        <Box className="selected-attributes">
                           {experienceDocuments.map(({ name, _id }) => {
                             return (
-                              <Box className="document" key={_id}>
-                                <img className="pdf-icon" src={pdfIcon} alt="pdf icon" />
-                                <Text className="document-name">{name.substring(0, 15)}...</Text>
+                              <Box key={_id} className="selected-attribute">
+                                <Checkbox />
+                                <Text className="verification-document-name">
+                                  <img src={pdfIcon} alt="pdf icon" /> {name}
+                                </Text>
                               </Box>
                             );
                           })}
+                        </Box>
+                        <Box className="btn-wrapper">
+                          <Button className="cancel-btn" onClick={() => setSelectionPage('Skill')}>
+                            Skip
+                          </Button>
+                          <Button className="green-btn" onClick={() => setSelectionPage('Skill')}>
+                            Next
+                          </Button>
                         </Box>
                       </Box>
                     )}
@@ -492,6 +531,14 @@ export const VerifyExperience: React.FC = () => {
                               })}
                           </Box>
                         </Box>
+                        <Box className="btn-wrapper">
+                          <Button className="cancel-btn" onClick={() => setSelectionPage('Attributes')}>
+                            Skip
+                          </Button>
+                          <Button className="green-btn" onClick={() => setSelectionPage('Attributes')}>
+                            Next
+                          </Button>
+                        </Box>
                       </Box>
                     )}
                     {selectionPage === 'Attributes' && (
@@ -527,6 +574,31 @@ export const VerifyExperience: React.FC = () => {
                             <RiAddCircleLine className="action-icon" />
                             <Text className="action-text">Add more</Text>
                           </Box>
+                          {addedPeers.indexOf(addedPeers[activePeer]) === addedPeers.length - 1 ? (
+                            <Box className="btn-wrapper">
+                              <Button
+                                className="cancel-btn"
+                                onClick={() => verificationStepDispatch({ type: ReviewActionType.NEXT_STEP })}
+                              >
+                                Skip
+                              </Button>
+                              <Button
+                                className="green-btn"
+                                onClick={() => verificationStepDispatch({ type: ReviewActionType.NEXT_STEP })}
+                              >
+                                Next
+                              </Button>
+                            </Box>
+                          ) : (
+                            <Box className="btn-wrapper">
+                              <Button className="cancel-btn" onClick={() => setActivePeer(activePeer + 1)}>
+                                Skip
+                              </Button>
+                              <Button className="green-btn" onClick={() => setActivePeer(activePeer + 1)}>
+                                Next
+                              </Button>
+                            </Box>
+                          )}
                         </Box>
                       </Box>
                     )}
