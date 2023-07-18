@@ -152,7 +152,7 @@ export const GlobalContextProvider: React.FC<{
 
   //----------------------------------------------------------------------
 
-  const [profileData, setProfileData] = useState<UserProfileResponse>({
+  const [profileData, setProfileData] = useState<UserProfileType>({
     firstName: '',
     lastName: '',
     bio: '',
@@ -171,7 +171,7 @@ export const GlobalContextProvider: React.FC<{
     );
 
     if (res.ok) {
-      setProfileData(res.value);
+      setProfileData(res.value.profile);
     } else {
       showErrorNotification(res.error.code);
     }
@@ -235,7 +235,7 @@ export const GlobalContextProvider: React.FC<{
     );
 
     if (res.ok) {
-      setWorkExperienceData(res.value.workExperinces);
+      setWorkExperienceData(res.value.workExperiences);
     } else {
       showErrorNotification(res.error.code);
     }

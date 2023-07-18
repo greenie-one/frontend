@@ -7,13 +7,17 @@ type DocumentsResponse = {
   ids: DocsType[];
 };
 
-type UserProfileResponse = {
+type UserProfileType = {
   _id: string;
   firstName: string;
   lastName: string;
   bio: string;
   descriptionTags: string[];
   profilePic: string;
+};
+
+type UserProfileResponse = {
+  profile: UserProfileType;
 };
 
 type WorkExperience = {
@@ -34,7 +38,7 @@ type WorkExperience = {
 };
 
 type workExperienceResponse = {
-  workExperinces: WorkExperience[];
+  workExperiences: WorkExperience[];
 };
 
 type ResidentialInfoResponse = {
