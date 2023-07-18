@@ -88,7 +88,7 @@ export class HttpClient {
 
   static async callApiAuth<T = unknown>(request: HttpRequest, authClient: AuthClient): Promise<Result<T>> {
     if (!authClient.getAccessToken()) {
-      return { ok: false, error: { status: 401, message: 'await resp.text()', code: 'SOMETHING_WENT_WRONG' } };
+      return { ok: false, error: { status: 401, message: 'Access Token Not Found', code: 'SOMETHING_WENT_WRONG' } };
     }
 
     const headers = {

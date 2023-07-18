@@ -68,7 +68,6 @@ export const AllExperiences = () => {
                     key={index}
                     onClick={() => {
                       setWorkId(id);
-                      console.log(workId);
 
                       open();
                     }}

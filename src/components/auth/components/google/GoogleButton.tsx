@@ -39,6 +39,7 @@ const GoogleButton = () => {
     } else {
       showErrorNotification(res.error.code);
     }
+    setIsLoading(false);
   };
 
   return (

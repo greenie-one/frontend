@@ -71,7 +71,6 @@ const Profile = () => {
     }
 
     if (active === 3) {
-      console.log('inside condition');
       setIsLoading(true);
       profileForm.clearErrors();
 
@@ -89,7 +88,7 @@ const Profile = () => {
         },
         authClient
       );
-      console.log(res);
+
       if (res.ok) {
         showSuccessNotification({
           title: 'Success !',
