@@ -37,7 +37,8 @@ export const ExperienceDetails: React.FC = () => {
   };
 
   const { id } = useParams();
-  const filteredExperience = workExperienceData.find((exp) => exp.workExpId === id);
+  const filteredExperience = workExperienceData.find((exp) => exp.id === id);
+  console.log('🚀 ~ file: ExperienceDetails.tsx:41 ~ filteredExperience:', filteredExperience);
 
   const handleAllExperiencesPage = (): void => {
     navigate('/candidate/profile/experience/allExperiences');
@@ -179,7 +180,7 @@ export const ExperienceDetails: React.FC = () => {
           <DeleteConfirmationModal
             opened={deleteModalOpened}
             close={deleteModalClose}
-            cb={() => handleDeleteWorkInfo(filteredExperience?.workExpId)}
+            cb={() => handleDeleteWorkInfo(filteredExperience?.id)}
           />
         </Box>
       </main>

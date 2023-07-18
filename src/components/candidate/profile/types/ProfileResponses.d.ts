@@ -21,7 +21,7 @@ type UserProfileResponse = {
 };
 
 type WorkExperience = {
-  workExpId: string;
+  id: string;
   department: string;
   image: string | null;
   designation: string;
@@ -103,7 +103,7 @@ type verifyLicence = {
 
 type createExperience = {
   success: boolean;
-  workExperienceId: string;
+  id: string;
 };
 
 type createResidentialInfo = {
