@@ -8,7 +8,7 @@ import { HttpClient } from '../../../../utils/generic/httpClient';
 import { authApiList } from '../../../../assets/api/ApiList';
 
 export const GoogleAuthRedirect = () => {
-  const navigate = useNavigate;
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { authClient } = useGlobalContext();
   const { setForceRender } = useAuthContext();
