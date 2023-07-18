@@ -260,6 +260,18 @@
       flex-direction: column;
       align-items: flex-start;
       padding: 2rem;
+      position: relative;
+
+      .btn-wrapper {
+        width: 250px;
+        .cancel-btn {
+          background: transparent;
+          color: $dark;
+        }
+        position: absolute;
+        bottom: 0;
+        right: 2rem;
+      }
 
       .doc-skill-selector {
         display: grid;
@@ -270,7 +282,7 @@
         background-color: $lightGray;
         padding: 0.25rem;
         border-radius: 0.25rem;
-        margin-bottom: 2rem;
+        margin-bottom: 1rem;
 
         .selector {
           padding: 0.5rem;
@@ -522,6 +534,15 @@
     color: $gray;
   }
 }
+
+.verification-document-name {
+  color: $dark;
+  font-weight: 500;
+  img {
+    width: 20px;
+  }
+}
+
 .selected-attributes {
   border: 1px solid $lightGray;
   border-radius: 0px 0px 24px 24px;
@@ -640,6 +661,69 @@
         }
       }
     }
+  }
+}
+
+.verify-experience-progress-bars {
+  width: 100%;
+  height: 0.35rem;
+  border-radius: 24px;
+  display: grid;
+  grid-template-columns: repeat(3, 32.5%);
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+
+  .progress-bar {
+    height: 0.35rem;
+    border-radius: 24px;
+    background-color: $lighterGray;
+
+    &.active {
+      background-color: $limeGreen;
+    }
+  }
+}
+
+.selection-page {
+  color: $gray;
+  font-size: 14px;
+  margin-bottom: 1rem;
+}
+
+.pro-tip-box {
+  border: 1px solid $lighterGray;
+  display: grid;
+  grid-template-columns: 20% 80%;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 1rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background-color: #f5faff;
+
+  .icon-box {
+    display: flex;
+    align-items: center;
+
+    .pro-tip {
+      font-family: Inter;
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 24px;
+      letter-spacing: -0.6000000238418579px;
+      text-align: left;
+      margin-left: 0.25rem;
+    }
+  }
+
+  .tip {
+    font-family: Inter;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: -0.10000000149011612px;
+    text-align: left;
   }
 }
 
