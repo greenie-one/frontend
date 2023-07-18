@@ -59,8 +59,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const profileForm = useForm<ProfileFormType>({
     initialValues: {
-      firstName: authTokens?.profile_hints?.first_name ?? '',
-      lastName: authTokens?.profile_hints?.last_name ?? '',
+      firstName: '',
+      lastName: '',
       descriptionTags: [],
     },
 
