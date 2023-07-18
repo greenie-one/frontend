@@ -1,4 +1,4 @@
-import { Text, Box, Button } from '@mantine/core';
+import { Text, Box, Button, Title, Modal, Checkbox } from '@mantine/core';
 import { BsArrowLeft } from 'react-icons/bs';
 import { AiOutlineRight } from 'react-icons/ai';
 import { MdVerified } from 'react-icons/md';
@@ -7,22 +7,45 @@ import tscLogo from '../../assets/tscLogo.png';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
 import { Navbar } from '../Navbar';
 import { useNavigate } from 'react-router-dom';
+import { useDisclosure, useMediaQuery } from '@mantine/hooks';
+import { useState } from 'react';
 
 export const AllExperiences = () => {
   const navigate = useNavigate();
-  const { workExperienceData, scrollToTop } = useGlobalContext();
+  const { workExperienceData } = useGlobalContext();
+  const [checked, setChecked] = useState<boolean>(false);
+  const [workId, setWorkId] = useState<number>();
+  const isMobile = useMediaQuery('(max-width: 768px)');
+  const [opened, { open, close }] = useDisclosure(false);
 
   const handleProfilePage = (): void => {
     navigate('/candidate/profile');
   };
 
-  const handleExperienceDetailsPage = (id: string) => {
-    navigate(`/candidate/profile/experience/${id}`);
-    scrollToTop();
+  const handleGoToVerification = () => {
+    navigate(`/candidate/profile/experience/${workId}/verify`);
   };
   return (
     <>
       <Navbar />
+      <Modal className="modal" size={'60%'} fullScreen={isMobile} opened={opened} onClose={close} centered>
+        <Box className="disclaimer-modal">
+          <Title className="disclaimer-heading">Disclaimer</Title>
+          <Text className="disclaimer-subHeading">Verifying IDs on Greenie</Text>
+          <Button className="primaryBtn" disabled={!checked} onClick={handleGoToVerification}>
+            I Agree
+          </Button>
+          <Box className="checkbox-box">
+            <Checkbox checked={checked} onChange={() => setChecked(!checked)} className="checkbox" color="teal" />
+            <Text className="tearms-conditions">
+              I understand that during the sign-up process and while using this website, I may be required to provide
+              certain personal information, including but not limited to my name, email address, contact details, and
+              any other information deemed necessary for registration and website usage.
+            </Text>
+          </Box>
+          <Text className="policy">Click to view Data and Privacy Policy</Text>
+        </Box>
+      </Modal>
       <main className="profile">
         <section className="container" style={{ marginTop: '7rem' }}>
           <Box className="top-header">
@@ -39,9 +62,17 @@ export const AllExperiences = () => {
           <Box className="see-all-experiences-wrapper">
             {workExperienceData
               .reverse()
-              .map(({ designation, companyName, id, isVerified, companyStartDate, companyEndDate }, index) => {
+              .map(({ designation, companyName, isVerified, id, companyStartDate, companyEndDate }, index) => {
                 return (
-                  <Box key={index} onClick={() => handleExperienceDetailsPage(id)}>
+                  <Box
+                    key={index}
+                    onClick={() => {
+                      setWorkId(id);
+                      console.log(workId);
+
+                      open();
+                    }}
+                  >
                     <Box className="experience-card">
                       <img className="companyLogo" src={tscLogo} />
                       <Text className="position">{designation}</Text>

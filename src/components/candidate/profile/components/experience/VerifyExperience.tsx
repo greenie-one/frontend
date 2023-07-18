@@ -1,10 +1,9 @@
-import React, { useReducer, useState, useRef, useEffect } from 'react';
-import { Title, Text, Box, Button, TextInput, Select, Divider, Checkbox, Modal } from '@mantine/core';
+import React, { useReducer, useState, useEffect } from 'react';
+import { Title, Text, Box, Button, TextInput, Select, Divider, Modal } from '@mantine/core';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 import { useForm, isNotEmpty, isEmail, hasLength } from '@mantine/form';
 import { MdVerified, MdOutlineDelete } from 'react-icons/md';
 import { AiOutlinePlus, AiFillInfoCircle } from 'react-icons/ai';
-import { RiAddCircleLine } from 'react-icons/ri';
 import { CgSandClock, CgProfile } from 'react-icons/cg';
 import tscLogo from '../../assets/tscLogo.png';
 import noData from '../../assets/noData.png';
@@ -12,34 +11,22 @@ import pdfIcon from '../../assets/pdfIcon.png';
 import { useParams, useNavigate } from 'react-router-dom';
 import { BsArrowLeft } from 'react-icons/bs';
 import { AiOutlineRight } from 'react-icons/ai';
-import { FcInfo } from 'react-icons/fc';
-import {
-  showErrorNotification,
-  // showLoadingNotification,
-  // showSuccessNotification,
-} from '../../../../../utils/functions/showNotification';
+import { showErrorNotification } from '../../../../../utils/functions/showNotification';
 import { peerType } from '../../constants/SelectionOptions';
 import { Peer } from '../../types/ProfileGeneral';
+import { PeerVerification } from './peer_verfication/PeerVerification';
+
 export enum ReviewActionType {
   NEXT_STEP,
   PREVIOUS_STEP,
   RESET_STEP,
 }
-// import { peerVerificationAPIList } from '../../../../../assets/api/ApiList';
+
 import { HttpClient, Result } from '../../../../../utils/generic/httpClient';
 import { docDepotAPIList, workExperienceAPiList } from '../../../../../assets/api/ApiList';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
 import { ExperienceDocuments } from '../../types/ProfileGeneral';
 import { Navbar } from '../Navbar';
-
-const attributes = [
-  { send: false, attribute: 'Job title' },
-  { send: false, attribute: 'Reporting Manager' },
-  { send: false, attribute: 'Work Experience in years' },
-  { send: false, attribute: 'Attitude' },
-  { send: false, attribute: 'Rehire status' },
-  { send: false, attribute: 'Exit formalities' },
-];
 
 const expertiseList: {
   [key: string]: string;
@@ -58,8 +45,6 @@ export const VerifyExperience: React.FC = () => {
 
   const [addedPeers, setAddedPeers] = useState<Peer[]>([]);
   const [activePeer, setActivePeer] = useState<number>(0);
-  const [selectionPage, setSelectionPage] = useState<'Document' | 'Skill' | 'Attributes'>('Document');
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const { authClient, skillData, scrollToTop, workExperienceData } = useGlobalContext();
   const authToken = authClient.getAccessToken();
 
@@ -182,6 +167,7 @@ export const VerifyExperience: React.FC = () => {
     );
     if (res.ok) {
       const filtered = res.value.filter((document) => document.workExperience === experience?.id);
+
       setExperienceDocuments(filtered);
     } else {
       showErrorNotification(res.error.code);
@@ -383,7 +369,10 @@ export const VerifyExperience: React.FC = () => {
                   {addedPeers.map(({ name, peerType }, index) => {
                     return (
                       <Box key={index}>
-                        <Box className={activePeer === index ? 'peer active' : 'peer'}>
+                        <Box
+                          onClick={() => setActivePeer(index)}
+                          className={activePeer === index ? 'peer active' : 'peer'}
+                        >
                           <Box className="border-left"></Box>
                           <Text className="peer-name">{name}</Text>
                           {peerType === 'LINE_MANAGER' && <Text className="peer-type">Line Manager</Text>}
@@ -398,211 +387,13 @@ export const VerifyExperience: React.FC = () => {
                   })}
                 </Box>
 
-                {activePeer === null ? (
-                  <Box className="see-peers-main-box">
-                    <img src={noData} alt="No data" />
-                  </Box>
-                ) : (
-                  <Box className="see-peers-select-doc-skills">
-                    <Box className="doc-skill-selector">
-                      <Box
-                        onClick={() => setSelectionPage('Document')}
-                        className={selectionPage === 'Document' ? 'selector active' : 'selector'}
-                      >
-                        Document
-                      </Box>
-                      {/* --- Check Here --- */}
-                      <Box
-                        onClick={() => setSelectionPage('Skill')}
-                        className={selectionPage === 'Skill' ? 'selector active' : 'selector'}
-                      >
-                        Skill
-                      </Box>
-                      <Box
-                        onClick={() => setSelectionPage('Attributes')}
-                        className={selectionPage === 'Attributes' ? 'selector active' : 'selector'}
-                      >
-                        Attributes
-                      </Box>
-                    </Box>
-                    <Box className="verify-experience-progress-bars">
-                      <Box className="progress-bar active"></Box>
-                      <Box
-                        className={
-                          selectionPage === 'Skill' || selectionPage === 'Attributes'
-                            ? 'progress-bar active'
-                            : 'progress-bar'
-                        }
-                      ></Box>
-                      <Box className={selectionPage === 'Attributes' ? 'progress-bar active' : ' progress-bar'}></Box>
-                    </Box>
-
-                    <Text className="selection-page">{selectionPage}</Text>
-                    <Box className="pro-tip-box">
-                      <Box className="icon-box">
-                        <FcInfo color="#1991ff" />
-                        <Text className="pro-tip">Pro tip</Text>
-                      </Box>
-                      <Text className="tip">
-                        To receive the best review, carefully choose the documents, skills, and attributes that your
-                        peers are familiar with. This will ensure a more accurate and insightful assessment of your
-                        profile on Greenie
-                      </Text>
-                    </Box>
-                    {selectionPage === 'Document' && (
-                      <Box className="documents-action-section">
-                        <input type="file" ref={fileInputRef} style={{ display: 'none' }} />
-                        <Box className="documents-action-nav">
-                          <Box className="document-action-heading-box">
-                            <Text className="document-action-heading">Documents</Text>
-                            <Text className="document-action-sub-heading">
-                              Select the documents you want the peer to review
-                            </Text>
-                          </Box>
-
-                          <Box className="document-action-selector">
-                            <Button
-                              leftIcon={<AiOutlinePlus />}
-                              className="document-action"
-                              onClick={() => fileInputRef.current?.click()}
-                            >
-                              Add files
-                            </Button>
-                          </Box>
-                        </Box>
-                        <Box className="selected-attribute-header">
-                          <Checkbox checked indeterminate readOnly />
-                          <Text>Select documents To Verify</Text>
-                        </Box>
-                        <Box className="selected-attributes">
-                          {experienceDocuments.map(({ name, _id }) => {
-                            return (
-                              <Box key={_id} className="selected-attribute">
-                                <Checkbox />
-                                <Text className="verification-document-name">
-                                  <img src={pdfIcon} alt="pdf icon" /> {name}
-                                </Text>
-                              </Box>
-                            );
-                          })}
-                        </Box>
-                        <Box className="btn-wrapper">
-                          <Button className="cancel-btn" onClick={() => setSelectionPage('Skill')}>
-                            Skip
-                          </Button>
-                          <Button className="green-btn" onClick={() => setSelectionPage('Skill')}>
-                            Next
-                          </Button>
-                        </Box>
-                      </Box>
-                    )}
-                    {selectionPage === 'Skill' && (
-                      <Box className="documents-action-section">
-                        <Box className="documents-action-nav">
-                          <Box className="document-action-heading-box">
-                            <Text className="document-action-heading">Skills</Text>
-                            <Text className="document-action-sub-heading">
-                              Select the skill you want the peer to review
-                            </Text>
-                          </Box>
-                        </Box>
-                        <Box>
-                          <Box className="selected-attribute-header">
-                            <Checkbox checked indeterminate readOnly />
-                            <Text>Select Skills To Verify</Text>
-                          </Box>
-
-                          <Box className="selected-skills">
-                            {skillData
-                              .filter((skill) => skill.workExperience === experience?.id)
-                              .map((skill, idx) => {
-                                return (
-                                  <Box key={idx}>
-                                    <Box className="selected-skill">
-                                      <Checkbox />
-                                      <Text>{skill.skillName}</Text>
-                                      {skill.expertise && (
-                                        <Text className="add-skill-rate">{expertiseList[skill.expertise]}</Text>
-                                      )}
-                                    </Box>
-                                  </Box>
-                                );
-                              })}
-                          </Box>
-                        </Box>
-                        <Box className="btn-wrapper">
-                          <Button className="cancel-btn" onClick={() => setSelectionPage('Attributes')}>
-                            Skip
-                          </Button>
-                          <Button className="green-btn" onClick={() => setSelectionPage('Attributes')}>
-                            Next
-                          </Button>
-                        </Box>
-                      </Box>
-                    )}
-                    {selectionPage === 'Attributes' && (
-                      <Box className="documents-action-section">
-                        <Box className="documents-action-nav">
-                          <Box className="document-action-heading-box">
-                            <Text className="document-action-heading">Attributes</Text>
-                            <Text className="document-action-sub-heading">
-                              Select the attributes you want the peer to review
-                            </Text>
-                          </Box>
-                        </Box>
-
-                        <Box>
-                          <Box className="selected-attribute-header">
-                            <Checkbox checked indeterminate readOnly />
-                            <Text>Name</Text>
-                          </Box>
-                          <Box className="selected-attributes">
-                            {attributes.map(({ attribute }, index) => {
-                              return (
-                                <Box key={index}>
-                                  <Box className="selected-attribute">
-                                    <Checkbox />
-                                    <Text>{attribute}</Text>
-                                  </Box>
-                                  {attributes.length - 1 !== index && <Divider color="#ebebeb" />}
-                                </Box>
-                              );
-                            })}
-                          </Box>
-                          <Box className="action-btn">
-                            <RiAddCircleLine className="action-icon" />
-                            <Text className="action-text">Add more</Text>
-                          </Box>
-                          {addedPeers.indexOf(addedPeers[activePeer]) === addedPeers.length - 1 ? (
-                            <Box className="btn-wrapper">
-                              <Button
-                                className="cancel-btn"
-                                onClick={() => verificationStepDispatch({ type: ReviewActionType.NEXT_STEP })}
-                              >
-                                Skip
-                              </Button>
-                              <Button
-                                className="green-btn"
-                                onClick={() => verificationStepDispatch({ type: ReviewActionType.NEXT_STEP })}
-                              >
-                                Next
-                              </Button>
-                            </Box>
-                          ) : (
-                            <Box className="btn-wrapper">
-                              <Button className="cancel-btn" onClick={() => setActivePeer(activePeer + 1)}>
-                                Skip
-                              </Button>
-                              <Button className="green-btn" onClick={() => setActivePeer(activePeer + 1)}>
-                                Next
-                              </Button>
-                            </Box>
-                          )}
-                        </Box>
-                      </Box>
-                    )}
-                  </Box>
-                )}
+                <PeerVerification
+                  experienceId={String(experience?.id)}
+                  activePeer={activePeer}
+                  addedPeers={addedPeers}
+                  setActivePeer={setActivePeer}
+                  verificationStepDispatch={verificationStepDispatch}
+                />
               </Box>
               <Box className="see-peers-btn-wrapper">
                 <Button

@@ -38,7 +38,6 @@ export const ExperienceDetails: React.FC = () => {
 
   const { id } = useParams();
   const filteredExperience = workExperienceData.find((exp) => exp.id === id);
-  console.log('🚀 ~ file: ExperienceDetails.tsx:41 ~ filteredExperience:', filteredExperience);
 
   const handleAllExperiencesPage = (): void => {
     navigate('/candidate/profile/experience/allExperiences');
