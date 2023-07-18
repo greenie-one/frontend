@@ -52,6 +52,7 @@ export class HttpClient {
       body = JSON.stringify(request.body);
     }
 
+    console.info(request.url);
     const resp = await fetch(url, {
       method: request.method,
       headers: {
@@ -60,6 +61,7 @@ export class HttpClient {
       },
       body,
     });
+    console.info(resp);
 
     let response: T;
 
