@@ -33,10 +33,22 @@ $dark: #191919;
   outline: none;
   background-color: transparent;
   color: $gray;
+  border-radius: 24px;
 
   &:hover {
     background-color: transparent;
     opacity: 0.5;
+  }
+}
+
+.disputed-btn {
+  border: 1px solid $red;
+  background: transparent;
+  border-radius: 24px;
+  color: $red;
+
+  &:hover {
+    background-color: transparent;
   }
 }
 
@@ -186,7 +198,7 @@ $dark: #191919;
     }
     .profile-details-actions {
       display: grid;
-      grid-template-columns: 55% 40%;
+      grid-template-columns: 49% 49%;
       align-items: center;
       justify-content: space-between;
     }
