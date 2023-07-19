@@ -162,6 +162,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } else {
       showErrorNotification(res.error.code);
     }
+    setIsLoading(false);
   };
 
   const getMyProfile = async () => {
