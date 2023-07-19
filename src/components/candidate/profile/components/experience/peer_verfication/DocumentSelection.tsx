@@ -9,11 +9,15 @@ import { SelectionHeading } from './SelectionHeading';
 import { PageActionBtns } from './PageActionBtns';
 import { AiOutlinePlus } from 'react-icons/ai';
 import pdfIcon from '../../../assets/pdfIcon.png';
+import { CreatePeerResponseType } from '../../../types/ProfileGeneral';
 
 export const DocumentSelection: React.FC<{
   id: string;
   setSelectionPage: React.Dispatch<React.SetStateAction<number>>;
-}> = ({ id, setSelectionPage }): JSX.Element => {
+  activePeer: number;
+  setCreatePeerResponse: React.Dispatch<React.SetStateAction<CreatePeerResponseType[]>>;
+  createPeerResponse: CreatePeerResponseType[];
+}> = ({ id, setSelectionPage, activePeer, setCreatePeerResponse, createPeerResponse }): JSX.Element => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { authClient } = useGlobalContext();
 
@@ -39,6 +43,31 @@ export const DocumentSelection: React.FC<{
     getExperienceDocument();
   }, [id]);
 
+  const handleMark = (event: React.ChangeEvent<HTMLInputElement>, id: string) => {
+    const updatedList = [];
+
+    for (let i = 0; i < createPeerResponse.length; i++) {
+      const peer = createPeerResponse[i];
+
+      if (i !== activePeer) {
+        updatedList.push(peer);
+        continue;
+      }
+
+      let docList = peer.verificationDocuments;
+      if (event.target.checked) {
+        docList.push(id);
+      } else {
+        docList = docList.filter((_id) => _id !== id);
+      }
+
+      peer.verificationDocuments = docList;
+      updatedList.push(peer);
+    }
+
+    setCreatePeerResponse(updatedList);
+  };
+
   return (
     <>
       <Box className="documents-action-section">
@@ -62,7 +91,10 @@ export const DocumentSelection: React.FC<{
           {experienceDocuments?.map(({ name, _id }) => {
             return (
               <Box key={_id} className="selected-attribute">
-                <Checkbox />
+                <Checkbox
+                  checked={createPeerResponse[activePeer].verificationDocuments.includes(_id)}
+                  onChange={(event) => handleMark(event, _id)}
+                />
                 <Text className="verification-document-name">
                   <img src={pdfIcon} alt="pdf icon" /> {name}
                 </Text>

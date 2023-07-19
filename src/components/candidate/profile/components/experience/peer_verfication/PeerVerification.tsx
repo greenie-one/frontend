@@ -27,7 +27,6 @@ export const PeerVerification: React.FC<PeerVerificationProps> = ({
   setCreatePeerResponse,
 }): JSX.Element => {
   const [selectionPage, setSelectionPage] = useState<number>(0);
-  console.log(createPeerResponse);
 
   useEffect(() => {
     addedPeers.forEach((peer) => {
@@ -39,7 +38,9 @@ export const PeerVerification: React.FC<PeerVerificationProps> = ({
           phone: peer.phone,
           ref: experienceId,
           verificationBy: peer.peerType,
-          verificationFields: [],
+          optionalVerificationFields: [],
+          verificationDocuments: [],
+          verificationSkills: [],
         },
       ]);
     });
@@ -49,8 +50,23 @@ export const PeerVerification: React.FC<PeerVerificationProps> = ({
     <>
       <Box className="see-peers-select-doc-skills">
         <VerificationHeader selectionPage={selectionPage} setSelectionPage={setSelectionPage} />
-        {selectionPage === 0 && <DocumentSelection id={experienceId} setSelectionPage={setSelectionPage} />}
-        {selectionPage === 1 && <SkillSelection setSelectionPage={setSelectionPage} />}
+        {selectionPage === 0 && (
+          <DocumentSelection
+            id={experienceId}
+            setSelectionPage={setSelectionPage}
+            activePeer={activePeer}
+            createPeerResponse={createPeerResponse}
+            setCreatePeerResponse={setCreatePeerResponse}
+          />
+        )}
+        {selectionPage === 1 && (
+          <SkillSelection
+            setSelectionPage={setSelectionPage}
+            activePeer={activePeer}
+            createPeerResponse={createPeerResponse}
+            setCreatePeerResponse={setCreatePeerResponse}
+          />
+        )}
         {selectionPage === 2 && (
           <AttributeSelection
             activePeer={activePeer}

@@ -39,10 +39,23 @@ const expertiseList: {
   MASTER: 'Master',
 };
 
+const attrDict: { [key: string]: string } = {
+  candidateId: 'Candidate ID',
+  department: 'Department',
+  dateOfJoining: 'Date of Joining',
+  dateOfLeaving: 'Date of Leaving',
+  companyName: 'Company Name',
+  workType: 'Work Type',
+  workMode: 'Mode of Work',
+  salary: 'Salary',
+};
+
 export const VerifyExperience: React.FC = () => {
   const navigate = useNavigate();
   const [experience, setExperience] = useState<WorkExperience | undefined>({} as WorkExperience);
   const [createPeerResponse, setCreatePeerResponse] = useState<CreatePeerResponseType[]>([]);
+  const [selectedDocuments, setSelectedDocuments] = useState<Array<string>>([]);
+  const [selectedSkills, setSelectedSkills] = useState<Array<string>>([]);
 
   const [addedPeers, setAddedPeers] = useState<Peer[]>([]);
   const [activePeer, setActivePeer] = useState<number>(0);
@@ -198,9 +211,42 @@ export const VerifyExperience: React.FC = () => {
     navigate('/candidate/profile/experience/allExperiences');
   };
 
+  console.log(createPeerResponse);
+
+  const createVerificationRequest = async (
+    thing: 'Skills' | 'Document',
+    sharedWith: 'Peer' | 'User',
+    peerId: string,
+    verificationList: Array<string>
+  ) => {
+    const requestBody = {
+      thing: thing,
+      thingId: verificationList,
+      sharedWith: sharedWith,
+      sharedWithId: peerId,
+    };
+
+    const res = await HttpClient.callApiAuth<unknown>(
+      {
+        url: peerVerificationAPIList.shareRequest,
+        method: 'POST',
+        body: requestBody,
+      },
+      authClient
+    );
+    if (res.ok) {
+      console.log(thing + 'Verification Response: ', res.value);
+
+      // const filtered = res.value.filter((document) => document.workExperience === experience?.id);
+    } else {
+      showErrorNotification(res.error.code);
+    }
+  };
+
   const handleCreatePeerRequest = async () => {
     for (const response of createPeerResponse) {
-      const res = await HttpClient.callApiAuth<unknown>(
+      response.phone = '+91' + response.phone.slice(-10);
+      const res = await HttpClient.callApiAuth<any>(
         {
           url: peerVerificationAPIList.createPeer,
           method: 'POST',
@@ -209,7 +255,9 @@ export const VerifyExperience: React.FC = () => {
         authClient
       );
       if (res.ok) {
-        console.log(res.value);
+        // console.log(res.value?._id);
+        createVerificationRequest('Skills', 'Peer', res.value?._id, response.verificationSkills);
+        createVerificationRequest('Document', 'Peer', res.value?._id, response.verificationDocuments);
 
         // const filtered = res.value.filter((document) => document.workExperience === experience?.id);
       } else {
@@ -495,14 +543,16 @@ export const VerifyExperience: React.FC = () => {
                           {addedPeers.map((peer, index) => {
                             return (
                               <Box key={index} className="docs-wrapper">
-                                {experienceDocuments.map((document, index) => {
-                                  return (
-                                    <Box className="document" key={index}>
-                                      <img className="pdf-icon" src={pdfIcon} alt="pdf icon" />
-                                      <Text className="document-name">{document.name.substring(0, 15)}...</Text>
-                                    </Box>
-                                  );
-                                })}
+                                {experienceDocuments
+                                  .filter((doc) => createPeerResponse[index].verificationDocuments.includes(doc._id))
+                                  .map((document, index) => {
+                                    return (
+                                      <Box className="document" key={index}>
+                                        <img className="pdf-icon" src={pdfIcon} alt="pdf icon" />
+                                        <Text className="document-name">{document.name.substring(0, 15)}...</Text>
+                                      </Box>
+                                    );
+                                  })}
                               </Box>
                             );
                           })}
@@ -510,27 +560,36 @@ export const VerifyExperience: React.FC = () => {
                       </Box>
                       <Box className="skills-list">
                         <Text className="document-action-heading">Skills</Text>
-                        <Box className="add-skills-wrapper">
-                          {skillData
-                            .filter((skill) => skill.workExperience === experience?.id)
-                            .map((skill: Skill, index: number) => {
-                              const { expertise, skillName } = skill;
-                              return (
-                                <Box key={index} className="add-skill-box">
-                                  <Text className="add-skill-name">{skillName}</Text>
-                                  {expertise && <Text className="add-skill-rate">{expertiseList[expertise]}</Text>}
-                                </Box>
-                              );
-                            })}
+                        <Box>
+                          {addedPeers.map((peer, index) => {
+                            return (
+                              <Box key={index} className="add-skills-wrapper">
+                                {skillData
+                                  .filter((skill) => skill.workExperience === experience?.id)
+                                  .filter((skill) => createPeerResponse[index].verificationSkills.includes(skill.id))
+                                  .map((skill: Skill, index: number) => {
+                                    const { expertise, skillName } = skill;
+                                    return (
+                                      <Box key={index} className="add-skill-box">
+                                        <Text className="add-skill-name">{skillName}</Text>
+                                        {expertise && (
+                                          <Text className="add-skill-rate">{expertiseList[expertise]}</Text>
+                                        )}
+                                      </Box>
+                                    );
+                                  })}
+                              </Box>
+                            );
+                          })}
                         </Box>
                       </Box>
                       <Box className="skills-list">
                         <Text className="document-action-heading">Attributes</Text>
                         <Box className="add-skills-wrapper">
-                          {response.verificationFields.map((attr, index: number) => {
+                          {response.optionalVerificationFields.map((attr, index: number) => {
                             return (
                               <Text key={index} className="add-skill-name">
-                                {attr}
+                                {attrDict[attr]}
                               </Text>
                             );
                           })}

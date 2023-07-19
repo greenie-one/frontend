@@ -15,19 +15,15 @@ type AttributeSelectionProps = {
   createPeerResponse: CreatePeerResponseType[];
 };
 
-const attributes = [
-  'Job title',
-  'Company Type',
-  'Company Name',
-  'LinkedIn URL',
-  'Department',
-  'Salary (CTC)',
-  'Work Email',
-  'Company ID',
-  'Job Start Date',
-  'Job End Date',
-  'Mode of Work',
-  'Work Type',
+const attributesList = [
+  { id: 'candidateId', attrName: 'Candidate ID' },
+  { id: 'department', attrName: 'Department' },
+  { id: 'dateOfJoining', attrName: 'Date of Joining' },
+  { id: 'dateOfLeaving', attrName: 'Date of Leaving' },
+  { id: 'companyName', attrName: 'Company Name' },
+  { id: 'workType', attrName: 'Work Type' },
+  { id: 'workMode', attrName: 'Mode of Work' },
+  { id: 'salary', attrName: 'Salary' },
 ];
 
 export const AttributeSelection: React.FC<AttributeSelectionProps> = ({
@@ -49,14 +45,14 @@ export const AttributeSelection: React.FC<AttributeSelectionProps> = ({
         continue;
       }
 
-      let attrList = peer.verificationFields;
+      let attrList = peer.optionalVerificationFields;
       if (event.target.checked) {
         attrList.push(attr);
       } else {
         attrList = attrList.filter((_attr) => _attr !== attr);
       }
 
-      peer.verificationFields = attrList;
+      peer.optionalVerificationFields = attrList;
       updatedList.push(peer);
     }
 
@@ -76,17 +72,17 @@ export const AttributeSelection: React.FC<AttributeSelectionProps> = ({
             <Text>Name</Text>
           </Box>
           <Box className="selected-attributes">
-            {attributes.map((attribute, index) => {
+            {attributesList.map(({ id, attrName }, idx) => {
               return (
-                <Box key={index}>
+                <Box key={idx}>
                   <Box className="selected-attribute">
                     <Checkbox
-                      checked={createPeerResponse[activePeer].verificationFields.includes(attribute)}
-                      onChange={(event) => handleMark(event, attribute)}
+                      checked={createPeerResponse[activePeer].optionalVerificationFields.includes(id)}
+                      onChange={(event) => handleMark(event, id)}
                     />
-                    <Text>{attribute}</Text>
+                    <Text>{attrName}</Text>
                   </Box>
-                  {attributes.length - 1 !== index && <Divider color="#ebebeb" />}
+                  {attributesList.length - 1 !== idx && <Divider color="#ebebeb" />}
                 </Box>
               );
             })}

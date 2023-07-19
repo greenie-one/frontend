@@ -20,7 +20,9 @@ type CreatePeerResponseType = {
   phone: string;
   ref: string;
   verificationBy: string;
-  verificationFields: Array<string>;
+  optionalVerificationFields: Array<string>;
+  verificationDocuments: Array<string>;
+  verificationSkills: Array<string>;
 };
 
 type UseStylesType = (
