@@ -17,7 +17,7 @@ export const DocDepotNavbar = () => {
   const { classes: inputClasses } = inputStyles();
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
-  const { documentForm } = useDocDepotContext();
+  const { documentForm, docDepotActivePage } = useDocDepotContext();
   const { authClient, setForceRender, forceRender } = useGlobalContext();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const openFileInput = () => {
@@ -124,9 +124,12 @@ export const DocDepotNavbar = () => {
         <Box className="search" tabIndex={0}>
           <TextInput classNames={inputClasses} className="search-input" placeholder="Search" icon={<GoSearch />} />
         </Box>
-        <Button className="green-outline-btn" onClick={openFileInput}>
-          Upload
-        </Button>
+        {docDepotActivePage === 0 && (
+          <Button className="green-outline-btn" onClick={openFileInput}>
+            Upload
+          </Button>
+        )}
+
         <input
           type="file"
           accept=".pdf,.doc,.docx"

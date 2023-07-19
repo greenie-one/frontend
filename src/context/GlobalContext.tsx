@@ -333,6 +333,22 @@ export const GlobalContextProvider: React.FC<{
     });
   };
 
+  //-------------------------------------------------------------
+
+  const handlePDFdownload = () => {
+    const files = [
+      { path: '../components/candidate/profile/assets/Undertaking User .pdf', name: 'Undertaking user' },
+      { path: '../components/auth/assets/Privacy Policy-Greenie.pdf', name: 'Privacy policy' },
+    ];
+    files.forEach((file) => {
+      const link = document.createElement('a');
+      link.href = file.path;
+      link.download = file.name;
+      link.target = '_blank';
+      link.click();
+    });
+  };
+
   const authTokens = authClient.getAccessToken();
 
   useEffect(() => {
@@ -375,6 +391,7 @@ export const GlobalContextProvider: React.FC<{
         deleteResidentialInfo,
         activeButton,
         setActiveButton,
+        handlePDFdownload,
       }}
     >
       {children}

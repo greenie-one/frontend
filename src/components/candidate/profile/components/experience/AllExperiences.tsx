@@ -1,50 +1,27 @@
-import { Text, Box, Button, Title, Modal, Checkbox } from '@mantine/core';
+import { Text, Box, Button } from '@mantine/core';
 import { BsArrowLeft } from 'react-icons/bs';
 import { AiOutlineRight } from 'react-icons/ai';
 import { MdVerified } from 'react-icons/md';
 import { CgSandClock } from 'react-icons/cg';
-import tscLogo from '../../assets/tscLogo.png';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
 import { Navbar } from '../Navbar';
 import { useNavigate } from 'react-router-dom';
-import { useDisclosure, useMediaQuery } from '@mantine/hooks';
-import { useState } from 'react';
 
 export const AllExperiences = () => {
   const navigate = useNavigate();
   const { workExperienceData } = useGlobalContext();
-  const [checked, setChecked] = useState<boolean>(false);
-  const [workId, setWorkId] = useState<number>();
-  const isMobile = useMediaQuery('(max-width: 768px)');
-  const [opened, { open, close }] = useDisclosure(false);
 
   const handleProfilePage = (): void => {
     navigate('/candidate/profile');
   };
 
-  const handleGoToVerification = () => {
-    navigate(`/candidate/profile/experience/${workId}/verify`);
+  const handleDetailsPage = (workId: string) => {
+    navigate(`/candidate/profile/experience/${workId}`);
   };
+
   return (
     <>
       <Navbar />
-      <Modal className="modal" size={'60%'} fullScreen={isMobile} opened={opened} onClose={close} centered>
-        <Box className="disclaimer-modal">
-          <Title className="disclaimer-heading">Undertaking</Title>
-          <Text className="disclaimer-subHeading">Verifying Work experience on Greenie</Text>
-
-          <Box className="checkbox-box">
-            <Checkbox checked={checked} onChange={() => setChecked(!checked)} className="checkbox" color="teal" />
-            <Text className="tearms-conditions">
-              I have read the undertaking and i authorise Greenie to collect information on my behalf.
-            </Text>
-          </Box>
-          <Text className="policy">Click to view the undertaking Data and Privacy Policy</Text>
-          <Button className="primaryBtn" disabled={!checked} onClick={handleGoToVerification}>
-            I Agree
-          </Button>
-        </Box>
-      </Modal>
       <main className="profile">
         <section className="container" style={{ marginTop: '7rem' }}>
           <Box className="top-header">
@@ -66,15 +43,12 @@ export const AllExperiences = () => {
                   <Box
                     key={index}
                     onClick={() => {
-                      setWorkId(id);
-
-                      open();
+                      handleDetailsPage(id);
                     }}
                   >
                     <Box className="experience-card">
-                      <img className="companyLogo" src={tscLogo} />
-                      <Text className="position">{designation}</Text>
-                      <Text className="companyName">{companyName}</Text>
+                      <Text className="position">{designation.substring(0, 25)}</Text>
+                      <Text className="companyName">{companyName.substring(0, 25)}</Text>
                       {isVerified ? (
                         <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
                           Verified

@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useProfileContext } from '../../context/ProfileContext';
 import { Text, Box, Button, Modal, Checkbox, createStyles, em, TextInput, Title, CopyButton } from '@mantine/core';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 import { BsArrowLeft } from 'react-icons/bs';
@@ -18,18 +17,19 @@ import {
 } from '../../../../../utils/functions/showNotification';
 import { useNavigate } from 'react-router-dom';
 import { APIError } from '../../../../../utils/generic/httpClient';
+import { Navbar } from '../Navbar';
 // import errorIcon from '../../assets/errorIcon.png';
 // import { GrPowerReset } from 'react-icons/gr';
 
 export const VerifyAadharCard = () => {
   const navigate = useNavigate();
+  const [aadharIsVerified, setAadharIsVerified] = useState<boolean>(false);
   const [opened, { open, close }] = useDisclosure(false);
   const [checked, setChecked] = useState<boolean>(false);
   const [secondsRemaining, setSecondsRemaining] = useState<number>(60);
   const { classes: otpInputClasses } = OtpInputStyles();
   const isMobile = useMediaQuery('(max-width: 768px)');
   const greeneId = 'GRN788209';
-  const { aadharIsVerified, setAadharIsVerified } = useProfileContext();
   const { authClient, setForceRender, scrollToTop, verifyAadharForm } = useGlobalContext();
   const [verificationData, setVerificationData] = useState<AadharVerificationResponse>({
     requestId: '',
@@ -109,9 +109,10 @@ export const VerifyAadharCard = () => {
       if (res.ok) {
         showSuccessNotification({ title: 'Success !', message: 'OTP Verified Successfully' });
         close();
-        setAadharIsVerified(true);
         verifyAadharForm.reset();
         setForceRender((prev) => !prev);
+        setAadharIsVerified(true);
+        navigate('/');
       } else {
         showErrorNotification(res.error.code);
       }
@@ -129,8 +130,11 @@ export const VerifyAadharCard = () => {
   };
 
   return (
-    <section className="container documents-container">
-      {/* <Modal className="modal" size={'40%'} fullScreen={isMobile} opened={opened} onClose={close} centered>
+    <>
+      <Navbar />
+      <main className="profile">
+        <section className="container documents-container" style={{ marginTop: '7rem' }}>
+          {/* <Modal className="modal" size={'40%'} fullScreen={isMobile} opened={opened} onClose={close} centered>
         <Box className="error-modal">
           <Text className="error-modal-title">Failed to connect to your Aadhaar</Text>
           <img src={errorIcon} alt="Error Icon" />
@@ -141,199 +145,201 @@ export const VerifyAadharCard = () => {
           <Text className="error-modal-text">Ff the problem persists, Please try again after few minutes</Text>
         </Box>
       </Modal> */}
-      {aadharIsVerified ? (
-        <Modal centered className="modal" size={'55%'} fullScreen={isMobile} opened={opened} onClose={close}>
-          <Box className="congratulations-modal">
-            <img src={checkImg} alt="Checked" />
-            <Title className="title">
-              Your Profile is now verified <MdVerified color="#8CF078" size={'18px'} />
-            </Title>
-            <Text className="sub-title">Here is your Greenie ID</Text>
-            <Text className="greenie-id">{greeneId}</Text>
+          {aadharIsVerified ? (
+            <Modal centered className="modal" size={'55%'} fullScreen={isMobile} opened={opened} onClose={close}>
+              <Box className="congratulations-modal">
+                <img src={checkImg} alt="Checked" />
+                <Title className="title">
+                  Your Profile is now verified <MdVerified color="#8CF078" size={'18px'} />
+                </Title>
+                <Text className="sub-title">Here is your Greenie ID</Text>
+                <Text className="greenie-id">{greeneId}</Text>
 
-            <Box className="buttons-wrapper">
-              <Button leftIcon={<MdVerified color="#8CF078" size={'18px'} />} className="verified">
-                Verified
-              </Button>
-              <CopyButton value={greeneId} timeout={2000}>
-                {({ copied, copy }) => (
-                  <Box>
-                    {copied ? (
-                      <Button className="copy-btn" leftIcon={<MdOutlineContentCopy size={'15px'} />}>
-                        Copied
-                      </Button>
-                    ) : (
-                      <Button className="copy-btn" onClick={copy} leftIcon={<MdOutlineContentCopy size={'15px'} />}>
-                        Copy
-                      </Button>
+                <Box className="buttons-wrapper">
+                  <Button leftIcon={<MdVerified color="#8CF078" size={'18px'} />} className="verified">
+                    Verified
+                  </Button>
+                  <CopyButton value={greeneId} timeout={2000}>
+                    {({ copied, copy }) => (
+                      <Box>
+                        {copied ? (
+                          <Button className="copy-btn" leftIcon={<MdOutlineContentCopy size={'15px'} />}>
+                            Copied
+                          </Button>
+                        ) : (
+                          <Button className="copy-btn" onClick={copy} leftIcon={<MdOutlineContentCopy size={'15px'} />}>
+                            Copy
+                          </Button>
+                        )}
+                      </Box>
                     )}
-                  </Box>
-                )}
-              </CopyButton>
-            </Box>
+                  </CopyButton>
+                </Box>
 
-            <Button className="primaryBtn" onClick={handleContinue}>
-              Continue
-            </Button>
-          </Box>
-        </Modal>
-      ) : (
-        <Modal
-          centered
-          className="modal"
-          size={'55%'}
-          fullScreen={isMobile}
-          opened={opened}
-          onClose={close}
-          title="Please enter the OTP send to"
-          styles={{
-            title: {
-              fontSize: '1.25rem',
-              fontWeight: 600,
-            },
-          }}
-        >
-          <form className="otp-form" onSubmit={handleSubmit}>
-            <Title className="title">OTP has been sent to your linked phone number!</Title>
-            <Text className="disbled-Input-State">
-              {verifyAadharForm.values.aadharNo}
-              <span className="changeBtn" onClick={close}>
-                Change
-              </span>
-            </Text>
-            <TextInput
-              classNames={otpInputClasses}
-              withAsterisk
-              maxLength={6}
-              pattern="[0-9]{6}"
-              {...verifyAadharForm.getInputProps('otp')}
-            />
-            {secondsRemaining === 0 ? (
-              <Button compact color="gray" variant="subtle" onClick={requestOTPForAadhar} className="resendLink">
-                Resend
-              </Button>
-            ) : (
-              <Text fw={'light'} fz={'xs'} my={'md'}>
-                Resend{' '}
-                <Text fw={'500'} span>
-                  after {secondsRemaining}s
+                <Button className="primaryBtn" onClick={handleContinue}>
+                  Continue
+                </Button>
+              </Box>
+            </Modal>
+          ) : (
+            <Modal
+              centered
+              className="modal"
+              size={'55%'}
+              fullScreen={isMobile}
+              opened={opened}
+              onClose={close}
+              title="Please enter the OTP send to"
+              styles={{
+                title: {
+                  fontSize: '1.25rem',
+                  fontWeight: 600,
+                },
+              }}
+            >
+              <form className="otp-form" onSubmit={handleSubmit}>
+                <Title className="title">OTP has been sent to your linked phone number!</Title>
+                <Text className="disbled-Input-State">
+                  {verifyAadharForm.values.aadharNo}
+                  <span className="changeBtn" onClick={close}>
+                    Change
+                  </span>
                 </Text>
-              </Text>
-            )}
-            <Button type="submit" className="primaryBtn">
-              Verify
-            </Button>
-          </form>
-        </Modal>
-      )}
+                <TextInput
+                  classNames={otpInputClasses}
+                  withAsterisk
+                  maxLength={6}
+                  pattern="[0-9]{6}"
+                  {...verifyAadharForm.getInputProps('otp')}
+                />
+                {secondsRemaining === 0 ? (
+                  <Button compact color="gray" variant="subtle" onClick={requestOTPForAadhar} className="resendLink">
+                    Resend
+                  </Button>
+                ) : (
+                  <Text fw={'light'} fz={'xs'} my={'md'}>
+                    Resend{' '}
+                    <Text fw={'500'} span>
+                      after {secondsRemaining}s
+                    </Text>
+                  </Text>
+                )}
+                <Button type="submit" className="primaryBtn">
+                  Verify
+                </Button>
+              </form>
+            </Modal>
+          )}
 
-      <Box className="see-all-header" onClick={handlePageChange}>
-        <Box className="go-back-btn">
-          <BsArrowLeft className="arrow-left-icon" size={'16px'} />
-          <Text>Profile</Text>
-          <AiOutlineRight className="arrow-right-icon" size={'16px'} />
-        </Box>
-        <Box className="go-back-btn">
-          <Text>Verification ID</Text>
-          <AiOutlineRight className="arrow-right-icon" size={'16px'} />
-
-          {aadharIsVerified ? <Text>Aadhar card details</Text> : <Text>Aadhar Card</Text>}
-        </Box>
-      </Box>
-      {aadharIsVerified ? (
-        <Box className="document-verified-container">
-          <Box className="document-verified-left-box">
-            <Box className="left-img-box">
-              <img src={john} className="verified-document-profile" alt="" />
-              <Text className="verified-document-name">John Jocab Marston</Text>
+          <Box className="see-all-header" onClick={handlePageChange}>
+            <Box className="go-back-btn">
+              <BsArrowLeft className="arrow-left-icon" size={'16px'} />
+              <Text>Profile</Text>
+              <AiOutlineRight className="arrow-right-icon" size={'16px'} />
             </Box>
+            <Box className="go-back-btn">
+              <Text>Verification ID</Text>
+              <AiOutlineRight className="arrow-right-icon" size={'16px'} />
 
-            <Box className="left-text-box">
-              <Box>
-                <Text className="heading">Last Updated</Text>
-                <Text className="details">02/03/2023</Text>
-              </Box>
-              <Box>
-                <Text className="heading">Timestamp</Text>
-                <Text className="details">12:30 AM | 02/03/2023</Text>
-              </Box>
+              {aadharIsVerified ? <Text>Aadhar card details</Text> : <Text>Aadhar Card</Text>}
             </Box>
           </Box>
-          <Box className="document-verified-right-box">
-            <Box className="box-row aadhar-first-row">
-              <Box className="details-box">
-                <Title className="details-title">Aadhar number</Title>
-                <Text className="details-detail">2237 8928 8282 0092</Text>
-              </Box>
-              <Box className="details-box">
-                <Title className="details-title">Name of Father/Husband</Title>
-                <Text className="details-detail">Jacob Marston</Text>
-              </Box>
-            </Box>
-            <Box className="box-row aadhar-second-row">
-              <Box className="details-box">
-                <Title className="details-title">State</Title>
-                <Text className="details-detail">Maharashtra</Text>
-              </Box>
-              <Box className="details-box">
-                <Title className="details-title">Street house landmark</Title>
-                <Text className="details-detail">Near TY Corner</Text>
-              </Box>
-              <Box className="details-box">
-                <Title className="details-title">Pincode</Title>
-                <Text className="details-detail">413049</Text>
-              </Box>
-            </Box>
-            <Box className="box-row aadhar-third-row">
-              <Box className="details-box">
-                <Title className="details-title">Country</Title>
-                <Text className="details-detail">India</Text>
-              </Box>
-              <Box className="details-box">
-                <Title className="details-title">DOB</Title>
-                <Text className="details-detail">19/09/1990</Text>
-              </Box>
-              <Box className="details-box">
-                <Title className="details-title">Phone Number</Title>
-                <Text className="details-detail">+918383838383</Text>
-              </Box>
-            </Box>
+          {aadharIsVerified ? (
+            <Box className="document-verified-container">
+              <Box className="document-verified-left-box">
+                <Box className="left-img-box">
+                  <img src={john} className="verified-document-profile" alt="" />
+                  <Text className="verified-document-name">John Jocab Marston</Text>
+                </Box>
 
-            <Button className="primaryBtn" onClick={open}>
-              Continue
-            </Button>
-          </Box>
-        </Box>
-      ) : (
-        <Box className="document-container">
-          <img src={AadharImg} className="document-img" alt="Aadhar Img" />
-          <Box className="document-text-box">
-            <Title className="heading">Enter your Aadhaar number</Title>
-            <TextInput
-              label="Enter aadhar number"
-              className="inputClass"
-              withAsterisk
-              minLength={12}
-              maxLength={12}
-              {...verifyAadharForm.getInputProps('aadharNo')}
-            />
-            <Button disabled={!checked} onClick={handleOpenModal} className={checked ? 'greenBtn' : 'disabledBtn'}>
-              Click to verify
-            </Button>
-            <Box className="checkbox-box">
-              <Checkbox checked={checked} onChange={() => setChecked(!checked)} className="checkbox" color="teal" />
-              <Text className="tearms-conditions">
-                I understand that during the sign-up process and while using this website, I may be required to provide
-                certain personal information, including but not limited to my name, email address, contact details, and
-                any other information deemed necessary for registration and website usage.
-              </Text>
-            </Box>
+                <Box className="left-text-box">
+                  <Box>
+                    <Text className="heading">Last Updated</Text>
+                    <Text className="details">02/03/2023</Text>
+                  </Box>
+                  <Box>
+                    <Text className="heading">Timestamp</Text>
+                    <Text className="details">12:30 AM | 02/03/2023</Text>
+                  </Box>
+                </Box>
+              </Box>
+              <Box className="document-verified-right-box">
+                <Box className="box-row aadhar-first-row">
+                  <Box className="details-box">
+                    <Title className="details-title">Aadhar number</Title>
+                    <Text className="details-detail">2237 8928 8282 0092</Text>
+                  </Box>
+                  <Box className="details-box">
+                    <Title className="details-title">Name of Father/Husband</Title>
+                    <Text className="details-detail">Jacob Marston</Text>
+                  </Box>
+                </Box>
+                <Box className="box-row aadhar-second-row">
+                  <Box className="details-box">
+                    <Title className="details-title">State</Title>
+                    <Text className="details-detail">Maharashtra</Text>
+                  </Box>
+                  <Box className="details-box">
+                    <Title className="details-title">Street house landmark</Title>
+                    <Text className="details-detail">Near TY Corner</Text>
+                  </Box>
+                  <Box className="details-box">
+                    <Title className="details-title">Pincode</Title>
+                    <Text className="details-detail">413049</Text>
+                  </Box>
+                </Box>
+                <Box className="box-row aadhar-third-row">
+                  <Box className="details-box">
+                    <Title className="details-title">Country</Title>
+                    <Text className="details-detail">India</Text>
+                  </Box>
+                  <Box className="details-box">
+                    <Title className="details-title">DOB</Title>
+                    <Text className="details-detail">19/09/1990</Text>
+                  </Box>
+                  <Box className="details-box">
+                    <Title className="details-title">Phone Number</Title>
+                    <Text className="details-detail">+918383838383</Text>
+                  </Box>
+                </Box>
 
-            <Text className="policy">Click to view Data and Privacy Policy</Text>
-          </Box>
-        </Box>
-      )}
-    </section>
+                <Button className="primaryBtn" onClick={open}>
+                  Continue
+                </Button>
+              </Box>
+            </Box>
+          ) : (
+            <Box className="document-container ">
+              <img src={AadharImg} className="document-img" alt="Aadhar Img" />
+              <Box className="document-text-box">
+                <Title className="heading">Enter your Aadhaar number</Title>
+                <TextInput
+                  label="Enter aadhar number"
+                  className="inputClass"
+                  withAsterisk
+                  minLength={12}
+                  maxLength={12}
+                  {...verifyAadharForm.getInputProps('aadharNo')}
+                />
+                <Button disabled={!checked} onClick={handleOpenModal} className={checked ? 'greenBtn' : 'disabledBtn'}>
+                  Click to verify
+                </Button>
+                <Box className="checkbox-box">
+                  <Checkbox checked={checked} onChange={() => setChecked(!checked)} className="checkbox" color="teal" />
+                  <Text className="tearms-conditions">
+                    I understand that during the sign-up process and while using this website, I may be required to
+                    provide certain personal information, including but not limited to my name, email address, contact
+                    details, and any other information deemed necessary for registration and website usage.
+                  </Text>
+                </Box>
+
+                <Text className="policy">Click to view Data and Privacy Policy</Text>
+              </Box>
+            </Box>
+          )}
+        </section>
+      </main>
+    </>
   );
 };
 

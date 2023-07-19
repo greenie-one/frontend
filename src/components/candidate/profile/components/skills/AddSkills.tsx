@@ -111,6 +111,7 @@ export const AddSkills = () => {
                 label="Eg. Frontend, Backend"
                 className="inputClass"
                 {...skillForm.getInputProps('skillName')}
+                maxLength={15}
               />
             </Box>
             <Box className="input-section">

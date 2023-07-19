@@ -21,7 +21,7 @@ export const ExperienceDetails: React.FC = () => {
     backgroundRepeat: 'no-repeat',
   };
 
-  const { deleteWorkExperience, workExperienceData } = useGlobalContext();
+  const { deleteWorkExperience, workExperienceData, scrollToTop } = useGlobalContext();
 
   const [checked, setChecked] = useState<boolean>(false);
 
@@ -40,10 +40,12 @@ export const ExperienceDetails: React.FC = () => {
   const filteredExperience = workExperienceData.find((exp) => exp.id === id);
 
   const handleAllExperiencesPage = (): void => {
+    scrollToTop();
     navigate('/candidate/profile/experience/allExperiences');
   };
 
   const handleGoToVerification = () => {
+    scrollToTop();
     navigate(`/candidate/profile/experience/${id}/verify`);
   };
 
@@ -61,7 +63,7 @@ export const ExperienceDetails: React.FC = () => {
               I have read the undertaking and i authorise Greenie to collect information on my behalf.
             </Text>
           </Box>
-          <Text className="policy">Click to view Data and Privacy Policy</Text>
+          <Text className="policy">Click to view the Undertaking, Data and Privacy policy</Text>
           <Button className="primaryBtn" disabled={!checked} onClick={handleGoToVerification}>
             I Agree
           </Button>

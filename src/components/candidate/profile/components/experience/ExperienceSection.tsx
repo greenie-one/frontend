@@ -20,9 +20,9 @@ export const ExperienceSection = () => {
     scrollToTop();
   };
 
-  const handleGoToVerification = (id: string) => {
+  const handleDetailsPage = (id: string) => {
     scrollToTop();
-    navigate(`/candidate/profile/experience/${id}/verify`);
+    navigate(`/candidate/profile/experience/${id}`);
   };
 
   return (
@@ -65,7 +65,7 @@ export const ExperienceSection = () => {
             .slice(0, 3)
             .map((workExperience, index) => {
               return (
-                <Box key={index} onClick={() => handleGoToVerification(workExperience.id)}>
+                <Box key={index} onClick={() => handleDetailsPage(workExperience.id)}>
                   <ExperienceCard
                     position={workExperience.designation}
                     companyName={workExperience.companyName}

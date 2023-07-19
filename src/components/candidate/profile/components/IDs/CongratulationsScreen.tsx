@@ -1,5 +1,4 @@
 import { Text, Box, Title, Button, Chip, Group, CopyButton } from '@mantine/core';
-import { useProfileContext } from '../../context/ProfileContext';
 import { MdVerified, MdOutlineContentCopy } from 'react-icons/md';
 import checkGif from '../../assets/94109-confirmation 1.gif';
 import level from '../../assets/level.png';
@@ -9,7 +8,6 @@ import { useMediaQuery } from '@mantine/hooks';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
 
 export const CongratulationsScreen = () => {
-  const { setAadharIsVerified } = useProfileContext();
   const { scrollToTop, profileData, IDs } = useGlobalContext();
 
   const userLevel = 0;
@@ -17,7 +15,6 @@ export const CongratulationsScreen = () => {
   const screenSize = useMediaQuery('(min-width: 768px)');
   const handleContinue = () => {
     scrollToTop();
-    setAadharIsVerified(false);
   };
 
   return (

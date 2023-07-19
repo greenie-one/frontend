@@ -6,7 +6,7 @@ import { MdOutlineDelete, MdVerified } from 'react-icons/md';
 import { VscDebugRestart } from 'react-icons/vsc';
 import { GrAdd } from 'react-icons/gr';
 import linkedInImg from '../../../../auth/assets/linkedIn-logo.png';
-import { BsArrowLeft, BsCheckLg } from 'react-icons/bs';
+import { BsArrowLeft } from 'react-icons/bs';
 import { skillsAPIList } from '../../../../../assets/api/ApiList';
 import uploadIcon from '../../assets/upload.png';
 import checkedIcon from '../../assets/check.png';
@@ -280,7 +280,7 @@ export const AddExperience = () => {
               I have read the undertaking and i authorise Greenie to collect information on my behalf.
             </Text>
           </Box>
-          <Text className="policy">Click to view the undertaking Data and Privacy Policy</Text>
+          <Text className="policy">Click to view the Undertaking, Data and Privacy Policy</Text>
           <Button className="primaryBtn" disabled={!checked} onClick={handleGoToVerification}>
             I Agree
           </Button>
@@ -315,10 +315,21 @@ export const AddExperience = () => {
                   className="inputClass"
                   data-autofocus
                   withAsterisk
+                  maxLength={45}
                   {...workExperienceForm.getInputProps('designation')}
                 />
               </Box>
               <Divider mb={'10px'} color="#e1e1e1" />
+              <Box className="input-section">
+                <Title className="title">Company name</Title>
+                <TextInput
+                  withAsterisk
+                  {...workExperienceForm.getInputProps('companyName')}
+                  label="Enter your company name"
+                  className="inputClass"
+                  maxLength={50}
+                />
+              </Box>
               <Box className="input-section">
                 <Title className="title">Company Type</Title>
                 <Select
@@ -339,15 +350,7 @@ export const AddExperience = () => {
                   {...workExperienceForm.getInputProps('companyType')}
                 />
               </Box>
-              <Box className="input-section">
-                <Title className="title">Company name</Title>
-                <TextInput
-                  withAsterisk
-                  {...workExperienceForm.getInputProps('companyName')}
-                  label="Enter your company name"
-                  className="inputClass"
-                />
-              </Box>
+
               <Box className="input-section">
                 <Title className="title">
                   <img src={linkedInImg} className="linked-in" alt="linkedIn logo" />
@@ -386,6 +389,7 @@ export const AddExperience = () => {
                   withAsterisk
                   label="Enter your CTC in Rs."
                   className="inputClass"
+                  maxLength={13}
                 />
               </Box>
 
@@ -402,9 +406,11 @@ export const AddExperience = () => {
               <Box className="input-section">
                 <Title className="title">Company ID</Title>
                 <TextInput
-                  label="Enter your unique company id"
+                  withAsterisk
+                  label="Enter your unique company Id"
                   className="inputClass"
                   {...workExperienceForm.getInputProps('companyId')}
+                  maxLength={10}
                 />
               </Box>
               <Box className="input-section">
@@ -413,6 +419,7 @@ export const AddExperience = () => {
                   {...workExperienceForm.getInputProps('description')}
                   label="Write down the reason for leaving"
                   className="text-area-input"
+                  maxLength={300}
                 />
               </Box>
               <Divider mb={'10px'} color="#e1e1e1" />
@@ -503,6 +510,7 @@ export const AddExperience = () => {
                   data-autofocus
                   label="Eg. Frontend, Backend"
                   className="inputClass"
+                  maxLength={15}
                   {...skillForm.getInputProps('skillName')}
                 />
               </Box>
@@ -542,7 +550,7 @@ export const AddExperience = () => {
                       <button className="remove-skills-btn" type="button" onClick={() => handleRemoveSkills(index)}>
                         <MdRemoveCircle />
                       </button>
-                      <Text className="add-skill-name">{skillName}</Text>
+                      <Text className="add-skill-name">{skillName.substring(0, 15)}</Text>
                       {expertise && <Text className="add-skill-rate">{expertiseList[expertise]}</Text>}
                     </Box>
                   );
@@ -624,10 +632,6 @@ export const AddExperience = () => {
                               },
                             })}
                           />
-                          <Box className="add-document-icon">
-                            <BsCheckLg color="#17a672" size={'16px'} />
-                            <Text color="#17a672">Added</Text>
-                          </Box>
                           <Box className="add-document-icon" onClick={() => handleRemoveDocument(_id)}>
                             <MdOutlineDelete size={'18px'} color="#697082" />
                             <Text color="#697082">Remove</Text>
@@ -648,9 +652,9 @@ export const AddExperience = () => {
                   color="teal"
                 />
                 <Text className="tearms-conditions">
-                  I understand that during the sign-up process and while using this website, I may be required to
-                  provide certain personal information, including but not limited to my name, email address, contact
-                  details, and any other information deemed necessary for registration and website usage.
+                  I understand that during the upload process and while using this website, I may be required to provide
+                  certain personal information, including but not limited to my name, email address, contact details,
+                  and any other information deemed necessary for registration and website usage.
                 </Text>
               </Box>
 

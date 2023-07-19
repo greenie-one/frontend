@@ -90,7 +90,7 @@ export const useProfileForms = () => {
       pincode: '',
       city: '',
       state: '',
-      country: '',
+      country: 'India',
       start_date: '',
       end_date: '',
       address_type: '',

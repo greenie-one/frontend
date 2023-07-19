@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useProfileContext } from '../../context/ProfileContext';
 import { Text, Box, Button, TextInput, Title, Checkbox } from '@mantine/core';
 import { BsArrowLeft } from 'react-icons/bs';
 import { AiOutlineRight } from 'react-icons/ai';
@@ -16,9 +15,9 @@ import { HttpClient, Result } from '../../../../../utils/generic/httpClient';
 import { useNavigate } from 'react-router-dom';
 
 export const VerifyDrivingLicence = () => {
+  const [licenseIsVerified, setLicenseIsVerified] = useState<boolean>(false);
   const navigate = useNavigate();
   const [checked, setChecked] = useState(false);
-  const { licenseIsVerified, setLicenseIsVerified } = useProfileContext();
   const { authClient, verifyLicenceForm, setForceRender } = useGlobalContext();
 
   const handleSubmit = async (event: React.FormEvent) => {

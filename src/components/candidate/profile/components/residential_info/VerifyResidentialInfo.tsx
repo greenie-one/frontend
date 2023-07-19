@@ -20,20 +20,7 @@ export const VerifyResidentialInfo: React.FC = () => {
   const link = 'https://greenie.verify34812';
   const { scrollToTop, residentialInfoVerificationForm, residentialInfoData } = useGlobalContext();
 
-  const [residentialInfo, setResidentialInfo] = useState<ResidentialInfoResponse>({
-    address_line_1: '',
-    address_line_2: '',
-    landmark: '',
-    pincode: 0,
-    city: '',
-    start_date: null,
-    end_date: null,
-    state: '',
-    country: '',
-    address_type: '',
-    isVerified: false,
-    residentialInfoId: '',
-  });
+  const [residentialInfo, setResidentialInfo] = useState<ResidentialInfoResponse | null>(null);
 
   const handleRemovePeer = (index: number) => {
     if (index < 0 || index >= addedPeers.length) {
@@ -78,7 +65,7 @@ export const VerifyResidentialInfo: React.FC = () => {
   };
 
   const { id } = useParams();
-  const filteredInfo = residentialInfoData.find((info: ResidentialInfoResponse) => info.residentialInfoId === id);
+  const filteredInfo = residentialInfoData.find((info: ResidentialInfoResponse) => info.id === id);
 
   useEffect(() => {
     if (filteredInfo) {
@@ -112,8 +99,8 @@ export const VerifyResidentialInfo: React.FC = () => {
 
                 <Box className="residential-details-text-box">
                   <Text className="address">
-                    {residentialInfo.address_line_1}, {residentialInfo.address_line_2}, {residentialInfo.landmark},{' '}
-                    {residentialInfo.city}, {residentialInfo.pincode}
+                    {residentialInfo?.address_line_1}, {residentialInfo?.address_line_2}, {residentialInfo?.landmark},{' '}
+                    {residentialInfo?.city}, {residentialInfo?.pincode}
                   </Text>
 
                   <Button leftIcon={<CgSandClock size={'16px'} />} className="pending">
@@ -211,8 +198,8 @@ export const VerifyResidentialInfo: React.FC = () => {
 
                 <Box className="residential-details-text-box">
                   <Text className="address">
-                    {residentialInfo.address_line_1}, {residentialInfo.address_line_2}, {residentialInfo.landmark},{' '}
-                    {residentialInfo.city}, {residentialInfo.pincode}
+                    {residentialInfo?.address_line_1}, {residentialInfo?.address_line_2}, {residentialInfo?.landmark},
+                    {residentialInfo?.city}, {residentialInfo?.pincode}
                   </Text>
 
                   <Button leftIcon={<CgSandClock size={'16px'} />} className="pending">

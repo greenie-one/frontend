@@ -51,8 +51,8 @@ export const Navbar = () => {
 
   const location = useLocation();
   const currentUrl = location.pathname + location.search;
-  const isProfilePage = currentUrl === 'candidate/profile';
-  const isProfileSettingsPage = currentUrl === 'candidate/profile/settings';
+  const isProfilePage = currentUrl === '/candidate/profile';
+  const isProfileSettingsPage = currentUrl === '/candidate/profile/settings';
   const debouncedValue = useDebounce(searchQuery, 250);
 
   const drawerReducer = (state: DrawerState, action: DrawerAction): DrawerState => {
@@ -449,8 +449,8 @@ const useStyles = createStyles(() => ({
     display: 'grid',
     placeItems: 'center',
     fontSize: rem(20),
-    height: '50px',
-    width: '50px',
+    height: '40px',
+    width: '40px',
     borderRadius: '50%',
     background: '#F5F5F5',
   },
@@ -460,8 +460,8 @@ const useStyles = createStyles(() => ({
     display: 'grid',
     placeItems: 'center',
     fontSize: rem(25),
-    height: '50px',
-    width: '50px',
+    height: '40px',
+    width: '40px',
   },
 
   navOptionsText: {

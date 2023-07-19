@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useProfileContext } from '../../context/ProfileContext';
 import { Text, Box, Button, TextInput, Title, Checkbox } from '@mantine/core';
 import { BsArrowLeft } from 'react-icons/bs';
 import { AiOutlineRight } from 'react-icons/ai';
@@ -17,7 +16,7 @@ import { useNavigate } from 'react-router-dom';
 
 export const VerifyPanCard = () => {
   const navigate = useNavigate();
-  const { panIsVerified, setPanIsVerified } = useProfileContext();
+  const [panIsVerified, setPanIsVerified] = useState<boolean>(false);
   const [checked, setChecked] = useState<boolean>(false);
   const { authClient, scrollToTop, verifyPANForm, setForceRender } = useGlobalContext();
 

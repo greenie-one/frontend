@@ -10,7 +10,7 @@ import {
 } from '../../../../../utils/functions/showNotification';
 import { HttpClient } from '../../../../../utils/generic/httpClient';
 import { residentialInfoAPIList } from '../../../../../assets/api/ApiList';
-import { states, countries } from '../../constants/SelectionOptions';
+import { countries, states } from '../../constants/SelectionOptions';
 import { Navbar } from '../Navbar';
 import { useNavigate } from 'react-router-dom';
 
@@ -165,20 +165,11 @@ export const AddResidentialInfo = () => {
                 />
                 <Select
                   data={countries}
+                  value={'India'}
+                  readOnly
                   label="Select country"
                   className="inputClass"
-                  {...residentialInfoForm.getInputProps('country')}
                   withAsterisk
-                  styles={() => ({
-                    item: {
-                      '&[data-selected]': {
-                        '&, &:hover': {
-                          backgroundColor: '#17a672',
-                          color: 'white',
-                        },
-                      },
-                    },
-                  })}
                 />
               </Box>
             </Box>

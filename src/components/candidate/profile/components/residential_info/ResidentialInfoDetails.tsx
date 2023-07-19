@@ -18,23 +18,10 @@ export const ResidentialInfoDetails: React.FC = () => {
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
   const [checked, setChecked] = useState<boolean>(false);
-  const [residential, setResidentialInfo] = useState<ResidentialInfoResponse>({
-    address_line_1: '',
-    address_line_2: '',
-    landmark: '',
-    pincode: 0,
-    city: '',
-    start_date: null,
-    end_date: null,
-    state: '',
-    country: '',
-    address_type: '',
-    isVerified: false,
-    residentialInfoId: '',
-  });
+  const [residential, setResidentialInfo] = useState<ResidentialInfoResponse>();
   const { residentialInfoData } = useGlobalContext();
   const { id } = useParams();
-  const filteredInfo = residentialInfoData.find((info: ResidentialInfoResponse) => info.residentialInfoId === id);
+  const filteredInfo = residentialInfoData.find((info: ResidentialInfoResponse) => info.id === id);
 
   const handleAggree = () => {
     if (checked) {
@@ -96,8 +83,8 @@ export const ResidentialInfoDetails: React.FC = () => {
           <Box className="residential-info-modal">
             <Title className="residential-info-modal-title">Disclaimer</Title>
             <Text className="address">
-              {residential.address_line_1}, {residential.address_line_2}, {residential.landmark}, {residential.city},{' '}
-              {residential.pincode}
+              {filteredInfo?.address_line_1}, {filteredInfo?.address_line_2}, {filteredInfo?.landmark},
+              {filteredInfo?.city}, {filteredInfo?.pincode}
             </Text>
             <Box className="residential-info-modal-box">
               <Box className="residential-info-modal-choice-box" onClick={() => handleGoToVerification('MySelf')}>
@@ -140,7 +127,7 @@ export const ResidentialInfoDetails: React.FC = () => {
               </Box>
               <Box className="address-box">
                 <Box className="address">
-                  {residential?.address_line_1}, {residential?.address_line_2}, {residential?.landmark},{' '}
+                  {filteredInfo?.address_line_1}, {residential?.address_line_2}, {residential?.landmark},{' '}
                   {residential?.city} {residential?.pincode}
                 </Box>
                 {residential?.isVerified ? (

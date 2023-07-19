@@ -26,4 +26,5 @@ type GlobalContextType = {
   deleteResidentialInfo: (id: string) => void;
   activeButton: number;
   setActiveButton: React.Dispatch<React.SetStateAction<number>>;
+  handlePDFdownload: () => void;
 };

@@ -1,7 +1,6 @@
 import { Text, Box, Button } from '@mantine/core';
 import { MdVerified } from 'react-icons/md';
 import { CgSandClock } from 'react-icons/cg';
-import tscLogo from '../../assets/tscLogo.png';
 
 export const ExperienceCard: React.FC<ExperienceCardProp> = ({
   position,
@@ -12,10 +11,9 @@ export const ExperienceCard: React.FC<ExperienceCardProp> = ({
 }) => {
   return (
     <Box className="experience-card">
-      <img className="companyLogo" src={tscLogo} />
       <Box>
-        <Text className="position">{position}</Text>
-        <Text className="companyName">{companyName}</Text>
+        <Text className="position">{position.substring(0, 25)}</Text>
+        <Text className="companyName">{companyName.substring(0, 25)}</Text>
       </Box>
 
       {isVerified ? (
@@ -35,7 +33,7 @@ export const ExperienceCard: React.FC<ExperienceCardProp> = ({
           <Text> {companyStartYear?.toString().substring(11, 15)} - Present</Text>
         ) : (
           <Text className="tenure">
-            {companyStartYear?.toString().substring(11, 15)} - {companyEndYear?.toString().substring(11, 15)}
+            {companyStartYear?.toString().substring(3, 15)} - {companyEndYear?.toString().substring(3, 15)}
           </Text>
         )}
       </Box>

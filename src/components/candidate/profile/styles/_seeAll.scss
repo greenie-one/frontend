@@ -290,6 +290,7 @@
     .greenBtn {
       background: $green;
       color: $white;
+      margin-top: 1rem;
       &:hover {
         opacity: 0.9;
         background: $green;
@@ -299,6 +300,7 @@
       background: $lightGray;
       color: $gray;
       opacity: 0.6;
+      margin-top: 1rem;
 
       &:hover {
         background: $lightGray;
@@ -446,7 +448,7 @@
     }
     .primaryBtn {
       width: 30%;
-      margin-top: 24px;
+      margin-top: 2rem;
     }
   }
 }

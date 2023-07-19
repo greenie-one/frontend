@@ -41,20 +41,7 @@ export const AddressVerification = () => {
   const { peerAddressVerificationForm, profileData, residentialInfoData } = useGlobalContext();
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
-  const [residentialInfo, setResidentialInfo] = useState<ResidentialInfoResponse>({
-    address_line_1: '',
-    address_line_2: '',
-    landmark: '',
-    pincode: 0,
-    city: '',
-    start_date: null,
-    end_date: null,
-    state: '',
-    country: '',
-    address_type: '',
-    isVerified: false,
-    residentialInfoId: '',
-  });
+  const [residentialInfo, setResidentialInfo] = useState<ResidentialInfoResponse | null>(null);
 
   const NextActiveStep = () => {
     if (activeStep !== 7) {
@@ -67,7 +54,7 @@ export const AddressVerification = () => {
   };
 
   const { id } = useParams();
-  const filteredInfo = residentialInfoData.find((info) => info.residentialInfoId === id);
+  const filteredInfo = residentialInfoData.find((info) => info.id === id);
 
   useEffect(() => {
     const timer = setInterval(() => {
