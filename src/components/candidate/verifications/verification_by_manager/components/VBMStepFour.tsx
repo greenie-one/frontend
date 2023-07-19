@@ -4,6 +4,8 @@ import { HiOutlineBan } from 'react-icons/hi';
 import { useVBMContext } from '../context/VBMContext';
 import { useState } from 'react';
 import { ProfileDetailsBox } from '../../verification_by_hr/components';
+import { DisclaimerText } from './DisclaimerText';
+import { PolicyText } from './PolicyText';
 
 export const VBMStepFour = () => {
   const { PrevActiveStep, NextActiveStep } = useVBMContext();
@@ -73,12 +75,8 @@ export const VBMStepFour = () => {
           Go Back
         </Button>
       </Box>
-      <Text className="verification-disclaimer">
-        I understand that during the sign-up process and while using this website, I may be required to provide certain
-        personal information, including but not limited to my name, email address, contact details, and any other
-        information deemed necessary for registration and website usage.
-      </Text>
-      <Text className="policy">Click to view Data and Privacy Policy</Text>
+      <DisclaimerText />
+      <PolicyText />
     </section>
   );
 };

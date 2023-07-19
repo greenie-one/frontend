@@ -7,6 +7,9 @@ import { useVBMContext } from '../context/VBMContext';
 import pdfIcon from '../../../profile/assets/pdfIcon.png';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 import { ProfileDetailsBox } from '../../verification_by_hr/components';
+import { disputes } from '../../constants/SelectionOptions';
+import { DisclaimerText } from './DisclaimerText';
+import { PolicyText } from './PolicyText';
 
 const documents = [
   { fileName: 'Letter of appointment 2021', status: 'pending' },
@@ -14,12 +17,10 @@ const documents = [
   { fileName: 'Experience Letter', status: 'pending' },
 ];
 
-const disputes = [{ value: 'Wrong Info', label: 'Wrong or unable to confirm' }];
 export const VBMStepThree = () => {
-  const { PrevActiveStep, NextActiveStep } = useVBMContext();
+  const { PrevActiveStep, NextActiveStep, disputeForm } = useVBMContext();
   const [isDisputed, setIsDisputed] = useState<boolean>(false);
   const [activeDocument, setActiveDocument] = useState<number>(0);
-  const [disputeReason, setDisputeReason] = useState<string>('');
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
 
@@ -27,7 +28,7 @@ export const VBMStepThree = () => {
     const inputValue = event.target.value;
     const wordCount = inputValue.trim().split(' ').length;
     if (wordCount <= 150) {
-      setDisputeReason(inputValue);
+      disputeForm.setFieldValue('disputeReason', inputValue);
     }
   };
 
@@ -42,9 +43,11 @@ export const VBMStepThree = () => {
   };
 
   const handleDispute = () => {
-    documents[activeDocument].status = 'disputed';
-    setIsDisputed(false);
-    close();
+    if (!disputeForm.validate().hasErrors) {
+      documents[activeDocument].status = 'disputed';
+      setIsDisputed(false);
+      close();
+    }
   };
   return (
     <section className="verification-step">
@@ -94,18 +97,21 @@ export const VBMStepThree = () => {
                   },
                 },
               })}
+              {...disputeForm.getInputProps('disputeType')}
             />
             <Box className="text-area-box-manager">
               <Textarea
-                value={disputeReason}
+                value={disputeForm.values.disputeReason}
                 onChange={handleInputChange}
                 placeholder="Write a review to help your peer get his dream job"
                 className="text-area"
               />
-              <Text className="word-limit">{disputeReason.trim().split(' ').length} / 150 words</Text>
+              <Text className="word-limit">
+                {disputeForm.values.disputeReason.trim().split(' ').length} / 150 words
+              </Text>
             </Box>
-            <Button className="primaryBtn" onClick={handleDispute}>
-              Send
+            <Button className="green-btn" onClick={handleDispute}>
+              Raise dispute
             </Button>
             <Text className="fact">
               This information will not be shared with the cadidate, it will be only used to maintain records
@@ -164,12 +170,8 @@ export const VBMStepThree = () => {
           Go Back
         </Button>
       </Box>
-      <Text className="verification-disclaimer">
-        I understand that during the sign-up process and while using this website, I may be required to provide certain
-        personal information, including but not limited to my name, email address, contact details, and any other
-        information deemed necessary for registration and website usage.
-      </Text>
-      <Text className="policy">Click to view Data and Privacy Policy</Text>
+      <DisclaimerText />
+      <PolicyText />
     </section>
   );
 };
