@@ -73,20 +73,21 @@ export const ResidentialInfoDetails: React.FC = () => {
       {modalStep === 1 && (
         <Modal className="modal" size={'60%'} fullScreen={isMobile} opened={opened} onClose={close} centered>
           <Box className="disclaimer-modal">
-            <Title className="disclaimer-heading">Disclaimer</Title>
-            <Text className="disclaimer-subHeading">Verifying IDs on Greenie</Text>
+            <Title className="disclaimer-heading">Undertaking</Title>
+            <Text className="disclaimer-subHeading">Verifying Address on Greenie</Text>
             <Button className="primaryBtn" disabled={!checked} onClick={handleAggree}>
               I Agree
             </Button>
             <Box className="checkbox-box">
               <Checkbox checked={checked} onChange={() => setChecked(!checked)} className="checkbox" color="teal" />
               <Text className="tearms-conditions">
-                I understand that during the sign-up process and while using this website, I may be required to provide
-                certain personal information, including but not limited to my name, email address, contact details, and
-                any other information deemed necessary for registration and website usage.
+                I undertake and understand that by adding my address on Greenie, I am providing accurate and true
+                information. I acknowledge that this information will be used solely for the intended purpose of address
+                verification. I consent to the collection and processing of my data for this purpose and I am aware that
+                I can delete this data anytime I desire.
               </Text>
             </Box>
-            <Text className="policy">Click to view Data and Privacy Policy</Text>
+            <Text className="policy">Click to view - Undertaking and Data and Privacy Policy</Text>
           </Box>
         </Modal>
       )}

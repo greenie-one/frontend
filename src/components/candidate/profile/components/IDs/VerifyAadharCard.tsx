@@ -121,7 +121,6 @@ export const VerifyAadharCard = () => {
   const handlePageChange = () => {
     verifyAadharForm.setFieldValue('aadharNo', '');
     verifyAadharForm.setFieldValue('otp', '');
-    setAadharIsVerified(false);
     navigate('/candidate/profile');
   };
 
@@ -228,8 +227,8 @@ export const VerifyAadharCard = () => {
         </Modal>
       )}
 
-      <Box className="see-all-header">
-        <Box className="go-back-btn" onClick={handlePageChange}>
+      <Box className="see-all-header" onClick={handlePageChange}>
+        <Box className="go-back-btn">
           <BsArrowLeft className="arrow-left-icon" size={'16px'} />
           <Text>Profile</Text>
           <AiOutlineRight className="arrow-right-icon" size={'16px'} />

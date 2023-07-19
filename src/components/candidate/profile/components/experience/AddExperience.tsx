@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Text, Box, Title, TextInput, Select, Checkbox, Button, Divider, Textarea } from '@mantine/core';
+import { Text, Box, Title, TextInput, Select, Checkbox, Button, Divider, Textarea, Modal } from '@mantine/core';
 import pdfIcon from '../../assets/pdfIcon.png';
 import { DateInput } from '@mantine/dates';
 import { MdOutlineDelete, MdVerified } from 'react-icons/md';
@@ -16,6 +16,7 @@ import { CgSandClock } from 'react-icons/cg';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
 import { HttpClient, Result } from '../../../../../utils/generic/httpClient';
 import { useNavigate } from 'react-router-dom';
+import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import {
   showErrorNotification,
   showLoadingNotification,
@@ -48,6 +49,9 @@ const expertiseList: {
 
 export const AddExperience = () => {
   const navigate = useNavigate();
+  const [checked, setChecked] = useState<boolean>(false);
+  const isMobile = useMediaQuery('(max-width: 768px)');
+  const [opened, { open, close }] = useDisclosure(false);
   const [experienceChecked, setExperienceChecked] = useState(false);
   const [documentsChecked, setDocumentsChecked] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -111,6 +115,7 @@ export const AddExperience = () => {
         showSuccessNotification({ title: 'Success !', message: 'New experience added to your profile.' });
         setForceRender((prev) => !prev);
         setActive(2);
+        workExperienceForm.reset();
       } else {
         showErrorNotification(res.error.code);
       }
@@ -264,6 +269,23 @@ export const AddExperience = () => {
   return (
     <>
       <Navbar />
+      <Modal className="modal" size={'60%'} fullScreen={isMobile} opened={opened} onClose={close} centered>
+        <Box className="disclaimer-modal">
+          <Title className="disclaimer-heading">Undertaking</Title>
+          <Text className="disclaimer-subHeading">Verifying Work experience on Greenie</Text>
+
+          <Box className="checkbox-box">
+            <Checkbox checked={checked} onChange={() => setChecked(!checked)} className="checkbox" color="teal" />
+            <Text className="tearms-conditions">
+              I have read the undertaking and i authorise Greenie to collect information on my behalf.
+            </Text>
+          </Box>
+          <Text className="policy">Click to view the undertaking Data and Privacy Policy</Text>
+          <Button className="primaryBtn" disabled={!checked} onClick={handleGoToVerification}>
+            I Agree
+          </Button>
+        </Box>
+      </Modal>
       <main className="profile">
         <section className="container add-work-experience">
           {active < 4 && (
@@ -699,7 +721,7 @@ export const AddExperience = () => {
                 </Box>
               </Box>
               <Box>
-                <Button className="green-btn btn" onClick={handleGoToVerification}>
+                <Button className="green-btn btn" onClick={open}>
                   Go to Verification
                 </Button>
                 <Button className="cancel-btn btn" onClick={handleProfilePage}>

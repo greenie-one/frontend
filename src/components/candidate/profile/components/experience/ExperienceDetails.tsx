@@ -52,20 +52,19 @@ export const ExperienceDetails: React.FC = () => {
       <Navbar />
       <Modal className="modal" size={'60%'} fullScreen={isMobile} opened={opened} onClose={close} centered>
         <Box className="disclaimer-modal">
-          <Title className="disclaimer-heading">Disclaimer</Title>
-          <Text className="disclaimer-subHeading">Verifying IDs on Greenie</Text>
-          <Button className="primaryBtn" disabled={!checked} onClick={handleGoToVerification}>
-            I Agree
-          </Button>
+          <Title className="disclaimer-heading">Undertaking</Title>
+          <Text className="disclaimer-subHeading">Verifying Work experience on Greenie</Text>
+
           <Box className="checkbox-box">
             <Checkbox checked={checked} onChange={() => setChecked(!checked)} className="checkbox" color="teal" />
             <Text className="tearms-conditions">
-              I understand that during the sign-up process and while using this website, I may be required to provide
-              certain personal information, including but not limited to my name, email address, contact details, and
-              any other information deemed necessary for registration and website usage.
+              I have read the undertaking and i authorise Greenie to collect information on my behalf.
             </Text>
           </Box>
           <Text className="policy">Click to view Data and Privacy Policy</Text>
+          <Button className="primaryBtn" disabled={!checked} onClick={handleGoToVerification}>
+            I Agree
+          </Button>
         </Box>
       </Modal>
       <main className="profile">
