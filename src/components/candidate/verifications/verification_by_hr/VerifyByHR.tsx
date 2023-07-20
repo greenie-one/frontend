@@ -1,21 +1,12 @@
-import { Text, Box, Title } from '@mantine/core';
-import {
-  VBHRStepOne,
-  VBHRStepTwo,
-  VBHRStepThree,
-  VBHRStepFour,
-  VBHRStepFive,
-  VBHRStepSix,
-  VBHRStepSeven,
-} from './components';
 import './styles/global.scss';
-import { useVBHRContext } from './context/VBHRContext';
+import { VerifyPeer } from '../components/VerifyPeer';
 
 export const VerifyByHR = () => {
-  const { activeStep } = useVBHRContext();
   return (
     <>
-      <main className="profile">
+      <VerifyPeer />
+      here
+      {/* <main className="profile">
         <section className="container" style={{ marginTop: '7rem' }}>
           <Title className="verification-title">Background verification request</Title>
           <Box className="verification-progress-bar-wrapper">
@@ -36,7 +27,7 @@ export const VerifyByHR = () => {
           {activeStep === 6 && <VBHRStepSix />}
           {activeStep === 7 && <VBHRStepSeven />}
         </section>
-      </main>
+      </main> */}
     </>
   );
 };

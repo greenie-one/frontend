@@ -74,5 +74,9 @@ export const docDepotAPIList = {
 export const peerVerificationAPIList = {
   createPeer: `${BASE_URL}/peer/work`,
   shareRequest: `${BASE_URL}/share`,
+  getSentRequest: `${BASE_URL}/peer/work/me`,
+  remindRequest: `${BASE_URL}/peer/work`,
+  getVerificationData: `${BASE_URL}/peer/work`,
+  verifyPeer: `${BASE_URL}/peer/work`
 }
 

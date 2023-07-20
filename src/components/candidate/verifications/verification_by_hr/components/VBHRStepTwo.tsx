@@ -1,12 +1,12 @@
 import { Text, Box, Button } from '@mantine/core';
-import { useVBHRContext } from '../context/VBHRContext';
+import { useVerificationContext } from '../context/VerificationContext';
 import { ProfileDetailsBox } from './ProfileDetailsBox';
 
 export const VBHRStepTwo = () => {
   const designation = 'CXP Manager';
   const companyName = 'Infotech Solutions Private Limited';
   const startDate = '13/03/2021';
-  const { NextActiveStep } = useVBHRContext();
+  const { NextActiveStep } = useVerificationContext();
 
   return (
     <section className="verification-step">

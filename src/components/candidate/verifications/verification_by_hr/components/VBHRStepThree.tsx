@@ -1,11 +1,11 @@
 import { Text, Box, Button } from '@mantine/core';
-import { useVBHRContext } from '../context/VBHRContext';
+import { useVerificationContext } from '../context/VerificationContext';
 import { ProfileDetailsBox } from './ProfileDetailsBox';
 
 export const VBHRStepThree = () => {
   const salary = '13.5 Lac p.a.';
   const companyName = 'Infotech Solutions Private Limited';
-  const { NextActiveStep } = useVBHRContext();
+  const { NextActiveStep } = useVerificationContext();
   return (
     <Box className="verification-step">
       <ProfileDetailsBox />

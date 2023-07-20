@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { Text, Box, Button } from '@mantine/core';
 import { BsEmojiFrown, BsEmojiNeutral, BsEmojiSmile, BsEmojiLaughing } from 'react-icons/bs';
-import { useVBHRContext } from '../context/VBHRContext';
+import { useVerificationContext } from '../context/VerificationContext';
 import { ProfileDetailsBox } from './ProfileDetailsBox';
 
 export const VBHRStepFour = () => {
   const [attitude, setAttitude] = useState('');
-  const { NextActiveStep, PrevActiveStep } = useVBHRContext();
+  const { NextActiveStep, PrevActiveStep } = useVerificationContext();
 
   const handleButtonClick = (feedback: string) => {
     setAttitude(feedback);

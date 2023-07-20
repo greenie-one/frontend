@@ -84,7 +84,7 @@ export const VBMStepThree = () => {
         >
           <Box className="verification-modal">
             <Select
-              className="disput-select-box"
+              className="dispute-select-box"
               data={disputes}
               label="Dispute type"
               styles={() => ({

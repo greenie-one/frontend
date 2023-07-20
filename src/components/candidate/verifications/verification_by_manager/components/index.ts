@@ -6,4 +6,3 @@ export { VBMStepFive } from './VBMStepFive';
 export { VBMLastStep } from './VBMLastStep';
 export { DisclaimerText } from './DisclaimerText';
 export { PolicyText } from './PolicyText';
-export { VerifyPeer } from './VerifyPeer';

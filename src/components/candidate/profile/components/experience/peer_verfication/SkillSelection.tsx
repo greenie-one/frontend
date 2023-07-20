@@ -4,17 +4,7 @@ import { useGlobalContext } from '../../../../../../context/GlobalContext';
 import { PageActionBtns } from './PageActionBtns';
 import { SelectionHeading } from './SelectionHeading';
 import { CreatePeerResponseType } from '../../../types/ProfileGeneral';
-
-const expertiseList: {
-  [key: string]: string;
-} = {
-  AMATEUR: 'Amateur',
-  BEGINNER: 'Beginner',
-  HIGHLY_COMPETENT: 'Highly Competent',
-  EXPERT: 'Expert',
-  SUPER_SPECIALIST: 'Super Specialist',
-  MASTER: 'Master',
-};
+import { skillExpertiseDict } from '../../../../constants/dictionaries';
 
 export const SkillSelection: React.FC<{
   setSelectionPage: React.Dispatch<React.SetStateAction<number>>;
@@ -73,7 +63,7 @@ export const SkillSelection: React.FC<{
                         onChange={(event) => handleMark(event, skill.id)}
                       />
                       <Text>{skill.skillName}</Text>
-                      {skill.expertise && <Text className="add-skill-rate">{expertiseList[skill.expertise]}</Text>}
+                      {skill.expertise && <Text className="add-skill-rate">{skillExpertiseDict[skill.expertise]}</Text>}
                     </Box>
                   </Box>
                 );

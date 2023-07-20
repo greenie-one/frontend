@@ -1,6 +1,6 @@
 import { Text, Box, Title } from '@mantine/core';
 
-import { VBMStepOne, VBMStepTwo, VBMStepThree, VBMStepFour, VBMStepFive, VerifyPeer, VBMLastStep } from './components';
+import { VBMStepOne, VBMStepTwo, VBMStepThree, VBMStepFour, VBMStepFive, VBMLastStep } from './components';
 import { useVBMContext } from './context/VBMContext';
 import './styles/global.scss';
 import '../verification_by_hr/styles/global.scss';
@@ -12,7 +12,7 @@ export const VerifyByManager = () => {
   return (
     <>
       <Navbar />
-      {activeStep === 0 && <VerifyPeer />}
+      {activeStep === 0 && <></>}
       {activeStep === 6 && <VBMLastStep />}
 
       {activeStep < 6 && activeStep > 0 && (

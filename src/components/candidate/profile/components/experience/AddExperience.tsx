@@ -34,17 +34,7 @@ import { docDepotAPIList } from '../../../../../assets/api/ApiList';
 import { ExperienceDocuments } from '../../types/ProfileGeneral';
 import { Navbar } from '../Navbar';
 import { MdRemoveCircle } from 'react-icons/md';
-
-const expertiseList: {
-  [key: string]: string;
-} = {
-  AMATEUR: 'Amateur',
-  BEGINNER: 'Beginner',
-  HIGHLY_COMPETENT: 'Highly Competent',
-  EXPERT: 'Expert',
-  SUPER_SPECIALIST: 'Super Specialist',
-  MASTER: 'Master',
-};
+import { skillExpertiseDict } from '../../../constants/dictionaries';
 
 export const AddExperience = () => {
   const navigate = useNavigate();
@@ -521,7 +511,7 @@ export const AddExperience = () => {
                         <MdRemoveCircle />
                       </button>
                       <Text className="add-skill-name">{skillName}</Text>
-                      {expertise && <Text className="add-skill-rate">{expertiseList[expertise]}</Text>}
+                      {expertise && <Text className="add-skill-rate">{skillExpertiseDict[expertise]}</Text>}
                     </Box>
                   );
                 })}
@@ -692,7 +682,7 @@ export const AddExperience = () => {
                     return (
                       <Box key={index} className="add-skill-box">
                         <Text className="add-skill-name">{skillName}</Text>
-                        {expertise && <Text className="add-skill-rate">{expertiseList[expertise]}</Text>}
+                        {expertise && <Text className="add-skill-rate">{skillExpertiseDict[expertise]}</Text>}
                       </Box>
                     );
                   })}

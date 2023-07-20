@@ -1,12 +1,12 @@
 import { Text, Box, Button } from '@mantine/core';
 import { FiThumbsDown, FiThumbsUp } from 'react-icons/fi';
 import { useState } from 'react';
-import { useVBHRContext } from '../context/VBHRContext';
+import { useVerificationContext } from '../context/VerificationContext';
 import { ProfileDetailsBox } from './ProfileDetailsBox';
 
 export const VBHRStepSix = () => {
   const [exitPocedure, setExitProcedure] = useState('');
-  const { NextActiveStep, PrevActiveStep } = useVBHRContext();
+  const { NextActiveStep, PrevActiveStep } = useVerificationContext();
 
   const handleButtonClick = (feedback: string) => {
     setExitProcedure(feedback);

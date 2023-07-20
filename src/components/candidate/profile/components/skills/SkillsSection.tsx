@@ -4,17 +4,7 @@ import { MdOutlineEdit } from 'react-icons/md';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
 import { useNavigate } from 'react-router-dom';
-
-const expertiseList: {
-  [key: string]: string;
-} = {
-  AMATEUR: 'Amateur',
-  BEGINNER: 'Beginner',
-  HIGHLY_COMPETENT: 'Highly Competent',
-  EXPERT: 'Expert',
-  SUPER_SPECIALIST: 'Super Specialist',
-  MASTER: 'Master',
-};
+import { skillExpertiseDict } from '../../../constants/dictionaries';
 
 export const SkillsSection = () => {
   const navigate = useNavigate();
@@ -72,7 +62,7 @@ export const SkillsSection = () => {
             return (
               <Box key={index} className="add-skill-box">
                 <Text className="add-skill-name">{skillName}</Text>
-                {expertise && <Text className="add-skill-rate">{expertiseList[expertise]}</Text>}
+                {expertise && <Text className="add-skill-rate">{skillExpertiseDict[expertise]}</Text>}
               </Box>
             );
           })}

@@ -27,28 +27,7 @@ import { docDepotAPIList, peerVerificationAPIList, workExperienceAPiList } from 
 import { useGlobalContext } from '../../../../../context/GlobalContext';
 import { ExperienceDocuments } from '../../types/ProfileGeneral';
 import { Navbar } from '../Navbar';
-
-const expertiseList: {
-  [key: string]: string;
-} = {
-  AMATEUR: 'Amateur',
-  BEGINNER: 'Beginner',
-  HIGHLY_COMPETENT: 'Highly Competent',
-  EXPERT: 'Expert',
-  SUPER_SPECIALIST: 'Super Specialist',
-  MASTER: 'Master',
-};
-
-const attrDict: { [key: string]: string } = {
-  candidateId: 'Candidate ID',
-  department: 'Department',
-  dateOfJoining: 'Date of Joining',
-  dateOfLeaving: 'Date of Leaving',
-  companyName: 'Company Name',
-  workType: 'Work Type',
-  workMode: 'Mode of Work',
-  salary: 'Salary',
-};
+import { optionalAttrDict, skillExpertiseDict } from '../../../constants/dictionaries';
 
 export const VerifyExperience: React.FC = () => {
   const navigate = useNavigate();
@@ -573,7 +552,7 @@ export const VerifyExperience: React.FC = () => {
                                       <Box key={index} className="add-skill-box">
                                         <Text className="add-skill-name">{skillName}</Text>
                                         {expertise && (
-                                          <Text className="add-skill-rate">{expertiseList[expertise]}</Text>
+                                          <Text className="add-skill-rate">{skillExpertiseDict[expertise]}</Text>
                                         )}
                                       </Box>
                                     );
@@ -589,7 +568,7 @@ export const VerifyExperience: React.FC = () => {
                           {response.optionalVerificationFields.map((attr, index: number) => {
                             return (
                               <Text key={index} className="add-skill-name">
-                                {attrDict[attr]}
+                                {optionalAttrDict[attr]}
                               </Text>
                             );
                           })}

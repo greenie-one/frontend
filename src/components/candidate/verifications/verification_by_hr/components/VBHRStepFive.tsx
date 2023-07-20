@@ -1,12 +1,12 @@
 import { Text, Box, Button } from '@mantine/core';
-import { useVBHRContext } from '../context/VBHRContext';
+// import { useVerificationContext } from '../context/VerificationContext';
 import { useState } from 'react';
 import { FiThumbsDown, FiThumbsUp } from 'react-icons/fi';
 import { ProfileDetailsBox } from './ProfileDetailsBox';
 
 export const VBHRStepFive = () => {
   const [rehire, setRehire] = useState('');
-  const { NextActiveStep, PrevActiveStep } = useVBHRContext();
+  // const { NextActiveStep, PrevActiveStep } = useVerificationContext();
 
   const handleButtonClick = (feedback: string) => {
     setRehire(feedback);
@@ -14,7 +14,7 @@ export const VBHRStepFive = () => {
 
   const handleNextStep = () => {
     if (rehire !== '') {
-      NextActiveStep();
+      // NextActiveStep();
     }
   };
   return (
@@ -38,9 +38,7 @@ export const VBHRStepFive = () => {
         </Box>
       </Box>
       <Box className="profile-details-actions" my={'1rem'}>
-        <Button className="dispute-btn" onClick={PrevActiveStep}>
-          Back
-        </Button>
+        <Button className="dispute-btn">Back</Button>
         <Button className="green-outline-btn" onClick={handleNextStep}>
           Next
         </Button>

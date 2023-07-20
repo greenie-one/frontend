@@ -13,11 +13,19 @@
 }
 
 .profile_image {
-  border: 1px solid;
-  width: 4rem;
-  height: 4rem;
+  border: 1px solid hsl(158, 76%, 37%, 0.05);
+  background: hsl(158, 76%, 37%, 0.045);
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
   aspect-ratio: 1;
   border-radius: 50%;
+}
+
+.profile_image img {
+  aspect-ratio: 1;
+  width: 1.75rem;
 }
 
 .request_item_body {

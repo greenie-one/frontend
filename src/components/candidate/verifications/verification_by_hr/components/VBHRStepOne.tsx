@@ -1,6 +1,6 @@
 import { Text, Box, Button, Modal } from '@mantine/core';
 import { ProfileDetailsBox } from './ProfileDetailsBox';
-import { useVBHRContext } from '../context/VBHRContext';
+import { useVerificationContext } from '../context/VerificationContext';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 
 const candidateDetails = [
@@ -14,7 +14,7 @@ const candidateDetails = [
 export const VBHRStepOne = () => {
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
-  const { NextActiveStep } = useVBHRContext();
+  const { NextActiveStep } = useVerificationContext();
   return (
     <section className="verification-step">
       <Modal centered size={'75%'} fullScreen={isMobile} opened={opened} onClose={close}></Modal>

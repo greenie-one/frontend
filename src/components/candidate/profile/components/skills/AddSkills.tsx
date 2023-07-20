@@ -14,17 +14,7 @@ import { skillRate } from '../../constants/SelectionOptions';
 import { Navbar } from '../Navbar';
 import { useNavigate } from 'react-router-dom';
 import { MdRemoveCircle } from 'react-icons/md';
-
-const expertiseList: {
-  [key: string]: string;
-} = {
-  AMATEUR: 'Amateur',
-  BEGINNER: 'Beginner',
-  HIGHLY_COMPETENT: 'Highly Competent',
-  EXPERT: 'Expert',
-  SUPER_SPECIALIST: 'Super Specialist',
-  MASTER: 'Master',
-};
+import { skillExpertiseDict } from '../../../constants/dictionaries';
 
 export const AddSkills = () => {
   const navigate = useNavigate();
@@ -150,7 +140,7 @@ export const AddSkills = () => {
                       <MdRemoveCircle />
                     </button>
                     <Text className="add-skill-name">{skillName}</Text>
-                    {expertise && <Text className="add-skill-rate">{expertiseList[expertise]}</Text>}
+                    {expertise && <Text className="add-skill-rate">{skillExpertiseDict[expertise]}</Text>}
                   </Box>
                 );
               })}
