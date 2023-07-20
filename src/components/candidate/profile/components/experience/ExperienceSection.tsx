@@ -70,8 +70,8 @@ export const ExperienceSection = () => {
                     position={workExperience.designation}
                     companyName={workExperience.companyName}
                     isVerified={workExperience.isVerified}
-                    companyStartYear={workExperience.companyStartDate}
-                    companyEndYear={workExperience.companyEndDate}
+                    companyStartYear={workExperience.dateOfJoining}
+                    companyEndYear={workExperience.dateOfLeaving}
                   />
                 </Box>
               );

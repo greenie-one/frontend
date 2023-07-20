@@ -29,7 +29,7 @@ export const LandingSolutions = () => {
   return (
     <section className="solutions">
       <LandingSectionHeading
-        heading="Greenie’s solution for you"
+        heading="Greenie's solution for you"
         subheading="Streamlining background checks with State-of-the-Art technology redefining trust in the verification industry"
       />
       <Box className="solutions-wrapper">

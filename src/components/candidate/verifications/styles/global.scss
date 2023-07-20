@@ -82,19 +82,16 @@ $dark: #191919;
   }
 }
 .verification-progress-bar-wrapper {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   margin-bottom: 8px;
+  gap: 4px;
 
   .progress-bar {
+    flex: 1;
     height: 4px;
     border-radius: 80px;
-
-    &:not(:last-child) {
-      margin-right: 4px;
-    }
   }
 }
 
@@ -117,6 +114,7 @@ $dark: #191919;
 }
 
 .profile-details-top {
+  margin-inline: auto;
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -125,7 +123,14 @@ $dark: #191919;
   .candidate-profile {
     width: 100px;
     height: 100px;
-    border-radius: 50%;
+    display: grid;
+    place-items: center;
+
+    img {
+      aspect-ratio: 1;
+      border-radius: 50%;
+      object-fit: fill;
+    }
   }
 
   .profile-details-text-box {
@@ -284,4 +289,11 @@ $dark: #191919;
     font-size: 12px;
     color: $green;
   }
+}
+
+.review-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }

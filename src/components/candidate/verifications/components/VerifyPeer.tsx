@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Box, Text, Title, Button, PinInput, createStyles, em } from '@mantine/core';
-import { useVerificationContext } from '../verification_by_hr/context/VerificationContext';
+import { Box, Text, Title, Button, PinInput, createStyles } from '@mantine/core';
+import { useVerificationContext } from '../context/VerificationContext';
 import { HttpClient } from '../../../../utils/generic/httpClient';
-import { useGlobalContext } from '../../../../context/GlobalContext';
 import { showErrorNotification } from '../../../../utils/functions/showNotification';
 import { peerVerificationAPIList } from '../../../../assets/api/ApiList';
 
@@ -28,8 +27,8 @@ const VerificationHeading = () => {
 };
 
 export const VerifyPeer = () => {
-  const { unverifiedLink, setActiveStep, peerId } = useVerificationContext();
-  const { authClient } = useGlobalContext();
+  const { classes: inputClasses } = OtpInputStyles();
+  const { unverifiedLink, peerUUID, getVerificationData, setActiveStep } = useVerificationContext();
 
   const [countdown, setCountDown] = useState<number>(60);
   const [otpProcess, setOtpProcess] = useState<number>(0);
@@ -40,14 +39,11 @@ export const VerifyPeer = () => {
       otpType: unverifiedLink,
     };
 
-    const res = await HttpClient.callApiAuth(
-      {
-        url: `${peerVerificationAPIList.verifyPeer}/${peerId}/send-otp`,
-        method: 'POST',
-        body: requestBody,
-      },
-      authClient
-    );
+    const res = await HttpClient.callApi({
+      url: `${peerVerificationAPIList.verifyPeer}/${peerUUID}/send-otp`,
+      method: 'POST',
+      body: requestBody,
+    });
 
     if (res.ok) {
       setOtpProcess((prev) => prev + 1);
@@ -64,17 +60,15 @@ export const VerifyPeer = () => {
       otpType: unverifiedLink,
       otp: String(otp),
     };
-    const res = await HttpClient.callApiAuth(
-      {
-        url: `${peerVerificationAPIList.verifyPeer}/${peerId}/verify-otp`,
-        method: 'POST',
-        body: requestBody,
-      },
-      authClient
-    );
+    const res = await HttpClient.callApi({
+      url: `${peerVerificationAPIList.verifyPeer}/${peerUUID}/verify-otp`,
+      method: 'POST',
+      body: requestBody,
+    });
 
     if (res.ok) {
-      setActiveStep((prev) => prev + 1);
+      setActiveStep((current) => current + 1);
+      await getVerificationData();
     } else {
       showErrorNotification(res.error.code);
     }
@@ -110,7 +104,13 @@ export const VerifyPeer = () => {
                 Enter the One-Time Password sent to your {unverifiedLink}.
               </Text>
               <Box className="input-section">
-                <PinInput length={6} oneTimeCode aria-label="One time code" onChange={(value) => setOtp(value)} />
+                <PinInput
+                  length={6}
+                  oneTimeCode
+                  aria-label="One time code"
+                  onChange={(value) => setOtp(value)}
+                  classNames={inputClasses}
+                />
               </Box>
               {countdown === 0 ? (
                 <Button compact color="gray" variant="subtle" className="resendLink">
@@ -133,33 +133,11 @@ export const VerifyPeer = () => {
 };
 
 const OtpInputStyles: OtpInputStylesType = createStyles(() => ({
-  root: {
-    position: 'relative',
-    marginBlock: '12px',
-  },
+  root: {},
 
   input: {
-    width: '458px',
-    height: '68px',
-    fontSize: '16px',
-    fontWeight: 500,
-    borderRadius: '8px',
-    border: '1px solid #D1D4DB',
-    lineHeight: '19px',
-    letterSpacing: '24px',
-    color: '#697082',
-
     '&:focus': {
       borderColor: 'green',
-    },
-
-    [`@media screen and (max-width: ${em(1024)})`]: {
-      width: '350px',
-      height: '46px',
-      borderRadius: '6px',
-      fontSize: '14px',
-      lineHeight: '12px',
-      margin: '0 auto',
     },
   },
 }));

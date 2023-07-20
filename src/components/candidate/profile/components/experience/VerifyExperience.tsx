@@ -190,8 +190,6 @@ export const VerifyExperience: React.FC = () => {
     navigate('/candidate/profile/experience/allExperiences');
   };
 
-  console.log(createPeerResponse);
-
   const createVerificationRequest = async (
     thing: 'Skills' | 'Document',
     sharedWith: 'Peer' | 'User',

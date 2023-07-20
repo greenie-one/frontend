@@ -1,36 +1,23 @@
 import React, { createContext, useEffect, useContext, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { HttpClient } from '../../../../../utils/generic/httpClient';
-import { useGlobalContext } from '../../../../../context/GlobalContext';
-import { peerVerificationAPIList } from '../../../../../assets/api/ApiList';
-import { UseFormReturnType, isNotEmpty, useForm } from '@mantine/form';
-
-type UnverifiedLinkType = 'EMAIL' | 'MOBILE' | 'NONE';
-
-type VerificationContextType = {
-  peerId: string;
-  verificationBy: string;
-  activeStep: number;
-  setActiveStep: React.Dispatch<React.SetStateAction<number>>;
-  totalSteps: number;
-  verificationData: any;
-  unverifiedLink: string;
-  disputeForm: UseFormReturnType<DisputeFormType>;
-};
-
-type DisputeFormType = {
-  disputeType: string;
-  disputeReason: string;
-};
+import { HttpClient } from '../../../../utils/generic/httpClient';
+import { peerVerificationAPIList } from '../../../../assets/api/ApiList';
+import { isNotEmpty, useForm } from '@mantine/form';
+import { showErrorNotification } from '../../../../utils/functions/showNotification';
+import {
+  DisputeFormType,
+  UnverifiedLinkType,
+  VerificationContextType,
+  VerificationResponseType,
+} from '../types/VerificationContext';
 
 const VerificationContext = createContext<VerificationContextType>({} as VerificationContextType);
 export const useVerificationContext = () => useContext(VerificationContext);
 
 export const VerificationContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const params = useParams();
-  const { authClient } = useGlobalContext();
 
-  const peerId = String(params.uuid);
+  const peerUUID = String(params.uuid);
   const verificationBy = String(params.peer);
   const disputeForm = useForm<DisputeFormType>({
     initialValues: {
@@ -47,20 +34,20 @@ export const VerificationContextProvider: React.FC<{ children: React.ReactNode }
   const [totalSteps, setTotalSteps] = useState<number>(7);
   const [verificationData, setVerificationData] = useState<any>(null);
   const [unverifiedLink, setUnverifiedLink] = useState<UnverifiedLinkType>('NONE');
+  const [verificationResponse, setVerificationResponse] = useState<VerificationResponseType>({});
 
   const getVerificationData = async () => {
-    const res = await HttpClient.callApiAuth(
-      {
-        url: `${peerVerificationAPIList.getVerificationData}/${params.uuid}`,
-        method: 'GET',
-      },
-      authClient
-    );
+    const res = await HttpClient.callApi({
+      url: `${peerVerificationAPIList.getVerificationData}/${params.uuid}`,
+      method: 'GET',
+    });
 
     if (res.ok) {
       console.log(res.value);
+      setUnverifiedLink('NONE');
       setVerificationData(res.value);
     } else {
+      setActiveStep(0);
       switch (res.error.code) {
         case 'GR0050': {
           setUnverifiedLink('EMAIL');
@@ -79,12 +66,33 @@ export const VerificationContextProvider: React.FC<{ children: React.ReactNode }
     }
   };
 
+  const postVerificationData = async () => {
+    console.log(verificationResponse);
+
+    const res = await HttpClient.callApi({
+      url: `${peerVerificationAPIList.getVerificationData}/${params.uuid}`,
+      method: 'PATCH',
+      body: {
+        verificationFields: verificationResponse,
+      },
+    });
+
+    if (res.ok) {
+      console.log(res.value);
+      setActiveStep(totalSteps);
+    } else {
+      showErrorNotification(res.error.code);
+    }
+  };
+
   useEffect(() => {
     getVerificationData();
+    if (verificationBy === 'HR') setTotalSteps(6);
+    else setTotalSteps(7);
   }, [params.peer, params.uuid]);
 
   const storeValues = {
-    peerId,
+    peerUUID,
     verificationBy,
     activeStep,
     setActiveStep,
@@ -92,6 +100,10 @@ export const VerificationContextProvider: React.FC<{ children: React.ReactNode }
     verificationData,
     unverifiedLink,
     disputeForm,
+    getVerificationData,
+    postVerificationData,
+    verificationResponse,
+    setVerificationResponse,
   };
 
   return <VerificationContext.Provider value={storeValues}>{children}</VerificationContext.Provider>;

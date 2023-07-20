@@ -28,8 +28,8 @@ type WorkExperience = {
   companyName: string;
   email: string;
   companyId: string;
-  companyStartDate: string;
-  companyEndDate: string;
+  dateOfJoining: string;
+  dateOfLeaving: string;
   workMode: string;
   workType: string;
   isVerified: boolean;

@@ -1,18 +1,23 @@
 import React from 'react';
 import { useMediaQuery } from '@mantine/hooks';
 import { Text, Box, Button, Modal, Textarea, Select } from '@mantine/core';
-import { useVerificationContext } from '../verification_by_hr/context/VerificationContext';
+import { useVerificationContext } from '../context/VerificationContext';
 
 type DisputeModalProps = {
+  attrId: string;
+  setAttrId?: React.Dispatch<React.SetStateAction<string>>;
   opened: boolean;
-  action: () => void;
+  close: () => void;
+  setActiveStep?: React.Dispatch<React.SetStateAction<number>>;
 };
+
+type ResponseObjType = { [keys: string]: string };
 
 const disputesReasons = ['Wrong or unable to confirm'];
 
-export const DisputeModal: React.FC<DisputeModalProps> = ({ opened, action }) => {
+export const DisputeModal: React.FC<DisputeModalProps> = ({ attrId, opened, setAttrId, close, setActiveStep }) => {
   const isMobile = useMediaQuery('(max-width: 768px)');
-  const { disputeForm } = useVerificationContext();
+  const { disputeForm, setVerificationResponse, verificationResponse } = useVerificationContext();
 
   const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const inputValue = event.target.value;
@@ -23,13 +28,40 @@ export const DisputeModal: React.FC<DisputeModalProps> = ({ opened, action }) =>
     }
   };
 
+  const disputeHandler = (id: string) => {
+    if (!id) return;
+    if (disputeForm.validate().hasErrors) return;
+
+    const responseObj: ResponseObjType = {};
+    responseObj['state'] = 'REJECTED';
+    responseObj['dispute_type'] = disputeForm.values.disputeType;
+    responseObj['dispute_reason'] = disputeForm.values.disputeReason;
+
+    const responseData: { [keys: string]: ResponseObjType } = {};
+    responseData[id] = responseObj;
+
+    setVerificationResponse({ ...verificationResponse, ...responseData });
+    disputeForm.setFieldValue('disputeType', '');
+    disputeForm.setFieldValue('disputeReason', '');
+
+    if (setAttrId) {
+      setAttrId('');
+    }
+    close();
+    if (setActiveStep) {
+      setActiveStep((current) => current + 1);
+    }
+  };
+
   return (
     <Modal
       centered
       size={'75%'}
       fullScreen={isMobile}
       opened={opened}
-      onClose={close}
+      onClose={() => {
+        close();
+      }}
       title="Add a dispute to the information"
       styles={{
         title: {
@@ -65,7 +97,7 @@ export const DisputeModal: React.FC<DisputeModalProps> = ({ opened, action }) =>
           />
           <Text className="word-limit">{disputeForm.values.disputeReason.trim().split(' ').length} / 150 words</Text>
         </Box>
-        <Button className="green-btn" onClick={action}>
+        <Button className="green-btn" onClick={() => disputeHandler(attrId)}>
           Raise dispute
         </Button>
         <Text className="fact">
