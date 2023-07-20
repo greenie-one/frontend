@@ -35,6 +35,7 @@ export const VerificationContextProvider: React.FC<{ children: React.ReactNode }
   const [verificationData, setVerificationData] = useState<any>(null);
   const [unverifiedLink, setUnverifiedLink] = useState<UnverifiedLinkType>('NONE');
   const [verificationResponse, setVerificationResponse] = useState<VerificationResponseType>({});
+  const [personBeingVerified, setPersonBeingVerified] = useState<string>('');
 
   const getVerificationData = async () => {
     const res = await HttpClient.callApi({
@@ -46,6 +47,7 @@ export const VerificationContextProvider: React.FC<{ children: React.ReactNode }
       setUnverifiedLink('NONE');
       setVerificationData(res.value);
     } else {
+      setPersonBeingVerified((res.error as any).name);
       setActiveStep(0);
       switch (res.error.code) {
         case 'GR0050': {
@@ -100,6 +102,7 @@ export const VerificationContextProvider: React.FC<{ children: React.ReactNode }
     postVerificationData,
     verificationResponse,
     setVerificationResponse,
+    personBeingVerified,
   };
 
   return <VerificationContext.Provider value={storeValues}>{children}</VerificationContext.Provider>;

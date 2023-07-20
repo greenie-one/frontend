@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Box } from '@mantine/core';
-import styles from '../styles/requestlist.module.css';
-import notificationStyles from '../styles/notifications.module.css';
-import { RenderRequestList } from './RenderRequestList';
-import { HttpClient } from '../../../../utils/generic/httpClient';
+
 import { peerVerificationAPIList } from '../../../../assets/api/ApiList';
 import { useGlobalContext } from '../../../../context/GlobalContext';
+import { HttpClient } from '../../../../utils/generic/httpClient';
+import { RenderRequestList } from './RenderRequestList';
+
 import { showErrorNotification } from '../../../../utils/functions/showNotification';
 import noNotificationIcon from '../../profile/assets/noNotifications.svg';
+import notificationStyles from '../styles/notifications.module.css';
+import styles from '../styles/requestlist.module.css';
 
 const { requestList_container } = styles;
 const { notifications_container, notification_icon_container, notification_msg } = notificationStyles;
@@ -17,16 +19,15 @@ export type RequestListType = {
   email: string;
   name: string;
   phone: string;
+  isVerificationCompleted: boolean;
 };
 
-export const RequestList: React.FC<{
-  activeListItem: number;
-}> = ({ activeListItem }): JSX.Element => {
+export const RequestList: React.FC<{ activeListItem: number }> = ({ activeListItem }): JSX.Element => {
   const { authClient } = useGlobalContext();
   const [sentRequests, setSentRequests] = useState<Array<RequestListType>>([]);
 
   const getSentRequests = async () => {
-    const res = await HttpClient.callApiAuth<any>(
+    const res = await HttpClient.callApiAuth<RequestListType[]>(
       {
         url: peerVerificationAPIList.getSentRequest,
         method: 'GET',
