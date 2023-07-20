@@ -11,7 +11,7 @@ type OtpVerificationBody = {
 };
 
 const VerificationHeading = () => {
-  const { unverifiedLink, verificationBy } = useVerificationContext();
+  const { unverifiedLink, verificationBy, personBeingVerified } = useVerificationContext();
 
   return (
     <>
@@ -19,7 +19,7 @@ const VerificationHeading = () => {
         Please verify your {unverifiedLink} to confirm your identity
       </Title>
       <Box className="address-verification-details">
-        <Title className="address-verification-details-title">Peer name</Title>
+        <Title className="address-verification-details-title">{personBeingVerified ?? 'Peer name'}</Title>
         <Text className="address-verification-details-address">{verificationBy}</Text>
       </Box>
     </>
