@@ -82,7 +82,6 @@ export const AddExperience = () => {
 
   const handleExperienceContinue = async (event: React.FormEvent) => {
     event.preventDefault();
-    console.log(workExperienceForm.validate());
 
     if (!workExperienceForm.validate().hasErrors) {
       showLoadingNotification({ title: 'Please wait !', message: 'We are adding your work experience.' });

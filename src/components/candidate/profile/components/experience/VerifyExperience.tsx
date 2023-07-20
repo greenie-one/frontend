@@ -212,8 +212,6 @@ export const VerifyExperience: React.FC = () => {
       authClient
     );
     if (res.ok) {
-      console.log(thing + 'Verification Response: ', res.value);
-
       // const filtered = res.value.filter((document) => document.workExperience === experience?.id);
     } else {
       showErrorNotification(res.error.code);
@@ -231,10 +229,10 @@ export const VerifyExperience: React.FC = () => {
         },
         authClient
       );
+
       if (res.ok) {
-        // console.log(res.value?._id);
-        createVerificationRequest('Skills', 'Peer', res.value?._id, response.verificationSkills);
-        createVerificationRequest('Document', 'Peer', res.value?._id, response.verificationDocuments);
+        createVerificationRequest('Skills', 'Peer', res.value?.id, response.verificationSkills);
+        createVerificationRequest('Document', 'Peer', res.value?.id, response.verificationDocuments);
 
         // const filtered = res.value.filter((document) => document.workExperience === experience?.id);
       } else {

@@ -43,7 +43,6 @@ export const VerificationContextProvider: React.FC<{ children: React.ReactNode }
     });
 
     if (res.ok) {
-      console.log(res.value);
       setUnverifiedLink('NONE');
       setVerificationData(res.value);
     } else {
@@ -67,8 +66,6 @@ export const VerificationContextProvider: React.FC<{ children: React.ReactNode }
   };
 
   const postVerificationData = async () => {
-    console.log(verificationResponse);
-
     const res = await HttpClient.callApi({
       url: `${peerVerificationAPIList.getVerificationData}/${params.uuid}`,
       method: 'PATCH',
@@ -78,7 +75,6 @@ export const VerificationContextProvider: React.FC<{ children: React.ReactNode }
     });
 
     if (res.ok) {
-      console.log(res.value);
       setActiveStep(totalSteps);
     } else {
       showErrorNotification(res.error.code);
