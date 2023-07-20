@@ -6,17 +6,7 @@ import { CgSandClock } from 'react-icons/cg';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
 import { Navbar } from '../Navbar';
 import { useNavigate } from 'react-router-dom';
-
-const expertiseList: {
-  [key: string]: string;
-} = {
-  AMATEUR: 'Amateur',
-  BEGINNER: 'Beginner',
-  HIGHLY_COMPETENT: 'Highly Competent',
-  EXPERT: 'Expert',
-  SUPER_SPECIALIST: 'Super Specialist',
-  MASTER: 'Master',
-};
+import { skillExpertiseDict } from '../../../constants/dictionaries';
 
 export const AllSkills = () => {
   const navigate = useNavigate();
@@ -61,7 +51,7 @@ export const AllSkills = () => {
                       </Button>
                     )}
                   </Box>
-                  {expertise && <Text className="skill-rate">{expertiseList[expertise]}</Text>}
+                  {expertise && <Text className="skill-rate">{skillExpertiseDict[expertise]}</Text>}
                   <Box className="skill-btn-wrapper">
                     {isVerified ? (
                       <Button className="view-details-btn">View details</Button>

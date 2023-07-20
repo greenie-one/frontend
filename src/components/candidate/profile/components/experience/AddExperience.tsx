@@ -34,17 +34,7 @@ import { docDepotAPIList } from '../../../../../assets/api/ApiList';
 import { ExperienceDocuments } from '../../types/ProfileGeneral';
 import { Navbar } from '../Navbar';
 import { MdRemoveCircle } from 'react-icons/md';
-
-const expertiseList: {
-  [key: string]: string;
-} = {
-  AMATEUR: 'Amateur',
-  BEGINNER: 'Beginner',
-  HIGHLY_COMPETENT: 'Highly Competent',
-  EXPERT: 'Expert',
-  SUPER_SPECIALIST: 'Super Specialist',
-  MASTER: 'Master',
-};
+import { skillExpertiseDict } from '../../../constants/dictionaries';
 
 export const AddExperience = () => {
   const navigate = useNavigate();
@@ -72,7 +62,7 @@ export const AddExperience = () => {
   };
 
   const handleCheck = () => {
-    workExperienceForm.setFieldValue('companyEndDate', '');
+    workExperienceForm.setFieldValue('dateOfLeaving', '');
     setExperienceChecked(!experienceChecked);
   };
 
@@ -106,6 +96,7 @@ export const AddExperience = () => {
         },
         authClient
       );
+
       if (res.ok) {
         setworkExperienceId(res.value.id);
         showSuccessNotification({ title: 'Success !', message: 'New experience added to your profile.' });
@@ -401,7 +392,7 @@ export const AddExperience = () => {
                   label="Start date"
                   className="inputClass"
                   withAsterisk
-                  {...workExperienceForm.getInputProps('companyStartDate')}
+                  {...workExperienceForm.getInputProps('dateOfJoining')}
                 />
               </Box>
               <Divider mb={'10px'} color="#e1e1e1" />
@@ -411,7 +402,7 @@ export const AddExperience = () => {
                   label="End date"
                   className="inputClass"
                   disabled={experienceChecked}
-                  {...workExperienceForm.getInputProps('companyEndDate')}
+                  {...workExperienceForm.getInputProps('dateOfLeaving')}
                 />
 
                 <Checkbox
@@ -521,7 +512,7 @@ export const AddExperience = () => {
                         <MdRemoveCircle />
                       </button>
                       <Text className="add-skill-name">{skillName}</Text>
-                      {expertise && <Text className="add-skill-rate">{expertiseList[expertise]}</Text>}
+                      {expertise && <Text className="add-skill-rate">{skillExpertiseDict[expertise]}</Text>}
                     </Box>
                   );
                 })}
@@ -692,7 +683,7 @@ export const AddExperience = () => {
                     return (
                       <Box key={index} className="add-skill-box">
                         <Text className="add-skill-name">{skillName}</Text>
-                        {expertise && <Text className="add-skill-rate">{expertiseList[expertise]}</Text>}
+                        {expertise && <Text className="add-skill-rate">{skillExpertiseDict[expertise]}</Text>}
                       </Box>
                     );
                   })}

@@ -16,8 +16,7 @@ import { AuthVerificationLayout } from './utils/constants/AuthVerification';
 import { GoogleAuthRedirect } from './components/auth/components/google/GoogleAuthRedirect';
 import { AppLayout } from './components/layouts/AppLayout';
 
-import { VerificationByHRPage } from './pages/VerificationByHRPage';
-import { VerificationByManagerPage } from './pages/VerificationByManagerPage';
+import { ExperienceVerification } from './pages/ExperienceVerification';
 import { AllExperiences } from './components/candidate/profile/components/experience/AllExperiences';
 import { ExperienceDetails } from './components/candidate/profile/components/experience/ExperienceDetails';
 import { VerifyExperience } from './components/candidate/profile/components/experience/VerifyExperience';
@@ -48,8 +47,7 @@ const App = () => {
             <Route path="auth" element={<AuthPage />} />
             <Route path="waitlist" element={<Waitlist />} />
             <Route path="oauth/google/callback" element={<GoogleAuthRedirect />} />
-            <Route path="/verification/experience/hr" element={<VerificationByHRPage />} />
-            <Route path="/verification/experience/manager" element={<VerificationByManagerPage />} />
+            <Route path="/verification/:peer/:uuid" element={<ExperienceVerification />} />
 
             <Route element={<AuthVerificationLayout />}>
               <Route path="candidate/profile">

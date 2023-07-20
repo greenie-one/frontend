@@ -14,6 +14,17 @@ type UseStyles = {
   starIcon: string;
 };
 
+type CreatePeerResponseType = {
+  name: string;
+  email: string;
+  phone: string;
+  ref: string;
+  verificationBy: string;
+  optionalVerificationFields: Array<string>;
+  verificationDocuments: Array<string>;
+  verificationSkills: Array<string>;
+};
+
 type UseStylesType = (
   params: void,
   options?: UseStylesOptions<string>

@@ -155,8 +155,8 @@ export const ExperienceDetails: React.FC = () => {
                 <Box className="comapny-type-box">
                   <Text className="experience-details-box-heading">Tenure</Text>
                   <Text className="experience-details-box-text">
-                    {filteredExperience?.companyStartDate?.toString().substring(11, 15)}-
-                    {filteredExperience?.companyEndDate?.toString().substring(11, 15)}
+                    {filteredExperience?.dateOfJoining?.toString().substring(11, 15)}-
+                    {filteredExperience?.dateOfLeaving?.toString().substring(11, 15)}
                   </Text>
                 </Box>
                 <Box className="comapny-type-box">

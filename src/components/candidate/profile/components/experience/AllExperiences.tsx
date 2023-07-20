@@ -62,7 +62,7 @@ export const AllExperiences = () => {
           <Box className="see-all-experiences-wrapper">
             {workExperienceData
               .reverse()
-              .map(({ designation, companyName, isVerified, id, companyStartDate, companyEndDate }, index) => {
+              .map(({ designation, companyName, isVerified, id, dateOfJoining, dateOfLeaving }, index) => {
                 return (
                   <Box
                     key={index}
@@ -89,8 +89,7 @@ export const AllExperiences = () => {
                       <Box className="tenure-box">
                         <Text className="since-text">Since</Text>
                         <Text className="tenure">
-                          {companyStartDate?.toString().substring(11, 15)} -{' '}
-                          {companyEndDate?.toString().substring(11, 15)}
+                          {dateOfJoining?.toString().substring(11, 15)} - {dateOfLeaving?.toString().substring(11, 15)}
                         </Text>
                       </Box>
                     </Box>

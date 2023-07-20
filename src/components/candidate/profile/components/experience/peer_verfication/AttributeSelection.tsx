@@ -4,22 +4,26 @@ import { SelectionHeading } from './SelectionHeading';
 import { PageActionBtns } from './PageActionBtns';
 import { ReviewActionType } from '../VerifyExperience';
 import { RiAddCircleLine } from 'react-icons/ri';
-import { Peer } from '../../../types/ProfileGeneral';
+import { CreatePeerResponseType, Peer } from '../../../types/ProfileGeneral';
 
 type AttributeSelectionProps = {
   activePeer: number;
   addedPeers: Peer[];
   setActivePeer: React.Dispatch<React.SetStateAction<number>>;
   verificationStepDispatch: React.Dispatch<ReviewStepAction>;
+  setCreatePeerResponse: React.Dispatch<React.SetStateAction<CreatePeerResponseType[]>>;
+  createPeerResponse: CreatePeerResponseType[];
 };
 
-const attributes = [
-  { send: false, attribute: 'Job title' },
-  { send: false, attribute: 'Reporting Manager' },
-  { send: false, attribute: 'Work Experience in years' },
-  { send: false, attribute: 'Attitude' },
-  { send: false, attribute: 'Rehire status' },
-  { send: false, attribute: 'Exit formalities' },
+const attributesList = [
+  { id: 'candidateId', attrName: 'Candidate ID' },
+  { id: 'department', attrName: 'Department' },
+  { id: 'dateOfJoining', attrName: 'Date of Joining' },
+  { id: 'dateOfLeaving', attrName: 'Date of Leaving' },
+  { id: 'companyName', attrName: 'Company Name' },
+  { id: 'workType', attrName: 'Work Type' },
+  { id: 'workMode', attrName: 'Mode of Work' },
+  { id: 'salary', attrName: 'Salary' },
 ];
 
 export const AttributeSelection: React.FC<AttributeSelectionProps> = ({
@@ -27,7 +31,34 @@ export const AttributeSelection: React.FC<AttributeSelectionProps> = ({
   addedPeers,
   setActivePeer,
   verificationStepDispatch,
+  createPeerResponse,
+  setCreatePeerResponse,
 }): JSX.Element => {
+  const handleMark = (event: React.ChangeEvent<HTMLInputElement>, attr: string) => {
+    const updatedList = [];
+
+    for (let i = 0; i < createPeerResponse.length; i++) {
+      const peer = createPeerResponse[i];
+
+      if (i !== activePeer) {
+        updatedList.push(peer);
+        continue;
+      }
+
+      let attrList = peer.optionalVerificationFields;
+      if (event.target.checked) {
+        attrList.push(attr);
+      } else {
+        attrList = attrList.filter((_attr) => _attr !== attr);
+      }
+
+      peer.optionalVerificationFields = attrList;
+      updatedList.push(peer);
+    }
+
+    setCreatePeerResponse(updatedList);
+  };
+
   return (
     <>
       <Box className="documents-action-section">
@@ -41,14 +72,17 @@ export const AttributeSelection: React.FC<AttributeSelectionProps> = ({
             <Text>Name</Text>
           </Box>
           <Box className="selected-attributes">
-            {attributes.map(({ attribute }, index) => {
+            {attributesList.map(({ id, attrName }, idx) => {
               return (
-                <Box key={index}>
+                <Box key={idx}>
                   <Box className="selected-attribute">
-                    <Checkbox />
-                    <Text>{attribute}</Text>
+                    <Checkbox
+                      checked={createPeerResponse[activePeer].optionalVerificationFields.includes(id)}
+                      onChange={(event) => handleMark(event, id)}
+                    />
+                    <Text>{attrName}</Text>
                   </Box>
-                  {attributes.length - 1 !== index && <Divider color="#ebebeb" />}
+                  {attributesList.length - 1 !== idx && <Divider color="#ebebeb" />}
                 </Box>
               );
             })}
