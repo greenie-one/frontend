@@ -6,7 +6,7 @@ type ExperienceRequestBody = {
   workType: string;
   companyName: string;
   companyId: string;
-  companyStartDate: string;
+  dateOfJoining: string;
   companyEndDate?: string;
   isVerified: boolean;
   department: string;

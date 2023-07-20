@@ -150,12 +150,14 @@
   }
   .bio-text {
     font-weight: 400;
-    font-size: 18px;
+    font-size: 1rem;
     line-height: 30px;
     color: $gray;
     width: 75%;
+    max-width: 600px;
     margin: 0 auto;
-    margin-bottom: 16px;
+    margin-bottom: 1rem;
+    word-wrap: break-word;
   }
 }
 

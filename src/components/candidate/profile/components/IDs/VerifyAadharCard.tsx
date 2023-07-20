@@ -17,7 +17,7 @@ import {
 } from '../../../../../utils/functions/showNotification';
 import { useNavigate } from 'react-router-dom';
 import { APIError } from '../../../../../utils/generic/httpClient';
-import { Navbar } from '../Navbar';
+import { Layout } from '../Layout';
 // import errorIcon from '../../assets/errorIcon.png';
 // import { GrPowerReset } from 'react-icons/gr';
 
@@ -131,8 +131,7 @@ export const VerifyAadharCard = () => {
 
   return (
     <>
-      <Navbar />
-      <main className="profile">
+      <Layout>
         <section className="container documents-container" style={{ marginTop: '7rem' }}>
           {/* <Modal className="modal" size={'40%'} fullScreen={isMobile} opened={opened} onClose={close} centered>
         <Box className="error-modal">
@@ -338,7 +337,7 @@ export const VerifyAadharCard = () => {
             </Box>
           )}
         </section>
-      </main>
+      </Layout>
     </>
   );
 };

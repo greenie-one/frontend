@@ -11,8 +11,9 @@ import {
 import { HttpClient } from '../../../../../utils/generic/httpClient';
 import { residentialInfoAPIList } from '../../../../../assets/api/ApiList';
 import { countries, states } from '../../constants/SelectionOptions';
-import { Navbar } from '../Navbar';
+
 import { useNavigate } from 'react-router-dom';
+import { Layout } from '../Layout';
 
 export const AddResidentialInfo = () => {
   const navigate = useNavigate();
@@ -61,8 +62,7 @@ export const AddResidentialInfo = () => {
 
   return (
     <>
-      <Navbar />
-      <main className="profile">
+      <Layout>
         <section className="container add-residential-info ">
           <Box className="see-all-header">
             <Box className="go-back-btn" onClick={handleToggleScreen}>
@@ -210,7 +210,7 @@ export const AddResidentialInfo = () => {
             </Box>
           </form>
         </section>
-      </main>
+      </Layout>
     </>
   );
 };

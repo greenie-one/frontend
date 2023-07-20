@@ -33,8 +33,9 @@ import {
 import axios from 'axios';
 import { docDepotAPIList } from '../../../../../assets/api/ApiList';
 import { ExperienceDocuments } from '../../types/ProfileGeneral';
-import { Navbar } from '../Navbar';
+
 import { MdRemoveCircle } from 'react-icons/md';
+import { Layout } from '../Layout';
 
 const expertiseList: {
   [key: string]: string;
@@ -166,8 +167,14 @@ export const AddExperience = () => {
   };
 
   const handleUploadDocument = (event: React.ChangeEvent<HTMLInputElement>) => {
+    showLoadingNotification({ title: 'Please wait !', message: 'Please wait while we add your document' });
     if (event.target.files && event.target.files[0]) {
-      setSelectedFile(event.target.files[0]);
+      if (event.target.files[0].size > 5 * 1024 * 1024) {
+        showErrorNotification('SIZE_EXCEEDS');
+      } else {
+        setSelectedFile(event.target.files[0]);
+        showSuccessNotification({ title: 'file selected ', message: '' });
+      }
     }
   };
 
@@ -268,7 +275,6 @@ export const AddExperience = () => {
 
   return (
     <>
-      <Navbar />
       <Modal className="modal" size={'60%'} fullScreen={isMobile} opened={opened} onClose={close} centered>
         <Box className="disclaimer-modal">
           <Title className="disclaimer-heading">Undertaking</Title>
@@ -286,7 +292,7 @@ export const AddExperience = () => {
           </Button>
         </Box>
       </Modal>
-      <main className="profile">
+      <Layout>
         <section className="container add-work-experience">
           {active < 4 && (
             <>
@@ -396,8 +402,7 @@ export const AddExperience = () => {
               <Box className="input-section">
                 <Title className="title">Work email</Title>
                 <TextInput
-                  withAsterisk
-                  label="Previous work email"
+                  label="Official work email"
                   className="inputClass"
                   {...workExperienceForm.getInputProps('email')}
                 />
@@ -406,7 +411,6 @@ export const AddExperience = () => {
               <Box className="input-section">
                 <Title className="title">Company ID</Title>
                 <TextInput
-                  withAsterisk
                   label="Enter your unique company Id"
                   className="inputClass"
                   {...workExperienceForm.getInputProps('companyId')}
@@ -430,7 +434,7 @@ export const AddExperience = () => {
                   label="Start date"
                   className="inputClass"
                   withAsterisk
-                  {...workExperienceForm.getInputProps('companyStartDate')}
+                  {...workExperienceForm.getInputProps('dateOfJoining')}
                 />
               </Box>
               <Divider mb={'10px'} color="#e1e1e1" />
@@ -735,7 +739,7 @@ export const AddExperience = () => {
             </Box>
           )}
         </section>
-      </main>
+      </Layout>
     </>
   );
 };

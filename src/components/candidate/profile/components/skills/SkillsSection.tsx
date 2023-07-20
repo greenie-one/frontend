@@ -46,7 +46,7 @@ export const SkillsSection = () => {
                 See All Skills
               </Text>
               <Button leftIcon={<MdOutlineEdit />} onClick={handleAddSkillPage} className="edit-btn">
-                Edit Section
+                Add Skill
               </Button>
             </Box>
             <Box className="edit-icon">
@@ -60,7 +60,7 @@ export const SkillsSection = () => {
         <Box className="no-data-wrapper">
           <img className="no-data" src={noData} alt="No data" />
           <Button leftIcon={<AiOutlinePlus />} onClick={handleAddSkillPage} className="add-records">
-            Add records
+            Add skills
           </Button>
         </Box>
       ) : (

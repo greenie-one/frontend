@@ -28,7 +28,7 @@ type WorkExperience = {
   companyName: string;
   email: string;
   companyId: string;
-  companyStartDate: string;
+  dateOfJoining: string;
   companyEndDate: string;
   workMode: string;
   workType: string;

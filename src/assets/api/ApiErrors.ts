@@ -44,7 +44,7 @@ export const ErrorMessage: Record<string, CustomError> = {
   "GR0031": {title:'Error !',message:'Error Message for PAN Verification Failure'},
   "GR0032": {title:'Error !',message:'Error Message for Driving License Verification Failure'},
   "GR0033": {title:'Invalid ID Number!', message:'Please enter valid Aadhar number'},
-  "GR0034": {title:'Limit exceeded!', message:'Rate limit exceeded for OTP requests'},
+  "GR0034": {title:'Limit exceeded!', message:'Please try after 10 minutes'},
   "GR0043": {title:'Error !',message:'User location not found'},
   "GR0038": {title:'Error !',message:'Aadhar verification is required'},
   "GR0039": {title:'Error !',message:'Aadhar already exists'},
@@ -56,4 +56,5 @@ export const ErrorMessage: Record<string, CustomError> = {
   ["MISSING_TAGS"]: {title: "Error !", message: "Please select document tags for all the documents."},
   ["AUTH_TOKENS_NOT_SET"]: {title: "Error !", message: "Please Login"},
   ["SOMETHING_WENT_WRONG"]: {title: "Error !", message: "Something went wrong. Please try again later."},
+  ["SIZE_EXCEEDS"]: {title: "Oops !", message: "File size exceeds the maximum allowed limit."}
 };

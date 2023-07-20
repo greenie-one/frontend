@@ -10,8 +10,9 @@ import noData from '../../assets/noData.png';
 import { ResidentialInfoPeerType } from '../../types/ProfileGeneral';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Navbar } from '../Navbar';
+
 import { AiOutlineRight } from 'react-icons/ai';
+import { Layout } from '../Layout';
 
 export const VerifyResidentialInfo: React.FC = () => {
   const navigate = useNavigate();
@@ -75,8 +76,7 @@ export const VerifyResidentialInfo: React.FC = () => {
 
   return (
     <>
-      <Navbar />
-      <main className="profile">
+      <Layout>
         <Box className="container" style={{ marginTop: '7rem' }}>
           <Box className="top-header">
             <Box className="see-all-header">
@@ -269,7 +269,7 @@ export const VerifyResidentialInfo: React.FC = () => {
             </Box>
           )}
         </Box>
-      </main>
+      </Layout>
     </>
   );
 };

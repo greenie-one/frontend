@@ -125,15 +125,21 @@ export const IDSection: React.FC = () => {
             <Box className="verify-data-no-data-card-wrapper">
               <Box className="hidden-card">
                 <img className="card-img" src={janeCooper} alt="Profile Picture" />
-                <Text className="card-text">Jane Cooper </Text>
+                <Text className="card-text">
+                  Jane Cooper <MdVerified className="verified-icon" />
+                </Text>
               </Box>
               <Box className="card">
                 <img className="card-img" src={johnMarston} alt="Profile Picture" />
-                <Text className="card-text">{`John Marston`} </Text>
+                <Text className="card-text">
+                  John Marston <MdVerified className="verified-icon" />
+                </Text>
               </Box>
               <Box className="hidden-card">
                 <img className="card-img" src={flyoMiles} alt="Profile Picture" />
-                <Text className="card-text">Floyd Miles</Text>
+                <Text className="card-text">
+                  Floyd Miles <MdVerified className="verified-icon" />
+                </Text>
               </Box>
             </Box>
           </Box>

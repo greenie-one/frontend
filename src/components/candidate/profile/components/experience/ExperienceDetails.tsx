@@ -8,10 +8,10 @@ import { AiOutlineDelete } from 'react-icons/ai';
 import { DeleteConfirmationModal } from '../../../../common/GenericModals';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Navbar } from '../Navbar';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { BsArrowLeft } from 'react-icons/bs';
 import { AiOutlineRight } from 'react-icons/ai';
+import { Layout } from '../Layout';
 
 export const ExperienceDetails: React.FC = () => {
   const navigate = useNavigate();
@@ -51,7 +51,6 @@ export const ExperienceDetails: React.FC = () => {
 
   return (
     <>
-      <Navbar />
       <Modal className="modal" size={'60%'} fullScreen={isMobile} opened={opened} onClose={close} centered>
         <Box className="disclaimer-modal">
           <Title className="disclaimer-heading">Undertaking</Title>
@@ -69,7 +68,7 @@ export const ExperienceDetails: React.FC = () => {
           </Button>
         </Box>
       </Modal>
-      <main className="profile">
+      <Layout>
         <Box className="container" style={{ marginTop: '7rem' }}>
           <Box className="top-header">
             <Box className="see-all-header">
@@ -156,7 +155,7 @@ export const ExperienceDetails: React.FC = () => {
                 <Box className="comapny-type-box">
                   <Text className="experience-details-box-heading">Tenure</Text>
                   <Text className="experience-details-box-text">
-                    {filteredExperience?.companyStartDate?.toString().substring(11, 15)}-
+                    {filteredExperience?.dateOfJoining?.toString().substring(11, 15)}-
                     {filteredExperience?.companyEndDate?.toString().substring(11, 15)}
                   </Text>
                 </Box>
@@ -183,7 +182,7 @@ export const ExperienceDetails: React.FC = () => {
             cb={() => handleDeleteWorkInfo(filteredExperience?.id)}
           />
         </Box>
-      </main>
+      </Layout>
     </>
   );
 };

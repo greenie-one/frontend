@@ -26,7 +26,7 @@ import { HttpClient, Result } from '../../../../../utils/generic/httpClient';
 import { docDepotAPIList, workExperienceAPiList } from '../../../../../assets/api/ApiList';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
 import { ExperienceDocuments } from '../../types/ProfileGeneral';
-import { Navbar } from '../Navbar';
+import { Layout } from '../Layout';
 
 const expertiseList: {
   [key: string]: string;
@@ -241,8 +241,7 @@ export const VerifyExperience: React.FC = () => {
           </Box>
         </Box>
       </Modal>
-      <Navbar />
-      <main className="profile">
+      <Layout>
         <Box className="container" style={{ marginTop: '7rem' }}>
           <Box className="top-header">
             <Box className="see-all-header">
@@ -512,7 +511,7 @@ export const VerifyExperience: React.FC = () => {
             </Box>
           )}
         </Box>
-      </main>
+      </Layout>
     </>
   );
 };

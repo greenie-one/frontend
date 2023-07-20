@@ -31,7 +31,7 @@ type workExperienceFormType = {
   isVerified?: boolean;
   description?: string;
   verifiedBy?: string;
-  companyStartDate?: string;
+  dateOfJoining?: string;
   linkedInUrl?: string;
   companyEndDate?: string;
   department: string;

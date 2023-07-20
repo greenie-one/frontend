@@ -5,10 +5,10 @@ import location from '../../assets/location.png';
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
-import { Navbar } from '../Navbar';
 import { BsArrowLeft } from 'react-icons/bs';
 import { AiOutlineRight, AiOutlineHome } from 'react-icons/ai';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
+import { Layout } from '../Layout';
 
 type VerificationType = 'MySelf' | 'Peer';
 
@@ -56,7 +56,6 @@ export const ResidentialInfoDetails: React.FC = () => {
 
   return (
     <>
-      <Navbar />
       {modalStep === 1 && (
         <Modal className="modal" size={'60%'} fullScreen={isMobile} opened={opened} onClose={close} centered>
           <Box className="disclaimer-modal">
@@ -105,7 +104,7 @@ export const ResidentialInfoDetails: React.FC = () => {
           </Box>
         </Modal>
       )}
-      <main className="profile">
+      <Layout>
         <Box className="container" style={{ marginTop: '7rem' }}>
           <Box className="top-header">
             <Box className="see-all-header">
@@ -208,7 +207,7 @@ export const ResidentialInfoDetails: React.FC = () => {
             </Button>
           </Box>
         </Box>
-      </main>
+      </Layout>
     </>
   );
 };

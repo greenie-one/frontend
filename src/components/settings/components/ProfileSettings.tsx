@@ -77,23 +77,15 @@ export const ProfileSettings: React.FC = (): JSX.Element => {
       <form className={formClasses.detailsCategory} onSubmit={onFormSubmit}>
         <Title className={formClasses.detailsCategoryTitle}>Name</Title>
         <TextInput
-          withAsterisk
           data-autofocus
           label="First Name"
           className="inputClass"
           {...profileForm.getInputProps('firstName')}
         />
-        <TextInput
-          withAsterisk
-          data-autofocus
-          label="Last Name"
-          className="inputClass"
-          {...profileForm.getInputProps('lastName')}
-        />
+        <TextInput data-autofocus label="Last Name" className="inputClass" {...profileForm.getInputProps('lastName')} />
 
         <Title className={formClasses.detailsCategoryTitle}>Bio</Title>
         <Textarea
-          withAsterisk
           data-autofocus
           label="Edit your bio"
           className="text-area-input"

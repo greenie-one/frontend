@@ -40,7 +40,7 @@ export const ExperienceSection = () => {
                 See All Experiences
               </Text>
               <Button leftIcon={<MdOutlineEdit />} onClick={handleAddWorkExperiencePage} className="edit-btn">
-                Edit Section
+                Add Experience
               </Button>
             </Box>
             <Box className="edit-icon" onClick={handleAddWorkExperiencePage}>
@@ -55,7 +55,7 @@ export const ExperienceSection = () => {
           <img className="no-data" src={noData} alt="No data" />
 
           <Button leftIcon={<AiOutlinePlus />} onClick={handleAddWorkExperiencePage} className="add-records">
-            Add records
+            Add experience
           </Button>
         </Box>
       ) : (
@@ -70,7 +70,7 @@ export const ExperienceSection = () => {
                     position={workExperience.designation}
                     companyName={workExperience.companyName}
                     isVerified={workExperience.isVerified}
-                    companyStartYear={workExperience.companyStartDate}
+                    companyStartYear={workExperience.dateOfJoining}
                     companyEndYear={workExperience.companyEndDate}
                   />
                 </Box>

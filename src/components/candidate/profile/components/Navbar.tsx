@@ -1,6 +1,23 @@
 import { useState, useReducer } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, TextInput, createStyles, Flex, List, Drawer, em, rem, Menu, Divider, Group, Text } from '@mantine/core';
+import { confirmationModalStyle } from '../../../settings/styles/articleContentStyles';
+import {
+  Box,
+  TextInput,
+  createStyles,
+  Flex,
+  List,
+  Drawer,
+  em,
+  rem,
+  Menu,
+  Divider,
+  Group,
+  Text,
+  Modal,
+  Button,
+} from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 import { Link, useLocation } from 'react-router-dom';
 import { MdVerified, MdOutlineMenuOpen, MdOutlineClose } from 'react-icons/md';
 import { GoSearch } from 'react-icons/go';
@@ -32,6 +49,13 @@ export const Navbar = () => {
   const { setShowDetailsId } = useSettingsContext();
   const navigate = useNavigate();
   const { authClient, scrollToTop, profileData } = useGlobalContext();
+  const { classes: modalStyles } = confirmationModalStyle();
+  const [opened, { open, close }] = useDisclosure(false);
+
+  const handleConfirmation = () => {
+    close();
+    removeAuthTokens();
+  };
 
   const removeAuthTokens = () => {
     showLoadingNotification({ title: 'Signing Out', message: 'Please wait while we sign you out' });
@@ -94,6 +118,40 @@ export const Navbar = () => {
 
   return (
     <header>
+      <Modal
+        title="Confirmation"
+        padding="xl"
+        radius="lg"
+        size="lg"
+        centered
+        classNames={modalStyles}
+        onClose={close}
+        opened={opened}
+      >
+        <Box className={modalStyles.confirmationMsgWrapper}>
+          <Text className={modalStyles.confirmationMsg}>Are you sure you want to sign out?</Text>
+
+          <Box className={modalStyles.modalBtnsContainer}>
+            {[
+              { variant: 'filled', text: 'Confirm', action: handleConfirmation },
+              { variant: 'outline', text: 'Cancel', action: close },
+            ].map((btns, idx) => (
+              <Button
+                key={idx}
+                className={modalStyles.modalActionBtns}
+                onClick={btns.action}
+                size="sm"
+                type="button"
+                radius="xl"
+                variant={btns.variant}
+                color="teal"
+              >
+                {btns.text}
+              </Button>
+            ))}
+          </Box>
+        </Box>
+      </Modal>
       <Box className="navbar">
         <Box className="nav-container">
           <Link to={'/candidate/profile'} className="logo">
@@ -192,7 +250,7 @@ export const Navbar = () => {
                     <span className="navOptionsText">Help</span>
                   </li>
                   <Divider className="divider" my={'1rem'} />
-                  <button className="navOptionItems" onClick={removeAuthTokens}>
+                  <button className="navOptionItems" onClick={open}>
                     <span className="navOptionsIcon">
                       <MdExitToApp />
                     </span>
@@ -257,7 +315,7 @@ export const Navbar = () => {
             </li>
           </List>
           <Divider className="divider" />
-          <button className={classes.signOutBtn} onClick={removeAuthTokens}>
+          <button className={classes.signOutBtn} onClick={open}>
             <span className={classes.signOut}>
               <MdExitToApp />
             </span>
@@ -325,7 +383,7 @@ export const Navbar = () => {
               </li>
             </List>
             <Divider className="divider" />
-            <button className={classes.signOutBtn} onClick={removeAuthTokens}>
+            <button className={classes.signOutBtn} onClick={open}>
               <span className={classes.signOut}>
                 <MdExitToApp />
               </span>

@@ -11,9 +11,9 @@ import {
 } from '../../../../../utils/functions/showNotification';
 import { HttpClient } from '../../../../../utils/generic/httpClient';
 import { skillRate } from '../../constants/SelectionOptions';
-import { Navbar } from '../Navbar';
 import { useNavigate } from 'react-router-dom';
 import { MdRemoveCircle } from 'react-icons/md';
+import { Layout } from '../Layout';
 
 const expertiseList: {
   [key: string]: string;
@@ -93,8 +93,7 @@ export const AddSkills = () => {
   };
   return (
     <>
-      <Navbar />{' '}
-      <main className="profile">
+      <Layout>
         <section className="container add-work-experience">
           <Box className="see-all-header">
             <Box className="go-back-btn" onClick={handleProfilePage}>
@@ -176,7 +175,7 @@ export const AddSkills = () => {
             </Box>
           </form>
         </section>
-      </main>{' '}
+      </Layout>
     </>
   );
 };

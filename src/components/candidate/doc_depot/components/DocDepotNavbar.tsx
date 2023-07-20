@@ -29,21 +29,27 @@ export const DocDepotNavbar = () => {
   const authToken = authClient.getAccessToken();
 
   const uploadDocument = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    showLoadingNotification({ title: 'Please wait !', message: 'Please wait while we add your document' });
     if (event.target.files && event.target.files[0]) {
-      const formData = new FormData();
-      formData.append('document', event.target.files[0]);
-      open();
-      documentForm.values.name = event.target.files[0].name;
-      try {
-        const res = await axios.post(`${docDepotAPIList.uploadDocument}`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            Authorization: `Bearer ${authToken}`,
-          },
-        });
-        documentForm.setFieldValue('privateUrl', res.data.url);
-      } catch (error: unknown) {
-        showErrorNotification('GR0000');
+      if (event.target.files[0].size > 5 * 1024 * 1024) {
+        showErrorNotification('SIZE_EXCEEDS');
+      } else {
+        const formData = new FormData();
+        formData.append('document', event.target.files[0]);
+        open();
+        documentForm.values.name = event.target.files[0].name;
+        try {
+          const res = await axios.post(`${docDepotAPIList.uploadDocument}`, formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              Authorization: `Bearer ${authToken}`,
+            },
+          });
+          documentForm.setFieldValue('privateUrl', res.data.url);
+          showSuccessNotification({ title: 'Success !', message: 'file selected successfully' });
+        } catch (error: unknown) {
+          showErrorNotification('GR0000');
+        }
       }
     }
   };
