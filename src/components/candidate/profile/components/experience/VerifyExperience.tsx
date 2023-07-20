@@ -5,7 +5,7 @@ import { useForm, isNotEmpty, isEmail, hasLength } from '@mantine/form';
 import { MdVerified, MdOutlineDelete } from 'react-icons/md';
 import { AiOutlinePlus, AiFillInfoCircle } from 'react-icons/ai';
 import { CgSandClock, CgProfile } from 'react-icons/cg';
-import tscLogo from '../../assets/tscLogo.png';
+// import tscLogo from '../../assets/tscLogo.png';
 import noData from '../../assets/noData.png';
 import pdfIcon from '../../assets/pdfIcon.png';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -26,15 +26,15 @@ import { HttpClient, Result } from '../../../../../utils/generic/httpClient';
 import { docDepotAPIList, peerVerificationAPIList, workExperienceAPiList } from '../../../../../assets/api/ApiList';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
 import { ExperienceDocuments } from '../../types/ProfileGeneral';
-import { Navbar } from '../Navbar';
 import { optionalAttrDict, skillExpertiseDict } from '../../../constants/dictionaries';
+import { Layout } from '../Layout';
 
 export const VerifyExperience: React.FC = () => {
   const navigate = useNavigate();
   const [experience, setExperience] = useState<WorkExperience | undefined>({} as WorkExperience);
   const [createPeerResponse, setCreatePeerResponse] = useState<CreatePeerResponseType[]>([]);
-  const [selectedDocuments, setSelectedDocuments] = useState<Array<string>>([]);
-  const [selectedSkills, setSelectedSkills] = useState<Array<string>>([]);
+  // const [selectedDocuments, setSelectedDocuments] = useState<Array<string>>([]);
+  // const [selectedSkills, setSelectedSkills] = useState<Array<string>>([]);
 
   const [addedPeers, setAddedPeers] = useState<Peer[]>([]);
   const [activePeer, setActivePeer] = useState<number>(0);
@@ -46,11 +46,11 @@ export const VerifyExperience: React.FC = () => {
   const [opened, { open, close }] = useDisclosure(false);
   const [experienceDocuments, setExperienceDocuments] = useState<ExperienceDocuments[]>([]);
 
-  const backgroundStyle = {
-    backgroundImage: `url(${tscLogo})`,
-    backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat',
-  };
+  // const backgroundStyle = {
+  //   backgroundImage: `url(${tscLogo})`,
+  //   backgroundPosition: 'center',
+  //   backgroundRepeat: 'no-repeat',
+  // };
 
   const VerifiationStepReducer = (state: ReviewStepState, action: ReviewStepAction): ReviewStepState => {
     switch (action.type) {
@@ -91,32 +91,6 @@ export const VerifyExperience: React.FC = () => {
     if (addedPeers.length < 2) {
       showErrorNotification('NO_PEERS');
     }
-    // if (addedPeers.length > 1) {
-    //   for (const peer of addedPeers) {
-    //     const requestBody = {
-    //       name: peer.name,
-    //       email: peer.email,
-    //       phone: peer.phone,
-    //       peerType: peer.peerType,
-    //       workExperience: peer.workExperience,
-    //     };
-    //     showLoadingNotification({ title: 'Please wait !', message: 'Please wait while we add peers to the list' });
-    //     const res: Result<addPeerResponse> = await HttpClient.callApiAuth(
-    //       {
-    //         url: `${peerVerificationAPIList.createPeer}`,
-    //         method: 'POST',
-    //         body: requestBody,
-    //       },
-    //       authClient
-    //     );
-    //     if (res.ok) {
-
-    //       showSuccessNotification({ title: 'Success !', message: 'Your Peers have been added sucessfully' });
-    //     } else {
-    //       showErrorNotification(res.error.code);
-    //     }
-    //   }
-    // }
     scrollToTop();
     verificationStepDispatch({ type: ReviewActionType.NEXT_STEP });
   };
@@ -233,7 +207,7 @@ export const VerifyExperience: React.FC = () => {
       if (res.ok) {
         createVerificationRequest('Skills', 'Peer', res.value?.id, response.verificationSkills);
         createVerificationRequest('Document', 'Peer', res.value?.id, response.verificationDocuments);
-
+        navigate('/candidate/profile/myVerification');
         // const filtered = res.value.filter((document) => document.workExperience === experience?.id);
       } else {
         showErrorNotification(res.error.code);
@@ -257,9 +231,9 @@ export const VerifyExperience: React.FC = () => {
           <Title className="heading">Your request has been sent</Title>
           <Text className="subHeading">Verifying your work experience</Text>
           <Box className="modal-experience-details">
-            <Box className="company-logo" style={backgroundStyle}>
+            {/* <Box className="company-logo" style={backgroundStyle}>
               <MdVerified className="verified-icon" color="#17a672" size="22px" />
-            </Box>
+            </Box> */}
 
             <Box className="experience-details-text-box">
               <Text className="designation">{experience?.designation}</Text>
@@ -285,8 +259,7 @@ export const VerifyExperience: React.FC = () => {
           </Box>
         </Box>
       </Modal>
-      <Navbar />
-      <main className="profile">
+      <Layout>
         <Box className="container" style={{ marginTop: '7rem' }}>
           <Box className="top-header">
             <Box className="see-all-header">
@@ -301,9 +274,9 @@ export const VerifyExperience: React.FC = () => {
           {currentStep === 0 && (
             <Box className="add-peer-box">
               <Box className="experience-details">
-                <Box className="company-logo" style={backgroundStyle}>
+                {/* <Box className="company-logo" style={backgroundStyle}>
                   <MdVerified className="verified-icon" color="#17a672" size="22px" />
-                </Box>
+                </Box> */}
 
                 <Box className="experience-details-text-box">
                   <Text className="designation">{experience?.designation}</Text>
@@ -489,9 +462,9 @@ export const VerifyExperience: React.FC = () => {
               <Box className="details-box">
                 <Text className="document-action-heading">To verify</Text>
                 <Box className="experience-details">
-                  <Box className="company-logo" style={backgroundStyle}>
+                  {/* <Box className="company-logo" style={backgroundStyle}>
                     <MdVerified className="verified-icon" color="#17a672" size="22px" />
-                  </Box>
+                  </Box> */}
 
                   <Box className="experience-details-text-box">
                     <Text className="designation">{experience?.designation}</Text>
@@ -589,7 +562,7 @@ export const VerifyExperience: React.FC = () => {
             </Box>
           )}
         </Box>
-      </main>
+      </Layout>
     </>
   );
 };

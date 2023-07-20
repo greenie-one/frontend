@@ -115,6 +115,8 @@ export const Userprofile = () => {
               label="Your first name"
               className="inputClass"
               {...profileForm.getInputProps('firstName')}
+              maxLength={10}
+              minLength={3}
             />
           </Box>
           <Box className="input-section">
@@ -125,6 +127,8 @@ export const Userprofile = () => {
               label="Your last name"
               className="inputClass"
               {...profileForm.getInputProps('lastName')}
+              maxLength={10}
+              minLength={3}
             />
           </Box>
           <Divider mb={'10px'} />
@@ -136,6 +140,7 @@ export const Userprofile = () => {
               label="Your bio"
               className="text-area-input"
               {...profileForm.getInputProps('bio')}
+              maxLength={150}
             />
           </Box>
           <Divider mb={'10px'} />
@@ -292,7 +297,9 @@ export const Userprofile = () => {
             )}
           </Box>
         </Box>
-        <Text className="bio-text">{profileData.bio}</Text>
+        <Box className="bio-text">
+          <Text> {profileData.bio}</Text>
+        </Box>
       </section>
     </>
   );

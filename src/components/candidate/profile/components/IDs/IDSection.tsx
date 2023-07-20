@@ -83,20 +83,19 @@ export const IDSection: React.FC = () => {
       {!isAgreed && (
         <Modal className="modal" size={'60%'} fullScreen={isMobile} opened={opened} onClose={onClose} centered>
           <Box className="disclaimer-modal">
-            <Title className="disclaimer-heading">Disclaimer</Title>
+            <Title className="disclaimer-heading">Undertaking</Title>
             <Text className="disclaimer-subHeading">Verifying IDs on Greenie</Text>
-            <Button className="primaryBtn" disabled={!checked} onClick={() => setIsAgreed(!isAgreed)}>
-              I Agree
-            </Button>
+
             <Box className="checkbox-box">
               <Checkbox checked={checked} onChange={() => setChecked(!checked)} className="checkbox" color="teal" />
               <Text className="tearms-conditions">
-                I understand that during the sign-up process and while using this website, I may be required to provide
-                certain personal information, including but not limited to my name, email address, contact details, and
-                any other information deemed necessary for registration and website usage.
+                I have read the undertaking and i authorise Greenie to collect information on my behalf.
               </Text>
             </Box>
-            <Text className="policy">Click to view Data and Privacy Policy</Text>
+            <Text className="policy">Click to view the Undertaking, Data and Privacy policy</Text>
+            <Button className="primaryBtn" disabled={!checked} onClick={() => setIsAgreed(!isAgreed)}>
+              I Agree
+            </Button>
           </Box>
         </Modal>
       )}
@@ -110,7 +109,7 @@ export const IDSection: React.FC = () => {
           <>
             <Box className="header-links">
               <Button leftIcon={<MdOutlineEdit />} onClick={open} className="edit-btn">
-                Edit Section
+                Add ID
               </Button>
             </Box>
             <Box className="edit-icon" onClick={open}>
@@ -126,15 +125,21 @@ export const IDSection: React.FC = () => {
             <Box className="verify-data-no-data-card-wrapper">
               <Box className="hidden-card">
                 <img className="card-img" src={janeCooper} alt="Profile Picture" />
-                <Text className="card-text">Jane Cooper </Text>
+                <Text className="card-text">
+                  Jane Cooper <MdVerified className="verified-icon" />{' '}
+                </Text>
               </Box>
               <Box className="card">
                 <img className="card-img" src={johnMarston} alt="Profile Picture" />
-                <Text className="card-text">{`John Marston`} </Text>
+                <Text className="card-text">
+                  John Marston <MdVerified className="verified-icon" />
+                </Text>
               </Box>
               <Box className="hidden-card">
                 <img className="card-img" src={flyoMiles} alt="Profile Picture" />
-                <Text className="card-text">Floyd Miles</Text>
+                <Text className="card-text">
+                  Floyd Miles <MdVerified className="verified-icon" />
+                </Text>
               </Box>
             </Box>
           </Box>

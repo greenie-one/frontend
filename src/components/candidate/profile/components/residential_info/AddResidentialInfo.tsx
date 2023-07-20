@@ -11,8 +11,8 @@ import {
 import { HttpClient } from '../../../../../utils/generic/httpClient';
 import { residentialInfoAPIList } from '../../../../../assets/api/ApiList';
 import { states, countries } from '../../constants/SelectionOptions';
-import { Navbar } from '../Navbar';
 import { useNavigate } from 'react-router-dom';
+import { Layout } from '../Layout';
 
 export const AddResidentialInfo = () => {
   const navigate = useNavigate();
@@ -61,8 +61,7 @@ export const AddResidentialInfo = () => {
 
   return (
     <>
-      <Navbar />
-      <main className="profile">
+      <Layout>
         <section className="container add-residential-info ">
           <Box className="see-all-header">
             <Box className="go-back-btn" onClick={handleToggleScreen}>
@@ -104,6 +103,7 @@ export const AddResidentialInfo = () => {
                 className="inputClass"
                 {...residentialInfoForm.getInputProps('address_line_1')}
                 withAsterisk
+                maxLength={40}
               />
             </Box>
             <Box className="input-section ">
@@ -113,6 +113,7 @@ export const AddResidentialInfo = () => {
                 className="inputClass"
                 {...residentialInfoForm.getInputProps('address_line_2')}
                 withAsterisk
+                maxLength={40}
               />
             </Box>
             <Box className="input-section ">
@@ -122,6 +123,7 @@ export const AddResidentialInfo = () => {
                 className="inputClass"
                 {...residentialInfoForm.getInputProps('landmark')}
                 withAsterisk
+                maxLength={25}
               />
             </Box>
             <Box className="input-section ">
@@ -131,6 +133,7 @@ export const AddResidentialInfo = () => {
                 className="inputClass"
                 {...residentialInfoForm.getInputProps('city')}
                 withAsterisk
+                maxLength={15}
               />
             </Box>
             <Box className="input-section ">
@@ -167,18 +170,9 @@ export const AddResidentialInfo = () => {
                   data={countries}
                   label="Select country"
                   className="inputClass"
-                  {...residentialInfoForm.getInputProps('country')}
+                  value={'India'}
+                  readOnly
                   withAsterisk
-                  styles={() => ({
-                    item: {
-                      '&[data-selected]': {
-                        '&, &:hover': {
-                          backgroundColor: '#17a672',
-                          color: 'white',
-                        },
-                      },
-                    },
-                  })}
                 />
               </Box>
             </Box>
@@ -212,14 +206,16 @@ export const AddResidentialInfo = () => {
             </Box>
             <Divider />
             <Box className="btn-wrapper">
-              <Button variant="default">Cancel</Button>
+              <Button variant="default" onClick={handleToggleScreen}>
+                Cancel
+              </Button>
               <Button color="teal" type="submit">
                 Save
               </Button>
             </Box>
           </form>
         </section>
-      </main>
+      </Layout>
     </>
   );
 };

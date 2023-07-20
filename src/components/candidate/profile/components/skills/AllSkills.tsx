@@ -4,9 +4,9 @@ import { AiOutlineRight } from 'react-icons/ai';
 import { MdVerified } from 'react-icons/md';
 import { CgSandClock } from 'react-icons/cg';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
-import { Navbar } from '../Navbar';
 import { useNavigate } from 'react-router-dom';
 import { skillExpertiseDict } from '../../../constants/dictionaries';
+import { Layout } from '../Layout';
 
 export const AllSkills = () => {
   const navigate = useNavigate();
@@ -20,8 +20,7 @@ export const AllSkills = () => {
 
   return (
     <>
-      <Navbar />
-      <main className="profile">
+      <Layout>
         <section className="container" style={{ marginTop: '7rem' }}>
           <Box className="see-all-header">
             <Box className="go-back-btn" onClick={handleProfilePage}>
@@ -66,7 +65,7 @@ export const AllSkills = () => {
             })}
           </Box>
         </section>
-      </main>
+      </Layout>
     </>
   );
 };

@@ -13,8 +13,6 @@ import {
 } from '../../../../utils/functions/showNotification';
 
 import { BsArrowLeft } from 'react-icons/bs';
-import linkedInLogo from '../../assets/linkedIn-logo.png';
-import linkedInGreenieLogo from '../../assets/linkedInGreenieLogo.png';
 import profileIllustration from '../../assets/profileillustration.png';
 import '../../styles/global.scss';
 
@@ -70,7 +68,7 @@ const Profile = () => {
       return Promise.resolve(null);
     }
 
-    if (active === 3) {
+    if (active === 2) {
       setIsLoading(true);
       profileForm.clearErrors();
 
@@ -106,8 +104,7 @@ const Profile = () => {
     <Box>
       <Box className="progress-bar-wrapper">
         <Box className="progress-bar" bg={'#9fe870'}></Box>
-        <Box className="progress-bar" bg={active === 2 || active === 3 ? '#9fe870' : '#F3F3F3'}></Box>
-        <Box className="progress-bar" bg={active === 3 ? '#9fe870' : '#F3F3F3'}></Box>
+        <Box className="progress-bar" bg={active === 2 ? '#9fe870' : '#F3F3F3'}></Box>
       </Box>
       {active !== 1 && (
         <>
@@ -120,19 +117,23 @@ const Profile = () => {
 
       {active === 1 && (
         <Box>
-          <Text className="steps">{`Steps ${active}`}/3</Text>
+          <Text className="steps">{`Steps ${active}`}/2</Text>
           <Text className="profileText">Enter Name As Per Aadhar Card</Text>
           <TextInput
             label="First Name"
             className="inputClass"
             {...profileForm.getInputProps('firstName')}
             ref={firstNameRef}
+            maxLength={10}
+            minLength={3}
           />
           <TextInput
             label="Last Name"
             className="inputClass"
             {...profileForm.getInputProps('lastName')}
             ref={lastNameRef}
+            maxLength={10}
+            minLength={3}
           />
           <Button type="submit" className="primaryBtn" onClick={nextStep}>
             Continue
@@ -142,31 +143,7 @@ const Profile = () => {
 
       {active === 2 && (
         <Box>
-          <Text className="steps">{`Steps ${active}`}/3</Text>
-
-          <img className="linkedInimg" src={linkedInGreenieLogo} alt="" />
-
-          <Text className="profileText" align="center">
-            Help us create a better experience for you
-          </Text>
-
-          <Button className="secondaryBtn" onClick={nextStep}>
-            Connect your
-            <span>
-              <img src={linkedInLogo} alt="linkedIn logo" />
-            </span>
-            LinkedIn Account
-          </Button>
-
-          <Text fz={'xs'} align="center" color="#4C4C4C" onClick={(e) => nextStep(e)} style={{ cursor: 'pointer' }}>
-            Skip for now
-          </Text>
-        </Box>
-      )}
-
-      {active === 3 && (
-        <Box>
-          <Text className="steps">{`Steps ${active}`}/3</Text>
+          <Text className="steps">{`Steps ${active}`}/2</Text>
           <Box className="profile-box">
             <img className="profileIllustration" src={profileIllustration} alt="" />
           </Box>

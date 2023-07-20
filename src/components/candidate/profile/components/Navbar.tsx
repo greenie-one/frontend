@@ -1,6 +1,22 @@
 import { useState, useReducer } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, TextInput, createStyles, Flex, List, Drawer, em, rem, Menu, Divider, Group, Text } from '@mantine/core';
+import {
+  Box,
+  TextInput,
+  createStyles,
+  Flex,
+  List,
+  Drawer,
+  em,
+  rem,
+  Menu,
+  Divider,
+  Group,
+  Text,
+  Modal,
+  Button,
+} from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 import { Link, useLocation } from 'react-router-dom';
 import { MdVerified, MdOutlineMenuOpen, MdOutlineClose } from 'react-icons/md';
 import { GoSearch } from 'react-icons/go';
@@ -15,6 +31,7 @@ import { useSettingsContext } from '../../../settings/context/SettingsContext';
 import { showLoadingNotification, showSuccessNotification } from '../../../../utils/functions/showNotification';
 import { useGlobalContext } from '../../../../context/GlobalContext';
 import noNotification from '../assets/noNotifications.png';
+import { confirmationModalStyle } from '../../../settings/styles/articleContentStyles';
 
 type notificationType = {
   imgUrl: string;
@@ -32,6 +49,8 @@ export const Navbar = () => {
   const { setShowDetailsId } = useSettingsContext();
   const navigate = useNavigate();
   const { authClient, scrollToTop, profileData } = useGlobalContext();
+  const { classes: modalStyles } = confirmationModalStyle();
+  const [opened, { open, close }] = useDisclosure(false);
 
   const removeAuthTokens = () => {
     showLoadingNotification({ title: 'Signing Out', message: 'Please wait while we sign you out' });
@@ -49,10 +68,14 @@ export const Navbar = () => {
     }, 1100);
   };
 
+  const handleConfirmation = () => {
+    close();
+    removeAuthTokens();
+  };
+
   const location = useLocation();
   const currentUrl = location.pathname + location.search;
-  const isProfilePage = currentUrl === 'candidate/profile';
-  const isProfileSettingsPage = currentUrl === 'candidate/profile/settings';
+  const isProfileSettingsPage = currentUrl === '/candidate/profile/settings';
   const debouncedValue = useDebounce(searchQuery, 250);
 
   const drawerReducer = (state: DrawerState, action: DrawerAction): DrawerState => {
@@ -94,6 +117,40 @@ export const Navbar = () => {
 
   return (
     <header>
+      <Modal
+        title="Confirmation"
+        padding="xl"
+        radius="lg"
+        size="lg"
+        centered
+        classNames={modalStyles}
+        onClose={close}
+        opened={opened}
+      >
+        <Box className={modalStyles.confirmationMsgWrapper}>
+          <Text className={modalStyles.confirmationMsg}>Are you sure you want to sign out?</Text>
+
+          <Box className={modalStyles.modalBtnsContainer}>
+            {[
+              { variant: 'filled', text: 'Confirm', action: handleConfirmation },
+              { variant: 'outline', text: 'Cancel', action: close },
+            ].map((btns, idx) => (
+              <Button
+                key={idx}
+                className={modalStyles.modalActionBtns}
+                onClick={btns.action}
+                size="sm"
+                type="button"
+                radius="xl"
+                variant={btns.variant}
+                color="teal"
+              >
+                {btns.text}
+              </Button>
+            ))}
+          </Box>
+        </Box>
+      </Modal>
       <Box className="navbar">
         <Box className="nav-container">
           <Link to={'/candidate/profile'} className="logo">
@@ -192,7 +249,7 @@ export const Navbar = () => {
                     <span className="navOptionsText">Help</span>
                   </li>
                   <Divider className="divider" my={'1rem'} />
-                  <button className="navOptionItems" onClick={removeAuthTokens}>
+                  <button className="navOptionItems" onClick={open}>
                     <span className="navOptionsIcon">
                       <MdExitToApp />
                     </span>
@@ -202,7 +259,7 @@ export const Navbar = () => {
               </Menu.Dropdown>
             </Menu>
 
-            {!state.firstDrawerOpened && isProfilePage && (
+            {!state.firstDrawerOpened && !isProfileSettingsPage && (
               <span className={classes.menuOpenBtn}>
                 <MdOutlineMenuOpen role="button" onClick={() => dispatch({ type: 'OPEN_FIRST_DRAWER' })} />
               </span>
@@ -257,7 +314,7 @@ export const Navbar = () => {
             </li>
           </List>
           <Divider className="divider" />
-          <button className={classes.signOutBtn} onClick={removeAuthTokens}>
+          <button className={classes.signOutBtn} onClick={open}>
             <span className={classes.signOut}>
               <MdExitToApp />
             </span>
@@ -325,7 +382,7 @@ export const Navbar = () => {
               </li>
             </List>
             <Divider className="divider" />
-            <button className={classes.signOutBtn} onClick={removeAuthTokens}>
+            <button className={classes.signOutBtn} onClick={open}>
               <span className={classes.signOut}>
                 <MdExitToApp />
               </span>
@@ -449,8 +506,8 @@ const useStyles = createStyles(() => ({
     display: 'grid',
     placeItems: 'center',
     fontSize: rem(20),
-    height: '50px',
-    width: '50px',
+    height: '40px',
+    width: '40px',
     borderRadius: '50%',
     background: '#F5F5F5',
   },
@@ -460,8 +517,8 @@ const useStyles = createStyles(() => ({
     display: 'grid',
     placeItems: 'center',
     fontSize: rem(25),
-    height: '50px',
-    width: '50px',
+    height: '40px',
+    width: '40px',
   },
 
   navOptionsText: {

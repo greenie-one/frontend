@@ -11,10 +11,10 @@ import {
 } from '../../../../../utils/functions/showNotification';
 import { HttpClient } from '../../../../../utils/generic/httpClient';
 import { skillRate } from '../../constants/SelectionOptions';
-import { Navbar } from '../Navbar';
 import { useNavigate } from 'react-router-dom';
 import { MdRemoveCircle } from 'react-icons/md';
 import { skillExpertiseDict } from '../../../constants/dictionaries';
+import { Layout } from '../Layout';
 
 export const AddSkills = () => {
   const navigate = useNavigate();
@@ -83,8 +83,7 @@ export const AddSkills = () => {
   };
   return (
     <>
-      <Navbar />{' '}
-      <main className="profile">
+      <Layout>
         <section className="container add-work-experience">
           <Box className="see-all-header">
             <Box className="go-back-btn" onClick={handleProfilePage}>
@@ -101,6 +100,7 @@ export const AddSkills = () => {
                 label="Eg. Frontend, Backend"
                 className="inputClass"
                 {...skillForm.getInputProps('skillName')}
+                maxLength={15}
               />
             </Box>
             <Box className="input-section">
@@ -165,7 +165,7 @@ export const AddSkills = () => {
             </Box>
           </form>
         </section>
-      </main>{' '}
+      </Layout>
     </>
   );
 };

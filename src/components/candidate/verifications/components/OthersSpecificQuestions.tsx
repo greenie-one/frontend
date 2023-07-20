@@ -12,7 +12,8 @@ export const OthersSpecificQuestions = (): JSX.Element => {
         <VerificationQuestions
           question={
             <>
-              According to {data.name} you were his {verificationBy} during his employment in {data.companyName}
+              According to {data.name} you were his <span>{verificationBy}</span> during his employment in
+              <span>{data.companyName}</span>
             </>
           }
           _id="peerPost"
@@ -24,7 +25,8 @@ export const OthersSpecificQuestions = (): JSX.Element => {
         <VerificationQuestions
           question={
             <>
-              According to {data.name} he was {data.designation} during his employment in {data.companyName}
+              According to <span>{data.name} </span>he was <span>{data.designation}</span> during his employment in{' '}
+              <span>{data.companyName}</span>
             </>
           }
           _id="designation"

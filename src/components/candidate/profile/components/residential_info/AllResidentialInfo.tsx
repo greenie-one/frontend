@@ -7,8 +7,8 @@ import location from '../../assets/location.png';
 import { useDisclosure } from '@mantine/hooks';
 import { DeleteConfirmationModal } from '../../../../common/GenericModals';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
-import { Navbar } from '../Navbar';
 import { useNavigate } from 'react-router-dom';
+import { Layout } from '../Layout';
 
 export const AllResidentialInfo = () => {
   const { residentialInfoData, deleteResidentialInfo } = useGlobalContext();
@@ -37,8 +37,8 @@ export const AllResidentialInfo = () => {
 
   return (
     <>
-      <Navbar />
-      <main className="profile">
+      <Layout>
+        {' '}
         <section className="container" style={{ marginTop: '7rem' }}>
           <Box className="top-header">
             <Box className="see-all-header">
@@ -56,7 +56,7 @@ export const AllResidentialInfo = () => {
           <Box className="residential-info-wrapper">
             {residentialInfoData.map((info, index) => {
               return (
-                <Box className="residential-card" key={index} onClick={() => handleGoToDetails(info.residentialInfoId)}>
+                <Box className="residential-card" key={index} onClick={() => handleGoToDetails(info.id)}>
                   <Box className="top-box">
                     <Box className="location">
                       <img className="location=img" src={location} alt="Location" />
@@ -80,7 +80,7 @@ export const AllResidentialInfo = () => {
                     <Box>
                       <Text className="since-text">Since</Text>
                       <Text className="tenure">
-                        {info.start_date?.toString().substring(0, 4)} - {info.end_date?.toString().substring(0, 4)}
+                        {info.start_date?.toString().substring(3, 15)} - {info.end_date?.toString().substring(3, 15)}
                       </Text>
                     </Box>
 
@@ -97,14 +97,14 @@ export const AllResidentialInfo = () => {
                   <DeleteConfirmationModal
                     opened={deleteModalOpened}
                     close={deleteModalClose}
-                    cb={() => handleDeleteResidentialInfo(info.residentialInfoId)}
+                    cb={() => handleDeleteResidentialInfo(info.id)}
                   />
                 </Box>
               );
             })}
           </Box>
         </section>
-      </main>
+      </Layout>
     </>
   );
 };

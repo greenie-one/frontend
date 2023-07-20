@@ -11,8 +11,8 @@ export const useProfileForms = () => {
     },
 
     validate: {
-      firstName: isNotEmpty('Please provide your first name'),
-      lastName: isNotEmpty('Please provide your last name'),
+      firstName: hasLength(3, 'Please provide your first name'),
+      lastName: hasLength(3, 'Please provide your last name'),
       bio: isNotEmpty('Please provide bio'),
       descriptionTags: hasLength(3, 'Please select at least 3'),
     },
@@ -90,7 +90,7 @@ export const useProfileForms = () => {
       pincode: '',
       city: '',
       state: '',
-      country: '',
+      country: 'India',
       start_date: '',
       end_date: '',
       address_type: '',

@@ -3,7 +3,6 @@ import { Text, Box, Checkbox, Divider } from '@mantine/core';
 import { SelectionHeading } from './SelectionHeading';
 import { PageActionBtns } from './PageActionBtns';
 import { ReviewActionType } from '../VerifyExperience';
-import { RiAddCircleLine } from 'react-icons/ri';
 import { CreatePeerResponseType, Peer } from '../../../types/ProfileGeneral';
 
 type AttributeSelectionProps = {
@@ -87,10 +86,7 @@ export const AttributeSelection: React.FC<AttributeSelectionProps> = ({
               );
             })}
           </Box>
-          <Box className="action-btn">
-            <RiAddCircleLine className="action-icon" />
-            <Text className="action-text">Add more</Text>
-          </Box>
+
           <PageActionBtns
             cb={
               addedPeers.indexOf(addedPeers[activePeer]) === addedPeers.length - 1

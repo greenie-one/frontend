@@ -77,15 +77,15 @@ export const ProfileSettings: React.FC = (): JSX.Element => {
       <form className={formClasses.detailsCategory} onSubmit={onFormSubmit}>
         <Title className={formClasses.detailsCategoryTitle}>Name</Title>
         <TextInput
-          withAsterisk
-          data-autofocus
+          maxLength={10}
+          minLength={3}
           label="First Name"
           className="inputClass"
           {...profileForm.getInputProps('firstName')}
         />
         <TextInput
-          withAsterisk
-          data-autofocus
+          maxLength={10}
+          minLength={3}
           label="Last Name"
           className="inputClass"
           {...profileForm.getInputProps('lastName')}
@@ -93,12 +93,11 @@ export const ProfileSettings: React.FC = (): JSX.Element => {
 
         <Title className={formClasses.detailsCategoryTitle}>Bio</Title>
         <Textarea
-          withAsterisk
-          data-autofocus
           label="Edit your bio"
           className="text-area-input"
           minRows={8}
           {...profileForm.getInputProps('bio')}
+          maxLength={250}
         />
         <Box className={formClasses.detailsCategory}>
           <Title order={3} className={formClasses.detailsCategoryTitle}>

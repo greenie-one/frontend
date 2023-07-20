@@ -87,7 +87,7 @@
   max-width: 960px;
   background-color: $white;
   border-radius: 16.0603px;
-  margin: 23px auto;
+  margin: 1.5rem auto;
   padding: 26px;
   display: flex;
   flex-direction: column;
@@ -165,8 +165,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin-top: 101px;
-    margin-bottom: 120px;
+    margin-block: 1rem;
     img {
       width: 344px;
       height: 253px;
@@ -287,18 +286,16 @@
 .footer {
   background-color: $dark;
   .footer-container {
-    display: flex;
+    display: grid;
+    grid-template-columns: 49% 35%;
     align-items: flex-start;
     justify-content: space-between;
     padding: 32px;
     max-width: 960px;
     margin: 0 auto;
-    .left-box {
-      width: 50%;
-    }
 
     .right-box {
-      width: 35%;
+      margin-top: 0.25rem;
     }
 
     .footer-logo {
@@ -316,11 +313,11 @@
 
     .mission-text {
       font-family: 'Gilroy-Bold' !important;
-      font-size: 24px;
+      font-size: 1.25rem;
       line-height: 28px;
       letter-spacing: -0.02em;
       color: #8e8e8e;
-      width: 220px;
+      width: 250px;
       margin-bottom: 42px;
     }
 
@@ -330,6 +327,7 @@
       line-height: 12px;
       letter-spacing: -0.02em;
       color: $white;
+      margin-top: -4rem;
     }
 
     .footer-link {
@@ -449,6 +447,28 @@
 
   .see-all-btn {
     display: block;
+  }
+}
+
+@media screen and (max-width: 512px) {
+  .footer {
+    .footer-container {
+      display: flex;
+      flex-direction: column;
+      border: 1px solid $white;
+
+      .right-box {
+        margin-top: 0rem;
+      }
+
+      .footer-link {
+        margin-bottom: 2.5rem;
+      }
+
+      .copy-right {
+        margin-top: 2rem;
+      }
+    }
   }
 }
 
