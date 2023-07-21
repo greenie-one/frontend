@@ -170,7 +170,7 @@ export const GlobalContextProvider: React.FC<{
     );
 
     if (res.ok) {
-      setProfileData(res.value.profile);
+      setProfileData(res.value);
     } else {
       showErrorNotification(res.error.code);
     }

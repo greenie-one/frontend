@@ -11,6 +11,8 @@ import { CommonVerifications } from './components/CommonVerification';
 import { Review } from './components/Review';
 import { CompleteVerification } from './components/CompleteVerification';
 import { OthersSpecificQuestions } from './components/OthersSpecificQuestions';
+import { VerifyDocuments } from './components/VerifyDocuments';
+import { VerifySkills } from './components/VerifySkills';
 
 export const VerificationJourney: React.FC = (): JSX.Element => {
   const { activeStep, totalSteps, setActiveStep, unverifiedLink, verificationData, verificationBy } =
@@ -55,9 +57,11 @@ export const VerificationJourney: React.FC = (): JSX.Element => {
                   </>
                 ) : (
                   <>
-                    {activeStep === 2 || activeStep === 3 ? <OthersSpecificQuestions /> : <></>}
-                    {activeStep === 4 || activeStep === 5 ? <CommonVerifications /> : <></>}
-                    {activeStep === 6 ? <Review /> : <></>}
+                    {activeStep === 2 && <VerifyDocuments />}
+                    {activeStep === 3 && <VerifySkills />}
+                    {activeStep === 4 || activeStep === 5 ? <OthersSpecificQuestions /> : <></>}
+                    {activeStep === 6 || activeStep === 7 ? <CommonVerifications /> : <></>}
+                    {activeStep === 8 ? <Review /> : <></>}
                   </>
                 )}
               </section>

@@ -83,8 +83,8 @@ export const VerificationContextProvider: React.FC<{ children: React.ReactNode }
 
   useEffect(() => {
     getVerificationData();
-    if (verificationBy === 'HR') setTotalSteps(6);
-    else setTotalSteps(7);
+    if (verificationBy === 'HR') setTotalSteps(8);
+    else setTotalSteps(9);
   }, [params.peer, params.uuid]);
 
   const storeValues = {

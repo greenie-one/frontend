@@ -185,7 +185,7 @@ export const Userprofile = () => {
         <Box className="cover-photo"></Box>
 
         <Box className="profile-photo">
-          {profileData.profilePic ? (
+          {profileData?.profilePic ? (
             <img src={profileData.profilePic} alt="emptyProfile" className="profile-image" />
           ) : (
             <img src={emptyProfile} alt="emptyProfile" className="profile-image" />

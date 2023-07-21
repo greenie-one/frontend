@@ -47,7 +47,7 @@ const App = () => {
             <Route path="auth" element={<AuthPage />} />
             <Route path="waitlist" element={<Waitlist />} />
             <Route path="oauth/google/callback" element={<GoogleAuthRedirect />} />
-            <Route path="/verification/:peer/:uuid" element={<ExperienceVerification />} />
+            <Route path="/verification" element={<ExperienceVerification />} />
 
             <Route element={<AuthVerificationLayout />}>
               <Route path="candidate/profile">
