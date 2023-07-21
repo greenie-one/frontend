@@ -43,17 +43,19 @@ export const ErrorMessage: Record<string, CustomError> = {
   "GR0044": {title:'Error !',message:'Internal Server Error'},
   "GR0031": {title:'Error !',message:'Error Message for PAN Verification Failure'},
   "GR0032": {title:'Error !',message:'Error Message for Driving License Verification Failure'},
-  "GR0033": {title:'Invalid ID Number!', message:'Please enter valid Aadhar number'},
+  "GR0033": {title:'Invalid ID Number!', message:'Please try after 10 minutes'},
   "GR0034": {title:'Limit exceeded!', message:'Rate limit exceeded for OTP requests'},
   "GR0043": {title:'Error !',message:'User location not found'},
   "GR0038": {title:'Error !',message:'Aadhar verification is required'},
   "GR0039": {title:'Error !',message:'Aadhar already exists'},
   "GR0040": {title:'Error !',message:'PAN already exists'},
   "GR0041": {title:'Error !',message:'Driving License already exists'},
+  "GR0054": {title:'Error !',message:'Peer already exists'},
 
   // CUSTOM ERRORS
   ["NO_SKILL"]: {title: "Error !", message: "Please add atleast one skill."},
   ["MISSING_TAGS"]: {title: "Error !", message: "Please select document tags for all the documents."},
   ["AUTH_TOKENS_NOT_SET"]: {title: "Error !", message: "Please Login"},
   ["SOMETHING_WENT_WRONG"]: {title: "Error !", message: "Something went wrong. Please try again later."},
+  ["SIZE_EXCEEDS"]: {title: "Oops !", message: "File size exceeds the maximum allowed limit."}
 };

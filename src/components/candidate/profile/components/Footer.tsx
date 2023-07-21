@@ -4,6 +4,8 @@ import { FaInstagram } from 'react-icons/fa';
 import { AiOutlineLinkedin } from 'react-icons/ai';
 import { MdVerified } from 'react-icons/md';
 import { Link } from 'react-router-dom';
+import privacyPolicy from '../../../auth/assets/Privacy Policy-Greenie.pdf';
+import termsAndConditions from '../../../auth/assets/terms_and_conditions-greenie.pdf';
 
 export const Footer = () => {
   return (
@@ -15,23 +17,22 @@ export const Footer = () => {
             <MdVerified color="#8CF078" style={{ marginInline: '4px' }} size={'18px'} />
             <Text className="text">Greenie</Text>
           </Box>
-          <Text className="mission-text">On a mission to disrupt traditional background verification.</Text>
-          <Text className="copy-right">2023 Greenie. All rights reserved</Text>
+          <Text className="mission-text">Fastest Onboarding Pleatform Of Pre-verified Candidates</Text>
         </Box>
         <Box className="right-box">
           <nav className="footer-nav">
             <List className="footer-links">
-              <Link to={''}>
-                <List.Item className="footer-link">Learn</List.Item>
+              <Link to={privacyPolicy} download={'Privacy Policy'}>
+                <List.Item className="footer-link">Privacy Policy</List.Item>
+              </Link>
+              <Link to={termsAndConditions} download={'Terms and Conditions'}>
+                <List.Item className="footer-link">Terms and Conditions</List.Item>
               </Link>
               <Link to={''}>
-                <List.Item className="footer-link">Pricing</List.Item>
+                <List.Item className="footer-link">Help</List.Item>
               </Link>
-              <Link to={''}>
-                <List.Item className="footer-link">About us</List.Item>
-              </Link>
-              <Link to={''}>
-                <List.Item className="footer-link">Career</List.Item>
+              <Link to={`mailto:office@greenie.one`}>
+                <List.Item className="footer-link">office@greenie.</List.Item>
               </Link>
             </List>
           </nav>
@@ -47,6 +48,7 @@ export const Footer = () => {
             </List.Item>
           </List>
         </Box>
+        <Text className="copy-right">{new Date().getFullYear()} Greenie. All rights reserved</Text>
       </Box>
     </footer>
   );

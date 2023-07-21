@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { Navbar } from '../Navbar';
 import {
   Text,
   Box,
@@ -19,6 +18,7 @@ import checkGif from '../../assets/94109-confirmation 1.gif';
 import location from '../../assets/location.png';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
 import { useParams } from 'react-router-dom';
+import { Layout } from '../Layout';
 
 type OtpInputStyles = {
   root: string;
@@ -41,20 +41,7 @@ export const AddressVerification = () => {
   const { peerAddressVerificationForm, profileData, residentialInfoData } = useGlobalContext();
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
-  const [residentialInfo, setResidentialInfo] = useState<ResidentialInfoResponse>({
-    address_line_1: '',
-    address_line_2: '',
-    landmark: '',
-    pincode: 0,
-    city: '',
-    start_date: null,
-    end_date: null,
-    state: '',
-    country: '',
-    address_type: '',
-    isVerified: false,
-    residentialInfoId: '',
-  });
+  const [residentialInfo, setResidentialInfo] = useState<ResidentialInfoResponse | null>(null);
 
   const NextActiveStep = () => {
     if (activeStep !== 7) {
@@ -67,7 +54,7 @@ export const AddressVerification = () => {
   };
 
   const { id } = useParams();
-  const filteredInfo = residentialInfoData.find((info) => info.residentialInfoId === id);
+  const filteredInfo = residentialInfoData.find((info) => info.id === id);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -111,10 +98,8 @@ export const AddressVerification = () => {
           </Button>
         </Box>
       </Modal>
-      <Navbar />
-
-      {activeStep === 1 && (
-        <main className="profile">
+      <Layout>
+        {activeStep === 1 && (
           <Box className="container" style={{ marginTop: '7rem' }}>
             <Box className="address-verification-container">
               <Title className="address-verification-details-main-title">Please confirm the peer identity</Title>
@@ -135,10 +120,8 @@ export const AddressVerification = () => {
               <Text className="address-verification-details-link">Not me</Text>
             </Box>
           </Box>
-        </main>
-      )}
-      {activeStep === 2 && (
-        <main className="profile">
+        )}
+        {activeStep === 2 && (
           <Box className="container" style={{ marginTop: '7rem' }}>
             <Box className="address-verification-container">
               <Title className="address-verification-details-main-title">Please confirm the peer identity</Title>
@@ -177,10 +160,8 @@ export const AddressVerification = () => {
               </Button>
             </Box>
           </Box>
-        </main>
-      )}
-      {activeStep === 3 && (
-        <main className="profile">
+        )}
+        {activeStep === 3 && (
           <Box className="container" style={{ marginTop: '7rem' }}>
             <Box className="address-verification-container">
               <Box className="address-verification-details">
@@ -229,8 +210,8 @@ export const AddressVerification = () => {
               </Button>
             </Box>
           </Box>
-        </main>
-      )}
+        )}
+      </Layout>
     </>
   );
 };

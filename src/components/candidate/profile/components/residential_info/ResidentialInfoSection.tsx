@@ -35,7 +35,7 @@ export const ResidentialInfoSection = () => {
                 See All Addresses
               </Text>
               <Button leftIcon={<MdOutlineEdit />} onClick={handleAddAddressScreen} className="edit-btn">
-                Edit Section
+                Add Address
               </Button>
             </Box>
             <Box className="edit-icon" onClick={handleAddAddressScreen}>
@@ -49,7 +49,7 @@ export const ResidentialInfoSection = () => {
         <Box className="no-data-wrapper">
           <img className="no-data" src={noData} alt="No data" />
           <Button leftIcon={<AiOutlinePlus />} onClick={handleAddAddressScreen} className="add-records">
-            Add records
+            Add Address
           </Button>
         </Box>
       ) : (

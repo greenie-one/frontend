@@ -14,7 +14,6 @@ export const ProfileDetailsBox: React.FC = (): JSX.Element => {
       </Box>
       <Box className="profile-details-text-box">
         <Text className="name">{data.name}</Text>
-        <Text className="designation">Software Engieer</Text>
         <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
           Verified
         </Button>

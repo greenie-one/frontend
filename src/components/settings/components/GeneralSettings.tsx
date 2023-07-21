@@ -4,6 +4,7 @@ import { useGeneralSettingsForm } from '../hooks/useGeneralSettings';
 import { detailsFormStyles } from '../styles/articleContentStyles';
 import { confirmationModalStyle } from '../styles/articleContentStyles';
 import { useDisclosure } from '@mantine/hooks';
+import { DateInput } from '@mantine/dates';
 
 export const GeneralSettings: React.FC = (): JSX.Element => {
   const { classes: formClasses } = detailsFormStyles();
@@ -61,64 +62,34 @@ export const GeneralSettings: React.FC = (): JSX.Element => {
 
       <form className={formClasses.detailsCategory} onSubmit={onFormSubmit}>
         <Title className={formClasses.detailsCategoryTitle}>Contact details</Title>
-        <TextInput
-          withAsterisk
-          data-autofocus
-          label="Phone number"
-          className="inputClass"
-          {...generalSettingsForm.getInputProps('phoneNumber')}
-        />
-        <TextInput
-          withAsterisk
-          data-autofocus
-          label="Email"
-          className="inputClass"
-          {...generalSettingsForm.getInputProps('emailId')}
-        />
+        <TextInput label="Phone number" className="inputClass" {...generalSettingsForm.getInputProps('phoneNumber')} />
+        <TextInput label="Email" className="inputClass" {...generalSettingsForm.getInputProps('emailId')} />
         <Title className={formClasses.detailsCategoryTitle}>Demographics</Title>
-        <TextInput
-          withAsterisk
-          data-autofocus
-          label="Age"
-          className="inputClass"
-          {...generalSettingsForm.getInputProps('age')}
-        />
-        <TextInput
-          withAsterisk
-          data-autofocus
-          label="Date of birth"
-          className="inputClass"
-          {...generalSettingsForm.getInputProps('dateOfBirth')}
-        />
+        <TextInput label="Age" className="inputClass" {...generalSettingsForm.getInputProps('age')} />
+        <DateInput label="Date of birth" className="inputClass" {...generalSettingsForm.getInputProps('dateOfBirth')} />
         <Title className={formClasses.detailsCategoryTitle}>Aadhar details</Title>
         <TextInput
-          withAsterisk
-          data-autofocus
           label="Phone number linked with Aadhaar"
           className="inputClass"
           {...generalSettingsForm.getInputProps('phoneLinkedWithAadhar')}
+          maxLength={10}
+          minLength={10}
         />
         <TextInput
-          withAsterisk
-          data-autofocus
           label="Aadhar number"
           className="inputClass"
           {...generalSettingsForm.getInputProps('aadharNumber')}
+          minLength={12}
+          maxLength={12}
         />
         <Title className={formClasses.detailsCategoryTitle}>PAN details</Title>
+
         <TextInput
-          withAsterisk
-          data-autofocus
-          label="Phone number linked with PAN"
-          className="inputClass"
-          {...generalSettingsForm.getInputProps('phoneLinkedWithPAN')}
-        />
-        <TextInput
-          withAsterisk
-          data-autofocus
-          label="PAN"
+          label="PAN number"
           className="inputClass"
           {...generalSettingsForm.getInputProps('PANNumber')}
+          maxLength={10}
+          minLength={10}
         />
 
         <Button className={formClasses.formSubmitBtn} size="sm" type="button" radius="xl" color="teal" onClick={open}>

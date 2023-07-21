@@ -24,7 +24,6 @@ export const GlobalContextProvider: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
   const [forceRender, setForceRender] = useState<boolean>(true);
-  const [activeButton, setActiveButton] = useState(1);
   const authClient = AuthClient.getInstance();
 
   const {
@@ -334,6 +333,20 @@ export const GlobalContextProvider: React.FC<{
     });
   };
 
+  const handlePDFdownload = () => {
+    const files = [
+      { path: '../components/candidate/profile/assets/Undertaking User .pdf', name: 'Undertaking user' },
+      { path: '../components/auth/assets/Privacy Policy-Greenie.pdf', name: 'Privacy policy' },
+    ];
+    files.forEach((file) => {
+      const link = document.createElement('a');
+      link.href = file.path;
+      link.download = file.name;
+      link.target = '_blank';
+      link.click();
+    });
+  };
+
   const authTokens = authClient.getAccessToken();
 
   useEffect(() => {
@@ -374,8 +387,7 @@ export const GlobalContextProvider: React.FC<{
         getResidentialInfo,
         deleteWorkExperience,
         deleteResidentialInfo,
-        activeButton,
-        setActiveButton,
+        handlePDFdownload,
       }}
     >
       {children}

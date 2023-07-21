@@ -1,21 +1,22 @@
 import { useState, useRef, useEffect } from 'react';
-import { Text, Box, Title, TextInput, Select, Checkbox, Button, Divider, Textarea } from '@mantine/core';
+import { Text, Box, Title, TextInput, Select, Checkbox, Button, Divider, Textarea, Modal } from '@mantine/core';
 import pdfIcon from '../../assets/pdfIcon.png';
 import { DateInput } from '@mantine/dates';
 import { MdOutlineDelete, MdVerified } from 'react-icons/md';
 import { VscDebugRestart } from 'react-icons/vsc';
 import { GrAdd } from 'react-icons/gr';
 import linkedInImg from '../../../../auth/assets/linkedIn-logo.png';
-import { BsArrowLeft, BsCheckLg } from 'react-icons/bs';
+import { BsArrowLeft } from 'react-icons/bs';
 import { skillsAPIList } from '../../../../../assets/api/ApiList';
 import uploadIcon from '../../assets/upload.png';
 import checkedIcon from '../../assets/check.png';
-import tcsLogo from '../../assets/tscLogo.png';
+// import tcsLogo from '../../assets/tscLogo.png';
 import { workExperienceAPiList } from '../../../../../assets/api/ApiList';
 import { CgSandClock } from 'react-icons/cg';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
 import { HttpClient, Result } from '../../../../../utils/generic/httpClient';
 import { useNavigate } from 'react-router-dom';
+import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import {
   showErrorNotification,
   showLoadingNotification,
@@ -32,9 +33,9 @@ import {
 import axios from 'axios';
 import { docDepotAPIList } from '../../../../../assets/api/ApiList';
 import { ExperienceDocuments } from '../../types/ProfileGeneral';
-import { Navbar } from '../Navbar';
 import { MdRemoveCircle } from 'react-icons/md';
 import { skillExpertiseDict } from '../../../constants/dictionaries';
+import { Layout } from '../Layout';
 
 export const AddExperience = () => {
   const navigate = useNavigate();
@@ -47,11 +48,15 @@ export const AddExperience = () => {
   const { authClient, workExperienceForm, skillForm, scrollToTop, setForceRender, forceRender, workExperienceData } =
     useGlobalContext();
   const authToken = authClient.getAccessToken();
-  const backgroundStyle = {
-    backgroundImage: `url(${tcsLogo})`,
-    backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat',
-  };
+  // const backgroundStyle = {
+  //   backgroundImage: `url(${tcsLogo})`,
+  //   backgroundPosition: 'center',
+  //   backgroundRepeat: 'no-repeat',
+  // };
+
+  const [checked, setChecked] = useState<boolean>(false);
+  const isMobile = useMediaQuery('(max-width: 768px)');
+  const [opened, { open, close }] = useDisclosure(false);
 
   const [selectedSkills, setSelectedSkills] = useState<Skill[]>([]);
   const [active, setActive] = useState<number>(1);
@@ -102,6 +107,8 @@ export const AddExperience = () => {
         showSuccessNotification({ title: 'Success !', message: 'New experience added to your profile.' });
         setForceRender((prev) => !prev);
         setActive(2);
+        scrollToTop();
+        workExperienceForm.reset();
       } else {
         showErrorNotification(res.error.code);
       }
@@ -152,8 +159,14 @@ export const AddExperience = () => {
   };
 
   const handleUploadDocument = (event: React.ChangeEvent<HTMLInputElement>) => {
+    showLoadingNotification({ title: 'Please wait !', message: 'Please wait while we add your document' });
     if (event.target.files && event.target.files[0]) {
-      setSelectedFile(event.target.files[0]);
+      if (event.target.files[0].size > 5 * 1024 * 1024) {
+        showErrorNotification('SIZE_EXCEEDS');
+      } else {
+        setSelectedFile(event.target.files[0]);
+        showSuccessNotification({ title: 'File selected ', message: '' });
+      }
     }
   };
 
@@ -254,8 +267,24 @@ export const AddExperience = () => {
 
   return (
     <>
-      <Navbar />
-      <main className="profile">
+      <Modal className="modal" size={'60%'} fullScreen={isMobile} opened={opened} onClose={close} centered>
+        <Box className="disclaimer-modal">
+          <Title className="disclaimer-heading">Undertaking</Title>
+          <Text className="disclaimer-subHeading">Verifying Work experience on Greenie</Text>
+
+          <Box className="checkbox-box">
+            <Checkbox checked={checked} onChange={() => setChecked(!checked)} className="checkbox" color="teal" />
+            <Text className="tearms-conditions">
+              I have read the undertaking and i authorise Greenie to collect information on my behalf.
+            </Text>
+          </Box>
+          <Text className="policy">Click to view the Undertaking, Data and Privacy Policy</Text>
+          <Button className="primaryBtn" disabled={!checked} onClick={handleGoToVerification}>
+            I Agree
+          </Button>
+        </Box>
+      </Modal>
+      <Layout>
         <section className="container add-work-experience">
           {active < 4 && (
             <>
@@ -285,9 +314,20 @@ export const AddExperience = () => {
                   data-autofocus
                   withAsterisk
                   {...workExperienceForm.getInputProps('designation')}
+                  maxLength={45}
                 />
               </Box>
               <Divider mb={'10px'} color="#e1e1e1" />
+              <Box className="input-section">
+                <Title className="title">Company name</Title>
+                <TextInput
+                  withAsterisk
+                  {...workExperienceForm.getInputProps('companyName')}
+                  label="Enter your company name"
+                  className="inputClass"
+                  maxLength={50}
+                />
+              </Box>
               <Box className="input-section">
                 <Title className="title">Company Type</Title>
                 <Select
@@ -308,15 +348,7 @@ export const AddExperience = () => {
                   {...workExperienceForm.getInputProps('companyType')}
                 />
               </Box>
-              <Box className="input-section">
-                <Title className="title">Company name</Title>
-                <TextInput
-                  withAsterisk
-                  {...workExperienceForm.getInputProps('companyName')}
-                  label="Enter your company name"
-                  className="inputClass"
-                />
-              </Box>
+
               <Box className="input-section">
                 <Title className="title">
                   <img src={linkedInImg} className="linked-in" alt="linkedIn logo" />
@@ -355,6 +387,7 @@ export const AddExperience = () => {
                   withAsterisk
                   label="Enter your CTC in Rs."
                   className="inputClass"
+                  maxLength={13}
                 />
               </Box>
 
@@ -362,7 +395,7 @@ export const AddExperience = () => {
                 <Title className="title">Work email</Title>
                 <TextInput
                   withAsterisk
-                  label="Previous work email"
+                  label="Official work email"
                   className="inputClass"
                   {...workExperienceForm.getInputProps('email')}
                 />
@@ -371,9 +404,10 @@ export const AddExperience = () => {
               <Box className="input-section">
                 <Title className="title">Company ID</Title>
                 <TextInput
-                  label="Enter your unique company id"
+                  label="Enter your unique company Id"
                   className="inputClass"
                   {...workExperienceForm.getInputProps('companyId')}
+                  maxLength={10}
                 />
               </Box>
               <Box className="input-section">
@@ -382,6 +416,7 @@ export const AddExperience = () => {
                   {...workExperienceForm.getInputProps('description')}
                   label="Write down the reason for leaving"
                   className="text-area-input"
+                  maxLength={300}
                 />
               </Box>
               <Divider mb={'10px'} color="#e1e1e1" />
@@ -473,6 +508,7 @@ export const AddExperience = () => {
                   label="Eg. Frontend, Backend"
                   className="inputClass"
                   {...skillForm.getInputProps('skillName')}
+                  maxLength={15}
                 />
               </Box>
               <Box className="input-section">
@@ -511,7 +547,7 @@ export const AddExperience = () => {
                       <button className="remove-skills-btn" type="button" onClick={() => handleRemoveSkills(index)}>
                         <MdRemoveCircle />
                       </button>
-                      <Text className="add-skill-name">{skillName}</Text>
+                      <Text className="add-skill-name">{skillName.substring(0, 15)}</Text>
                       {expertise && <Text className="add-skill-rate">{skillExpertiseDict[expertise]}</Text>}
                     </Box>
                   );
@@ -593,10 +629,7 @@ export const AddExperience = () => {
                               },
                             })}
                           />
-                          <Box className="add-document-icon">
-                            <BsCheckLg color="#17a672" size={'16px'} />
-                            <Text color="#17a672">Added</Text>
-                          </Box>
+
                           <Box className="add-document-icon" onClick={() => handleRemoveDocument(_id)}>
                             <MdOutlineDelete size={'18px'} color="#697082" />
                             <Text color="#697082">Remove</Text>
@@ -617,9 +650,9 @@ export const AddExperience = () => {
                   color="teal"
                 />
                 <Text className="tearms-conditions">
-                  I understand that during the sign-up process and while using this website, I may be required to
-                  provide certain personal information, including but not limited to my name, email address, contact
-                  details, and any other information deemed necessary for registration and website usage.
+                  I understand that during the upload process and while using this website, I may be required to provide
+                  certain personal information, including but not limited to my name, email address, contact details,
+                  and any other information deemed necessary for registration and website usage.
                 </Text>
               </Box>
 
@@ -645,9 +678,9 @@ export const AddExperience = () => {
               <Title className="main-heading">Your Work Experience is added.</Title>
               <Text className="main-sub-heading">Let's get it verified</Text>
               <Box className="experience-details">
-                <Box className="company-logo" style={backgroundStyle}>
+                {/* <Box className="company-logo" style={backgroundStyle}>
                   <MdVerified className="verified-icon" color="#17a672" size="22px" />
-                </Box>
+                </Box> */}
                 <Box className="experience-details-text-box">
                   <Text className="designation">{workExperienceData[workExperienceData.length - 1].designation}</Text>
                   <Text className="company-name">{workExperienceData[workExperienceData.length - 1].companyName}</Text>
@@ -690,7 +723,7 @@ export const AddExperience = () => {
                 </Box>
               </Box>
               <Box>
-                <Button className="green-btn btn" onClick={handleGoToVerification}>
+                <Button className="green-btn btn" onClick={open}>
                   Go to Verification
                 </Button>
                 <Button className="cancel-btn btn" onClick={handleProfilePage}>
@@ -700,7 +733,7 @@ export const AddExperience = () => {
             </Box>
           )}
         </section>
-      </main>
+      </Layout>
     </>
   );
 };

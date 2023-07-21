@@ -9,7 +9,6 @@ export const useGeneralSettingsForm = () => {
       dateOfBirth: '',
       phoneLinkedWithAadhar: null,
       aadharNumber: '',
-      phoneLinkedWithPAN: null,
       PANNumber: '',
     },
 
@@ -18,7 +17,6 @@ export const useGeneralSettingsForm = () => {
       emailId: isEmail('Invalid email id!'),
       phoneLinkedWithAadhar: isNotEmpty('This field cannot be empty'),
       aadharNumber: isNotEmpty('Aadhar number cannot be empty'),
-      phoneLinkedWithPAN: isNotEmpty('This field cannot be empty'),
       PANNumber: isNotEmpty('PAN number cannot be empty'),
     },
   });

@@ -5,10 +5,10 @@ import location from '../../assets/location.png';
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
-import { Navbar } from '../Navbar';
 import { BsArrowLeft } from 'react-icons/bs';
 import { AiOutlineRight, AiOutlineHome } from 'react-icons/ai';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
+import { Layout } from '../Layout';
 
 type VerificationType = 'MySelf' | 'Peer';
 
@@ -18,23 +18,10 @@ export const ResidentialInfoDetails: React.FC = () => {
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
   const [checked, setChecked] = useState<boolean>(false);
-  const [residential, setResidentialInfo] = useState<ResidentialInfoResponse>({
-    address_line_1: '',
-    address_line_2: '',
-    landmark: '',
-    pincode: 0,
-    city: '',
-    start_date: null,
-    end_date: null,
-    state: '',
-    country: '',
-    address_type: '',
-    isVerified: false,
-    residentialInfoId: '',
-  });
-  const { residentialInfoData } = useGlobalContext();
+  const [residential, setResidentialInfo] = useState<ResidentialInfoResponse | null>(null);
+  const { residentialInfoData, scrollToTop } = useGlobalContext();
   const { id } = useParams();
-  const filteredInfo = residentialInfoData.find((info: ResidentialInfoResponse) => info.residentialInfoId === id);
+  const filteredInfo = residentialInfoData.find((info: ResidentialInfoResponse) => info.id === id);
 
   const handleAggree = () => {
     if (checked) {
@@ -48,16 +35,19 @@ export const ResidentialInfoDetails: React.FC = () => {
 
   const handleAllAddressesScreen = () => {
     navigate('/candidate/profile/address/allAddresses');
+    scrollToTop();
   };
 
   const handleGoToVerification = (choice: VerificationType) => {
     if (choice === 'MySelf') {
       navigate(`/candidate/profile/address/${id}/verify/me`);
       close();
+      scrollToTop();
     }
     if (choice === 'Peer') {
       close();
       navigate(`/candidate/profile/address/${id}/verify`);
+      scrollToTop();
     }
   };
 
@@ -69,24 +59,25 @@ export const ResidentialInfoDetails: React.FC = () => {
 
   return (
     <>
-      <Navbar />
       {modalStep === 1 && (
         <Modal className="modal" size={'60%'} fullScreen={isMobile} opened={opened} onClose={close} centered>
           <Box className="disclaimer-modal">
-            <Title className="disclaimer-heading">Disclaimer</Title>
-            <Text className="disclaimer-subHeading">Verifying IDs on Greenie</Text>
-            <Button className="primaryBtn" disabled={!checked} onClick={handleAggree}>
-              I Agree
-            </Button>
+            <Title className="disclaimer-heading">Undertaking</Title>
+            <Text className="disclaimer-subHeading">Verifying Address on Greenie</Text>
+
             <Box className="checkbox-box">
               <Checkbox checked={checked} onChange={() => setChecked(!checked)} className="checkbox" color="teal" />
               <Text className="tearms-conditions">
-                I understand that during the sign-up process and while using this website, I may be required to provide
-                certain personal information, including but not limited to my name, email address, contact details, and
-                any other information deemed necessary for registration and website usage.
+                I undertake and understand that by adding my address on Greenie, I am providing accurate and true
+                information. I acknowledge that this information will be used solely for the intended purpose of address
+                verification. I consent to the collection and processing of my data for this purpose and I am aware that
+                I can delete this data anytime I desire.
               </Text>
             </Box>
-            <Text className="policy">Click to view Data and Privacy Policy</Text>
+            <Text className="policy">Click to view - Undertaking and Data and Privacy Policy</Text>
+            <Button className="primaryBtn" disabled={!checked} onClick={handleAggree}>
+              I Agree
+            </Button>
           </Box>
         </Modal>
       )}
@@ -95,8 +86,8 @@ export const ResidentialInfoDetails: React.FC = () => {
           <Box className="residential-info-modal">
             <Title className="residential-info-modal-title">Disclaimer</Title>
             <Text className="address">
-              {residential.address_line_1}, {residential.address_line_2}, {residential.landmark}, {residential.city},{' '}
-              {residential.pincode}
+              {residential?.address_line_1}, {residential?.address_line_2}, {residential?.landmark}, {residential?.city}
+              , {residential?.pincode}
             </Text>
             <Box className="residential-info-modal-box">
               <Box className="residential-info-modal-choice-box" onClick={() => handleGoToVerification('MySelf')}>
@@ -117,7 +108,7 @@ export const ResidentialInfoDetails: React.FC = () => {
           </Box>
         </Modal>
       )}
-      <main className="profile">
+      <Layout>
         <Box className="container" style={{ marginTop: '7rem' }}>
           <Box className="top-header">
             <Box className="see-all-header">
@@ -163,8 +154,8 @@ export const ResidentialInfoDetails: React.FC = () => {
                 <Box className="detail-box">
                   <Title className="title">Tenure</Title>
                   <Text className="detail">
-                    {residential?.start_date?.toString().substring(0, 4)} -{' '}
-                    {residential?.end_date?.toString().substring(0, 4)}{' '}
+                    {residential?.start_date?.toString().substring(3, 15)} -{' '}
+                    {residential?.end_date?.toString().substring(3, 15)}{' '}
                   </Text>
                 </Box>
               </Box>
@@ -220,7 +211,7 @@ export const ResidentialInfoDetails: React.FC = () => {
             </Button>
           </Box>
         </Box>
-      </main>
+      </Layout>
     </>
   );
 };

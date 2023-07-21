@@ -34,10 +34,10 @@ export const ResidentialInfoCard: React.FC<ResidentialInfoCardProps> = ({
           )}
         </Box>
       </Box>
-      <Box>
+      <Box className="card-footer">
         <Text className="since-text">Since</Text>
         <Text className="tenure">
-          {start_date?.toString().substring(0, 4)} - {end_date?.toString().substring(0, 4)}
+          {start_date?.toString().substring(3, 15)} - {end_date?.toString().substring(3, 15)}
         </Text>
       </Box>
     </Box>

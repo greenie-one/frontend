@@ -1,27 +1,26 @@
 import React, { useState } from 'react';
 import { ActionIcon, Text, Box, Button, Title, Modal, Checkbox } from '@mantine/core';
-import tcsLogo from '../../assets/tscLogo.png';
+// import tcsLogo from '../../assets/tscLogo.png';
 import { CgSandClock } from 'react-icons/cg';
-import { MdVerified } from 'react-icons/md';
-import { BiEditAlt } from 'react-icons/bi';
+import { MdVerified, MdEdit } from 'react-icons/md';
 import { AiOutlineDelete } from 'react-icons/ai';
 import { DeleteConfirmationModal } from '../../../../common/GenericModals';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Navbar } from '../Navbar';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { BsArrowLeft } from 'react-icons/bs';
 import { AiOutlineRight } from 'react-icons/ai';
+import { Layout } from '../Layout';
 
 export const ExperienceDetails: React.FC = () => {
   const navigate = useNavigate();
-  const backgroundStyle = {
-    backgroundImage: `url(${tcsLogo})`,
-    backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat',
-  };
+  // const backgroundStyle = {
+  //   backgroundImage: `url(${tcsLogo})`,
+  //   backgroundPosition: 'center',
+  //   backgroundRepeat: 'no-repeat',
+  // };
 
-  const { deleteWorkExperience, workExperienceData } = useGlobalContext();
+  const { deleteWorkExperience, workExperienceData, scrollToTop } = useGlobalContext();
 
   const [checked, setChecked] = useState<boolean>(false);
 
@@ -40,35 +39,35 @@ export const ExperienceDetails: React.FC = () => {
   const filteredExperience = workExperienceData.find((exp) => exp.id === id);
 
   const handleAllExperiencesPage = (): void => {
+    scrollToTop();
     navigate('/candidate/profile/experience/allExperiences');
   };
 
   const handleGoToVerification = () => {
+    scrollToTop();
     navigate(`/candidate/profile/experience/${id}/verify`);
   };
 
   return (
     <>
-      <Navbar />
       <Modal className="modal" size={'60%'} fullScreen={isMobile} opened={opened} onClose={close} centered>
         <Box className="disclaimer-modal">
-          <Title className="disclaimer-heading">Disclaimer</Title>
-          <Text className="disclaimer-subHeading">Verifying IDs on Greenie</Text>
-          <Button className="primaryBtn" disabled={!checked} onClick={handleGoToVerification}>
-            I Agree
-          </Button>
+          <Title className="disclaimer-heading">Undertaking</Title>
+          <Text className="disclaimer-subHeading">Verifying Work experience on Greenie</Text>
+
           <Box className="checkbox-box">
             <Checkbox checked={checked} onChange={() => setChecked(!checked)} className="checkbox" color="teal" />
             <Text className="tearms-conditions">
-              I understand that during the sign-up process and while using this website, I may be required to provide
-              certain personal information, including but not limited to my name, email address, contact details, and
-              any other information deemed necessary for registration and website usage.
+              I have read the undertaking and i authorise Greenie to collect information on my behalf.
             </Text>
           </Box>
-          <Text className="policy">Click to view Data and Privacy Policy</Text>
+          <Text className="policy">Click to view the Undertaking, Data and Privacy policy</Text>
+          <Button className="primaryBtn" disabled={!checked} onClick={handleGoToVerification}>
+            I Agree
+          </Button>
         </Box>
       </Modal>
-      <main className="profile">
+      <Layout>
         <Box className="container" style={{ marginTop: '7rem' }}>
           <Box className="top-header">
             <Box className="see-all-header">
@@ -83,9 +82,9 @@ export const ExperienceDetails: React.FC = () => {
           <Box className="experience-details-screen">
             <Box className="experience-details-wrapper">
               <Box className="experience-details">
-                <Box className="company-logo" style={backgroundStyle}>
+                {/* <Box className="company-logo" style={backgroundStyle}>
                   <MdVerified className="verified-icon" color="#17a672" size="22px" />
-                </Box>
+                </Box> */}
 
                 <Box className="experience-details-text-box">
                   <Text className="designation">{filteredExperience?.designation}</Text>
@@ -103,7 +102,7 @@ export const ExperienceDetails: React.FC = () => {
               </Box>
               <Box className="actions-icons">
                 <Box className="action-icon">
-                  <BiEditAlt />
+                  <MdEdit />
                 </Box>
                 <Box className="action-icon">
                   <ActionIcon
@@ -112,7 +111,7 @@ export const ExperienceDetails: React.FC = () => {
                       deleteModalOpen();
                     }}
                   >
-                    <AiOutlineDelete />
+                    <AiOutlineDelete size={'24px'} color="#697082" />
                   </ActionIcon>
                 </Box>
               </Box>
@@ -155,8 +154,8 @@ export const ExperienceDetails: React.FC = () => {
                 <Box className="comapny-type-box">
                   <Text className="experience-details-box-heading">Tenure</Text>
                   <Text className="experience-details-box-text">
-                    {filteredExperience?.dateOfJoining?.toString().substring(11, 15)}-
-                    {filteredExperience?.dateOfLeaving?.toString().substring(11, 15)}
+                    {filteredExperience?.dateOfJoining?.toString().substring(3, 15)}-
+                    {filteredExperience?.dateOfLeaving?.toString().substring(3, 15)}
                   </Text>
                 </Box>
                 <Box className="comapny-type-box">
@@ -182,7 +181,7 @@ export const ExperienceDetails: React.FC = () => {
             cb={() => handleDeleteWorkInfo(filteredExperience?.id)}
           />
         </Box>
-      </main>
+      </Layout>
     </>
   );
 };

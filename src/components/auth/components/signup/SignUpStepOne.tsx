@@ -36,7 +36,7 @@ const SignUpStepOne = () => {
           />
           <Text className="tearms-condition">
             By creating an account, you agree to our{' '}
-            <a href={TermsAndConditions} download={'Tearms and Conditions'}>
+            <a href={TermsAndConditions} download={'Terms and Conditions'}>
               Terms of Service
             </a>{' '}
             and{' '}

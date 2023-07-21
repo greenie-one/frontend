@@ -37,6 +37,7 @@ $dark: #191919;
     font-size: 12px;
     padding: 0.15rem 1rem;
     margin-left: 1rem;
+    cursor: pointer;
   }
 }
 
@@ -320,9 +321,31 @@ $dark: #191919;
   .folder-wrapper {
     grid-template-columns: repeat(2, 49%);
   }
+
+  .filter-box {
+    display: grid;
+    grid-template-columns: repeat(2, 49%);
+    align-items: center;
+    max-width: 414px;
+    margin-inline: auto;
+    .filter-heading {
+      display: none;
+    }
+    .filter {
+      padding: 0.25rem;
+      margin-left: 0rem;
+      text-align: center;
+      font-size: 10px;
+      margin: 0.25rem;
+    }
+  }
 }
 @media screen and (max-width: 512px) {
   .folder-wrapper {
     grid-template-columns: 100%;
+  }
+
+  .filter {
+    font-size: 10px;
   }
 }

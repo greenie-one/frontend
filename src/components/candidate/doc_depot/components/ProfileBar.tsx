@@ -6,7 +6,7 @@ import { MdVerified } from 'react-icons/md';
 import { useGlobalContext } from '../../../../context/GlobalContext';
 
 export const ProfileBar = () => {
-  const { profileData } = useGlobalContext();
+  const { profileData, IDs } = useGlobalContext();
   return (
     <Box>
       <Box className="profile-bar-profile-details">
@@ -14,12 +14,11 @@ export const ProfileBar = () => {
           {profileData.profilePic ? (
             <Box className="image-box">
               <img src={profileData.profilePic} alt="Profile Image" />
-              <MdVerified color="#17a672" className="verified-icon" size={'24px'} />
             </Box>
           ) : (
             <Box className="image-box">
               <img src={emptyProfile} alt="Profile Image" />
-              <MdVerified color="#17a672" className="verified-icon" size={'24px'} />
+              {IDs.length > 0 && <MdVerified color="#17a672" className="verified-icon" size={'24px'} />}
             </Box>
           )}
 
@@ -27,12 +26,11 @@ export const ProfileBar = () => {
             <Text className="name">
               {profileData.firstName} {profileData.lastName}
             </Text>
-            <Text className="designation">Software Engineer</Text>
           </Box>
         </Box>
         <Box className="right-box">
           <img src={starImg} alt="star Image" />
-          <Text className="ratings">4.5 star</Text>
+          <Text className="ratings">0 star</Text>
         </Box>
       </Box>
     </Box>
