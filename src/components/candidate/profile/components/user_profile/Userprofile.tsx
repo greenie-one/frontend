@@ -71,7 +71,7 @@ export const Userprofile = () => {
   //----------------Bio section-----------------------------------
 
   const userLevel = 0;
-  const greeneId = 'GRN788209';
+  const greeneId = profileData?.greenieId ?? '';
   const screenSize = useMediaQuery('(min-width: 768px)');
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
