@@ -1,19 +1,20 @@
 import React from 'react';
-import styles from '../styles/requestlist.module.css';
 import { useDisclosure } from '@mantine/hooks';
 import { Box, Button, Modal } from '@mantine/core';
 import { RequestListType } from './RequestList';
-
 import { ReminderModal } from './Modals';
-import { HttpClient } from '../../../../utils/generic/httpClient';
+
+import { peerVerificationAPIList } from '../../../../assets/api/ApiList';
 import { useGlobalContext } from '../../../../context/GlobalContext';
+import { HttpClient } from '../../../../utils/generic/httpClient';
 import {
   showErrorNotification,
   showLoadingNotification,
   showSuccessNotification,
 } from '../../../../utils/functions/showNotification';
-import { peerVerificationAPIList } from '../../../../assets/api/ApiList';
+
 import notificationIcon from '../../profile/assets/notification.svg';
+import styles from '../styles/requestlist.module.css';
 
 type RenderRequestListProps = {
   requestType: 'sent' | 'recieved';
@@ -84,20 +85,23 @@ const SentRequestActions: React.FC<{ requestId: string }> = ({ requestId }): JSX
 
 export const RenderRequestList: React.FC<RenderRequestListProps> = ({ requestList }): JSX.Element[] => {
   return requestList.map((request) => {
-    return (
-      <Box key={request.id} className={request_item}>
-        <span className={profile_image}>
-          <img src={notificationIcon} alt="notification" />
-        </span>
-        <Box className={request_item_body}>
-          <span className={request_title}>Request to verify your work experience</span>
-          <span className={request_msg}>
-            You have requested <span style={{ color: '#000000', fontWeight: '500' }}>{request.name}</span> to verify
-            your work experience
+    if (!request.isVerificationCompleted) {
+      return (
+        <Box key={request.id} className={request_item}>
+          <span className={profile_image}>
+            <img src={notificationIcon} alt="notification" />
           </span>
+          <Box className={request_item_body}>
+            <span className={request_title}>Request to verify your work experience</span>
+            <span className={request_msg}>
+              You have requested <span style={{ color: '#000000', fontWeight: '500' }}>{request.name}</span> to verify
+              your work experience
+            </span>
+          </Box>
+          <SentRequestActions requestId={request.id} />
         </Box>
-        <SentRequestActions requestId={request.id} />
-      </Box>
-    );
+      );
+    }
+    return <></>;
   });
 };

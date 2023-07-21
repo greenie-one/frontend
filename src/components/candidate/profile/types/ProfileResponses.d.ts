@@ -8,16 +8,13 @@ type DocumentsResponse = {
 };
 
 type UserProfileType = {
-  _id: string;
+  id: string;
   firstName: string;
   lastName: string;
   bio: string;
   descriptionTags: string[];
-  profilePic: string;
-};
-
-type UserProfileResponse = {
-  profile: UserProfileType;
+  profilePic?: string;
+  greenieId?: string;
 };
 
 type WorkExperience = {

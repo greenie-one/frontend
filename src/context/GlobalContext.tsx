@@ -156,12 +156,13 @@ export const GlobalContextProvider: React.FC<{
     lastName: '',
     bio: '',
     descriptionTags: [],
-    _id: '',
+    id: '',
     profilePic: '',
+    greenieId: '',
   });
 
   const getProfile = async () => {
-    const res = await HttpClient.callApiAuth<UserProfileResponse>(
+    const res = await HttpClient.callApiAuth<UserProfileType>(
       {
         url: `${profileAPIList.getMyProfile}`,
         method: 'GET',
@@ -170,7 +171,7 @@ export const GlobalContextProvider: React.FC<{
     );
 
     if (res.ok) {
-      setProfileData(res.value.profile);
+      setProfileData(res.value);
     } else {
       showErrorNotification(res.error.code);
     }

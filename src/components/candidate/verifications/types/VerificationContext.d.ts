@@ -23,4 +23,5 @@ type VerificationContextType = {
   postVerificationData: () => Promise<void>;
   verificationResponse: VerificationResponseType;
   setVerificationResponse: React.Dispatch<React.SetStateAction<VerificationResponseType>>;
+  personBeingVerified: string;
 };
