@@ -22,7 +22,7 @@ type HttpRequest = {
       method: 'PUT';
     }
   | {
-      body?: Record<string, object>;
+      body?: Record<string, any>;
       method: 'PATCH';
     }
   | {
