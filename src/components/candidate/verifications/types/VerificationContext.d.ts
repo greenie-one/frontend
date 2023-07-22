@@ -16,12 +16,12 @@ type VerificationContextType = {
   activeStep: number;
   setActiveStep: React.Dispatch<React.SetStateAction<number>>;
   totalSteps: number;
-  verificationData: any;
+  verificationData: GetVerificationDataResponse;
   unverifiedLink: string;
   disputeForm: UseFormReturnType<DisputeFormType>;
   getVerificationData: () => Promise<void>;
   postVerificationData: () => Promise<void>;
-  verificationResponse: VerificationResponseType;
-  setVerificationResponse: React.Dispatch<React.SetStateAction<VerificationResponseType>>;
+  verificationResponse: PostVerificationDataType;
+  setVerificationResponse: React.Dispatch<React.SetStateAction<PostVerificationDataType>>;
   personBeingVerified: string;
 };

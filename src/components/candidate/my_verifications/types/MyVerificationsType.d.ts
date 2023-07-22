@@ -7,3 +7,8 @@ type SentRequestActionType = {
   requestId: string;
   name: string;
 };
+
+type CancelationModalType = {
+  cancelationHandler: () => void;
+  name: string;
+};

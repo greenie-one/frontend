@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Box, Button, Text } from '@mantine/core';
 import { BsEmojiFrown, BsEmojiNeutral, BsEmojiSmile, BsEmojiLaughing } from 'react-icons/bs';
-import { VerificationDisclaimer } from './VerificationDisclaimer';
 import { useVerificationContext } from '../context/VerificationContext';
 import { IconType } from 'react-icons/lib';
 
@@ -21,16 +20,24 @@ export const AttitudeVerification: React.FC = (): JSX.Element => {
 
   const verificationHandler = () => {
     if (!attitude) return;
-    const responseData: { [keys: string]: string } = {};
-    responseData['attitudeRating'] = attitude;
 
-    setVerificationResponse({ ...verificationResponse, ...responseData });
+    const responseData: { attitudeRating: string } = {
+      attitudeRating: attitude,
+    };
+
+    setVerificationResponse({
+      ...verificationResponse,
+      mandatoryQuestions: { ...verificationResponse.mandatoryQuestions, ...responseData },
+    });
+
     setActiveStep((current) => current + 1);
   };
 
   return (
     <section className="verification-step">
-      <Text className="question-text">Rate attitude of Candidate 0 least Collaborative, 5 Highly Collaborative</Text>
+      <Text className="question-text">
+        Rate attitude of Candidate (0 - least Collaborative, 5 - Highly Collaborative)
+      </Text>
       <Box className="verification-attitude-wrapper">
         {ratingValuesUpper.map((rating, idx) => {
           const Emoji = rating.emoji;
@@ -61,7 +68,6 @@ export const AttitudeVerification: React.FC = (): JSX.Element => {
           );
         })}
       </Box>
-      <VerificationDisclaimer />
       <Box className="verification-btns-wrapper">
         <Button className="green-btn" onClick={verificationHandler}>
           Continue
