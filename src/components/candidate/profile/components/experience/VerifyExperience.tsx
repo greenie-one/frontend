@@ -183,6 +183,8 @@ export const VerifyExperience: React.FC = () => {
     }
   };
 
+  console.log(createPeerResponse);
+
   const handleCreatePeerRequest = async () => {
     for (const response of createPeerResponse) {
       response.phone = '+91' + response.phone.slice(-10);
@@ -196,8 +198,8 @@ export const VerifyExperience: React.FC = () => {
       );
 
       if (res.ok) {
-        createVerificationRequest('Skills', 'Peer', res.value?.id, response.verificationSkills);
-        createVerificationRequest('Document', 'Peer', res.value?.id, response.verificationDocuments);
+        // createVerificationRequest('Skills', 'Peer', res.value?.id, response.verificationSkills);
+        // createVerificationRequest('Document', 'Peer', res.value?.id, response.verificationDocuments);
         navigate('/candidate/profile/myVerification');
         // const filtered = res.value.filter((document) => document.workExperience === experience?.id);
       } else {

@@ -39,8 +39,8 @@ export const PeerVerification: React.FC<PeerVerificationProps> = ({
           ref: experienceId,
           verificationBy: peer.peerType,
           optionalVerificationFields: [],
-          verificationDocuments: [],
-          verificationSkills: [],
+          documents: [],
+          skills: [],
         },
       ]);
     });

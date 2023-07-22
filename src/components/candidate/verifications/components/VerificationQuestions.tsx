@@ -6,11 +6,16 @@ import { useDisclosure } from '@mantine/hooks';
 type VerificationQuestionsProps = {
   question: React.ReactNode;
   _id: string;
+  parentKey: keyof PostVerificationDataType;
 };
 
 type ResponseObjType = { [keys: string]: string };
 
-export const VerificationQuestions: React.FC<VerificationQuestionsProps> = ({ question, _id }): JSX.Element => {
+export const VerificationQuestions: React.FC<VerificationQuestionsProps> = ({
+  _id,
+  question,
+  parentKey,
+}): JSX.Element => {
   const { verificationResponse, setVerificationResponse, setActiveStep } = useVerificationContext();
   const [disputeModalOpened, { open: disputeModalOpen, close: disputeModalClose }] = useDisclosure();
 
@@ -21,7 +26,10 @@ export const VerificationQuestions: React.FC<VerificationQuestionsProps> = ({ qu
     const responseData: { [keys: string]: ResponseObjType } = {};
     responseData[_id] = responseObj;
 
-    setVerificationResponse({ ...verificationResponse, ...responseData });
+    setVerificationResponse({
+      ...verificationResponse,
+      [parentKey]: { ...verificationResponse[parentKey], ...responseData },
+    });
     setActiveStep((current) => current + 1);
   };
 
@@ -34,18 +42,19 @@ export const VerificationQuestions: React.FC<VerificationQuestionsProps> = ({ qu
           disputeModalClose();
         }}
         setActiveStep={setActiveStep}
+        parentKey={parentKey}
       />
-      <Text className="question-text" w={'45%'}>
-        {question}
-      </Text>
-      <Box className="profile-details-actions">
-        <Button className="green-outline-btn" onClick={approveHandler}>
-          Approve
-        </Button>
-        <Button className="dispute-btn" onClick={disputeModalOpen}>
-          Dispute
-        </Button>
-      </Box>
+      <section className="verification-step">
+        <Text className="question-text">{question}</Text>
+        <Box className="profile-details-actions">
+          <Button className="green-outline-btn" onClick={approveHandler}>
+            Approve
+          </Button>
+          <Button className="dispute-btn" onClick={disputeModalOpen}>
+            Dispute
+          </Button>
+        </Box>
+      </section>
     </>
   );
 };
