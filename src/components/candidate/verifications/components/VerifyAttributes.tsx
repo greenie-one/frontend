@@ -37,33 +37,32 @@ export const VerifyAttributes: React.FC = (): JSX.Element => {
         parentKey="optionalVerificationFields"
       />
       <Box className="profile-details-action-section">
-        {data &&
-          Object.keys(data?.optionalVerificationFields).map((keys, index) => {
-            return optionalAttrDict[keys] ? (
-              <Box className="profile-detail" key={index}>
-                <Box className="details">
-                  <Text className="label">{optionalAttrDict[keys]}</Text>
-                  <Text className="detail">{data?.optionalVerificationFields[keys]}</Text>
-                </Box>
-                <Box className="profile-details-actions">
-                  <Button className="green-outline-btn" onClick={() => approveHandler(keys)}>
-                    Approve
-                  </Button>
-                  <Button
-                    className="dispute-btn"
-                    onClick={() => {
-                      setAttrId(keys);
-                      disputeModalOpen();
-                    }}
-                  >
-                    Dispute
-                  </Button>
-                </Box>
+        {Object.keys(data?.optionalVerificationFields).map((keys, index) => {
+          return optionalAttrDict[keys] ? (
+            <Box className="profile-detail" key={index}>
+              <Box className="details">
+                <Text className="label">{optionalAttrDict[keys]}</Text>
+                <Text className="detail">{data?.optionalVerificationFields[keys]}</Text>
               </Box>
-            ) : (
-              <React.Fragment key={index}></React.Fragment>
-            );
-          })}
+              <Box className="profile-details-actions">
+                <Button className="green-outline-btn" onClick={() => approveHandler(keys)}>
+                  Approve
+                </Button>
+                <Button
+                  className="dispute-btn"
+                  onClick={() => {
+                    setAttrId(keys);
+                    disputeModalOpen();
+                  }}
+                >
+                  Dispute
+                </Button>
+              </Box>
+            </Box>
+          ) : (
+            <React.Fragment key={index}></React.Fragment>
+          );
+        })}
       </Box>
       <Box className="verification-btns-wrapper">
         <Button className="btn next-btn" onClick={() => setActiveStep((current) => current + 1)}>
