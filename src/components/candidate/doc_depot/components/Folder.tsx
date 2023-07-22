@@ -51,6 +51,7 @@ export const Folder: React.FC<FolderProps> = ({ id, name, isFolder, privateUrl }
               fontWeight: 600,
             },
           }}
+          radius={'lg'}
         >
           <Box className="folder-move-modal">
             <Box className="move-folder-wrapper">
@@ -95,6 +96,7 @@ export const Folder: React.FC<FolderProps> = ({ id, name, isFolder, privateUrl }
               fontWeight: 600,
             },
           }}
+          radius={'lg'}
         >
           <Box className="folder-delete-modal">
             <Text className="heading">You are about to delete this file</Text>

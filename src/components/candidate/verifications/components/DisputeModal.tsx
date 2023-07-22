@@ -55,6 +55,7 @@ export const DisputeModal: React.FC<DisputeModalProps> = ({ attrId, opened, setA
 
   return (
     <Modal
+      radius={'lg'}
       centered
       size={'75%'}
       fullScreen={isMobile}

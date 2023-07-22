@@ -25,7 +25,6 @@
 
 .profile_image img {
   aspect-ratio: 1;
-  width: 1.75rem;
 }
 
 .request_item_body {
@@ -39,7 +38,7 @@
 }
 
 .request_msg {
-  color: #7f7f7f;
+  color: #333333;
   font-size: 0.9rem;
 }
 

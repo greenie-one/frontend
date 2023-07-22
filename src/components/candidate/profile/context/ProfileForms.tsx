@@ -70,7 +70,6 @@ export const useProfileForms = () => {
     },
 
     validate: {
-      email: isEmail('Please provide a valid email address'),
       designation: isNotEmpty('Please enter your job title'),
       companyType: isNotEmpty('Please enter Company Type'),
       companyName: isNotEmpty('Please enter your company name'),

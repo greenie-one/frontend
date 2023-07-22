@@ -65,6 +65,7 @@ export const PeerVerification: React.FC<PeerVerificationProps> = ({
             activePeer={activePeer}
             createPeerResponse={createPeerResponse}
             setCreatePeerResponse={setCreatePeerResponse}
+            workExperienceID={experienceId}
           />
         )}
         {selectionPage === 2 && (
@@ -75,6 +76,7 @@ export const PeerVerification: React.FC<PeerVerificationProps> = ({
             verificationStepDispatch={verificationStepDispatch}
             createPeerResponse={createPeerResponse}
             setCreatePeerResponse={setCreatePeerResponse}
+            setSelectionPage={setSelectionPage}
           />
         )}
       </Box>

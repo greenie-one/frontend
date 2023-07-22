@@ -83,10 +83,22 @@ export const VerificationContextProvider: React.FC<{ children: React.ReactNode }
     }
   };
 
+  // const getPeerDocuments = async () => {
+  //   const res = await HttpClient.callApi({
+  //     url: `${peerVerificationAPIList.getDocuments}/${verificationData.id}`,
+  //     method: 'GET',
+  //   });
+  //   if (res.ok) {
+  //     console.log(res.value);
+  //   } else {
+  //     console.log(res.error.code);
+  //   }
+  // };
+
   useEffect(() => {
     getVerificationData();
-    if (verificationBy === 'HR') setTotalSteps(8);
-    else setTotalSteps(9);
+    if (verificationBy === 'HR') setTotalSteps(6);
+    else setTotalSteps(7);
   }, [params.peer, params.uuid]);
 
   const storeValues = {

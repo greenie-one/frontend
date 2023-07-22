@@ -14,6 +14,7 @@ import updateIdTrophy from '../../assets/updateIdTrophy.png';
 import React, { useState } from 'react';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
 import { useNavigate } from 'react-router-dom';
+import { UndertakingText } from '../UndertakingText';
 
 export const IDSection: React.FC = () => {
   const navigate = useNavigate();
@@ -46,7 +47,15 @@ export const IDSection: React.FC = () => {
   return (
     <section className="verificationId-section  container">
       {isAgreed && IDs.length === 0 && (
-        <Modal className="modal" size={'55%'} fullScreen={isMobile} opened={opened} onClose={onClose} centered>
+        <Modal
+          radius={'lg'}
+          className="modal"
+          size={'55%'}
+          fullScreen={isMobile}
+          opened={opened}
+          onClose={onClose}
+          centered
+        >
           <Box className="ids-modal">
             <Text className="title">Select ID that you want to verify</Text>
             <Box className="ids-wrapper">
@@ -64,7 +73,15 @@ export const IDSection: React.FC = () => {
         </Modal>
       )}
       {isAgreed && IDs.length > 0 && (
-        <Modal className="modal" size={'65%'} fullScreen={isMobile} opened={opened} onClose={onClose} centered>
+        <Modal
+          radius={'lg'}
+          className="modal"
+          size={'65%'}
+          fullScreen={isMobile}
+          opened={opened}
+          onClose={onClose}
+          centered
+        >
           <Box className="ids-modal">
             <Text className="title">Select ID that you want to verify</Text>
             <Box className="ids-wrapper">
@@ -81,7 +98,15 @@ export const IDSection: React.FC = () => {
         </Modal>
       )}
       {!isAgreed && (
-        <Modal className="modal" size={'60%'} fullScreen={isMobile} opened={opened} onClose={onClose} centered>
+        <Modal
+          radius={'lg'}
+          className="modal"
+          size={'60%'}
+          fullScreen={isMobile}
+          opened={opened}
+          onClose={onClose}
+          centered
+        >
           <Box className="disclaimer-modal">
             <Title className="disclaimer-heading">Undertaking</Title>
             <Text className="disclaimer-subHeading">Verifying IDs on Greenie</Text>
@@ -92,7 +117,7 @@ export const IDSection: React.FC = () => {
                 I have read the undertaking and i authorise Greenie to collect information on my behalf.
               </Text>
             </Box>
-            <Text className="policy">Click to view the Undertaking, Data and Privacy policy</Text>
+            <UndertakingText />
             <Button className="primaryBtn" disabled={!checked} onClick={() => setIsAgreed(!isAgreed)}>
               I Agree
             </Button>

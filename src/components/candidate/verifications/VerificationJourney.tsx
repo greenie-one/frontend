@@ -13,6 +13,7 @@ import { CompleteVerification } from './components/CompleteVerification';
 import { OthersSpecificQuestions } from './components/OthersSpecificQuestions';
 import { VerifyDocuments } from './components/VerifyDocuments';
 import { VerifySkills } from './components/VerifySkills';
+import { Navbar } from './components/Navbar';
 
 export const VerificationJourney: React.FC = (): JSX.Element => {
   const { activeStep, totalSteps, setActiveStep, unverifiedLink, verificationData, verificationBy } =
@@ -21,6 +22,7 @@ export const VerificationJourney: React.FC = (): JSX.Element => {
 
   return (
     <>
+      <Navbar />
       {activeStep === totalSteps ? (
         <CompleteVerification />
       ) : (

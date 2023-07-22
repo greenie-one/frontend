@@ -6,13 +6,13 @@ import { useVerificationContext } from '../context/VerificationContext';
 import { IconType } from 'react-icons/lib';
 
 const ratingValuesUpper: Array<{ value: string; label: string; emoji: IconType }> = [
-  { value: 'non-collaborative', label: 'Non-Collaborative', emoji: BsEmojiFrown },
-  { value: 'rarely-collaborative', label: 'Rarely Collaborative', emoji: BsEmojiNeutral },
+  { value: 'highly-collaborative', label: 'Highly Collaborative', emoji: BsEmojiLaughing },
+  { value: 'moderately-collaborative', label: 'Moderately Collaborative', emoji: BsEmojiSmile },
   { value: 'occasionally-collaborative', label: 'Occasionally Collaborative', emoji: BsEmojiSmile },
 ];
 const ratingValuesLower: Array<{ value: string; label: string; emoji: IconType }> = [
-  { value: 'moderately-collaborative', label: 'Moderately Collaborative', emoji: BsEmojiSmile },
-  { value: 'highly-collaborative', label: 'Highly Collaborative', emoji: BsEmojiLaughing },
+  { value: 'rarely-collaborative', label: 'Rarely Collaborative', emoji: BsEmojiNeutral },
+  { value: 'non-collaborative', label: 'Non-Collaborative', emoji: BsEmojiFrown },
 ];
 
 export const AttitudeVerification: React.FC = (): JSX.Element => {

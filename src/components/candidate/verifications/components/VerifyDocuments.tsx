@@ -17,7 +17,7 @@ const documents = [
 ];
 
 export const VerifyDocuments = () => {
-  const { activeStep, disputeForm } = useVerificationContext();
+  const { disputeForm } = useVerificationContext();
   const [isDisputed, setIsDisputed] = useState<boolean>(false);
   const [activeDocument, setActiveDocument] = useState<number>(0);
   const isMobile = useMediaQuery('(max-width: 768px)');
@@ -51,7 +51,7 @@ export const VerifyDocuments = () => {
   return (
     <section className="verification-step">
       {!isDisputed && (
-        <Modal centered size={'75%'} fullScreen={isMobile} opened={opened} onClose={close}>
+        <Modal centered size={'75%'} fullScreen={isMobile} opened={opened} onClose={close} radius={'lg'}>
           <Box className="verification-modal">
             <Text className="document">{documents[activeDocument].fileName}</Text>
             <Box className="profile-details-actions" my={'1rem'}>
@@ -67,6 +67,7 @@ export const VerifyDocuments = () => {
       )}
       {isDisputed && (
         <Modal
+          radius={'lg'}
           centered
           size={'75%'}
           fullScreen={isMobile}

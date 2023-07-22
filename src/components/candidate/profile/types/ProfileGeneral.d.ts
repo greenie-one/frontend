@@ -94,3 +94,5 @@ type ExperienceDocuments = {
   privateUrl: string;
   workExperience: string;
 };
+
+type ExperienceDetailsModal = 'Verify Experience' | 'Show Documents' | 'Show Skills' | null;

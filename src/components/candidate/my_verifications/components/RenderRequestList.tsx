@@ -48,7 +48,7 @@ const ActionBtns: React.FC<{ type: 'sent' | 'recieved'; cbRight: () => void; cbL
   );
 };
 
-const SentRequestActions: React.FC<{ requestId: string }> = ({ requestId }): JSX.Element => {
+const SentRequestActions: React.FC<SentRequestActionType> = ({ requestId, name }): JSX.Element => {
   const { authClient } = useGlobalContext();
   const [opened, { open, close }] = useDisclosure(false);
 
@@ -77,7 +77,7 @@ const SentRequestActions: React.FC<{ requestId: string }> = ({ requestId }): JSX
     <>
       <ActionBtns type="sent" cbRight={open} cbLeft={handleCancelRequest} />
       <Modal opened={opened} onClose={close} title="Confirmation" centered radius="lg" padding="xl" size="lg">
-        <ReminderModal confirmationHandler={handleRemind} />
+        <ReminderModal confirmationHandler={handleRemind} name={name} />
       </Modal>
     </>
   );
@@ -98,7 +98,13 @@ export const RenderRequestList: React.FC<RenderRequestListProps> = ({ requestLis
               your work experience
             </span>
           </Box>
-          <SentRequestActions requestId={request.id} />
+          {request.isVerificationCompleted ? (
+            <Box className={request_actions}>
+              <Button className={request_action_btns}>Completed</Button>
+            </Box>
+          ) : (
+            <SentRequestActions requestId={request.id} name={request.name} />
+          )}
         </Box>
       );
     }

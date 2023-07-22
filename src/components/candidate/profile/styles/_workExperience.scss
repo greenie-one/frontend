@@ -275,7 +275,8 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    margin-block: 3rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
 
     .company-logo {
       width: 120px;
@@ -346,7 +347,7 @@
   }
 
   .basic-info {
-    margin-top: 2rem;
+    margin-top: 1rem;
 
     .basic-info-box-wrapper {
       display: grid;
@@ -369,6 +370,7 @@
     font-weight: 600;
     font-size: 14px;
     text-decoration: underline;
+    cursor: pointer;
   }
 }
 
@@ -379,8 +381,8 @@
   justify-content: space-between;
 
   .checked-icon {
-    margin-bottom: 2rem;
-    margin-top: 4rem;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
   }
 
   .main-heading {
@@ -408,7 +410,7 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    margin-bottom: 3rem;
+    margin-bottom: 1.5rem;
 
     .company-logo {
       width: 120px;
@@ -450,6 +452,7 @@
   .docs-box {
     text-align: center;
     min-width: 90%;
+
     .docs-wrapper {
       margin-block: 1rem;
       display: grid;
@@ -465,7 +468,10 @@
   }
 
   .add-skills-wrapper {
-    margin-block: 1rem;
+    padding-block: 0.5rem;
+    .add-skill-box {
+      margin-block: 0rem;
+    }
   }
 
   .cancel-btn {
@@ -479,6 +485,43 @@
     &:hover {
       opacity: 0.7;
     }
+  }
+}
+
+.skills-modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  .skill-modal-title {
+    font-family: Inter;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 19px;
+    letter-spacing: -0.02em;
+    text-align: center;
+    color: $dark;
+  }
+  .add-skills-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .folder-wrapper {
+    width: 100%;
+    margin-top: 1.5rem;
+
+    .folder {
+      &:hover {
+        border: 1px solid $green;
+      }
+    }
+  }
+
+  .green-btn {
+    margin: 1rem auto;
   }
 }
 

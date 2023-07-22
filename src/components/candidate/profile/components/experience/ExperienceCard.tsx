@@ -12,8 +12,8 @@ export const ExperienceCard: React.FC<ExperienceCardProp> = ({
   return (
     <Box className="experience-card">
       <Box>
-        <Text className="position">{position.substring(0, 25)}</Text>
         <Text className="companyName">{companyName.substring(0, 25)}</Text>
+        <Text className="position">{position.substring(0, 25)}</Text>
       </Box>
 
       {isVerified ? (

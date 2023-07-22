@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { ActionIcon, Text, Box, Button, Title, Modal, Checkbox } from '@mantine/core';
-// import tcsLogo from '../../assets/tscLogo.png';
 import { CgSandClock } from 'react-icons/cg';
-import { MdVerified, MdEdit } from 'react-icons/md';
+import { MdVerified } from 'react-icons/md';
 import { AiOutlineDelete } from 'react-icons/ai';
 import { DeleteConfirmationModal } from '../../../../common/GenericModals';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
@@ -11,28 +10,57 @@ import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { BsArrowLeft } from 'react-icons/bs';
 import { AiOutlineRight } from 'react-icons/ai';
 import { Layout } from '../Layout';
+import { ExperienceDetailsModal } from '../../types/ProfileGeneral';
+import { skillExpertiseDict } from '../../../constants/dictionaries';
+import { docDepotAPIList } from '../../../../../assets/api/ApiList';
+import { HttpClient } from '../../../../../utils/generic/httpClient';
+import { ExperienceDocuments } from '../../types/ProfileGeneral';
+import { showErrorNotification } from '../../../../../utils/functions/showNotification';
+import pdfIcon from '../../assets/pdfIcon.png';
+import { Link } from 'react-router-dom';
+import { UndertakingText } from '../UndertakingText';
 
 export const ExperienceDetails: React.FC = () => {
   const navigate = useNavigate();
-  // const backgroundStyle = {
-  //   backgroundImage: `url(${tcsLogo})`,
-  //   backgroundPosition: 'center',
-  //   backgroundRepeat: 'no-repeat',
-  // };
-
-  const { deleteWorkExperience, workExperienceData, scrollToTop } = useGlobalContext();
-
+  const [openModal, setOpenModal] = useState<ExperienceDetailsModal>(null);
+  const { deleteWorkExperience, workExperienceData, scrollToTop, skillData, authClient } = useGlobalContext();
   const [checked, setChecked] = useState<boolean>(false);
-
+  const [experienceDocuments, setExperienceDocuments] = useState<ExperienceDocuments[]>([]);
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
-
   const [deleteModalOpened, { open: deleteModalOpen, close: deleteModalClose }] = useDisclosure(false);
+
+  const getExperienceDocument = async () => {
+    const res = await HttpClient.callApiAuth<ExperienceDocuments[]>(
+      {
+        url: `${docDepotAPIList.getAllDocuments}/work`,
+        method: 'GET',
+      },
+      authClient
+    );
+    if (res.ok) {
+      const filtered = res.value.filter((document) => document.workExperience === id);
+      setExperienceDocuments(filtered);
+    } else {
+      showErrorNotification(res.error.code);
+    }
+  };
 
   const handleDeleteWorkInfo = (_id: string): void => {
     deleteWorkExperience(_id);
     deleteModalClose();
     navigate('/candidate/profile');
+  };
+
+  const handleOpenModal = (modalType: ExperienceDetailsModal) => {
+    if (modalType === 'Show Documents') {
+      getExperienceDocument();
+      setOpenModal(modalType);
+      open();
+    } else {
+      setOpenModal(modalType);
+      open();
+    }
   };
 
   const { id } = useParams();
@@ -43,6 +71,10 @@ export const ExperienceDetails: React.FC = () => {
     navigate('/candidate/profile/experience/allExperiences');
   };
 
+  const handleProfilePage = (): void => {
+    navigate('/candidate/profile');
+  };
+
   const handleGoToVerification = () => {
     scrollToTop();
     navigate(`/candidate/profile/experience/${id}/verify`);
@@ -50,42 +82,90 @@ export const ExperienceDetails: React.FC = () => {
 
   return (
     <>
-      <Modal className="modal" size={'60%'} fullScreen={isMobile} opened={opened} onClose={close} centered>
-        <Box className="disclaimer-modal">
-          <Title className="disclaimer-heading">Undertaking</Title>
-          <Text className="disclaimer-subHeading">Verifying Work experience on Greenie</Text>
+      {openModal === 'Verify Experience' && (
+        <Modal
+          radius={'lg'}
+          className="modal"
+          size={'60%'}
+          fullScreen={isMobile}
+          opened={opened}
+          onClose={close}
+          centered
+        >
+          <Box className="disclaimer-modal">
+            <Title className="disclaimer-heading">Undertaking</Title>
+            <Text className="disclaimer-subHeading">Verifying Work experience on Greenie</Text>
 
-          <Box className="checkbox-box">
-            <Checkbox checked={checked} onChange={() => setChecked(!checked)} className="checkbox" color="teal" />
-            <Text className="tearms-conditions">
-              I have read the undertaking and i authorise Greenie to collect information on my behalf.
-            </Text>
+            <Box className="checkbox-box">
+              <Checkbox checked={checked} onChange={() => setChecked(!checked)} className="checkbox" color="teal" />
+              <Text className="tearms-conditions">
+                I have read the undertaking and i authorise Greenie to collect information on my behalf.
+              </Text>
+            </Box>
+            <UndertakingText />
+            <Button className="primaryBtn" disabled={!checked} onClick={handleGoToVerification}>
+              I Agree
+            </Button>
           </Box>
-          <Text className="policy">Click to view the Undertaking, Data and Privacy policy</Text>
-          <Button className="primaryBtn" disabled={!checked} onClick={handleGoToVerification}>
-            I Agree
-          </Button>
-        </Box>
-      </Modal>
+        </Modal>
+      )}
+      {openModal === 'Show Skills' && (
+        <Modal size={'80%'} fullScreen={isMobile} opened={opened} onClose={close} centered radius={'lg'}>
+          <Box className="skills-modal">
+            <Title className="skill-modal-title">Skills</Title>
+            <Box className="add-skills-wrapper">
+              {skillData
+                .filter((skill) => skill.workExperience === id)
+                .map(({ skillName, expertise }, index) => {
+                  return (
+                    <Box key={index} className="add-skill-box">
+                      <Text className="add-skill-name">{skillName}</Text>
+                      <Text className="add-skill-rate">{skillExpertiseDict[expertise]}</Text>
+                    </Box>
+                  );
+                })}
+            </Box>
+            <Button className="green-btn">Continue</Button>
+          </Box>
+        </Modal>
+      )}
+      {openModal === 'Show Documents' && (
+        <Modal size={'80%'} fullScreen={isMobile} opened={opened} onClose={close} centered radius={'lg'}>
+          <Box className="skills-modal">
+            <Title className="skill-modal-title">Documents</Title>
+            {experienceDocuments.length === 0 ? (
+              <Text>No documents added</Text>
+            ) : (
+              <Box className="folder-wrapper">
+                {experienceDocuments.map(({ name, _id, privateUrl }) => {
+                  return (
+                    <Link key={_id} className="folder" to={privateUrl} target="_blank">
+                      <img src={pdfIcon} alt="PDF Icon" />
+                      <Text>{name.substring(0, 20)}</Text>
+                    </Link>
+                  );
+                })}
+              </Box>
+            )}
+          </Box>
+        </Modal>
+      )}
+
       <Layout>
         <Box className="container" style={{ marginTop: '7rem' }}>
           <Box className="top-header">
             <Box className="see-all-header">
-              <Box className="go-back-btn" onClick={handleAllExperiencesPage}>
+              <Box className="go-back-btn" onClick={handleProfilePage}>
                 <BsArrowLeft className="arrow-left-icon" size={'16px'} />
                 <Text>Profile</Text>
                 <AiOutlineRight className="arrow-right-icon" size={'16px'} />
               </Box>
-              <Text>{`Work Experience (${workExperienceData.length})`}</Text>
+              <Text onClick={handleAllExperiencesPage}>{`Work Experience (${workExperienceData.length})`}</Text>
             </Box>
           </Box>
           <Box className="experience-details-screen">
             <Box className="experience-details-wrapper">
               <Box className="experience-details">
-                {/* <Box className="company-logo" style={backgroundStyle}>
-                  <MdVerified className="verified-icon" color="#17a672" size="22px" />
-                </Box> */}
-
                 <Box className="experience-details-text-box">
                   <Text className="designation">{filteredExperience?.designation}</Text>
                   <Text className="company-name">{filteredExperience?.companyName}</Text>
@@ -101,9 +181,6 @@ export const ExperienceDetails: React.FC = () => {
                 </Box>
               </Box>
               <Box className="actions-icons">
-                <Box className="action-icon">
-                  <MdEdit />
-                </Box>
                 <Box className="action-icon">
                   <ActionIcon
                     onClick={(event) => {
@@ -132,7 +209,7 @@ export const ExperienceDetails: React.FC = () => {
                       rel="noopener noreferrer"
                       className="details-link"
                     >
-                      {filteredExperience?.companyName}
+                      {filteredExperience?.linkedInUrl}
                     </a>
                   ) : (
                     '-'
@@ -167,10 +244,14 @@ export const ExperienceDetails: React.FC = () => {
               </Box>
             </Box>
             <Box className="experience-details-links">
-              <Text className="details-link">Show Documents</Text>
-              <Text className="details-link">Show Skills</Text>
+              <Text className="details-link" onClick={() => handleOpenModal('Show Documents')}>
+                Show Documents
+              </Text>
+              <Text className="details-link" onClick={() => handleOpenModal('Show Skills')}>
+                Show Skills
+              </Text>
             </Box>
-            <Button className="green-btn" onClick={open}>
+            <Button className="green-btn" onClick={() => handleOpenModal('Verify Experience')}>
               Get Verified
             </Button>
           </Box>

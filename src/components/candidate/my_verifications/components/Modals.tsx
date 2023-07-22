@@ -19,10 +19,10 @@ export const AcceptanceModal: React.FC<{ confirmationHandler: () => void }> = ({
   );
 };
 
-export const ReminderModal: React.FC<{ confirmationHandler: () => void }> = ({ confirmationHandler }): JSX.Element => {
+export const ReminderModal: React.FC<ReminderModalType> = ({ confirmationHandler, name }): JSX.Element => {
   return (
     <Box className="modal-content">
-      <h3 className="modal-content-heading">You are about to send a reminder to John Marston!</h3>
+      <h3 className="modal-content-heading">You are about to send a reminder to {name}!</h3>
       <p className="modal-content-msg">Request sent of 23rd April 2012 (13 days ago)</p>
       <Button radius="xl" className="modal-action-btn" onClick={confirmationHandler}>
         Send Reminder

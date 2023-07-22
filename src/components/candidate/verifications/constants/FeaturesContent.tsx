@@ -17,9 +17,9 @@ export const featuresCardContent: Array<{
 }> = [
   {
     id: randomId(),
+    title: 'Professional Profiles',
     cardBg: '#17A672',
-    title: 'Instant Verification Of Documents',
-    text: "Greeni's cutting edge automation enables verifying identity, address, employment, salary, experience and skills under 100 seconds",
+    text: 'Streamlining background checks with State-of-the-Art technology redefining trust in the verification industry',
     textColor: '#FFFFFF',
     titleColor: '#FFFFFF',
     illustrationSmall: instantVerificationMobile,
@@ -38,21 +38,23 @@ export const featuresCardContent: Array<{
   {
     id: randomId(),
     cardBg: '#85D1B5',
-    title: 'Professional Profiles',
+
+    title: 'Contract Management Tool',
+    text: "Enhance your team's productivity by using Greenie's in-built Contract Management Tool enabling you to effortlessly create robust contracts or upload and modify existing ones.",
     titleColor: '#FFFFFF',
-    text: 'Greenie verifies all candidate profiles, providing HR with dependable information prior to the interview. HR can then simply conduct interviews, negotiate salary and onboard candidates',
     textColor: '#FFFFFF',
-    illustrationSmall: professionalProfiles,
-    illustrationLarge: professionalProfiles,
+
+    illustrationSmall: dataControll,
+    illustrationLarge: dataControll,
   },
   {
     id: randomId(),
-    title: 'Contract Management Tool',
-    text: "Enhance your team's productivity by using Greenie's in-built Contract Management Tool enabling you to effortlessly create robust contracts or upload and modify existing ones.",
-    illustrationSmall: dataControll,
-    illustrationLarge: dataControll,
+    title: 'Instant Verification Of Documents',
+    text: "Greeni's cutting edge automation enables verifying identity, address, employment, salary, experience and skills under 100 seconds",
     cardBg: '#A0E2E1',
     titleColor: '#310805',
     textColor: '#191819',
+    illustrationSmall: professionalProfiles,
+    illustrationLarge: professionalProfiles,
   },
 ];

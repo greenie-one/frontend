@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, Box, Checkbox } from '@mantine/core';
 import { useGlobalContext } from '../../../../../../context/GlobalContext';
 import { PageActionBtns } from './PageActionBtns';
@@ -11,8 +11,10 @@ export const SkillSelection: React.FC<{
   activePeer: number;
   setCreatePeerResponse: React.Dispatch<React.SetStateAction<CreatePeerResponseType[]>>;
   createPeerResponse: CreatePeerResponseType[];
-}> = ({ setSelectionPage, activePeer, setCreatePeerResponse, createPeerResponse }): JSX.Element => {
+  workExperienceID: string;
+}> = ({ setSelectionPage, activePeer, setCreatePeerResponse, createPeerResponse, workExperienceID }): JSX.Element => {
   const { skillData } = useGlobalContext();
+  const [filteredSkills, setFilteredSkills] = useState<SkillResponse[]>([]);
 
   const handleMark = (event: React.ChangeEvent<HTMLInputElement>, id: string) => {
     const updatedList = [];
@@ -39,6 +41,11 @@ export const SkillSelection: React.FC<{
     setCreatePeerResponse(updatedList);
   };
 
+  useEffect(() => {
+    const filteredData = skillData.filter((skill) => skill.workExperience === workExperienceID);
+    setFilteredSkills(filteredData);
+  }, []);
+
   return (
     <>
       <Box className="documents-action-section">
@@ -50,24 +57,20 @@ export const SkillSelection: React.FC<{
           </Box>
 
           <Box className="selected-skills">
-            {skillData
-              .filter((skill) => {
-                return true;
-              })
-              .map((skill, idx) => {
-                return (
-                  <Box key={idx}>
-                    <Box className="selected-skill">
-                      <Checkbox
-                        checked={createPeerResponse[activePeer].verificationSkills.includes(skill.id)}
-                        onChange={(event) => handleMark(event, skill.id)}
-                      />
-                      <Text>{skill.skillName}</Text>
-                      {skill.expertise && <Text className="add-skill-rate">{skillExpertiseDict[skill.expertise]}</Text>}
-                    </Box>
+            {filteredSkills.map((skill, idx) => {
+              return (
+                <Box key={idx}>
+                  <Box className="selected-skill">
+                    <Checkbox
+                      checked={createPeerResponse[activePeer].verificationSkills.includes(skill.id)}
+                      onChange={(event) => handleMark(event, skill.id)}
+                    />
+                    <Text>{skill.skillName}</Text>
+                    {skill.expertise && <Text className="add-skill-rate">{skillExpertiseDict[skill.expertise]}</Text>}
                   </Box>
-                );
-              })}
+                </Box>
+              );
+            })}
           </Box>
         </Box>
         <PageActionBtns cb={() => setSelectionPage(2)} />

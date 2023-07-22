@@ -5,9 +5,7 @@ import { useForm, isNotEmpty, isEmail, hasLength } from '@mantine/form';
 import { MdVerified, MdOutlineDelete } from 'react-icons/md';
 import { AiOutlinePlus, AiFillInfoCircle } from 'react-icons/ai';
 import { CgSandClock, CgProfile } from 'react-icons/cg';
-// import tscLogo from '../../assets/tscLogo.png';
 import noData from '../../assets/noData.png';
-import pdfIcon from '../../assets/pdfIcon.png';
 import { useParams, useNavigate } from 'react-router-dom';
 import { BsArrowLeft } from 'react-icons/bs';
 import { AiOutlineRight } from 'react-icons/ai';
@@ -26,31 +24,24 @@ import { HttpClient, Result } from '../../../../../utils/generic/httpClient';
 import { docDepotAPIList, peerVerificationAPIList, workExperienceAPiList } from '../../../../../assets/api/ApiList';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
 import { ExperienceDocuments } from '../../types/ProfileGeneral';
-import { optionalAttrDict, skillExpertiseDict } from '../../../constants/dictionaries';
+
 import { Layout } from '../Layout';
+import { ConfirmRequest } from './peer_verfication/ConfirmRequest';
 
 export const VerifyExperience: React.FC = () => {
   const navigate = useNavigate();
   const [experience, setExperience] = useState<WorkExperience | undefined>({} as WorkExperience);
   const [createPeerResponse, setCreatePeerResponse] = useState<CreatePeerResponseType[]>([]);
-  // const [selectedDocuments, setSelectedDocuments] = useState<Array<string>>([]);
-  // const [selectedSkills, setSelectedSkills] = useState<Array<string>>([]);
 
   const [addedPeers, setAddedPeers] = useState<Peer[]>([]);
   const [activePeer, setActivePeer] = useState<number>(0);
-  const { authClient, skillData, scrollToTop, workExperienceData } = useGlobalContext();
+  const { authClient, scrollToTop, workExperienceData } = useGlobalContext();
   const authToken = authClient.getAccessToken();
 
   const isMobile = useMediaQuery('(max-width: 768px)');
   const isTablet = useMediaQuery('(max-width: 1024px)');
   const [opened, { open, close }] = useDisclosure(false);
   const [experienceDocuments, setExperienceDocuments] = useState<ExperienceDocuments[]>([]);
-
-  // const backgroundStyle = {
-  //   backgroundImage: `url(${tscLogo})`,
-  //   backgroundPosition: 'center',
-  //   backgroundRepeat: 'no-repeat',
-  // };
 
   const VerifiationStepReducer = (state: ReviewStepState, action: ReviewStepAction): ReviewStepState => {
     switch (action.type) {
@@ -226,7 +217,14 @@ export const VerifyExperience: React.FC = () => {
 
   return (
     <>
-      <Modal size={isTablet ? '80%' : '60%'} fullScreen={isMobile} opened={opened} onClose={close} centered>
+      <Modal
+        radius={'lg'}
+        size={isTablet ? '80%' : '60%'}
+        fullScreen={isMobile}
+        opened={opened}
+        onClose={close}
+        centered
+      >
         <Box className="verify-experience-modal">
           <Title className="heading">Your request has been sent</Title>
           <Text className="subHeading">Verifying your work experience</Text>
@@ -274,10 +272,6 @@ export const VerifyExperience: React.FC = () => {
           {currentStep === 0 && (
             <Box className="add-peer-box">
               <Box className="experience-details">
-                {/* <Box className="company-logo" style={backgroundStyle}>
-                  <MdVerified className="verified-icon" color="#17a672" size="22px" />
-                </Box> */}
-
                 <Box className="experience-details-text-box">
                   <Text className="designation">{experience?.designation}</Text>
                   <Text className="company-name">{experience?.companyName}</Text>
@@ -431,135 +425,14 @@ export const VerifyExperience: React.FC = () => {
             </Box>
           )}
           {currentStep === 2 && (
-            <Box className="confirm-request-box">
-              <Box className="document-action-heading-box">
-                <Text className="document-action-heading">Confirm your work experience</Text>
-                <Text className="document-action-sub-heading">
-                  The following skills are part of your work experience
-                </Text>
-              </Box>
-
-              <Box className="peers-list">
-                <Text className="document-action-heading">Requesting</Text>
-                <Box className="requesting-peers">
-                  {addedPeers.map(({ name, peerType }, index) => {
-                    return (
-                      <Box key={index} className="requesting-peer">
-                        <Box className="profile-picture"></Box>
-                        <Box className="requesting-peer-text-box">
-                          <Text className="name">{name}</Text>
-                          {peerType === 'LINE_MANAGER' && <Text className="peer-type">Line Manager</Text>}
-                          {peerType === 'REPORTING_MANAGER' && <Text className="peer-type">Reporting Manager</Text>}
-                          {peerType === 'HR' && <Text className="peer-type">HR</Text>}
-                          {peerType === 'COLLEAGUE' && <Text className="peer-type">Colleague</Text>}
-                          {peerType === 'CXO' && <Text className="peer-type">CXO</Text>}
-                        </Box>
-                      </Box>
-                    );
-                  })}
-                </Box>
-              </Box>
-              <Box className="details-box">
-                <Text className="document-action-heading">To verify</Text>
-                <Box className="experience-details">
-                  {/* <Box className="company-logo" style={backgroundStyle}>
-                    <MdVerified className="verified-icon" color="#17a672" size="22px" />
-                  </Box> */}
-
-                  <Box className="experience-details-text-box">
-                    <Text className="designation">{experience?.designation}</Text>
-                    <Text className="company-name">{experience?.companyName}</Text>
-                    {experience?.isVerified ? (
-                      <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
-                        Verified
-                      </Button>
-                    ) : (
-                      <Button leftIcon={<CgSandClock size={'16px'} />} className="pending">
-                        Pending
-                      </Button>
-                    )}
-                  </Box>
-                </Box>
-              </Box>
-              <Box>
-                {createPeerResponse.map((response, idx) => {
-                  return (
-                    <React.Fragment key={idx}>
-                      <Box className="document-list">
-                        <Text className="document-action-heading">With Documents</Text>
-                        <Box>
-                          {addedPeers.map((peer, index) => {
-                            return (
-                              <Box key={index} className="docs-wrapper">
-                                {experienceDocuments
-                                  .filter((doc) => createPeerResponse[index].verificationDocuments.includes(doc._id))
-                                  .map((document, index) => {
-                                    return (
-                                      <Box className="document" key={index}>
-                                        <img className="pdf-icon" src={pdfIcon} alt="pdf icon" />
-                                        <Text className="document-name">{document.name.substring(0, 15)}...</Text>
-                                      </Box>
-                                    );
-                                  })}
-                              </Box>
-                            );
-                          })}
-                        </Box>
-                      </Box>
-                      <Box className="skills-list">
-                        <Text className="document-action-heading">Skills</Text>
-                        <Box>
-                          {addedPeers.map((peer, index) => {
-                            return (
-                              <Box key={index} className="add-skills-wrapper">
-                                {skillData
-                                  .filter((skill) => skill.workExperience === experience?.id)
-                                  .filter((skill) => createPeerResponse[index].verificationSkills.includes(skill.id))
-                                  .map((skill: Skill, index: number) => {
-                                    const { expertise, skillName } = skill;
-                                    return (
-                                      <Box key={index} className="add-skill-box">
-                                        <Text className="add-skill-name">{skillName}</Text>
-                                        {expertise && (
-                                          <Text className="add-skill-rate">{skillExpertiseDict[expertise]}</Text>
-                                        )}
-                                      </Box>
-                                    );
-                                  })}
-                              </Box>
-                            );
-                          })}
-                        </Box>
-                      </Box>
-                      <Box className="skills-list">
-                        <Text className="document-action-heading">Attributes</Text>
-                        <Box className="add-skills-wrapper">
-                          {response.optionalVerificationFields.map((attr, index: number) => {
-                            return (
-                              <Text key={index} className="add-skill-name">
-                                {optionalAttrDict[attr]}
-                              </Text>
-                            );
-                          })}
-                        </Box>
-                      </Box>
-                    </React.Fragment>
-                  );
-                })}
-              </Box>
-
-              <Box className="see-peers-btn-wrapper">
-                <Button className="green-btn" onClick={handleCreatePeerRequest}>
-                  Confirm and send
-                </Button>
-                <Button
-                  className="cancel-btn"
-                  onClick={() => verificationStepDispatch({ type: ReviewActionType.PREVIOUS_STEP })}
-                >
-                  Cancel
-                </Button>
-              </Box>
-            </Box>
+            <ConfirmRequest
+              addedPeers={addedPeers}
+              experience={experience}
+              experienceDocuments={experienceDocuments}
+              createPeerResponse={createPeerResponse}
+              handleCreatePeerRequest={handleCreatePeerRequest}
+              verificationStepDispatch={verificationStepDispatch}
+            />
           )}
         </Box>
       </Layout>

@@ -3,7 +3,7 @@ import { Text, Box, Button, TextInput, Title, Checkbox } from '@mantine/core';
 import { BsArrowLeft } from 'react-icons/bs';
 import { AiOutlineRight } from 'react-icons/ai';
 import PanImg from '../../assets/Pan.png';
-import john from '../../assets/johnMarston.png';
+import emptyProfile from '../../assets/emptyProfile.png';
 import { PANAPIList } from '../../../../../assets/api/ApiList';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
 import { HttpClient, Result } from '../../../../../utils/generic/httpClient';
@@ -14,11 +14,12 @@ import {
 } from '../../../../../utils/functions/showNotification';
 import { useNavigate } from 'react-router-dom';
 import { Layout } from '../Layout';
+import privacyPolicy from '../../../../auth/assets/Privacy Policy-Greenie.pdf';
 
 export const VerifyPanCard = () => {
   const navigate = useNavigate();
   const [checked, setChecked] = useState<boolean>(false);
-  const { authClient, scrollToTop, verifyPANForm, setForceRender } = useGlobalContext();
+  const { authClient, scrollToTop, verifyPANForm, setForceRender, profileData } = useGlobalContext();
   const [panIsVerified, setPanIsVerified] = useState<boolean>(false);
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -53,7 +54,7 @@ export const VerifyPanCard = () => {
 
   return (
     <Layout>
-      <section className="container">
+      <section className="container" style={{ marginTop: '7rem' }}>
         <Box className="see-all-header">
           <Box className="go-back-btn" onClick={handlePageChange}>
             <BsArrowLeft className="arrow-left-icon" size={'16px'} />
@@ -70,8 +71,15 @@ export const VerifyPanCard = () => {
           <Box className="document-verified-container">
             <Box className="document-verified-left-box">
               <Box className="left-img-box">
-                <img src={john} className="verified-document-profile" alt="" />
-                <Text className="verified-document-name">John Jocab Marston</Text>
+                {profileData.profilePic ? (
+                  <img src={profileData.profilePic} className="verified-document-profile" alt="" />
+                ) : (
+                  <img src={emptyProfile} className="verified-document-profile" alt="" />
+                )}
+
+                <Text className="verified-document-name">
+                  {profileData.firstName} {profileData.lastName}
+                </Text>
               </Box>
 
               <Box className="left-text-box">
@@ -169,7 +177,9 @@ export const VerifyPanCard = () => {
                 </Text>
               </Box>
 
-              <Text className="policy">Click to view Data and Privacy Policy</Text>
+              <a href={privacyPolicy} download={'Data and Privacy Policy'} className="policy">
+                Click to view Data and Privacy Policy
+              </a>
             </Box>
           </form>
         )}

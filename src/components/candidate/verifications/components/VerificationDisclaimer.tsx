@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text } from '@mantine/core';
+import privacyPolicy from '../../../auth/assets/Privacy Policy-Greenie.pdf';
 
 export const VerificationDisclaimer: React.FC = (): JSX.Element => {
   return (
@@ -9,7 +10,9 @@ export const VerificationDisclaimer: React.FC = (): JSX.Element => {
         personal information, including but not limited to my name, email address, contact details, and any other
         information deemed necessary for registration and website usage.
       </Text>
-      <Text className="policy">Click to view Data and Privacy Policy</Text>
+      <a href={privacyPolicy} download={'Data and Privacy Policy'} className="policy">
+        Click to view Data and Privacy Policy
+      </a>
     </>
   );
 };

@@ -47,7 +47,7 @@ const App = () => {
             <Route path="auth" element={<AuthPage />} />
             <Route path="waitlist" element={<Waitlist />} />
             <Route path="oauth/google/callback" element={<GoogleAuthRedirect />} />
-            <Route path="/verification" element={<ExperienceVerification />} />
+            <Route path="/verification/:peer/:uuid" element={<ExperienceVerification />} />
 
             <Route element={<AuthVerificationLayout />}>
               <Route path="candidate/profile">
@@ -74,6 +74,7 @@ const App = () => {
                 <Route path="docDepot" element={<DocDepotPage />} />
                 <Route path="myVerification" element={<MyVerifications />} />
               </Route>
+              R
             </Route>
 
             <Route path="privacy" element={<PrivacyPolicyPage />} />

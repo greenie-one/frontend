@@ -3,7 +3,6 @@ import { Text, Box, Button, TextInput, Title, Checkbox } from '@mantine/core';
 import { BsArrowLeft } from 'react-icons/bs';
 import { AiOutlineRight } from 'react-icons/ai';
 import DrivingLicenceImg from '../../assets/DrivingLicence.png';
-import john from '../../assets/johnMarston.png';
 import { drivinglicenseAPIList } from '../../../../../assets/api/ApiList';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
 import {
@@ -14,12 +13,14 @@ import {
 import { HttpClient, Result } from '../../../../../utils/generic/httpClient';
 import { useNavigate } from 'react-router-dom';
 import { Layout } from '../Layout';
+import emptyProfile from '../../assets/emptyProfile.png';
+import privacyPolicy from '../../../../auth/assets/Privacy Policy-Greenie.pdf';
 
 export const VerifyDrivingLicence = () => {
   const [licenseIsVerified, setLicenseIsVerified] = useState<boolean>(false);
   const navigate = useNavigate();
   const [checked, setChecked] = useState(false);
-  const { authClient, verifyLicenceForm, setForceRender } = useGlobalContext();
+  const { authClient, verifyLicenceForm, setForceRender, profileData } = useGlobalContext();
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -54,7 +55,7 @@ export const VerifyDrivingLicence = () => {
   };
   return (
     <Layout>
-      <section className="container">
+      <section className="container" style={{ marginTop: '7rem' }}>
         <Box className="see-all-header">
           <Box className="go-back-btn" onClick={handlePageChange}>
             <BsArrowLeft className="arrow-left-icon" size={'16px'} />
@@ -71,8 +72,16 @@ export const VerifyDrivingLicence = () => {
           <Box className="document-verified-container">
             <Box className="document-verified-left-box">
               <Box className="left-img-box">
-                <img src={john} className="verified-document-profile" alt="" />
-                <Text className="verified-document-name">John Jocab Marston</Text>
+                {profileData.profilePic ? (
+                  <img src={profileData.profilePic} className="verified-document-profile" alt="" />
+                ) : (
+                  <img src={emptyProfile} className="verified-document-profile" alt="" />
+                )}
+
+                <Text className="verified-document-name">
+                  {profileData.firstName}
+                  {profileData.lastName}
+                </Text>
               </Box>
               <Box className="left-text-box">
                 <Box>
@@ -179,7 +188,9 @@ export const VerifyDrivingLicence = () => {
                 </Text>
               </Box>
 
-              <Text className="policy">Click to view Data and Privacy Policy</Text>
+              <a className="policy" href={privacyPolicy} download={'Data and Privacy Policy'}>
+                Click to view Data and Privacy Policy
+              </a>
             </Box>
           </form>
         )}
