@@ -105,6 +105,7 @@ export const Userprofile = () => {
         opened={opened}
         onClose={onClose}
         title="Update Profile"
+        radius={'lg'}
       >
         <form onSubmit={handleSubmit}>
           <Box className="input-section">
@@ -185,8 +186,8 @@ export const Userprofile = () => {
         <Box className="cover-photo"></Box>
 
         <Box className="profile-photo">
-          {profileData.profilePic ? (
-            <img src={profileData.profilePic} alt="emptyProfile" className="profile-image" />
+          {profileData?.profilePic ? (
+            <img src={profileData.profilePic} alt="Profile picture" className="profile-image" />
           ) : (
             <img src={emptyProfile} alt="emptyProfile" className="profile-image" />
           )}

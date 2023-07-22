@@ -12,6 +12,7 @@ type AttributeSelectionProps = {
   verificationStepDispatch: React.Dispatch<ReviewStepAction>;
   setCreatePeerResponse: React.Dispatch<React.SetStateAction<CreatePeerResponseType[]>>;
   createPeerResponse: CreatePeerResponseType[];
+  setSelectionPage: React.Dispatch<React.SetStateAction<number>>;
 };
 
 const attributesList = [
@@ -32,6 +33,7 @@ export const AttributeSelection: React.FC<AttributeSelectionProps> = ({
   verificationStepDispatch,
   createPeerResponse,
   setCreatePeerResponse,
+  setSelectionPage,
 }): JSX.Element => {
   const handleMark = (event: React.ChangeEvent<HTMLInputElement>, attr: string) => {
     const updatedList = [];
@@ -91,7 +93,9 @@ export const AttributeSelection: React.FC<AttributeSelectionProps> = ({
             cb={
               addedPeers.indexOf(addedPeers[activePeer]) === addedPeers.length - 1
                 ? () => verificationStepDispatch({ type: ReviewActionType.NEXT_STEP })
-                : () => setActivePeer(activePeer + 1)
+                : () => {
+                    setActivePeer(activePeer + 1), setSelectionPage(0);
+                  }
             }
           />
         </Box>

@@ -12,7 +12,7 @@ export const optionalAttrDict: { [key: string]: string } = {
 export const skillExpertiseDict: {
   [key: string]: string;
 } = {
-  AMATEUR: 'Amateur',
+  AMATEUR: 'Amature',
   BEGINNER: 'Beginner',
   HIGHLY_COMPETENT: 'Highly Competent',
   EXPERT: 'Expert',

@@ -15,6 +15,11 @@ export const ResidentialInfoSection = () => {
     scrollToTop();
   };
 
+  const handleDetailsPage = (id: string) => {
+    navigate(`/candidate/profile/address/${id}`);
+    scrollToTop();
+  };
+
   const handleAddAddressScreen = () => {
     navigate('/candidate/profile/address/addResidentialInfo');
     scrollToTop();
@@ -59,7 +64,7 @@ export const ResidentialInfoSection = () => {
             .slice(0, 3)
             .map((info, index) => {
               return (
-                <Box key={index}>
+                <Box key={index} onClick={() => handleDetailsPage(info.id)}>
                   <ResidentialInfoCard {...info} />
                 </Box>
               );

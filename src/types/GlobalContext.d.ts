@@ -24,5 +24,4 @@ type GlobalContextType = {
   getResidentialInfo: () => void;
   deleteWorkExperience: (id: string) => void;
   deleteResidentialInfo: (id: string) => void;
-  handlePDFdownload: () => void;
 };

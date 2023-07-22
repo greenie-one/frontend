@@ -5,7 +5,6 @@ import { BsArrowLeft } from 'react-icons/bs';
 import { MdVerified, MdOutlineContentCopy } from 'react-icons/md';
 import { AiOutlineRight } from 'react-icons/ai';
 import AadharImg from '../../assets/Aadhar.png';
-import john from '../../assets/johnMarston.png';
 import { aadharAPIList } from '../../../../../assets/api/ApiList';
 import checkImg from '../../assets/check.png';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
@@ -18,8 +17,10 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { APIError } from '../../../../../utils/generic/httpClient';
 import { Layout } from '../Layout';
+import emptyProfile from '../../assets/emptyProfile.png';
 // import errorIcon from '../../assets/errorIcon.png';
 // import { GrPowerReset } from 'react-icons/gr';
+import privacyPolicy from '../../../../auth/assets/Privacy Policy-Greenie.pdf';
 
 export const VerifyAadharCard = () => {
   const navigate = useNavigate();
@@ -30,7 +31,7 @@ export const VerifyAadharCard = () => {
   const { classes: otpInputClasses } = OtpInputStyles();
   const isMobile = useMediaQuery('(max-width: 768px)');
   const greeneId = 'GRN788209';
-  const { authClient, setForceRender, scrollToTop, verifyAadharForm } = useGlobalContext();
+  const { authClient, setForceRender, scrollToTop, verifyAadharForm, profileData } = useGlobalContext();
   const [verificationData, setVerificationData] = useState<AadharVerificationResponse>({
     requestId: '',
     taskId: '',
@@ -131,8 +132,8 @@ export const VerifyAadharCard = () => {
 
   return (
     <Layout>
-      <section className="container documents-container">
-        {/* <Modal className="modal" size={'40%'} fullScreen={isMobile} opened={opened} onClose={close} centered>
+      <section className="container documents-container" style={{ marginTop: '7rem' }}>
+        {/* <Modal         radius={'lg'} className="modal" size={'40%'} fullScreen={isMobile} opened={opened} onClose={close} centered>
         <Box className="error-modal">
           <Text className="error-modal-title">Failed to connect to your Aadhaar</Text>
           <img src={errorIcon} alt="Error Icon" />
@@ -144,7 +145,15 @@ export const VerifyAadharCard = () => {
         </Box>
       </Modal> */}
         {aadharIsVerified ? (
-          <Modal centered className="modal" size={'55%'} fullScreen={isMobile} opened={opened} onClose={close}>
+          <Modal
+            radius={'lg'}
+            centered
+            className="modal"
+            size={'55%'}
+            fullScreen={isMobile}
+            opened={opened}
+            onClose={close}
+          >
             <Box className="congratulations-modal">
               <img src={checkImg} alt="Checked" />
               <Title className="title">
@@ -194,6 +203,7 @@ export const VerifyAadharCard = () => {
                 fontWeight: 600,
               },
             }}
+            radius={'lg'}
           >
             <form className="otp-form" onSubmit={handleSubmit}>
               <Title className="title">OTP has been sent to your linked phone number!</Title>
@@ -246,8 +256,15 @@ export const VerifyAadharCard = () => {
           <Box className="document-verified-container">
             <Box className="document-verified-left-box">
               <Box className="left-img-box">
-                <img src={john} className="verified-document-profile" alt="" />
-                <Text className="verified-document-name">John Jocab Marston</Text>
+                {profileData.profilePic ? (
+                  <img src={profileData.profilePic} className="verified-document-profile" alt="" />
+                ) : (
+                  <img src={emptyProfile} className="verified-document-profile" alt="" />
+                )}
+
+                <Text className="verified-document-name">
+                  {profileData.firstName} {profileData.lastName}
+                </Text>
               </Box>
 
               <Box className="left-text-box">
@@ -331,7 +348,9 @@ export const VerifyAadharCard = () => {
                 </Text>
               </Box>
 
-              <Text className="policy">Click to view Data and Privacy Policy</Text>
+              <a href={privacyPolicy} download={'Data and Privacy Policy'} className="policy">
+                Click to view Data and Privacy Policy
+              </a>
             </Box>
           </Box>
         )}

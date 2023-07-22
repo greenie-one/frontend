@@ -36,6 +36,7 @@ import { ExperienceDocuments } from '../../types/ProfileGeneral';
 import { MdRemoveCircle } from 'react-icons/md';
 import { skillExpertiseDict } from '../../../constants/dictionaries';
 import { Layout } from '../Layout';
+import { UndertakingText } from '../UndertakingText';
 
 export const AddExperience = () => {
   const navigate = useNavigate();
@@ -267,7 +268,15 @@ export const AddExperience = () => {
 
   return (
     <>
-      <Modal className="modal" size={'60%'} fullScreen={isMobile} opened={opened} onClose={close} centered>
+      <Modal
+        radius={'lg'}
+        className="modal"
+        size={'60%'}
+        fullScreen={isMobile}
+        opened={opened}
+        onClose={close}
+        centered
+      >
         <Box className="disclaimer-modal">
           <Title className="disclaimer-heading">Undertaking</Title>
           <Text className="disclaimer-subHeading">Verifying Work experience on Greenie</Text>
@@ -278,7 +287,7 @@ export const AddExperience = () => {
               I have read the undertaking and i authorise Greenie to collect information on my behalf.
             </Text>
           </Box>
-          <Text className="policy">Click to view the Undertaking, Data and Privacy Policy</Text>
+          <UndertakingText />
           <Button className="primaryBtn" disabled={!checked} onClick={handleGoToVerification}>
             I Agree
           </Button>
@@ -394,7 +403,6 @@ export const AddExperience = () => {
               <Box className="input-section">
                 <Title className="title">Work email</Title>
                 <TextInput
-                  withAsterisk
                   label="Official work email"
                   className="inputClass"
                   {...workExperienceForm.getInputProps('email')}
@@ -410,15 +418,7 @@ export const AddExperience = () => {
                   maxLength={10}
                 />
               </Box>
-              <Box className="input-section">
-                <Title className="title">Reason for leaving</Title>
-                <Textarea
-                  {...workExperienceForm.getInputProps('description')}
-                  label="Write down the reason for leaving"
-                  className="text-area-input"
-                  maxLength={300}
-                />
-              </Box>
+
               <Divider mb={'10px'} color="#e1e1e1" />
 
               <Box className="input-section">
@@ -446,6 +446,16 @@ export const AddExperience = () => {
                   className="checkbox"
                   color="teal"
                   label="I currently work here"
+                />
+              </Box>
+              <Box className="input-section">
+                <Title className="title">Reason for leaving</Title>
+                <Textarea
+                  disabled={experienceChecked}
+                  {...workExperienceForm.getInputProps('description')}
+                  label="Write down the reason for leaving"
+                  className="text-area-input"
+                  maxLength={300}
                 />
               </Box>
               <Divider mb={'10px'} color="#e1e1e1" />

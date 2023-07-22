@@ -10,8 +10,8 @@ type CandidateDataType = {
 
 type StatusType = {
   state: 'ACCEPTED' | 'REJECTED' | 'PENDING';
-  dispute_type?: string | null;
-  dispute_reason?: string | null;
+  dispute_type?: string;
+  dispute_reason?: string;
 };
 
 type OptionalFieldsType = {
@@ -22,8 +22,27 @@ type OptionalFieldsType = {
   salary?: StatusType;
 };
 
-type OtherQuestionsFieldsType = {
+type DynamicObjectType = {
   [key: string]: StatusType;
+};
+
+type DynamicObjectWithIdType = { id: string; status: StatusType };
+
+type OtherQuestionsType = {
+  exitProcedure: StatusType;
+  designation: StatusType;
+  peerPost: StatusType;
+};
+
+type VerificationDataType = {
+  name: string;
+  profilePic: string;
+  peerPost: string;
+  designation: string;
+  companyName: string;
+  skills: Array<{ id: string; skillName: string; expertise: string }>;
+  documents: Array<{ id: string; type: string; name: string; privateUrl: string }>;
+  optionalVerificationFields: { [key: string]: string };
 };
 
 type GetVerificationDataResponse = {
@@ -34,7 +53,21 @@ type GetVerificationDataResponse = {
   emailVerified: boolean;
   phoneVerified: boolean;
   verificationBy: string;
-  optionalVerificationFields: OptionalFieldsType;
-  otherQuestionFields: OtherQuestionsFieldsType;
-  data: CandidateDataType;
+  dateOfJoining: string;
+  dateOfLeaving: string;
+  data: VerificationDataType;
+};
+
+type PostVerificationDataType = {
+  optionalVerificationFields: DynamicObjectType;
+  skills: Array<DynamicObjectWithIdType>;
+  documents: Array<DynamicObjectWithIdType>;
+  mandatoryVerificationFields: {
+    review: string;
+  };
+  mandatoryQuestions: {
+    eligibleForRehire: StatusType;
+    attitudeRating: string;
+  };
+  otherQuestions: Pick<OtherQuestionsType, 'exitProcedure'> | Omit<OtherQuestionsType, 'exitProcedure'>;
 };

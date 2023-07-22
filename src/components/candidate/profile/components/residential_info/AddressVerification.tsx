@@ -72,7 +72,15 @@ export const AddressVerification = () => {
   }, [secondsRemaining]);
   return (
     <>
-      <Modal className="modal" size={'60%'} fullScreen={isMobile} opened={opened} onClose={close} centered>
+      <Modal
+        className="modal"
+        size={'60%'}
+        fullScreen={isMobile}
+        opened={opened}
+        onClose={close}
+        centered
+        radius={'lg'}
+      >
         <Box className="address-verification-modal">
           <img src={checkGif} alt="Check Gif" />
           <Title className="address-verification-modal-title">Resident address verified</Title>

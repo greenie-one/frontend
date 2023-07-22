@@ -86,7 +86,7 @@ export const VerifyPeer = () => {
 
   return (
     <main className="profile">
-      <Box className="container">
+      <Box className="container verification-container">
         {otpProcess === 0 && (
           <Box className="address-verification-container">
             <VerificationHeading />

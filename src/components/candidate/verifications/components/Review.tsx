@@ -68,10 +68,16 @@ export const Review: React.FC = () => {
 
   const endVerificationHandler = async () => {
     if (!review) return;
-    const responseData: { [keys: string]: string } = {};
-    responseData['review'] = review;
 
-    setVerificationResponse({ ...verificationResponse, ...responseData });
+    const responseData: { review: string } = {
+      review: review,
+    };
+
+    setVerificationResponse({
+      ...verificationResponse,
+      mandatoryVerificationFields: { ...verificationResponse.mandatoryVerificationFields, ...responseData },
+    });
+
     open();
   };
 

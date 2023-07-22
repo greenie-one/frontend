@@ -389,6 +389,16 @@
   }
 }
 
+.Undertaking {
+  color: $dark;
+  font-weight: 500;
+  margin-bottom: 1rem;
+
+  a {
+    text-decoration: underline;
+  }
+}
+
 @import '_cardStyles';
 @import '_modals';
 @import '_navbar';

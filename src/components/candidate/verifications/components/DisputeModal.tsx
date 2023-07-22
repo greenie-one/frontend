@@ -9,13 +9,19 @@ type DisputeModalProps = {
   opened: boolean;
   close: () => void;
   setActiveStep?: React.Dispatch<React.SetStateAction<number>>;
+  parentKey: keyof PostVerificationDataType;
 };
-
-type ResponseObjType = { [keys: string]: string };
 
 const disputesReasons = ['Wrong or unable to confirm'];
 
-export const DisputeModal: React.FC<DisputeModalProps> = ({ attrId, opened, setAttrId, close, setActiveStep }) => {
+export const DisputeModal: React.FC<DisputeModalProps> = ({
+  attrId,
+  opened,
+  setAttrId,
+  close,
+  setActiveStep,
+  parentKey,
+}) => {
   const isMobile = useMediaQuery('(max-width: 768px)');
   const { disputeForm, setVerificationResponse, verificationResponse } = useVerificationContext();
 
@@ -32,15 +38,51 @@ export const DisputeModal: React.FC<DisputeModalProps> = ({ attrId, opened, setA
     if (!id) return;
     if (disputeForm.validate().hasErrors) return;
 
-    const responseObj: ResponseObjType = {};
-    responseObj['state'] = 'REJECTED';
-    responseObj['dispute_type'] = disputeForm.values.disputeType;
-    responseObj['dispute_reason'] = disputeForm.values.disputeReason;
+    const responseObj: StatusType = {
+      state: 'REJECTED',
+      dispute_type: disputeForm.values.disputeType,
+      dispute_reason: disputeForm.values.disputeReason,
+    };
 
-    const responseData: { [keys: string]: ResponseObjType } = {};
-    responseData[id] = responseObj;
+    if (parentKey === 'documents' || parentKey === 'skills') {
+      const resObj: DynamicObjectWithIdType = {
+        id: id,
+        status: {
+          state: 'REJECTED',
+          dispute_type: disputeForm.values.disputeType,
+          dispute_reason: disputeForm.values.disputeReason,
+        },
+      };
 
-    setVerificationResponse({ ...verificationResponse, ...responseData });
+      if (verificationResponse[parentKey]) {
+        setVerificationResponse((current) => {
+          const list = current[parentKey];
+          const newList = list.map((item) => {
+            if (item.id === id) {
+              return resObj;
+            }
+
+            return item;
+          });
+
+          return { ...current, [parentKey]: newList };
+        });
+      } else {
+        setVerificationResponse({
+          ...verificationResponse,
+          [parentKey]: [resObj],
+        });
+      }
+    } else {
+      const responseData: { [keys: string]: StatusType } = {};
+      responseData[id] = responseObj;
+
+      setVerificationResponse({
+        ...verificationResponse,
+        [parentKey]: { ...verificationResponse[parentKey], ...responseData },
+      });
+    }
+
     disputeForm.setFieldValue('disputeType', '');
     disputeForm.setFieldValue('disputeReason', '');
 
@@ -55,6 +97,7 @@ export const DisputeModal: React.FC<DisputeModalProps> = ({ attrId, opened, setA
 
   return (
     <Modal
+      radius={'lg'}
       centered
       size={'75%'}
       fullScreen={isMobile}

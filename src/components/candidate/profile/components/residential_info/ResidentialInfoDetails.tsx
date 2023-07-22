@@ -9,6 +9,7 @@ import { BsArrowLeft } from 'react-icons/bs';
 import { AiOutlineRight, AiOutlineHome } from 'react-icons/ai';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 import { Layout } from '../Layout';
+import { UndertakingText } from '../UndertakingText';
 
 type VerificationType = 'MySelf' | 'Peer';
 
@@ -60,7 +61,15 @@ export const ResidentialInfoDetails: React.FC = () => {
   return (
     <>
       {modalStep === 1 && (
-        <Modal className="modal" size={'60%'} fullScreen={isMobile} opened={opened} onClose={close} centered>
+        <Modal
+          className="modal"
+          size={'60%'}
+          fullScreen={isMobile}
+          opened={opened}
+          onClose={close}
+          centered
+          radius={'lg'}
+        >
           <Box className="disclaimer-modal">
             <Title className="disclaimer-heading">Undertaking</Title>
             <Text className="disclaimer-subHeading">Verifying Address on Greenie</Text>
@@ -74,7 +83,7 @@ export const ResidentialInfoDetails: React.FC = () => {
                 I can delete this data anytime I desire.
               </Text>
             </Box>
-            <Text className="policy">Click to view - Undertaking and Data and Privacy Policy</Text>
+            <UndertakingText />
             <Button className="primaryBtn" disabled={!checked} onClick={handleAggree}>
               I Agree
             </Button>
@@ -82,7 +91,15 @@ export const ResidentialInfoDetails: React.FC = () => {
         </Modal>
       )}
       {modalStep === 2 && (
-        <Modal className="modal" size={'60%'} fullScreen={isMobile} opened={opened} onClose={close} centered>
+        <Modal
+          className="modal"
+          size={'60%'}
+          fullScreen={isMobile}
+          opened={opened}
+          onClose={close}
+          centered
+          radius={'lg'}
+        >
           <Box className="residential-info-modal">
             <Title className="residential-info-modal-title">Disclaimer</Title>
             <Text className="address">
@@ -201,10 +218,6 @@ export const ResidentialInfoDetails: React.FC = () => {
                   <Text className="detail details-link">Click to locate</Text>
                 </Box>
               </Box>
-            </Box>
-            <Box className="experience-details-links">
-              <Text className="details-link">Show Documents</Text>
-              <Text className="details-link">Show Skills</Text>
             </Box>
             <Button className="green-btn" onClick={() => open()}>
               Get Verified

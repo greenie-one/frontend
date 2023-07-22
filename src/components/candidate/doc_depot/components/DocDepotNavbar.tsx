@@ -80,7 +80,15 @@ export const DocDepotNavbar = () => {
 
   return (
     <>
-      <Modal size={'50%'} fullScreen={isMobile} opened={opened} onClose={close} centered title="Upload documents">
+      <Modal
+        size={'50%'}
+        fullScreen={isMobile}
+        opened={opened}
+        onClose={close}
+        centered
+        title="Upload documents"
+        radius={'lg'}
+      >
         <Box className="modal">
           <Box className="document-modal">
             <Box className="input-section">

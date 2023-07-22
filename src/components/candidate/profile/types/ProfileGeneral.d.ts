@@ -21,8 +21,8 @@ type CreatePeerResponseType = {
   ref: string;
   verificationBy: string;
   optionalVerificationFields: Array<string>;
-  verificationDocuments: Array<string>;
-  verificationSkills: Array<string>;
+  documents: Array<string>;
+  skills: Array<string>;
 };
 
 type UseStylesType = (
@@ -94,3 +94,5 @@ type ExperienceDocuments = {
   privateUrl: string;
   workExperience: string;
 };
+
+type ExperienceDetailsModal = 'Verify Experience' | 'Show Documents' | 'Show Skills' | null;
