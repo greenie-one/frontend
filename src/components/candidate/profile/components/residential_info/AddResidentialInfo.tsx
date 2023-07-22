@@ -18,7 +18,6 @@ export const AddResidentialInfo = () => {
   const navigate = useNavigate();
   const { authClient, residentialInfoForm, setForceRender } = useGlobalContext();
   const [checked, setChecked] = useState(false);
-
   const handleToggleScreen = () => {
     residentialInfoForm.reset();
     navigate('/candidate/profile');
@@ -37,8 +36,22 @@ export const AddResidentialInfo = () => {
       title: 'Wait !',
       message: 'Please wait while we update your residential information.',
     });
-
-    const requestBody: ResidentialInfoRequestBody = residentialInfoForm.values;
+    let requestBody: ResidentialInfoRequestBody;
+    if (residentialInfoForm.values.end_date == '') {
+      requestBody = {
+        address_line_1: residentialInfoForm.values.address_line_1,
+        address_line_2: residentialInfoForm.values.address_line_2,
+        landmark: residentialInfoForm.values.landmark,
+        pincode: residentialInfoForm.values.pincode,
+        city: residentialInfoForm.values.city,
+        state: residentialInfoForm.values.state,
+        country: residentialInfoForm.values.country,
+        start_date: residentialInfoForm.values.start_date,
+        address_type: residentialInfoForm.values.address_type,
+      };
+    } else {
+      requestBody = residentialInfoForm.values;
+    }
     const res = await HttpClient.callApiAuth<createResidentialInfo>(
       {
         url: `${residentialInfoAPIList.postResidentialInfo}`,
