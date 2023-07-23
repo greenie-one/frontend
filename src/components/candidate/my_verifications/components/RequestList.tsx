@@ -20,11 +20,13 @@ export type RequestListType = {
   name: string;
   phone: string;
   isVerificationCompleted: boolean;
+  createdAt?: string;
 };
 
 export const RequestList: React.FC<{ activeListItem: number }> = ({ activeListItem }): JSX.Element => {
   const { authClient } = useGlobalContext();
   const [sentRequests, setSentRequests] = useState<Array<RequestListType>>([]);
+  const [forceRenderList, setForceRenderList] = useState<boolean>(true);
 
   const getSentRequests = async () => {
     const res = await HttpClient.callApiAuth<RequestListType[]>(
@@ -44,11 +46,21 @@ export const RequestList: React.FC<{ activeListItem: number }> = ({ activeListIt
 
   useEffect(() => {
     getSentRequests();
-  }, [authClient]);
+  }, [forceRenderList]);
 
   return activeListItem === 0 ? (
     <article className={requestList_container}>
-      <RenderRequestList requestType={activeListItem === 0 ? 'sent' : 'recieved'} requestList={sentRequests} />
+      {sentRequests.length != 0 ? (
+        <RenderRequestList
+          setForceRenderList={setForceRenderList}
+          requestType={activeListItem === 0 ? 'sent' : 'recieved'}
+          requestList={sentRequests}
+        />
+      ) : (
+        <Box className={notifications_container}>
+          <span className={notification_msg}>Need to verify the work experience by the peer</span>
+        </Box>
+      )}
     </article>
   ) : (
     <Box className={notifications_container}>

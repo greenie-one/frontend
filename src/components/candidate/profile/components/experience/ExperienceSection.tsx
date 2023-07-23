@@ -67,6 +67,7 @@ export const ExperienceSection = () => {
               return (
                 <Box key={index} onClick={() => handleDetailsPage(workExperience.id)}>
                   <ExperienceCard
+                    id={workExperience.id}
                     position={workExperience.designation}
                     companyName={workExperience.companyName}
                     isVerified={workExperience.isVerified}

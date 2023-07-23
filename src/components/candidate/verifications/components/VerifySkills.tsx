@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Text, Box, Button } from '@mantine/core';
 import { BsPersonCheckFill } from 'react-icons/bs';
 import { HiOutlineBan } from 'react-icons/hi';
+import { skillRate } from '../../profile/constants/SelectionOptions';
 
 import { useVerificationContext } from '../context/VerificationContext';
 import { DisputeModal } from './DisputeModal';
@@ -11,6 +12,8 @@ export const VerifySkills = () => {
   const { setActiveStep, setVerificationResponse, verificationResponse, verificationData } = useVerificationContext();
   const { data } = verificationData;
   const [disputeModalOpened, { open: disputeModalOpen, close: disputeModalClose }] = useDisclosure();
+  const [approvedAttrs, setApprovedAttrs] = useState<string[]>([]);
+  const [disputedAttrs, setDisputedAttrs] = useState<string[]>([]);
 
   const [attrId, setAttrId] = useState<string>('');
 
@@ -41,6 +44,9 @@ export const VerifySkills = () => {
         skills: [responseObj],
       });
     }
+
+    setApprovedAttrs((current) => [...current, _id]);
+    setDisputedAttrs((current) => current.filter((id) => id !== _id));
   };
 
   return (
@@ -53,35 +59,52 @@ export const VerifySkills = () => {
           disputeModalClose();
         }}
         parentKey="skills"
+        setApprovedAttrs={setApprovedAttrs}
+        setDisputedAttrs={setDisputedAttrs}
       />
       <Text className="question-text">Could you verify skills claimed by {data.name}?</Text>
       <Box className="verification-skills-box">
         <Box className="verification-skill-header">
           <Text>Skills</Text>
           <Text>Expertise</Text>
-          <Text>Approve/Dispute</Text>
+          <Text>Status</Text>
         </Box>
         <Box className="verification-skills-wrapper">
           {data.skills.map((skill, index) => {
             return (
               <Box key={index} className="verification-skill-row">
                 <Text>{skill.skillName}</Text>
-                <Text className="expertise">{skill.expertise}</Text>
-                <BsPersonCheckFill className="approved-skill-icon" onClick={() => approveHandler(skill.id)} />
-                <HiOutlineBan
-                  className="disputed-skill-icon"
-                  onClick={() => {
-                    setAttrId(skill.id);
-                    disputeModalOpen();
-                  }}
-                />
+                <Text className="expertise">{skillRate.find((_skill) => _skill.value === skill.expertise)?.label}</Text>
+                <Box className="status-btns">
+                  <button
+                    disabled={approvedAttrs.includes(skill.id)}
+                    className="green-outline-btn"
+                    onClick={() => approveHandler(skill.id)}
+                  >
+                    <BsPersonCheckFill />
+                  </button>
+                  <button
+                    disabled={disputedAttrs.includes(skill.id)}
+                    className="disputed-skill-icon dispute-btn"
+                    onClick={() => {
+                      setAttrId(skill.id);
+                      disputeModalOpen();
+                    }}
+                  >
+                    <HiOutlineBan />
+                  </button>
+                </Box>
               </Box>
             );
           })}
         </Box>
       </Box>
       <Box className="verification-btns-wrapper">
-        <Button className="btn next-btn" onClick={() => setActiveStep((current) => current + 1)}>
+        <Button
+          disabled={approvedAttrs.length + disputedAttrs.length < data.skills.length}
+          className="btn next-btn"
+          onClick={() => setActiveStep((current) => current + 1)}
+        >
           Continue
         </Button>
       </Box>

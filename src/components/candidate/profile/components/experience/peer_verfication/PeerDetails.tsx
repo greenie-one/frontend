@@ -36,31 +36,33 @@ export const PeerDetails: React.FC<ConfirmPeerType> = ({
         </Box>
       </Box>
       <Box className="document-list">
-        <Text className="document-action-heading">With Documents</Text>
         <Box className="docs-wrapper">
-          {experienceDocuments
-            .filter((doc) => createPeerResponse[indexNumber].documents.includes(doc._id))
-            .map((document, index) => {
-              return (
-                <Box className="document" key={index}>
-                  <img className="pdf-icon" src={pdfIcon} alt="pdf icon" />
-                  <Text className="document-name">{document.name.substring(0, 15)}...</Text>
-                </Box>
-              );
-            })}
+          <Text className="document-action-heading">With Documents</Text>
+          <Box className="docs-list">
+            {experienceDocuments
+              .filter((doc) => createPeerResponse[indexNumber].documents.includes(doc._id))
+              .map((document, index) => {
+                return (
+                  <Box className="document" key={index}>
+                    <img className="pdf-icon" src={pdfIcon} alt="pdf icon" />
+                    <Text className="document-name">{document.name.substring(0, 15)}</Text>
+                  </Box>
+                );
+              })}
+          </Box>
         </Box>
         <Box className="document-list">
           <Text className="document-action-heading">With Skills</Text>
-          <Box className="add-skills-wrapper">
+          <Box className="skills-wrapper">
             {skillData
               .filter((skill) => skill.workExperience === experience?.id)
               .filter((skill) => createPeerResponse[indexNumber].skills.includes(skill.id))
               .map((skill: Skill, index: number) => {
                 const { expertise, skillName } = skill;
                 return (
-                  <Box key={index} className="add-skill-box">
-                    <Text className="add-skill-name">{skillName}</Text>
-                    {expertise && <Text className="add-skill-rate">{skillExpertiseDict[expertise]}</Text>}
+                  <Box key={index} className="skill-box">
+                    <Text className="skill-name">{skillName}</Text>
+                    {expertise && <Text className="expertise">{skillExpertiseDict[expertise]}</Text>}
                   </Box>
                 );
               })}

@@ -13,6 +13,8 @@ export const VerifyDocuments = () => {
   const [disputeModalOpened, { open: disputeModalOpen, close: disputeModalClose }] = useDisclosure();
 
   const [attrId, setAttrId] = useState<string>('');
+  const [approvedAttrs, setApprovedAttrs] = useState<string[]>([]);
+  const [disputedAttrs, setDisputedAttrs] = useState<string[]>([]);
 
   const approveHandler = (_id: string) => {
     const responseObj: DynamicObjectWithIdType = {
@@ -41,6 +43,9 @@ export const VerifyDocuments = () => {
         documents: [responseObj],
       });
     }
+
+    setApprovedAttrs((current) => [...current, _id]);
+    setDisputedAttrs((current) => current.filter((id) => id !== _id));
   };
 
   return (
@@ -53,6 +58,8 @@ export const VerifyDocuments = () => {
           disputeModalClose();
         }}
         parentKey="documents"
+        setApprovedAttrs={setApprovedAttrs}
+        setDisputedAttrs={setDisputedAttrs}
       />
       <Text className="question-text">Could you verify documents uploaded by Abhishek?</Text>
       <Box className="verify-documents-box">
@@ -66,15 +73,18 @@ export const VerifyDocuments = () => {
               <Box key={index} className="verify-documets-row">
                 <Box className="verify-document-name">
                   <img src={pdfIcon} alt="PDF Icon" />
-                  <Text className="name">{doc.name}</Text>
+                  <a href={doc.privateUrl} target="_blank" rel="noopener noreferrer">
+                    <Text className="name">{doc.name}</Text>
+                  </a>
                 </Box>
                 <Box className="verification-documents-actions">
                   <Button
-                    className="verify-action-btn pending-btn"
+                    className="verify-action-btn approved-btn"
                     leftIcon={<BsPersonCheckFill size={'18px'} />}
                     onClick={() => approveHandler(doc.id)}
+                    disabled={approvedAttrs.includes(doc.id)}
                   >
-                    Approve
+                    {approvedAttrs.includes(doc.id) ? 'Approved' : 'Approve'}
                   </Button>
                   <Button
                     className="verify-action-btn disputed-btn"
@@ -83,8 +93,9 @@ export const VerifyDocuments = () => {
                       setAttrId(doc.id);
                       disputeModalOpen();
                     }}
+                    disabled={disputedAttrs.includes(doc.id)}
                   >
-                    Dispute
+                    {disputedAttrs.includes(doc.id) ? 'Disputed' : 'Dispute'}
                   </Button>
                 </Box>
               </Box>
@@ -93,7 +104,11 @@ export const VerifyDocuments = () => {
         </Box>
       </Box>
       <Box className="verification-btns-wrapper">
-        <Button className="btn next-btn" onClick={() => setActiveStep((current) => current + 1)}>
+        <Button
+          disabled={approvedAttrs.length + disputedAttrs.length < data.documents.length}
+          className="btn next-btn"
+          onClick={() => setActiveStep((current) => current + 1)}
+        >
           Continue
         </Button>
       </Box>

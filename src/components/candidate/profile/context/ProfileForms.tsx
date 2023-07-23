@@ -79,7 +79,6 @@ export const useProfileForms = () => {
       department: isNotEmpty('Please provide the department'),
       salary: isNotEmpty('Please provide your salary'),
       email: isNotEmpty('Please enter your official work Email'),
-      companyId: isNotEmpty('Please enter your company ID'),
     },
   });
 

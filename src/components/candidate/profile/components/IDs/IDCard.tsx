@@ -1,11 +1,43 @@
 import { Text, Box, Button } from '@mantine/core';
+import { useNavigate } from 'react-router-dom';
 import { MdVerified } from 'react-icons/md';
 import { CgSandClock } from 'react-icons/cg';
+import AadharImg from '../../assets/Aadhar.png';
+import PanImg from '../../assets/Pan.png';
+import DrivingLicence from '../../assets/DrivingLicence.png';
 
 export const IDCard: React.FC<VerificationIdCardProp> = ({ documentName, isVerified }) => {
+  const navigate = useNavigate();
+  const handleView = () => {
+    navigate('/candidate/profile/IDs/verify/Aadhar');
+  };
+
   return (
     <Box className="verificationIdCard">
-      <Box className="verificationIdImg"></Box>
+      <Box className="verificationIdImg">
+        {documentName === 'AADHAR' && (
+          <div className="blurBox">
+            <img src={AadharImg} />
+            <Button className="viewBtn" onClick={handleView}>
+              View
+            </Button>
+          </div>
+        )}
+        {documentName === 'PAN' && (
+          <div className="blurBox">
+            <img src={PanImg} />
+            <Button className="viewBtn" onClick={handleView}>
+              View
+            </Button>
+          </div>
+        )}
+        {documentName === 'DRIVING_LICENSE' && (
+          <div className="blurBox">
+            <img src={DrivingLicence} />
+            <Button className="viewBtn">View</Button>
+          </div>
+        )}
+      </Box>
       <Box className="verification-id-text-box">
         {documentName === 'AADHAR' && <Text className="document-name">Aadhar Card</Text>}
         {documentName === 'PAN' && <Text className="document-name">PAN Card</Text>}

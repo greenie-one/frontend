@@ -126,16 +126,60 @@
   border-radius: 24px;
 
   .added-documents {
-    padding: 0.25rem 1rem;
+    padding: 0.25rem 2rem;
     display: grid;
-    grid-template-columns: 30% 30% 30%;
+    grid-template-columns: 35% 30% 30%;
     align-items: center;
     justify-content: space-between;
     font-size: 14px;
 
+    .document-name {
+      span {
+        color: $dark;
+      }
+    }
+
+    .documents-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .added-box {
+        margin-left: 1rem;
+      }
+    }
+
+    .document-name {
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 19px;
+      letter-spacing: -0.02em;
+      text-align: left;
+      color: $gray;
+
+      span {
+        margin-right: 0.5rem;
+      }
+    }
+
     .inputClass {
       margin-top: 1rem;
       margin-bottom: 0rem;
+    }
+
+    .added-box {
+      display: flex;
+      align-items: center;
+      color: $green;
+
+      .added-text {
+        margin-left: 0.5rem;
+        font-size: 12px;
+        font-weight: 500;
+        line-height: 15px;
+        letter-spacing: 0em;
+        text-align: left;
+      }
     }
 
     .add-document-icon {
@@ -324,6 +368,48 @@
     text-align: left;
     color: $dark;
     margin-bottom: 0.5rem;
+
+    &.referees-heading {
+      margin-top: 1.5rem;
+    }
+  }
+
+  .requests-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+
+    .referees-request-box {
+      border: 1px solid #e1e1e1;
+      border-radius: 1rem;
+      padding: 1rem;
+      margin-block: 0.25rem;
+
+      .request-box-heading {
+        font-weight: 500;
+      }
+
+      .request-box-text {
+        font-size: 13px;
+        color: gray;
+        text-decoration: underline;
+      }
+
+      .request-status {
+        font-weight: 500;
+        font-size: 12px;
+        color: #ff7272;
+        width: max-content;
+        padding: 2px 8px;
+        background: #ffffff;
+        border: 1px solid #ff7272;
+        border-radius: 34px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 1.5rem;
+      }
+    }
   }
 
   .comapny-type-box {
@@ -352,7 +438,7 @@
     .basic-info-box-wrapper {
       display: grid;
       align-items: center;
-      grid-template-columns: 20% 25% 25% 25%;
+      grid-template-columns: 17% 25% 27% 27%;
       column-gap: 0.5rem;
     }
   }
@@ -453,6 +539,14 @@
     text-align: center;
     min-width: 90%;
 
+    .heading {
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 19px;
+      letter-spacing: -0.02em;
+      text-align: center;
+    }
+
     .docs-wrapper {
       margin-block: 1rem;
       display: grid;
@@ -463,14 +557,17 @@
       .folder {
         display: grid;
         grid-template-columns: 20% 75%;
+        border-radius: 0.75rem;
       }
     }
   }
 
   .add-skills-wrapper {
     padding-block: 0.5rem;
+    margin-bottom: 2rem;
+
     .add-skill-box {
-      margin-block: 0rem;
+      margin-block: 0.5rem;
     }
   }
 
@@ -486,6 +583,12 @@
       opacity: 0.7;
     }
   }
+}
+
+.mantine-Modal-title {
+  font-weight: 600;
+  font-size: 1.15rem;
+  padding-inline: 1rem;
 }
 
 .skills-modal {
@@ -512,8 +615,32 @@
   .folder-wrapper {
     width: 100%;
     margin-top: 1.5rem;
+    padding-block: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-inline: 1rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
 
     .folder {
+      width: 100%;
+      display: flex;
+      gap: 10px;
+      justify-content: flex-start;
+      margin-bottom: 0 !important;
+
+      .doc-name {
+        width: 100%;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+
+      img {
+        width: 2rem;
+      }
       &:hover {
         border: 1px solid $green;
       }
@@ -525,7 +652,22 @@
   }
 }
 
-@media screen and (max-width: 820px) {
+.congrats-btns-wrapper {
+  display: grid;
+  grid-template-columns: 60% 40%;
+}
+
+@media screen and (max-width: 900px) {
+  .experience-details-screen {
+    .basic-info {
+      .basic-info-box-wrapper {
+        grid-template-columns: 30% 35%;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 830px) {
   .experience-details-screen {
     .about-company-box-wrapper {
       grid-template-columns: 35% 40%;
@@ -533,7 +675,18 @@
 
     .basic-info {
       .basic-info-box-wrapper {
-        grid-template-columns: 30% 55%;
+        grid-template-columns: 45% 50%;
+      }
+    }
+  }
+
+  .added-documents-wrapper {
+    .added-documents {
+      padding: 0.25rem 1rem;
+      grid-template-columns: 35% 30% 30%;
+
+      .document-name {
+        font-size: 14px;
       }
     }
   }
@@ -541,9 +694,6 @@
 
 @media screen and (max-width: 768px) {
   .add-work-experience {
-    .tearms-conditions {
-      font-size: 14px;
-    }
     .input-section {
       grid-template-columns: 1fr;
       grid-template-rows: 1fr;
@@ -552,15 +702,6 @@
 
     .border-bottom {
       margin-bottom: 0.5rem;
-    }
-  }
-
-  .added-documents-wrapper {
-    .added-documents {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding-block: 1rem;
     }
   }
 
@@ -592,12 +733,55 @@
       }
     }
   }
+
+  .added-documents-wrapper {
+    .added-documents {
+      .document-name {
+        font-size: 14px;
+      }
+    }
+  }
+}
+@media screen and (max-width: 660px) {
+  .added-documents-wrapper {
+    .added-documents {
+      .index {
+        font-size: 12px;
+      }
+      .document-name {
+        font-size: 12px;
+      }
+
+      .inputClass {
+        margin-right: 0.5rem;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 580px) {
+  .added-documents-wrapper {
+    .added-documents {
+      padding: 1rem 1.5rem;
+      grid-template-columns: 100%;
+      .document-name {
+        font-size: 12px;
+      }
+
+      .documents-actions {
+        width: 50%;
+        margin-inline: auto;
+      }
+    }
+  }
 }
 
 @media screen and (max-width: 512px) {
-  .add-work-experience {
-    .tearms-conditions {
-      font-size: 12px;
+  .added-documents-wrapper {
+    .added-documents {
+      .documents-actions {
+        width: 70%;
+      }
     }
   }
 

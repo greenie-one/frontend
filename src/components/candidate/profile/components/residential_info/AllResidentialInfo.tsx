@@ -1,19 +1,15 @@
 import { Text, Box, Button } from '@mantine/core';
 import { BsArrowLeft } from 'react-icons/bs';
 import { AiOutlineRight } from 'react-icons/ai';
-import { MdVerified, MdDelete } from 'react-icons/md';
+import { MdVerified } from 'react-icons/md';
 import { CgSandClock } from 'react-icons/cg';
 import location from '../../assets/location.png';
-import { useDisclosure } from '@mantine/hooks';
-import { DeleteConfirmationModal } from '../../../../common/GenericModals';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
 import { useNavigate } from 'react-router-dom';
 import { Layout } from '../Layout';
 
 export const AllResidentialInfo = () => {
-  const { residentialInfoData, deleteResidentialInfo } = useGlobalContext();
-
-  const [deleteModalOpened, { open: deleteModalOpen, close: deleteModalClose }] = useDisclosure(false);
+  const { residentialInfoData } = useGlobalContext();
 
   const navigate = useNavigate();
 
@@ -29,16 +25,9 @@ export const AllResidentialInfo = () => {
     navigate('/candidate/profile/address/allAddresses');
   };
 
-  const handleDeleteResidentialInfo = (_id: string): void => {
-    deleteResidentialInfo(_id);
-    deleteModalClose();
-    navigate('/candidate/profile');
-  };
-
   return (
     <>
       <Layout>
-        {' '}
         <section className="container" style={{ marginTop: '7rem' }}>
           <Box className="top-header">
             <Box className="see-all-header">
@@ -83,22 +72,7 @@ export const AllResidentialInfo = () => {
                         {info.start_date?.toString().substring(3, 15)} - {info.end_date?.toString().substring(3, 15)}
                       </Text>
                     </Box>
-
-                    <Button
-                      className="delete-btn"
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        deleteModalOpen();
-                      }}
-                    >
-                      <MdDelete />
-                    </Button>
                   </Box>
-                  <DeleteConfirmationModal
-                    opened={deleteModalOpened}
-                    close={deleteModalClose}
-                    cb={() => handleDeleteResidentialInfo(info.id)}
-                  />
                 </Box>
               );
             })}
