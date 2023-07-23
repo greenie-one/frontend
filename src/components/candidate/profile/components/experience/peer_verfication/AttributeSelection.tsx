@@ -62,10 +62,7 @@ export const AttributeSelection: React.FC<AttributeSelectionProps> = ({
   return (
     <>
       <Box className="documents-action-section">
-        <SelectionHeading
-          heading="Attributes"
-          subHeading="Select the attributes you want the peer to review"
-        ></SelectionHeading>
+        <SelectionHeading heading="Attributes" subHeading="Select the attributes you want the peer to review" />
         <Box>
           <Box className="selected-attribute-header">
             <Checkbox checked indeterminate readOnly />

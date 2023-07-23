@@ -86,6 +86,9 @@ export const AddResidentialInfo = () => {
             <Box className="input-section">
               <Title className="title">Type of Address</Title>
               <Select
+                clearable
+                searchable
+                nothingFound="No options"
                 data-autofocus
                 data={[
                   { value: 'Permenent', label: 'Permenent' },
@@ -163,6 +166,9 @@ export const AddResidentialInfo = () => {
               <Title className="title">State/Country</Title>
               <Box className="inner-input-section">
                 <Select
+                  clearable
+                  searchable
+                  nothingFound="No options"
                   data={states}
                   label="Select state"
                   className="inputClass"
@@ -180,6 +186,9 @@ export const AddResidentialInfo = () => {
                   })}
                 />
                 <Select
+                  clearable
+                  searchable
+                  nothingFound="No options"
                   data={countries}
                   label="Select country"
                   className="inputClass"

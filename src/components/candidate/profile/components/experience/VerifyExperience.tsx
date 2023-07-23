@@ -298,6 +298,9 @@ export const VerifyExperience: React.FC = () => {
                   {...peerVerificationForm.getInputProps('name')}
                 />
                 <Select
+                  clearable
+                  searchable
+                  nothingFound="No options"
                   withAsterisk
                   label="Peer type"
                   data={peerType}
