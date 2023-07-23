@@ -18,7 +18,7 @@ const months = [
 ];
 
 const formattedDate = (data: string) => {
-  return data.substring(0, 10).split('-').reverse();
+  return data?.substring(0, 10).split('-').reverse();
 };
 
 export const AcceptanceModal: React.FC<{ confirmationHandler: () => void }> = ({

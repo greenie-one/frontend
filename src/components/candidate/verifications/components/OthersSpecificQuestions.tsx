@@ -6,7 +6,7 @@ export const OthersSpecificQuestions = (): JSX.Element => {
   const { data } = verificationData;
 
   const formattedDate = (_data: string) => {
-    return _data.substring(0, 10).split('-').reverse().join('-');
+    return _data?.substring(0, 10).split('-').reverse().join('-');
   };
 
   return (

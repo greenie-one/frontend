@@ -72,7 +72,7 @@ export const VerificationJourney: React.FC = (): JSX.Element => {
                     {activeStep === 6 ? (
                       <VerificationQuestions
                         question={<>Is the candidate eligible for rehire?</>}
-                        _id="exitProcedure"
+                        _id="eligibleForRehire"
                         parentKey="mandatoryQuestions"
                       />
                     ) : (

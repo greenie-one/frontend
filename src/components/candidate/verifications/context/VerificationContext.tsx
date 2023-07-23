@@ -5,6 +5,7 @@ import { peerVerificationAPIList } from '../../../../assets/api/ApiList';
 import { isNotEmpty, useForm } from '@mantine/form';
 import { showErrorNotification } from '../../../../utils/functions/showNotification';
 import { DisputeFormType, UnverifiedLinkType, VerificationContextType } from '../types/VerificationContext';
+import { UpdatePeerWorkVerificationDto } from 'backend-types';
 
 const VerificationContext = createContext<VerificationContextType>({} as VerificationContextType);
 export const useVerificationContext = () => useContext(VerificationContext);
@@ -67,7 +68,7 @@ export const VerificationContextProvider: React.FC<{ children: React.ReactNode }
   };
 
   const postVerificationData = async () => {
-    const res = await HttpClient.callApi({
+    const res = await HttpClient.callApi<UpdatePeerWorkVerificationDto>({
       url: `${peerVerificationAPIList.getVerificationData}/${params.uuid}`,
       method: 'PATCH',
       body: verificationResponse,
