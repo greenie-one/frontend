@@ -61,7 +61,7 @@ export const VerifyDocuments = () => {
         setApprovedAttrs={setApprovedAttrs}
         setDisputedAttrs={setDisputedAttrs}
       />
-      <Text className="question-text">Could you verify documents uploaded by Abhishek?</Text>
+      <Text className="question-text">Could you verify uploaded documents ?</Text>
       <Box className="verify-documents-box">
         <Box className="verify-documents-header">
           <Text>File</Text>
