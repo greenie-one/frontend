@@ -436,7 +436,6 @@ export const AddExperience = () => {
               <Box className="input-section">
                 <Title className="title">Company ID</Title>
                 <TextInput
-                  withAsterisk
                   label="Enter your unique company Id"
                   className="inputClass"
                   {...workExperienceForm.getInputProps('companyId')}
