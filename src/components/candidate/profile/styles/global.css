@@ -3620,7 +3620,8 @@
   padding: 1rem 0.5rem;
 }
 .docs-wrapper .document .pdf-icon {
-  width: 30px;
+  width: 2px;
+  border: 1px solid;
 }
 .docs-wrapper .document .document-name {
   font-size: 14px;

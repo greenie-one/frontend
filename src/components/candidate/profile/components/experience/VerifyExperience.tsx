@@ -27,12 +27,14 @@ import { ExperienceDocuments } from '../../types/ProfileGeneral';
 
 import { Layout } from '../Layout';
 import { ConfirmRequest } from './peer_verfication/ConfirmRequest';
+import { RequestListType } from '../../../my_verifications/components/RequestList';
 
 export const VerifyExperience: React.FC = () => {
   const navigate = useNavigate();
   const [experience, setExperience] = useState<WorkExperience | undefined>({} as WorkExperience);
   const [createPeerResponse, setCreatePeerResponse] = useState<CreatePeerResponseType[]>([]);
 
+  const [sentRequests, setSentRequests] = useState<Array<RequestListType>>([]);
   const [addedPeers, setAddedPeers] = useState<Peer[]>([]);
   const [activePeer, setActivePeer] = useState<number>(0);
   const { authClient, scrollToTop, workExperienceData } = useGlobalContext();
@@ -78,10 +80,24 @@ export const VerifyExperience: React.FC = () => {
     },
   });
 
-  const handleProceed = async () => {
-    if (addedPeers.length < 2) {
-      showErrorNotification('NO_PEERS');
+  const getSentRequests = async () => {
+    const res = await HttpClient.callApiAuth<SentRequestsResponseType[]>(
+      {
+        url: peerVerificationAPIList.getSentRequest,
+        method: 'GET',
+      },
+      authClient
+    );
+
+    if (res.ok) {
+      const filteredData = res.value.filter((request) => request.workExperience === id);
+      setSentRequests(filteredData);
+    } else {
+      showErrorNotification(res.error.code);
     }
+  };
+
+  const handleProceed = async () => {
     scrollToTop();
     verificationStepDispatch({ type: ReviewActionType.NEXT_STEP });
   };
@@ -89,6 +105,10 @@ export const VerifyExperience: React.FC = () => {
   const checkDuplicateEmail = (email: string) => {
     for (const peers of addedPeers) {
       if (peers.email === email) return false;
+    }
+
+    for (const requests of sentRequests) {
+      if (requests.email === email) return false;
     }
 
     return true;
@@ -169,34 +189,6 @@ export const VerifyExperience: React.FC = () => {
     navigate('/candidate/profile/experience/allExperiences');
   };
 
-  // const createVerificationRequest = async (
-  //   thing: 'Skills' | 'Document',
-  //   sharedWith: 'Peer' | 'User',
-  //   peerId: string,
-  //   verificationList: Array<string>
-  // ) => {
-  //   const requestBody = {
-  //     thing: thing,
-  //     thingId: verificationList,
-  //     sharedWith: sharedWith,
-  //     sharedWithId: peerId,
-  //   };
-
-  //   const res = await HttpClient.callApiAuth<unknown>(
-  //     {
-  //       url: peerVerificationAPIList.shareRequest,
-  //       method: 'POST',
-  //       body: requestBody,
-  //     },
-  //     authClient
-  //   );
-  //   if (res.ok) {
-  //     // const filtered = res.value.filter((document) => document.workExperience === experience?.id);
-  //   } else {
-  //     showErrorNotification(res.error.code);
-  //   }
-  // };
-
   const handleCreatePeerRequest = async () => {
     showLoadingNotification({ title: 'Please Wait !', message: 'Wait while we send the request' });
     for (const response of createPeerResponse) {
@@ -210,15 +202,9 @@ export const VerifyExperience: React.FC = () => {
         authClient
       );
 
-      if (res.ok) {
-        // createVerificationRequest('Skills', 'Peer', res.value?.id, response.verificationSkills);
-        // createVerificationRequest('Document', 'Peer', res.value?.id, response.verificationDocuments);
-        open();
-        handleSeeRequest();
-
-        // const filtered = res.value.filter((document) => document.workExperience === experience?.id);
-      } else {
+      if (!res.ok) {
         showErrorNotification(res.error.code);
+        throw new Error();
       }
     }
   };
@@ -229,6 +215,7 @@ export const VerifyExperience: React.FC = () => {
     if (authToken) {
       getWorkExperience();
       getExperienceDocument();
+      getSentRequests();
     }
   }, []);
 
@@ -387,7 +374,11 @@ export const VerifyExperience: React.FC = () => {
                 )}
               </Box>
 
-              <Button disabled={addedPeers.length < 2} className="primaryBtn" onClick={handleProceed}>
+              <Button
+                disabled={addedPeers.length + sentRequests.length < 2}
+                className="primaryBtn"
+                onClick={handleProceed}
+              >
                 Proceed
               </Button>
             </Box>

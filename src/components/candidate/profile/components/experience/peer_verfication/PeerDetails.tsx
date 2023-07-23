@@ -36,18 +36,20 @@ export const PeerDetails: React.FC<ConfirmPeerType> = ({
         </Box>
       </Box>
       <Box className="document-list">
-        <Text className="document-action-heading">With Documents</Text>
         <Box className="docs-wrapper">
-          {experienceDocuments
-            .filter((doc) => createPeerResponse[indexNumber].documents.includes(doc._id))
-            .map((document, index) => {
-              return (
-                <Box className="document" key={index}>
-                  <img className="pdf-icon" src={pdfIcon} alt="pdf icon" />
-                  <Text className="document-name">{document.name.substring(0, 15)}</Text>
-                </Box>
-              );
-            })}
+          <Text className="document-action-heading">With Documents</Text>
+          <Box className="docs-list">
+            {experienceDocuments
+              .filter((doc) => createPeerResponse[indexNumber].documents.includes(doc._id))
+              .map((document, index) => {
+                return (
+                  <Box className="document" key={index}>
+                    <img className="pdf-icon" src={pdfIcon} alt="pdf icon" />
+                    <Text className="document-name">{document.name.substring(0, 15)}</Text>
+                  </Box>
+                );
+              })}
+          </Box>
         </Box>
         <Box className="document-list">
           <Text className="document-action-heading">With Skills</Text>

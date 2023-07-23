@@ -131,10 +131,17 @@
 }
 
 .experience-details {
+  width: max-content;
+  border: 1px solid #e1e1e1;
+  padding: 2rem;
+  text-align: center;
+  border-radius: 15px;
+  cursor: pointer;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  margin-bottom: 3rem;
+  justify-content: space-between;
+  flex-direction: column;
+  margin-bottom: 2.5rem;
 
   .company-logo {
     width: 120px;
@@ -484,14 +491,14 @@
   .document {
     margin-top: 0.5rem;
     border: 1px solid $lighterGray;
-    border-radius: 0.75rem;
+    border-radius: 0.5rem;
     display: flex;
     align-items: center;
     justify-content: flex-start;
     padding: 1rem 0.5rem;
 
     .pdf-icon {
-      width: 40px;
+      width: 30px;
     }
     .document-name {
       font-size: 14px;
@@ -550,8 +557,6 @@
 .verification-document-name {
   color: $dark;
   font-weight: 500;
-  text-decoration: underline;
-  margin-left: 0.35rem;
 }
 
 .selected-attributes {
@@ -571,10 +576,11 @@
     .document {
       display: flex;
       align-items: center;
-      justify-content: flex-start;
+      gap: 0.5rem;
 
-      .pdf-icon {
-        width: 22px;
+      img {
+        width: 1.75rem;
+        object-fit: cover;
       }
     }
   }
@@ -654,6 +660,125 @@
       margin-bottom: 0.5rem;
     }
   }
+
+  .document-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+
+    .docs-wrapper {
+      display: flex !important;
+      flex-direction: column;
+      gap: 0.25rem;
+      justify-content: flex-start;
+
+      .document-action-heading {
+        margin-bottom: 0;
+      }
+
+      .docs-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+
+        .document {
+          margin-top: 0;
+        }
+      }
+    }
+
+    .document-list {
+      margin-block: 0 !important;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+
+      .document-action-heading {
+        margin-bottom: 0;
+        text-align: center;
+      }
+
+      .skills-wrapper {
+        display: grid;
+        gap: 8px;
+
+        .skill-box {
+          padding: 0.5rem 0.75rem;
+          border-radius: 10px;
+          border: 1px solid #e1e1e1;
+
+          .skill-name {
+            font-weight: 500;
+            font-size: 16px;
+            color: #697082;
+          }
+
+          .expertise {
+            font-size: 14px;
+            color: #697082;
+          }
+        }
+      }
+    }
+
+    .skills-list {
+      margin-block: 0 !important;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+
+      .document-action-heading {
+        margin-bottom: 0;
+        text-align: center;
+      }
+
+      .add-skills-wrapper {
+        display: grid;
+        gap: 8px;
+        padding-block: 0 !important;
+        grid-template-columns: 1fr;
+
+        .add-skill-name {
+          padding: 0.5rem 0.75rem;
+          border: 1px solid #e1e1e1;
+          border-radius: 10px;
+          color: #697082;
+          font-size: 15px;
+          font-weight: 500;
+        }
+      }
+    }
+  }
+
+  .requesting-peers {
+    display: grid;
+    grid-template-columns: repeat(3, 32%);
+    align-items: center;
+    justify-content: space-between;
+    .requesting-peer {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      margin-block: 0.5rem;
+      .profile-picture {
+        background: $lighterGray;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        margin-right: 0.75rem;
+      }
+      .requesting-peer-text-box {
+        .name {
+          font-weight: 500;
+        }
+        .designation {
+          color: $gray;
+          font-size: 14px;
+        }
+      }
+    }
+  }
 }
 
 .verify-experience-progress-bars {
@@ -673,70 +798,6 @@
 
     &.active {
       background-color: $limeGreen;
-    }
-  }
-}
-
-.peer-details {
-  .requesting-peer {
-    .name {
-      font-weight: 500;
-    }
-  }
-}
-
-.requesting-peer {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  margin-block: 0.5rem;
-  .profile-picture {
-    background: $lighterGray;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    margin-right: 0.75rem;
-  }
-  .requesting-peer-text-box {
-    .peer-type {
-      color: $gray;
-      font-size: 14px;
-    }
-  }
-}
-
-.skills-wrapper {
-  display: grid;
-  align-items: center;
-  justify-content: space-between;
-  grid-template-columns: repeat(4, 24%);
-
-  .skill-box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border-radius: 1rem;
-    margin-block: 1rem;
-    border: 1px solid $lighterGray;
-    padding: 1rem;
-
-    .skill-name {
-      margin-bottom: 0.5rem;
-    }
-
-    .expertise {
-      font-weight: 500;
-      font-size: 12px;
-      color: $gray;
-      padding: 4px 12px;
-      background: $white;
-      border-radius: 34px;
-      background-color: #f4f4f4;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
     }
   }
 }
@@ -783,58 +844,24 @@
   }
 }
 
-.sent-reuest-box {
-  margin-top: 1rem;
+.requesting-peer-text-box {
+  margin-block-start: 2rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid hsl(223, 11%, 46%, 0.15);
 
-  .requests-wrapper {
-    display: grid;
-    grid-template-columns: repeat(4, 24%);
-    align-items: center;
-    justify-content: space-between;
-
-    .request-box {
-      border: 1px solid $lighterGray;
-      padding: 1rem;
-      border-radius: 1rem;
-      margin-block-end: 1rem;
-
-      .request-box-heading {
-        font-weight: 600;
-        margin-bottom: 0.5rem;
-        font-size: 16px;
-      }
-      .request-box-text {
-        font-size: 14px;
-        color: $gray;
-        margin-bottom: 0.5rem;
-      }
-      .request-status {
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-
-        .request-status-text {
-          font-size: 12px;
-          margin-left: 0.25rem;
-          font-weight: 500;
-          margin-top: 2px;
-
-          &.verified-status {
-            color: $green;
-          }
-          &.pending-status {
-            color: $red;
-          }
-        }
-      }
-    }
+  .name {
+    font-size: 18px;
+    font-weight: 600;
   }
-  .verified,
-  .pending {
-    border: none;
-    outline: none;
-    margin-left: -0.5rem;
+
+  .peer-type {
+    font-size: 15px;
+    color: #697082;
   }
+}
+
+.disclaimer-heading {
+  font-size: 17px;
 }
 
 @media screen and (max-width: 930px) {
@@ -845,14 +872,6 @@
   }
 }
 @media screen and (max-width: 768px) {
-  .sent-reuest-box {
-    .requests-wrapper {
-      grid-template-columns: repeat(2, 49%);
-    }
-  }
-  .skills-wrapper {
-    grid-template-columns: repeat(2, 49%);
-  }
   .add-peer-box {
     padding: 4rem 1rem;
     .experience-details {
@@ -908,15 +927,7 @@
   .docs-wrapper {
     grid-template-columns: 100%;
   }
-  .skills-wrapper {
-    grid-template-columns: 100%;
-  }
   .see-peers-btn-wrapper {
     width: 80%;
-  }
-  .sent-reuest-box {
-    .requests-wrapper {
-      grid-template-columns: 80%;
-    }
   }
 }

@@ -1,10 +1,13 @@
-import { Text, Box, Button } from '@mantine/core';
+import { Text, Box, Button, Modal, Title } from '@mantine/core';
 import { MdVerified } from 'react-icons/md';
 import { CgSandClock } from 'react-icons/cg';
 import { ExperienceDocuments, Peer } from '../../../types/ProfileGeneral';
 import { PeerDetails } from './PeerDetails';
 import { CreatePeerResponseType } from '../../../types/ProfileGeneral';
 import { ReviewActionType } from '../VerifyExperience';
+import { useDisclosure, useMediaQuery } from '@mantine/hooks';
+import { useNavigate } from 'react-router-dom';
+import { useGlobalContext } from '../../../../../../context/GlobalContext';
 
 type ConfrimRequestPropsType = {
   addedPeers: Peer[];
@@ -23,8 +26,43 @@ export const ConfirmRequest: React.FC<ConfrimRequestPropsType> = ({
   handleCreatePeerRequest,
   verificationStepDispatch,
 }) => {
+  const navigate = useNavigate();
+  const { scrollToTop } = useGlobalContext();
+  const isMobile = useMediaQuery('(max-width: 768px)');
+  const [opened, { open, close }] = useDisclosure(false);
+
+  const handleFinish = () => {
+    close();
+    scrollToTop();
+    navigate('/candidate/profile/myVerification');
+  };
+
   return (
     <>
+      <Modal
+        radius={'lg'}
+        className="modal"
+        size={'60%'}
+        fullScreen={isMobile}
+        opened={opened}
+        onClose={close}
+        centered
+      >
+        <Box className="disclaimer-modal completion-modal">
+          <Title className="disclaimer-heading">Your request has been sent!</Title>
+          <Text className="disclaimer-subHeading">For verifying your work experience on Greenie</Text>
+          <Box className="experience-details-text-box">
+            <Text className="designation">{experience?.designation}</Text>
+            <Text className="company-name">{experience?.companyName}</Text>
+            <Button leftIcon={<CgSandClock size={'16px'} />} className="pending">
+              Pending
+            </Button>
+          </Box>
+          <Button radius={'xl'} className="continue-btn" onClick={handleFinish}>
+            Continue
+          </Button>
+        </Box>
+      </Modal>
       <Box className="confirm-request-box">
         <Box className="document-action-heading-box">
           <Text className="document-action-heading">Confirm your work experience</Text>
@@ -64,7 +102,17 @@ export const ConfirmRequest: React.FC<ConfrimRequestPropsType> = ({
         })}
       </Box>
       <Box className="see-peers-btn-wrapper">
-        <Button className="green-btn" onClick={handleCreatePeerRequest}>
+        <Button
+          className="green-btn"
+          onClick={() => {
+            try {
+              handleCreatePeerRequest();
+              open();
+            } catch (err) {
+              console.error('Something went wrong!');
+            }
+          }}
+        >
           Confirm and send
         </Button>
         <Button

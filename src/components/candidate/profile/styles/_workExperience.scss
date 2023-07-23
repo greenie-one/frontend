@@ -368,6 +368,48 @@
     text-align: left;
     color: $dark;
     margin-bottom: 0.5rem;
+
+    &.referees-heading {
+      margin-top: 1.5rem;
+    }
+  }
+
+  .requests-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+
+    .referees-request-box {
+      border: 1px solid #e1e1e1;
+      border-radius: 1rem;
+      padding: 1rem;
+      margin-block: 0.25rem;
+
+      .request-box-heading {
+        font-weight: 500;
+      }
+
+      .request-box-text {
+        font-size: 13px;
+        color: gray;
+        text-decoration: underline;
+      }
+
+      .request-status {
+        font-weight: 500;
+        font-size: 12px;
+        color: #ff7272;
+        width: max-content;
+        padding: 2px 8px;
+        background: #ffffff;
+        border: 1px solid #ff7272;
+        border-radius: 34px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 1.5rem;
+      }
+    }
   }
 
   .comapny-type-box {
@@ -543,6 +585,12 @@
   }
 }
 
+.mantine-Modal-title {
+  font-weight: 600;
+  font-size: 1.15rem;
+  padding-inline: 1rem;
+}
+
 .skills-modal {
   display: flex;
   flex-direction: column;
@@ -567,8 +615,32 @@
   .folder-wrapper {
     width: 100%;
     margin-top: 1.5rem;
+    padding-block: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-inline: 1rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
 
     .folder {
+      width: 100%;
+      display: flex;
+      gap: 10px;
+      justify-content: flex-start;
+      margin-bottom: 0 !important;
+
+      .doc-name {
+        width: 100%;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+
+      img {
+        width: 2rem;
+      }
       &:hover {
         border: 1px solid $green;
       }

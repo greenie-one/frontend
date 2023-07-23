@@ -21,6 +21,25 @@ import { UndertakingText } from '../UndertakingText';
 import { peerVerificationAPIList } from '../../../../../assets/api/ApiList';
 import { RequestListType } from '../../../my_verifications/components/RequestList';
 
+const months = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+];
+
+const formattedDate = (data: string) => {
+  return data.substring(0, 10).split('-').reverse();
+};
+
 export const ExperienceDetails: React.FC = () => {
   const navigate = useNavigate();
   const [openModal, setOpenModal] = useState<ExperienceDetailsModal>(null);
@@ -134,7 +153,7 @@ export const ExperienceDetails: React.FC = () => {
         </Modal>
       )}
       {openModal === 'Show Skills' && (
-        <Modal size={'80%'} fullScreen={isMobile} opened={opened} onClose={close} centered radius={'lg'}>
+        <Modal size={'auto'} fullScreen={isMobile} opened={opened} onClose={close} centered radius={'lg'}>
           <Box className="skills-modal">
             <Title className="skill-modal-title">Skills</Title>
             <Box className="add-skills-wrapper">
@@ -154,9 +173,16 @@ export const ExperienceDetails: React.FC = () => {
         </Modal>
       )}
       {openModal === 'Show Documents' && (
-        <Modal size={'80%'} fullScreen={isMobile} opened={opened} onClose={close} centered radius={'lg'}>
+        <Modal
+          size={'60%'}
+          title="Documents"
+          fullScreen={isMobile}
+          opened={opened}
+          onClose={close}
+          centered
+          radius={'lg'}
+        >
           <Box className="skills-modal">
-            <Title className="skill-modal-title">Documents</Title>
             {experienceDocuments.length === 0 ? (
               <Text>No documents added</Text>
             ) : (
@@ -165,7 +191,7 @@ export const ExperienceDetails: React.FC = () => {
                   return (
                     <Link key={_id} className="folder" to={privateUrl} target="_blank">
                       <img src={pdfIcon} alt="PDF Icon" />
-                      <Text>{name.substring(0, 20)}</Text>
+                      <Text className="doc-name">{name}</Text>
                     </Link>
                   );
                 })}
@@ -269,13 +295,20 @@ export const ExperienceDetails: React.FC = () => {
             </Box>
             {sentRequests.length > 0 && (
               <Box className="sent-reuest-box">
-                <Title className="experience-details-box-heading">Referees</Title>
+                <Title className="experience-details-box-heading referees-heading">Referees</Title>
                 <Box className="requests-wrapper">
-                  {sentRequests.map(({ name, isVerificationCompleted, id }) => {
+                  {sentRequests.map(({ name, isVerificationCompleted, id, createdAt }) => {
+                    const date = formattedDate(String(createdAt));
+
                     return (
-                      <Box key={id} className="request-box">
+                      <Box key={id} className="request-box referees-request-box">
                         <Text className="request-box-heading">{name}</Text>
-                        <Text className="request-box-text">12.30 AM | 02/03/2023</Text>
+                        <Text className="request-box-text">
+                          Request sent on{' '}
+                          <strong style={{ fontWeight: 500 }}>
+                            {date[0]} {months[Number(date[1]) - 1]} {date[2]}
+                          </strong>
+                        </Text>
                         {isVerificationCompleted ? (
                           <Box className="request-status">
                             <Box className="request-box-icon">

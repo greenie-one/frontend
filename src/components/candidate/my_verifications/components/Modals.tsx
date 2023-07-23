@@ -2,6 +2,25 @@ import React from 'react';
 import '../styles/modal.css';
 import { Box, Button } from '@mantine/core';
 
+const months = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+];
+
+const formattedDate = (data: string) => {
+  return data.substring(0, 10).split('-').reverse();
+};
+
 export const AcceptanceModal: React.FC<{ confirmationHandler: () => void }> = ({
   confirmationHandler,
 }): JSX.Element => {
@@ -19,11 +38,15 @@ export const AcceptanceModal: React.FC<{ confirmationHandler: () => void }> = ({
   );
 };
 
-export const ReminderModal: React.FC<ReminderModalType> = ({ confirmationHandler, name }): JSX.Element => {
+export const ReminderModal: React.FC<ReminderModalType> = ({ confirmationHandler, name, createdAt }): JSX.Element => {
+  const date = formattedDate(String(createdAt));
+
   return (
     <Box className="modal-content">
       <h3 className="modal-content-heading">You are about to send a reminder to {name}!</h3>
-      <p className="modal-content-msg">Request sent of 23rd April 2012 (13 days ago)</p>
+      <p className="modal-content-msg">
+        Request sent on {date[0]} {months[Number(date[1]) - 1]} {date[2]}
+      </p>
       <Button radius="xl" className="modal-action-btn" onClick={confirmationHandler}>
         Send Reminder
       </Button>
@@ -31,11 +54,19 @@ export const ReminderModal: React.FC<ReminderModalType> = ({ confirmationHandler
   );
 };
 
-export const CancelationModal: React.FC<CancelationModalType> = ({ cancelationHandler, name }): JSX.Element => {
+export const CancelationModal: React.FC<CancelationModalType> = ({
+  cancelationHandler,
+  name,
+  createdAt,
+}): JSX.Element => {
+  const date = formattedDate(String(createdAt));
+
   return (
     <Box className="modal-content">
       <h3 className="modal-content-heading">Do you really want to cancel verification request sent to {name}!</h3>
-      <p className="modal-content-msg">Request sent of 23rd April 2012 (13 days ago)</p>
+      <p className="modal-content-msg">
+        Request sent on {date[0]} {months[Number(date[1]) - 1]} {date[2]}
+      </p>
       <Button radius="xl" className="modal-action-btn" onClick={cancelationHandler}>
         Cancel Request
       </Button>

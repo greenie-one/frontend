@@ -1,11 +1,10 @@
 import React from 'react';
 import { useDisclosure } from '@mantine/hooks';
-import { Box, Button, Modal, Text } from '@mantine/core';
+import { Box, Button, Modal } from '@mantine/core';
 import { RequestListType } from './RequestList';
 
 import { CancelationModal, ReminderModal } from './Modals';
 import profileImage from '../../../auth/assets/profileillustration.png';
-import { BsCheckLg } from 'react-icons/bs';
 
 import { peerVerificationAPIList } from '../../../../assets/api/ApiList';
 import { useGlobalContext } from '../../../../context/GlobalContext';
@@ -21,6 +20,7 @@ import styles from '../styles/requestlist.module.css';
 type RenderRequestListProps = {
   requestType: 'sent' | 'recieved';
   requestList: Array<RequestListType>;
+  setForceRenderList: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const {
@@ -31,32 +31,27 @@ const {
   request_msg,
   request_actions,
   request_action_btns,
-  requested_date,
-  request_status,
-  request_status_text,
 } = styles;
 
-const ActionBtns: React.FC<{ type: 'sent' | 'recieved'; cbRight: () => void; cbLeft: () => void }> = ({
-  type,
-  cbRight,
-}): JSX.Element => {
+const ActionBtns: React.FC<{ cbRight: () => void; cbLeft: () => void }> = ({ cbLeft, cbRight }): JSX.Element => {
   return (
     <Box className={request_actions}>
-      <Box>
-        <Box className={request_status}>
-          <BsCheckLg size={'14px'} />
-          <Text className={request_status_text}>Sent</Text>
-        </Box>
-        <Text className={requested_date}>On 23rd April 2023</Text>
-      </Box>
+      <Button radius="xl" className={request_action_btns} onClick={cbLeft}>
+        Remind
+      </Button>
       <Button radius="xl" className={request_action_btns} onClick={cbRight}>
-        {type === 'sent' ? 'Remind' : 'Accept'}
+        Cancel
       </Button>
     </Box>
   );
 };
 
-const SentRequestActions: React.FC<SentRequestActionType> = ({ requestId, name }): JSX.Element => {
+const SentRequestActions: React.FC<SentRequestActionType> = ({
+  requestId,
+  name,
+  setForceRenderList,
+  createdAt,
+}): JSX.Element => {
   const { authClient } = useGlobalContext();
   const [reminderModalOpened, { open: reminderModalOpen, close: reminderModalClose }] = useDisclosure(false);
   const [cancelationModalOpened, { open: cancelationModalOpen, close: cancelationModalClose }] = useDisclosure(false);
@@ -88,6 +83,7 @@ const SentRequestActions: React.FC<SentRequestActionType> = ({ requestId, name }
       authClient
     );
     if (res.ok) {
+      setForceRenderList((current: boolean) => !current);
       showSuccessNotification({ title: 'Success!', message: res.value.message });
       cancelationModalClose();
     } else {
@@ -97,7 +93,7 @@ const SentRequestActions: React.FC<SentRequestActionType> = ({ requestId, name }
 
   return (
     <>
-      <ActionBtns type="sent" cbRight={reminderModalOpen} cbLeft={cancelationModalOpen} />
+      <ActionBtns cbLeft={reminderModalOpen} cbRight={cancelationModalOpen} />
       <Modal
         opened={reminderModalOpened}
         onClose={reminderModalClose}
@@ -107,7 +103,7 @@ const SentRequestActions: React.FC<SentRequestActionType> = ({ requestId, name }
         padding="xl"
         size="lg"
       >
-        <ReminderModal confirmationHandler={handleRemind} name={name} />
+        <ReminderModal confirmationHandler={handleRemind} name={name} createdAt={createdAt} />
       </Modal>
       <Modal
         opened={cancelationModalOpened}
@@ -118,13 +114,16 @@ const SentRequestActions: React.FC<SentRequestActionType> = ({ requestId, name }
         padding="xl"
         size="lg"
       >
-        <CancelationModal cancelationHandler={handleCancelRequest} name={name} />
+        <CancelationModal cancelationHandler={handleCancelRequest} name={name} createdAt={createdAt} />
       </Modal>
     </>
   );
 };
 
-export const RenderRequestList: React.FC<RenderRequestListProps> = ({ requestList }): JSX.Element[] => {
+export const RenderRequestList: React.FC<RenderRequestListProps> = ({
+  requestList,
+  setForceRenderList,
+}): JSX.Element[] => {
   return requestList.map((request) => {
     if (!request.isVerificationCompleted) {
       return (
@@ -133,17 +132,23 @@ export const RenderRequestList: React.FC<RenderRequestListProps> = ({ requestLis
             <img src={profileImage} alt="notification" />
           </span>
           <Box className={request_item_body}>
-            <Text className={request_title}>
-              Request to <span style={{ color: '#000000', fontWeight: '400' }}>{request.name}</span>
-            </Text>
-            <span className={request_msg}>A request to verify your work experience as been sent</span>
+            <span className={request_title}>Request to verify your work experience</span>
+            <span className={request_msg}>
+              You have requested <span style={{ color: '#000000', fontWeight: '500' }}>{request.name}</span> to verify
+              your work experience
+            </span>
           </Box>
           {request.isVerificationCompleted ? (
             <Box className={request_actions}>
               <Button className={request_action_btns}>Completed</Button>
             </Box>
           ) : (
-            <SentRequestActions requestId={request.id} name={request.name} />
+            <SentRequestActions
+              setForceRenderList={setForceRenderList}
+              requestId={request.id}
+              name={request.name}
+              createdAt={request.createdAt}
+            />
           )}
         </Box>
       );

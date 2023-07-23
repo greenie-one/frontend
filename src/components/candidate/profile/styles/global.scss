@@ -448,6 +448,45 @@
   }
 }
 
+.completion-modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .disclaimer-heading {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .disclaimer-subHeading {
+    color: #697082;
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  .experience-details-text-box {
+    margin-bottom: 2.5rem;
+    border-radius: 10px;
+
+    .designation {
+      font-weight: 600;
+      color: #000000;
+    }
+
+    .company-name {
+      color: #697082;
+      font-weight: 500;
+      margin-bottom: 1rem;
+    }
+  }
+
+  .continue-btn {
+    background: #17a672;
+    width: 300px;
+  }
+}
+
 @import '_cardStyles';
 @import '_modals';
 @import '_navbar';
