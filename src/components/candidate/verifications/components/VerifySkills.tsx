@@ -1,73 +1,89 @@
+import { useState } from 'react';
 import { Text, Box, Button } from '@mantine/core';
 import { BsPersonCheckFill } from 'react-icons/bs';
 import { HiOutlineBan } from 'react-icons/hi';
-import { useState } from 'react';
-import { ProfileDetailsBox } from './ProfileDetailsBox';
-import { VerificationDisclaimer } from './VerificationDisclaimer';
+
+import { useVerificationContext } from '../context/VerificationContext';
+import { DisputeModal } from './DisputeModal';
+import { useDisclosure } from '@mantine/hooks';
 
 export const VerifySkills = () => {
-  const [skills, setSkills] = useState([
-    {
-      skillName: 'Software Engineer',
-      expertise: 'Master Pro',
-      status: 'pending',
-    },
-    { skillName: 'ReactJs', expertise: 'Master Pro', status: 'pending' },
-    { skillName: 'Express', expertise: 'Master Pro', status: 'pending' },
-  ]);
+  const { setActiveStep, setVerificationResponse, verificationResponse, verificationData } = useVerificationContext();
+  const { data } = verificationData;
+  const [disputeModalOpened, { open: disputeModalOpen, close: disputeModalClose }] = useDisclosure();
 
-  const handleApprove = (index: number) => {
-    const updatedSkills = [...skills];
-    updatedSkills[index].status = 'approved';
-    setSkills(updatedSkills);
+  const [attrId, setAttrId] = useState<string>('');
+
+  const approveHandler = (_id: string) => {
+    const responseObj: DynamicObjectWithIdType = {
+      id: _id,
+      status: {
+        state: 'ACCEPTED',
+      },
+    };
+
+    if (verificationResponse.skills) {
+      setVerificationResponse((current) => {
+        const skillsList = current.documents;
+        const newSkillsList = skillsList.map((_skill) => {
+          if (_skill.id === _id) {
+            return responseObj;
+          }
+
+          return _skill;
+        });
+
+        return { ...current, skills: newSkillsList };
+      });
+    } else {
+      setVerificationResponse({
+        ...verificationResponse,
+        skills: [responseObj],
+      });
+    }
   };
-  const handleDispute = (index: number) => {
-    const updatedSkills = [...skills];
-    updatedSkills[index].status = 'disputed';
-    setSkills(updatedSkills);
-  };
-  const handlePending = (index: number) => {
-    const updatedSkills = [...skills];
-    updatedSkills[index].status = 'pending';
-    setSkills(updatedSkills);
-  };
+
   return (
     <section className="verification-step">
-      <ProfileDetailsBox />
-      <Text className="question-text">Could you verify documents uploaded by Abhishek?</Text>
+      <DisputeModal
+        attrId={attrId}
+        setAttrId={setAttrId}
+        opened={disputeModalOpened}
+        close={() => {
+          disputeModalClose();
+        }}
+        parentKey="skills"
+      />
+      <Text className="question-text">Could you verify skills claimed by {data.name}?</Text>
       <Box className="verification-skills-box">
         <Box className="verification-skill-header">
           <Text>Skills</Text>
           <Text>Expertise</Text>
-          <Text>Aprove/Dispute</Text>
+          <Text>Approve/Dispute</Text>
         </Box>
         <Box className="verification-skills-wrapper">
-          {skills.map(({ skillName, expertise, status }, index) => {
+          {data.skills.map((skill, index) => {
             return (
               <Box key={index} className="verification-skill-row">
-                <Text>{skillName}</Text>
-                <Text className="expertise">{expertise}</Text>
-                <Box className="verification-skills-action">
-                  {status === 'approved' ? (
-                    <BsPersonCheckFill className="approved-skill-icon" onClick={() => handlePending(index)} />
-                  ) : (
-                    <BsPersonCheckFill className="verification-skill-icon" onClick={() => handleApprove(index)} />
-                  )}
-                  {status === 'disputed' ? (
-                    <HiOutlineBan className="disputed-skill-icon" onClick={() => handlePending(index)} />
-                  ) : (
-                    <HiOutlineBan className="verification-skill-icon" onClick={() => handleDispute(index)} />
-                  )}
-                </Box>
+                <Text>{skill.skillName}</Text>
+                <Text className="expertise">{skill.expertise}</Text>
+                <BsPersonCheckFill className="approved-skill-icon" onClick={() => approveHandler(skill.id)} />
+                <HiOutlineBan
+                  className="disputed-skill-icon"
+                  onClick={() => {
+                    setAttrId(skill.id);
+                    disputeModalOpen();
+                  }}
+                />
               </Box>
             );
           })}
         </Box>
       </Box>
-      <VerificationDisclaimer />
-      <Box className="profile-details-actions" my={'1rem'}>
-        <Button className="green-outline-btn">Continue</Button>
-        <Button className="dispute-btn">Go Back</Button>
+      <Box className="verification-btns-wrapper">
+        <Button className="btn next-btn" onClick={() => setActiveStep((current) => current + 1)}>
+          Continue
+        </Button>
       </Box>
     </section>
   );

@@ -3,10 +3,7 @@ import { Box, Button, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useVerificationContext } from '../context/VerificationContext';
 import { DisputeModal } from './DisputeModal';
-import { VerificationDisclaimer } from './VerificationDisclaimer';
 import { optionalAttrDict } from '../../constants/dictionaries';
-
-type ResponseObjType = { [keys: string]: string };
 
 export const VerifyAttributes: React.FC = (): JSX.Element => {
   const { setActiveStep, verificationData, verificationResponse, setVerificationResponse } = useVerificationContext();
@@ -16,13 +13,16 @@ export const VerifyAttributes: React.FC = (): JSX.Element => {
   const [attrId, setAttrId] = useState<string>('');
 
   const approveHandler = (_id: string) => {
-    const responseObj: ResponseObjType = {};
+    const responseObj: StatusType = {} as StatusType;
     responseObj['state'] = 'ACCEPTED';
 
-    const responseData: { [keys: string]: ResponseObjType } = {};
+    const responseData: { [keys: string]: StatusType } = {};
     responseData[_id] = responseObj;
 
-    setVerificationResponse({ ...verificationResponse, ...responseData });
+    setVerificationResponse({
+      ...verificationResponse,
+      optionalVerificationFields: { ...verificationResponse.optionalVerificationFields, ...responseData },
+    });
   };
 
   return (
@@ -34,14 +34,15 @@ export const VerifyAttributes: React.FC = (): JSX.Element => {
         close={() => {
           disputeModalClose();
         }}
+        parentKey="optionalVerificationFields"
       />
       <Box className="profile-details-action-section">
-        {Object.keys(data).map((keys, index) => {
+        {Object.keys(data?.optionalVerificationFields).map((keys, index) => {
           return optionalAttrDict[keys] ? (
             <Box className="profile-detail" key={index}>
               <Box className="details">
                 <Text className="label">{optionalAttrDict[keys]}</Text>
-                <Text className="detail">{data[keys]}</Text>
+                <Text className="detail">{data?.optionalVerificationFields[keys]}</Text>
               </Box>
               <Box className="profile-details-actions">
                 <Button className="green-outline-btn" onClick={() => approveHandler(keys)}>
@@ -63,7 +64,6 @@ export const VerifyAttributes: React.FC = (): JSX.Element => {
           );
         })}
       </Box>
-      <VerificationDisclaimer />
       <Box className="verification-btns-wrapper">
         <Button className="btn next-btn" onClick={() => setActiveStep((current) => current + 1)}>
           Continue

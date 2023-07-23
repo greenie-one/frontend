@@ -197,10 +197,11 @@ export const VerifyExperience: React.FC = () => {
       );
 
       if (res.ok) {
-        createVerificationRequest('Skills', 'Peer', res.value?.id, response.verificationSkills);
-        createVerificationRequest('Document', 'Peer', res.value?.id, response.verificationDocuments);
+        // createVerificationRequest('Skills', 'Peer', res.value?.id, response.verificationSkills);
+        // createVerificationRequest('Document', 'Peer', res.value?.id, response.verificationDocuments);
         open();
         handleSeeRequest();
+
         // const filtered = res.value.filter((document) => document.workExperience === experience?.id);
       } else {
         showErrorNotification(res.error.code);

@@ -21,8 +21,8 @@ type CreatePeerResponseType = {
   ref: string;
   verificationBy: string;
   optionalVerificationFields: Array<string>;
-  verificationDocuments: Array<string>;
-  verificationSkills: Array<string>;
+  documents: Array<string>;
+  skills: Array<string>;
 };
 
 type UseStylesType = (

@@ -92,7 +92,24 @@ export const AddExperience = () => {
     if (!workExperienceForm.validate().hasErrors) {
       showLoadingNotification({ title: 'Please wait !', message: 'We are adding your work experience.' });
       workExperienceForm.clearErrors();
-      const requestBody: ExperienceRequestBody = workExperienceForm.values;
+      let requestBody: ExperienceRequestBody;
+      if (workExperienceForm.values.dateOfLeaving == '') {
+        requestBody = {
+          designation: workExperienceForm.values.designation,
+          companyType: workExperienceForm.values.companyType,
+          email: workExperienceForm.values.email,
+          workMode: workExperienceForm.values.workMode,
+          workType: workExperienceForm.values.workType,
+          companyName: workExperienceForm.values.companyName,
+          companyId: workExperienceForm.values.companyId,
+          dateOfJoining: workExperienceForm.values.dateOfJoining,
+          isVerified: workExperienceForm.values.isVerified,
+          department: workExperienceForm.values.department,
+          reasonForLeaving: workExperienceForm.values.department,
+        };
+      } else {
+        requestBody = workExperienceForm.values;
+      }
 
       const res = await HttpClient.callApiAuth<createExperience>(
         {
@@ -403,6 +420,7 @@ export const AddExperience = () => {
               <Box className="input-section">
                 <Title className="title">Work email</Title>
                 <TextInput
+                  withAsterisk
                   label="Official work email"
                   className="inputClass"
                   {...workExperienceForm.getInputProps('email')}
@@ -412,6 +430,7 @@ export const AddExperience = () => {
               <Box className="input-section">
                 <Title className="title">Company ID</Title>
                 <TextInput
+                  withAsterisk
                   label="Enter your unique company Id"
                   className="inputClass"
                   {...workExperienceForm.getInputProps('companyId')}

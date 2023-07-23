@@ -15,6 +15,9 @@
 .modal-content-heading {
   font-size: 1rem;
   font-weight: 600;
+  max-width: 40ch;
+  text-align: center;
+  line-height: 1.5;
 }
 
 .modal-content-msg {

@@ -39,7 +39,7 @@ export const PeerDetails: React.FC<ConfirmPeerType> = ({
         <Text className="document-action-heading">With Documents</Text>
         <Box className="docs-wrapper">
           {experienceDocuments
-            .filter((doc) => createPeerResponse[indexNumber].verificationDocuments.includes(doc._id))
+            .filter((doc) => createPeerResponse[indexNumber].documents.includes(doc._id))
             .map((document, index) => {
               return (
                 <Box className="document" key={index}>
@@ -54,7 +54,7 @@ export const PeerDetails: React.FC<ConfirmPeerType> = ({
           <Box className="skills-wrapper">
             {skillData
               .filter((skill) => skill.workExperience === experience?.id)
-              .filter((skill) => createPeerResponse[indexNumber].verificationSkills.includes(skill.id))
+              .filter((skill) => createPeerResponse[indexNumber].skills.includes(skill.id))
               .map((skill: Skill, index: number) => {
                 const { expertise, skillName } = skill;
                 return (

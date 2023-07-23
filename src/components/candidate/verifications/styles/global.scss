@@ -217,14 +217,23 @@ $dark: #191919;
   font-family: Inter;
   font-size: 16px;
   font-weight: 500;
-  line-height: 33px;
+  line-height: 1.75;
   letter-spacing: -0.02em;
   text-align: center;
   margin-block: 1rem;
   margin-bottom: 1rem;
+  max-width: 50ch;
+  margin-bottom: 3rem;
 
   span {
-    color: $green;
+    color: #000000;
+    font-weight: 600;
+    text-transform: uppercase;
+
+    &.green-text {
+      border-bottom: 1px solid $green;
+      color: $green;
+    }
   }
 
   .date {
@@ -390,14 +399,14 @@ $dark: #191919;
 
   .verify-documents-header {
     display: grid;
-    grid-template-columns: 40% 40% 20%;
+    grid-template-columns: 3fr 2fr;
     padding: 1rem;
     font-weight: 500;
   }
   .verify-documents-wrapper {
     .verify-documets-row {
       display: grid;
-      grid-template-columns: 40% 40% 20%;
+      grid-template-columns: 3fr 2fr;
       align-items: center;
       justify-content: flex-start;
       border-top: 1px solid $lighterGray;

@@ -1,23 +1,27 @@
 import React from 'react';
-import './styles/global.scss';
 import { Text, Box, Title } from '@mantine/core';
 import { useVerificationContext } from './context/VerificationContext';
-import { HiMiniArrowLongLeft } from 'react-icons/hi2';
-import { VerifyPeer } from './components/VerifyPeer';
+
+import { OthersSpecificQuestions } from './components/OthersSpecificQuestions';
+import { VerificationDisclaimer } from './components/VerificationDisclaimer';
+import { VerificationQuestions } from './components/VerificationQuestions';
+import { AttitudeVerification } from './components/AttitudeVerification';
+import { CompleteVerification } from './components/CompleteVerification';
 import { ProfileDetailsBox } from './components/ProfileDetailsBox';
 import { VerifyAttributes } from './components/VerifyAttributes';
-import { AttitudeVerification } from './components/AttitudeVerification';
-import { CommonVerifications } from './components/CommonVerification';
-import { Review } from './components/Review';
-import { CompleteVerification } from './components/CompleteVerification';
-import { OthersSpecificQuestions } from './components/OthersSpecificQuestions';
 import { VerifyDocuments } from './components/VerifyDocuments';
 import { VerifySkills } from './components/VerifySkills';
+import { VerifyPeer } from './components/VerifyPeer';
+import { Review } from './components/Review';
 import { Navbar } from './components/Navbar';
+
+import { HiMiniArrowLongLeft } from 'react-icons/hi2';
+import './styles/global.scss';
 
 export const VerificationJourney: React.FC = (): JSX.Element => {
   const { activeStep, totalSteps, setActiveStep, unverifiedLink, verificationData, verificationBy } =
     useVerificationContext();
+
   const stepper = Array.from({ length: totalSteps - 1 }, (_, index) => index + 1);
 
   return (
@@ -50,20 +54,50 @@ export const VerificationJourney: React.FC = (): JSX.Element => {
                   ))}
                 </Box>
                 <ProfileDetailsBox />
-                {activeStep === 1 ? <VerifyAttributes /> : <></>}
+                {activeStep === 1 ? <VerificationDisclaimer /> : <></>}
                 {verificationBy === 'HR' ? (
                   <>
-                    {activeStep === 2 ? <AttitudeVerification /> : <></>}
-                    {activeStep === 3 || activeStep === 4 ? <CommonVerifications /> : <></>}
-                    {activeStep === 5 ? <Review /> : <></>}
+                    {activeStep === 2 ? <VerifyAttributes /> : <></>}
+                    {activeStep === 3 ? <VerifyDocuments /> : <></>}
+                    {activeStep === 4 ? <VerifySkills /> : <></>}
+                    {activeStep === 5 ? (
+                      <VerificationQuestions
+                        question={<>Has the candidate completed the exit procedure?</>}
+                        _id="exitProcedure"
+                        parentKey="otherQuestions"
+                      />
+                    ) : (
+                      <></>
+                    )}
+                    {activeStep === 6 ? (
+                      <VerificationQuestions
+                        question={<>Is the candidate eligible for rehire?</>}
+                        _id="exitProcedure"
+                        parentKey="otherQuestions"
+                      />
+                    ) : (
+                      <></>
+                    )}
+                    {activeStep === 7 ? <AttitudeVerification /> : <></>}
+                    {activeStep === 8 ? <Review /> : <></>}
                   </>
                 ) : (
                   <>
-                    {activeStep === 2 && <VerifyDocuments />}
-                    {activeStep === 3 && <VerifySkills />}
-                    {activeStep === 4 || activeStep === 5 ? <OthersSpecificQuestions /> : <></>}
-                    {activeStep === 6 || activeStep === 7 ? <CommonVerifications /> : <></>}
-                    {activeStep === 8 ? <Review /> : <></>}
+                    {activeStep === 2 || activeStep === 3 ? <OthersSpecificQuestions /> : <></>}
+                    {activeStep === 4 ? <VerifyAttributes /> : <></>}
+                    {activeStep === 5 ? <VerifyDocuments /> : <></>}
+                    {activeStep === 6 ? <VerifySkills /> : <></>}
+                    {activeStep === 7 ? (
+                      <VerificationQuestions
+                        question={<>Is the candidate eligible for rehire?</>}
+                        _id="eligibleForRehire"
+                        parentKey="mandatoryQuestions"
+                      />
+                    ) : (
+                      <></>
+                    )}
+                    {activeStep === 8 ? <AttitudeVerification /> : <></>}
+                    {activeStep === 9 ? <Review /> : <></>}
                   </>
                 )}
               </section>

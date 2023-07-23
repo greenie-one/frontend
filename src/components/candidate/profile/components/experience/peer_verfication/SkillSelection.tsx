@@ -27,14 +27,14 @@ export const SkillSelection: React.FC<{
         continue;
       }
 
-      let skillsList = peer.verificationSkills;
+      let skillsList = peer.skills;
       if (event.target.checked) {
         skillsList.push(id);
       } else {
         skillsList = skillsList.filter((_id) => _id !== id);
       }
 
-      peer.verificationSkills = skillsList;
+      peer.skills = skillsList;
       updatedList.push(peer);
     }
 
@@ -62,7 +62,7 @@ export const SkillSelection: React.FC<{
                 <Box key={idx}>
                   <Box className="selected-skill">
                     <Checkbox
-                      checked={createPeerResponse[activePeer].verificationSkills.includes(skill.id)}
+                      checked={createPeerResponse[activePeer].skills.includes(skill.id)}
                       onChange={(event) => handleMark(event, skill.id)}
                     />
                     <Text>{skill.skillName}</Text>

@@ -4,12 +4,7 @@ import { HttpClient } from '../../../../utils/generic/httpClient';
 import { peerVerificationAPIList } from '../../../../assets/api/ApiList';
 import { isNotEmpty, useForm } from '@mantine/form';
 import { showErrorNotification } from '../../../../utils/functions/showNotification';
-import {
-  DisputeFormType,
-  UnverifiedLinkType,
-  VerificationContextType,
-  VerificationResponseType,
-} from '../types/VerificationContext';
+import { DisputeFormType, UnverifiedLinkType, VerificationContextType } from '../types/VerificationContext';
 
 const VerificationContext = createContext<VerificationContextType>({} as VerificationContextType);
 export const useVerificationContext = () => useContext(VerificationContext);
@@ -32,13 +27,17 @@ export const VerificationContextProvider: React.FC<{ children: React.ReactNode }
 
   const [activeStep, setActiveStep] = useState<number>(1);
   const [totalSteps, setTotalSteps] = useState<number>(7);
-  const [verificationData, setVerificationData] = useState<any>(null);
+  const [verificationData, setVerificationData] = useState<GetVerificationDataResponse>(
+    {} as GetVerificationDataResponse
+  );
   const [unverifiedLink, setUnverifiedLink] = useState<UnverifiedLinkType>('NONE');
-  const [verificationResponse, setVerificationResponse] = useState<VerificationResponseType>({});
+  const [verificationResponse, setVerificationResponse] = useState<PostVerificationDataType>(
+    {} as PostVerificationDataType
+  );
   const [personBeingVerified, setPersonBeingVerified] = useState<string>('');
 
   const getVerificationData = async () => {
-    const res = await HttpClient.callApi({
+    const res = await HttpClient.callApi<GetVerificationDataResponse>({
       url: `${peerVerificationAPIList.getVerificationData}/${params.uuid}`,
       method: 'GET',
     });
@@ -47,7 +46,7 @@ export const VerificationContextProvider: React.FC<{ children: React.ReactNode }
       setUnverifiedLink('NONE');
       setVerificationData(res.value);
     } else {
-      setPersonBeingVerified((res.error as any).name);
+      setPersonBeingVerified((res.error as APIErrorPeer).name);
       setActiveStep(0);
       switch (res.error.code) {
         case 'GR0050': {
@@ -71,9 +70,7 @@ export const VerificationContextProvider: React.FC<{ children: React.ReactNode }
     const res = await HttpClient.callApi({
       url: `${peerVerificationAPIList.getVerificationData}/${params.uuid}`,
       method: 'PATCH',
-      body: {
-        verificationFields: verificationResponse,
-      },
+      body: verificationResponse,
     });
 
     if (res.ok) {
@@ -83,22 +80,10 @@ export const VerificationContextProvider: React.FC<{ children: React.ReactNode }
     }
   };
 
-  // const getPeerDocuments = async () => {
-  //   const res = await HttpClient.callApi({
-  //     url: `${peerVerificationAPIList.getDocuments}/${verificationData.id}`,
-  //     method: 'GET',
-  //   });
-  //   if (res.ok) {
-  //     console.log(res.value);
-  //   } else {
-  //     console.log(res.error.code);
-  //   }
-  // };
-
   useEffect(() => {
     getVerificationData();
-    if (verificationBy === 'HR') setTotalSteps(6);
-    else setTotalSteps(7);
+    if (verificationBy === 'HR') setTotalSteps(9);
+    else setTotalSteps(10);
   }, [params.peer, params.uuid]);
 
   const storeValues = {

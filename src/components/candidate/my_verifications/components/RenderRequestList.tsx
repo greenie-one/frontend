@@ -2,7 +2,8 @@ import React from 'react';
 import { useDisclosure } from '@mantine/hooks';
 import { Box, Button, Modal, Text } from '@mantine/core';
 import { RequestListType } from './RequestList';
-import { ReminderModal } from './Modals';
+
+import { CancelationModal, ReminderModal } from './Modals';
 import profileImage from '../../../auth/assets/profileillustration.png';
 import { BsCheckLg } from 'react-icons/bs';
 
@@ -57,7 +58,8 @@ const ActionBtns: React.FC<{ type: 'sent' | 'recieved'; cbRight: () => void; cbL
 
 const SentRequestActions: React.FC<SentRequestActionType> = ({ requestId, name }): JSX.Element => {
   const { authClient } = useGlobalContext();
-  const [opened, { open, close }] = useDisclosure(false);
+  const [reminderModalOpened, { open: reminderModalOpen, close: reminderModalClose }] = useDisclosure(false);
+  const [cancelationModalOpened, { open: cancelationModalOpen, close: cancelationModalClose }] = useDisclosure(false);
 
   const handleRemind = async () => {
     showLoadingNotification({ title: 'Please wait!', message: 'We are sending a reminder to the peer.' });
@@ -70,21 +72,53 @@ const SentRequestActions: React.FC<SentRequestActionType> = ({ requestId, name }
     );
     if (res.ok) {
       showSuccessNotification({ title: 'Success!', message: res.value.message });
-      close();
+      reminderModalClose();
     } else {
       showErrorNotification(res.error.code);
     }
   };
 
-  const handleCancelRequest = () => {
-    alert('Request Cancelled!');
+  const handleCancelRequest = async () => {
+    showLoadingNotification({ title: 'Please wait!', message: 'We are sending a reminder to the peer.' });
+    const res = await HttpClient.callApiAuth<{ message: string; success: boolean }>(
+      {
+        url: `${peerVerificationAPIList.remindRequest}/${requestId}`,
+        method: 'DELETE',
+      },
+      authClient
+    );
+    if (res.ok) {
+      showSuccessNotification({ title: 'Success!', message: res.value.message });
+      cancelationModalClose();
+    } else {
+      showErrorNotification(res.error.code);
+    }
   };
 
   return (
     <>
-      <ActionBtns type="sent" cbRight={open} cbLeft={handleCancelRequest} />
-      <Modal opened={opened} onClose={close} title="Confirmation" centered radius="lg" padding="xl" size="lg">
+      <ActionBtns type="sent" cbRight={reminderModalOpen} cbLeft={cancelationModalOpen} />
+      <Modal
+        opened={reminderModalOpened}
+        onClose={reminderModalClose}
+        title="Confirmation"
+        centered
+        radius="lg"
+        padding="xl"
+        size="lg"
+      >
         <ReminderModal confirmationHandler={handleRemind} name={name} />
+      </Modal>
+      <Modal
+        opened={cancelationModalOpened}
+        onClose={cancelationModalClose}
+        title="Confirmation"
+        centered
+        radius="lg"
+        padding="xl"
+        size="lg"
+      >
+        <CancelationModal cancelationHandler={handleCancelRequest} name={name} />
       </Modal>
     </>
   );

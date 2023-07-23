@@ -54,14 +54,14 @@ export const DocumentSelection: React.FC<{
         continue;
       }
 
-      let docList = peer.verificationDocuments;
+      let docList = peer.documents;
       if (event.target.checked) {
         docList.push(id);
       } else {
         docList = docList.filter((_id) => _id !== id);
       }
 
-      peer.verificationDocuments = docList;
+      peer.documents = docList;
       updatedList.push(peer);
     }
 
@@ -92,7 +92,7 @@ export const DocumentSelection: React.FC<{
             return (
               <Box key={_id} className="selected-attribute">
                 <Checkbox
-                  checked={createPeerResponse[activePeer].verificationDocuments.includes(_id)}
+                  checked={createPeerResponse[activePeer].documents.includes(_id)}
                   onChange={(event) => handleMark(event, _id)}
                 />
                 <Box className="document">
