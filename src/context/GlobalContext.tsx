@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { createStyles, rem, em } from '@mantine/core';
 import { AuthClient } from '../utils/generic/authClinet';
+import { useLocalStorage } from '@mantine/hooks';
 import {
   skillsAPIList,
   profileAPIList,
@@ -333,7 +334,9 @@ export const GlobalContextProvider: React.FC<{
     });
   };
 
-  const authTokens = authClient.getAccessToken();
+  const [authTokens] = useLocalStorage<AuthTokens>({
+    key: 'auth-tokens',
+  });
 
   useEffect(() => {
     if (authTokens) {
@@ -343,7 +346,7 @@ export const GlobalContextProvider: React.FC<{
       getSkills();
       getResidentialInfo();
     }
-  }, [forceRender]);
+  }, [forceRender, authTokens]);
 
   return (
     <GlobalContext.Provider
