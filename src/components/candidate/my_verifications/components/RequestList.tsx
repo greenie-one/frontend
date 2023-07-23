@@ -50,11 +50,17 @@ export const RequestList: React.FC<{ activeListItem: number }> = ({ activeListIt
 
   return activeListItem === 0 ? (
     <article className={requestList_container}>
-      <RenderRequestList
-        setForceRenderList={setForceRenderList}
-        requestType={activeListItem === 0 ? 'sent' : 'recieved'}
-        requestList={sentRequests}
-      />
+      {sentRequests.length != 0 ? (
+        <RenderRequestList
+          setForceRenderList={setForceRenderList}
+          requestType={activeListItem === 0 ? 'sent' : 'recieved'}
+          requestList={sentRequests}
+        />
+      ) : (
+        <Box className={notifications_container}>
+          <span className={notification_msg}>Need to verify the work experience by the peer</span>
+        </Box>
+      )}
     </article>
   ) : (
     <Box className={notifications_container}>

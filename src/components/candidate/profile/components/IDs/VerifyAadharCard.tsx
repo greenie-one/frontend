@@ -24,7 +24,7 @@ import privacyPolicy from '../../../../auth/assets/Privacy Policy-Greenie.pdf';
 
 export const VerifyAadharCard = () => {
   const navigate = useNavigate();
-  const [aadharIsVerified, setAadharIsVerified] = useState<boolean>(false);
+  const [aadharIsVerified, setAadharIsVerified] = useState<boolean>(true);
   const [opened, { open, close }] = useDisclosure(false);
   const [checked, setChecked] = useState<boolean>(false);
   const [secondsRemaining, setSecondsRemaining] = useState<number>(60);
@@ -128,8 +128,9 @@ export const VerifyAadharCard = () => {
 
   const handleContinue = () => {
     scrollToTop();
+    navigate('/candidate/profile');
   };
-
+  console.log(aadharIsVerified);
   return (
     <Layout>
       <section className="container documents-container" style={{ marginTop: '7rem' }}>
