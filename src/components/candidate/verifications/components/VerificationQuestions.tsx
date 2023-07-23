@@ -1,3 +1,4 @@
+import React from 'react';
 import { Text, Box, Button } from '@mantine/core';
 import { useVerificationContext } from '../context/VerificationContext';
 import { DisputeModal } from './DisputeModal';
@@ -30,6 +31,7 @@ export const VerificationQuestions: React.FC<VerificationQuestionsProps> = ({
       ...verificationResponse,
       [parentKey]: { ...verificationResponse[parentKey], ...responseData },
     });
+
     setActiveStep((current) => current + 1);
   };
 
@@ -47,10 +49,10 @@ export const VerificationQuestions: React.FC<VerificationQuestionsProps> = ({
       <section className="verification-step">
         <Text className="question-text">{question}</Text>
         <Box className="profile-details-actions">
-          <Button className="green-outline-btn" onClick={approveHandler}>
+          <Button className="green-outline-btn no-disable" onClick={approveHandler}>
             Approve
           </Button>
-          <Button className="dispute-btn" onClick={disputeModalOpen}>
+          <Button className="dispute-btn no-disable" onClick={disputeModalOpen}>
             Dispute
           </Button>
         </Box>

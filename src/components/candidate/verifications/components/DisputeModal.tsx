@@ -10,6 +10,8 @@ type DisputeModalProps = {
   close: () => void;
   setActiveStep?: React.Dispatch<React.SetStateAction<number>>;
   parentKey: keyof PostVerificationDataType;
+  setApprovedAttrs?: React.Dispatch<React.SetStateAction<string[]>>;
+  setDisputedAttrs?: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
 const disputesReasons = ['Wrong or unable to confirm'];
@@ -21,6 +23,8 @@ export const DisputeModal: React.FC<DisputeModalProps> = ({
   close,
   setActiveStep,
   parentKey,
+  setApprovedAttrs,
+  setDisputedAttrs,
 }) => {
   const isMobile = useMediaQuery('(max-width: 768px)');
   const { disputeForm, setVerificationResponse, verificationResponse } = useVerificationContext();
@@ -92,6 +96,14 @@ export const DisputeModal: React.FC<DisputeModalProps> = ({
     close();
     if (setActiveStep) {
       setActiveStep((current) => current + 1);
+    }
+
+    if (setDisputedAttrs) {
+      setDisputedAttrs((current) => [...current, id]);
+    }
+
+    if (setApprovedAttrs) {
+      setApprovedAttrs((current) => current.filter((_id) => _id !== id));
     }
   };
 

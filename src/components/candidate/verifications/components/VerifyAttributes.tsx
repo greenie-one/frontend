@@ -11,6 +11,8 @@ export const VerifyAttributes: React.FC = (): JSX.Element => {
 
   const [disputeModalOpened, { open: disputeModalOpen, close: disputeModalClose }] = useDisclosure();
   const [attrId, setAttrId] = useState<string>('');
+  const [approvedAttrs, setApprovedAttrs] = useState<string[]>([]);
+  const [disputedAttrs, setDisputedAttrs] = useState<string[]>([]);
 
   const approveHandler = (_id: string) => {
     const responseObj: StatusType = {} as StatusType;
@@ -23,7 +25,12 @@ export const VerifyAttributes: React.FC = (): JSX.Element => {
       ...verificationResponse,
       optionalVerificationFields: { ...verificationResponse.optionalVerificationFields, ...responseData },
     });
+
+    setApprovedAttrs((current) => [...current, _id]);
+    setDisputedAttrs((current) => current.filter((id) => id !== _id));
   };
+
+  const attributesList = Object.keys(data?.optionalVerificationFields);
 
   return (
     <section className="verification-step">
@@ -35,9 +42,11 @@ export const VerifyAttributes: React.FC = (): JSX.Element => {
           disputeModalClose();
         }}
         parentKey="optionalVerificationFields"
+        setApprovedAttrs={setApprovedAttrs}
+        setDisputedAttrs={setDisputedAttrs}
       />
       <Box className="profile-details-action-section">
-        {Object.keys(data?.optionalVerificationFields).map((keys, index) => {
+        {attributesList.map((keys, index) => {
           return optionalAttrDict[keys] ? (
             <Box className="profile-detail" key={index}>
               <Box className="details">
@@ -45,17 +54,22 @@ export const VerifyAttributes: React.FC = (): JSX.Element => {
                 <Text className="detail">{data?.optionalVerificationFields[keys]}</Text>
               </Box>
               <Box className="profile-details-actions">
-                <Button className="green-outline-btn" onClick={() => approveHandler(keys)}>
-                  Approve
+                <Button
+                  disabled={approvedAttrs.includes(keys)}
+                  className="green-outline-btn"
+                  onClick={() => approveHandler(keys)}
+                >
+                  {approvedAttrs.includes(keys) ? 'Approved' : 'Approve'}
                 </Button>
                 <Button
+                  disabled={disputedAttrs.includes(keys)}
                   className="dispute-btn"
                   onClick={() => {
                     setAttrId(keys);
                     disputeModalOpen();
                   }}
                 >
-                  Dispute
+                  {disputedAttrs.includes(keys) ? 'Disputed' : 'Dispute'}
                 </Button>
               </Box>
             </Box>
@@ -65,7 +79,11 @@ export const VerifyAttributes: React.FC = (): JSX.Element => {
         })}
       </Box>
       <Box className="verification-btns-wrapper">
-        <Button className="btn next-btn" onClick={() => setActiveStep((current) => current + 1)}>
+        <Button
+          disabled={approvedAttrs.length + disputedAttrs.length < attributesList.length}
+          className="btn next-btn"
+          onClick={() => setActiveStep((current) => current + 1)}
+        >
           Continue
         </Button>
       </Box>

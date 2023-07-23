@@ -98,7 +98,7 @@ export const Review: React.FC = () => {
           <Text className="word-limit">{review.trim().split(' ').length} / 150 words</Text>
         </Box>
 
-        <Button className="green-outline-btn" onClick={endVerificationHandler}>
+        <Button className="green-outline-btn no-disable" onClick={endVerificationHandler}>
           End Verification
         </Button>
       </Box>

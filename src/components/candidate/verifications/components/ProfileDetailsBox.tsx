@@ -7,6 +7,10 @@ export const ProfileDetailsBox: React.FC = (): JSX.Element => {
   const { verificationData } = useVerificationContext();
   const { data } = verificationData;
 
+  if (!data) {
+    return <></>;
+  }
+
   return (
     <Box className="profile-details-top">
       <Box className="candidate-profile">

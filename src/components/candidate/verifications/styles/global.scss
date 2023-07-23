@@ -20,19 +20,32 @@ $dark: #191919;
 }
 
 .green-outline-btn {
-  border: 2px solid $green;
+  border: 2px solid hsl(223, 11%, 46%, 0.6);
   background-color: transparent;
-  color: $green;
+  color: $gray;
   border-radius: 24px;
 
   &:hover {
     background-color: transparent;
     opacity: 0.5;
   }
+
+  &.no-disable {
+    background: $green;
+    border: 2px solid $green;
+    color: $white;
+    padding-inline: 2rem;
+  }
+
+  &:disabled {
+    background: $green;
+    border: 2px solid $green;
+    color: $white;
+  }
 }
 
 .dispute-btn {
-  border: none;
+  border: 2px solid hsl(223, 11%, 46%, 0.6);
   outline: none;
   background-color: transparent;
   color: $gray;
@@ -41,6 +54,18 @@ $dark: #191919;
   &:hover {
     background-color: transparent;
     opacity: 0.5;
+  }
+
+  &.no-disable {
+    border: 2px solid $red;
+    color: $red;
+    padding-inline: 2rem;
+  }
+
+  &:disabled {
+    background: $red;
+    border: 2px solid $red;
+    color: $white;
   }
 }
 
@@ -73,10 +98,11 @@ $dark: #191919;
   }
 
   .next-btn {
-    background-color: $green;
-    color: $white;
-    padding-inline: 2rem;
-
+    &:not(:disabled) {
+      background-color: $green;
+      color: $white;
+      padding-inline: 2rem;
+    }
     &:hover {
       background-color: $green;
       color: $white;
@@ -114,6 +140,12 @@ $dark: #191919;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  .profile-details-actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
 }
 
 .profile-details-top {
@@ -206,7 +238,7 @@ $dark: #191919;
     }
     .profile-details-actions {
       display: grid;
-      grid-template-columns: 49% 49%;
+      grid-template-columns: 1fr 1fr;
       align-items: center;
       justify-content: space-between;
     }
@@ -434,6 +466,8 @@ $dark: #191919;
         align-items: center;
         justify-content: flex-start;
         width: 100%;
+        gap: 1rem;
+        padding-inline-end: 1rem;
 
         .link {
           font-size: 12px;
@@ -455,26 +489,78 @@ $dark: #191919;
   background: transparent;
   font-weight: 400;
   width: 60%;
+  border-radius: 4px;
+  color: $gray;
+  border: 1px solid $gray;
 
   &:hover {
     background: transparent;
     opacity: 0.7;
   }
 
-  &.pending-btn {
-    color: $gray;
-    border: 1px solid $gray;
-  }
   &.approved-btn {
-    color: $green;
-    border: 1px solid $green;
+    &:disabled {
+      color: $white;
+      border: 1px solid $green;
+      background: $green;
+    }
   }
+
   &.disputed-btn {
-    color: $red;
-    border: 1px solid $red;
+    &:disabled {
+      color: $white;
+      border: 1px solid $red;
+      background: $red;
+    }
   }
 }
 
 .verification-container {
   margin-top: 7rem;
+}
+
+.verification-skills-box {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  border-radius: 5px;
+  overflow: hidden;
+  border: 1px solid hsl(223, 11%, 46%, 0.35);
+
+  .verification-skill-header {
+    display: grid;
+    grid-template-columns: 4fr 3fr 3fr;
+    align-items: center;
+
+    > * {
+      padding-block: 0.7rem;
+      padding-inline: 1rem;
+      font-size: 15px;
+      font-weight: 600;
+    }
+  }
+
+  .verification-skill-row {
+    @extend .verification-skill-header;
+    border-top: 1px solid hsl(223, 11%, 46%, 0.35);
+
+    > * {
+      font-weight: 500;
+      color: #697082;
+    }
+
+    .status-btns {
+      display: flex;
+      gap: 0.5rem;
+
+      .dispute-btn,
+      .green-outline-btn {
+        border-radius: 4px;
+        border-width: 1px;
+        width: 2.25rem;
+        height: 2.25rem;
+        font-size: 24px;
+      }
+    }
+  }
 }
