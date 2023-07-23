@@ -357,6 +357,9 @@ export const AddExperience = () => {
               <Box className="input-section">
                 <Title className="title">Company Type</Title>
                 <Select
+                  clearable
+                  searchable
+                  nothingFound="No options"
                   withAsterisk
                   data={companyTypes}
                   label="Select company type"
@@ -389,6 +392,9 @@ export const AddExperience = () => {
               <Box className="input-section">
                 <Title className="title">Department</Title>
                 <Select
+                  clearable
+                  searchable
+                  nothingFound="No options"
                   {...workExperienceForm.getInputProps('department')}
                   withAsterisk
                   data={departments}
@@ -482,6 +488,9 @@ export const AddExperience = () => {
                 <Title className="title">Work Type</Title>
                 <Box className="inner-input-section">
                   <Select
+                    clearable
+                    searchable
+                    nothingFound="No options"
                     withAsterisk
                     data={workType}
                     label="Mode of Work"
@@ -499,6 +508,9 @@ export const AddExperience = () => {
                     })}
                   />
                   <Select
+                    clearable
+                    searchable
+                    nothingFound="No options"
                     withAsterisk
                     data={modeOfWork}
                     label="Select work type"
@@ -543,6 +555,9 @@ export const AddExperience = () => {
               <Box className="input-section">
                 <Title className="title">Expertise</Title>
                 <Select
+                  clearable
+                  searchable
+                  nothingFound="No options"
                   withAsterisk
                   data={skillRate}
                   label="Select your expertise"
@@ -644,6 +659,9 @@ export const AddExperience = () => {
                         <Box className="added-documents">
                           <Text>{name.substring(0, 25)}...</Text>
                           <Select
+                            clearable
+                            searchable
+                            nothingFound="No options"
                             data={documentTags}
                             className="inputClass"
                             label={'Select document type'}

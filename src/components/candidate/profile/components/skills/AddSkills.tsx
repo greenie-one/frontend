@@ -106,6 +106,9 @@ export const AddSkills = () => {
             <Box className="input-section">
               <Title className="title">Expertise</Title>
               <Select
+                clearable
+                searchable
+                nothingFound="No options"
                 withAsterisk
                 data={skillRate}
                 label="Select your expertise"

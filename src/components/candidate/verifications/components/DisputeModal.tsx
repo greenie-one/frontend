@@ -116,6 +116,9 @@ export const DisputeModal: React.FC<DisputeModalProps> = ({
     >
       <Box className="verification-modal">
         <Select
+          clearable
+          searchable
+          nothingFound="No options"
           className="dispute-select-box"
           data={disputesReasons}
           label="Dispute type"
