@@ -109,6 +109,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  margin-bottom: 1rem;
 
   .top-box {
     display: flex;
@@ -168,24 +169,7 @@
       font-size: 14px;
       line-height: 19px;
       letter-spacing: -0.02em;
-      margin-bottom: 20px;
       color: $gray;
-    }
-
-    .delete-btn {
-      border-radius: 50%;
-      width: 2.25rem;
-      height: 2.25rem;
-      background: transparent;
-      border: 1px solid hsl(0, 100%, 72%);
-      color: #ff7272;
-      padding: 0;
-      font-size: 1.5rem;
-
-      &:hover {
-        background: hsl(0, 100%, 72%, 0.2);
-        transition: all 150ms linear;
-      }
     }
   }
 }

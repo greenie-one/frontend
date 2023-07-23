@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ActionIcon, Text, Box, Button, Title, Modal, Checkbox } from '@mantine/core';
 import { CgSandClock } from 'react-icons/cg';
-import { MdVerified } from 'react-icons/md';
-import { AiOutlineDelete } from 'react-icons/ai';
+import { MdVerified, MdDelete } from 'react-icons/md';
 import { DeleteConfirmationModal } from '../../../../common/GenericModals';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -19,6 +18,8 @@ import { showErrorNotification } from '../../../../../utils/functions/showNotifi
 import pdfIcon from '../../assets/pdfIcon.png';
 import { Link } from 'react-router-dom';
 import { UndertakingText } from '../UndertakingText';
+import { peerVerificationAPIList } from '../../../../../assets/api/ApiList';
+import { RequestListType } from '../../../my_verifications/components/RequestList';
 
 export const ExperienceDetails: React.FC = () => {
   const navigate = useNavigate();
@@ -26,6 +27,7 @@ export const ExperienceDetails: React.FC = () => {
   const { deleteWorkExperience, workExperienceData, scrollToTop, skillData, authClient } = useGlobalContext();
   const [checked, setChecked] = useState<boolean>(false);
   const [experienceDocuments, setExperienceDocuments] = useState<ExperienceDocuments[]>([]);
+  const [sentRequests, setSentRequests] = useState<Array<RequestListType>>([]);
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
   const [deleteModalOpened, { open: deleteModalOpen, close: deleteModalClose }] = useDisclosure(false);
@@ -45,6 +47,28 @@ export const ExperienceDetails: React.FC = () => {
       showErrorNotification(res.error.code);
     }
   };
+
+  const getSentRequests = async () => {
+    const res = await HttpClient.callApiAuth<SentRequestsResponseType[]>(
+      {
+        url: peerVerificationAPIList.getSentRequest,
+        method: 'GET',
+      },
+      authClient
+    );
+
+    if (res.ok) {
+      setSentRequests(res.value);
+      const filteredData = res.value.filter((request) => request.workExperience === id);
+      setSentRequests(filteredData);
+    } else {
+      showErrorNotification(res.error.code);
+    }
+  };
+
+  useEffect(() => {
+    getSentRequests();
+  }, [authClient]);
 
   const handleDeleteWorkInfo = (_id: string): void => {
     deleteWorkExperience(_id);
@@ -188,7 +212,7 @@ export const ExperienceDetails: React.FC = () => {
                       deleteModalOpen();
                     }}
                   >
-                    <AiOutlineDelete size={'24px'} color="#697082" />
+                    <MdDelete size={'24px'} color="#697082" />
                   </ActionIcon>
                 </Box>
               </Box>
@@ -243,6 +267,37 @@ export const ExperienceDetails: React.FC = () => {
                 </Box>
               </Box>
             </Box>
+            {sentRequests.length > 0 && (
+              <Box className="sent-reuest-box">
+                <Title className="experience-details-box-heading">Referees</Title>
+                <Box className="requests-wrapper">
+                  {sentRequests.map(({ name, isVerificationCompleted, id }) => {
+                    return (
+                      <Box key={id} className="request-box">
+                        <Text className="request-box-heading">{name}</Text>
+                        <Text className="request-box-text">12.30 AM | 02/03/2023</Text>
+                        {isVerificationCompleted ? (
+                          <Box className="request-status">
+                            <Box className="request-box-icon">
+                              <MdVerified color="#17a672" />
+                            </Box>
+                            <Text className="request-status-text verified-status">Verified</Text>
+                          </Box>
+                        ) : (
+                          <Box className="request-status">
+                            <Box className="request-box-icon">
+                              <CgSandClock color="#ff7272" />
+                            </Box>
+                            <Text className="request-status-text pending-status">Pending</Text>
+                          </Box>
+                        )}
+                      </Box>
+                    );
+                  })}
+                </Box>
+              </Box>
+            )}
+
             <Box className="experience-details-links">
               <Text className="details-link" onClick={() => handleOpenModal('Show Documents')}>
                 Show Documents

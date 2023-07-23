@@ -9,7 +9,7 @@ import noData from '../../assets/noData.png';
 import { useParams, useNavigate } from 'react-router-dom';
 import { BsArrowLeft } from 'react-icons/bs';
 import { AiOutlineRight } from 'react-icons/ai';
-import { showErrorNotification } from '../../../../../utils/functions/showNotification';
+import { showErrorNotification, showLoadingNotification } from '../../../../../utils/functions/showNotification';
 import { peerType } from '../../constants/SelectionOptions';
 import { CreatePeerResponseType, Peer } from '../../types/ProfileGeneral';
 import { PeerVerification } from './peer_verfication/PeerVerification';
@@ -184,6 +184,7 @@ export const VerifyExperience: React.FC = () => {
   };
 
   const handleCreatePeerRequest = async () => {
+    showLoadingNotification({ title: 'Please Wait !', message: 'Wait while we send the request' });
     for (const response of createPeerResponse) {
       response.phone = '+91' + response.phone.slice(-10);
       const res = await HttpClient.callApiAuth<any>(
@@ -198,7 +199,8 @@ export const VerifyExperience: React.FC = () => {
       if (res.ok) {
         createVerificationRequest('Skills', 'Peer', res.value?.id, response.verificationSkills);
         createVerificationRequest('Document', 'Peer', res.value?.id, response.verificationDocuments);
-        navigate('/candidate/profile/myVerification');
+        open();
+        handleSeeRequest();
         // const filtered = res.value.filter((document) => document.workExperience === experience?.id);
       } else {
         showErrorNotification(res.error.code);

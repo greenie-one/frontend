@@ -1,5 +1,5 @@
 import { Box, Text, Title, Button, Modal, Checkbox } from '@mantine/core';
-import { MdVerified, MdAddLocationAlt } from 'react-icons/md';
+import { MdVerified, MdAddLocationAlt, MdDelete } from 'react-icons/md';
 import { CgSandClock } from 'react-icons/cg';
 import location from '../../assets/location.png';
 import { useState, useEffect } from 'react';
@@ -10,6 +10,7 @@ import { AiOutlineRight, AiOutlineHome } from 'react-icons/ai';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 import { Layout } from '../Layout';
 import { UndertakingText } from '../UndertakingText';
+import { DeleteConfirmationModal } from '../../../../common/GenericModals';
 
 type VerificationType = 'MySelf' | 'Peer';
 
@@ -20,13 +21,23 @@ export const ResidentialInfoDetails: React.FC = () => {
   const [opened, { open, close }] = useDisclosure(false);
   const [checked, setChecked] = useState<boolean>(false);
   const [residential, setResidentialInfo] = useState<ResidentialInfoResponse | null>(null);
-  const { residentialInfoData, scrollToTop } = useGlobalContext();
+  const { residentialInfoData, scrollToTop, deleteResidentialInfo } = useGlobalContext();
   const { id } = useParams();
   const filteredInfo = residentialInfoData.find((info: ResidentialInfoResponse) => info.id === id);
 
   const handleAggree = () => {
     if (checked) {
       setModalStep(2);
+    }
+  };
+
+  const [deleteModalOpened, { open: deleteModalOpen, close: deleteModalClose }] = useDisclosure(false);
+
+  const handleDeleteResidentialInfo = (): void => {
+    if (residential) {
+      deleteResidentialInfo(residential.id);
+      deleteModalClose();
+      navigate('/candidate/profile');
     }
   };
 
@@ -125,6 +136,11 @@ export const ResidentialInfoDetails: React.FC = () => {
           </Box>
         </Modal>
       )}
+      <DeleteConfirmationModal
+        opened={deleteModalOpened}
+        close={deleteModalClose}
+        cb={() => handleDeleteResidentialInfo()}
+      />
       <Layout>
         <Box className="container" style={{ marginTop: '7rem' }}>
           <Box className="top-header">
@@ -140,7 +156,6 @@ export const ResidentialInfoDetails: React.FC = () => {
             </Box>
           </Box>
           <Box className="info-detail-box">
-            <Box className=""></Box>
             <Box className="info-detail-top-box">
               <Box className="location">
                 <img className="location=img" src={location} alt="Location" />
@@ -160,7 +175,17 @@ export const ResidentialInfoDetails: React.FC = () => {
                   </Button>
                 )}
               </Box>
+              <Button
+                className="delete-btn"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  deleteModalOpen();
+                }}
+              >
+                <MdDelete />
+              </Button>
             </Box>
+
             <Box className="wrapper">
               <Title className="title">Other information</Title>
               <Box className="other-info-box">

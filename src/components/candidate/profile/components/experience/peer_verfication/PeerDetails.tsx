@@ -44,23 +44,23 @@ export const PeerDetails: React.FC<ConfirmPeerType> = ({
               return (
                 <Box className="document" key={index}>
                   <img className="pdf-icon" src={pdfIcon} alt="pdf icon" />
-                  <Text className="document-name">{document.name.substring(0, 15)}...</Text>
+                  <Text className="document-name">{document.name.substring(0, 15)}</Text>
                 </Box>
               );
             })}
         </Box>
         <Box className="document-list">
           <Text className="document-action-heading">With Skills</Text>
-          <Box className="add-skills-wrapper">
+          <Box className="skills-wrapper">
             {skillData
               .filter((skill) => skill.workExperience === experience?.id)
               .filter((skill) => createPeerResponse[indexNumber].verificationSkills.includes(skill.id))
               .map((skill: Skill, index: number) => {
                 const { expertise, skillName } = skill;
                 return (
-                  <Box key={index} className="add-skill-box">
-                    <Text className="add-skill-name">{skillName}</Text>
-                    {expertise && <Text className="add-skill-rate">{skillExpertiseDict[expertise]}</Text>}
+                  <Box key={index} className="skill-box">
+                    <Text className="skill-name">{skillName}</Text>
+                    {expertise && <Text className="expertise">{skillExpertiseDict[expertise]}</Text>}
                   </Box>
                 );
               })}

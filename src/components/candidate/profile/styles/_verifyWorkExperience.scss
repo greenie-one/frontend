@@ -475,14 +475,14 @@
   .document {
     margin-top: 0.5rem;
     border: 1px solid $lighterGray;
-    border-radius: 0.5rem;
+    border-radius: 0.75rem;
     display: flex;
     align-items: center;
     justify-content: flex-start;
     padding: 1rem 0.5rem;
 
     .pdf-icon {
-      width: 30px;
+      width: 40px;
     }
     .document-name {
       font-size: 14px;
@@ -541,9 +541,8 @@
 .verification-document-name {
   color: $dark;
   font-weight: 500;
-  img {
-    width: 20px;
-  }
+  text-decoration: underline;
+  margin-left: 0.35rem;
 }
 
 .selected-attributes {
@@ -559,6 +558,16 @@
     padding: 0.75rem;
     font-size: 14px;
     color: $gray;
+
+    .document {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+
+      .pdf-icon {
+        width: 22px;
+      }
+    }
   }
 }
 
@@ -636,35 +645,6 @@
       margin-bottom: 0.5rem;
     }
   }
-
-  .requesting-peers {
-    display: grid;
-    grid-template-columns: repeat(3, 32%);
-    align-items: center;
-    justify-content: space-between;
-    .requesting-peer {
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      margin-block: 0.5rem;
-      .profile-picture {
-        background: $lighterGray;
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        margin-right: 0.75rem;
-      }
-      .requesting-peer-text-box {
-        .name {
-          font-weight: 500;
-        }
-        .designation {
-          color: $gray;
-          font-size: 14px;
-        }
-      }
-    }
-  }
 }
 
 .verify-experience-progress-bars {
@@ -684,6 +664,70 @@
 
     &.active {
       background-color: $limeGreen;
+    }
+  }
+}
+
+.peer-details {
+  .requesting-peer {
+    .name {
+      font-weight: 500;
+    }
+  }
+}
+
+.requesting-peer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-block: 0.5rem;
+  .profile-picture {
+    background: $lighterGray;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 0.75rem;
+  }
+  .requesting-peer-text-box {
+    .peer-type {
+      color: $gray;
+      font-size: 14px;
+    }
+  }
+}
+
+.skills-wrapper {
+  display: grid;
+  align-items: center;
+  justify-content: space-between;
+  grid-template-columns: repeat(4, 24%);
+
+  .skill-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 1rem;
+    margin-block: 1rem;
+    border: 1px solid $lighterGray;
+    padding: 1rem;
+
+    .skill-name {
+      margin-bottom: 0.5rem;
+    }
+
+    .expertise {
+      font-weight: 500;
+      font-size: 12px;
+      color: $gray;
+      padding: 4px 12px;
+      background: $white;
+      border-radius: 34px;
+      background-color: #f4f4f4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
     }
   }
 }
@@ -730,6 +774,60 @@
   }
 }
 
+.sent-reuest-box {
+  margin-top: 1rem;
+
+  .requests-wrapper {
+    display: grid;
+    grid-template-columns: repeat(4, 24%);
+    align-items: center;
+    justify-content: space-between;
+
+    .request-box {
+      border: 1px solid $lighterGray;
+      padding: 1rem;
+      border-radius: 1rem;
+      margin-block-end: 1rem;
+
+      .request-box-heading {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        font-size: 16px;
+      }
+      .request-box-text {
+        font-size: 14px;
+        color: $gray;
+        margin-bottom: 0.5rem;
+      }
+      .request-status {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+
+        .request-status-text {
+          font-size: 12px;
+          margin-left: 0.25rem;
+          font-weight: 500;
+          margin-top: 2px;
+
+          &.verified-status {
+            color: $green;
+          }
+          &.pending-status {
+            color: $red;
+          }
+        }
+      }
+    }
+  }
+  .verified,
+  .pending {
+    border: none;
+    outline: none;
+    margin-left: -0.5rem;
+  }
+}
+
 @media screen and (max-width: 930px) {
   .confirm-request-box {
     .requesting-peers {
@@ -738,6 +836,14 @@
   }
 }
 @media screen and (max-width: 768px) {
+  .sent-reuest-box {
+    .requests-wrapper {
+      grid-template-columns: repeat(2, 49%);
+    }
+  }
+  .skills-wrapper {
+    grid-template-columns: repeat(2, 49%);
+  }
   .add-peer-box {
     padding: 4rem 1rem;
     .experience-details {
@@ -793,7 +899,15 @@
   .docs-wrapper {
     grid-template-columns: 100%;
   }
+  .skills-wrapper {
+    grid-template-columns: 100%;
+  }
   .see-peers-btn-wrapper {
     width: 80%;
+  }
+  .sent-reuest-box {
+    .requests-wrapper {
+      grid-template-columns: 80%;
+    }
   }
 }
