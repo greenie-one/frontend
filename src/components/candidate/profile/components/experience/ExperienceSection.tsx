@@ -70,7 +70,7 @@ export const ExperienceSection = () => {
                     id={workExperience.id}
                     position={workExperience.designation}
                     companyName={workExperience.companyName}
-                    isVerified={workExperience.isVerified}
+                    noOfVerifications={workExperience.noOfVerifications}
                     companyStartYear={workExperience.dateOfJoining}
                     companyEndYear={workExperience.dateOfLeaving}
                   />

@@ -2,7 +2,7 @@ type ExperienceCardProp = {
   id: string;
   position: string;
   companyName: string;
-  isVerified: boolean;
+  noOfVerifications: number;
   companyStartYear: string;
   companyEndYear: string;
 };

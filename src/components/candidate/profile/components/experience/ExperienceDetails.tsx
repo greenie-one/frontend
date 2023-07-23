@@ -219,7 +219,7 @@ export const ExperienceDetails: React.FC = () => {
                 <Box className="experience-details-text-box">
                   <Text className="designation">{filteredExperience?.designation}</Text>
                   <Text className="company-name">{filteredExperience?.companyName}</Text>
-                  {filteredExperience?.isVerified ? (
+                  {filteredExperience?.noOfVerifications >= 2 ? (
                     <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
                       Verified
                     </Button>
@@ -339,7 +339,11 @@ export const ExperienceDetails: React.FC = () => {
                 Show Skills
               </Text>
             </Box>
-            <Button className="green-btn" onClick={() => handleOpenModal('Verify Experience')}>
+            <Button
+              disabled={filteredExperience?.noOfVerifications >= 2}
+              className="green-btn"
+              onClick={() => handleOpenModal('Verify Experience')}
+            >
               Get Verified
             </Button>
           </Box>
