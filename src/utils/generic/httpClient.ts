@@ -1,6 +1,6 @@
 import { AuthClient } from './authClinet';
 
-type PostBody = string | string[] | number | boolean | Date | { [key: string]: PostBody };
+type PostBody = string | string[] | number | boolean | Date | PostBody[] | { [key: string]: PostBody };
 
 type HttpRequest = {
   url: string;
@@ -22,7 +22,7 @@ type HttpRequest = {
       method: 'PUT';
     }
   | {
-      body?: Record<string, any>;
+      body?: Record<string, PostBody>;
       method: 'PATCH';
     }
   | {

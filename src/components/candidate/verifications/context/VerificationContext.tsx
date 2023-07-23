@@ -46,7 +46,7 @@ export const VerificationContextProvider: React.FC<{ children: React.ReactNode }
       setUnverifiedLink('NONE');
       setVerificationData(res.value);
     } else {
-      setPersonBeingVerified((res.error as any).name);
+      setPersonBeingVerified((res.error as APIErrorPeer).name);
       setActiveStep(0);
       switch (res.error.code) {
         case 'GR0050': {
