@@ -155,33 +155,33 @@ export const VerifyExperience: React.FC = () => {
     navigate('/candidate/profile/experience/allExperiences');
   };
 
-  const createVerificationRequest = async (
-    thing: 'Skills' | 'Document',
-    sharedWith: 'Peer' | 'User',
-    peerId: string,
-    verificationList: Array<string>
-  ) => {
-    const requestBody = {
-      thing: thing,
-      thingId: verificationList,
-      sharedWith: sharedWith,
-      sharedWithId: peerId,
-    };
+  // const createVerificationRequest = async (
+  //   thing: 'Skills' | 'Document',
+  //   sharedWith: 'Peer' | 'User',
+  //   peerId: string,
+  //   verificationList: Array<string>
+  // ) => {
+  //   const requestBody = {
+  //     thing: thing,
+  //     thingId: verificationList,
+  //     sharedWith: sharedWith,
+  //     sharedWithId: peerId,
+  //   };
 
-    const res = await HttpClient.callApiAuth<unknown>(
-      {
-        url: peerVerificationAPIList.shareRequest,
-        method: 'POST',
-        body: requestBody,
-      },
-      authClient
-    );
-    if (res.ok) {
-      // const filtered = res.value.filter((document) => document.workExperience === experience?.id);
-    } else {
-      showErrorNotification(res.error.code);
-    }
-  };
+  //   const res = await HttpClient.callApiAuth<unknown>(
+  //     {
+  //       url: peerVerificationAPIList.shareRequest,
+  //       method: 'POST',
+  //       body: requestBody,
+  //     },
+  //     authClient
+  //   );
+  //   if (res.ok) {
+  //     // const filtered = res.value.filter((document) => document.workExperience === experience?.id);
+  //   } else {
+  //     showErrorNotification(res.error.code);
+  //   }
+  // };
 
   const handleCreatePeerRequest = async () => {
     showLoadingNotification({ title: 'Please Wait !', message: 'Wait while we send the request' });
