@@ -86,7 +86,21 @@ export const VerifyExperience: React.FC = () => {
     verificationStepDispatch({ type: ReviewActionType.NEXT_STEP });
   };
 
+  const checkDuplicateEmail = (email: string) => {
+    for (const peers of addedPeers) {
+      if (peers.email === email) return false;
+    }
+
+    return true;
+  };
+
   const handleCreatePeer = async () => {
+    if (peerVerificationForm.validate().hasErrors) return;
+    if (!checkDuplicateEmail(peerVerificationForm.values.email)) {
+      peerVerificationForm.setFieldError('email', 'Email already added! Please add another email.');
+      return;
+    }
+
     const newPeer: Peer = {
       name: peerVerificationForm.values.name,
       email: peerVerificationForm.values.email,
