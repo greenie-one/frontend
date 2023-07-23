@@ -1,8 +1,11 @@
 import React from 'react';
 import { useDisclosure } from '@mantine/hooks';
-import { Box, Button, Modal } from '@mantine/core';
+import { Box, Button, Modal, Text } from '@mantine/core';
 import { RequestListType } from './RequestList';
+
 import { CancelationModal, ReminderModal } from './Modals';
+import profileImage from '../../../auth/assets/profileillustration.png';
+import { BsCheckLg } from 'react-icons/bs';
 
 import { peerVerificationAPIList } from '../../../../assets/api/ApiList';
 import { useGlobalContext } from '../../../../context/GlobalContext';
@@ -13,7 +16,6 @@ import {
   showSuccessNotification,
 } from '../../../../utils/functions/showNotification';
 
-import notificationIcon from '../../profile/assets/notification.svg';
 import styles from '../styles/requestlist.module.css';
 
 type RenderRequestListProps = {
@@ -29,20 +31,26 @@ const {
   request_msg,
   request_actions,
   request_action_btns,
+  requested_date,
+  request_status,
+  request_status_text,
 } = styles;
 
 const ActionBtns: React.FC<{ type: 'sent' | 'recieved'; cbRight: () => void; cbLeft: () => void }> = ({
   type,
   cbRight,
-  cbLeft,
 }): JSX.Element => {
   return (
     <Box className={request_actions}>
+      <Box>
+        <Box className={request_status}>
+          <BsCheckLg size={'14px'} />
+          <Text className={request_status_text}>Sent</Text>
+        </Box>
+        <Text className={requested_date}>On 23rd April 2023</Text>
+      </Box>
       <Button radius="xl" className={request_action_btns} onClick={cbRight}>
         {type === 'sent' ? 'Remind' : 'Accept'}
-      </Button>
-      <Button radius="xl" className={request_action_btns} onClick={cbLeft}>
-        {type === 'sent' ? 'Cancel' : 'Reject'}
       </Button>
     </Box>
   );
@@ -122,14 +130,13 @@ export const RenderRequestList: React.FC<RenderRequestListProps> = ({ requestLis
       return (
         <Box key={request.id} className={request_item}>
           <span className={profile_image}>
-            <img src={notificationIcon} alt="notification" />
+            <img src={profileImage} alt="notification" />
           </span>
           <Box className={request_item_body}>
-            <span className={request_title}>Request to verify your work experience</span>
-            <span className={request_msg}>
-              You have requested <span style={{ color: '#000000', fontWeight: '500' }}>{request.name}</span> to verify
-              your work experience
-            </span>
+            <Text className={request_title}>
+              Request to <span style={{ color: '#000000', fontWeight: '400' }}>{request.name}</span>
+            </Text>
+            <span className={request_msg}>A request to verify your work experience as been sent</span>
           </Box>
           {request.isVerificationCompleted ? (
             <Box className={request_actions}>

@@ -1,4 +1,5 @@
 type ExperienceCardProp = {
+  id: string;
   position: string;
   companyName: string;
   isVerified: boolean;

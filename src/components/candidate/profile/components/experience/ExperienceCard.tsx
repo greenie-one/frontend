@@ -1,6 +1,11 @@
-import { Text, Box, Button } from '@mantine/core';
+import { Text, Box, Button, Tooltip } from '@mantine/core';
 import { MdVerified } from 'react-icons/md';
 import { CgSandClock } from 'react-icons/cg';
+import { useState, useEffect } from 'react';
+import { showErrorNotification } from '../../../../../utils/functions/showNotification';
+import { HttpClient } from '../../../../../utils/generic/httpClient';
+import { peerVerificationAPIList } from '../../../../../assets/api/ApiList';
+import { useGlobalContext } from '../../../../../context/GlobalContext';
 
 export const ExperienceCard: React.FC<ExperienceCardProp> = ({
   position,
@@ -8,7 +13,38 @@ export const ExperienceCard: React.FC<ExperienceCardProp> = ({
   isVerified,
   companyStartYear,
   companyEndYear,
+  id,
 }) => {
+  const { authClient } = useGlobalContext();
+  const [tooltipLabel, setToolTipLabel] = useState<string>('');
+  const getSentRequests = async () => {
+    const res = await HttpClient.callApiAuth<SentRequestsResponseType[]>(
+      {
+        url: peerVerificationAPIList.getSentRequest,
+        method: 'GET',
+      },
+      authClient
+    );
+
+    if (res.ok) {
+      const filteredData = res.value.filter((request) => request.workExperience === id);
+      const extractedData = filteredData.map(({ name, isVerificationCompleted }) => ({
+        name,
+        isVerificationCompleted,
+      }));
+      const tooltipLabel = extractedData
+        .map((item) => `${item.name}: ${item.isVerificationCompleted ? 'Completed' : 'Pending'}`)
+        .join('\n | ');
+      setToolTipLabel(tooltipLabel);
+    } else {
+      showErrorNotification(res.error.code);
+    }
+  };
+
+  useEffect(() => {
+    getSentRequests();
+  }, [authClient]);
+
   return (
     <Box className="experience-card">
       <Box>
@@ -17,13 +53,37 @@ export const ExperienceCard: React.FC<ExperienceCardProp> = ({
       </Box>
 
       {isVerified ? (
-        <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
-          Verified
-        </Button>
+        <Tooltip
+          label={tooltipLabel}
+          withArrow
+          color="teal"
+          openDelay={500}
+          styles={{
+            tooltip: {
+              fontSize: 12,
+            },
+          }}
+        >
+          <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
+            Verified
+          </Button>
+        </Tooltip>
       ) : (
-        <Button leftIcon={<CgSandClock size={'16px'} />} className="pending">
-          Pending
-        </Button>
+        <Tooltip
+          label={tooltipLabel}
+          withArrow
+          color="teal"
+          openDelay={500}
+          styles={{
+            tooltip: {
+              fontSize: 10,
+            },
+          }}
+        >
+          <Button leftIcon={<CgSandClock size={'16px'} />} className="pending">
+            Pending
+          </Button>
+        </Tooltip>
       )}
 
       <Box className="tenure-box">

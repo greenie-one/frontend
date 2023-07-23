@@ -95,9 +95,10 @@ export const DocumentSelection: React.FC<{
                   checked={createPeerResponse[activePeer].documents.includes(_id)}
                   onChange={(event) => handleMark(event, _id)}
                 />
-                <Text className="verification-document-name">
-                  <img src={pdfIcon} alt="pdf icon" /> {name}
-                </Text>
+                <Box className="document">
+                  <img src={pdfIcon} className="pdf-icon" alt="pdf icon" />
+                  <Text className="verification-document-name">{name}</Text>
+                </Box>
               </Box>
             );
           })}

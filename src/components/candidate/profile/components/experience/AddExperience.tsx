@@ -6,7 +6,7 @@ import { MdOutlineDelete, MdVerified } from 'react-icons/md';
 import { VscDebugRestart } from 'react-icons/vsc';
 import { GrAdd } from 'react-icons/gr';
 import linkedInImg from '../../../../auth/assets/linkedIn-logo.png';
-import { BsArrowLeft } from 'react-icons/bs';
+import { BsArrowLeft, BsCheckLg } from 'react-icons/bs';
 import { skillsAPIList } from '../../../../../assets/api/ApiList';
 import uploadIcon from '../../assets/upload.png';
 import checkedIcon from '../../assets/check.png';
@@ -636,7 +636,7 @@ export const AddExperience = () => {
                 {selectedFile !== null && (
                   <Box className="inpute-file-name-box">
                     <Text className="label">File upload</Text>
-                    <Text className="input-file-name">{selectedFile?.name.substring(0, 15)}...</Text>
+                    <Text className="input-file-name">{selectedFile?.name.substring(0, 15)}</Text>
                     <Box className="icon-box">
                       <VscDebugRestart className="add-document-icon" onClick={() => fileInputRef.current?.click()} />
                       <MdOutlineDelete className="add-document-icon" onClick={() => setSelectedFile(null)} />
@@ -657,7 +657,9 @@ export const AddExperience = () => {
                     return (
                       <Box key={_id}>
                         <Box className="added-documents">
-                          <Text>{name.substring(0, 25)}...</Text>
+                          <Text className="document-name">
+                            <span>{index + 1}</span> {name.substring(0, 25)}
+                          </Text>
                           <Select
                             clearable
                             searchable
@@ -676,10 +678,17 @@ export const AddExperience = () => {
                               },
                             })}
                           />
-
-                          <Box className="add-document-icon" onClick={() => handleRemoveDocument(_id)}>
-                            <MdOutlineDelete size={'18px'} color="#697082" />
-                            <Text color="#697082">Remove</Text>
+                          <Box className="documents-actions">
+                            <Box className="added-box">
+                              <BsCheckLg />
+                              <Text className="added-text">Added</Text>
+                            </Box>
+                            <Box className="add-document-icon" onClick={() => handleRemoveDocument(_id)}>
+                              <MdOutlineDelete size={'18px'} color="#697082" />
+                              <Text className="remove-text" color="#697082">
+                                Remove
+                              </Text>
+                            </Box>
                           </Box>
                         </Box>
                         {index < documents.length - 1 && <Divider />}
@@ -707,7 +716,7 @@ export const AddExperience = () => {
                 <Button type="button" className="cancel-btn" variant="default" onClick={handlePrevPage}>
                   Back
                 </Button>
-                {documentsChecked ? (
+                {documents.length > 0 && documentsChecked ? (
                   <Button className="green-btn" onClick={handleDocumentContinue}>
                     Continue
                   </Button>
@@ -725,9 +734,6 @@ export const AddExperience = () => {
               <Title className="main-heading">Your Work Experience is added.</Title>
               <Text className="main-sub-heading">Let's get it verified</Text>
               <Box className="experience-details">
-                {/* <Box className="company-logo" style={backgroundStyle}>
-                  <MdVerified className="verified-icon" color="#17a672" size="22px" />
-                </Box> */}
                 <Box className="experience-details-text-box">
                   <Text className="designation">{workExperienceData[workExperienceData.length - 1].designation}</Text>
                   <Text className="company-name">{workExperienceData[workExperienceData.length - 1].companyName}</Text>
@@ -769,7 +775,7 @@ export const AddExperience = () => {
                   })}
                 </Box>
               </Box>
-              <Box>
+              <Box className="congrats-btns-wrapper">
                 <Button className="green-btn btn" onClick={open}>
                   Go to Verification
                 </Button>

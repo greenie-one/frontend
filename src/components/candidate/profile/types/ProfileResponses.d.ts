@@ -130,3 +130,12 @@ type addPeerResponse = {
   workExperience: string;
   _id: string;
 };
+
+type SentRequestsResponseType = {
+  id: string;
+  email: string;
+  name: string;
+  phone: string;
+  isVerificationCompleted: boolean;
+  workExperience: string;
+};
