@@ -183,8 +183,6 @@ export const VerifyExperience: React.FC = () => {
     }
   };
 
-  console.log(createPeerResponse);
-
   const handleCreatePeerRequest = async () => {
     for (const response of createPeerResponse) {
       response.phone = '+91' + response.phone.slice(-10);

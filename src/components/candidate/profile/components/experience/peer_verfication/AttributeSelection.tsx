@@ -16,7 +16,6 @@ type AttributeSelectionProps = {
 };
 
 const attributesList = [
-  { id: 'candidateId', attrName: 'Candidate ID' },
   { id: 'department', attrName: 'Department' },
   { id: 'dateOfJoining', attrName: 'Date of Joining' },
   { id: 'dateOfLeaving', attrName: 'Date of Leaving' },
