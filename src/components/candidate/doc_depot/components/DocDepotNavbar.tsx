@@ -98,16 +98,12 @@ export const DocDepotNavbar = () => {
             <Box className="input-section">
               <Title className="title">Document type</Title>
               <Select
+                clearable
+                searchable
                 withAsterisk
-                {...documentForm.getInputProps('type')}
-                data={[
-                  { value: 'id', label: 'ID' },
-                  { value: 'work', label: 'Work document' },
-                  { value: 'education', label: 'Education document' },
-                  { value: 'other', label: 'Others' },
-                ]}
-                label="Select document type"
                 className="inputClass"
+                nothingFound="No options"
+                label="Select document type"
                 styles={() => ({
                   item: {
                     '&[data-selected]': {
@@ -118,6 +114,13 @@ export const DocDepotNavbar = () => {
                     },
                   },
                 })}
+                data={[
+                  { value: 'id', label: 'ID' },
+                  { value: 'work', label: 'Work document' },
+                  { value: 'education', label: 'Education document' },
+                  { value: 'other', label: 'Others' },
+                ]}
+                {...documentForm.getInputProps('type')}
               />
             </Box>
             <Divider my={'1rem'} />

@@ -116,6 +116,9 @@ export const VerifyResidentialInfo: React.FC = () => {
                   {...residentialInfoVerificationForm.getInputProps('name')}
                 />
                 <Select
+                  clearable
+                  searchable
+                  nothingFound="No options"
                   withAsterisk
                   label="Peer type"
                   data={relations}
