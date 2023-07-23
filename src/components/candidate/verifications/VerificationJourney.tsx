@@ -1,28 +1,26 @@
 import React from 'react';
-import './styles/global.scss';
 import { Text, Box, Title } from '@mantine/core';
 import { useVerificationContext } from './context/VerificationContext';
-import { HiMiniArrowLongLeft } from 'react-icons/hi2';
-import { VerifyPeer } from './components/VerifyPeer';
-import { ProfileDetailsBox } from './components/ProfileDetailsBox';
-import { VerifyAttributes } from './components/VerifyAttributes';
-import { AttitudeVerification } from './components/AttitudeVerification';
-import { Review } from './components/Review';
-import { CompleteVerification } from './components/CompleteVerification';
+
 import { OthersSpecificQuestions } from './components/OthersSpecificQuestions';
-import { VerifyDocuments } from './components/VerifyDocuments';
-import { VerifySkills } from './components/VerifySkills';
-import { Navbar } from './components/Navbar';
 import { VerificationDisclaimer } from './components/VerificationDisclaimer';
 import { VerificationQuestions } from './components/VerificationQuestions';
+import { AttitudeVerification } from './components/AttitudeVerification';
+import { CompleteVerification } from './components/CompleteVerification';
+import { ProfileDetailsBox } from './components/ProfileDetailsBox';
+import { VerifyAttributes } from './components/VerifyAttributes';
+import { VerifyDocuments } from './components/VerifyDocuments';
+import { VerifySkills } from './components/VerifySkills';
+import { VerifyPeer } from './components/VerifyPeer';
+import { Review } from './components/Review';
+import { Navbar } from './components/Navbar';
+
+import { HiMiniArrowLongLeft } from 'react-icons/hi2';
+import './styles/global.scss';
 
 export const VerificationJourney: React.FC = (): JSX.Element => {
   const { activeStep, totalSteps, setActiveStep, unverifiedLink, verificationData, verificationBy } =
     useVerificationContext();
-
-  if (JSON.stringify(verificationData) === '{}') {
-    return <></>;
-  }
 
   const stepper = Array.from({ length: totalSteps - 1 }, (_, index) => index + 1);
 
