@@ -2180,6 +2180,10 @@ babel-preset-react-app@^10.0.1:
     babel-plugin-macros "^3.1.0"
     babel-plugin-transform-react-remove-prop-types "^0.4.24"
 
+"backend-types@git+https://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:x-oauth-basic@github.com/greenie-one/global-dtos.git#dev":
+  version "1.0.0"
+  resolved "git+https://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:x-oauth-basic@github.com/greenie-one/global-dtos.git#71c7fa7ee58c944f6bad054991119a8544978dc4"
+
 balanced-match@^1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.2.tgz#e83e3a7e3f300b34cb9d87f615fa0cbf357690ee"
