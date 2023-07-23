@@ -49,11 +49,6 @@ export const AddExperience = () => {
   const { authClient, workExperienceForm, skillForm, scrollToTop, setForceRender, forceRender, workExperienceData } =
     useGlobalContext();
   const authToken = authClient.getAccessToken();
-  // const backgroundStyle = {
-  //   backgroundImage: `url(${tcsLogo})`,
-  //   backgroundPosition: 'center',
-  //   backgroundRepeat: 'no-repeat',
-  // };
 
   const [checked, setChecked] = useState<boolean>(false);
   const isMobile = useMediaQuery('(max-width: 768px)');
@@ -736,7 +731,7 @@ export const AddExperience = () => {
                 <Box className="experience-details-text-box">
                   <Text className="designation">{workExperienceData[workExperienceData.length - 1].designation}</Text>
                   <Text className="company-name">{workExperienceData[workExperienceData.length - 1].companyName}</Text>
-                  {workExperienceData[0].isVerified ? (
+                  {workExperienceData[0].noOfVerifications >= 2 ? (
                     <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
                       Verified
                     </Button>

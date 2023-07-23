@@ -10,7 +10,7 @@ import { useGlobalContext } from '../../../../../context/GlobalContext';
 export const ExperienceCard: React.FC<ExperienceCardProp> = ({
   position,
   companyName,
-  isVerified,
+  noOfVerifications,
   companyStartYear,
   companyEndYear,
   id,
@@ -52,7 +52,7 @@ export const ExperienceCard: React.FC<ExperienceCardProp> = ({
         <Text className="position">{position.substring(0, 25)}</Text>
       </Box>
 
-      {isVerified ? (
+      {noOfVerifications >= 2 ? (
         <Tooltip
           label={tooltipLabel}
           withArrow
