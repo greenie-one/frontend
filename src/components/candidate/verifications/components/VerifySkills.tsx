@@ -70,7 +70,7 @@ export const VerifySkills = () => {
           <Text>Status</Text>
         </Box>
         <Box className="verification-skills-wrapper">
-          {data.skills.map((skill, index) => {
+          {data.skills?.map((skill, index) => {
             return (
               <Box key={index} className="verification-skill-row">
                 <Text>{skill.skillName}</Text>
@@ -101,7 +101,7 @@ export const VerifySkills = () => {
       </Box>
       <Box className="verification-btns-wrapper">
         <Button
-          disabled={approvedAttrs.length + disputedAttrs.length < data.skills.length}
+          disabled={approvedAttrs.length + disputedAttrs.length < data.skills?.length}
           className="btn next-btn"
           onClick={() => setActiveStep((current) => current + 1)}
         >
