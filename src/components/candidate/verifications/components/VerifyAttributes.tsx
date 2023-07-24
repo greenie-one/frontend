@@ -30,7 +30,7 @@ export const VerifyAttributes: React.FC = (): JSX.Element => {
     setDisputedAttrs((current) => current.filter((id) => id !== _id));
   };
 
-  const attributesList = Object.keys(data?.optionalVerificationFields);
+  const attributesList = Object.keys(data?.optionalVerificationFields ?? {});
 
   return (
     <section className="verification-step">
