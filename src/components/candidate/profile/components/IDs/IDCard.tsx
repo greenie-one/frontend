@@ -3,33 +3,34 @@ import { useNavigate } from 'react-router-dom';
 import { MdVerified } from 'react-icons/md';
 import { CgSandClock } from 'react-icons/cg';
 import AadharImg from '../../assets/Aadhar.png';
+import { useGlobalContext } from '../../../../../context/GlobalContext';
 import PanImg from '../../assets/Pan.png';
 import DrivingLicence from '../../assets/DrivingLicence.png';
 
 export const IDCard: React.FC<VerificationIdCardProp> = ({ documentName, isVerified }) => {
+  const { scrollToTop } = useGlobalContext();
   const navigate = useNavigate();
-  const handleView = () => {
-    navigate('/candidate/profile/IDs/verify/Aadhar');
+  const handleViewAdhar = () => {
+    scrollToTop();
+    navigate('/candidate/profile/IDs/aadhar');
   };
 
+  const handleViewPan = () => {
+    scrollToTop();
+    navigate('/candidate/profile/IDs/pan');
+  };
   return (
     <Box className="verificationIdCard">
       <Box className="verificationIdImg">
         {documentName === 'AADHAR' && (
-          <div className="blurBox">
+          <span className="blurBox" onClick={handleViewAdhar}>
             <img src={AadharImg} />
-            <Button className="viewBtn" onClick={handleView}>
-              View
-            </Button>
-          </div>
+          </span>
         )}
         {documentName === 'PAN' && (
-          <div className="blurBox">
+          <span className="blurBox" onClick={handleViewPan}>
             <img src={PanImg} />
-            <Button className="viewBtn" onClick={handleView}>
-              View
-            </Button>
-          </div>
+          </span>
         )}
         {documentName === 'DRIVING_LICENSE' && (
           <div className="blurBox">

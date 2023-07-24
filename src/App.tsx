@@ -32,6 +32,8 @@ import { AddressVerification } from './components/candidate/profile/components/r
 import { DocDepotPage } from './pages/DocDepotPage';
 import { MyVerifications } from './components/candidate/my_verifications';
 import { VerifyAadharCard } from './components/candidate/profile/components/IDs/VerifyAadharCard';
+import { AadharCardDetails } from './components/candidate/profile/components/IDs/AadharCardDetails';
+import { PanCardDetails } from './components/candidate/profile/components/IDs/PanCardDetails';
 import { VerifyPanCard } from './components/candidate/profile/components/IDs/VerifyPanCard';
 import { VerifyDrivingLicence } from './components/candidate/profile/components/IDs/VerifyDrivingLicence';
 
@@ -57,6 +59,9 @@ const App = () => {
                 <Route path="IDs/verify/aadhar" element={<VerifyAadharCard />} />
                 <Route path="IDs/verify/pan" element={<VerifyPanCard />} />
                 <Route path="IDs/verify/licence" element={<VerifyDrivingLicence />} />
+
+                <Route path="IDs/aadhar" element={<AadharCardDetails />} />
+                <Route path="IDs/pan" element={<PanCardDetails />} />
 
                 <Route path="experience/addExperience" element={<AddExperience />} />
                 <Route path="experience/allExperiences" element={<AllExperiences />} />

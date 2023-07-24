@@ -137,7 +137,7 @@ const useStyles: UseStylesType = createStyles(() => ({
     fontSize: rem(14),
     fontWeight: 500,
     whiteSpace: 'nowrap',
-    maxWidth: '8ch',
+    maxWidth: '25ch',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
   },

@@ -153,9 +153,8 @@ export const ExperienceDetails: React.FC = () => {
         </Modal>
       )}
       {openModal === 'Show Skills' && (
-        <Modal size={'auto'} fullScreen={isMobile} opened={opened} onClose={close} centered radius={'lg'}>
+        <Modal size={'60%'} title="Skills" fullScreen={isMobile} opened={opened} onClose={close} centered radius={'lg'}>
           <Box className="skills-modal">
-            <Title className="skill-modal-title">Skills</Title>
             <Box className="add-skills-wrapper">
               {skillData
                 .filter((skill) => skill.workExperience === id)
@@ -168,7 +167,6 @@ export const ExperienceDetails: React.FC = () => {
                   );
                 })}
             </Box>
-            <Button className="green-btn">Continue</Button>
           </Box>
         </Modal>
       )}

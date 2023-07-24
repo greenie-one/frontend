@@ -24,7 +24,7 @@ import privacyPolicy from '../../../../auth/assets/Privacy Policy-Greenie.pdf';
 
 export const VerifyAadharCard = () => {
   const navigate = useNavigate();
-  const [aadharIsVerified, setAadharIsVerified] = useState<boolean>(true);
+  const [aadharIsVerified, setAadharIsVerified] = useState<boolean>(false);
   const [opened, { open, close }] = useDisclosure(false);
   const [checked, setChecked] = useState<boolean>(false);
   const [secondsRemaining, setSecondsRemaining] = useState<number>(60);

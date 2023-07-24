@@ -306,7 +306,6 @@
   align-items: center;
   justify-content: space-between;
   margin-left: 2rem;
-  margin-top: -3rem;
 }
 
 .experience-details-screen {
@@ -337,7 +336,7 @@
     }
 
     .experience-details-text-box {
-      margin-left: 1rem;
+      // margin-left: 1rem;
 
       .designation {
         font-family: Inter;
@@ -375,9 +374,9 @@
   }
 
   .requests-wrapper {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
 
     .referees-request-box {
       border: 1px solid #e1e1e1;
@@ -594,8 +593,8 @@
 .skills-modal {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
+  align-items: center;
 
   .skill-modal-title {
     font-family: Inter;
@@ -610,6 +609,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 100%;
+    align-items: flex-start;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0.3rem;
   }
 
   .folder-wrapper {
