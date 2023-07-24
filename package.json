@@ -54,7 +54,6 @@
     "eslint-plugin-unused-imports": "^2.0.0",
     "prettier": "3.0.0",
     "typescript": "^5.1.6",
-    "vite": "^4.4.2",
-    "backend-types": "git+https://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:x-oauth-basic@github.com/greenie-one/global-dtos.git#dev"
+    "vite": "^4.4.2"
   }
 }
