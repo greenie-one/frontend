@@ -64,8 +64,8 @@ export const VerifyDocuments = () => {
       <Text className="question-text">Could you verify uploaded documents ?</Text>
       <Box className="verify-documents-box">
         <Box className="verify-documents-header">
-          <Text>File</Text>
-          <Text>Status</Text>
+          <Text className="verify-header-text">File</Text>
+          <Text className="verify-header-text">Status</Text>
         </Box>
         <Box className="verify-documents-wrapper">
           {data.documents.map((doc, index) => {

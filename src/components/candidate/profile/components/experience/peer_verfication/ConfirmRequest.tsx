@@ -8,6 +8,7 @@ import { ReviewActionType } from '../VerifyExperience';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { useNavigate } from 'react-router-dom';
 import { useGlobalContext } from '../../../../../../context/GlobalContext';
+import { AiFillInfoCircle } from 'react-icons/ai';
 
 type ConfrimRequestPropsType = {
   addedPeers: Peer[];
@@ -59,8 +60,13 @@ export const ConfirmRequest: React.FC<ConfrimRequestPropsType> = ({
             </Button>
           </Box>
           <Button radius={'xl'} className="continue-btn" onClick={handleFinish}>
-            Continue
+            See Request
           </Button>
+          <Box className="note">
+            <AiFillInfoCircle className="info-icon" color="#1991ff" size={'18px'} />
+            <Text className="note-heading">Note</Text>
+            <Text className="text">Candidates cannot see this verification process or its results.</Text>
+          </Box>
         </Box>
       </Modal>
       <Box className="confirm-request-box">

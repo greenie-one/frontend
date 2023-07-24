@@ -7,15 +7,19 @@ import medal from '../../assets/medal.png';
 import { useMediaQuery } from '@mantine/hooks';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
 import { Layout } from '../Layout';
+import emptyProfile from '../../assets/emptyProfile.png';
+import { useNavigate } from 'react-router-dom';
 
 export const CongratulationsScreen = () => {
-  const { scrollToTop, profileData, IDs } = useGlobalContext();
+  const navigate = useNavigate();
+  const { scrollToTop, profileData } = useGlobalContext();
 
-  const userLevel = 0;
-  const greeneId = 'GRN788209';
+  const userLevel = 1;
+  const greeneId = profileData?.greenieId ?? '';
   const screenSize = useMediaQuery('(min-width: 768px)');
   const handleContinue = () => {
     scrollToTop();
+    navigate('/candidate/profile');
   };
 
   return (
@@ -29,19 +33,27 @@ export const CongratulationsScreen = () => {
           <Box className="congrats-profile-section">
             <Box className="profile-section">
               <Box className="cover-photo"></Box>
-              <Box className="profile-photo"></Box>
+              <Box className="profile-photo">
+                {profileData.profilePic ? (
+                  <img src={profileData.profilePic} alt="emptyProfile" />
+                ) : (
+                  <img src={emptyProfile} alt="emptyProfile" />
+                )}
+              </Box>
             </Box>
             <Box className="bio-section container">
               <Box className="bio-name-box">
                 <Text className="bio-name">
                   {profileData.firstName} {profileData.lastName}
+                  <span>
+                    <MdVerified size={'19px'} color="#8cf078" />
+                  </span>
                 </Text>
-                {IDs.length > 0 && <MdVerified className="name-verified" size={'20px'} />}
               </Box>
 
-              <Box className="chips">
+              <Box>
                 <Chip.Group>
-                  <Group>
+                  <Group className="chips">
                     {profileData.descriptionTags.map((tag: string) => (
                       <Chip key={tag} size={screenSize ? 'sm' : 'xs'}>
                         {tag}
@@ -55,43 +67,14 @@ export const CongratulationsScreen = () => {
                 <Box className="left-section">
                   <Box className="level">
                     <Text className="level-heading">Level {userLevel}</Text>
-                    {userLevel === 0 ? (
-                      <Box className="level-wrapper">
-                        <img className="level-img" src={level} alt="level" />
-                        <img className="level-img" src={level} alt="level" />
-                        <img className="level-img" src={level} alt="level" />
-                        <img className="level-img" src={level} alt="level" />
-                        <img className="level-img" src={level} alt="level" />
-                      </Box>
-                    ) : (
-                      <Box className="level-wrapper">
-                        {userLevel > 0 ? (
-                          <img className="level-img" src={levelFilled} alt="level" />
-                        ) : (
-                          <img src={level} alt="level" />
-                        )}
-                        {userLevel > 1 ? (
-                          <img className="level-img" src={levelFilled} alt="level" />
-                        ) : (
-                          <img className="level-img" src={level} alt="level" />
-                        )}
-                        {userLevel > 2 ? (
-                          <img className="level-img" src={levelFilled} alt="level" />
-                        ) : (
-                          <img className="level-img" src={level} alt="level" />
-                        )}
-                        {userLevel > 3 ? (
-                          <img className="level-img" src={levelFilled} alt="level" />
-                        ) : (
-                          <img className="level-img" src={level} alt="level" />
-                        )}
-                        {userLevel > 4 ? (
-                          <img className="level-img" src={levelFilled} alt="level" />
-                        ) : (
-                          <img className="level-img" src={level} alt="level" />
-                        )}
-                      </Box>
-                    )}
+
+                    <Box className="level-wrapper">
+                      <img className="level-img" src={levelFilled} alt="level" />
+                      <img className="level-img" src={level} alt="level" />
+                      <img className="level-img" src={level} alt="level" />
+                      <img className="level-img" src={level} alt="level" />
+                      <img className="level-img" src={level} alt="level" />
+                    </Box>
                   </Box>
                   <Box className="border-left"></Box>
 
@@ -105,27 +88,20 @@ export const CongratulationsScreen = () => {
                 </Box>
                 <Box className="border-left"></Box>
                 <Box className="right-section">
-                  {IDs.length > 0 ? (
-                    <CopyButton value={greeneId} timeout={2000}>
-                      {({ copied, copy }) => (
-                        <Box className="greenie-id" onClick={copy}>
-                          <Box className="icon-box">
-                            <MdOutlineContentCopy size={'18px'} color="#17a672" />
-                          </Box>
-
-                          <Box>
-                            <Text className="greenie-id-heading">Share Greenie ID </Text>
-                            {copied ? <Text className="id">Copied</Text> : <Text className="id">{greeneId}</Text>}
-                          </Box>
+                  <CopyButton value={greeneId} timeout={2000}>
+                    {({ copied, copy }) => (
+                      <Box className="greenie-id" onClick={copy}>
+                        <Box className="icon-box">
+                          <MdOutlineContentCopy size={'18px'} color="#17a672" />
                         </Box>
-                      )}
-                    </CopyButton>
-                  ) : (
-                    <Box className="verify-id-bio-text">
-                      <Text className="text-subheading">Verify your identity </Text>
-                      <Text className="text-subheading">and get a {<MdVerified color="#8cf078" />} Greenie Check</Text>
-                    </Box>
-                  )}
+
+                        <Box>
+                          <Text className="greenie-id-heading">Share Greenie ID </Text>
+                          {copied ? <Text className="id">Copied</Text> : <Text className="id">{greeneId}</Text>}
+                        </Box>
+                      </Box>
+                    )}
+                  </CopyButton>
                 </Box>
               </Box>
               <Text className="bio-text">{profileData.bio}</Text>

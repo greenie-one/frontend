@@ -15,7 +15,7 @@ const VerificationHeading = () => {
 
   return (
     <>
-      <Title className="address-verification-details-main-title">
+      <Title className="address-verification-details-main-title" style={{ textAlign: 'center' }}>
         Please verify your {unverifiedLink} to confirm your identity
       </Title>
       <Box className="address-verification-details">

@@ -296,6 +296,17 @@
         background: $green;
       }
     }
+
+    .checkbox-box {
+      display: flex;
+
+      .tearms-conditions {
+        margin-left: 0.75rem;
+        color: $gray;
+        margin-bottom: 1rem;
+      }
+    }
+
     .disabledBtn {
       background: $lightGray;
       color: $gray;
@@ -501,6 +512,14 @@
     grid-template-columns: 100%;
     img {
       margin: 0 auto;
+    }
+
+    .tearms-conditions {
+      font-size: 14px;
+    }
+
+    .policy {
+      font-size: 12px;
     }
   }
 

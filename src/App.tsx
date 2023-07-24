@@ -34,6 +34,7 @@ import { MyVerifications } from './components/candidate/my_verifications';
 import { VerifyAadharCard } from './components/candidate/profile/components/IDs/VerifyAadharCard';
 import { VerifyPanCard } from './components/candidate/profile/components/IDs/VerifyPanCard';
 import { VerifyDrivingLicence } from './components/candidate/profile/components/IDs/VerifyDrivingLicence';
+import { CongratulationsScreen } from './components/candidate/profile/components/IDs/CongratulationsScreen';
 
 const App = () => {
   return (
@@ -55,6 +56,7 @@ const App = () => {
                 <Route path="settings" element={<SettingsPage />} />
 
                 <Route path="IDs/verify/aadhar" element={<VerifyAadharCard />} />
+                <Route path="IDs/verify/aadhar/congratulations" element={<CongratulationsScreen />} />
                 <Route path="IDs/verify/pan" element={<VerifyPanCard />} />
                 <Route path="IDs/verify/licence" element={<VerifyDrivingLicence />} />
 

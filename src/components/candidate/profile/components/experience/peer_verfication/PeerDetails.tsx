@@ -25,7 +25,6 @@ export const PeerDetails: React.FC<ConfirmPeerType> = ({
   return (
     <Box className="peer-details">
       <Box className="requesting-peer">
-        <Box className="profile-picture"></Box>
         <Box className="requesting-peer-text-box">
           <Text className="name">{Peer.name}</Text>
           {Peer.peerType === 'LINE_MANAGER' && <Text className="peer-type">Line Manager</Text>}
@@ -41,7 +40,7 @@ export const PeerDetails: React.FC<ConfirmPeerType> = ({
           <Box className="docs-list">
             {experienceDocuments
               .filter((doc) => createPeerResponse[indexNumber].documents.includes(doc._id))
-              .map((document, index) => {
+              .map((document: ExperienceDocuments, index: number) => {
                 return (
                   <Box className="document" key={index}>
                     <img className="pdf-icon" src={pdfIcon} alt="pdf icon" />

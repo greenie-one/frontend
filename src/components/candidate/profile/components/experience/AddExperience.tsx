@@ -421,7 +421,6 @@ export const AddExperience = () => {
               <Box className="input-section">
                 <Title className="title">Work email</Title>
                 <TextInput
-                  withAsterisk
                   label="Official work email"
                   className="inputClass"
                   {...workExperienceForm.getInputProps('email')}
@@ -611,7 +610,7 @@ export const AddExperience = () => {
           )}
 
           {active === 3 && (
-            <Box>
+            <Box className="experience-add-documents">
               <Box className="documents-input-box">
                 <img src={uploadIcon} alt="upload icon" />
                 <input
