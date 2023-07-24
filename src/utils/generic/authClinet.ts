@@ -79,11 +79,7 @@ export class AuthClient {
     if (resp.ok) {
       await this.setTokens(resp.value.accessToken, resp.value.refreshToken);
     } else {
-      if (resp.error.code === 'GRA0005') {
-        console.error('Refresh token is expired or invalid, deleting tokens');
-        console.error(resp.error);
-        await this.deleteTokens();
-      }
+      await this.deleteTokens();
       throw new Error(JSON.stringify(resp.error));
     }
     return resp;
