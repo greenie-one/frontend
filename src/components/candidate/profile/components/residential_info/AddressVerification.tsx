@@ -39,7 +39,7 @@ type OtpInputStylesType = (
 
 export const AddressVerification = () => {
   const [activeStep, setActiveStep] = useState<number>(0);
-  const [addressVerified, setAddressVerified] = useState<boolean>(false);
+  const addressVerified = false;
   const { classes: inputClasses } = OtpInputStyles();
   const [secondsRemaining, setSecondsRemaining] = useState<number>(30);
   const { peerAddressVerificationForm, profileData, residentialInfoData } = useGlobalContext();
