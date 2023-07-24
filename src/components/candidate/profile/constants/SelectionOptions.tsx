@@ -32,7 +32,7 @@ export const skillRate = [
 export const documentTags = [
   { value: 'Appointsment Letter', label: 'Appointsment Letter' },
   { value: 'Payment Slip', label: 'Payment Slip' },
-  { value: 'Cerificate', label: 'Cerificate' },
+  { value: 'Certificate', label: 'Certificate' },
   { value: 'Other', label: 'Other' },
 ];
 

@@ -90,7 +90,7 @@ export const VerifyResidentialInfo: React.FC = () => {
             </Box>
           </Box>
           {currentStep === 0 && (
-            <Box className="add-peer-box">
+            <Box className="add-peer-box residential-info-peer-box">
               <Box className="residential-details">
                 <Box className="location">
                   <img src={location} alt="location icon" />
@@ -153,13 +153,13 @@ export const VerifyResidentialInfo: React.FC = () => {
               <Button className="add-peer-btn" leftIcon={<AiOutlinePlus size={'18px'} />} onClick={handleAddPeer}>
                 Add Peer
               </Button>
-              <Box className="add-peer-header">
-                <Text>Peer</Text>
-                <Text>Email</Text>
-                <Text>Peer Type</Text>
-                <Text>Action</Text>
+              <Box className="residential-add-peer-header">
+                <Text className="residential-peer-header-text">Peer</Text>
+                <Text className="residential-peer-header-text">Email</Text>
+                <Text className="residential-peer-header-text">Peer Type</Text>
+                <Text className="residential-peer-header-text">Action</Text>
               </Box>
-              <Box className="added-peer-box">
+              <Box className="residential-added-peer-box">
                 {addedPeers.length > 0 ? (
                   <Box className="add-peers">
                     {addedPeers.reverse().map(({ name, email, peerType }, index) => {
@@ -173,7 +173,7 @@ export const VerifyResidentialInfo: React.FC = () => {
 
                           <Text className="peer-type">{peerType}</Text>
                           <Text className="peer-remove" onClick={() => handleRemovePeer(index)}>
-                            <MdOutlineDelete size={'20px'} />
+                            <MdOutlineDelete className="remove-icon" />
                             <span>Remove</span>
                           </Text>
                         </Box>
@@ -192,7 +192,7 @@ export const VerifyResidentialInfo: React.FC = () => {
             </Box>
           )}
           {currentStep === 1 && (
-            <Box className="add-peer-box">
+            <Box className="add-peer-box residential-info-peer-box">
               <Box className="residential-details">
                 <Box className="location">
                   <img src={location} alt="location icon" />
@@ -221,9 +221,10 @@ export const VerifyResidentialInfo: React.FC = () => {
                   <Box className="copy-box">
                     <label>Here is your verification link</label>
                     <Text className="copy-link">{link}</Text>
-                    <Button className="copy-btn" onClick={copy} leftIcon={<MdOutlineContentCopy />}>
-                      {copied ? 'Copied' : 'Copy'}
-                    </Button>
+                    <Box className="copy-btn" onClick={copy}>
+                      <MdOutlineContentCopy />
+                      {copied ? <Text className="copy-text">Copied</Text> : <Text className="copy-text">Copy</Text>}
+                    </Box>
                   </Box>
                 )}
               </CopyButton>
@@ -232,13 +233,13 @@ export const VerifyResidentialInfo: React.FC = () => {
                 Personnel will receive an verification link on Email as well as SMS to verify the residential property
                 on the details provided by you.
               </Text>
-              <Box className="add-peer-header">
-                <Text>Peer</Text>
-                <Text>Email</Text>
-                <Text>Peer Type</Text>
-                <Text>Action</Text>
+              <Box className="residential-add-peer-header">
+                <Text className="residential-peer-header-text">Peer</Text>
+                <Text className="residential-peer-header-text">Email</Text>
+                <Text className="residential-peer-header-text">Peer Type</Text>
+                <Text className="residential-peer-header-text">Action</Text>
               </Box>
-              <Box className="added-peer-box">
+              <Box className="residential-added-peer-box">
                 {addedPeers.length > 0 ? (
                   <Box className="add-peers">
                     {addedPeers.reverse().map(({ name, email, peerType }, index) => {

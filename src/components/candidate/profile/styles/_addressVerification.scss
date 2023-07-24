@@ -11,6 +11,10 @@ $black: #282828;
 $gray: #697082;
 $dark: #191919;
 
+.residential-info-peer-box {
+  padding-block: 4rem;
+}
+
 .address-verification-container {
   display: flex;
   flex-direction: column;
@@ -179,5 +183,302 @@ $dark: #191919;
   .verified {
     border: none;
     outline: none;
+  }
+}
+
+.residential-add-peer-header {
+  border: 1px solid $lightGray;
+  border-radius: 16px 16px 0px 0px;
+  display: grid;
+  grid-template-columns: 30% 30% 20% 10%;
+  margin: 0rem auto;
+  margin-top: 2rem;
+  padding: 1rem;
+  font-weight: 500;
+  width: 90%;
+}
+
+.residential-added-peer-box {
+  width: 90%;
+  .added-peers {
+    border: 1px solid $lightGray;
+    display: grid;
+    grid-template-columns: 30% 30% 20% 15%;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 1rem;
+    font-size: 14px;
+    width: 100%;
+
+    &:last-child {
+      border-radius: 0px 0px 16px 16px;
+    }
+
+    .peer-name {
+      .profile-icon {
+        font-size: 24px;
+        color: $gray;
+        background-color: $lightGray;
+        border-radius: 50%;
+        padding: 0.25rem;
+      }
+      span {
+        font-weight: 500;
+        margin-left: 0.25rem;
+        font-size: 12px;
+      }
+    }
+
+    .peer-email {
+      word-wrap: break-word;
+      max-width: 25ch;
+      font-size: 13px;
+    }
+
+    .peer-response {
+      text-align: center;
+      border-radius: 24px;
+      width: 70px;
+      color: $blue;
+      font-size: 12px;
+      font-weight: 600;
+      background-color: rgba(135, 235, 218, 0.52);
+      padding: 0.15rem 0rem;
+    }
+
+    .peer-type {
+      text-align: center;
+      border-radius: 24px;
+      color: $dark;
+      font-weight: 500;
+      background-color: $lightGray;
+      padding: 0.25rem 0rem;
+      font-size: 12px;
+      width: 75%;
+    }
+
+    .peer-remove {
+      color: $dark;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+
+      .remove-icon {
+        font-size: 18px;
+      }
+
+      span {
+        text-decoration: underline;
+        font-weight: 600;
+        margin-left: 0.15rem;
+      }
+    }
+  }
+}
+
+.add-peer-text {
+  font-family: Inter;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: -0.02em;
+  text-align: center;
+  color: $gray;
+  width: 350px;
+  margin-bottom: 1rem;
+}
+
+.add-peer-sub-text {
+  font-family: Inter;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: -0.02em;
+  text-align: center;
+  color: $gray;
+  width: 320px;
+}
+
+.copy-box {
+  height: 58px;
+  padding-top: 1rem;
+  padding-inline: 0.75rem;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 8px;
+  border: 1px solid #d1d4db;
+  line-height: 19px;
+  letter-spacing: -0.02em;
+  width: 90%;
+  max-width: 350px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+
+  label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    font-size: 12px;
+    padding-left: 14px;
+    padding-top: 7px;
+    line-height: 14.52px;
+    letter-spacing: -0.02em;
+    z-index: 1;
+    color: #697082;
+  }
+
+  .copy-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    color: $gray;
+    border-radius: 34px;
+    border: 1px solid $lighterGray;
+    height: 27px;
+    font-size: 12px;
+    width: 100px;
+
+    .copy-text {
+      margin-left: 0.25rem;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .add-peer-text {
+    font-size: 14px;
+    width: 98%;
+    max-width: 350px;
+  }
+
+  .add-peer-sub-text {
+    font-size: 12px;
+    width: 98%;
+    max-width: 350px;
+    line-height: 18px;
+  }
+  .residential-add-peer-header {
+    grid-template-columns: 35% 45% 20%;
+
+    width: 94%;
+
+    .residential-peer-header-text {
+      &:nth-child(3) {
+        display: none;
+      }
+    }
+  }
+  .residential-added-peer-box {
+    width: 94%;
+    .added-peers {
+      grid-template-columns: 35% 45% 20%;
+
+      .peer-type {
+        display: none;
+      }
+
+      .peer-remove {
+        .remove-icon {
+          font-size: 16px;
+        }
+
+        span {
+          font-size: 12px;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .residential-info-peer-box {
+    padding-block: 2rem;
+  }
+  .copy-box {
+    font-size: 12px;
+    label {
+      position: absolute;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      font-size: 12px;
+      padding-left: 14px;
+      padding-top: 7px;
+      line-height: 14.52px;
+      letter-spacing: -0.02em;
+      z-index: 1;
+      color: #697082;
+    }
+
+    .copy-btn {
+      background: transparent;
+      color: $gray;
+      border-radius: 34px;
+      border: 1px solid $lighterGray;
+      height: 25px;
+      font-size: 10px;
+      width: 75px;
+    }
+  }
+  .residential-add-peer-header {
+    grid-template-columns: 33% 50% 20%;
+
+    width: 100%;
+
+    .residential-peer-header-text {
+      font-size: 12px;
+      &:nth-child(3) {
+        display: none;
+      }
+    }
+  }
+  .residential-added-peer-box {
+    width: 100%;
+    .added-peers {
+      grid-template-columns: 35% 45% 20%;
+      padding-inline: 0.25rem;
+
+      .peer-name {
+        .profile-icon {
+          font-size: 1rem;
+          color: $gray;
+          background-color: $lightGray;
+          border-radius: 50%;
+          padding: 0.15rem;
+        }
+        span {
+          font-weight: 500;
+          margin-left: 0.25rem;
+          font-size: 10px;
+        }
+      }
+
+      .peer-email {
+        font-size: 10px;
+      }
+
+      .peer-remove {
+        color: $dark;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+
+        .remove-icon {
+          font-size: 14px;
+        }
+
+        span {
+          text-decoration: underline;
+          font-weight: 600;
+          margin-left: 0.15rem;
+          font-size: 10px;
+        }
+      }
+    }
   }
 }

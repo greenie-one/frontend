@@ -273,6 +273,7 @@ export const GlobalContextProvider: React.FC<{
 
     if (res.ok) {
       setResidentialInfoData(res.value.residentialInfo.residentialInfos);
+      console.log(res.value.residentialInfo.residentialInfos);
     } else {
       showErrorNotification(res.error.code);
     }

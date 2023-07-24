@@ -757,12 +757,13 @@
   .added-documents-wrapper {
     .added-documents {
       padding: 1rem 1.5rem;
-      grid-template-columns: 100%;
+      grid-template-columns: 1fr 1.9fr;
       .document-name {
         font-size: 12px;
       }
 
       .documents-actions {
+        grid-column: 1 / span 2;
         width: 50%;
         margin-inline: auto;
       }
@@ -776,6 +777,20 @@
       .documents-actions {
         width: 70%;
       }
+    }
+  }
+
+  .congrats-btns-wrapper {
+    grid-template-columns: 100%;
+    .green-btn {
+      margin-bottom: 0.5rem;
+    }
+    .cancel-btn {
+      margin-inline: 0rem;
+    }
+
+    .btn {
+      width: 100%;
     }
   }
 
