@@ -11,14 +11,17 @@ import {
   MantineTheme,
   Modal,
 } from '@mantine/core';
-import johnMarston from '../../assets/johnMarston.png';
+import emptyProfile from '../../assets/emptyProfile.png';
 import { MdVerified } from 'react-icons/md';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 import checkGif from '../../assets/94109-confirmation 1.gif';
 import location from '../../assets/location.png';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
 import { useParams } from 'react-router-dom';
-import { Layout } from '../Layout';
+import { Footer } from '../Footer';
+import { Navbar } from '../../../verifications/components/Navbar';
+import { FcInfo } from 'react-icons/fc';
+import locationError from '../../assets/locationError.png';
 
 type OtpInputStyles = {
   root: string;
@@ -35,7 +38,8 @@ type OtpInputStylesType = (
 };
 
 export const AddressVerification = () => {
-  const [activeStep, setActiveStep] = useState<number>(1);
+  const [activeStep, setActiveStep] = useState<number>(0);
+  const [addressVerified, setAddressVerified] = useState<boolean>(false);
   const { classes: inputClasses } = OtpInputStyles();
   const [secondsRemaining, setSecondsRemaining] = useState<number>(30);
   const { peerAddressVerificationForm, profileData, residentialInfoData } = useGlobalContext();
@@ -73,42 +77,82 @@ export const AddressVerification = () => {
   return (
     <>
       <Modal
-        className="modal"
         size={'60%'}
+        className="modal"
         fullScreen={isMobile}
         opened={opened}
         onClose={close}
         centered
         radius={'lg'}
       >
-        <Box className="address-verification-modal">
-          <img src={checkGif} alt="Check Gif" />
-          <Title className="address-verification-modal-title">Resident address verified</Title>
-          <Text className="address-verification-modal-text">Thanks for your co-operation in verify.</Text>
-          <Box className="residential-details">
-            <Box className="location">
-              <img src={location} alt="location icon" />
+        {addressVerified && (
+          <Box className="address-verification-modal">
+            <img src={checkGif} alt="Check Gif" />
+            <Title className="address-verification-modal-title">Resident address verified</Title>
+            <Box className="address-verification-modal-text-box">
+              <Text className="address-verification-modal-text">Thanks for your co-operation in verify.</Text>
             </Box>
 
-            <Box className="residential-details-text-box">
-              <Text className="address">
-                {residentialInfo?.address_line_1}, {residentialInfo?.address_line_2}, {residentialInfo?.landmark},{' '}
-                {residentialInfo?.city}, {residentialInfo?.pincode}
-              </Text>
+            <Box className="residential-details">
+              <Box className="location">
+                <img src={location} alt="location icon" />
+              </Box>
 
-              <Button leftIcon={<MdVerified size={'16px'} />} className="verified">
-                Verified
+              <Box className="residential-details-text-box">
+                <Text className="address">
+                  {residentialInfo?.address_line_1}, {residentialInfo?.address_line_2}, {residentialInfo?.landmark},{' '}
+                  {residentialInfo?.city}, {residentialInfo?.pincode}
+                </Text>
+
+                <Button leftIcon={<MdVerified size={'16px'} />} className="verified">
+                  Verified
+                </Button>
+              </Box>
+            </Box>
+            <Button className="green-btn" onClick={handleGoToProfile}>
+              Continue
+            </Button>
+          </Box>
+        )}
+        {!addressVerified && (
+          <Box className="address-verification-modal">
+            <img src={locationError} alt="Location Error" className="error-image" />
+            <Title className="address-verification-modal-title">Error verification failed</Title>
+            <Box className="address-verification-modal-text-box">
+              <Text className="address-verification-modal-text">We were unable to match the location.</Text>
+              <Text className="address-verification-modal-text">
+                please make sure you are at the right place to complete verification
+              </Text>
+            </Box>
+
+            <Button className="green-btn" onClick={close}>
+              Continue
+            </Button>
+          </Box>
+        )}
+      </Modal>
+
+      <Navbar />
+      <Box className="profile">
+        {activeStep === 0 && (
+          <Box className="container" style={{ marginTop: '8rem' }}>
+            <Box className="address-verification-container">
+              <Title className="address-verification-details-main-title">Welcome to</Title>
+              <Box className="logo-box">
+                <Text className="logo-text">Greenie</Text>
+                <MdVerified className="logo-icon" />
+              </Box>
+              <Text className="address-verification-dark-text">
+                <span>{profileData.firstName}</span> wants you to verify his address
+              </Text>
+              <Button className="green-outline-btn" onClick={NextActiveStep}>
+                Proceed
               </Button>
             </Box>
           </Box>
-          <Button className="green-btn" onClick={handleGoToProfile}>
-            Continue
-          </Button>
-        </Box>
-      </Modal>
-      <Layout>
+        )}
         {activeStep === 1 && (
-          <Box className="container" style={{ marginTop: '7rem' }}>
+          <Box className="container" style={{ marginTop: '8rem' }}>
             <Box className="address-verification-container">
               <Title className="address-verification-details-main-title">Please confirm the peer identity</Title>
               <Box className="address-verification-details">
@@ -116,7 +160,6 @@ export const AddressVerification = () => {
                   {profileData.firstName} {profileData.lastName}
                 </Title>
                 <Text className="address-verification-details-address">
-                  {' '}
                   {residentialInfo?.address_line_1}, {residentialInfo?.address_line_2}, {residentialInfo?.landmark},{' '}
                   {residentialInfo?.city}, {residentialInfo?.pincode}
                 </Text>
@@ -130,16 +173,15 @@ export const AddressVerification = () => {
           </Box>
         )}
         {activeStep === 2 && (
-          <Box className="container" style={{ marginTop: '7rem' }}>
+          <Box className="container" style={{ marginTop: '8rem' }}>
             <Box className="address-verification-container">
               <Title className="address-verification-details-main-title">Please confirm the peer identity</Title>
               <Box className="address-verification-details">
                 <Title className="address-verification-details-title">
-                  {' '}
                   {profileData.firstName} {profileData.lastName}
                 </Title>
                 <Text className="address-verification-details-address">
-                  {residentialInfo?.address_line_1}, {residentialInfo?.address_line_2}, {residentialInfo?.landmark},{' '}
+                  {residentialInfo?.address_line_1}, {residentialInfo?.address_line_2}, {residentialInfo?.landmark},
                   {residentialInfo?.city},{residentialInfo?.pincode}
                 </Text>
               </Box>
@@ -170,7 +212,7 @@ export const AddressVerification = () => {
           </Box>
         )}
         {activeStep === 3 && (
-          <Box className="container" style={{ marginTop: '7rem' }}>
+          <Box className="container" style={{ marginTop: '8rem' }}>
             <Box className="address-verification-container">
               <Box className="address-verification-details">
                 <Title className="address-verification-details-title">
@@ -185,12 +227,22 @@ export const AddressVerification = () => {
               </Box>
               <Title className="address-verification-bold-title">We are trying to verify residential address of</Title>
               <Box className="profile-details">
-                <Box className="profile-details-image">
-                  <img src={johnMarston} alt="Profile picture" />
-                  <Box className="verified-icon">
-                    <MdVerified />
+                {profileData.profilePic ? (
+                  <Box className="profile-details-image">
+                    <img src={profileData.profilePic} alt="Profile picture" />
+                    <Box className="verified-icon">
+                      <MdVerified />
+                    </Box>
                   </Box>
-                </Box>
+                ) : (
+                  <Box className="profile-details-image">
+                    <img src={emptyProfile} alt="Profile picture" />
+                    <Box className="verified-icon">
+                      <MdVerified />
+                    </Box>
+                  </Box>
+                )}
+
                 <Title className="address-verification-details-name">
                   {profileData.firstName} {profileData.lastName}
                 </Title>
@@ -213,13 +265,22 @@ export const AddressVerification = () => {
               <Title className="address-verification-details-main-title">
                 Please allow permission to capture location to confirm the verificationh
               </Title>
+              <Box className="pro-tip-box">
+                <Box className="icon-box">
+                  <FcInfo color="#1991ff" />
+                  <Text className="pro-tip">Pro tip</Text>
+                </Box>
+                <Text className="tip">Share this link with your peer to verify the location.</Text>
+              </Box>
               <Button className="green-outline-btn" onClick={open}>
                 Capture Location
               </Button>
             </Box>
           </Box>
         )}
-      </Layout>
+      </Box>
+
+      <Footer />
     </>
   );
 };

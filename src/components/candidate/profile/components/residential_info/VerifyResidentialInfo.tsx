@@ -12,6 +12,7 @@ import { useGlobalContext } from '../../../../../context/GlobalContext';
 import { useParams, useNavigate } from 'react-router-dom';
 import { AiOutlineRight } from 'react-icons/ai';
 import { Layout } from '../Layout';
+import { FcInfo } from 'react-icons/fc';
 
 export const VerifyResidentialInfo: React.FC = () => {
   const navigate = useNavigate();
@@ -34,13 +35,14 @@ export const VerifyResidentialInfo: React.FC = () => {
   };
 
   const handleNextStep = () => {
-    if (addedPeers.length > 1) {
+    if (addedPeers.length > 0) {
       setCurrentStep(1);
     }
   };
 
   const handleProceed = () => {
     scrollToTop();
+    navigate('/candidate/profile/myVerification');
   };
 
   const handleProfilePage = (): void => {
@@ -107,9 +109,20 @@ export const VerifyResidentialInfo: React.FC = () => {
                   </Button>
                 </Box>
               </Box>
-              <Title className="add-peer-title">Add Peers to verify</Title>
+              <Title className="add-peer-title">Add personnels that will verify your address</Title>
+              <Box className="pro-tip-box">
+                <Box className="icon-box">
+                  <FcInfo color="#1991ff" />
+                  <Text className="pro-tip">Pro tip</Text>
+                </Box>
+                <Text className="tip">
+                  For accurate address verification, ensure you enter the name of the actual resident who lives at the
+                  specified location. This will help validate the address effectively on Greenie.
+                </Text>
+              </Box>
               <Box className="add-peers-inputs">
                 <TextInput
+                  maxLength={20}
                   withAsterisk
                   label="Name"
                   className="inputClass"
@@ -120,7 +133,7 @@ export const VerifyResidentialInfo: React.FC = () => {
                   searchable
                   nothingFound="No options"
                   withAsterisk
-                  label="Peer type"
+                  label="Peer relation"
                   data={relations}
                   styles={() => ({
                     item: {
@@ -137,7 +150,7 @@ export const VerifyResidentialInfo: React.FC = () => {
                 />
                 <TextInput
                   withAsterisk
-                  label="Official email id"
+                  label="Email"
                   className="inputClass"
                   {...residentialInfoVerificationForm.getInputProps('email')}
                 />
@@ -150,19 +163,23 @@ export const VerifyResidentialInfo: React.FC = () => {
                   {...residentialInfoVerificationForm.getInputProps('phone')}
                 />
               </Box>
+              <Text className="add-peer-sub-text">
+                To ensure thorough verification, OTPs will be sent to verify all credentials.
+              </Text>
               <Button className="add-peer-btn" leftIcon={<AiOutlinePlus size={'18px'} />} onClick={handleAddPeer}>
                 Add Peer
               </Button>
               <Box className="residential-add-peer-header">
                 <Text className="residential-peer-header-text">Peer</Text>
                 <Text className="residential-peer-header-text">Email</Text>
+                <Text className="residential-peer-header-text">Phone Number</Text>
                 <Text className="residential-peer-header-text">Peer Type</Text>
                 <Text className="residential-peer-header-text">Action</Text>
               </Box>
               <Box className="residential-added-peer-box">
                 {addedPeers.length > 0 ? (
                   <Box className="add-peers">
-                    {addedPeers.reverse().map(({ name, email, peerType }, index) => {
+                    {addedPeers.reverse().map(({ name, email, peerType, phone }, index) => {
                       return (
                         <Box key={index} className="added-peers">
                           <Text className="peer-name">
@@ -170,6 +187,7 @@ export const VerifyResidentialInfo: React.FC = () => {
                             <span>{name}</span>
                           </Text>
                           <Text className="peer-email">{email}</Text>
+                          <Text className="peer-phone">{phone}</Text>
 
                           <Text className="peer-type">{peerType}</Text>
                           <Text className="peer-remove" onClick={() => handleRemovePeer(index)}>
@@ -186,7 +204,7 @@ export const VerifyResidentialInfo: React.FC = () => {
                   </Box>
                 )}
               </Box>
-              <Button disabled={addedPeers.length < 2} className="primaryBtn" onClick={handleNextStep}>
+              <Button disabled={addedPeers.length < 1} className="primaryBtn" onClick={handleNextStep}>
                 Proceed
               </Button>
             </Box>
@@ -212,10 +230,7 @@ export const VerifyResidentialInfo: React.FC = () => {
               <Title className="add-peer-title">
                 Verification sent <BsCheckLg color="#17a672" />{' '}
               </Title>
-              <Text className="add-peer-text">
-                Personnel will receive an verification link on Email as well as SMS to verify the residential property
-                on the details provided by you.
-              </Text>
+              <Text className="add-peer-text">Share this link with your peer to verify the location.</Text>
               <CopyButton value={link} timeout={2000}>
                 {({ copied, copy }) => (
                   <Box className="copy-box">
@@ -228,21 +243,24 @@ export const VerifyResidentialInfo: React.FC = () => {
                   </Box>
                 )}
               </CopyButton>
-
-              <Text className="add-peer-sub-text">
-                Personnel will receive an verification link on Email as well as SMS to verify the residential property
-                on the details provided by you.
-              </Text>
+              <Box className="pro-tip-box">
+                <Box className="icon-box">
+                  <FcInfo color="#1991ff" />
+                  <Text className="pro-tip">Pro tip</Text>
+                </Box>
+                <Text className="tip">Share this link with your peer to verify the location.</Text>
+              </Box>
               <Box className="residential-add-peer-header">
                 <Text className="residential-peer-header-text">Peer</Text>
                 <Text className="residential-peer-header-text">Email</Text>
+                <Text className="residential-peer-header-text">Phone Number</Text>
                 <Text className="residential-peer-header-text">Peer Type</Text>
                 <Text className="residential-peer-header-text">Action</Text>
               </Box>
               <Box className="residential-added-peer-box">
                 {addedPeers.length > 0 ? (
                   <Box className="add-peers">
-                    {addedPeers.reverse().map(({ name, email, peerType }, index) => {
+                    {addedPeers.reverse().map(({ name, email, peerType, phone }, index) => {
                       return (
                         <Box key={index} className="added-peers">
                           <Text className="peer-name">
@@ -250,6 +268,7 @@ export const VerifyResidentialInfo: React.FC = () => {
                             <span>{name}</span>
                           </Text>
                           <Text className="peer-email">{email}</Text>
+                          <Text className="peer-phone">{phone}</Text>
 
                           <Text className="peer-type">{peerType}</Text>
                           <Text className="peer-remove" onClick={() => handleRemovePeer(index)}>
@@ -266,7 +285,7 @@ export const VerifyResidentialInfo: React.FC = () => {
                   </Box>
                 )}
               </Box>
-              <Button disabled={addedPeers.length < 2} className="primaryBtn" onClick={handleProceed}>
+              <Button disabled={addedPeers.length < 1} className="primaryBtn" onClick={handleProceed}>
                 Proceed
               </Button>
             </Box>

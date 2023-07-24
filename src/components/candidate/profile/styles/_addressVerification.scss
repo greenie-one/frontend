@@ -13,6 +13,20 @@ $dark: #191919;
 
 .residential-info-peer-box {
   padding-block: 4rem;
+
+  .residential-details {
+    font-weight: 600;
+  }
+
+  .add-peer-title {
+    margin-bottom: 1rem;
+  }
+
+  .pro-tip-box {
+    width: 90%;
+    max-width: 500px;
+    margin-block: 1.5rem;
+  }
 }
 
 .address-verification-container {
@@ -20,7 +34,44 @@ $dark: #191919;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  padding-top: 4rem;
+  padding-block: 4rem;
+
+  .pro-tip-box {
+    width: 90%;
+    max-width: 450px;
+    margin-block: 1.5rem;
+  }
+
+  .logo-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+
+    .logo-text {
+      font-family: 'Gilroy-Bold' !important;
+      font-size: 23px;
+    }
+    .logo-icon {
+      color: $limeGreen;
+      margin-left: 0.25rem;
+    }
+  }
+
+  .address-verification-dark-text {
+    color: $dark;
+    width: 150px;
+    margin-bottom: 1rem;
+
+    span {
+      font-weight: 600;
+    }
+  }
+
+  .green-outline-btn {
+    border: 2px solid $green;
+    color: $green;
+  }
 
   .primaryBtn {
     width: 400px;
@@ -32,9 +83,9 @@ $dark: #191919;
     font-weight: 600;
     line-height: 27px;
     letter-spacing: 0em;
-    text-align: left;
+    text-align: center;
     color: $dark;
-    margin-bottom: 2rem;
+    margin-bottom: 0.75rem;
   }
 
   .address-verification-bold-title {
@@ -82,6 +133,7 @@ $dark: #191919;
     img {
       width: 64px;
       height: 64px;
+      border-radius: 50%;
     }
 
     .verified-icon {
@@ -151,7 +203,12 @@ $dark: #191919;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  padding-block: 1rem;
+
+  .error-image {
+    margin-bottom: 1rem;
+  }
 
   .address-verification-modal-title {
     font-family: Inter;
@@ -159,9 +216,16 @@ $dark: #191919;
     font-weight: 600;
     line-height: 24px;
     letter-spacing: -0.02em;
-    text-align: left;
+    text-align: center;
     color: $dark;
     margin-bottom: 1rem;
+  }
+
+  .address-verification-modal-text-box {
+    margin-bottom: 1.25rem;
+    margin-inline: auto;
+    width: 100%;
+    text-align: center;
   }
   .address-verification-modal-text {
     font-family: Inter;
@@ -169,9 +233,11 @@ $dark: #191919;
     font-weight: 500;
     line-height: 17px;
     letter-spacing: -0.02em;
-    text-align: left;
+    text-align: center;
     color: $dark;
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.25rem;
+    width: 90%;
+    margin-inline: auto;
   }
   .residential-details {
     margin-bottom: 2rem;
@@ -190,12 +256,13 @@ $dark: #191919;
   border: 1px solid $lightGray;
   border-radius: 16px 16px 0px 0px;
   display: grid;
-  grid-template-columns: 30% 30% 20% 10%;
+  grid-template-columns: 23% 23% 17% 25% 15%;
   margin: 0rem auto;
   margin-top: 2rem;
   padding: 1rem;
   font-weight: 500;
   width: 90%;
+  font-size: 14px;
 }
 
 .residential-added-peer-box {
@@ -203,7 +270,7 @@ $dark: #191919;
   .added-peers {
     border: 1px solid $lightGray;
     display: grid;
-    grid-template-columns: 30% 30% 20% 15%;
+    grid-template-columns: 23% 23% 17% 25% 15%;
     align-items: center;
     justify-content: flex-start;
     padding: 1rem;
@@ -285,18 +352,22 @@ $dark: #191919;
   text-align: center;
   color: $gray;
   width: 350px;
-  margin-bottom: 1rem;
+  margin-bottom: 2.5rem;
 }
 
 .add-peer-sub-text {
   font-family: Inter;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 400;
   line-height: 24px;
   letter-spacing: -0.02em;
   text-align: center;
   color: $gray;
-  width: 320px;
+  margin-bottom: 1rem;
+
+  &.screen-two {
+    max-width: 320px;
+  }
 }
 
 .copy-box {
@@ -368,7 +439,8 @@ $dark: #191919;
     width: 94%;
 
     .residential-peer-header-text {
-      &:nth-child(3) {
+      &:nth-child(3),
+      &:nth-child(4) {
         display: none;
       }
     }
@@ -378,7 +450,8 @@ $dark: #191919;
     .added-peers {
       grid-template-columns: 35% 45% 20%;
 
-      .peer-type {
+      .peer-type,
+      .peer-phone {
         display: none;
       }
 
@@ -396,8 +469,133 @@ $dark: #191919;
 }
 
 @media screen and (max-width: 550px) {
+  .address-verification-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: 4rem;
+
+    .pro-tip-box {
+      width: 90%;
+      max-width: 450px;
+      margin-block: 1.5rem;
+    }
+
+    .logo-box {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+
+      .logo-text {
+        font-family: 'Gilroy-Bold' !important;
+        font-size: 23px;
+      }
+      .logo-icon {
+        color: $limeGreen;
+        margin-left: 0.25rem;
+      }
+    }
+
+    .address-verification-dark-text {
+      color: $dark;
+      width: 150px;
+      margin-bottom: 1rem;
+
+      span {
+        font-weight: 600;
+      }
+    }
+
+    .green-outline-btn {
+      border: 2px solid $green;
+      color: $green;
+    }
+
+    .primaryBtn {
+      width: 400px;
+    }
+
+    .address-verification-details-main-title {
+      font-size: 1rem;
+    }
+
+    .address-verification-bold-title {
+      font-size: 1rem;
+    }
+
+    .address-verification-details {
+      .address-verification-details-title {
+        font-family: Inter;
+        font-size: 20px;
+        font-weight: 500;
+        line-height: 28px;
+        letter-spacing: -0.800000011920929px;
+        text-align: center;
+        color: $dark;
+      }
+      .address-verification-details-address {
+        font-family: Inter;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 20px;
+        letter-spacing: -0.10000000149011612px;
+        text-align: center;
+        color: $gray;
+        margin-block: 0.5rem;
+        margin-bottom: 2rem;
+        max-width: 200px;
+        text-align: center;
+      }
+    }
+
+    .profile-details {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-block: 1rem;
+      position: relative;
+
+      img {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+      }
+
+      .verified-icon {
+        position: absolute;
+        color: $green;
+        border-radius: 50%;
+        bottom: 0;
+        background-color: $white;
+        left: 45px;
+        width: 1.25rem;
+        height: 1.25rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .address-verification-details-name {
+        font-family: Inter;
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 19px;
+        letter-spacing: -0.02em;
+        text-align: left;
+        color: $dark;
+        margin-left: 1rem;
+      }
+    }
+  }
   .residential-info-peer-box {
     padding-block: 2rem;
+
+    .add-peer-title {
+      margin-bottom: 1rem;
+      font-size: 1rem;
+    }
   }
   .copy-box {
     font-size: 12px;
