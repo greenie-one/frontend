@@ -37,8 +37,6 @@ export const ConfirmRequest: React.FC<ConfrimRequestPropsType> = ({
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
 
-  console.log(createPeerResponse);
-
   const handleCreatePeerRequest = async () => {
     showLoadingNotification({ title: 'Please Wait !', message: 'Wait while we send the request' });
     for (const response of createPeerResponse) {

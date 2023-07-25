@@ -7,7 +7,7 @@ import { useGlobalContext } from '../../../../../context/GlobalContext';
 import { UseStylesType } from '../../types/ProfileGeneral';
 import { HttpClient, Result } from '../../../../../utils/generic/httpClient';
 import { SearchListObject } from '../../types/ProfileGeneral';
-import { SearchResponse } from '../../types/ProfileGeneral';
+// import { SearchResponse } from '../../types/ProfileGeneral';
 
 type SearchListPropsType = {
   searchQuery: string;
@@ -25,7 +25,7 @@ export const SearchList: React.FC<SearchListPropsType> = ({ searchQuery }): JSX.
 
   const fetchProfiles = useMemo(
     () => async () => {
-      const res: Result<SearchResponse> = await HttpClient.callApiAuth(
+      const res: Result<SearchListObject[]> = await HttpClient.callApiAuth(
         {
           url: `${profileAPIList.searchProfile}${searchQuery}`,
           method: 'GET',
@@ -33,7 +33,7 @@ export const SearchList: React.FC<SearchListPropsType> = ({ searchQuery }): JSX.
         authClient
       );
       if (res.ok) {
-        setProfilesData(res.value.profiles);
+        setProfilesData(res.value);
         setError(false);
         setFetchingData(false);
       } else {
@@ -137,7 +137,7 @@ const useStyles: UseStylesType = createStyles(() => ({
     fontSize: rem(14),
     fontWeight: 500,
     whiteSpace: 'nowrap',
-    maxWidth: '8ch',
+    // maxWidth: '8ch',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
   },
