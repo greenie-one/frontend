@@ -680,8 +680,6 @@ export const AddExperience = () => {
               {documents.length > 0 && (
                 <Box className="added-documents-wrapper">
                   {documents.map(({ _id, name }, index) => {
-                    console.log(documents);
-
                     return (
                       <Box key={_id}>
                         <Box className="added-documents">

@@ -38,8 +38,6 @@ export const VerifyAttributes: React.FC = (): JSX.Element => {
     })
     .filter((key) => key !== undefined);
 
-  console.log(attributesList);
-
   return (
     <section className="verification-step">
       <DisputeModal
