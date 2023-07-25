@@ -27,7 +27,7 @@ export const AttitudeVerification: React.FC = (): JSX.Element => {
 
     setVerificationResponse({
       ...verificationResponse,
-      mandatoryQuestions: { ...verificationResponse.mandatoryQuestions, ...responseData },
+      allQuestions: { ...verificationResponse.allQuestions, ...responseData },
     });
 
     setActiveStep((current) => current + 1);

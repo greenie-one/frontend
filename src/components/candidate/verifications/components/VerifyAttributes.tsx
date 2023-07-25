@@ -23,14 +23,22 @@ export const VerifyAttributes: React.FC = (): JSX.Element => {
 
     setVerificationResponse({
       ...verificationResponse,
-      optionalVerificationFields: { ...verificationResponse.optionalVerificationFields, ...responseData },
+      selectedFields: { ...verificationResponse.selectedFields, ...responseData },
     });
 
     setApprovedAttrs((current) => [...current, _id]);
     setDisputedAttrs((current) => current.filter((id) => id !== _id));
   };
 
-  const attributesList = Object.keys(data?.optionalVerificationFields ?? {});
+  const attributesList = Object.keys(data?.selectedFields)
+    .map((key) => {
+      if (key !== 'salary') {
+        return key;
+      }
+    })
+    .filter((key) => key !== undefined);
+
+  console.log(attributesList);
 
   return (
     <section className="verification-step">
@@ -41,17 +49,18 @@ export const VerifyAttributes: React.FC = (): JSX.Element => {
         close={() => {
           disputeModalClose();
         }}
-        parentKey="optionalVerificationFields"
+        parentKey="selectedFields"
         setApprovedAttrs={setApprovedAttrs}
         setDisputedAttrs={setDisputedAttrs}
       />
       <Box className="profile-details-action-section">
         {attributesList.map((keys, index) => {
+          if (!keys) return <React.Fragment key={index}></React.Fragment>;
           return optionalAttrDict[keys] ? (
             <Box className="profile-detail" key={index}>
               <Box className="details">
                 <Text className="label">{optionalAttrDict[keys]}</Text>
-                <Text className="detail">{data?.optionalVerificationFields[keys]}</Text>
+                <Text className="detail">{data?.selectedFields[keys]}</Text>
               </Box>
               <Box className="profile-details-actions">
                 <Button

@@ -5,24 +5,18 @@ export const OthersSpecificQuestions = (): JSX.Element => {
   const { activeStep, verificationData, verificationBy } = useVerificationContext();
   const { data } = verificationData;
 
-  const formattedDate = (_data: string) => {
-    return _data?.substring(0, 10).split('-').reverse().join('-');
-  };
-
   return (
     <>
       {activeStep === 2 ? (
         <VerificationQuestions
           question={
             <>
-              According to <span>{data.name}</span> you were his <span className="green-text">{verificationBy}</span>{' '}
-              during his employment in <span>{data.companyName}</span> from{' '}
-              <span>{formattedDate(verificationData.dateOfJoining)}</span> to{' '}
-              <span>{formattedDate(verificationData.dateOfLeaving)}</span>
+              According to <span>{data.name}</span> you were his <span className="green-text">{verificationBy}</span> in{' '}
+              <span>{data.selectedFields?.companyName}</span> during his employment tenure?
             </>
           }
           _id="peerPost"
-          parentKey="otherQuestions"
+          parentKey="allQuestions"
         />
       ) : (
         <></>
@@ -32,12 +26,12 @@ export const OthersSpecificQuestions = (): JSX.Element => {
           question={
             <>
               According to <span className="name">{data.name} </span>he was{' '}
-              <span className="green-text">{data.designation}</span> during his employment in{' '}
-              <span>{data.companyName}</span>
+              <span className="green-text">{data.selectedFields?.designation}</span> during his employment in{' '}
+              <span>{data.selectedFields?.companyName}</span>
             </>
           }
           _id="designation"
-          parentKey="otherQuestions"
+          parentKey="allQuestions"
         />
       ) : (
         <></>

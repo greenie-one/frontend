@@ -61,6 +61,12 @@ export const DisputeModal: React.FC<DisputeModalProps> = ({
       if (verificationResponse[parentKey]) {
         setVerificationResponse((current) => {
           const list = current[parentKey];
+
+          const findSkill = list.find((_skill) => _skill.id === id);
+          if (!findSkill) {
+            return { ...current, [parentKey]: [...current[parentKey], resObj] };
+          }
+
           const newList = list.map((item) => {
             if (item.id === id) {
               return resObj;

@@ -334,7 +334,7 @@
     margin-bottom: 1rem;
 
     .experience-details-text-box {
-      margin-left: 1rem;
+      // margin-left: 1rem;
 
       .designation {
         font-family: Inter;
@@ -417,6 +417,13 @@
     border-radius: 1rem;
     padding: 1rem;
     margin-block: 0.25rem;
+
+    a {
+      display: block;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
   }
 
   .about-company-box-wrapper {
@@ -430,6 +437,9 @@
     color: $gray;
     font-weight: 500;
     font-size: 14px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 
   .basic-info {
@@ -596,29 +606,28 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 100%;
   }
 
   .folder-wrapper {
-    width: 100%;
     margin-top: 1.5rem;
     padding-block: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
     padding-inline: 1rem;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: calc(50% - 0.5rem) calc(50% - 0.5rem);
     gap: 1rem;
+    width: 100%;
 
     .folder {
-      width: 100%;
       display: flex;
       gap: 10px;
       justify-content: flex-start;
       margin-bottom: 0 !important;
+      padding: 1rem;
+      height: auto !important;
+      grid-column: span 1;
 
       .doc-name {
-        width: 100%;
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
@@ -631,6 +640,12 @@
         border: 1px solid $green;
       }
     }
+  }
+
+  .skill-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    width: 100%;
   }
 
   .green-btn {

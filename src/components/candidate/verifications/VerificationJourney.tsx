@@ -32,7 +32,7 @@ export const VerificationJourney: React.FC = (): JSX.Element => {
       ) : (
         <>
           {unverifiedLink !== 'NONE' && activeStep < 1 ? <VerifyPeer /> : <></>}
-          {unverifiedLink === 'NONE' && verificationData ? (
+          {unverifiedLink === 'NONE' && verificationData.data ? (
             <main className="profile">
               <section className="container" style={{ marginTop: '7rem' }}>
                 <Title className="verification-title">Background verification request</Title>
@@ -57,47 +57,173 @@ export const VerificationJourney: React.FC = (): JSX.Element => {
                 {activeStep === 1 ? <VerificationDisclaimer /> : <></>}
                 {verificationBy === 'HR' ? (
                   <>
-                    {activeStep === 2 ? <VerifyAttributes /> : <></>}
-                    {activeStep === 3 ? <VerifyDocuments /> : <></>}
-                    {activeStep === 4 ? <VerifySkills /> : <></>}
+                    {activeStep === 2 || activeStep === 3 ? <OthersSpecificQuestions /> : <></>}
+                    {activeStep === 4 ? <VerifyAttributes /> : <></>}
                     {activeStep === 5 ? (
                       <VerificationQuestions
-                        question={<>Has the candidate completed the exit procedure?</>}
-                        _id="exitProcedure"
-                        parentKey="otherQuestions"
+                        question={<>Was the candidate's salary {verificationData.data.selectedFields.salary} LPA ?</>}
+                        _id="salary"
+                        parentKey="selectedFields"
                       />
                     ) : (
                       <></>
                     )}
-                    {activeStep === 6 ? (
-                      <VerificationQuestions
-                        question={<>Is the candidate eligible for rehire?</>}
-                        _id="eligibleForRehire"
-                        parentKey="mandatoryQuestions"
-                      />
+                    {totalSteps === 10 ? (
+                      <>
+                        {activeStep === 6 ? (
+                          <VerificationQuestions
+                            question={<>Has the candidate completed the exit procedure?</>}
+                            _id="exitProcedure"
+                            parentKey="otherQuestions"
+                          />
+                        ) : (
+                          <></>
+                        )}
+                        {activeStep === 7 ? (
+                          <VerificationQuestions
+                            question={<>Is the candidate eligible for rehire?</>}
+                            _id="eligibleForRehire"
+                            parentKey="otherQuestions"
+                          />
+                        ) : (
+                          <></>
+                        )}
+                        {activeStep === 8 ? <AttitudeVerification /> : <></>}
+                        {activeStep === 9 ? <Review /> : <></>}
+                      </>
+                    ) : totalSteps === 11 ? (
+                      <>
+                        {activeStep === 6 ? <VerifySkills /> : <></>}
+                        {activeStep === 7 ? (
+                          <VerificationQuestions
+                            question={<>Has the candidate completed the exit procedure?</>}
+                            _id="exitProcedure"
+                            parentKey="otherQuestions"
+                          />
+                        ) : (
+                          <></>
+                        )}
+                        {activeStep === 8 ? (
+                          <VerificationQuestions
+                            question={<>Is the candidate eligible for rehire?</>}
+                            _id="eligibleForRehire"
+                            parentKey="otherQuestions"
+                          />
+                        ) : (
+                          <></>
+                        )}
+                        {activeStep === 9 ? <AttitudeVerification /> : <></>}
+                        {activeStep === 10 ? <Review /> : <></>}
+                      </>
                     ) : (
-                      <></>
+                      <>
+                        {activeStep === 6 ? <VerifyDocuments /> : <></>}
+                        {activeStep === 7 ? <VerifySkills /> : <></>}
+                        {activeStep === 8 ? (
+                          <VerificationQuestions
+                            question={<>Has the candidate completed the exit procedure?</>}
+                            _id="exitProcedure"
+                            parentKey="otherQuestions"
+                          />
+                        ) : (
+                          <></>
+                        )}
+                        {activeStep === 9 ? (
+                          <VerificationQuestions
+                            question={<>Is the candidate eligible for rehire?</>}
+                            _id="eligibleForRehire"
+                            parentKey="otherQuestions"
+                          />
+                        ) : (
+                          <></>
+                        )}
+                        {activeStep === 10 ? <AttitudeVerification /> : <></>}
+                        {activeStep === 11 ? <Review /> : <></>}
+                      </>
                     )}
-                    {activeStep === 7 ? <AttitudeVerification /> : <></>}
-                    {activeStep === 8 ? <Review /> : <></>}
                   </>
                 ) : (
                   <>
                     {activeStep === 2 || activeStep === 3 ? <OthersSpecificQuestions /> : <></>}
                     {activeStep === 4 ? <VerifyAttributes /> : <></>}
-                    {activeStep === 5 ? <VerifyDocuments /> : <></>}
-                    {activeStep === 6 ? <VerifySkills /> : <></>}
-                    {activeStep === 7 ? (
-                      <VerificationQuestions
-                        question={<>Is the candidate eligible for rehire?</>}
-                        _id="eligibleForRehire"
-                        parentKey="mandatoryQuestions"
-                      />
+                    {verificationData.data.selectedFields.salary ? (
+                      <>
+                        {totalSteps === 8 ? (
+                          <>
+                            {activeStep === 5 ? (
+                              <VerificationQuestions
+                                question={
+                                  <>Was the candidate's salary {verificationData.data.selectedFields.salary} LPA ?</>
+                                }
+                                _id="salary"
+                                parentKey="selectedFields"
+                              />
+                            ) : (
+                              <></>
+                            )}
+                            {activeStep === 6 ? <AttitudeVerification /> : <></>}
+                            {activeStep === 7 ? <Review /> : <></>}
+                          </>
+                        ) : totalSteps === 9 ? (
+                          <>
+                            {activeStep === 5 ? (
+                              <VerificationQuestions
+                                question={
+                                  <>Was the candidate's salary {verificationData.data.selectedFields.salary} LPA ?</>
+                                }
+                                _id="salary"
+                                parentKey="selectedFields"
+                              />
+                            ) : (
+                              <></>
+                            )}
+                            {activeStep === 6 ? <VerifySkills /> : <></>}
+                            {activeStep === 7 ? <AttitudeVerification /> : <></>}
+                            {activeStep === 8 ? <Review /> : <></>}
+                          </>
+                        ) : (
+                          <>
+                            {activeStep === 5 ? (
+                              <VerificationQuestions
+                                question={
+                                  <>Was the candidate's salary {verificationData.data.selectedFields.salary} LPA ?</>
+                                }
+                                _id="salary"
+                                parentKey="selectedFields"
+                              />
+                            ) : (
+                              <></>
+                            )}
+                            {activeStep === 6 ? <VerifyDocuments /> : <></>}
+                            {activeStep === 7 ? <VerifySkills /> : <></>}
+                            {activeStep === 8 ? <AttitudeVerification /> : <></>}
+                            {activeStep === 9 ? <Review /> : <></>}
+                          </>
+                        )}
+                      </>
                     ) : (
-                      <></>
+                      <>
+                        {totalSteps === 7 ? (
+                          <>
+                            {activeStep === 5 ? <AttitudeVerification /> : <></>}
+                            {activeStep === 6 ? <Review /> : <></>}
+                          </>
+                        ) : totalSteps === 8 ? (
+                          <>
+                            {activeStep === 5 ? <VerifySkills /> : <></>}
+                            {activeStep === 6 ? <AttitudeVerification /> : <></>}
+                            {activeStep === 7 ? <Review /> : <></>}
+                          </>
+                        ) : (
+                          <>
+                            {activeStep === 5 ? <VerifyDocuments /> : <></>}
+                            {activeStep === 6 ? <VerifySkills /> : <></>}
+                            {activeStep === 7 ? <AttitudeVerification /> : <></>}
+                            {activeStep === 8 ? <Review /> : <></>}
+                          </>
+                        )}
+                      </>
                     )}
-                    {activeStep === 8 ? <AttitudeVerification /> : <></>}
-                    {activeStep === 9 ? <Review /> : <></>}
                   </>
                 )}
               </section>

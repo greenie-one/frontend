@@ -29,11 +29,11 @@ export const ResidentialInfoSection = () => {
     <section className="residential-info container">
       <Box className="header">
         <Box>
-          <Text className="heading">{`Residential Information (${residentialInfoData.length})`}</Text>
+          <Text className="heading">{`Residential Information (${residentialInfoData?.length})`}</Text>
           <Text className="subheading">All your permanenent and temporary addresses</Text>
         </Box>
 
-        {residentialInfoData.length > 0 && (
+        {residentialInfoData?.length > 0 && (
           <>
             <Box className="header-links">
               <Text className="link" onClick={handleToggleResidentialDetails}>
@@ -50,7 +50,7 @@ export const ResidentialInfoSection = () => {
         )}
       </Box>
 
-      {residentialInfoData.length === 0 ? (
+      {residentialInfoData?.length === 0 ? (
         <Box className="no-data-wrapper">
           <img className="no-data" src={noData} alt="No data" />
           <Button leftIcon={<AiOutlinePlus />} onClick={handleAddAddressScreen} className="add-records">
@@ -60,9 +60,9 @@ export const ResidentialInfoSection = () => {
       ) : (
         <Box className="section-cards-wrapper ">
           {residentialInfoData
-            .reverse()
-            .slice(0, 3)
-            .map((info, index) => {
+            ?.reverse()
+            ?.slice(0, 3)
+            ?.map((info, index) => {
               return (
                 <Box key={index} onClick={() => handleDetailsPage(info.id)}>
                   <ResidentialInfoCard {...info} />
@@ -71,7 +71,7 @@ export const ResidentialInfoSection = () => {
             })}
         </Box>
       )}
-      {residentialInfoData.length > 0 && (
+      {residentialInfoData?.length > 0 && (
         <Button className="see-all-btn" onClick={handleToggleResidentialDetails}>
           See All
         </Button>

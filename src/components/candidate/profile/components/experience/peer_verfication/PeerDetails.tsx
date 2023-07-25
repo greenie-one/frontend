@@ -71,7 +71,7 @@ export const PeerDetails: React.FC<ConfirmPeerType> = ({
         <Box className="skills-list">
           <Text className="document-action-heading">Attributes</Text>
           <Box className="add-skills-wrapper">
-            {createPeerResponse[indexNumber].optionalVerificationFields.map((attr, index: number) => {
+            {createPeerResponse[indexNumber].selectedFields.map((attr, index: number) => {
               return (
                 <Text key={index} className="add-skill-name">
                   {optionalAttrDict[attr]}

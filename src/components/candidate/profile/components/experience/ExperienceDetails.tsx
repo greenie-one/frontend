@@ -123,6 +123,8 @@ export const ExperienceDetails: React.FC = () => {
     navigate(`/candidate/profile/experience/${id}/verify`);
   };
 
+  const filteredSkillData = skillData.filter((skill) => skill.workExperience === id);
+
   return (
     <>
       {openModal === 'Verify Experience' && (
@@ -153,22 +155,24 @@ export const ExperienceDetails: React.FC = () => {
         </Modal>
       )}
       {openModal === 'Show Skills' && (
-        <Modal size={'auto'} fullScreen={isMobile} opened={opened} onClose={close} centered radius={'lg'}>
+        <Modal size={'60%'} title="Skills" fullScreen={isMobile} opened={opened} onClose={close} centered radius={'lg'}>
           <Box className="skills-modal">
-            <Title className="skill-modal-title">Skills</Title>
             <Box className="add-skills-wrapper">
-              {skillData
-                .filter((skill) => skill.workExperience === id)
-                .map(({ skillName, expertise }, index) => {
-                  return (
-                    <Box key={index} className="add-skill-box">
-                      <Text className="add-skill-name">{skillName}</Text>
-                      <Text className="add-skill-rate">{skillExpertiseDict[expertise]}</Text>
-                    </Box>
-                  );
-                })}
+              {filteredSkillData.length === 0 ? (
+                <Text>No skills added</Text>
+              ) : (
+                <Box className="skill-wrapper">
+                  {filteredSkillData.map(({ skillName, expertise }, index) => {
+                    return (
+                      <Box key={index} className="add-skill-box">
+                        <Text className="add-skill-name">{skillName}</Text>
+                        <Text className="add-skill-rate">{skillExpertiseDict[expertise]}</Text>
+                      </Box>
+                    );
+                  })}
+                </Box>
+              )}
             </Box>
-            <Button className="green-btn">Continue</Button>
           </Box>
         </Modal>
       )}
@@ -258,8 +262,9 @@ export const ExperienceDetails: React.FC = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                       className="details-link"
+                      title={filteredExperience?.linkedInUrl}
                     >
-                      {filteredExperience?.linkedInUrl}
+                      {filteredExperience?.linkedInUrl ? filteredExperience?.linkedInUrl : '-'}
                     </a>
                   ) : (
                     '-'
@@ -272,17 +277,23 @@ export const ExperienceDetails: React.FC = () => {
               <Box className="basic-info-box-wrapper">
                 <Box className="comapny-type-box">
                   <Text className="experience-details-box-heading">Company ID</Text>
-                  <Text className="experience-details-box-text">{filteredExperience?.companyId}</Text>
+                  <Text className="experience-details-box-text">
+                    {filteredExperience?.companyId ? filteredExperience?.companyId : '-'}
+                  </Text>
                 </Box>
                 <Box className="comapny-type-box">
                   <Text className="experience-details-box-heading">Work Email</Text>
-                  <Text className="experience-details-box-text">{filteredExperience?.email}</Text>
+                  <Text title={filteredExperience?.email} className="experience-details-box-text">
+                    {filteredExperience?.email}
+                  </Text>
                 </Box>
                 <Box className="comapny-type-box">
                   <Text className="experience-details-box-heading">Tenure</Text>
                   <Text className="experience-details-box-text">
-                    {filteredExperience?.dateOfJoining?.toString().substring(3, 15)}-
-                    {filteredExperience?.dateOfLeaving?.toString().substring(3, 15)}
+                    {filteredExperience?.dateOfJoining?.toString().substring(3, 15)} -{' '}
+                    {filteredExperience?.dateOfLeaving
+                      ? filteredExperience?.dateOfLeaving?.toString().substring(3, 15)
+                      : 'Present'}
                   </Text>
                 </Box>
                 <Box className="comapny-type-box">
@@ -314,7 +325,9 @@ export const ExperienceDetails: React.FC = () => {
                             <Box className="request-box-icon">
                               <MdVerified color="#17a672" />
                             </Box>
-                            <Text className="request-status-text verified-status">Verified</Text>
+                            <Text style={{ color: '#17a672' }} className="request-status-text verified-status">
+                              Verified
+                            </Text>
                           </Box>
                         ) : (
                           <Box className="request-status">

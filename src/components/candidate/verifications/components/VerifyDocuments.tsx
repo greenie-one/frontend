@@ -27,6 +27,12 @@ export const VerifyDocuments = () => {
     if (verificationResponse.documents) {
       setVerificationResponse((current) => {
         const documentList = current.documents;
+
+        const findDoc = documentList.find((_doc) => _doc.id === _id);
+        if (!findDoc) {
+          return { ...current, documents: [...current.documents, responseObj] };
+        }
+
         const newDocList = documentList.map((_doc) => {
           if (_doc.id === _id) {
             return responseObj;

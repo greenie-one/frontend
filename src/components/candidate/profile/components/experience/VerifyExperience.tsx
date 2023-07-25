@@ -8,11 +8,7 @@ import noData from '../../assets/noData.png';
 import { useParams, useNavigate } from 'react-router-dom';
 import { BsArrowLeft } from 'react-icons/bs';
 import { AiOutlineRight } from 'react-icons/ai';
-import {
-  showErrorNotification,
-  showLoadingNotification,
-  showSuccessNotification,
-} from '../../../../../utils/functions/showNotification';
+import { showErrorNotification } from '../../../../../utils/functions/showNotification';
 import { peerType } from '../../constants/SelectionOptions';
 import { CreatePeerResponseType, Peer } from '../../types/ProfileGeneral';
 import { PeerVerification } from './peer_verfication/PeerVerification';
@@ -182,29 +178,6 @@ export const VerifyExperience: React.FC = () => {
     navigate('/candidate/profile/experience/allExperiences');
   };
 
-  const handleCreatePeerRequest = async () => {
-    showLoadingNotification({ title: 'Please Wait !', message: 'Wait while we send the request' });
-    for (const response of createPeerResponse) {
-      response.phone = '+91' + response.phone.slice(-10);
-      const res = await HttpClient.callApiAuth<any>(
-        {
-          url: peerVerificationAPIList.createPeer,
-          method: 'POST',
-          body: response,
-        },
-        authClient
-      );
-      if (res.ok) {
-        showSuccessNotification({ title: 'Success !', message: 'Request sent successfully' });
-      }
-
-      if (!res.ok) {
-        showErrorNotification(res.error.code);
-        throw new Error();
-      }
-    }
-  };
-
   const { id } = useParams();
 
   useEffect(() => {
@@ -225,7 +198,7 @@ export const VerifyExperience: React.FC = () => {
               <Text>Profile</Text>
               <AiOutlineRight className="arrow-right-icon" size={'16px'} />
             </Box>
-            <Text>{`Work Experience (${workExperienceData.length})`}</Text>
+            <Text>{`Work Experience (${workExperienceData?.length})`}</Text>
           </Box>
         </Box>
         {currentStep === 0 && (
@@ -234,7 +207,7 @@ export const VerifyExperience: React.FC = () => {
               <Box className="experience-details-text-box">
                 <Text className="designation">{experience?.designation}</Text>
                 <Text className="company-name">{experience?.companyName}</Text>
-                {experience?.isVerified ? (
+                {experience && experience.noOfVerifications > 0 ? (
                   <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
                     Verified
                   </Button>
@@ -301,7 +274,7 @@ export const VerifyExperience: React.FC = () => {
             <Box className="added-peer-box">
               {addedPeers.length > 0 ? (
                 <Box className="add-peers">
-                  {addedPeers.reverse().map(({ name, email, peerType }, index) => {
+                  {[...addedPeers].reverse().map(({ name, email, peerType }, index) => {
                     return (
                       <Box key={index} className="added-peers">
                         <Text className="peer-name">
@@ -399,7 +372,6 @@ export const VerifyExperience: React.FC = () => {
             experience={experience}
             experienceDocuments={experienceDocuments}
             createPeerResponse={createPeerResponse}
-            handleCreatePeerRequest={handleCreatePeerRequest}
             verificationStepDispatch={verificationStepDispatch}
           />
         )}

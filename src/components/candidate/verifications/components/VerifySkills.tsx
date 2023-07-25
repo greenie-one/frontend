@@ -27,7 +27,14 @@ export const VerifySkills = () => {
 
     if (verificationResponse.skills) {
       setVerificationResponse((current) => {
-        const skillsList = current.documents;
+        const skillsList = current.skills;
+
+        const findSkill = skillsList.find((_skill) => _skill.id === _id);
+
+        if (!findSkill) {
+          return { ...current, skills: [...current.skills, responseObj] };
+        }
+
         const newSkillsList = skillsList.map((_skill) => {
           if (_skill.id === _id) {
             return responseObj;
