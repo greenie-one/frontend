@@ -14,6 +14,18 @@ $dark: #191919;
 
 @import '_features';
 
+.address-verification-container {
+  .address-verification-bold-title {
+    margin-bottom: 1rem;
+  }
+  .input-section {
+    margin-bottom: 1rem;
+  }
+  .primaryBtn {
+    max-width: 200px;
+  }
+}
+
 .steps {
   color: $gray;
   font-size: 16px;
@@ -428,6 +440,7 @@ $dark: #191919;
   border: 1px solid $lighterGray;
   border-radius: 8px;
   width: 80%;
+  margin-bottom: 1rem;
 
   .verify-documents-header {
     display: grid;
@@ -560,6 +573,96 @@ $dark: #191919;
         width: 2.25rem;
         height: 2.25rem;
         font-size: 24px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .verify-documents-box {
+    border: 1px solid $lighterGray;
+    border-radius: 8px;
+    width: 80%;
+
+    .verify-documents-header {
+      grid-template-columns: 2fr 2fr;
+    }
+    .verify-documents-wrapper {
+      .verify-documets-row {
+        grid-template-columns: 2fr 2fr;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .verify-documents-box {
+    border: 1px solid $lighterGray;
+    border-radius: 8px;
+    width: 80%;
+
+    .verify-documents-header {
+      grid-template-columns: 100%;
+
+      .verify-header-text {
+        &:nth-child(2) {
+          display: none;
+        }
+      }
+    }
+    .verify-documents-wrapper {
+      .verify-documets-row {
+        grid-template-columns: 100%;
+      }
+
+      .verification-documents-actions {
+        justify-content: space-between;
+
+        padding: 1rem;
+        width: 80%;
+
+        .link {
+          font-size: 12px;
+        }
+
+        .open-file {
+          color: $dark;
+        }
+        .download {
+          color: $blue;
+          margin-left: 1rem;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 460px) {
+  .verification-skills-box {
+    .verification-skill-header {
+      grid-template-columns: 3fr 3fr 3fr;
+    }
+
+    .verification-skill-row {
+      .status-btns {
+        padding-inline: 1rem;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .profile-details-action-section {
+    width: 90%;
+
+    .profile-detail {
+      grid-template-columns: 100%;
+
+      .details {
+        margin-bottom: 1rem;
+      }
+      .profile-details-actions {
+        grid-template-columns: 0.5fr 0.5fr;
       }
     }
   }

@@ -437,6 +437,8 @@
     display: flex;
     margin-bottom: 30px;
     text-align: left;
+    display: flex;
+    align-items: center;
 
     .tearms-conditions {
       margin-left: 12px;
@@ -485,6 +487,32 @@
     background: #17a672;
     width: 300px;
   }
+
+  .note {
+    border: 1px solid $lightGray;
+    border-radius: 0.5rem;
+    display: flex;
+    padding: 0.5rem 1rem;
+    margin-top: 1rem;
+
+    .note-heading {
+      margin-left: 0.25rem;
+      margin-right: 0.5rem;
+      color: $dark;
+      font-weight: 500;
+      font-size: 12px;
+    }
+
+    .text {
+      color: $gray;
+      font-size: 12px;
+      text-align: left;
+    }
+  }
+}
+
+.verified-document-profile {
+  border-radius: 50%;
 }
 
 @import '_cardStyles';
@@ -611,6 +639,35 @@
 
     a {
       text-decoration: underline;
+    }
+  }
+
+  .completion-modal {
+    .disclaimer-heading {
+      font-size: 17px;
+    }
+
+    .disclaimer-subHeading {
+      font-size: 14px;
+    }
+
+    .continue-btn {
+      width: 200px;
+    }
+
+    .note {
+      .note-heading {
+        margin-left: 0.25rem;
+        margin-right: 0.5rem;
+        color: $dark;
+        font-weight: 500;
+        font-size: 12px;
+      }
+
+      .text {
+        color: $gray;
+        font-size: 12px;
+      }
     }
   }
 }

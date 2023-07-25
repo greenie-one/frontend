@@ -1,7 +1,7 @@
 import { Text, Box, Button } from '@mantine/core';
 import { BsArrowLeft } from 'react-icons/bs';
 import { AiOutlineRight } from 'react-icons/ai';
-import { MdVerified } from 'react-icons/md';
+import { MdEdit, MdVerified, MdDelete } from 'react-icons/md';
 import { CgSandClock } from 'react-icons/cg';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
 import { useNavigate } from 'react-router-dom';
@@ -59,6 +59,14 @@ export const AllSkills = () => {
                         Get Verified
                       </Button>
                     )}
+                    <Box className="skill-actions-btns">
+                      <button className="action-btns update-btn">
+                        <MdEdit />
+                      </button>
+                      <button className="action-btns delete-btn">
+                        <MdDelete />
+                      </button>
+                    </Box>
                   </Box>
                 </Box>
               );

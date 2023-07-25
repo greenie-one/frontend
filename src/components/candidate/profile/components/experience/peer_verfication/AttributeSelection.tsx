@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Text, Box, Checkbox, Divider } from '@mantine/core';
 import { SelectionHeading } from './SelectionHeading';
 import { PageActionBtns } from './PageActionBtns';
 import { ReviewActionType } from '../VerifyExperience';
 import { CreatePeerResponseType, Peer } from '../../../types/ProfileGeneral';
+import { useGlobalContext } from '../../../../../../context/GlobalContext';
 
 type AttributeSelectionProps = {
+  id: string;
   activePeer: number;
   addedPeers: Peer[];
   setActivePeer: React.Dispatch<React.SetStateAction<number>>;
@@ -16,16 +18,17 @@ type AttributeSelectionProps = {
 };
 
 const attributesList = [
-  { id: 'department', attrName: 'Department' },
+  { id: 'companyId', attrName: 'Company Id' },
   { id: 'dateOfJoining', attrName: 'Date of Joining' },
   { id: 'dateOfLeaving', attrName: 'Date of Leaving' },
-  { id: 'companyName', attrName: 'Company Name' },
+  { id: 'department', attrName: 'Department' },
+  { id: 'salary', attrName: 'Salary' },
   { id: 'workType', attrName: 'Work Type' },
   { id: 'workMode', attrName: 'Mode of Work' },
-  { id: 'salary', attrName: 'Salary' },
 ];
 
 export const AttributeSelection: React.FC<AttributeSelectionProps> = ({
+  id,
   activePeer,
   addedPeers,
   setActivePeer,
@@ -34,7 +37,18 @@ export const AttributeSelection: React.FC<AttributeSelectionProps> = ({
   setCreatePeerResponse,
   setSelectionPage,
 }): JSX.Element => {
-  const handleMark = (event: React.ChangeEvent<HTMLInputElement>, attr: string) => {
+  const { workExperienceData } = useGlobalContext();
+  const currentWorkExperience = workExperienceData.find((exp) => exp.id === id);
+
+  // let validAttributesList = Object.keys(currentWorkExperience).map(key => {
+  //   if (currentWorkExperience[key]) {
+
+  //   }
+  // })
+
+  const peerType = addedPeers[activePeer].peerType;
+
+  const updateAttrList = (checked: boolean, attr: string) => {
     const updatedList = [];
 
     for (let i = 0; i < createPeerResponse.length; i++) {
@@ -45,19 +59,26 @@ export const AttributeSelection: React.FC<AttributeSelectionProps> = ({
         continue;
       }
 
-      let attrList = peer.optionalVerificationFields;
-      if (event.target.checked) {
+      let attrList = peer.selectedFields;
+      if (checked) {
         attrList.push(attr);
       } else {
         attrList = attrList.filter((_attr) => _attr !== attr);
       }
 
-      peer.optionalVerificationFields = attrList;
+      peer.selectedFields = attrList;
       updatedList.push(peer);
     }
 
     setCreatePeerResponse(updatedList);
   };
+
+  useEffect(() => {
+    if (peerType === 'HR') {
+      updateAttrList(true, 'salary');
+    }
+    updateAttrList(true, 'companyName');
+  }, [activePeer]);
 
   return (
     <>
@@ -69,19 +90,34 @@ export const AttributeSelection: React.FC<AttributeSelectionProps> = ({
             <Text>Name</Text>
           </Box>
           <Box className="selected-attributes">
+            <Box>
+              <Box className="selected-attribute">
+                <Checkbox checked indeterminate readOnly />
+                <Text>Company Name</Text>
+              </Box>
+              <Divider color="#ebebeb" />
+            </Box>
             {attributesList.map(({ id, attrName }, idx) => {
-              return (
-                <Box key={idx}>
-                  <Box className="selected-attribute">
-                    <Checkbox
-                      checked={createPeerResponse[activePeer].optionalVerificationFields.includes(id)}
-                      onChange={(event) => handleMark(event, id)}
-                    />
-                    <Text>{attrName}</Text>
+              if (currentWorkExperience[id]) {
+                return (
+                  <Box key={idx}>
+                    <Box className="selected-attribute">
+                      {peerType === 'HR' && id === 'salary' ? (
+                        <Checkbox checked indeterminate readOnly />
+                      ) : (
+                        <Checkbox
+                          checked={createPeerResponse[activePeer].selectedFields.includes(id)}
+                          onChange={(event) => updateAttrList(event.target.checked, id)}
+                        />
+                      )}
+                      <Text>{attrName}</Text>
+                    </Box>
+                    {attributesList.length - 1 !== idx && <Divider color="#ebebeb" />}
                   </Box>
-                  {attributesList.length - 1 !== idx && <Divider color="#ebebeb" />}
-                </Box>
-              );
+                );
+              } else {
+                return <React.Fragment key={idx}></React.Fragment>;
+              }
             })}
           </Box>
 

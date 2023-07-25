@@ -18,20 +18,21 @@ type UserProfileType = {
 };
 
 type WorkExperience = {
-  id: string;
-  department: string;
-  image: string | null;
-  designation: string;
+  companyId?: string;
   companyName: string;
-  email: string;
-  companyId: string;
+  companyType: string;
   dateOfJoining: string;
   dateOfLeaving: string;
+  department: string;
+  designation: string;
+  email: string;
+  id: string;
+  image?: string | null;
+  linkedInUrl?: string;
+  noOfVerifications: 0;
+  salary: string;
   workMode: string;
   workType: string;
-  isVerified: boolean;
-  verifiedBy: [] | null;
-  companyType: string;
 };
 
 type workExperienceResponse = {

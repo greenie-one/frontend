@@ -1,15 +1,14 @@
 import React, { useReducer, useState, useEffect } from 'react';
-import { Title, Text, Box, Button, TextInput, Select, Divider, Modal } from '@mantine/core';
-import { useMediaQuery, useDisclosure } from '@mantine/hooks';
+import { Title, Text, Box, Button, TextInput, Select, Divider } from '@mantine/core';
 import { useForm, isNotEmpty, isEmail, hasLength } from '@mantine/form';
 import { MdVerified, MdOutlineDelete } from 'react-icons/md';
-import { AiOutlinePlus, AiFillInfoCircle } from 'react-icons/ai';
+import { AiOutlinePlus } from 'react-icons/ai';
 import { CgSandClock, CgProfile } from 'react-icons/cg';
 import noData from '../../assets/noData.png';
 import { useParams, useNavigate } from 'react-router-dom';
 import { BsArrowLeft } from 'react-icons/bs';
 import { AiOutlineRight } from 'react-icons/ai';
-import { showErrorNotification, showLoadingNotification } from '../../../../../utils/functions/showNotification';
+import { showErrorNotification } from '../../../../../utils/functions/showNotification';
 import { peerType } from '../../constants/SelectionOptions';
 import { CreatePeerResponseType, Peer } from '../../types/ProfileGeneral';
 import { PeerVerification } from './peer_verfication/PeerVerification';
@@ -39,10 +38,6 @@ export const VerifyExperience: React.FC = () => {
   const [activePeer, setActivePeer] = useState<number>(0);
   const { authClient, scrollToTop, workExperienceData } = useGlobalContext();
   const authToken = authClient.getAccessToken();
-
-  const isMobile = useMediaQuery('(max-width: 768px)');
-  const isTablet = useMediaQuery('(max-width: 1024px)');
-  const [opened, { open, close }] = useDisclosure(false);
   const [experienceDocuments, setExperienceDocuments] = useState<ExperienceDocuments[]>([]);
 
   const VerifiationStepReducer = (state: ReviewStepState, action: ReviewStepAction): ReviewStepState => {
@@ -143,12 +138,6 @@ export const VerifyExperience: React.FC = () => {
     });
   };
 
-  const handleSeeRequest = () => {
-    close();
-    scrollToTop();
-    navigate('/candidate/profile/myVerification');
-  };
-
   const getExperienceDocument = async () => {
     const res: Result<ExperienceDocuments[]> = await HttpClient.callApiAuth(
       {
@@ -189,26 +178,6 @@ export const VerifyExperience: React.FC = () => {
     navigate('/candidate/profile/experience/allExperiences');
   };
 
-  const handleCreatePeerRequest = async () => {
-    showLoadingNotification({ title: 'Please Wait !', message: 'Wait while we send the request' });
-    for (const response of createPeerResponse) {
-      response.phone = '+91' + response.phone.slice(-10);
-      const res = await HttpClient.callApiAuth<any>(
-        {
-          url: peerVerificationAPIList.createPeer,
-          method: 'POST',
-          body: response,
-        },
-        authClient
-      );
-
-      if (!res.ok) {
-        showErrorNotification(res.error.code);
-        throw new Error();
-      }
-    }
-  };
-
   const { id } = useParams();
 
   useEffect(() => {
@@ -220,233 +189,193 @@ export const VerifyExperience: React.FC = () => {
   }, []);
 
   return (
-    <>
-      <Modal
-        radius={'lg'}
-        size={isTablet ? '80%' : '60%'}
-        fullScreen={isMobile}
-        opened={opened}
-        onClose={close}
-        centered
-      >
-        <Box className="verify-experience-modal">
-          <Title className="heading">Your request has been sent</Title>
-          <Text className="subHeading">Verifying your work experience</Text>
-          <Box className="modal-experience-details">
-            {/* <Box className="company-logo" style={backgroundStyle}>
-              <MdVerified className="verified-icon" color="#17a672" size="22px" />
-            </Box> */}
-
-            <Box className="experience-details-text-box">
-              <Text className="designation">{experience?.designation}</Text>
-              <Text className="company-name">{experience?.companyName}</Text>
-              {experience?.isVerified ? (
-                <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
-                  Verified
-                </Button>
-              ) : (
-                <Button leftIcon={<CgSandClock size={'16px'} />} className="pending">
-                  Pending
-                </Button>
-              )}
+    <Layout>
+      <Box className="container" style={{ marginTop: '7rem' }}>
+        <Box className="top-header">
+          <Box className="see-all-header">
+            <Box className="go-back-btn" onClick={handleAllExperiencesPage}>
+              <BsArrowLeft className="arrow-left-icon" size={'16px'} />
+              <Text>Profile</Text>
+              <AiOutlineRight className="arrow-right-icon" size={'16px'} />
             </Box>
-          </Box>
-          <Button className="green-btn" onClick={handleSeeRequest}>
-            See request
-          </Button>
-          <Box className="note">
-            <AiFillInfoCircle className="info-icon" size={'18px'} />
-            <Text className="note-heading">Note</Text>
-            <Text className="text">Candidates cannot see this verification process or its results.</Text>
+            <Text>{`Work Experience (${workExperienceData?.length})`}</Text>
           </Box>
         </Box>
-      </Modal>
-      <Layout>
-        <Box className="container" style={{ marginTop: '7rem' }}>
-          <Box className="top-header">
-            <Box className="see-all-header">
-              <Box className="go-back-btn" onClick={handleAllExperiencesPage}>
-                <BsArrowLeft className="arrow-left-icon" size={'16px'} />
-                <Text>Profile</Text>
-                <AiOutlineRight className="arrow-right-icon" size={'16px'} />
-              </Box>
-              <Text>{`Work Experience (${workExperienceData.length})`}</Text>
-            </Box>
-          </Box>
-          {currentStep === 0 && (
-            <Box className="add-peer-box">
-              <Box className="experience-details">
-                <Box className="experience-details-text-box">
-                  <Text className="designation">{experience?.designation}</Text>
-                  <Text className="company-name">{experience?.companyName}</Text>
-                  {experience?.isVerified ? (
-                    <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
-                      Verified
-                    </Button>
-                  ) : (
-                    <Button leftIcon={<CgSandClock size={'16px'} />} className="pending">
-                      Pending
-                    </Button>
-                  )}
-                </Box>
-              </Box>
-              <Title className="add-peer-title">Add Peers to verify</Title>
-              <Box className="add-peers-inputs">
-                <TextInput
-                  withAsterisk
-                  label="Name"
-                  className="inputClass"
-                  {...peerVerificationForm.getInputProps('name')}
-                />
-                <Select
-                  clearable
-                  searchable
-                  nothingFound="No options"
-                  withAsterisk
-                  label="Peer type"
-                  data={peerType}
-                  styles={() => ({
-                    item: {
-                      '&[data-selected]': {
-                        '&, &:hover': {
-                          backgroundColor: '#17a672',
-                          color: 'white',
-                        },
-                      },
-                    },
-                  })}
-                  className="inputClass"
-                  {...peerVerificationForm.getInputProps('peerType')}
-                />
-                <TextInput
-                  withAsterisk
-                  label="Official email id"
-                  className="inputClass"
-                  {...peerVerificationForm.getInputProps('email')}
-                />
-                <TextInput
-                  withAsterisk
-                  label="Contact number"
-                  className="inputClass"
-                  maxLength={10}
-                  minLength={10}
-                  {...peerVerificationForm.getInputProps('contactNumber')}
-                />
-              </Box>
-              <Button className="add-peer-btn" leftIcon={<AiOutlinePlus size={'18px'} />} onClick={handleCreatePeer}>
-                Add Peer
-              </Button>
-              <Box className="add-peer-header">
-                <Text>Peer</Text>
-                <Text>Email</Text>
-                <Text>Peer Type</Text>
-                <Text>Action</Text>
-              </Box>
-              <Box className="added-peer-box">
-                {addedPeers.length > 0 ? (
-                  <Box className="add-peers">
-                    {addedPeers.reverse().map(({ name, email, peerType }, index) => {
-                      return (
-                        <Box key={index} className="added-peers">
-                          <Text className="peer-name">
-                            <CgProfile className="profile-icon" />
-                            <span>{name}</span>
-                          </Text>
-                          <Text className="peer-email">{email}</Text>
-                          {peerType === 'LINE_MANAGER' && <Text className="peer-type">Line Manager</Text>}
-                          {peerType === 'REPORTING_MANAGER' && <Text className="peer-type">Reporting Manager</Text>}
-                          {peerType === 'HR' && <Text className="peer-type">HR</Text>}
-                          {peerType === 'COLLEAGUE' && <Text className="peer-type">Colleague</Text>}
-                          {peerType === 'CXO' && <Text className="peer-type">CXO</Text>}
-
-                          <Text className="peer-remove" onClick={() => handleRemovePeer(index)}>
-                            <MdOutlineDelete size={'20px'} />
-                            <span>Remove</span>
-                          </Text>
-                        </Box>
-                      );
-                    })}
-                  </Box>
+        {currentStep === 0 && (
+          <Box className="add-peer-box">
+            <Box className="experience-details">
+              <Box className="experience-details-text-box">
+                <Text className="designation">{experience?.designation}</Text>
+                <Text className="company-name">{experience?.companyName}</Text>
+                {experience && experience.noOfVerifications > 0 ? (
+                  <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
+                    Verified
+                  </Button>
                 ) : (
-                  <Box className="peer-no-data-wrapper">
-                    <img src={noData} alt="No data" />
-                  </Box>
+                  <Button leftIcon={<CgSandClock size={'16px'} />} className="pending">
+                    Pending
+                  </Button>
                 )}
               </Box>
-
-              <Button
-                disabled={addedPeers.length + sentRequests.length < 2}
-                className="primaryBtn"
-                onClick={handleProceed}
-              >
-                Proceed
-              </Button>
             </Box>
-          )}
-          {currentStep === 1 && (
-            <Box className="see-peers">
-              <Box className="see-peers-box">
-                <Box className="see-peers-sidebar">
-                  <Text className="select-peer-heading">Select Peer</Text>
-                  {addedPeers.map(({ name, peerType }, index) => {
+            <Title className="add-peer-title">Add Peers to verify</Title>
+            <Box className="add-peers-inputs">
+              <TextInput
+                withAsterisk
+                label="Name"
+                className="inputClass"
+                {...peerVerificationForm.getInputProps('name')}
+              />
+              <Select
+                clearable
+                searchable
+                nothingFound="No options"
+                withAsterisk
+                label="Peer type"
+                data={peerType}
+                styles={() => ({
+                  item: {
+                    '&[data-selected]': {
+                      '&, &:hover': {
+                        backgroundColor: '#17a672',
+                        color: 'white',
+                      },
+                    },
+                  },
+                })}
+                className="inputClass"
+                {...peerVerificationForm.getInputProps('peerType')}
+              />
+              <TextInput
+                withAsterisk
+                label="Official email id"
+                className="inputClass"
+                {...peerVerificationForm.getInputProps('email')}
+              />
+              <TextInput
+                withAsterisk
+                label="Contact number"
+                className="inputClass"
+                maxLength={10}
+                minLength={10}
+                {...peerVerificationForm.getInputProps('contactNumber')}
+              />
+            </Box>
+            <Button className="add-peer-btn" leftIcon={<AiOutlinePlus size={'18px'} />} onClick={handleCreatePeer}>
+              Add Peer
+            </Button>
+            <Box className="add-peer-header">
+              <Text>Peer</Text>
+              <Text>Email</Text>
+              <Text>Status</Text>
+              <Text>Peer Type</Text>
+              <Text>Action</Text>
+            </Box>
+            <Box className="added-peer-box">
+              {addedPeers.length > 0 ? (
+                <Box className="add-peers">
+                  {[...addedPeers].reverse().map(({ name, email, peerType }, index) => {
                     return (
-                      <Box key={index}>
-                        <Box
-                          onClick={() => setActivePeer(index)}
-                          className={activePeer === index ? 'peer active' : 'peer'}
-                        >
-                          <Box className="border-left"></Box>
-                          <Text className="peer-name">{name}</Text>
-                          {peerType === 'LINE_MANAGER' && <Text className="peer-type">Line Manager</Text>}
-                          {peerType === 'REPORTING_MANAGER' && <Text className="peer-type">Reporting Manager</Text>}
-                          {peerType === 'HR' && <Text className="peer-type">HR</Text>}
-                          {peerType === 'COLLEAGUE' && <Text className="peer-type">Colleague</Text>}
-                          {peerType === 'CXO' && <Text className="peer-type">CXO</Text>}
-                        </Box>
-                        {addedPeers.length - 1 !== index && <Divider color="#ebebeb" />}
+                      <Box key={index} className="added-peers">
+                        <Text className="peer-name">
+                          <CgProfile className="profile-icon" />
+                          <span>{name}</span>
+                        </Text>
+
+                        <Text className="peer-email">{email}</Text>
+                        <Text className="peer-response">Waiting</Text>
+                        {peerType === 'LINE_MANAGER' && <Text className="peer-type">Line Manager</Text>}
+                        {peerType === 'REPORTING_MANAGER' && <Text className="peer-type">Reporting Manager</Text>}
+                        {peerType === 'HR' && <Text className="peer-type">HR</Text>}
+                        {peerType === 'COLLEAGUE' && <Text className="peer-type">Colleague</Text>}
+                        {peerType === 'CXO' && <Text className="peer-type">CXO</Text>}
+
+                        <Text className="peer-remove" onClick={() => handleRemovePeer(index)}>
+                          <MdOutlineDelete size={'20px'} />
+                          <span>Remove</span>
+                        </Text>
                       </Box>
                     );
                   })}
                 </Box>
-
-                <PeerVerification
-                  experienceId={String(experience?.id)}
-                  activePeer={activePeer}
-                  addedPeers={addedPeers}
-                  setActivePeer={setActivePeer}
-                  verificationStepDispatch={verificationStepDispatch}
-                  createPeerResponse={createPeerResponse}
-                  setCreatePeerResponse={setCreatePeerResponse}
-                />
-              </Box>
-              <Box className="see-peers-btn-wrapper">
-                <Button
-                  className="green-btn"
-                  onClick={() => verificationStepDispatch({ type: ReviewActionType.NEXT_STEP })}
-                >
-                  Confirm and send request
-                </Button>
-                <Button
-                  className="cancel-btn"
-                  onClick={() => verificationStepDispatch({ type: ReviewActionType.PREVIOUS_STEP })}
-                >
-                  Cancel
-                </Button>
-              </Box>
+              ) : (
+                <Box className="peer-no-data-wrapper">
+                  <img src={noData} alt="No data" />
+                </Box>
+              )}
             </Box>
-          )}
-          {currentStep === 2 && (
-            <ConfirmRequest
-              addedPeers={addedPeers}
-              experience={experience}
-              experienceDocuments={experienceDocuments}
-              createPeerResponse={createPeerResponse}
-              handleCreatePeerRequest={handleCreatePeerRequest}
-              verificationStepDispatch={verificationStepDispatch}
-            />
-          )}
-        </Box>
-      </Layout>
-    </>
+
+            <Button
+              disabled={addedPeers.length + sentRequests.length < 2}
+              className="primaryBtn"
+              onClick={handleProceed}
+            >
+              Proceed
+            </Button>
+          </Box>
+        )}
+        {currentStep === 1 && (
+          <Box className="see-peers">
+            <Box className="see-peers-box">
+              <Box className="see-peers-sidebar">
+                <Text className="select-peer-heading">Select Peer</Text>
+                {addedPeers.map(({ name, peerType }, index) => {
+                  return (
+                    <Box key={index}>
+                      <Box
+                        onClick={() => setActivePeer(index)}
+                        className={activePeer === index ? 'peer active' : 'peer'}
+                      >
+                        <Box className="border-left"></Box>
+                        <Text className="peer-name">{name}</Text>
+                        {peerType === 'LINE_MANAGER' && <Text className="peer-type">Line Manager</Text>}
+                        {peerType === 'REPORTING_MANAGER' && <Text className="peer-type">Reporting Manager</Text>}
+                        {peerType === 'HR' && <Text className="peer-type">HR</Text>}
+                        {peerType === 'COLLEAGUE' && <Text className="peer-type">Colleague</Text>}
+                        {peerType === 'CXO' && <Text className="peer-type">CXO</Text>}
+                      </Box>
+                      {addedPeers.length - 1 !== index && <Divider color="#ebebeb" />}
+                    </Box>
+                  );
+                })}
+              </Box>
+
+              <PeerVerification
+                experienceId={String(experience?.id)}
+                activePeer={activePeer}
+                addedPeers={addedPeers}
+                setActivePeer={setActivePeer}
+                verificationStepDispatch={verificationStepDispatch}
+                createPeerResponse={createPeerResponse}
+                setCreatePeerResponse={setCreatePeerResponse}
+              />
+            </Box>
+            <Box className="see-peers-btn-wrapper">
+              <Button
+                className="green-btn"
+                onClick={() => verificationStepDispatch({ type: ReviewActionType.NEXT_STEP })}
+              >
+                Confirm and send request
+              </Button>
+              <Button
+                className="cancel-btn"
+                onClick={() => verificationStepDispatch({ type: ReviewActionType.PREVIOUS_STEP })}
+              >
+                Cancel
+              </Button>
+            </Box>
+          </Box>
+        )}
+        {currentStep === 2 && (
+          <ConfirmRequest
+            addedPeers={addedPeers}
+            experience={experience}
+            experienceDocuments={experienceDocuments}
+            createPeerResponse={createPeerResponse}
+            verificationStepDispatch={verificationStepDispatch}
+          />
+        )}
+      </Box>
+    </Layout>
   );
 };

@@ -6,7 +6,7 @@ import { MdVerified, MdOutlineContentCopy } from 'react-icons/md';
 import { AiOutlineRight } from 'react-icons/ai';
 import AadharImg from '../../assets/Aadhar.png';
 import { aadharAPIList } from '../../../../../assets/api/ApiList';
-import checkImg from '../../assets/check.png';
+import checkImg from '../../assets/94109-confirmation 1.gif';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
 import { HttpClient, Result } from '../../../../../utils/generic/httpClient';
 import {
@@ -24,14 +24,14 @@ import privacyPolicy from '../../../../auth/assets/Privacy Policy-Greenie.pdf';
 
 export const VerifyAadharCard = () => {
   const navigate = useNavigate();
-  const [aadharIsVerified, setAadharIsVerified] = useState<boolean>(true);
+  const [aadharIsVerified, setAadharIsVerified] = useState<boolean>(false);
   const [opened, { open, close }] = useDisclosure(false);
   const [checked, setChecked] = useState<boolean>(false);
   const [secondsRemaining, setSecondsRemaining] = useState<number>(60);
   const { classes: otpInputClasses } = OtpInputStyles();
   const isMobile = useMediaQuery('(max-width: 768px)');
   const greeneId = 'GRN788209';
-  const { authClient, setForceRender, scrollToTop, verifyAadharForm, profileData } = useGlobalContext();
+  const { authClient, setForceRender, scrollToTop, verifyAadharForm, profileData, setUserLevel } = useGlobalContext();
   const [verificationData, setVerificationData] = useState<AadharVerificationResponse>({
     requestId: '',
     taskId: '',
@@ -60,6 +60,7 @@ export const VerifyAadharCard = () => {
       }));
       open();
       showSuccessNotification({ title: 'Success !', message: 'OTP Sent to your linked phone number' });
+      setUserLevel((prev) => prev + 1);
     } else {
       showErrorNotification(res.error.code);
     }
@@ -128,9 +129,9 @@ export const VerifyAadharCard = () => {
 
   const handleContinue = () => {
     scrollToTop();
-    navigate('/candidate/profile');
+    navigate('/candidate/profile/IDs/verify/aadhar/congratulations');
   };
-  console.log(aadharIsVerified);
+
   return (
     <Layout>
       <section className="container documents-container" style={{ marginTop: '7rem' }}>

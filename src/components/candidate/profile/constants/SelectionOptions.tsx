@@ -23,7 +23,7 @@ export const companyTypes = [
 export const skillRate = [
   { value: 'AMATEUR', label: 'Amature' },
   { value: 'BEGINNER', label: 'Begineer/Novice' },
-  { value: 'HIGHLY_COMPETENT', label: 'Highly Competant' },
+  { value: 'HIGHLY_COMPETENT', label: 'Highly Competent' },
   { value: 'EXPERT', label: 'Expert' },
   { value: 'SUPER_SPECIALIST', label: 'Super Specialist' },
   { value: 'MASTER', label: 'Master - Pro(Global Recognition)' },

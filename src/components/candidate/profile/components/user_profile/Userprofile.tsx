@@ -29,7 +29,8 @@ const skillSetOne = [
 ];
 
 export const Userprofile = () => {
-  const { authClient, setForceRender, forceRender, profileData, profileForm, updateProfile, IDs } = useGlobalContext();
+  const { authClient, setForceRender, forceRender, profileData, profileForm, updateProfile, IDs, userLevel } =
+    useGlobalContext();
   const authToken = authClient.getAccessToken();
   //-------------profile photo------------------------
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -70,7 +71,6 @@ export const Userprofile = () => {
 
   //----------------Bio section-----------------------------------
 
-  const userLevel = 0;
   const greeneId = profileData?.greenieId ?? '';
   const screenSize = useMediaQuery('(min-width: 768px)');
   const isMobile = useMediaQuery('(max-width: 768px)');

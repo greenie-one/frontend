@@ -75,7 +75,7 @@ export const Review: React.FC = () => {
 
     setVerificationResponse({
       ...verificationResponse,
-      mandatoryVerificationFields: { ...verificationResponse.mandatoryVerificationFields, ...responseData },
+      allQuestions: { ...verificationResponse.allQuestions, ...responseData },
     });
 
     open();

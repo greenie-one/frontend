@@ -44,7 +44,7 @@ export const SkillSelection: React.FC<{
   useEffect(() => {
     const filteredData = skillData.filter((skill) => skill.workExperience === workExperienceID);
     setFilteredSkills(filteredData);
-  }, []);
+  }, [workExperienceID]);
 
   return (
     <>

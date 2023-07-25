@@ -61,7 +61,7 @@ export const useProfileForms = () => {
       email: '',
       companyId: '',
       dateOfJoining: '',
-      dateOfLeaving: undefined,
+      dateOfLeaving: '',
       workType: '',
       workMode: '',
       department: '',

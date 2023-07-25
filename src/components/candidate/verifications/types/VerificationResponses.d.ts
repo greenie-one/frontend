@@ -37,12 +37,9 @@ type OtherQuestionsType = {
 type VerificationDataType = {
   name: string;
   profilePic: string;
-  peerPost: string;
-  designation: string;
-  companyName: string;
   skills: Array<{ id: string; skillName: string; expertise: string }>;
   documents: Array<{ id: string; type: string; name: string; privateUrl: string }>;
-  optionalVerificationFields: { [key: string]: string };
+  selectedFields: { [key: string]: string };
 };
 
 type GetVerificationDataResponse = {
@@ -54,20 +51,22 @@ type GetVerificationDataResponse = {
   phoneVerified: boolean;
   verificationBy: string;
   dateOfJoining: string;
-  dateOfLeaving: string;
+  dateOfLeaving?: string;
   data: VerificationDataType;
 };
 
 type PostVerificationDataType = {
-  optionalVerificationFields: DynamicObjectType;
+  selectedFields: DynamicObjectType;
+  allQuestions: {
+    attitudeRating: string;
+    peerPost: StatusType;
+    review: string;
+    designation: StatusType;
+  };
+  otherQuestions?: {
+    exitProcedure: StatusType;
+    eligibleForRehire: StatusType;
+  };
   skills: Array<DynamicObjectWithIdType>;
   documents: Array<DynamicObjectWithIdType>;
-  mandatoryVerificationFields: {
-    review: string;
-  };
-  mandatoryQuestions: {
-    eligibleForRehire: StatusType;
-    attitudeRating: string;
-  };
-  otherQuestions: Pick<OtherQuestionsType, 'exitProcedure'> | Omit<OtherQuestionsType, 'exitProcedure'>;
 };

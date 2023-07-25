@@ -8,13 +8,20 @@ import { ReviewActionType } from '../VerifyExperience';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { useNavigate } from 'react-router-dom';
 import { useGlobalContext } from '../../../../../../context/GlobalContext';
+import { AiFillInfoCircle } from 'react-icons/ai';
+import {
+  showErrorNotification,
+  showLoadingNotification,
+  showSuccessNotification,
+} from '../../../../../../utils/functions/showNotification';
+import { HttpClient } from '../../../../../../utils/generic/httpClient';
+import { peerVerificationAPIList } from '../../../../../../assets/api/ApiList';
 
 type ConfrimRequestPropsType = {
   addedPeers: Peer[];
   experience: WorkExperience | undefined;
   experienceDocuments: ExperienceDocuments[];
   createPeerResponse: CreatePeerResponseType[];
-  handleCreatePeerRequest: () => void;
   verificationStepDispatch: React.Dispatch<ReviewStepAction>;
 };
 
@@ -23,13 +30,35 @@ export const ConfirmRequest: React.FC<ConfrimRequestPropsType> = ({
   experience,
   experienceDocuments,
   createPeerResponse,
-  handleCreatePeerRequest,
   verificationStepDispatch,
 }) => {
   const navigate = useNavigate();
-  const { scrollToTop } = useGlobalContext();
+  const { scrollToTop, authClient } = useGlobalContext();
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
+
+  console.log(createPeerResponse);
+
+  const handleCreatePeerRequest = async () => {
+    showLoadingNotification({ title: 'Please Wait !', message: 'Wait while we send the request' });
+    for (const response of createPeerResponse) {
+      response.phone = '+91' + response.phone.slice(-10);
+      const res = await HttpClient.callApiAuth<any>(
+        {
+          url: peerVerificationAPIList.createPeer,
+          method: 'POST',
+          body: response,
+        },
+        authClient
+      );
+      if (res.ok) {
+        showSuccessNotification({ title: 'Success !', message: 'Request sent successfully' });
+        open();
+      } else {
+        showErrorNotification(res.error.code);
+      }
+    }
+  };
 
   const handleFinish = () => {
     close();
@@ -59,8 +88,13 @@ export const ConfirmRequest: React.FC<ConfrimRequestPropsType> = ({
             </Button>
           </Box>
           <Button radius={'xl'} className="continue-btn" onClick={handleFinish}>
-            Continue
+            See Request
           </Button>
+          <Box className="note">
+            <AiFillInfoCircle className="info-icon" color="#1991ff" size={'18px'} />
+            <Text className="note-heading">Note</Text>
+            <Text className="text">Candidates cannot see this verification process or its results.</Text>
+          </Box>
         </Box>
       </Modal>
       <Box className="confirm-request-box">
@@ -76,7 +110,7 @@ export const ConfirmRequest: React.FC<ConfrimRequestPropsType> = ({
             <Box className="experience-details-text-box">
               <Text className="designation">{experience?.designation}</Text>
               <Text className="company-name">{experience?.companyName}</Text>
-              {experience?.isVerified ? (
+              {experience && experience?.noOfVerifications > 0 ? (
                 <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
                   Verified
                 </Button>
@@ -102,17 +136,7 @@ export const ConfirmRequest: React.FC<ConfrimRequestPropsType> = ({
         })}
       </Box>
       <Box className="see-peers-btn-wrapper">
-        <Button
-          className="green-btn"
-          onClick={() => {
-            try {
-              handleCreatePeerRequest();
-              open();
-            } catch (err) {
-              console.error('Something went wrong!');
-            }
-          }}
-        >
+        <Button className="green-btn" onClick={handleCreatePeerRequest}>
           Confirm and send
         </Button>
         <Button

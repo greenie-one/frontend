@@ -94,6 +94,10 @@
     color: $gray;
     margin-bottom: 5px;
   }
+
+  .add-records {
+    margin-inline: 0;
+  }
 }
 
 .singleData-wrapper {
@@ -127,12 +131,17 @@
     }
   }
 }
-@media screen and (max-width: 578px) {
+@media screen and (max-width: 668px) {
   .singleData-wrapper {
     grid-template-columns: 100%;
 
     .single-data-box {
       flex-direction: column;
+      margin-top: 1rem;
+      .verify-id-text {
+        text-align: center;
+        margin-top: 1rem;
+      }
     }
   }
 }

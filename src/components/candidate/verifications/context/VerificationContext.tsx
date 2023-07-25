@@ -44,6 +44,20 @@ export const VerificationContextProvider: React.FC<{ children: React.ReactNode }
 
     if (res.ok) {
       setUnverifiedLink('NONE');
+      const responseData = res.value.data;
+
+      if (responseData.documents.length > 0) {
+        setTotalSteps((current) => current + 1);
+      }
+
+      if (responseData.skills.length > 0) {
+        setTotalSteps((current) => current + 1);
+      }
+
+      if (responseData.selectedFields.salary) {
+        setTotalSteps((current) => current + 1);
+      }
+
       setVerificationData(res.value);
     } else {
       setPersonBeingVerified((res.error as APIErrorPeer).name);
@@ -67,10 +81,20 @@ export const VerificationContextProvider: React.FC<{ children: React.ReactNode }
   };
 
   const postVerificationData = async () => {
+    let requestBody: PostVerificationDataType = { ...verificationResponse };
+
+    if (!verificationResponse.documents) {
+      requestBody = { ...requestBody, documents: [] };
+    }
+
+    if (!verificationResponse.skills) {
+      requestBody = { ...requestBody, skills: [] };
+    }
+
     const res = await HttpClient.callApi({
       url: `${peerVerificationAPIList.getVerificationData}/${params.uuid}`,
       method: 'PATCH',
-      body: verificationResponse,
+      body: requestBody,
     });
 
     if (res.ok) {
@@ -81,9 +105,10 @@ export const VerificationContextProvider: React.FC<{ children: React.ReactNode }
   };
 
   useEffect(() => {
+    if (verificationBy === 'HR') {
+      setTotalSteps((current) => current + 2);
+    }
     getVerificationData();
-    if (verificationBy === 'HR') setTotalSteps(9);
-    else setTotalSteps(10);
   }, [params.peer, params.uuid]);
 
   const storeValues = {

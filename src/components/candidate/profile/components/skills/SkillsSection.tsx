@@ -20,7 +20,7 @@ export const SkillsSection = () => {
     navigate('/candidate/profile/skills/addSkills');
   };
 
-  const uniqueSkills = [...new Set(skillData.map((skill) => skill.skillName))];
+  const uniqueSkills = [...new Set(skillData?.map((skill) => skill.skillName))];
 
   return (
     <section className="skills-section container">
@@ -29,7 +29,7 @@ export const SkillsSection = () => {
           <Text className="heading">{`Skills (${uniqueSkills.length})`}</Text>
           <Text className="subheading">All your skills, certifications and expertise</Text>
         </Box>
-        {uniqueSkills.length > 0 && (
+        {uniqueSkills?.length > 0 && (
           <>
             <Box className="header-links">
               <Text className="link" onClick={handleAllSkillsScreen}>
@@ -46,7 +46,7 @@ export const SkillsSection = () => {
         )}
       </Box>
 
-      {uniqueSkills.length === 0 ? (
+      {uniqueSkills?.length === 0 ? (
         <Box className="no-data-wrapper">
           <img className="no-data" src={noData} alt="No data" />
           <Button leftIcon={<AiOutlinePlus />} onClick={handleAddSkillPage} className="add-records">

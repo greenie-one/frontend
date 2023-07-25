@@ -27,6 +27,12 @@ export const VerifyDocuments = () => {
     if (verificationResponse.documents) {
       setVerificationResponse((current) => {
         const documentList = current.documents;
+
+        const findDoc = documentList.find((_doc) => _doc.id === _id);
+        if (!findDoc) {
+          return { ...current, documents: [...current.documents, responseObj] };
+        }
+
         const newDocList = documentList.map((_doc) => {
           if (_doc.id === _id) {
             return responseObj;
@@ -64,8 +70,8 @@ export const VerifyDocuments = () => {
       <Text className="question-text">Could you verify uploaded documents ?</Text>
       <Box className="verify-documents-box">
         <Box className="verify-documents-header">
-          <Text>File</Text>
-          <Text>Status</Text>
+          <Text className="verify-header-text">File</Text>
+          <Text className="verify-header-text">Status</Text>
         </Box>
         <Box className="verify-documents-wrapper">
           {data.documents.map((doc, index) => {

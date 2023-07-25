@@ -8,8 +8,16 @@ import DrivingLicence from '../../assets/DrivingLicence.png';
 
 export const IDCard: React.FC<VerificationIdCardProp> = ({ documentName, isVerified }) => {
   const navigate = useNavigate();
-  const handleView = () => {
-    navigate('/candidate/profile/IDs/verify/Aadhar');
+  const handleView = (documentName: string) => {
+    if (documentName === 'AADHAR') {
+      navigate('/candidate/profile/IDs/verify/Aadhar');
+    }
+    if (documentName === 'PAN') {
+      navigate('/candidate/profile/IDs/verify/pan');
+    }
+    if (documentName === 'DRIVING_LICENSE') {
+      navigate('/candidate/profile/IDs/verify/licence');
+    }
   };
 
   return (
@@ -18,7 +26,7 @@ export const IDCard: React.FC<VerificationIdCardProp> = ({ documentName, isVerif
         {documentName === 'AADHAR' && (
           <div className="blurBox">
             <img src={AadharImg} />
-            <Button className="viewBtn" onClick={handleView}>
+            <Button className="viewBtn" onClick={() => handleView('AADHAR')}>
               View
             </Button>
           </div>
@@ -26,7 +34,7 @@ export const IDCard: React.FC<VerificationIdCardProp> = ({ documentName, isVerif
         {documentName === 'PAN' && (
           <div className="blurBox">
             <img src={PanImg} />
-            <Button className="viewBtn" onClick={handleView}>
+            <Button className="viewBtn" onClick={() => handleView('PAN')}>
               View
             </Button>
           </div>
@@ -34,7 +42,9 @@ export const IDCard: React.FC<VerificationIdCardProp> = ({ documentName, isVerif
         {documentName === 'DRIVING_LICENSE' && (
           <div className="blurBox">
             <img src={DrivingLicence} />
-            <Button className="viewBtn">View</Button>
+            <Button className="viewBtn" onClick={() => handleView('DRIVING_LICENSE')}>
+              View
+            </Button>
           </div>
         )}
       </Box>

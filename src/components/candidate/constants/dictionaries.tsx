@@ -1,12 +1,12 @@
 export const optionalAttrDict: { [key: string]: string } = {
-  candidateId: 'Candidate ID',
-  department: 'Department',
+  companyName: 'Company Name',
+  companyId: 'Company Id',
   dateOfJoining: 'Date of Joining',
   dateOfLeaving: 'Date of Leaving',
-  companyName: 'Company Name',
+  department: 'Department',
+  salary: 'Salary',
   workType: 'Work Type',
   workMode: 'Mode of Work',
-  salary: 'Salary',
 };
 
 export const skillExpertiseDict: {

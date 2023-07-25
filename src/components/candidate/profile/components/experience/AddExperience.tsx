@@ -64,6 +64,9 @@ export const AddExperience = () => {
 
   const handleCheck = () => {
     workExperienceForm.setFieldValue('dateOfLeaving', '');
+    workExperienceForm.setFieldValue('description', '');
+    workExperienceForm.clearFieldError('description');
+
     setExperienceChecked(!experienceChecked);
   };
 
@@ -81,50 +84,64 @@ export const AddExperience = () => {
     }
   };
 
+  const checkOptionalErrors = () => {
+    let hasErrors = false;
+
+    if (!experienceChecked) {
+      if (workExperienceForm.values.dateOfLeaving === '') {
+        workExperienceForm.setFieldError('dateOfLeaving', 'This field is required! Please enter a valid value.');
+        hasErrors = true;
+      }
+
+      if (workExperienceForm.values.description === '') {
+        workExperienceForm.setFieldError('description', 'This field is required! Please enter a valid value.');
+        hasErrors = true;
+      }
+    }
+
+    return hasErrors;
+  };
+
   const handleExperienceContinue = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    if (!workExperienceForm.validate().hasErrors) {
-      showLoadingNotification({ title: 'Please wait !', message: 'We are adding your work experience.' });
-      workExperienceForm.clearErrors();
-      let requestBody: ExperienceRequestBody;
-      if (workExperienceForm.values.dateOfLeaving == '') {
-        requestBody = {
-          designation: workExperienceForm.values.designation,
-          companyType: workExperienceForm.values.companyType,
-          email: workExperienceForm.values.email,
-          workMode: workExperienceForm.values.workMode,
-          workType: workExperienceForm.values.workType,
-          companyName: workExperienceForm.values.companyName,
-          companyId: workExperienceForm.values.companyId,
-          dateOfJoining: workExperienceForm.values.dateOfJoining,
-          isVerified: workExperienceForm.values.isVerified,
-          department: workExperienceForm.values.department,
-          reasonForLeaving: workExperienceForm.values.department,
-        };
-      } else {
-        requestBody = workExperienceForm.values;
-      }
+    if (workExperienceForm.validate().hasErrors) {
+      checkOptionalErrors();
+      return;
+    }
 
-      const res = await HttpClient.callApiAuth<createExperience>(
-        {
-          url: `${workExperienceAPiList.postWorkExperience}`,
-          method: 'POST',
-          body: requestBody,
-        },
-        authClient
-      );
+    if (checkOptionalErrors()) {
+      return;
+    }
 
-      if (res.ok) {
-        setworkExperienceId(res.value.id);
-        showSuccessNotification({ title: 'Success !', message: 'New experience added to your profile.' });
-        setForceRender((prev) => !prev);
-        setActive(2);
-        scrollToTop();
-        workExperienceForm.reset();
-      } else {
-        showErrorNotification(res.error.code);
+    let requestBody: { [key: string]: string } = {} as { [key: string]: string };
+
+    Object.keys(workExperienceForm.values).forEach((key) => {
+      if (workExperienceForm.values[key] !== '') {
+        requestBody = { ...requestBody, [key]: workExperienceForm.values[key] };
       }
+    });
+
+    showLoadingNotification({ title: 'Please wait !', message: 'We are adding your work experience.' });
+
+    const res = await HttpClient.callApiAuth<createExperience>(
+      {
+        url: `${workExperienceAPiList.postWorkExperience}`,
+        method: 'POST',
+        body: requestBody,
+      },
+      authClient
+    );
+
+    if (res.ok) {
+      setworkExperienceId(res.value.id);
+      showSuccessNotification({ title: 'Success !', message: 'New experience added to your profile.' });
+      setForceRender((prev) => !prev);
+      setActive(2);
+      scrollToTop();
+      workExperienceForm.reset();
+    } else {
+      showErrorNotification(res.error.code);
     }
   };
 
@@ -173,11 +190,15 @@ export const AddExperience = () => {
 
   const handleUploadDocument = (event: React.ChangeEvent<HTMLInputElement>) => {
     showLoadingNotification({ title: 'Please wait !', message: 'Please wait while we add your document' });
+
     if (event.target.files && event.target.files[0]) {
       if (event.target.files[0].size > 5 * 1024 * 1024) {
         showErrorNotification('SIZE_EXCEEDS');
       } else {
         setSelectedFile(event.target.files[0]);
+        if (fileInputRef.current) {
+          fileInputRef.current.value = '';
+        }
         showSuccessNotification({ title: 'File selected ', message: '' });
       }
     }
@@ -214,6 +235,9 @@ export const AddExperience = () => {
           if (resp.ok) {
             showSuccessNotification({ title: 'Success !', message: 'Document added successfully !' });
             setForceRender((prev) => !prev);
+            if (fileInputRef.current) {
+              fileInputRef.current.value = '';
+            }
             setSelectedFile(null);
           } else {
             showErrorNotification(resp.error.code);
@@ -236,6 +260,10 @@ export const AddExperience = () => {
     );
     if (res.ok) {
       showSuccessNotification({ title: 'Success !', message: 'Document deleted successfully !' });
+      setSelectedFile(null);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
       setForceRender((prev) => !prev);
     } else {
       showErrorNotification(res.error.code);
@@ -453,6 +481,7 @@ export const AddExperience = () => {
               <Box className="input-section">
                 <Title className="title">End Date</Title>
                 <DateInput
+                  withAsterisk={!experienceChecked}
                   label="End date"
                   className="inputClass"
                   disabled={experienceChecked}
@@ -470,6 +499,7 @@ export const AddExperience = () => {
               <Box className="input-section">
                 <Title className="title">Reason for leaving</Title>
                 <Textarea
+                  withAsterisk={!experienceChecked}
                   disabled={experienceChecked}
                   {...workExperienceForm.getInputProps('description')}
                   label="Write down the reason for leaving"
@@ -611,14 +641,14 @@ export const AddExperience = () => {
           )}
 
           {active === 3 && (
-            <Box>
+            <Box className="experience-add-documents">
               <Box className="documents-input-box">
                 <img src={uploadIcon} alt="upload icon" />
                 <input
                   type="file"
                   ref={fileInputRef}
                   style={{ display: 'none' }}
-                  accept=".pdf,.doc,.docx"
+                  accept=".pdf"
                   onChange={handleUploadDocument}
                 />
                 <Text className="add-document-heading">Add your work documents</Text>
@@ -643,11 +673,15 @@ export const AddExperience = () => {
                   </Button>
                 )}
 
-                <Text className="limit">(max 5 MB)</Text>
+                <Text className="limit">
+                  (Only add <strong>.pdf</strong> files of size less than <strong>5 MB</strong>)
+                </Text>
               </Box>
               {documents.length > 0 && (
                 <Box className="added-documents-wrapper">
                   {documents.map(({ _id, name }, index) => {
+                    console.log(documents);
+
                     return (
                       <Box key={_id}>
                         <Box className="added-documents">

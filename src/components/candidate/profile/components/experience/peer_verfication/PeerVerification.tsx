@@ -38,7 +38,7 @@ export const PeerVerification: React.FC<PeerVerificationProps> = ({
           phone: peer.phone,
           ref: experienceId,
           verificationBy: peer.peerType,
-          optionalVerificationFields: [],
+          selectedFields: [],
           documents: [],
           skills: [],
         },
@@ -70,6 +70,7 @@ export const PeerVerification: React.FC<PeerVerificationProps> = ({
         )}
         {selectionPage === 2 && (
           <AttributeSelection
+            id={experienceId}
             activePeer={activePeer}
             addedPeers={addedPeers}
             setActivePeer={setActivePeer}

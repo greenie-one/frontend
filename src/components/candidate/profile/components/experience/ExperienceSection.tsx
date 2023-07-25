@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 
 export const ExperienceSection = () => {
   const { workExperienceData, scrollToTop } = useGlobalContext();
+  console.log('🚀 ~ file: ExperienceSection.tsx:11 ~ ExperienceSection ~ workExperienceData:', workExperienceData);
   const navigate = useNavigate();
 
   const handleAllExperiencePage = (): void => {
