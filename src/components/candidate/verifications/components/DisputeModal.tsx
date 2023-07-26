@@ -31,9 +31,9 @@ export const DisputeModal: React.FC<DisputeModalProps> = ({
 
   const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const inputValue = event.target.value;
-    const wordCount = inputValue.trim().split(' ').length;
+    const wordCount = inputValue.length;
 
-    if (wordCount <= 150) {
+    if (wordCount <= 250) {
       disputeForm.setFieldValue('disputeReason', inputValue);
     }
   };
@@ -117,7 +117,7 @@ export const DisputeModal: React.FC<DisputeModalProps> = ({
     <Modal
       radius={'lg'}
       centered
-      size={'75%'}
+      size={'60%'}
       fullScreen={isMobile}
       opened={opened}
       onClose={() => {
@@ -159,7 +159,7 @@ export const DisputeModal: React.FC<DisputeModalProps> = ({
             placeholder="Write a review to help your peer get his dream job"
             className="text-area"
           />
-          <Text className="word-limit">{disputeForm.values.disputeReason.trim().split(' ').length} / 150 words</Text>
+          <Text className="word-limit">{disputeForm.values.disputeReason.length} / 250 </Text>
         </Box>
         <Button className="green-btn" onClick={() => disputeHandler(attrId)}>
           Raise dispute

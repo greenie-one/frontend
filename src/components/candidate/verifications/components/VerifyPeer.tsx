@@ -2,7 +2,11 @@ import { useEffect, useState } from 'react';
 import { Box, Text, Title, Button, PinInput, createStyles } from '@mantine/core';
 import { useVerificationContext } from '../context/VerificationContext';
 import { HttpClient } from '../../../../utils/generic/httpClient';
-import { showErrorNotification } from '../../../../utils/functions/showNotification';
+import {
+  showErrorNotification,
+  showLoadingNotification,
+  showSuccessNotification,
+} from '../../../../utils/functions/showNotification';
 import { peerVerificationAPIList } from '../../../../assets/api/ApiList';
 
 type OtpVerificationBody = {
@@ -28,13 +32,17 @@ const VerificationHeading = () => {
 
 export const VerifyPeer = () => {
   const { classes: inputClasses } = OtpInputStyles();
-  const { unverifiedLink, peerUUID, getVerificationData, setActiveStep } = useVerificationContext();
+  const { unverifiedLink, peerUUID, getVerificationData, totalSteps, setActiveStep } = useVerificationContext();
 
   const [countdown, setCountDown] = useState<number>(60);
   const [otpProcess, setOtpProcess] = useState<number>(0);
   const [otp, setOtp] = useState<string>();
 
   const sendOtp = async () => {
+    showLoadingNotification({
+      title: 'Sending OTP...',
+      message: 'Please wait while we send OTP to your phone number.',
+    });
     const requestBody: Record<'otpType', string> = {
       otpType: unverifiedLink,
     };
@@ -47,6 +55,7 @@ export const VerifyPeer = () => {
 
     if (res.ok) {
       setOtpProcess((prev) => prev + 1);
+      showSuccessNotification({ title: 'Success !', message: 'OTP Sent to your phone number' });
     } else {
       showErrorNotification(res.error.code);
     }
@@ -93,7 +102,9 @@ export const VerifyPeer = () => {
             <Button className="green-outline-btn" onClick={sendOtp}>
               Click to send OTP
             </Button>
-            <button className="address-verification-details-link">Not me</button>
+            <button className="address-verification-details-link" onClick={() => setActiveStep(totalSteps)}>
+              Not me
+            </button>
           </Box>
         )}
         {otpProcess === 1 && (
@@ -113,7 +124,7 @@ export const VerifyPeer = () => {
                 />
               </Box>
               {countdown === 0 ? (
-                <Button compact color="gray" variant="subtle" className="resendLink">
+                <Button compact color="gray" variant="subtle" className="resendLink" onClick={sendOtp}>
                   Resend
                 </Button>
               ) : (

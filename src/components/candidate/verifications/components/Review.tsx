@@ -59,9 +59,9 @@ export const Review: React.FC = () => {
 
   const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const inputValue = event.target.value;
-    const wordCount = inputValue.trim().split(' ').length;
+    const wordCount = inputValue.length;
 
-    if (wordCount <= 150) {
+    if (wordCount <= 250) {
       setReview(inputValue);
     }
   };
@@ -95,7 +95,7 @@ export const Review: React.FC = () => {
             placeholder="Write a review to help your peer get his dream job"
             className="text-area"
           />
-          <Text className="word-limit">{review.trim().split(' ').length} / 150 words</Text>
+          <Text className="word-limit">{review.length} / 250 </Text>
         </Box>
 
         <Button className="green-outline-btn no-disable" onClick={endVerificationHandler}>

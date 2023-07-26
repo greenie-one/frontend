@@ -11,7 +11,8 @@ export const OthersSpecificQuestions = (): JSX.Element => {
         <VerificationQuestions
           question={
             <>
-              According to <span>{data.name}</span> you were his <span className="green-text">{verificationBy}</span> in{' '}
+              According to <span>{data.name}</span> you were his/her{' '}
+              <span className="green-text">{verificationBy}</span>
               <span>{data.selectedFields?.companyName}</span> during his employment tenure?
             </>
           }
@@ -26,7 +27,7 @@ export const OthersSpecificQuestions = (): JSX.Element => {
           question={
             <>
               According to <span className="name">{data.name} </span>he was{' '}
-              <span className="green-text">{data.selectedFields?.designation}</span> during his employment in{' '}
+              <span className="green-text">{data.selectedFields?.designation}</span> during his/her employment in{' '}
               <span>{data.selectedFields?.companyName}</span>
             </>
           }
