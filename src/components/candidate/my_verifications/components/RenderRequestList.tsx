@@ -30,6 +30,7 @@ const {
   request_title,
   request_msg,
   request_actions,
+  request_name,
   request_action_btns,
 } = styles;
 
@@ -134,8 +135,11 @@ export const RenderRequestList: React.FC<RenderRequestListProps> = ({
           <Box className={request_item_body}>
             <span className={request_title}>Request to verify your work experience</span>
             <span className={request_msg}>
-              You have requested <span style={{ color: '#000000', fontWeight: '500' }}>{request.name}</span> to verify
-              your work experience
+              You have requested{' '}
+              <span className={request_name} style={{ color: '#000000', fontWeight: '500' }}>
+                {request.name}
+              </span>{' '}
+              to verify your work experience
             </span>
           </Box>
           {request.isVerificationCompleted ? (

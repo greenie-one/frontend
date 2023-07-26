@@ -4,7 +4,7 @@
   border-radius: 1rem;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  /* align-items: center; */
   gap: 1.5rem;
 }
 
@@ -41,6 +41,10 @@
 .request_msg {
   color: #333333;
   font-size: 0.9rem;
+}
+
+.request_name {
+  word-break: break-all;
 }
 
 .request_actions {

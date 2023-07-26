@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, Box, Button } from '@mantine/core';
-import { MdVerified } from 'react-icons/md';
+import { CgSandClock } from 'react-icons/cg';
 import { useVerificationContext } from '../context/VerificationContext';
 
 export const ProfileDetailsBox: React.FC = (): JSX.Element => {
@@ -18,8 +18,8 @@ export const ProfileDetailsBox: React.FC = (): JSX.Element => {
       </Box>
       <Box className="profile-details-text-box">
         <Text className="name">{data.name}</Text>
-        <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
-          Verified
+        <Button leftIcon={<CgSandClock size={'16px'} />} className="pending">
+          Pending
         </Button>
       </Box>
     </Box>
