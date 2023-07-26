@@ -1,6 +1,6 @@
 import { AuthClient } from './authClinet';
 
-type PostBody = string | string[] | number | boolean | Date | { [key: string]: PostBody };
+type PostBody = string | string[] | number | boolean | Date | PostBody[] | { [key: string]: PostBody };
 
 type HttpRequest = {
   url: string;
@@ -52,6 +52,7 @@ export class HttpClient {
       body = JSON.stringify(request.body);
     }
 
+    // console.info(request.url);
     const resp = await fetch(url, {
       method: request.method,
       headers: {
@@ -60,6 +61,7 @@ export class HttpClient {
       },
       body,
     });
+    // console.info(resp);
 
     let response: T;
 
@@ -86,7 +88,7 @@ export class HttpClient {
 
   static async callApiAuth<T = unknown>(request: HttpRequest, authClient: AuthClient): Promise<Result<T>> {
     if (!authClient.getAccessToken()) {
-      return { ok: false, error: { status: 401, message: 'await resp.text()', code: 'SOMETHING_WENT_WRONG' } };
+      return { ok: false, error: { status: 401, message: 'Access Token Not Found', code: 'SOMETHING_WENT_WRONG' } };
     }
 
     const headers = {

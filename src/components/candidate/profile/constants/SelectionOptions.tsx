@@ -11,7 +11,7 @@ export const modeOfWork = [
 ];
 
 export const companyTypes = [
-  { value: 'Startup', label: 'Start-up (Funded)' },
+  { value: 'Start-up (Funded)', label: 'Start-up (Funded)' },
   { value: 'Early Stage Startup', label: 'Early Stage Startup' },
   { value: 'Startup (Profitable)', label: 'Startup (Profitable)' },
   { value: 'Family Owned Business', label: 'Family Owned Business' },
@@ -23,7 +23,7 @@ export const companyTypes = [
 export const skillRate = [
   { value: 'AMATEUR', label: 'Amature' },
   { value: 'BEGINNER', label: 'Begineer/Novice' },
-  { value: 'HIGHLY_COMPETENT', label: 'Highly Competant' },
+  { value: 'HIGHLY_COMPETENT', label: 'Highly Competent' },
   { value: 'EXPERT', label: 'Expert' },
   { value: 'SUPER_SPECIALIST', label: 'Super Specialist' },
   { value: 'MASTER', label: 'Master - Pro(Global Recognition)' },
@@ -62,6 +62,7 @@ export const departments = [
   { value: 'HealthSafety', label: 'Health and Safety' },
   { value: 'Sustainability', label: 'Sustainability or Corporate Social Responsibility' },
   { value: 'DataAnalytics', label: 'Data Analytics or Business Intelligence' },
+  { value: 'Other', label: 'Other' },
 ];
 
 //------------------------------------------------------------

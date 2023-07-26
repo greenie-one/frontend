@@ -162,6 +162,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } else {
       showErrorNotification(res.error.code);
     }
+    setIsLoading(false);
   };
 
   const getMyProfile = async () => {
@@ -174,7 +175,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     );
 
     if (res.ok) {
-      navigate('/profile');
+      navigate('/candidate/profile');
     } else {
       dispatch({ type: 'CREATEPROFILE' });
     }

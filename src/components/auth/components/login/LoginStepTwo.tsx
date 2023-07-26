@@ -81,7 +81,7 @@ const LoginStepTwo = () => {
         });
 
         if (resp.ok) {
-          loginForm.setFieldValue('password', '');
+          loginForm.reset();
           setAuthTokens(resp.value);
           authClient.updateTokens(resp.value.accessToken, resp.value.refreshToken);
 
@@ -90,8 +90,6 @@ const LoginStepTwo = () => {
             title: 'Success !',
             message: 'You have been logged in successfully.',
           });
-
-          // dispatch({ type: 'PREVLOGINSTEP' });
         } else {
           showErrorNotification(resp.error.code);
           dispatch({ type: 'PREVLOGINSTEP' });
@@ -99,6 +97,7 @@ const LoginStepTwo = () => {
         }
       } else {
         showErrorNotification(res.error.code);
+        loginForm.setFieldValue('password', '');
       }
       setIsLoading(false);
     }

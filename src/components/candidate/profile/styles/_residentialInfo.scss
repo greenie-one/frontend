@@ -3,15 +3,18 @@
   grid-template-columns: repeat(3, 32%);
   align-items: center;
   justify-content: space-between;
+
+  .residential-card {
+    margin-bottom: 1rem;
+  }
 }
 
 .info-detail-box {
   .info-detail-top-box {
-    display: grid;
-    grid-template-columns: 100px 300px;
-    align-items: center;
+    display: flex;
     justify-content: flex-start;
     margin-bottom: 2rem;
+
     .location {
       border: 1px solid $lighterGray;
       display: flex;
@@ -20,12 +23,29 @@
       height: 100%;
       border-radius: 50%;
       color: $lighterGray;
+      min-width: 100px;
+      min-height: 100px;
     }
 
     .address-box {
       margin-left: 1rem;
+      width: 50%;
       .address {
         margin-bottom: 1rem;
+      }
+    }
+
+    .delete-btn {
+      width: 2rem;
+      height: 2rem;
+      background: transparent;
+      color: $gray;
+      padding: 0;
+      font-size: 1.25rem;
+
+      &:hover {
+        background: hsl(0, 100%, 72%, 0.2);
+        transition: all 150ms linear;
       }
     }
   }
@@ -97,10 +117,10 @@
 }
 
 .residential-details {
-  display: grid;
-  grid-template-columns: 80px 250px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-bottom: 2.5rem;
-  width: 350px;
 
   .location {
     border: 1px solid $lighterGray;
@@ -109,10 +129,13 @@
     justify-content: center;
     border-radius: 50%;
     height: 80px;
+    width: 80px;
   }
 
   .residential-details-text-box {
     margin-left: 1rem;
+    width: 60%;
+
     .address {
       margin-bottom: 0.5rem;
     }
@@ -253,6 +276,42 @@
   }
 }
 
+.add-residential-info {
+  margin-top: 7rem;
+  width: 94%;
+  .input-section {
+    display: grid;
+    align-items: center;
+    justify-content: space-between;
+    grid-template-columns: 40% 60%;
+
+    .title {
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 27px;
+      color: $dark;
+      width: 100%;
+      color: $dark;
+    }
+
+    .checkbox {
+      margin-block: 1rem;
+
+      label {
+        font-size: 1rem;
+        margin-top: -2.5px;
+      }
+    }
+
+    .inner-input-section {
+      display: grid;
+      grid-template-columns: 49% 49%;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+}
+
 @media screen and (max-width: 850px) {
   .info-detail-box {
     .geo-info-box {
@@ -261,6 +320,48 @@
     }
   }
 }
+
+@media screen and (max-width: 768px) {
+  .add-residential-info {
+    .input-section {
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr;
+      align-items: flex-start;
+    }
+
+    .border-bottom {
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  .residential-info-wrapper {
+    grid-template-columns: repeat(2, 49%);
+  }
+
+  .info-detail-box {
+    .info-detail-top-box {
+      .location {
+        min-width: 80px;
+        min-height: 80px;
+      }
+    }
+  }
+
+  .residential-details {
+    .residential-details-text-box {
+      margin-left: 1rem;
+
+      .address {
+        margin-bottom: 0.5rem;
+      }
+      .pending {
+        border: none;
+        outline: none;
+      }
+    }
+  }
+}
+
 @media screen and (max-width: 700px) {
   .info-detail-box {
     .geo-info-box {
@@ -283,6 +384,10 @@
       display: grid;
       grid-template-columns: 100%;
     }
+  }
+
+  .residential-info-wrapper {
+    grid-template-columns: 100%;
   }
 }
 @media screen and (max-width: 414px) {

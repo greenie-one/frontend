@@ -1,114 +1,73 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Box } from '@mantine/core';
+
+import { peerVerificationAPIList } from '../../../../assets/api/ApiList';
+import { useGlobalContext } from '../../../../context/GlobalContext';
+import { HttpClient } from '../../../../utils/generic/httpClient';
+import { RenderRequestList } from './RenderRequestList';
+
+import { showErrorNotification } from '../../../../utils/functions/showNotification';
+import noNotificationIcon from '../../profile/assets/noNotifications.svg';
+import notificationStyles from '../styles/notifications.module.css';
 import styles from '../styles/requestlist.module.css';
-import '../styles/modal.css';
-import { useDisclosure } from '@mantine/hooks';
-import { Box, Button, Modal } from '@mantine/core';
-import { FiCheck } from 'react-icons/fi';
 
-const {
-  requestList_container,
-  request_item,
-  profile_image,
-  request_item_body,
-  request_title,
-  request_msg,
-  request_actions,
-  request_action_btns,
-  request_sent_info,
-  check_icon,
-  sent_msg,
-  sent_date,
-} = styles;
+const { requestList_container } = styles;
+const { notifications_container, notification_icon_container, notification_msg } = notificationStyles;
 
-const RequestListArray: Array<{
-  id: number;
-  profileImg: string;
+export type RequestListType = {
+  id: string;
+  email: string;
   name: string;
-  title: string;
-  message: string;
-}> = [
-  {
-    id: 0,
-    profileImg: '',
-    name: 'John Marston',
-    title: 'Request to verify your work experience',
-    message: 'is asking you to verify your address proof',
-  },
-  {
-    id: 1,
-    profileImg: '',
-    name: 'John Marston',
-    title: 'Request to verify your work experience',
-    message: 'is asking you to verify your address proof',
-  },
-  {
-    id: 2,
-    profileImg: '',
-    name: 'John Marston',
-    title: 'Request to verify your work experience',
-    message: 'is asking you to verify your address proof',
-  },
-];
+  phone: string;
+  isVerificationCompleted: boolean;
+  createdAt?: string;
+};
 
-export const RequestList: React.FC = (): JSX.Element => {
-  const [requestSent, setRequestSent] = useState<boolean>(false);
+export const RequestList: React.FC<{ activeListItem: number }> = ({ activeListItem }): JSX.Element => {
+  const { authClient } = useGlobalContext();
+  const [sentRequests, setSentRequests] = useState<Array<RequestListType>>([]);
+  const [forceRenderList, setForceRenderList] = useState<boolean>(true);
 
-  const [opened, { open, close }] = useDisclosure(false);
+  const getSentRequests = async () => {
+    const res = await HttpClient.callApiAuth<RequestListType[]>(
+      {
+        url: peerVerificationAPIList.getSentRequest,
+        method: 'GET',
+      },
+      authClient
+    );
 
-  return (
+    if (res.ok) {
+      setSentRequests(res.value);
+    } else {
+      showErrorNotification(res.error.code);
+    }
+  };
+
+  useEffect(() => {
+    getSentRequests();
+  }, [forceRenderList]);
+
+  return activeListItem === 0 ? (
     <article className={requestList_container}>
-      {RequestListArray.map((request) => {
-        return (
-          <Box key={request.id} className={request_item}>
-            <span className={profile_image}>
-              <img src="" alt="" />
-            </span>
-            <Box className={request_item_body}>
-              <span className={request_title}>{request.title}</span>
-              <span className={request_msg}>
-                <span style={{ color: '#000000', fontWeight: '500' }}>{request.name}</span> {request.message}
-              </span>
-            </Box>
-            <Box className={request_actions}>
-              {!requestSent ? (
-                <Button radius="xl" className={request_action_btns} onClick={open}>
-                  Accept
-                </Button>
-              ) : (
-                <span className={request_sent_info}>
-                  <span className={sent_msg}>
-                    <FiCheck className={check_icon} />
-                    Sent
-                  </span>
-                  <span className={sent_date}>On 23rd April 2023</span>
-                </span>
-              )}
-              <Button radius="xl" className={request_action_btns}>
-                Reject
-              </Button>
-            </Box>
-          </Box>
-        );
-      })}
-      <Modal opened={opened} onClose={close} title="Confirmation" centered radius="lg" padding="xl" size="lg">
-        <Box className="modal-content">
-          <h3 className="modal-content-heading">You are about confirm that you served</h3>
-          <p className="modal-content-msg">
-            Line manager at TCS with <span style={{ color: '#000000', fontWeight: '600' }}>John Marston</span> working
-            directly or indirectly with you?
-          </p>
-          <Button
-            radius="xl"
-            className="modal-action-btn"
-            onClick={() => {
-              setRequestSent(true);
-              close();
-            }}
-          >
-            Accept request and confirm
-          </Button>
+      {sentRequests.length != 0 ? (
+        <RenderRequestList
+          setForceRenderList={setForceRenderList}
+          requestType={activeListItem === 0 ? 'sent' : 'recieved'}
+          requestList={sentRequests}
+        />
+      ) : (
+        <Box className={notifications_container}>
+          <span className={notification_msg}>Need to verify the work experience by the peer</span>
         </Box>
-      </Modal>
+      )}
     </article>
+  ) : (
+    <Box className={notifications_container}>
+      <span className={notification_icon_container}>
+        <img src={noNotificationIcon} alt="notification" />
+      </span>
+      <span className={notification_msg}>Coming Soon</span>
+    </Box>
   );
 };

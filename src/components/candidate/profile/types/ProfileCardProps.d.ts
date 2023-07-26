@@ -1,37 +1,38 @@
-export interface IExperienceCardProp {
+type ExperienceCardProp = {
+  id: string;
   position: string;
   companyName: string;
-  isVerified: boolean;
+  noOfVerifications: number;
   companyStartYear: string;
   companyEndYear: string;
-}
+};
 
-export interface IVerificationIdCardProp {
+type VerificationIdCardProp = {
   documentName: string;
   isVerified: boolean;
-}
+};
 
-export interface IResidentialInfoCardProps {
+type ResidentialInfoCardProps = {
   address_line_1: string;
   address_line_2: string;
   landmark: string;
   pincode: number;
-  start_date: Date;
-  end_date: Date;
+  start_date: Date | null;
+  end_date: Date | null;
   isVerified: boolean;
   city: string;
-}
+};
 
-export interface IResidentialInfoDetailsCardProps {
+type ResidentialInfoDetailsCardProps = {
   address_line_1: string;
   address_line_2: string;
   landmark: string;
   pincode: number;
-  start_date: Date;
-  end_date: Date;
+  start_date: Date | null;
+  end_date: Date | null;
   isVerified: boolean;
   city: string;
   state: string;
   country: string;
   address_type: string;
-}
+};

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import { Box, Button, Modal, Text, Chip, Group, CopyButton, Title, TextInput, Divider, Textarea } from '@mantine/core';
 import axios from 'axios';
 import emptyProfile from '../../assets/emptyProfile.png';
@@ -8,9 +8,13 @@ import medal from '../../assets/medal.png';
 import { profileAPIList } from '../../../../../assets/api/ApiList';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
-import { useProfileContext } from '../../context/ProfileContext';
 import { MdVerified, MdOutlineEdit, MdOutlineContentCopy } from 'react-icons/md';
-import { showLoadingNotification, showSuccessNotification } from '../../../../../utils/functions/showNotification';
+import {
+  showErrorNotification,
+  showLoadingNotification,
+  showSuccessNotification,
+} from '../../../../../utils/functions/showNotification';
+import { HttpClient, Result } from '../../../../../utils/generic/httpClient';
 
 const skillSetOne = [
   'Lone Wolf',
@@ -25,11 +29,11 @@ const skillSetOne = [
 ];
 
 export const Userprofile = () => {
-  const { authClient } = useGlobalContext();
+  const { authClient, setForceRender, forceRender, profileData, profileForm, updateProfile, IDs, userLevel } =
+    useGlobalContext();
   const authToken = authClient.getAccessToken();
   //-------------profile photo------------------------
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [src, setSrc] = useState<string>(emptyProfile);
 
   const openFileInput = () => {
     if (fileInputRef.current) {
@@ -48,25 +52,35 @@ export const Userprofile = () => {
           Authorization: `Bearer ${authToken}`,
         },
       });
-      setSrc(res.data.url);
-      showSuccessNotification({ title: 'Success !', message: 'Profile picture is updated !' });
+      const resp: Result<UpdateResponse> = await HttpClient.callApiAuth(
+        {
+          url: `${profileAPIList.updateProfile}`,
+          method: 'PATCH',
+          body: { profilePic: res.data.url },
+        },
+        authClient
+      );
+      if (resp.ok) {
+        showSuccessNotification({ title: 'Success !', message: 'Profile picture is updated !' });
+        setForceRender(!forceRender);
+      } else {
+        showErrorNotification(resp.error.code);
+      }
     }
   };
 
   //----------------Bio section-----------------------------------
 
-  const userLevel = 0;
-  const greeneId = 'GRN788209';
+  const greeneId = profileData?.greenieId ?? '';
   const screenSize = useMediaQuery('(min-width: 768px)');
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
-  const { profileData, profileForm, updateProfile, documentsData } = useProfileContext();
 
   const onClose = () => {
-    profileForm.values.firstName = '';
-    profileForm.values.lastName = '';
-    profileForm.values.bio = '';
-    profileForm.values.descriptionTags = [];
+    profileForm.setFieldValue('firstName', '');
+    profileForm.setFieldValue('lastName', '');
+    profileForm.setFieldValue('bio', '');
+    profileForm.setFieldValue('descriptionTags', []);
     close();
   };
 
@@ -91,6 +105,7 @@ export const Userprofile = () => {
         opened={opened}
         onClose={onClose}
         title="Update Profile"
+        radius={'lg'}
       >
         <form onSubmit={handleSubmit}>
           <Box className="input-section">
@@ -101,6 +116,8 @@ export const Userprofile = () => {
               label="Your first name"
               className="inputClass"
               {...profileForm.getInputProps('firstName')}
+              maxLength={10}
+              minLength={3}
             />
           </Box>
           <Box className="input-section">
@@ -111,6 +128,8 @@ export const Userprofile = () => {
               label="Your last name"
               className="inputClass"
               {...profileForm.getInputProps('lastName')}
+              maxLength={10}
+              minLength={3}
             />
           </Box>
           <Divider mb={'10px'} />
@@ -122,6 +141,7 @@ export const Userprofile = () => {
               label="Your bio"
               className="text-area-input"
               {...profileForm.getInputProps('bio')}
+              maxLength={150}
             />
           </Box>
           <Divider mb={'10px'} />
@@ -166,7 +186,12 @@ export const Userprofile = () => {
         <Box className="cover-photo"></Box>
 
         <Box className="profile-photo">
-          <img src={src} alt="emptyProfile" className="profile-image" />
+          {profileData?.profilePic ? (
+            <img src={profileData.profilePic} alt="Profile picture" className="profile-image" />
+          ) : (
+            <img src={emptyProfile} alt="emptyProfile" className="profile-image" />
+          )}
+
           <Button leftIcon={<MdOutlineEdit />} className="edit-btn" onClick={openFileInput}>
             Change picture
           </Button>
@@ -181,7 +206,7 @@ export const Userprofile = () => {
           <Text className="bio-name">
             {profileData.firstName} {profileData.lastName}
           </Text>
-          {documentsData.length > 0 && <MdVerified className="name-verified" size={'20px'} />}
+          {IDs.length > 0 && <MdVerified className="name-verified" size={'20px'} />}
         </Box>
 
         <Box className="chips">
@@ -250,7 +275,7 @@ export const Userprofile = () => {
           </Box>
           <Box className="border-left"></Box>
           <Box className="right-section">
-            {documentsData.length > 0 ? (
+            {IDs.length > 0 ? (
               <CopyButton value={greeneId} timeout={2000}>
                 {({ copied, copy }) => (
                   <Box className="greenie-id" onClick={copy}>
@@ -273,7 +298,9 @@ export const Userprofile = () => {
             )}
           </Box>
         </Box>
-        <Text className="bio-text">{profileData.bio}</Text>
+        <Box className="bio-text">
+          <Text> {profileData.bio}</Text>
+        </Box>
       </section>
     </>
   );

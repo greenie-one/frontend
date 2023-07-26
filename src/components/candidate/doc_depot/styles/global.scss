@@ -37,6 +37,7 @@ $dark: #191919;
     font-size: 12px;
     padding: 0.15rem 1rem;
     margin-left: 1rem;
+    cursor: pointer;
   }
 }
 
@@ -48,20 +49,27 @@ $dark: #191919;
   margin-bottom: 4rem;
 }
 
-.folder {
+.pdf {
   border: 1px solid $lighterGray;
   border-radius: 0.5rem;
-  display: grid;
-  grid-template-columns: 20% 60% 5%;
-  align-items: center;
-  justify-content: space-between;
   padding: 1rem 0.5rem;
   font-size: 16px;
   height: 80px;
   cursor: pointer;
-  margin-bottom: 1rem;
-  transition: all 0.2s ease-in-out;
+  display: grid;
+  grid-template-columns: 90% 5%;
+  align-items: center;
+  justify-content: space-between;
   position: relative;
+  margin-block: 0.5rem;
+
+  .pdf-box {
+    display: grid;
+    grid-template-columns: 20% 60% 10%;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.2s ease-in-out;
+  }
 
   .three-dots-menu {
     visibility: hidden;
@@ -73,20 +81,6 @@ $dark: #191919;
     .three-dots-menu {
       visibility: visible;
     }
-  }
-
-  .folder-img {
-    width: 45px;
-    margin-right: 0.5rem;
-  }
-
-  .folder-text {
-    font-family: Inter;
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 24px;
-    letter-spacing: -0.02em;
-    text-align: left;
   }
 
   .folder-dropdown-menu {
@@ -115,6 +109,36 @@ $dark: #191919;
         background-color: $lightGray;
       }
     }
+  }
+}
+
+.folder {
+  border: 1px solid $lighterGray;
+  border-radius: 0.5rem;
+  display: grid;
+  grid-template-columns: 20% 60% 5%;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 0.5rem;
+  font-size: 16px;
+  height: 80px;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  transition: all 0.2s ease-in-out;
+  position: relative;
+
+  .folder-img {
+    width: 45px;
+    margin-right: 0.5rem;
+  }
+
+  .folder-text {
+    font-family: Inter;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: -0.02em;
+    text-align: left;
   }
 }
 
@@ -197,7 +221,7 @@ $dark: #191919;
   .move-modal-btns-wrapper {
     max-width: 512px;
     display: grid;
-    grid-template-columns: 28% 38% 20%;
+    grid-template-columns: 55% 35%;
     align-items: center;
     justify-content: center;
     margin: 2rem auto;
@@ -297,9 +321,31 @@ $dark: #191919;
   .folder-wrapper {
     grid-template-columns: repeat(2, 49%);
   }
+
+  .filter-box {
+    display: grid;
+    grid-template-columns: repeat(2, 49%);
+    align-items: center;
+    max-width: 414px;
+    margin-inline: auto;
+    .filter-heading {
+      display: none;
+    }
+    .filter {
+      padding: 0.25rem;
+      margin-left: 0rem;
+      text-align: center;
+      font-size: 10px;
+      margin: 0.25rem;
+    }
+  }
 }
 @media screen and (max-width: 512px) {
   .folder-wrapper {
     grid-template-columns: 100%;
+  }
+
+  .filter {
+    font-size: 10px;
   }
 }

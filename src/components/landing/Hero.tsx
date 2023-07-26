@@ -42,9 +42,9 @@ export const LandingHero = () => {
             encrypted platform.
           </Text>
           <Box className={classes.heroActionBtn}>
-            <Link to="/waitlist">
+            <Link to="/auth">
               <Button variant={'fill'} outline={true} classNames={classes.tryForFree}>
-                Join The Waitlist
+                Signup
               </Button>
             </Link>
           </Box>

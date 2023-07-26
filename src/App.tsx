@@ -16,8 +16,25 @@ import { AuthVerificationLayout } from './utils/constants/AuthVerification';
 import { GoogleAuthRedirect } from './components/auth/components/google/GoogleAuthRedirect';
 import { AppLayout } from './components/layouts/AppLayout';
 
-import { VerificationByHRPage } from './pages/VerificationByHRPage';
-import { VerificationByManagerPage } from './pages/VerificationByManagerPage';
+import { ExperienceVerification } from './pages/ExperienceVerification';
+import { AllExperiences } from './components/candidate/profile/components/experience/AllExperiences';
+import { ExperienceDetails } from './components/candidate/profile/components/experience/ExperienceDetails';
+import { VerifyExperience } from './components/candidate/profile/components/experience/VerifyExperience';
+import { AllResidentialInfo } from './components/candidate/profile/components/residential_info/AllResidentialInfo';
+import { ResidentialInfoDetails } from './components/candidate/profile/components/residential_info/ResidentialInfoDetails';
+import { VerifyResidentialInfo } from './components/candidate/profile/components/residential_info/VerifyResidentialInfo';
+import { AllSkills } from './components/candidate/profile/components/skills/AllSkills';
+
+import { AddExperience } from './components/candidate/profile/components/experience/AddExperience';
+import { AddResidentialInfo } from './components/candidate/profile/components/residential_info/AddResidentialInfo';
+import { AddSkills } from './components/candidate/profile/components/skills/AddSkills';
+import { AddressVerification } from './components/candidate/profile/components/residential_info/AddressVerification';
+import { DocDepotPage } from './pages/DocDepotPage';
+import { MyVerifications } from './components/candidate/my_verifications';
+import { VerifyAadharCard } from './components/candidate/profile/components/IDs/VerifyAadharCard';
+import { VerifyPanCard } from './components/candidate/profile/components/IDs/VerifyPanCard';
+import { VerifyDrivingLicence } from './components/candidate/profile/components/IDs/VerifyDrivingLicence';
+import { CongratulationsScreen } from './components/candidate/profile/components/IDs/CongratulationsScreen';
 
 const App = () => {
   return (
@@ -31,15 +48,37 @@ const App = () => {
             <Route path="auth" element={<AuthPage />} />
             <Route path="waitlist" element={<Waitlist />} />
             <Route path="oauth/google/callback" element={<GoogleAuthRedirect />} />
-            <Route path="/verification/experience/hr" element={<VerificationByHRPage />} />
-            <Route path="/verification/experience/manager" element={<VerificationByManagerPage />} />
+            <Route path="/verification/:peer/:uuid" element={<ExperienceVerification />} />
 
             <Route element={<AuthVerificationLayout />}>
-              <Route path="profile">
+              <Route path="candidate/profile">
                 <Route index element={<ProfilePage />} />
                 <Route path="settings" element={<SettingsPage />} />
+
+                <Route path="IDs/verify/aadhar" element={<VerifyAadharCard />} />
+                <Route path="IDs/verify/aadhar/congratulations" element={<CongratulationsScreen />} />
+                <Route path="IDs/verify/pan" element={<VerifyPanCard />} />
+                <Route path="IDs/verify/licence" element={<VerifyDrivingLicence />} />
+
+                <Route path="experience/addExperience" element={<AddExperience />} />
+                <Route path="experience/allExperiences" element={<AllExperiences />} />
+                <Route path="experience/:id" element={<ExperienceDetails />} />
+                <Route path="experience/:id/verify" element={<VerifyExperience />} />
+
+                <Route path="address/addResidentialInfo" element={<AddResidentialInfo />} />
+                <Route path="address/allAddresses" element={<AllResidentialInfo />} />
+                <Route path="address/:id" element={<ResidentialInfoDetails />} />
+                <Route path="address/:id/verify" element={<VerifyResidentialInfo />} />
+                <Route path="address/:id/verify/me" element={<AddressVerification />} />
+
+                <Route path="skills/allSkills" element={<AllSkills />} />
+                <Route path="skills/addSkills" element={<AddSkills />} />
+                <Route path="docDepot" element={<DocDepotPage />} />
+                <Route path="myVerification" element={<MyVerifications />} />
               </Route>
+              R
             </Route>
+
             <Route path="privacy" element={<PrivacyPolicyPage />} />
             <Route path="tos" element={<TermsAndConditionsPage />} />
           </Route>

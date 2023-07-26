@@ -14,6 +14,17 @@ type UseStyles = {
   starIcon: string;
 };
 
+type CreatePeerResponseType = {
+  name: string;
+  email: string;
+  phone: string;
+  ref: string;
+  verificationBy: string;
+  selectedFields: Array<string>;
+  documents: Array<string>;
+  skills: Array<string>;
+};
+
 type UseStylesType = (
   params: void,
   options?: UseStylesOptions<string>
@@ -23,29 +34,29 @@ type UseStylesType = (
   theme: MantineTheme;
 };
 
-export type Document = {
+type Document = {
   document: File | undefined;
   documentTag: string | null;
 };
 
-export type Peer = {
+type Peer = {
   email: string;
   name: string;
   peerType: string;
   phone: string;
   workExperience: string;
-  _id: string;
+  _id?: string;
 };
 
-export interface IWorkExperienceVerification {
-  workExId: string;
+type WorkExperienceVerification = {
+  id: string;
   image: string | null;
   designation: string;
   companyName: string;
   isVerified: boolean;
-}
+};
 
-export interface ISearchListObject {
+type SearchListObject = {
   createdAt: string;
   descriptionTags: string[];
   firstName: string;
@@ -58,20 +69,30 @@ export interface ISearchListObject {
   designation: string | undefined;
   rating: number | undefined;
   verified: boolean | undefined;
-}
-
-export interface ISearchListContentType {
-  results: ISearchListObject[];
-  classes: UseStyles;
-}
-
-export type SearchResponse = {
-  profiles: ISearchListObject[];
 };
 
-export type ResidentialInfoPeerType = {
+type SearchListContentType = {
+  results: SearchListObject[];
+  classes: UseStyles;
+};
+
+type SearchResponse = {
+  profiles: SearchListObject[];
+};
+
+type ResidentialInfoPeerType = {
   name: string;
   email: string;
   peerType: string;
   phone: string;
 };
+
+type ExperienceDocuments = {
+  _id: string;
+  name: string;
+  type: string;
+  privateUrl: string;
+  workExperience: string;
+};
+
+type ExperienceDetailsModal = 'Verify Experience' | 'Show Documents' | 'Show Skills' | null;

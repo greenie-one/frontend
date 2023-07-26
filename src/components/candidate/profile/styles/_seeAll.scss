@@ -50,7 +50,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
   font-weight: 600;
   font-size: 20px;
   line-height: 24px;
@@ -103,7 +103,8 @@
       font-size: 12px;
       color: $gray;
       height: 24px;
-      width: 100px;
+      width: max-content;
+      padding-inline: 1.5rem;
       background: $white;
       border-radius: 34px;
       background-color: #f4f4f4;
@@ -130,6 +131,24 @@
 
         &:hover {
           background: $white;
+        }
+      }
+
+      .skill-actions-btns {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+
+        .action-btns {
+          font-size: 1.2rem;
+          display: grid;
+          place-items: center;
+          aspect-ratio: 1;
+          width: 1.8rem;
+          border-radius: 50%;
+          margin-top: 0.5rem;
+          color: #697082;
+          border: 1px solid #c1c1c1;
         }
       }
 
@@ -289,36 +308,33 @@
     .greenBtn {
       background: $green;
       color: $white;
+      margin-top: 1rem;
       &:hover {
         opacity: 0.9;
         background: $green;
       }
     }
+
+    .checkbox-box {
+      display: flex;
+
+      .tearms-conditions {
+        margin-left: 0.75rem;
+        color: $gray;
+        margin-bottom: 1rem;
+      }
+    }
+
     .disabledBtn {
       background: $lightGray;
       color: $gray;
       opacity: 0.6;
+      margin-top: 1rem;
 
       &:hover {
         background: $lightGray;
       }
     }
-  }
-}
-
-.checkbox-box {
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 27px;
-  color: $gray;
-  display: flex;
-  margin-bottom: 30px;
-  text-align: left;
-
-  .tearms-conditions {
-    margin-left: 12px;
   }
 }
 
@@ -346,6 +362,7 @@
     img {
       margin-bottom: 16px;
       max-width: 200px;
+      max-height: 200px;
     }
     .left-img-box {
       .verified-document-name {
@@ -445,7 +462,7 @@
     }
     .primaryBtn {
       width: 30%;
-      margin-top: 24px;
+      margin-top: 2rem;
     }
   }
 }
@@ -513,6 +530,14 @@
     grid-template-columns: 100%;
     img {
       margin: 0 auto;
+    }
+
+    .tearms-conditions {
+      font-size: 14px;
+    }
+
+    .policy {
+      font-size: 12px;
     }
   }
 

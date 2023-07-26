@@ -2,9 +2,8 @@ import { Text, Box, Button } from '@mantine/core';
 import { MdVerified } from 'react-icons/md';
 import location from '../../assets/location.png';
 import { CgSandClock } from 'react-icons/cg';
-import { IResidentialInfoCardProps } from '../../types/ProfileCardProps';
 
-export const ResidentialInfoCard: React.FC<IResidentialInfoCardProps> = ({
+export const ResidentialInfoCard: React.FC<ResidentialInfoCardProps> = ({
   address_line_1,
   address_line_2,
   landmark,
@@ -35,10 +34,10 @@ export const ResidentialInfoCard: React.FC<IResidentialInfoCardProps> = ({
           )}
         </Box>
       </Box>
-      <Box>
+      <Box className="card-footer">
         <Text className="since-text">Since</Text>
         <Text className="tenure">
-          {start_date.toString().substring(0, 4)} - {end_date.toString().substring(0, 4)}
+          {start_date?.toString().substring(3, 15)} - {end_date?.toString().substring(3, 15)}
         </Text>
       </Box>
     </Box>

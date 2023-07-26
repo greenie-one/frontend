@@ -1,44 +1,45 @@
 import { useState, useReducer } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, TextInput, createStyles, Flex, List, Drawer, em, rem, Menu, Divider, Group, Text } from '@mantine/core';
+import {
+  Box,
+  TextInput,
+  createStyles,
+  Flex,
+  List,
+  Drawer,
+  em,
+  rem,
+  Menu,
+  Divider,
+  Group,
+  Text,
+  Modal,
+  Button,
+} from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 import { Link, useLocation } from 'react-router-dom';
 import { MdVerified, MdOutlineMenuOpen, MdOutlineClose } from 'react-icons/md';
 import { GoSearch } from 'react-icons/go';
 import { AiOutlineBell, AiFillCaretDown } from 'react-icons/ai';
-import JohnMarston from '../assets/johnMarston.png';
+import emptyProfile from '../assets/emptyProfile.png';
 import { SearchList } from './search_list';
 import { useDebounce } from '../../../../utils/hooks/useDebounce';
 import { BiUserCircle } from 'react-icons/bi';
 import { RiSettings3Line } from 'react-icons/ri';
 import { MdExitToApp, MdOutlineLiveHelp, MdOutlineLock } from 'react-icons/md';
 import { useSettingsContext } from '../../../settings/context/SettingsContext';
-import { useProfileContext } from '../context/ProfileContext';
 import { showLoadingNotification, showSuccessNotification } from '../../../../utils/functions/showNotification';
 import { useGlobalContext } from '../../../../context/GlobalContext';
-import { DrawerAction, DrawerState } from '../types/ProfileActions';
+import noNotification from '../assets/noNotifications.png';
+import { confirmationModalStyle } from '../../../settings/styles/articleContentStyles';
 
-const notificationsData = [
-  {
-    imgUrl: JohnMarston,
-    heading: 'Your request to verify skill sent',
-    subHeading: 'Honestrly, your energy is infections. I wish I could work with someone like you.',
-  },
-  {
-    imgUrl: JohnMarston,
-    heading: 'Request to verify address',
-    subHeading: 'Albert Mereno is asking you to verify your account',
-  },
-  {
-    imgUrl: JohnMarston,
-    heading: 'Help Jeremy verify his skills',
-    subHeading: 'Verify his skills as a colleague and help Jeremy grow on Greenie',
-  },
-  {
-    imgUrl: JohnMarston,
-    heading: 'Request to verify your ID',
-    subHeading: 'Esther Smith is asking you to verify your address proof',
-  },
-];
+type notificationType = {
+  imgUrl: string;
+  heading: string;
+  subHeading: string;
+};
+
+const notificationsData: notificationType[] = [];
 
 export const Navbar = () => {
   const { classes } = useStyles();
@@ -46,12 +47,12 @@ export const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [showSearchList, setShowSearchList] = useState<boolean>(false);
   const { setShowDetailsId } = useSettingsContext();
-  const { setIsLoading, scrollToTop } = useProfileContext();
   const navigate = useNavigate();
-  const { authClient } = useGlobalContext();
+  const { authClient, scrollToTop, profileData } = useGlobalContext();
+  const { classes: modalStyles } = confirmationModalStyle();
+  const [opened, { open, close }] = useDisclosure(false);
 
   const removeAuthTokens = () => {
-    setIsLoading(true);
     showLoadingNotification({ title: 'Signing Out', message: 'Please wait while we sign you out' });
 
     setTimeout(() => {
@@ -67,10 +68,14 @@ export const Navbar = () => {
     }, 1100);
   };
 
+  const handleConfirmation = () => {
+    close();
+    removeAuthTokens();
+  };
+
   const location = useLocation();
   const currentUrl = location.pathname + location.search;
-  const isProfilePage = currentUrl === '/profile';
-  const isProfileSettingsPage = currentUrl === '/profile/settings';
+  const isProfileSettingsPage = currentUrl === '/candidate/profile/settings';
   const debouncedValue = useDebounce(searchQuery, 250);
 
   const drawerReducer = (state: DrawerState, action: DrawerAction): DrawerState => {
@@ -112,9 +117,43 @@ export const Navbar = () => {
 
   return (
     <header>
+      <Modal
+        title="Confirmation"
+        padding="xl"
+        radius="lg"
+        size="lg"
+        centered
+        classNames={modalStyles}
+        onClose={close}
+        opened={opened}
+      >
+        <Box className={modalStyles.confirmationMsgWrapper}>
+          <Text className={modalStyles.confirmationMsg}>Are you sure you want to sign out?</Text>
+
+          <Box className={modalStyles.modalBtnsContainer}>
+            {[
+              { variant: 'filled', text: 'Confirm', action: handleConfirmation },
+              { variant: 'outline', text: 'Cancel', action: close },
+            ].map((btns, idx) => (
+              <Button
+                key={idx}
+                className={modalStyles.modalActionBtns}
+                onClick={btns.action}
+                size="sm"
+                type="button"
+                radius="xl"
+                variant={btns.variant}
+                color="teal"
+              >
+                {btns.text}
+              </Button>
+            ))}
+          </Box>
+        </Box>
+      </Modal>
       <Box className="navbar">
         <Box className="nav-container">
-          <Link to={'/profile'} className="logo">
+          <Link to={'/candidate/profile'} className="logo">
             <span className="greenie">Greenie</span>
             <span className="nav-verified">
               <MdVerified size={'20px'} color="#9fe870" />
@@ -163,21 +202,31 @@ export const Navbar = () => {
                     })}
                   </Box>
                 ) : (
-                  <Box>No Notifications yet</Box>
+                  <Box className="no-notification-box">
+                    <img src={noNotification} alt="" />
+                    <Text className="no-notification-text">Coming soon</Text>
+                  </Box>
                 )}
               </Menu.Dropdown>
             </Menu>
             <Menu trigger="hover" position="bottom-end">
               <Menu.Target>
-                <Group>
-                  <img className="profile-picture" src={JohnMarston} alt="Profile Piture" />
-                  <AiFillCaretDown className="down-arrow-icon" />
-                </Group>
+                {profileData.profilePic ? (
+                  <Group>
+                    <img className="profile-picture" src={profileData.profilePic} alt="Profile Piture" />
+                    <AiFillCaretDown className="down-arrow-icon" />
+                  </Group>
+                ) : (
+                  <Group>
+                    <img className="profile-picture" src={emptyProfile} alt="Profile Piture" />
+                    <AiFillCaretDown className="down-arrow-icon" />
+                  </Group>
+                )}
               </Menu.Target>
               <Menu.Dropdown className="profile-dropdown-menu">
                 <List className="navOptionsList">
                   <li>
-                    <Link to={'/profile'} className="navOptionItems">
+                    <Link to={'/candidate/profile'} className="navOptionItems">
                       <span className="navOptionsIcon">
                         <BiUserCircle />
                       </span>
@@ -186,7 +235,7 @@ export const Navbar = () => {
                   </li>
 
                   <li>
-                    <Link to={'/profile/settings'} className="navOptionItems">
+                    <Link to={'/candidate/profile/settings'} className="navOptionItems">
                       <span className="navOptionsIcon">
                         <RiSettings3Line />
                       </span>
@@ -200,7 +249,7 @@ export const Navbar = () => {
                     <span className="navOptionsText">Help</span>
                   </li>
                   <Divider className="divider" my={'1rem'} />
-                  <button className="navOptionItems" onClick={removeAuthTokens}>
+                  <button className="navOptionItems" onClick={open}>
                     <span className="navOptionsIcon">
                       <MdExitToApp />
                     </span>
@@ -210,7 +259,7 @@ export const Navbar = () => {
               </Menu.Dropdown>
             </Menu>
 
-            {!state.firstDrawerOpened && isProfilePage && (
+            {!state.firstDrawerOpened && !isProfileSettingsPage && (
               <span className={classes.menuOpenBtn}>
                 <MdOutlineMenuOpen role="button" onClick={() => dispatch({ type: 'OPEN_FIRST_DRAWER' })} />
               </span>
@@ -241,7 +290,7 @@ export const Navbar = () => {
           </Flex>
           <List className={classes.navOptionsList}>
             <li>
-              <Link to={'/profile'} className={classes.navOptionItems}>
+              <Link to={'/candidate/profile'} className={classes.navOptionItems}>
                 <span className={classes.navOptionsIcon}>
                   <BiUserCircle />
                 </span>
@@ -250,7 +299,7 @@ export const Navbar = () => {
             </li>
 
             <li>
-              <Link to={'/profile/settings'} className={classes.navOptionItems}>
+              <Link to={'/candidate/profile/settings'} className={classes.navOptionItems}>
                 <span className={classes.navOptionsIcon}>
                   <RiSettings3Line />
                 </span>
@@ -265,7 +314,7 @@ export const Navbar = () => {
             </li>
           </List>
           <Divider className="divider" />
-          <button className={classes.signOutBtn} onClick={removeAuthTokens}>
+          <button className={classes.signOutBtn} onClick={open}>
             <span className={classes.signOut}>
               <MdExitToApp />
             </span>
@@ -284,19 +333,28 @@ export const Navbar = () => {
         <nav className={classes.mobileNavOptionsContainer}>
           <Flex justify="space-between" align="center" direction="row" className={classes.logo}>
             <Box>
-              <Link to={'/profile'}>
+              <Link to={'/candidate/profile'}>
                 <span className={classes.mobileGreenie}>Greenie</span>
                 <span className={classes.mobileVerified}>
                   <MdVerified />
                 </span>
               </Link>
             </Box>
-            <Box className="drawer-right-section">
-              <AiOutlineBell size={'22px'} className="bell-icon" />
-              <Link to={'/profile'}>
-                <img className="profile-picture" src={JohnMarston} alt="Profile Piture" />
-              </Link>
-            </Box>
+            {profileData.profilePic ? (
+              <Box className="drawer-right-section">
+                <AiOutlineBell size={'22px'} className="bell-icon" />
+                <Link to={'/candidate/profile'}>
+                  <img className="profile-picture" src={profileData.profilePic} alt="Profile Piture" />
+                </Link>
+              </Box>
+            ) : (
+              <Box className="drawer-right-section">
+                <AiOutlineBell size={'22px'} className="bell-icon" />
+                <Link to={'/candidate/profile'}>
+                  <img className="profile-picture" src={emptyProfile} alt="Profile Piture" />
+                </Link>
+              </Box>
+            )}
 
             <span className={classes.menuCloseBtn}>
               <MdOutlineClose role="button" onClick={() => dispatch({ type: 'CLOSE_SECOND_DRAWER' })} />
@@ -324,7 +382,7 @@ export const Navbar = () => {
               </li>
             </List>
             <Divider className="divider" />
-            <button className={classes.signOutBtn} onClick={removeAuthTokens}>
+            <button className={classes.signOutBtn} onClick={open}>
               <span className={classes.signOut}>
                 <MdExitToApp />
               </span>
@@ -433,8 +491,8 @@ const useStyles = createStyles(() => ({
     flexDirection: 'row',
     alignItems: 'center',
     gap: '8px',
-    paddingInline: em(15),
-    paddingBlock: em(12),
+    paddingInline: em(8),
+    paddingBlock: em(8),
     borderRadius: em(8),
     transition: 'background 150ms linear',
 
@@ -448,8 +506,8 @@ const useStyles = createStyles(() => ({
     display: 'grid',
     placeItems: 'center',
     fontSize: rem(20),
-    height: '50px',
-    width: '50px',
+    height: '40px',
+    width: '40px',
     borderRadius: '50%',
     background: '#F5F5F5',
   },
@@ -459,8 +517,8 @@ const useStyles = createStyles(() => ({
     display: 'grid',
     placeItems: 'center',
     fontSize: rem(25),
-    height: '50px',
-    width: '50px',
+    height: '40px',
+    width: '40px',
   },
 
   navOptionsText: {

@@ -50,7 +50,7 @@ $dark: #191919;
       font-weight: 500;
       line-height: 28px;
       letter-spacing: -0.800000011920929px;
-      text-align: left;
+      text-align: center;
       color: $dark;
     }
     .address-verification-details-address {
@@ -59,11 +59,12 @@ $dark: #191919;
       font-weight: 400;
       line-height: 20px;
       letter-spacing: -0.10000000149011612px;
-      text-align: left;
+      text-align: center;
       color: $gray;
-      width: 151px;
       margin-block: 0.5rem;
       margin-bottom: 2rem;
+      max-width: 200px;
+      text-align: center;
     }
   }
 

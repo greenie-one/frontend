@@ -1,12 +1,10 @@
 import { BsArrowLeft } from 'react-icons/bs';
 import { Text, Box } from '@mantine/core';
-import { useProfileContext } from '../../profile/context/ProfileContext';
 import { Folder } from './Folder';
 import { useDocDepotContext } from '../context/DocDepotContext';
 
 export const DocDepotExpPage = () => {
-  const { setDocDepotActivePage } = useProfileContext();
-  const { experienceDocuments } = useDocDepotContext();
+  const { experienceDocuments, setDocDepotActivePage } = useDocDepotContext();
 
   return (
     <Box>
@@ -15,10 +13,10 @@ export const DocDepotExpPage = () => {
         <Text className="text">Work Experience({experienceDocuments.length})</Text>
       </Box>
       <Box className="folder-wrapper">
-        {experienceDocuments.map(({ _id, name }, index) => {
+        {experienceDocuments.map(({ _id, name, privateUrl }, index) => {
           return (
             <Box key={index}>
-              <Folder id={_id} name={name} isFolder={false} />
+              <Folder id={_id} name={name} isFolder={false} privateUrl={privateUrl} />
             </Box>
           );
         })}

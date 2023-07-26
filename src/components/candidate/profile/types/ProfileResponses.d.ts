@@ -1,122 +1,124 @@
-export interface IDocument {
+type DocsType = {
   id_type: string;
   isVerified: boolean;
-}
-
-export type DocumentsResponse = {
-  ids: IDocument[];
 };
 
-export interface IUserProfileResponse {
-  _id: string;
+type DocumentsResponse = {
+  ids: DocsType[];
+};
+
+type UserProfileType = {
+  id: string;
   firstName: string;
   lastName: string;
   bio: string;
   descriptionTags: string[];
-}
-
-export interface IWorkExperienceResponse {
-  workExpId: string;
-  image: string | null;
-  designation: string;
-  companyName: string;
-  email: string;
-  companyId: string;
-  companyStartDate: string;
-  companyEndDate: string;
-  workMode: string;
-  workType: string;
-  isVerified: boolean;
-  verifiedBy: [] | null;
-  companyType: string;
-}
-
-export type workExperienceResponse = {
-  workExperinces: IWorkExperienceResponse[];
+  profilePic?: string;
+  greenieId?: string;
 };
 
-export interface IResidendialInfoResponse {
-  _id: string;
+type WorkExperience = {
+  companyId?: string;
+  companyName: string;
+  companyType: string;
+  dateOfJoining: string;
+  dateOfLeaving: string;
+  department: string;
+  designation: string;
+  email: string;
+  id: string;
+  image?: string | null;
+  linkedInUrl?: string;
+  noOfVerifications: 0;
+  salary: string;
+  workMode: string;
+  workType: string;
+};
+
+type workExperienceResponse = {
+  workExperiences: WorkExperience[];
+};
+
+type ResidentialInfoResponse = {
+  id: string;
   address_line_1: string;
   address_line_2: string;
-  typeOfAddress: string;
+  address_type: string;
   landmark: string;
   pincode: number;
   city: string;
   state: string;
   country: string;
-  start_date: Date;
-  end_date: Date;
+  start_date: Date | null;
+  end_date: Date | null;
   isVerified: boolean;
-}
+};
 
-export type ResidentialInfoRes = {
+type ResidentialInfoRes = {
   residentialInfo: {
-    residentialInfos: IResidendialInfoResponse[];
+    residentialInfos: ResidentialInfoResponse[];
   };
 };
 
-export interface ISkillResponse {
-  _id: string;
+type SkillResponse = {
+  id: string;
   skillName: string;
   expertise: string;
   isVerified: boolean;
-}
-
-export type SkillResponse = {
-  skills: ISkillResponse[];
+  workExperience: string;
 };
 
-export interface ISkill {
+type Skill = {
   skillName: string;
   expertise: string;
   workExperience: string;
-}
+};
 
-export interface IAadharVerificationResponse {
+type AadharVerificationResponse = {
   requestId: string;
   taskId: string;
-}
+};
 
-export type IAddAadhar = {
+type AddAadhar = {
   request_id: string;
   taskId: string;
 };
 
-export type verifyAadhar = {
+type verifyAadhar = {
   success: boolean;
   aadhar: string;
 };
 
-export type verifyPan = {
+type verifyPan = {
   success: boolean;
   pan: string;
 };
-export type verifyLicence = {
+
+type verifyLicence = {
   success: boolean;
   driving_licence: string;
 };
 
-export type createExperience = {
+type createExperience = {
   success: boolean;
-  workExperienceId: string;
+  id: string;
 };
 
-export type createResidentialInfo = {
+type createResidentialInfo = {
   success: boolean;
   residentialInfo: string;
 };
 
-export type createSkill = {
+type createSkill = {
   success: boolean;
   skill: string;
 };
 
-export type UpdateResponse = {
+type UpdateResponse = {
   success: boolean;
   message: string;
 };
-export type DeleteResponse = {
+type DeleteResponse = {
   success: boolean;
   message: string;
 };
@@ -128,4 +130,13 @@ type addPeerResponse = {
   phone: string;
   workExperience: string;
   _id: string;
+};
+
+type SentRequestsResponseType = {
+  id: string;
+  email: string;
+  name: string;
+  phone: string;
+  isVerificationCompleted: boolean;
+  workExperience: string;
 };

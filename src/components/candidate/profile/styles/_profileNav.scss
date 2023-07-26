@@ -34,8 +34,13 @@
 }
 @media screen and (max-width: 512px) {
   .profileNav {
+    padding: 1rem;
     .profile-btn-wrapper {
       width: 100%;
+      grid-template-columns: 25% 30% 35%;
+      button {
+        font-size: 12px;
+      }
     }
   }
 }

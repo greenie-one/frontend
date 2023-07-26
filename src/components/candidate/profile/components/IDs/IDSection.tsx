@@ -2,7 +2,6 @@ import { Text, Box, Button, Modal, Title, Checkbox } from '@mantine/core';
 import { IDCard } from './IDCard';
 import { MdOutlineEdit, MdVerified } from 'react-icons/md';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
-import { useProfileContext } from '../../context/ProfileContext';
 import { Carousel } from '@mantine/carousel';
 import janeCooper from '../../assets/janeCooper.png';
 import johnMarston from '../../assets/johnMarston.png';
@@ -13,25 +12,29 @@ import panLogo from '../../assets/pan-logo.png';
 import licenceLogo from '../../assets/licence-logo.png';
 import updateIdTrophy from '../../assets/updateIdTrophy.png';
 import React, { useState } from 'react';
+import { useGlobalContext } from '../../../../../context/GlobalContext';
+import { useNavigate } from 'react-router-dom';
+import { UndertakingText } from '../UndertakingText';
 
 export const IDSection: React.FC = () => {
+  const navigate = useNavigate();
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
-  const { documentsData, scrollToTop, setCandidateActivePage } = useProfileContext();
+  const { IDs, scrollToTop } = useGlobalContext();
   const [isAgreed, setIsAgreed] = useState<boolean>(false);
   const [checked, setChecked] = useState<boolean>(false);
   const handlePageChange = (documentsType: string) => {
     if (documentsType === 'AADHAR') {
-      setCandidateActivePage('Verify Aadhar Card');
       scrollToTop();
+      navigate('/candidate/profile/IDs/verify/Aadhar');
     }
     if (documentsType === 'PAN') {
-      setCandidateActivePage('Verify PAN Card');
       scrollToTop();
+      navigate('/candidate/profile/IDs/verify/pan');
     }
     if (documentsType === 'DRIVING_LICENSE') {
-      setCandidateActivePage('Verify Licence');
       scrollToTop();
+      navigate('/candidate/profile/IDs/verify/licence');
     }
   };
 
@@ -43,8 +46,16 @@ export const IDSection: React.FC = () => {
 
   return (
     <section className="verificationId-section  container">
-      {isAgreed && documentsData.length === 0 && (
-        <Modal className="modal" size={'55%'} fullScreen={isMobile} opened={opened} onClose={onClose} centered>
+      {isAgreed && IDs.length === 0 && (
+        <Modal
+          radius={'lg'}
+          className="modal"
+          size={'55%'}
+          fullScreen={isMobile}
+          opened={opened}
+          onClose={onClose}
+          centered
+        >
           <Box className="ids-modal">
             <Text className="title">Select ID that you want to verify</Text>
             <Box className="ids-wrapper">
@@ -61,8 +72,16 @@ export const IDSection: React.FC = () => {
           </Box>
         </Modal>
       )}
-      {isAgreed && documentsData.length > 0 && (
-        <Modal className="modal" size={'65%'} fullScreen={isMobile} opened={opened} onClose={onClose} centered>
+      {isAgreed && IDs.length > 0 && (
+        <Modal
+          radius={'lg'}
+          className="modal"
+          size={'65%'}
+          fullScreen={isMobile}
+          opened={opened}
+          onClose={onClose}
+          centered
+        >
           <Box className="ids-modal">
             <Text className="title">Select ID that you want to verify</Text>
             <Box className="ids-wrapper">
@@ -79,36 +98,43 @@ export const IDSection: React.FC = () => {
         </Modal>
       )}
       {!isAgreed && (
-        <Modal className="modal" size={'60%'} fullScreen={isMobile} opened={opened} onClose={onClose} centered>
+        <Modal
+          radius={'lg'}
+          className="modal"
+          size={'60%'}
+          fullScreen={isMobile}
+          opened={opened}
+          onClose={onClose}
+          centered
+        >
           <Box className="disclaimer-modal">
-            <Title className="disclaimer-heading">Disclaimer</Title>
+            <Title className="disclaimer-heading">Undertaking</Title>
             <Text className="disclaimer-subHeading">Verifying IDs on Greenie</Text>
-            <Button className="primaryBtn" disabled={!checked} onClick={() => setIsAgreed(!isAgreed)}>
-              I Agree
-            </Button>
+
             <Box className="checkbox-box">
               <Checkbox checked={checked} onChange={() => setChecked(!checked)} className="checkbox" color="teal" />
               <Text className="tearms-conditions">
-                I understand that during the sign-up process and while using this website, I may be required to provide
-                certain personal information, including but not limited to my name, email address, contact details, and
-                any other information deemed necessary for registration and website usage.
+                I have read the undertaking and i authorise Greenie to collect information on my behalf.
               </Text>
             </Box>
-            <Text className="policy">Click to view Data and Privacy Policy</Text>
+            <UndertakingText />
+            <Button className="primaryBtn" disabled={!checked} onClick={() => setIsAgreed(!isAgreed)}>
+              I Agree
+            </Button>
           </Box>
         </Modal>
       )}
 
       <Box className="header">
         <Box>
-          <Text className="heading">{`Verification ID (${documentsData.length})`}</Text>
+          <Text className="heading">{`Verification ID (${IDs.length})`}</Text>
           <Text className="subheading">All government IDs, personal verification IDs etc.</Text>
         </Box>
-        {documentsData.length > 0 && (
+        {IDs.length > 0 && (
           <>
             <Box className="header-links">
               <Button leftIcon={<MdOutlineEdit />} onClick={open} className="edit-btn">
-                Edit Section
+                Add ID
               </Button>
             </Box>
             <Box className="edit-icon" onClick={open}>
@@ -118,21 +144,27 @@ export const IDSection: React.FC = () => {
         )}
       </Box>
 
-      {documentsData.length === 0 && (
+      {IDs.length === 0 && (
         <Box className="verify-id-no-data-wrapper">
           <Box className="verify-id-img">
             <Box className="verify-data-no-data-card-wrapper">
               <Box className="hidden-card">
                 <img className="card-img" src={janeCooper} alt="Profile Picture" />
-                <Text className="card-text">Jane Cooper </Text>
+                <Text className="card-text">
+                  Jane Cooper <MdVerified className="verified-icon" />{' '}
+                </Text>
               </Box>
               <Box className="card">
                 <img className="card-img" src={johnMarston} alt="Profile Picture" />
-                <Text className="card-text">{`John Marston`} </Text>
+                <Text className="card-text">
+                  John Marston <MdVerified className="verified-icon" />
+                </Text>
               </Box>
               <Box className="hidden-card">
                 <img className="card-img" src={flyoMiles} alt="Profile Picture" />
-                <Text className="card-text">Floyd Miles</Text>
+                <Text className="card-text">
+                  Floyd Miles <MdVerified className="verified-icon" />
+                </Text>
               </Box>
             </Box>
           </Box>
@@ -148,9 +180,9 @@ export const IDSection: React.FC = () => {
         </Box>
       )}
 
-      {documentsData.length === 1 && (
+      {IDs.length === 1 && (
         <Box className="singleData-wrapper">
-          <IDCard documentName={documentsData[0].id_type} isVerified={true} />
+          <IDCard documentName={IDs[0].id_type} isVerified={true} />
           <Box className="single-data-box">
             <img src={updateIdTrophy} alt="Update Id" />
             <Box className="verify-id-text">
@@ -163,7 +195,7 @@ export const IDSection: React.FC = () => {
           </Box>
         </Box>
       )}
-      {documentsData.length > 1 && (
+      {IDs.length > 1 && (
         <Carousel
           withIndicators={false}
           slideSize="33.33%"
@@ -176,7 +208,7 @@ export const IDSection: React.FC = () => {
             { maxWidth: 'md', slideSize: '50%' },
           ]}
         >
-          {documentsData.map(({ id_type }, index) => (
+          {IDs.map(({ id_type }, index) => (
             <Carousel.Slide key={index}>
               <Box>
                 <IDCard documentName={id_type} isVerified={true} />

@@ -3,7 +3,11 @@ import { useForm, isNotEmpty } from '@mantine/form';
 import { HttpClient, Result } from '../../../../utils/generic/httpClient';
 import { useGlobalContext } from '../../../../context/GlobalContext';
 import { docDepotAPIList } from '../../../../assets/api/ApiList';
-import { showErrorNotification, showSuccessNotification } from '../../../../utils/functions/showNotification';
+import {
+  showErrorNotification,
+  showSuccessNotification,
+  showLoadingNotification,
+} from '../../../../utils/functions/showNotification';
 
 const DocDepotContext = createContext<DocDepotContextType>({} as DocDepotContextType);
 export const useDocDepotContext = () => useContext(DocDepotContext);
@@ -11,11 +15,11 @@ export const useDocDepotContext = () => useContext(DocDepotContext);
 export const DocDepotContextProvider: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
-  const documentForm = useForm<docDepotFormType>({
+  const documentForm = useForm<DocDepotFormType>({
     initialValues: {
       name: '',
       type: '',
-      private_url: '',
+      privateUrl: '',
     },
 
     validate: {
@@ -23,14 +27,15 @@ export const DocDepotContextProvider: React.FC<{
       type: isNotEmpty('Please select document type'),
     },
   });
-  const { authClient } = useGlobalContext();
+  const { authClient, forceRender, setForceRender } = useGlobalContext();
   const authTokens = authClient.getAccessToken();
-  const [educationDocuments, setEducationDocument] = useState<IDocumentType[]>([]);
-  const [experienceDocuments, setExperienceDocument] = useState<IDocumentType[]>([]);
-  const [otherDocuments, setOtherDocument] = useState<IDocumentType[]>([]);
+  const [educationDocuments, setEducationDocument] = useState<DocumentResponseType[]>([]);
+  const [experienceDocuments, setExperienceDocument] = useState<DocumentResponseType[]>([]);
+  const [otherDocuments, setOtherDocument] = useState<DocumentResponseType[]>([]);
+  const [docDepotActivePage, setDocDepotActivePage] = useState<number>(0);
 
   const getExperienceDocument = async () => {
-    const res: Result<IDocumentType[]> = await HttpClient.callApiAuth(
+    const res: Result<DocumentResponseType[]> = await HttpClient.callApiAuth(
       {
         url: `${docDepotAPIList.getAllDocuments}/work`,
         method: 'GET',
@@ -45,7 +50,7 @@ export const DocDepotContextProvider: React.FC<{
   };
 
   const getEducationDocument = async () => {
-    const res: Result<IDocumentType[]> = await HttpClient.callApiAuth(
+    const res: Result<DocumentResponseType[]> = await HttpClient.callApiAuth(
       {
         url: `${docDepotAPIList.getAllDocuments}/education`,
         method: 'GET',
@@ -60,7 +65,7 @@ export const DocDepotContextProvider: React.FC<{
   };
 
   const getOtherDocument = async () => {
-    const res: Result<IDocumentType[]> = await HttpClient.callApiAuth(
+    const res: Result<DocumentResponseType[]> = await HttpClient.callApiAuth(
       {
         url: `${docDepotAPIList.getAllDocuments}/other`,
         method: 'GET',
@@ -75,7 +80,8 @@ export const DocDepotContextProvider: React.FC<{
   };
 
   const moveDocument = async (id: string, type: string) => {
-    const res: Result<updateDocumentResponseType> = await HttpClient.callApiAuth(
+    showLoadingNotification({ title: 'Please Wait', message: 'Wait while we move your document' });
+    const res: Result<UpdateDocumentResponseType> = await HttpClient.callApiAuth(
       {
         url: `${docDepotAPIList.updateDocument}/${id}`,
         method: 'PATCH',
@@ -84,6 +90,7 @@ export const DocDepotContextProvider: React.FC<{
       authClient
     );
     if (res.ok) {
+      setForceRender(!forceRender);
       showSuccessNotification({ title: 'Success !', message: 'Document moved to another folder !' });
     } else {
       showErrorNotification(res.error.code);
@@ -91,7 +98,8 @@ export const DocDepotContextProvider: React.FC<{
   };
 
   const deleteDocument = async (id: string) => {
-    const res: Result<deleteDocumentResponseType> = await HttpClient.callApiAuth(
+    showLoadingNotification({ title: 'Please Wait', message: 'Wait while we delete the document' });
+    const res: Result<DeleteDocumentResponseType> = await HttpClient.callApiAuth(
       {
         url: `${docDepotAPIList.deleteDocument}/${id}`,
         method: 'DELETE',
@@ -99,8 +107,8 @@ export const DocDepotContextProvider: React.FC<{
       authClient
     );
     if (res.ok) {
+      setForceRender(!forceRender);
       showSuccessNotification({ title: 'Success !', message: 'Document deleted successfully !' });
-      close();
     } else {
       showErrorNotification(res.error.code);
     }
@@ -112,7 +120,7 @@ export const DocDepotContextProvider: React.FC<{
       getEducationDocument();
       getOtherDocument();
     }
-  }, []);
+  }, [forceRender]);
 
   return (
     <DocDepotContext.Provider
@@ -123,6 +131,8 @@ export const DocDepotContextProvider: React.FC<{
         experienceDocuments,
         educationDocuments,
         otherDocuments,
+        docDepotActivePage,
+        setDocDepotActivePage,
       }}
     >
       {children}

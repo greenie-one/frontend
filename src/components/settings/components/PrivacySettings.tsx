@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Title, Button, Modal, Text, PasswordInput, createStyles, rem, em } from '@mantine/core';
 import { privacySettingsStyles, detailsFormStyles, confirmationModalStyle } from '../styles/articleContentStyles';
 import { useDisclosure } from '@mantine/hooks';
-import { MdOutlineHelpCenter } from 'react-icons/md';
+import { MdOutlineInfo } from 'react-icons/md';
 import { useSettingsContext } from '../context/SettingsContext';
 
 export const PrivacySettings: React.FC = (): JSX.Element => {
@@ -24,11 +24,7 @@ export const PrivacySettings: React.FC = (): JSX.Element => {
   const { classes: inputClasses } = inputStyles();
 
   const handleOpenModal = () => {
-    if (
-      !privacySettingsForm.validateField('currentPassword').hasError &&
-      !privacySettingsForm.validateField('newPassword').hasError &&
-      !privacySettingsForm.validateField('confirmPassword').hasError
-    ) {
+    if (!privacySettingsForm.validate().hasErrors) {
       open();
     }
   };
@@ -39,9 +35,9 @@ export const PrivacySettings: React.FC = (): JSX.Element => {
   };
 
   const onClose = () => {
-    privacySettingsForm.values.currentPassword = '';
-    privacySettingsForm.values.newPassword = '';
-    privacySettingsForm.values.confirmPassword = '';
+    privacySettingsForm.setFieldValue('currentPassword', '');
+    privacySettingsForm.setFieldValue('newPassword', '');
+    privacySettingsForm.setFieldValue('confirmPassword', '');
     close();
   };
 
@@ -89,19 +85,16 @@ export const PrivacySettings: React.FC = (): JSX.Element => {
       <form className={formClasses.detailsCategory}>
         <Title className={formClasses.detailsCategoryTitle}>Change password</Title>
         <PasswordInput
-          withAsterisk
           label="Enter current password"
           classNames={inputClasses}
           {...privacySettingsForm.getInputProps('currentPassword')}
         />
         <PasswordInput
-          withAsterisk
           label="Enter new password"
           classNames={inputClasses}
           {...privacySettingsForm.getInputProps('newPassword')}
         />
         <PasswordInput
-          withAsterisk
           label="Confirm new password"
           classNames={inputClasses}
           {...privacySettingsForm.getInputProps('confirmPassword')}
@@ -110,7 +103,7 @@ export const PrivacySettings: React.FC = (): JSX.Element => {
           {accountActions.map((actions, idx) => (
             <button key={idx} className={privacyClasses.accountActionBtns}>
               <span className={privacyClasses.accountActionIcon}>
-                <MdOutlineHelpCenter />
+                <MdOutlineInfo />
               </span>
               <span className={privacyClasses.accountActionText}>{actions.action}</span>
             </button>

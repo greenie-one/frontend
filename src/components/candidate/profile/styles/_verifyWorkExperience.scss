@@ -48,7 +48,7 @@
     border: 1px solid $lightGray;
     border-radius: 16px 16px 0px 0px;
     display: grid;
-    grid-template-columns: 25% 30% 30% 15%;
+    grid-template-columns: 22% 25% 15% 25% 10%;
     margin: 0rem auto;
     margin-top: 2rem;
     padding: 1rem;
@@ -61,7 +61,7 @@
     .added-peers {
       border: 1px solid $lightGray;
       display: grid;
-      grid-template-columns: 25% 30% 30% 15%;
+      grid-template-columns: 22% 25% 15% 25% 10%;
       align-items: center;
       justify-content: flex-start;
       padding: 1rem;
@@ -87,11 +87,17 @@
         }
       }
 
+      .peer-email {
+        word-wrap: break-word;
+        max-width: 25ch;
+        font-size: 13px;
+      }
+
       .peer-response {
         text-align: center;
         border-radius: 24px;
         width: 70px;
-        color: rgb(0, 154, 237);
+        color: $blue;
         font-size: 12px;
         font-weight: 600;
         background-color: rgba(135, 235, 218, 0.52);
@@ -106,7 +112,7 @@
         background-color: $lightGray;
         padding: 0.25rem 0rem;
         font-size: 12px;
-        width: 90%;
+        width: 75%;
       }
 
       .peer-remove {
@@ -126,10 +132,22 @@
 }
 
 .experience-details {
+  width: max-content;
+  padding: 2rem;
+  text-align: center;
+  border-radius: 15px;
+  cursor: pointer;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  margin-bottom: 3rem;
+  justify-content: space-between;
+  flex-direction: column;
+  margin-bottom: 2.5rem;
+  border: 1px solid #e1e1e1;
+
+  .pending {
+    border: none;
+    outline: none;
+  }
 
   .company-logo {
     width: 120px;
@@ -146,14 +164,16 @@
   }
 
   .experience-details-text-box {
-    margin-left: 1rem;
+    // margin-left: 1rem;
+    display: grid;
+    place-items: center;
 
     .designation {
       font-family: Inter;
       font-size: 16px;
       font-weight: 400;
       line-height: 19px;
-      letter-spacing: -0.02em;
+      // letter-spacing: -0.02em;
       margin-bottom: 0.5rem;
     }
     .company-name {
@@ -161,7 +181,7 @@
       font-size: 16px;
       font-weight: 400;
       line-height: 19px;
-      letter-spacing: -0.02em;
+      // letter-spacing: -0.02em;
       color: #a3a3a3;
       margin-bottom: 0.5rem;
     }
@@ -199,11 +219,11 @@
         font-weight: 500;
         color: $dark;
         border-bottom: 1px solid $lightGray;
-        padding: 1rem;
+        padding: 0.75rem 1rem;
       }
 
       .peer {
-        padding: 0.5rem 0.25rem;
+        padding: 0.35rem 0.65rem;
         border-left: 2px solid white;
         cursor: pointer;
         position: relative;
@@ -211,7 +231,7 @@
         .border-left {
           background-color: $green;
           border-radius: 24px;
-          height: 50px;
+          height: 47px;
           width: 5px;
           position: absolute;
           scale: 0;
@@ -220,13 +240,13 @@
 
         .peer-name {
           font-weight: 500;
-          margin-left: 0.75rem;
-          margin-bottom: 0.25rem;
+          margin-left: 0.85rem;
+          margin-bottom: 0.01rem;
         }
         .peer-type {
           color: $gray;
           font-size: 14px;
-          margin-left: 0.75rem;
+          margin-left: 0.85rem;
           margin-bottom: 0.25rem;
         }
 
@@ -259,7 +279,21 @@
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      padding: 2rem;
+      padding: 1.5rem;
+      position: relative;
+      padding-bottom: 4rem;
+
+      .btn-wrapper {
+        width: 250px;
+
+        .cancel-btn {
+          background: transparent;
+          color: $dark;
+        }
+        position: absolute;
+        bottom: 0;
+        right: 2rem;
+      }
 
       .doc-skill-selector {
         display: grid;
@@ -270,13 +304,14 @@
         background-color: $lightGray;
         padding: 0.25rem;
         border-radius: 0.25rem;
-        margin-bottom: 2rem;
+        margin-bottom: 1rem;
 
         .selector {
-          padding: 0.5rem;
+          padding: 0.25rem;
           border-radius: 0.25rem;
           transition: all 0.1s ease;
           cursor: pointer;
+          font-size: 14px;
 
           &.active {
             background-color: $white;
@@ -337,22 +372,10 @@
     justify-content: flex-start;
     margin-bottom: 3rem;
 
-    .company-logo {
-      width: 100px;
-      height: 100px;
-      border: 1px solid $lightGray;
-      border-radius: 50%;
-      position: relative;
-
-      .verified-icon {
-        position: absolute;
-        bottom: 4px;
-        right: 4px;
-      }
-    }
-
     .experience-details-text-box {
-      margin-left: 1rem;
+      // margin-left: 1rem;
+      display: grid;
+      place-items: center;
 
       .designation {
         font-family: Inter;
@@ -371,27 +394,6 @@
         color: #a3a3a3;
         margin-bottom: 0.5rem;
       }
-    }
-  }
-
-  .note {
-    border: 1px solid $lightGray;
-    border-radius: 0.5rem;
-    display: flex;
-    align-items: center;
-    padding: 0.5rem 1rem;
-    margin-bottom: 2rem;
-
-    .note-heading {
-      margin-left: 0.25rem;
-      margin-right: 0.5rem;
-      color: $dark;
-      font-weight: 500;
-    }
-
-    .text {
-      color: $gray;
-      font-size: 14px;
     }
   }
 }
@@ -517,11 +519,17 @@
     grid-template-columns: 5% 40% 40%;
     align-items: center;
     justify-content: space-between;
-    padding: 1rem;
+    padding: 0.75rem;
     font-size: 14px;
     color: $gray;
   }
 }
+
+.verification-document-name {
+  color: $dark;
+  font-weight: 500;
+}
+
 .selected-attributes {
   border: 1px solid $lightGray;
   border-radius: 0px 0px 24px 24px;
@@ -532,9 +540,20 @@
     grid-template-columns: 5% 90%;
     align-items: center;
     justify-content: space-between;
-    padding: 1rem;
+    padding: 0.75rem;
     font-size: 14px;
     color: $gray;
+
+    .document {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      img {
+        width: 1.75rem;
+        object-fit: cover;
+      }
+    }
   }
 }
 
@@ -613,34 +632,178 @@
     }
   }
 
-  .requesting-peers {
+  .document-list {
     display: grid;
-    grid-template-columns: repeat(3, 32%);
-    align-items: center;
-    justify-content: space-between;
-    .requesting-peer {
-      display: flex;
-      align-items: center;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+
+    .docs-wrapper {
+      display: flex !important;
+      flex-direction: column;
+      gap: 0.25rem;
       justify-content: flex-start;
-      margin-block: 0.5rem;
-      .profile-picture {
-        background: $lighterGray;
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        margin-right: 0.75rem;
+
+      .document-action-heading {
+        margin-bottom: 0;
       }
-      .requesting-peer-text-box {
-        .name {
-          font-weight: 500;
+
+      .docs-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+
+        .document {
+          margin-top: 0;
         }
-        .designation {
-          color: $gray;
-          font-size: 14px;
+      }
+    }
+
+    .document-list {
+      margin-block: 0 !important;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+
+      .document-action-heading {
+        margin-bottom: 0;
+        text-align: center;
+      }
+
+      .skills-wrapper {
+        display: grid;
+        gap: 8px;
+
+        .skill-box {
+          padding: 0.5rem 0.75rem;
+          border-radius: 10px;
+          border: 1px solid #e1e1e1;
+
+          .skill-name {
+            font-weight: 500;
+            font-size: 16px;
+            color: #697082;
+          }
+
+          .expertise {
+            font-size: 14px;
+            color: #697082;
+          }
+        }
+      }
+    }
+
+    .skills-list {
+      margin-block: 0 !important;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+
+      .document-action-heading {
+        margin-bottom: 0;
+        text-align: center;
+      }
+
+      .add-skills-wrapper {
+        display: grid;
+        gap: 8px;
+        padding-block: 0 !important;
+        grid-template-columns: 1fr;
+
+        .add-skill-name {
+          padding: 0.5rem 0.75rem;
+          border: 1px solid #e1e1e1;
+          border-radius: 10px;
+          color: #697082;
+          font-size: 15px;
+          font-weight: 500;
         }
       }
     }
   }
+}
+
+.verify-experience-progress-bars {
+  width: 100%;
+  height: 0.35rem;
+  border-radius: 24px;
+  display: grid;
+  grid-template-columns: repeat(3, 32.5%);
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+
+  .progress-bar {
+    height: 0.35rem;
+    border-radius: 24px;
+    background-color: $lighterGray;
+
+    &.active {
+      background-color: $limeGreen;
+    }
+  }
+}
+
+.selection-page {
+  color: $gray;
+  font-size: 14px;
+  margin-bottom: 1rem;
+}
+
+.pro-tip-box {
+  border: 1px solid $lighterGray;
+  display: grid;
+  grid-template-columns: 20% 80%;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 1rem;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  background-color: #f5faff;
+
+  .icon-box {
+    display: flex;
+    align-items: center;
+
+    .pro-tip {
+      font-family: Inter;
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 24px;
+      letter-spacing: -0.6000000238418579px;
+      text-align: left;
+      margin-left: 0.25rem;
+    }
+  }
+
+  .tip {
+    font-family: Inter;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: -0.10000000149011612px;
+    text-align: left;
+  }
+}
+
+.requesting-peer-text-box {
+  margin-block-start: 2rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid hsl(223, 11%, 46%, 0.15);
+
+  .name {
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  .peer-type {
+    font-size: 15px;
+    color: #697082;
+  }
+}
+
+.disclaimer-heading {
+  font-size: 17px;
 }
 
 @media screen and (max-width: 930px) {
@@ -698,6 +861,100 @@
     .cancel-btn {
       margin-left: 0rem;
       margin-top: 1rem;
+    }
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .confirm-request-box {
+    .document-list {
+      display: grid;
+      grid-template-columns: 100%;
+      gap: 2rem;
+
+      .docs-wrapper {
+        display: flex !important;
+        flex-direction: column;
+        gap: 0.25rem;
+        justify-content: flex-start;
+
+        .document-action-heading {
+          margin-bottom: 0;
+        }
+
+        .docs-list {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+          width: 100%;
+
+          .document {
+            margin-top: 0;
+          }
+        }
+      }
+
+      .document-list {
+        margin-block: 0 !important;
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+
+        .document-action-heading {
+          margin-bottom: 0;
+          text-align: center;
+        }
+
+        .skills-wrapper {
+          display: grid;
+          gap: 8px;
+
+          .skill-box {
+            padding: 0.5rem 0.75rem;
+            border-radius: 10px;
+            border: 1px solid #e1e1e1;
+
+            .skill-name {
+              font-weight: 500;
+              font-size: 16px;
+              color: #697082;
+            }
+
+            .expertise {
+              font-size: 14px;
+              color: #697082;
+            }
+          }
+        }
+      }
+
+      .skills-list {
+        margin-block: 0 !important;
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+
+        .document-action-heading {
+          margin-bottom: 0;
+          text-align: center;
+        }
+
+        .add-skills-wrapper {
+          display: grid;
+          gap: 8px;
+          padding-block: 0 !important;
+          grid-template-columns: 1fr;
+
+          .add-skill-name {
+            padding: 0.5rem 0.75rem;
+            border: 1px solid #e1e1e1;
+            border-radius: 10px;
+            color: #697082;
+            font-size: 15px;
+            font-weight: 500;
+          }
+        }
+      }
     }
   }
 }

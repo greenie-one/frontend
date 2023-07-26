@@ -116,7 +116,6 @@
 
       label {
         font-size: 1rem;
-        margin-top: -2.5px;
       }
     }
 
@@ -126,50 +125,6 @@
       align-items: center;
       justify-content: space-between;
     }
-  }
-}
-
-.disclaimer-modal {
-  padding: 2rem 3rem;
-  text-align: center;
-
-  .disclaimer-heading {
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 600;
-    font-size: 36px;
-    line-height: 44px;
-    letter-spacing: -0.02em;
-    color: $black;
-    margin-bottom: 10px;
-    text-align: center;
-  }
-  .disclaimer-subHeading {
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 20px;
-    line-height: 24px;
-    letter-spacing: -0.02em;
-    color: $black;
-    margin-bottom: 40px;
-    text-align: center;
-  }
-
-  .primaryBtn {
-    max-width: 150px;
-  }
-
-  .policy {
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 600;
-    font-size: 14px;
-    line-height: 27px;
-    text-decoration-line: underline;
-    text-align: center;
-    color: $dark;
-    margin-bottom: 16px;
   }
 }
 
@@ -331,6 +286,15 @@
     padding: 1rem;
     margin: 0.5rem;
     border-radius: 24px;
+    position: relative;
+
+    .remove-skills-btn {
+      position: absolute;
+      top: 0.6rem;
+      right: 1rem;
+      font-size: 1.25rem;
+      color: rgb(255, 74, 110);
+    }
 
     .add-skill-name {
       margin-bottom: 0.5rem;

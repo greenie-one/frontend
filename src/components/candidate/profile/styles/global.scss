@@ -87,7 +87,7 @@
   max-width: 960px;
   background-color: $white;
   border-radius: 16.0603px;
-  margin: 23px auto;
+  margin: 1.5rem auto;
   padding: 26px;
   display: flex;
   flex-direction: column;
@@ -165,8 +165,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin-top: 101px;
-    margin-bottom: 120px;
+    margin-block: 1rem;
     img {
       width: 344px;
       height: 253px;
@@ -191,6 +190,7 @@
   background-color: $lightGray;
   color: $gray;
   border-radius: 34px;
+  padding: 6px 52px;
 
   &:hover {
     background-color: $lightGray;
@@ -287,18 +287,16 @@
 .footer {
   background-color: $dark;
   .footer-container {
-    display: flex;
+    display: grid;
+    grid-template-columns: 49% 35%;
     align-items: flex-start;
     justify-content: space-between;
     padding: 32px;
     max-width: 960px;
     margin: 0 auto;
-    .left-box {
-      width: 50%;
-    }
 
     .right-box {
-      width: 35%;
+      margin-top: 0.25rem;
     }
 
     .footer-logo {
@@ -316,11 +314,11 @@
 
     .mission-text {
       font-family: 'Gilroy-Bold' !important;
-      font-size: 24px;
+      font-size: 1.25rem;
       line-height: 28px;
       letter-spacing: -0.02em;
       color: #8e8e8e;
-      width: 220px;
+      width: 250px;
       margin-bottom: 42px;
     }
 
@@ -330,6 +328,7 @@
       line-height: 12px;
       letter-spacing: -0.02em;
       color: $white;
+      margin-top: -4rem;
     }
 
     .footer-link {
@@ -391,6 +390,131 @@
   }
 }
 
+.Undertaking {
+  color: $dark;
+  font-weight: 500;
+  margin-bottom: 1rem;
+
+  a {
+    text-decoration: underline;
+  }
+}
+
+.disclaimer-modal {
+  padding: 2rem 3rem;
+  text-align: center;
+
+  .disclaimer-heading {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 36px;
+    line-height: 44px;
+    letter-spacing: -0.02em;
+    color: $black;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  .disclaimer-subHeading {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+    letter-spacing: -0.02em;
+    color: $black;
+    margin-bottom: 40px;
+    text-align: center;
+  }
+
+  .checkbox-box {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 27px;
+    color: $gray;
+    display: flex;
+    margin-bottom: 30px;
+    text-align: left;
+    display: flex;
+    align-items: center;
+
+    .tearms-conditions {
+      margin-left: 12px;
+    }
+  }
+
+  .primaryBtn {
+    max-width: 150px;
+  }
+}
+
+.completion-modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .disclaimer-heading {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .disclaimer-subHeading {
+    color: #697082;
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  .experience-details-text-box {
+    margin-bottom: 2.5rem;
+    border-radius: 10px;
+
+    .designation {
+      font-weight: 600;
+      color: #000000;
+    }
+
+    .company-name {
+      color: #697082;
+      font-weight: 500;
+      margin-bottom: 1rem;
+    }
+  }
+
+  .continue-btn {
+    background: #17a672;
+    width: 300px;
+  }
+
+  .note {
+    border: 1px solid $lightGray;
+    border-radius: 0.5rem;
+    display: flex;
+    padding: 0.5rem 1rem;
+    margin-top: 1rem;
+
+    .note-heading {
+      margin-left: 0.25rem;
+      margin-right: 0.5rem;
+      color: $dark;
+      font-weight: 500;
+      font-size: 12px;
+    }
+
+    .text {
+      color: $gray;
+      font-size: 12px;
+      text-align: left;
+    }
+  }
+}
+
+.verified-document-profile {
+  border-radius: 50%;
+}
+
 @import '_cardStyles';
 @import '_modals';
 @import '_navbar';
@@ -449,6 +573,102 @@
 
   .see-all-btn {
     display: block;
+  }
+}
+
+@media screen and (max-width: 668px) {
+  .disclaimer-modal {
+    padding: 1rem;
+    text-align: center;
+
+    .tearms-conditions {
+      font-size: 14px;
+    }
+
+    .disclaimer-heading {
+      font-size: 1.75rem;
+    }
+    .disclaimer-subHeading {
+      font-size: 1.25rem;
+    }
+
+    .primaryBtn {
+      max-width: 150px;
+    }
+  }
+}
+
+@media screen and (max-width: 512px) {
+  .text-area-input {
+    textarea {
+      font-size: 10px;
+    }
+  }
+
+  .disclaimer-modal {
+    .tearms-conditions {
+      font-size: 12px;
+    }
+  }
+
+  .footer {
+    .footer-container {
+      display: flex;
+      flex-direction: column;
+      border: 1px solid $white;
+
+      .right-box {
+        margin-top: 0rem;
+      }
+
+      .footer-link {
+        margin-bottom: 2.5rem;
+      }
+
+      .copy-right {
+        margin-top: 2rem;
+      }
+    }
+  }
+
+  .Undertaking {
+    color: $dark;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    font-size: 15px;
+
+    a {
+      text-decoration: underline;
+    }
+  }
+
+  .completion-modal {
+    .disclaimer-heading {
+      font-size: 17px;
+    }
+
+    .disclaimer-subHeading {
+      font-size: 14px;
+    }
+
+    .continue-btn {
+      width: 200px;
+    }
+
+    .note {
+      .note-heading {
+        margin-left: 0.25rem;
+        margin-right: 0.5rem;
+        color: $dark;
+        font-weight: 500;
+        font-size: 12px;
+      }
+
+      .text {
+        color: $gray;
+        font-size: 12px;
+      }
+    }
   }
 }
 
