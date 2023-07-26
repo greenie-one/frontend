@@ -73,6 +73,10 @@
       }
 
       .peer-name {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        max-width: 15ch;
         .profile-icon {
           font-size: 24px;
           color: $gray;
@@ -89,7 +93,10 @@
 
       .peer-email {
         word-wrap: break-word;
-        max-width: 25ch;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        max-width: 20ch;
         font-size: 13px;
       }
 
@@ -242,6 +249,10 @@
           font-weight: 500;
           margin-left: 0.85rem;
           margin-bottom: 0.01rem;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          max-width: 20ch;
         }
         .peer-type {
           color: $gray;
@@ -794,6 +805,10 @@
   .name {
     font-size: 18px;
     font-weight: 600;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 20ch;
   }
 
   .peer-type {

@@ -384,6 +384,10 @@
       margin-right: 0.5rem;
 
       .request-box-heading {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        max-width: 18ch;
         font-weight: 500;
         margin-bottom: 0.5rem;
       }

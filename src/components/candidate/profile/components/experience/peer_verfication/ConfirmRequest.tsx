@@ -72,7 +72,7 @@ export const ConfirmRequest: React.FC<ConfrimRequestPropsType> = ({
         size={'60%'}
         fullScreen={isMobile}
         opened={opened}
-        onClose={close}
+        onClose={handleFinish}
         centered
       >
         <Box className="disclaimer-modal completion-modal">

@@ -43,7 +43,9 @@ export const ReminderModal: React.FC<ReminderModalType> = ({ confirmationHandler
 
   return (
     <Box className="modal-content">
-      <h3 className="modal-content-heading">You are about to send a reminder to {name}!</h3>
+      <h3 className="modal-content-heading">
+        You are about to send a reminder to <span className="modal-content-heading-name">{name}!</span>
+      </h3>
       <p className="modal-content-msg">
         Request sent on {date[0]} {months[Number(date[1]) - 1]} {date[2]}
       </p>
@@ -63,7 +65,10 @@ export const CancelationModal: React.FC<CancelationModalType> = ({
 
   return (
     <Box className="modal-content">
-      <h3 className="modal-content-heading">Do you really want to cancel verification request sent to {name}!</h3>
+      <h3 className="modal-content-heading">
+        Do you really want to cancel verification request sent to{' '}
+        <span className="modal-content-heading-name">{name}!</span>
+      </h3>
       <p className="modal-content-msg">
         Request sent on {date[0]} {months[Number(date[1]) - 1]} {date[2]}
       </p>
