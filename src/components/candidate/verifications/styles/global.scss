@@ -333,14 +333,15 @@ $dark: #191919;
 }
 
 .text-area-box {
-  width: 478px;
+  width: 100%;
   position: relative;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   textarea {
     border: 1px solid $lightGray;
     border-radius: 24px;
     height: 150px;
     color: $gray;
+    padding: 1rem;
 
     &:focus {
       border: 1px solid $green;
@@ -548,6 +549,7 @@ $dark: #191919;
   border-radius: 5px;
   overflow: hidden;
   border: 1px solid hsl(223, 11%, 46%, 0.35);
+  margin-bottom: 1rem;
 
   .verification-skill-header {
     display: grid;
@@ -602,6 +604,38 @@ $dark: #191919;
       }
     }
   }
+
+  .verification-attitude-wrapper {
+    flex-direction: column;
+    border: none;
+    outline: none;
+    width: 100%;
+    max-width: 375px;
+
+    .attitude-box {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      color: $gray;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      border: 1px solid $lighterGray;
+      border-radius: 24px;
+      width: 100%;
+      margin-bottom: 1rem;
+
+      &.active {
+        color: $green;
+        background-color: #dbffd3;
+      }
+      &:first-child {
+        border-radius: 24px;
+      }
+      &:last-child {
+        border-radius: 24px;
+      }
+    }
+  }
 }
 
 @media screen and (max-width: 700px) {
@@ -648,6 +682,7 @@ $dark: #191919;
 
 @media screen and (max-width: 460px) {
   .verification-skills-box {
+    width: 100%;
     .verification-skill-header {
       grid-template-columns: 3fr 3fr 3fr;
     }

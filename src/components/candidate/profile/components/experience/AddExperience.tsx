@@ -10,7 +10,6 @@ import { BsArrowLeft, BsCheckLg } from 'react-icons/bs';
 import { skillsAPIList } from '../../../../../assets/api/ApiList';
 import uploadIcon from '../../assets/upload.png';
 import checkedIcon from '../../assets/check.png';
-// import tcsLogo from '../../assets/tscLogo.png';
 import { workExperienceAPiList } from '../../../../../assets/api/ApiList';
 import { CgSandClock } from 'react-icons/cg';
 import { useGlobalContext } from '../../../../../context/GlobalContext';

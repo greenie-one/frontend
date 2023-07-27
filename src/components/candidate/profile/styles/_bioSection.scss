@@ -23,9 +23,10 @@
       font-weight: 600;
     }
     .name-verified {
-      margin-left: 8px;
+      margin-left: 4px;
       color: #9fe870;
       margin-top: 6px;
+      font-size: 20px;
     }
   }
 
@@ -189,6 +190,10 @@
         font-size: 20px;
         line-height: 23px;
         letter-spacing: -0.02em;
+      }
+      .name-verified {
+        margin-top: 2px;
+        font-size: 18px;
       }
     }
 
