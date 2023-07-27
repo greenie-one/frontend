@@ -37,7 +37,7 @@ const FeaturesCard: React.FC<FeaturesCardPropsType> = ({
 export const CompleteVerification = () => {
   return (
     <main className="profile">
-      <Box className="container">
+      <Box className="container" style={{ marginTop: '8rem' }}>
         <Box className="verification-feature-box">
           <Title className="title">Thanks for taking time and verifying</Title>
           <Text className="text">Your insights helps with keep Greenie updated and profiles verified</Text>
