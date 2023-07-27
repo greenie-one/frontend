@@ -47,7 +47,7 @@ export const AddResidentialInfo = () => {
         state: residentialInfoForm.values.state,
         country: residentialInfoForm.values.country,
         start_date: residentialInfoForm.values.start_date,
-        address_type: residentialInfoForm.values.address_type,
+        addressType: residentialInfoForm.values.address_type,
       };
     } else {
       requestBody = residentialInfoForm.values;

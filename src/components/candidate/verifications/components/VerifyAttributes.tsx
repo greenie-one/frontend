@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Button, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useVerificationContext } from '../context/VerificationContext';
 import { DisputeModal } from './DisputeModal';
 import { optionalAttrDict } from '../../constants/dictionaries';
+
+const formattedDate = (data: string) => {
+  return data.substring(0, 10).split('-').reverse().join('-');
+};
 
 export const VerifyAttributes: React.FC = (): JSX.Element => {
   const { setActiveStep, verificationData, verificationResponse, setVerificationResponse } = useVerificationContext();
@@ -38,6 +42,18 @@ export const VerifyAttributes: React.FC = (): JSX.Element => {
     })
     .filter((key) => key !== undefined);
 
+  useEffect(() => {
+    if (verificationResponse.selectedFields) {
+      Object.keys(verificationResponse.selectedFields).forEach((key) => {
+        if (verificationResponse.selectedFields[key].state === 'ACCEPTED') {
+          setApprovedAttrs((current) => [...current, key]);
+        } else {
+          setDisputedAttrs((current) => [...current, key]);
+        }
+      });
+    }
+  }, []);
+
   return (
     <section className="verification-step">
       <DisputeModal
@@ -58,7 +74,13 @@ export const VerifyAttributes: React.FC = (): JSX.Element => {
             <Box className="profile-detail" key={index}>
               <Box className="details">
                 <Text className="label">{optionalAttrDict[keys]}</Text>
-                <Text className="detail">{data?.selectedFields[keys]}</Text>
+                <Text className="detail">
+                  {keys === 'dateOfJoining'
+                    ? formattedDate(data?.selectedFields[keys])
+                    : keys === 'dateOfLeaving'
+                    ? formattedDate(data?.selectedFields[keys])
+                    : data?.selectedFields[keys]}
+                </Text>
               </Box>
               <Box className="profile-details-actions">
                 <Button

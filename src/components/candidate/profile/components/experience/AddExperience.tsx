@@ -10,7 +10,6 @@ import { BsArrowLeft, BsCheckLg } from 'react-icons/bs';
 import { skillsAPIList } from '../../../../../assets/api/ApiList';
 import uploadIcon from '../../assets/upload.png';
 import checkedIcon from '../../assets/check.png';
-// import tcsLogo from '../../assets/tscLogo.png';
 import { workExperienceAPiList } from '../../../../../assets/api/ApiList';
 import { CgSandClock } from 'react-icons/cg';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
@@ -22,14 +21,7 @@ import {
   showLoadingNotification,
   showSuccessNotification,
 } from '../../../../../utils/functions/showNotification';
-import {
-  workType,
-  modeOfWork,
-  departments,
-  companyTypes,
-  skillRate,
-  documentTags,
-} from '../../constants/SelectionOptions';
+import { workType, modeOfWork, departments, companyTypes, skillRate } from '../../constants/SelectionOptions';
 import axios from 'axios';
 import { docDepotAPIList } from '../../../../../assets/api/ApiList';
 import { ExperienceDocuments } from '../../types/ProfileGeneral';
@@ -194,12 +186,14 @@ export const AddExperience = () => {
     if (event.target.files && event.target.files[0]) {
       if (event.target.files[0].size > 5 * 1024 * 1024) {
         showErrorNotification('SIZE_EXCEEDS');
+        setSelectedFile(null);
       } else {
         setSelectedFile(event.target.files[0]);
-        if (fileInputRef.current) {
-          fileInputRef.current.value = '';
-        }
         showSuccessNotification({ title: 'File selected ', message: '' });
+      }
+
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
       }
     }
   };
@@ -235,16 +229,17 @@ export const AddExperience = () => {
           if (resp.ok) {
             showSuccessNotification({ title: 'Success !', message: 'Document added successfully !' });
             setForceRender((prev) => !prev);
-            if (fileInputRef.current) {
-              fileInputRef.current.value = '';
-            }
-            setSelectedFile(null);
           } else {
             showErrorNotification(resp.error.code);
           }
         }
       } catch (error: unknown) {
         showErrorNotification('GR0000');
+      } finally {
+        if (fileInputRef.current) {
+          fileInputRef.current.value = '';
+          setSelectedFile(null);
+        }
       }
     }
   };
@@ -260,13 +255,14 @@ export const AddExperience = () => {
     );
     if (res.ok) {
       showSuccessNotification({ title: 'Success !', message: 'Document deleted successfully !' });
-      setSelectedFile(null);
-      if (fileInputRef.current) {
-        fileInputRef.current.value = '';
-      }
       setForceRender((prev) => !prev);
     } else {
       showErrorNotification(res.error.code);
+    }
+
+    setSelectedFile(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
     }
   };
 
@@ -690,7 +686,7 @@ export const AddExperience = () => {
                             clearable
                             searchable
                             nothingFound="No options"
-                            data={documentTags}
+                            data={[{ value: 'work', label: 'Work Experience' }]}
                             className="inputClass"
                             label={'Select document type'}
                             styles={() => ({
@@ -703,6 +699,7 @@ export const AddExperience = () => {
                                 },
                               },
                             })}
+                            value={'work'}
                           />
                           <Box className="documents-actions">
                             <Box className="added-box">
@@ -763,7 +760,7 @@ export const AddExperience = () => {
                 <Box className="experience-details-text-box">
                   <Text className="designation">{workExperienceData[workExperienceData.length - 1].designation}</Text>
                   <Text className="company-name">{workExperienceData[workExperienceData.length - 1].companyName}</Text>
-                  {workExperienceData[0].noOfVerifications >= 2 ? (
+                  {workExperienceData[workExperienceData.length - 1].noOfVerifications >= 2 ? (
                     <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
                       Verified
                     </Button>

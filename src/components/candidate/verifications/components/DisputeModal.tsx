@@ -2,6 +2,7 @@ import React from 'react';
 import { useMediaQuery } from '@mantine/hooks';
 import { Text, Box, Button, Modal, Textarea, Select } from '@mantine/core';
 import { useVerificationContext } from '../context/VerificationContext';
+import '../styles/global.scss';
 
 type DisputeModalProps = {
   attrId: string;
@@ -137,7 +138,7 @@ export const DisputeModal: React.FC<DisputeModalProps> = ({
           clearable
           searchable
           nothingFound="No options"
-          className="dispute-select-box"
+          className="inputClass"
           data={disputesReasons}
           label="Dispute type"
           styles={() => ({
@@ -152,7 +153,7 @@ export const DisputeModal: React.FC<DisputeModalProps> = ({
           })}
           {...disputeForm.getInputProps('disputeType')}
         />
-        <Box className="text-area-box-manager">
+        <Box className="text-area-box">
           <Textarea
             value={disputeForm.values.disputeReason}
             onChange={handleInputChange}

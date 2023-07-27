@@ -10,6 +10,7 @@ import { Layout } from '../Layout';
 export const AllExperiences = () => {
   const navigate = useNavigate();
   const { workExperienceData } = useGlobalContext();
+  console.log(workExperienceData);
 
   const handleDetailsPage = (workId: string) => {
     navigate(`/candidate/profile/experience/${workId}`);
@@ -35,9 +36,9 @@ export const AllExperiences = () => {
           </Box>
 
           <Box className="see-all-experiences-wrapper">
-            {workExperienceData
+            {[...workExperienceData]
               .reverse()
-              .map(({ designation, companyName, isVerified, id, dateOfJoining, dateOfLeaving }, index) => {
+              .map(({ designation, companyName, noOfVerifications, id, dateOfJoining, dateOfLeaving }, index) => {
                 return (
                   <Box
                     key={index}
@@ -48,7 +49,7 @@ export const AllExperiences = () => {
                     <Box className="experience-card">
                       <Text className="position">{designation}</Text>
                       <Text className="companyName">{companyName}</Text>
-                      {isVerified ? (
+                      {noOfVerifications >= 2 ? (
                         <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
                           Verified
                         </Button>
@@ -61,7 +62,8 @@ export const AllExperiences = () => {
                       <Box className="tenure-box">
                         <Text className="since-text">Since</Text>
                         <Text className="tenure">
-                          {dateOfJoining?.toString().substring(3, 15)} - {dateOfLeaving?.toString().substring(3, 15)}
+                          {dateOfJoining?.toString().substring(3, 15)} -{' '}
+                          {dateOfLeaving ? dateOfLeaving?.toString().substring(3, 15) : 'Present'}
                         </Text>
                       </Box>
                     </Box>

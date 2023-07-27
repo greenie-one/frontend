@@ -17,10 +17,17 @@ import { Navbar } from './components/Navbar';
 
 import { HiMiniArrowLongLeft } from 'react-icons/hi2';
 import './styles/global.scss';
+import { useNavigate } from 'react-router-dom';
 
 export const VerificationJourney: React.FC = (): JSX.Element => {
-  const { activeStep, totalSteps, setActiveStep, unverifiedLink, verificationData, verificationBy } =
+  const navigate = useNavigate();
+  const { activeStep, peerVerified, totalSteps, setActiveStep, unverifiedLink, verificationData, verificationBy } =
     useVerificationContext();
+
+  if (peerVerified) {
+    navigate('/');
+    return <></>;
+  }
 
   const stepper = Array.from({ length: totalSteps - 1 }, (_, index) => index + 1);
 

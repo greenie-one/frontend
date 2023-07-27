@@ -11,12 +11,102 @@ $black: #282828;
 $gray: #697082;
 $dark: #191919;
 
+.residential-info-peer-box {
+  padding-block: 4rem;
+
+  .residential-details {
+    font-weight: 600;
+  }
+
+  .add-peer-title {
+    margin-bottom: 1rem;
+  }
+
+  .pro-tip-box {
+    border: 1px solid $lighterGray;
+    display: grid;
+    grid-template-columns: 20% 80%;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 1rem;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    background-color: #f5faff;
+    max-width: 500px;
+
+    .icon-box {
+      display: flex;
+      align-items: center;
+
+      .pro-tip {
+        font-family: Inter;
+        font-size: 13px;
+        font-weight: 600;
+        line-height: 24px;
+        letter-spacing: -0.6000000238418579px;
+        text-align: left;
+        margin-left: 0.25rem;
+      }
+    }
+
+    .tip {
+      font-family: Inter;
+      font-size: 13px;
+      font-weight: 400;
+      line-height: 20px;
+      letter-spacing: -0.10000000149011612px;
+      text-align: left;
+    }
+  }
+
+  .peer-no-data-wrapper {
+    width: 90%;
+  }
+}
+
 .address-verification-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  padding-top: 4rem;
+  padding-block: 4rem;
+
+  .pro-tip-box {
+    width: 80%;
+    max-width: 450px;
+    margin-block: 1.5rem;
+  }
+
+  .logo-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+
+    .logo-text {
+      font-family: 'Gilroy-Bold' !important;
+      font-size: 23px;
+    }
+    .logo-icon {
+      color: $limeGreen;
+      margin-left: 0.25rem;
+    }
+  }
+
+  .address-verification-dark-text {
+    color: $dark;
+    width: 150px;
+    margin-bottom: 1rem;
+
+    span {
+      font-weight: 600;
+    }
+  }
+
+  .green-outline-btn {
+    border: 2px solid $green;
+    color: $green;
+  }
 
   .primaryBtn {
     width: 400px;
@@ -28,7 +118,7 @@ $dark: #191919;
     font-weight: 600;
     line-height: 27px;
     letter-spacing: 0em;
-    text-align: left;
+    text-align: center;
     color: $dark;
     margin-bottom: 2rem;
   }
@@ -147,7 +237,12 @@ $dark: #191919;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  padding-block: 1rem;
+
+  .error-image {
+    margin-bottom: 1rem;
+  }
 
   .address-verification-modal-title {
     font-family: Inter;
@@ -155,7 +250,7 @@ $dark: #191919;
     font-weight: 600;
     line-height: 24px;
     letter-spacing: -0.02em;
-    text-align: left;
+    text-align: center;
     color: $dark;
     margin-bottom: 1rem;
   }
@@ -165,7 +260,7 @@ $dark: #191919;
     font-weight: 500;
     line-height: 17px;
     letter-spacing: -0.02em;
-    text-align: left;
+    text-align: center;
     color: $dark;
     margin-bottom: 1.5rem;
   }
@@ -179,5 +274,479 @@ $dark: #191919;
   .verified {
     border: none;
     outline: none;
+  }
+}
+
+.residential-add-peer-header {
+  border: 1px solid $lightGray;
+  border-radius: 16px 16px 0px 0px;
+  display: grid;
+  grid-template-columns: 23% 23% 17% 25% 15%;
+  margin: 0rem auto;
+  margin-top: 2rem;
+  padding: 1rem;
+  font-weight: 500;
+  width: 90%;
+  font-size: 14px;
+}
+
+.residential-added-peer-box {
+  width: 90%;
+  margin-inline: auto;
+
+  .residential-added-peers {
+    border: 1px solid $lightGray;
+    display: grid;
+    grid-template-columns: 23% 23% 17% 25% 15%;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 1rem;
+    font-size: 14px;
+    width: 100%;
+
+    &:last-child {
+      border-radius: 0px 0px 16px 16px;
+    }
+
+    .peer-name {
+      .profile-icon {
+        font-size: 24px;
+        color: $gray;
+        background-color: $lightGray;
+        border-radius: 50%;
+        padding: 0.25rem;
+      }
+      span {
+        font-weight: 500;
+        margin-left: 0.25rem;
+        font-size: 12px;
+      }
+    }
+
+    .peer-email {
+      word-wrap: break-word;
+      max-width: 25ch;
+      font-size: 13px;
+    }
+
+    .peer-response {
+      text-align: center;
+      border-radius: 24px;
+      width: 70px;
+      color: $blue;
+      font-size: 12px;
+      font-weight: 600;
+      background-color: rgba(135, 235, 218, 0.52);
+      padding: 0.15rem 0rem;
+    }
+
+    .peer-type {
+      text-align: center;
+      border-radius: 24px;
+      color: $dark;
+      font-weight: 500;
+      background-color: $lightGray;
+      padding: 0.25rem 0rem;
+      font-size: 12px;
+      width: 75%;
+    }
+
+    .peer-remove {
+      color: $dark;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+
+      .remove-icon {
+        font-size: 18px;
+      }
+
+      span {
+        text-decoration: underline;
+        font-weight: 600;
+        margin-left: 0.15rem;
+      }
+    }
+  }
+}
+
+.add-peer-text {
+  font-family: Inter;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: -0.02em;
+  text-align: center;
+  color: $gray;
+  width: 350px;
+  margin-bottom: 2.5rem;
+}
+
+.add-peer-sub-text {
+  font-family: Inter;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: -0.02em;
+  text-align: center;
+  color: $gray;
+  margin-bottom: 1rem;
+
+  &.screen-two {
+    max-width: 320px;
+  }
+}
+
+.copy-box {
+  height: 58px;
+  padding-top: 1rem;
+  padding-inline: 0.75rem;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 8px;
+  border: 1px solid #d1d4db;
+  line-height: 19px;
+  letter-spacing: -0.02em;
+  width: 90%;
+  max-width: 350px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+
+  label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    font-size: 12px;
+    padding-left: 14px;
+    padding-top: 7px;
+    line-height: 14.52px;
+    letter-spacing: -0.02em;
+    z-index: 1;
+    color: #697082;
+  }
+
+  .copy-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    color: $gray;
+    border-radius: 34px;
+    border: 1px solid $lighterGray;
+    height: 27px;
+    font-size: 12px;
+    width: 100px;
+
+    .copy-text {
+      margin-left: 0.25rem;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .residential-info-peer-box {
+    .peer-no-data-wrapper {
+      width: 94%;
+    }
+  }
+  .address-verification-details-box-header {
+    grid-template-columns: 7% 43% 24% 24%;
+    padding: 1rem 0.5rem;
+    width: 100%;
+    font-size: 12px;
+  }
+  .address-verification-details-added-peers {
+    grid-template-columns: 7% 43% 24% 24%;
+    padding: 1rem 0.5rem;
+    font-size: 12px;
+    width: 100%;
+  }
+  .add-peer-text {
+    font-size: 14px;
+    width: 98%;
+    max-width: 350px;
+  }
+
+  .add-peer-sub-text {
+    font-size: 12px;
+    width: 98%;
+    max-width: 350px;
+    line-height: 18px;
+  }
+  .residential-add-peer-header {
+    grid-template-columns: 35% 45% 20%;
+
+    width: 94%;
+
+    .residential-peer-header-text {
+      &:nth-child(3),
+      &:nth-child(4) {
+        display: none;
+      }
+    }
+  }
+
+  .residential-added-peer-box {
+    width: 94%;
+    .residential-added-peers {
+      grid-template-columns: 35% 45% 20%;
+
+      .peer-type,
+      .peer-phone {
+        display: none;
+      }
+
+      .peer-remove {
+        .remove-icon {
+          font-size: 16px;
+        }
+
+        span {
+          font-size: 12px;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .residential-info-peer-box {
+    .peer-no-data-wrapper {
+      width: 100%;
+    }
+  }
+  .residential-add-peer-header {
+    grid-template-columns: 33% 50% 20%;
+
+    width: 100%;
+
+    .residential-peer-header-text {
+      font-size: 12px;
+      &:nth-child(3) {
+        display: none;
+      }
+    }
+  }
+  .residential-added-peer-box {
+    width: 100%;
+    .residential-added-peers {
+      grid-template-columns: 35% 45% 20%;
+      padding-inline: 0.25rem;
+
+      .peer-name {
+        .profile-icon {
+          font-size: 1rem;
+          color: $gray;
+          background-color: $lightGray;
+          border-radius: 50%;
+          padding: 0.15rem;
+        }
+        span {
+          font-weight: 500;
+          margin-left: 0.25rem;
+          font-size: 10px;
+        }
+      }
+
+      .peer-email {
+        font-size: 10px;
+      }
+
+      .peer-remove {
+        color: $dark;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+
+        .remove-icon {
+          font-size: 14px;
+        }
+
+        span {
+          text-decoration: underline;
+          font-weight: 600;
+          margin-left: 0.15rem;
+          font-size: 10px;
+        }
+      }
+    }
+  }
+  .address-verification-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: 4rem;
+
+    .pro-tip-box {
+      width: 100%;
+      max-width: 450px;
+      margin-block: 1.5rem;
+    }
+
+    .logo-box {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+
+      .logo-text {
+        font-family: 'Gilroy-Bold' !important;
+        font-size: 23px;
+      }
+      .logo-icon {
+        color: $limeGreen;
+        margin-left: 0.25rem;
+      }
+    }
+
+    .address-verification-dark-text {
+      color: $dark;
+      width: 150px;
+      margin-bottom: 1rem;
+
+      span {
+        font-weight: 600;
+      }
+    }
+
+    .green-outline-btn {
+      border: 2px solid $green;
+      color: $green;
+    }
+
+    .primaryBtn {
+      width: 400px;
+    }
+
+    .address-verification-details-main-title {
+      font-size: 1rem;
+      font-weight: 400;
+    }
+
+    .address-verification-bold-title {
+      font-size: 1rem;
+    }
+
+    .address-verification-details {
+      .address-verification-details-title {
+        font-family: Inter;
+        font-size: 20px;
+        font-weight: 500;
+        line-height: 28px;
+        letter-spacing: -0.800000011920929px;
+        text-align: center;
+        color: $dark;
+      }
+      .address-verification-details-address {
+        font-family: Inter;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 20px;
+        letter-spacing: -0.10000000149011612px;
+        text-align: center;
+        color: $gray;
+        margin-block: 0.5rem;
+        margin-bottom: 2rem;
+        max-width: 200px;
+        text-align: center;
+      }
+    }
+
+    .profile-details {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-block: 1rem;
+      position: relative;
+
+      img {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+      }
+
+      .verified-icon {
+        position: absolute;
+        color: $green;
+        border-radius: 50%;
+        bottom: 0;
+        background-color: $white;
+        left: 45px;
+        width: 1.25rem;
+        height: 1.25rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .address-verification-details-name {
+        font-family: Inter;
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 19px;
+        letter-spacing: -0.02em;
+        text-align: left;
+        color: $dark;
+        margin-left: 1rem;
+      }
+    }
+  }
+  .residential-info-peer-box {
+    padding-block: 2rem;
+
+    .add-peer-title {
+      margin-bottom: 1rem;
+      font-size: 1rem;
+    }
+  }
+  .copy-box {
+    font-size: 12px;
+    label {
+      position: absolute;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      font-size: 12px;
+      padding-left: 14px;
+      padding-top: 7px;
+      line-height: 14.52px;
+      letter-spacing: -0.02em;
+      z-index: 1;
+      color: #697082;
+    }
+
+    .copy-btn {
+      background: transparent;
+      color: $gray;
+      border-radius: 34px;
+      border: 1px solid $lighterGray;
+      height: 25px;
+      font-size: 10px;
+      width: 75px;
+    }
+  }
+}
+
+@media screen and (max-width: 512px) {
+  .residential-info-peer-box {
+    .pro-tip-box {
+      padding: 1rem 0.5rem;
+      width: 100%;
+      .icon-box {
+        .pro-tip {
+          font-size: 10px;
+        }
+      }
+      .tip {
+        font-size: 10px;
+        line-height: 14px;
+        margin-left: 0.15rem;
+      }
+    }
   }
 }

@@ -178,7 +178,7 @@
   background-color: $green;
   color: $white;
   border-radius: 34px;
-  padding: 6px 52px;
+  padding: 6px 24px;
 
   &:hover {
     background-color: $green;
@@ -438,7 +438,7 @@
     margin-bottom: 30px;
     text-align: left;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
 
     .tearms-conditions {
       margin-left: 12px;

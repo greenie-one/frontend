@@ -20,6 +20,7 @@ import { Link } from 'react-router-dom';
 import { UndertakingText } from '../UndertakingText';
 import { peerVerificationAPIList } from '../../../../../assets/api/ApiList';
 import { RequestListType } from '../../../my_verifications/components/RequestList';
+import { peerPost } from '../../../constants/dictionaries';
 
 const months = [
   'January',
@@ -308,19 +309,32 @@ export const ExperienceDetails: React.FC = () => {
               <Box className="sent-reuest-box">
                 <Title className="experience-details-box-heading referees-heading">Referees</Title>
                 <Box className="requests-wrapper">
-                  {sentRequests.map(({ name, isVerificationCompleted, id, createdAt }) => {
-                    const date = formattedDate(String(createdAt));
+                  {sentRequests.map((request) => {
+                    let date;
+
+                    if (!request.isVerificationCompleted) {
+                      date = formattedDate(String(request.createdAt));
+                    } else {
+                      date = formattedDate(String(request.updatedAt));
+                    }
 
                     return (
                       <Box key={id} className="request-box referees-request-box">
-                        <Text className="request-box-heading">{name}</Text>
+                        <Text className="request-box-heading">
+                          {request.name}
+                          <br />
+                          <small style={{ fontWeight: 500 }}>
+                            {request.peerPost ? peerPost[request.peerPost] : '-'}
+                          </small>
+                        </Text>
+
                         <Text className="request-box-text">
-                          Request sent on{' '}
+                          {request.isVerificationCompleted ? 'Verified ' : 'Request sent '} on{' '}
                           <strong style={{ fontWeight: 500 }}>
                             {date[0]} {months[Number(date[1]) - 1]} {date[2]}
                           </strong>
                         </Text>
-                        {isVerificationCompleted ? (
+                        {request.isVerificationCompleted ? (
                           <Box className="request-status">
                             <Box className="request-box-icon">
                               <MdVerified color="#17a672" />

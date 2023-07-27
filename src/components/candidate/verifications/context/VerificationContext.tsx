@@ -35,6 +35,7 @@ export const VerificationContextProvider: React.FC<{ children: React.ReactNode }
     {} as PostVerificationDataType
   );
   const [personBeingVerified, setPersonBeingVerified] = useState<string>('');
+  const [peerVerified, setPeerVerified] = useState<boolean>(false);
 
   const getVerificationData = async () => {
     const res = await HttpClient.callApi<GetVerificationDataResponse>({
@@ -70,6 +71,12 @@ export const VerificationContextProvider: React.FC<{ children: React.ReactNode }
 
         case 'GR0051': {
           setUnverifiedLink('MOBILE');
+          break;
+        }
+
+        case 'GR0055': {
+          setUnverifiedLink('NONE');
+          setPeerVerified(true);
           break;
         }
 
@@ -125,6 +132,7 @@ export const VerificationContextProvider: React.FC<{ children: React.ReactNode }
     verificationResponse,
     setVerificationResponse,
     personBeingVerified,
+    peerVerified,
   };
 
   return <VerificationContext.Provider value={storeValues}>{children}</VerificationContext.Provider>;

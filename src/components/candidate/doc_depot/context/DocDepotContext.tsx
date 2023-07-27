@@ -20,6 +20,7 @@ export const DocDepotContextProvider: React.FC<{
       name: '',
       type: '',
       privateUrl: '',
+      workExperience: '',
     },
 
     validate: {
@@ -29,51 +30,19 @@ export const DocDepotContextProvider: React.FC<{
   });
   const { authClient, forceRender, setForceRender } = useGlobalContext();
   const authTokens = authClient.getAccessToken();
-  const [educationDocuments, setEducationDocument] = useState<DocumentResponseType[]>([]);
-  const [experienceDocuments, setExperienceDocument] = useState<DocumentResponseType[]>([]);
-  const [otherDocuments, setOtherDocument] = useState<DocumentResponseType[]>([]);
+  const [docDepoDocuments, setDocDepoDocuments] = useState<DocumentResponseType[]>([]);
   const [docDepotActivePage, setDocDepotActivePage] = useState<number>(0);
 
-  const getExperienceDocument = async () => {
+  const getDocuments = async () => {
     const res: Result<DocumentResponseType[]> = await HttpClient.callApiAuth(
       {
-        url: `${docDepotAPIList.getAllDocuments}/work`,
+        url: `${docDepotAPIList.getAllDocuments}`,
         method: 'GET',
       },
       authClient
     );
     if (res.ok) {
-      setExperienceDocument(res.value);
-    } else {
-      showErrorNotification(res.error.code);
-    }
-  };
-
-  const getEducationDocument = async () => {
-    const res: Result<DocumentResponseType[]> = await HttpClient.callApiAuth(
-      {
-        url: `${docDepotAPIList.getAllDocuments}/education`,
-        method: 'GET',
-      },
-      authClient
-    );
-    if (res.ok) {
-      setEducationDocument(res.value);
-    } else {
-      showErrorNotification(res.error.code);
-    }
-  };
-
-  const getOtherDocument = async () => {
-    const res: Result<DocumentResponseType[]> = await HttpClient.callApiAuth(
-      {
-        url: `${docDepotAPIList.getAllDocuments}/other`,
-        method: 'GET',
-      },
-      authClient
-    );
-    if (res.ok) {
-      setOtherDocument(res.value);
+      setDocDepoDocuments(res.value);
     } else {
       showErrorNotification(res.error.code);
     }
@@ -116,9 +85,7 @@ export const DocDepotContextProvider: React.FC<{
 
   useEffect(() => {
     if (authTokens) {
-      getExperienceDocument();
-      getEducationDocument();
-      getOtherDocument();
+      getDocuments();
     }
   }, [forceRender]);
 
@@ -128,9 +95,7 @@ export const DocDepotContextProvider: React.FC<{
         documentForm,
         deleteDocument,
         moveDocument,
-        experienceDocuments,
-        educationDocuments,
-        otherDocuments,
+        docDepoDocuments,
         docDepotActivePage,
         setDocDepotActivePage,
       }}

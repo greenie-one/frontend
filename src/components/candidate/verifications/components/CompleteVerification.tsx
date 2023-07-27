@@ -1,6 +1,7 @@
 import { Text, Box, Title } from '@mantine/core';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { featuresCardContent } from '../constants/FeaturesContent';
+import { useVerificationContext } from '../context/VerificationContext';
 
 type FeaturesCardPropsType = {
   id: string;
@@ -35,9 +36,17 @@ const FeaturesCard: React.FC<FeaturesCardPropsType> = ({
 };
 
 export const CompleteVerification = () => {
+  const { totalSteps, activeStep } = useVerificationContext();
+  const navigate = useNavigate();
+
+  if (activeStep !== totalSteps) {
+    navigate('/');
+    return <></>;
+  }
+
   return (
     <main className="profile">
-      <Box className="container">
+      <Box className="container complete-verification-container">
         <Box className="verification-feature-box">
           <Title className="title">Thanks for taking time and verifying</Title>
           <Text className="text">Your insights helps with keep Greenie updated and profiles verified</Text>

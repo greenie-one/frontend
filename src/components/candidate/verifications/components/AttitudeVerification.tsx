@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Button, Text } from '@mantine/core';
 import { BsEmojiFrown, BsEmojiNeutral, BsEmojiSmile, BsEmojiLaughing } from 'react-icons/bs';
 import { useVerificationContext } from '../context/VerificationContext';
@@ -32,6 +32,12 @@ export const AttitudeVerification: React.FC = (): JSX.Element => {
 
     setActiveStep((current) => current + 1);
   };
+
+  useEffect(() => {
+    if (verificationResponse.allQuestions.attitudeRating) {
+      setAttitude(verificationResponse.allQuestions.attitudeRating);
+    }
+  }, []);
 
   return (
     <section className="verification-step">
