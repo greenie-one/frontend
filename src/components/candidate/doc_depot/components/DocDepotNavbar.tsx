@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Box, Button, Title, TextInput, createStyles, em, Modal, Select, Divider } from '@mantine/core';
 import { GoSearch } from 'react-icons/go';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
@@ -18,7 +19,8 @@ export const DocDepotNavbar = () => {
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
   const { documentForm, docDepotActivePage } = useDocDepotContext();
-  const { authClient, setForceRender, forceRender } = useGlobalContext();
+  const [workExperienceSelect, setWorkExperienceSelect] = useState<Array<{ value: string; label: string }>>([]);
+  const { authClient, setForceRender, forceRender, workExperienceData } = useGlobalContext();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const openFileInput = () => {
     if (fileInputRef.current) {
@@ -56,11 +58,16 @@ export const DocDepotNavbar = () => {
 
   const handleCreateDocument = async () => {
     showLoadingNotification({ title: 'Please wait !', message: 'Wait while we upload your document' });
-    const requestBody = {
+    let requestBody: { [key: string]: string } = {
       name: documentForm.values.name,
       type: documentForm.values.type,
       privateUrl: documentForm.values.privateUrl,
     };
+
+    if (documentForm.values.type === 'work') {
+      requestBody = { ...requestBody, workExperience: documentForm.values.workExperience };
+    }
+
     const res: Result<UpdateDocumentResponseType> = await HttpClient.callApiAuth(
       {
         url: `${docDepotAPIList.addDocument}`,
@@ -73,10 +80,25 @@ export const DocDepotNavbar = () => {
       close();
       setForceRender(!forceRender);
       showSuccessNotification({ title: 'Success !', message: 'Document added to successfully' });
+      documentForm.reset();
     } else {
       showErrorNotification(res.error.code);
     }
   };
+
+  useEffect(() => {
+    setWorkExperienceSelect([]);
+
+    workExperienceData.forEach((experience) => {
+      setWorkExperienceSelect((current) => [
+        ...current,
+        {
+          value: experience.id,
+          label: `${experience.companyName} (${experience.designation})`,
+        },
+      ]);
+    });
+  }, [documentForm.values.type]);
 
   return (
     <>
@@ -123,6 +145,33 @@ export const DocDepotNavbar = () => {
                 {...documentForm.getInputProps('type')}
               />
             </Box>
+            {documentForm.values.type === 'work' ? (
+              <Box className="input-section">
+                <Title className="title">Work Experience</Title>
+                <Select
+                  clearable
+                  searchable
+                  withAsterisk
+                  className="inputClass"
+                  nothingFound="No options"
+                  label="Select document type"
+                  styles={() => ({
+                    item: {
+                      '&[data-selected]': {
+                        '&, &:hover': {
+                          backgroundColor: '#17a672',
+                          color: 'white',
+                        },
+                      },
+                    },
+                  })}
+                  data={workExperienceSelect}
+                  {...documentForm.getInputProps('workExperience')}
+                />
+              </Box>
+            ) : (
+              <></>
+            )}
             <Divider my={'1rem'} />
             {documentForm.values.type !== '' ? (
               <Button className="green-btn" onClick={handleCreateDocument}>
@@ -147,13 +196,7 @@ export const DocDepotNavbar = () => {
           </Button>
         )}
 
-        <input
-          type="file"
-          accept=".pdf,.doc,.docx"
-          ref={fileInputRef}
-          style={{ display: 'none' }}
-          onChange={uploadDocument}
-        />
+        <input type="file" accept=".pdf" ref={fileInputRef} style={{ display: 'none' }} onChange={uploadDocument} />
       </Box>
     </>
   );

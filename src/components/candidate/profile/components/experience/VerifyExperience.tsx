@@ -207,7 +207,7 @@ export const VerifyExperience: React.FC = () => {
               <Box className="experience-details-text-box">
                 <Text className="designation">{experience?.designation}</Text>
                 <Text className="company-name">{experience?.companyName}</Text>
-                {experience && experience.noOfVerifications > 0 ? (
+                {experience && experience.noOfVerifications >= 2 ? (
                   <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
                     Verified
                   </Button>

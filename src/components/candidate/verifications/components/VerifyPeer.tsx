@@ -8,6 +8,7 @@ import {
   showSuccessNotification,
 } from '../../../../utils/functions/showNotification';
 import { peerVerificationAPIList } from '../../../../assets/api/ApiList';
+import { peerPost } from '../../constants/dictionaries';
 
 type OtpVerificationBody = {
   otpType: string;
@@ -24,7 +25,7 @@ const VerificationHeading = () => {
       </Title>
       <Box className="address-verification-details">
         <Title className="address-verification-details-title">{personBeingVerified ?? 'Peer name'}</Title>
-        <Text className="address-verification-details-address">{verificationBy}</Text>
+        <Text className="address-verification-details-address">{peerPost[verificationBy]}</Text>
       </Box>
     </>
   );
@@ -54,7 +55,12 @@ export const VerifyPeer = () => {
     });
 
     if (res.ok) {
-      setOtpProcess((prev) => prev + 1);
+      if (!(otpProcess === 1)) {
+        setOtpProcess((prev) => prev + 1);
+      }
+
+      setCountDown(60);
+
       showSuccessNotification({ title: 'Success !', message: 'OTP Sent to your phone number' });
     } else {
       showErrorNotification(res.error.code);

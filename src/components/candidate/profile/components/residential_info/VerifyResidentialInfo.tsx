@@ -162,7 +162,7 @@ export const VerifyResidentialInfo: React.FC = () => {
               <Box className="added-peer-box">
                 {addedPeers.length > 0 ? (
                   <Box className="add-peers">
-                    {addedPeers.reverse().map(({ name, email, peerType }, index) => {
+                    {[...addedPeers].reverse().map(({ name, email, peerType }, index) => {
                       return (
                         <Box key={index} className="added-peers">
                           <Text className="peer-name">
@@ -241,7 +241,7 @@ export const VerifyResidentialInfo: React.FC = () => {
               <Box className="added-peer-box">
                 {addedPeers.length > 0 ? (
                   <Box className="add-peers">
-                    {addedPeers.reverse().map(({ name, email, peerType }, index) => {
+                    {[...addedPeers].reverse().map(({ name, email, peerType }, index) => {
                       return (
                         <Box key={index} className="added-peers">
                           <Text className="peer-name">

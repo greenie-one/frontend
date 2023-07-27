@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { Box, Button, Modal, Text, Chip, Group, CopyButton, Title, TextInput, Divider, Textarea } from '@mantine/core';
 import axios from 'axios';
 import emptyProfile from '../../assets/emptyProfile.png';
@@ -31,7 +31,9 @@ const skillSetOne = [
 export const Userprofile = () => {
   const { authClient, setForceRender, forceRender, profileData, profileForm, updateProfile, IDs, userLevel } =
     useGlobalContext();
+
   const authToken = authClient.getAccessToken();
+  const [profileImage, setProfileImage] = useState<string | undefined>(undefined);
   //-------------profile photo------------------------
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -63,6 +65,9 @@ export const Userprofile = () => {
       if (resp.ok) {
         showSuccessNotification({ title: 'Success !', message: 'Profile picture is updated !' });
         setForceRender(!forceRender);
+        if (fileInputRef.current) {
+          fileInputRef.current.value = '';
+        }
       } else {
         showErrorNotification(resp.error.code);
       }
@@ -96,6 +101,10 @@ export const Userprofile = () => {
     onClose();
   };
 
+  useEffect(() => {
+    setProfileImage(profileData.profilePic);
+  }, [profileData.profilePic, forceRender]);
+
   return (
     <>
       <Modal
@@ -112,24 +121,24 @@ export const Userprofile = () => {
             <Title className="title">First Name</Title>
             <TextInput
               withAsterisk
-              data-autofocus
               label="Your first name"
               className="inputClass"
               {...profileForm.getInputProps('firstName')}
               maxLength={10}
               minLength={3}
+              placeholder={profileData.firstName}
             />
           </Box>
           <Box className="input-section">
             <Title className="title">Last Name</Title>
             <TextInput
               withAsterisk
-              data-autofocus
               label="Your last name"
               className="inputClass"
               {...profileForm.getInputProps('lastName')}
               maxLength={10}
               minLength={3}
+              placeholder={profileData.lastName}
             />
           </Box>
           <Divider mb={'10px'} />
@@ -137,11 +146,11 @@ export const Userprofile = () => {
             <Title className="title">Tell Us about yourself</Title>
             <Textarea
               withAsterisk
-              data-autofocus
               label="Your bio"
               className="text-area-input"
               {...profileForm.getInputProps('bio')}
               maxLength={150}
+              placeholder={profileData.bio}
             />
           </Box>
           <Divider mb={'10px'} />
@@ -186,8 +195,8 @@ export const Userprofile = () => {
         <Box className="cover-photo"></Box>
 
         <Box className="profile-photo">
-          {profileData?.profilePic ? (
-            <img src={profileData.profilePic} alt="Profile picture" className="profile-image" />
+          {profileImage ? (
+            <img src={profileImage} alt="Profile picture" className="profile-image" />
           ) : (
             <img src={emptyProfile} alt="emptyProfile" className="profile-image" />
           )}

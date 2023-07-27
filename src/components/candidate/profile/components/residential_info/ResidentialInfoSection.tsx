@@ -59,7 +59,7 @@ export const ResidentialInfoSection = () => {
         </Box>
       ) : (
         <Box className="section-cards-wrapper ">
-          {residentialInfoData
+          {[...residentialInfoData]
             ?.reverse()
             ?.slice(0, 3)
             ?.map((info, index) => {

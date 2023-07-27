@@ -31,7 +31,7 @@ export const AllSkills = () => {
             <Text>{`Skills (${uniqueSkills.length})`}</Text>
           </Box>
           <Box className="skills-card-wrapper">
-            {uniqueSkills.reverse().map((skillName, index) => {
+            {[...uniqueSkills].reverse().map((skillName, index) => {
               const skill = skillData.find((skill) => skill.skillName === skillName);
               const expertise = skill?.expertise;
               const isVerified = skill?.isVerified;

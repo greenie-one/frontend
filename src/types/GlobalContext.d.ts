@@ -26,4 +26,5 @@ type GlobalContextType = {
   deleteResidentialInfo: (id: string) => void;
   userLevel: number;
   setUserLevel: React.Dispatch<React.SetStateAction<number>>;
+  getProfile: () => void;
 };

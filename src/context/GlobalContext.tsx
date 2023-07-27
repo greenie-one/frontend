@@ -377,6 +377,7 @@ export const GlobalContextProvider: React.FC<{
         deleteResidentialInfo,
         userLevel,
         setUserLevel,
+        getProfile,
       }}
     >
       {children}
