@@ -425,8 +425,7 @@
     a {
       display: block;
       overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
+      word-wrap: break-word;
     }
   }
 
@@ -435,6 +434,7 @@
     align-items: center;
     grid-template-columns: 25% 30%;
     column-gap: 0.5rem;
+    align-items: stretch;
   }
 
   .experience-details-box-text {
@@ -442,8 +442,7 @@
     font-weight: 500;
     font-size: 14px;
     overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+    word-wrap: break-word;
   }
 
   .basic-info {
@@ -454,6 +453,7 @@
       align-items: center;
       grid-template-columns: 17% 25% 27% 27%;
       column-gap: 0.5rem;
+      align-items: stretch;
     }
   }
 

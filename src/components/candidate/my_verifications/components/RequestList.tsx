@@ -21,6 +21,8 @@ export type RequestListType = {
   phone: string;
   isVerificationCompleted: boolean;
   createdAt?: string;
+  updatedAt?: string;
+  peerPost?: string;
 };
 
 export const RequestList: React.FC<{ activeListItem: number }> = ({ activeListItem }): JSX.Element => {

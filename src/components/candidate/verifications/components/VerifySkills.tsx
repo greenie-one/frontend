@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Text, Box, Button } from '@mantine/core';
 import { BsPersonCheckFill } from 'react-icons/bs';
 import { HiOutlineBan } from 'react-icons/hi';
@@ -55,6 +55,18 @@ export const VerifySkills = () => {
     setApprovedAttrs((current) => [...current, _id]);
     setDisputedAttrs((current) => current.filter((id) => id !== _id));
   };
+
+  useEffect(() => {
+    if (verificationResponse.skills) {
+      verificationResponse.skills.forEach((skill) => {
+        if (skill.status.state === 'ACCEPTED') {
+          setApprovedAttrs((current) => [...current, skill.id]);
+        } else {
+          setDisputedAttrs((current) => [...current, skill.id]);
+        }
+      });
+    }
+  }, []);
 
   return (
     <section className="verification-step">

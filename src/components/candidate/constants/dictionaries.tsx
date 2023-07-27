@@ -19,3 +19,13 @@ export const skillExpertiseDict: {
   SUPER_SPECIALIST: 'Super Specialist',
   MASTER: 'Master',
 };
+
+export const peerPost: {
+  [key: string]: string;
+} = {
+  COLLEAGUE: 'Colleague',
+  REPORTING_MANAGER: 'Reporting Manager',
+  LINE_MANAGER: 'Line Manager',
+  HR: 'HR',
+  CXO: 'CXO',
+};

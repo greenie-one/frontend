@@ -60,7 +60,7 @@ export const ExperienceSection = () => {
         </Box>
       ) : (
         <Box className="section-cards-wrapper">
-          {workExperienceData
+          {[...workExperienceData]
             .reverse()
             .slice(0, 3)
             .map((workExperience, index) => {

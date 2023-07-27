@@ -37,6 +37,9 @@ type OtherQuestionsType = {
 type VerificationDataType = {
   name: string;
   profilePic: string;
+  companyName: string;
+  peerPost: string;
+  designation: string;
   skills: Array<{ id: string; skillName: string; expertise: string }>;
   documents: Array<{ id: string; type: string; name: string; privateUrl: string }>;
   selectedFields: { [key: string]: string };
