@@ -44,7 +44,7 @@ export const AddressVerification = () => {
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
   const [residentialInfo, setResidentialInfo] = useState<ResidentialInfoResponse | null>(null);
-  const addressVerified = false;
+  const addressVerified = true;
 
   const NextActiveStep = () => {
     if (activeStep !== 7) {
@@ -126,30 +126,6 @@ export const AddressVerification = () => {
             </Button>
           </Box>
         )}
-        <Box className="address-verification-modal">
-          <img src={checkGif} alt="Check Gif" />
-          <Title className="address-verification-modal-title">Resident address verified</Title>
-          <Text className="address-verification-modal-text">Thanks for your co-operation in verify.</Text>
-          <Box className="residential-details">
-            <Box className="location">
-              <img src={location} alt="location icon" />
-            </Box>
-
-            <Box className="residential-details-text-box">
-              <Text className="address">
-                {residentialInfo?.address_line_1}, {residentialInfo?.address_line_2}, {residentialInfo?.landmark},{' '}
-                {residentialInfo?.city}, {residentialInfo?.pincode}
-              </Text>
-
-              <Button leftIcon={<MdVerified size={'16px'} />} className="verified">
-                Verified
-              </Button>
-            </Box>
-          </Box>
-          <Button className="green-btn" onClick={handleGoToProfile}>
-            Continue
-          </Button>
-        </Box>
       </Modal>
       <Layout>
         {activeStep === 0 && (
@@ -277,7 +253,7 @@ export const AddressVerification = () => {
                   {residentialInfo?.city}, {residentialInfo?.pincode}
                 </Text>
                 <Text>{residentialInfo?.address_type}</Text>
-                <Text>{residentialInfo?.end_date?.toString().substring(0, 10)}</Text>
+                <Text>{residentialInfo?.end_date?.toString().substring(3, 15)}</Text>
               </Box>
               <Title className="address-verification-details-main-title">
                 Please allow permission to capture location to confirm the verificationh
