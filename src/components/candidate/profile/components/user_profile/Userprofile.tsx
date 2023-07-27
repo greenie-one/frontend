@@ -206,7 +206,7 @@ export const Userprofile = () => {
           <Text className="bio-name">
             {profileData.firstName} {profileData.lastName}
           </Text>
-          {IDs.length > 0 && <MdVerified className="name-verified" size={'20px'} />}
+          {IDs.length > 0 && <MdVerified className="name-verified" />}
         </Box>
 
         <Box className="chips">
