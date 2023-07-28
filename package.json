@@ -25,6 +25,7 @@
     "@mantine/notifications": "^6.0.16",
     "@mantine/nprogress": "^6.0.16",
     "@mantine/spotlight": "^6.0.16",
+    "@react-pdf/renderer": "^3.1.12",
     "axios": "^1.4.0",
     "dayjs": "^1.11.9",
     "embla-carousel-autoplay": "^8.0.0-rc09",
