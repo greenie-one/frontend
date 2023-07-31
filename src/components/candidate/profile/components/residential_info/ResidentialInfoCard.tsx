@@ -3,6 +3,10 @@ import { MdVerified } from 'react-icons/md';
 import location from '../../assets/location.png';
 import { CgSandClock } from 'react-icons/cg';
 
+const formattedDate = (data: string) => {
+  return data?.substring(0, 10).split('-').reverse().join('-');
+};
+
 export const ResidentialInfoCard: React.FC<ResidentialInfoCardProps> = ({
   address_line_1,
   address_line_2,
@@ -37,7 +41,7 @@ export const ResidentialInfoCard: React.FC<ResidentialInfoCardProps> = ({
       <Box className="card-footer">
         <Text className="since-text">Since</Text>
         <Text className="tenure">
-          {start_date?.toString().substring(3, 15)} - {end_date?.toString().substring(3, 15)}
+          {formattedDate(String(start_date))} to {end_date ? formattedDate(String(end_date)) : 'Present'}
         </Text>
       </Box>
     </Box>

@@ -34,5 +34,5 @@ type ResidentialInfoDetailsCardProps = {
   city: string;
   state: string;
   country: string;
-  address_type: string;
+  addressType: string;
 };
