@@ -23,6 +23,11 @@
     margin-bottom: 2rem;
   }
 
+  .pro-tip-box {
+    width: min(90%, 40rem);
+    margin-bottom: 2rem;
+  }
+
   .add-peers-inputs {
     width: 70%;
     display: grid;
@@ -340,11 +345,12 @@
 .see-peers-btn-wrapper {
   margin-top: 2rem;
   display: grid;
-  grid-template-columns: 50% 45%;
+  grid-template-columns: 1fr 1fr;
   align-items: center;
   justify-content: space-between;
   width: 100%;
   max-width: 375px;
+  gap: 1rem;
 
   .cancel-btn {
     border-radius: 24px;
