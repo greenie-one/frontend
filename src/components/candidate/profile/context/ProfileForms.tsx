@@ -93,7 +93,7 @@ export const useProfileForms = () => {
       country: 'India',
       start_date: '',
       end_date: '',
-      address_type: '',
+      addressType: '',
     },
 
     validate: {
@@ -101,7 +101,7 @@ export const useProfileForms = () => {
       address_line_2: isNotEmpty('Please enter valid address'),
       landmark: isNotEmpty('Please enter valid address'),
       city: isNotEmpty('Please enter valid address'),
-      address_type: isNotEmpty('Please enter the address type'),
+      addressType: isNotEmpty('Please enter the address type'),
       pincode: hasLength(6, 'Please enter valid pincode'),
       state: isNotEmpty('Please enter your state/country'),
       start_date: isNotEmpty('Please enter start date'),

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Box } from '@mantine/core';
 
-import { peerVerificationAPIList } from '../../../../assets/api/ApiList';
+import { addressVerificationAPIList, peerVerificationAPIList } from '../../../../assets/api/ApiList';
 import { useGlobalContext } from '../../../../context/GlobalContext';
 import { HttpClient } from '../../../../utils/generic/httpClient';
 import { RenderRequestList } from './RenderRequestList';
@@ -20,8 +20,8 @@ export type RequestListType = {
   name: string;
   phone: string;
   isVerificationCompleted: boolean;
-  createdAt?: string;
-  updatedAt?: string;
+  createdAt: string;
+  updatedAt: string;
   peerPost?: string;
 };
 
@@ -30,7 +30,7 @@ export const RequestList: React.FC<{ activeListItem: number }> = ({ activeListIt
   const [sentRequests, setSentRequests] = useState<Array<RequestListType>>([]);
   const [forceRenderList, setForceRenderList] = useState<boolean>(true);
 
-  const getSentRequests = async () => {
+  const getWorkRequests = async () => {
     const res = await HttpClient.callApiAuth<RequestListType[]>(
       {
         url: peerVerificationAPIList.getSentRequest,
@@ -40,14 +40,46 @@ export const RequestList: React.FC<{ activeListItem: number }> = ({ activeListIt
     );
 
     if (res.ok) {
-      setSentRequests(res.value);
+      setSentRequests((current) => [...current, ...res.value]);
     } else {
       showErrorNotification(res.error.code);
     }
   };
 
+  const getAddressRequests = async () => {
+    const res = await HttpClient.callApiAuth<RequestListType[]>(
+      {
+        url: addressVerificationAPIList.getRequests,
+        method: 'GET',
+      },
+      authClient
+    );
+
+    if (res.ok) {
+      setSentRequests((current) => [...current, ...res.value]);
+    } else {
+      showErrorNotification(res.error.code);
+    }
+  };
+
+  const sortRequests = () => {
+    sentRequests.sort((a, b) => {
+      if (a.updatedAt > b.updatedAt) {
+        return -1;
+      }
+
+      if (a.updatedAt < b.updatedAt) {
+        return 1;
+      }
+
+      return 0;
+    });
+  };
+
   useEffect(() => {
-    getSentRequests();
+    getWorkRequests();
+    getAddressRequests();
+    sortRequests();
   }, [forceRenderList]);
 
   return activeListItem === 0 ? (

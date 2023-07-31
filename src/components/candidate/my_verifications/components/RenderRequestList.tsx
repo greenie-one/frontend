@@ -133,13 +133,15 @@ export const RenderRequestList: React.FC<RenderRequestListProps> = ({
             <img src={profileImage} alt="notification" />
           </span>
           <Box className={request_item_body}>
-            <span className={request_title}>Request to verify your work experience</span>
+            <span className={request_title}>
+              Request to verify your {request.peerPost ? 'Work Experience' : 'Address'}
+            </span>
             <span className={request_msg}>
               You have requested{' '}
               <span className={request_name} style={{ color: '#000000', fontWeight: '500' }}>
                 {request.name}
               </span>{' '}
-              to verify your work experience
+              to verify your {request.peerPost ? 'work experience' : 'address'}
             </span>
           </Box>
           {request.isVerificationCompleted ? (

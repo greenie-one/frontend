@@ -11,6 +11,28 @@ import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 import { Layout } from '../Layout';
 import { UndertakingText } from '../UndertakingText';
 import { DeleteConfirmationModal } from '../../../../common/GenericModals';
+import { HttpClient } from '../../../../../utils/generic/httpClient';
+import { addressVerificationAPIList } from '../../../../../assets/api/ApiList';
+import { showErrorNotification } from '../../../../../utils/functions/showNotification';
+
+const months = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+];
+
+const formattedDate = (data: string) => {
+  return data?.substring(0, 10).split('-').reverse().join('-');
+};
 
 type VerificationType = 'MySelf' | 'Peer';
 
@@ -21,15 +43,19 @@ export const ResidentialInfoDetails: React.FC = () => {
   const [opened, { open, close }] = useDisclosure(false);
   const [checked, setChecked] = useState<boolean>(false);
   const [residential, setResidentialInfo] = useState<ResidentialInfoResponse | null>(null);
-  const { residentialInfoData, scrollToTop, deleteResidentialInfo } = useGlobalContext();
+  const { residentialInfoData, scrollToTop, deleteResidentialInfo, authClient } = useGlobalContext();
   const { id } = useParams();
   const filteredInfo = residentialInfoData.find((info: ResidentialInfoResponse) => info.id === id);
+
+  const [sentRequests, setSentRequests] = useState<Array<GetAddressVerificationResponse>>([]);
 
   const handleAggree = () => {
     if (checked) {
       setModalStep(2);
     }
   };
+
+  console.log(sentRequests);
 
   const [deleteModalOpened, { open: deleteModalOpen, close: deleteModalClose }] = useDisclosure(false);
 
@@ -52,7 +78,7 @@ export const ResidentialInfoDetails: React.FC = () => {
 
   const handleGoToVerification = (choice: VerificationType) => {
     if (choice === 'MySelf') {
-      navigate(`/candidate/profile/address/${id}/verify/me`);
+      navigate(`/candidate/profile/location/${id}/verify/me`);
       close();
       scrollToTop();
     }
@@ -63,9 +89,28 @@ export const ResidentialInfoDetails: React.FC = () => {
     }
   };
 
+  const getRequests = async () => {
+    const res = await HttpClient.callApiAuth<Array<GetAddressVerificationResponse>>(
+      {
+        url: addressVerificationAPIList.getRequests,
+        method: 'GET',
+      },
+      authClient
+    );
+
+    if (res.ok) {
+      const requests = res.value;
+      const filteredRequests = requests.filter((req) => req.ref === id);
+      setSentRequests(filteredRequests);
+    } else {
+      showErrorNotification(res.error.code);
+    }
+  };
+
   useEffect(() => {
     if (filteredInfo) {
       setResidentialInfo(filteredInfo);
+      getRequests();
     }
   }, []);
 
@@ -191,13 +236,13 @@ export const ResidentialInfoDetails: React.FC = () => {
               <Box className="other-info-box">
                 <Box className="detail-box">
                   <Title className="title">Address Type</Title>
-                  <Text className="detail">{residential?.address_type}</Text>
+                  <Text className="detail">{residential?.addressType}</Text>
                 </Box>
                 <Box className="detail-box">
                   <Title className="title">Tenure</Title>
                   <Text className="detail">
-                    {residential?.start_date?.toString().substring(3, 15)} -{' '}
-                    {residential?.end_date?.toString().substring(3, 15)}{' '}
+                    {formattedDate(String(residential?.start_date))} to{' '}
+                    {residential?.end_date ? formattedDate(String(residential.end_date)) : 'Present'}{' '}
                   </Text>
                 </Box>
               </Box>
@@ -238,15 +283,65 @@ export const ResidentialInfoDetails: React.FC = () => {
                   <Title className="title">Country</Title>
                   <Text className="detail">{residential?.country}</Text>
                 </Box>
-                <Box className="detail-box">
-                  <Title className="title">Google maps</Title>
-                  <Text className="detail details-link">Click to locate</Text>
-                </Box>
               </Box>
             </Box>
-            <Button className="green-btn" onClick={() => open()}>
-              Get Verified
-            </Button>
+            {sentRequests.length > 0 && (
+              <Box className="sent-reuest-box">
+                <Title className="experience-details-box-heading referees-heading">Referees</Title>
+                <Box className="requests-wrapper">
+                  {sentRequests.map((request) => {
+                    let date;
+
+                    if (!request.isVerificationCompleted) {
+                      date = formattedDate(String(request.createdAt));
+                    } else {
+                      date = formattedDate(String(request.updatedAt));
+                    }
+
+                    return (
+                      <Box key={id} className="request-box referees-request-box">
+                        <Text className="request-box-heading">
+                          {request.name}
+                          <br />
+                          <small style={{ fontWeight: 500 }}>{request.verificationBy}</small>
+                        </Text>
+
+                        <Text className="request-box-text">
+                          {request.isVerificationCompleted ? 'Verified ' : 'Request sent '} on{' '}
+                          <strong style={{ fontWeight: 500 }}>
+                            {date[0]} {months[Number(date[1]) - 1]} {date[2]}
+                          </strong>
+                        </Text>
+                        {request.isVerificationCompleted ? (
+                          <Box className="request-status">
+                            <Box className="request-box-icon">
+                              <MdVerified color="#17a672" />
+                            </Box>
+                            <Text style={{ color: '#17a672' }} className="request-status-text verified-status">
+                              Verified
+                            </Text>
+                          </Box>
+                        ) : (
+                          <Box className="request-status">
+                            <Box className="request-box-icon">
+                              <CgSandClock color="#ff7272" />
+                            </Box>
+                            <Text className="request-status-text pending-status">Pending</Text>
+                          </Box>
+                        )}
+                      </Box>
+                    );
+                  })}
+                </Box>
+              </Box>
+            )}
+            {sentRequests.length > 0 ? (
+              <></>
+            ) : (
+              <Button className="green-btn" onClick={() => open()}>
+                Get Verified
+              </Button>
+            )}
           </Box>
         </Box>
       </Layout>
