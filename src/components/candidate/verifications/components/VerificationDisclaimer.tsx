@@ -10,9 +10,10 @@ export const VerificationDisclaimer: React.FC = (): JSX.Element => {
     <>
       <section className="verification-step">
         <Text className="verification-disclaimer">
-          I understand that during the sign-up process and while using this website, I may be required to provide
-          certain personal information, including but not limited to my name, email address, contact details, and any
-          other information deemed necessary for registration and website usage.
+          By verifying the candidate's information, you confirm that you are a genuine peer and that the details you
+          provide are accurate and true to the best of your knowledge. Your verification will be used solely for the
+          intended purpose as claimed by the candidate. Greenie ensures the security and confidentiality of the data
+          shared during the verification process
         </Text>
         <a href={privacyPolicy} download={'Data and Privacy Policy'} className="policy">
           Click to view Data and Privacy Policy
