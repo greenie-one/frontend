@@ -36,6 +36,7 @@ export const VerificationContextProvider: React.FC<{ children: React.ReactNode }
   );
   const [personBeingVerified, setPersonBeingVerified] = useState<string>('');
   const [peerVerified, setPeerVerified] = useState<boolean>(false);
+  const [otpTarget, setOtpTarget] = useState<string>('');
 
   const getVerificationData = async () => {
     const res = await HttpClient.callApi<GetVerificationDataResponse>({
@@ -66,16 +67,19 @@ export const VerificationContextProvider: React.FC<{ children: React.ReactNode }
       switch (res.error.code) {
         case 'GR0050': {
           setUnverifiedLink('EMAIL');
+          setOtpTarget((res.error as APIErrorPeer).email);
           break;
         }
 
         case 'GR0051': {
           setUnverifiedLink('MOBILE');
+          setOtpTarget((res.error as APIErrorPeer).phone);
           break;
         }
 
         case 'GR0055': {
           setUnverifiedLink('NONE');
+          setOtpTarget('');
           setPeerVerified(true);
           break;
         }
@@ -133,6 +137,7 @@ export const VerificationContextProvider: React.FC<{ children: React.ReactNode }
     setVerificationResponse,
     personBeingVerified,
     peerVerified,
+    otpTarget,
   };
 
   return <VerificationContext.Provider value={storeValues}>{children}</VerificationContext.Provider>;
