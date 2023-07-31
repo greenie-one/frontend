@@ -171,9 +171,9 @@ export const VerifyPanCard = () => {
               <Box className="checkbox-box">
                 <Checkbox className="checkbox" checked={checked} onChange={() => setChecked(!checked)} color="teal" />
                 <Text className="tearms-conditions">
-                  I understand that during the sign-up process and while using this website, I may be required to
-                  provide certain personal information, including but not limited to my name, email address, contact
-                  details, and any other information deemed necessary for registration and website usage.
+                  I hereby authorize Greenie to verify my Aadhar/PAN/DL details for authentication purposes. I have read
+                  the Consent Notice and I am aware that Greenie will use the information only for the intended purpose
+                  and my data will be handled as per laws. I am aware that I can withdraw this consent in the future.
                 </Text>
               </Box>
 

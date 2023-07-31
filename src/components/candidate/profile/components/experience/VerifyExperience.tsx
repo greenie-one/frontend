@@ -27,6 +27,7 @@ import { ExperienceDocuments } from '../../types/ProfileGeneral';
 
 import { Layout } from '../Layout';
 import { ConfirmRequest } from './peer_verfication/ConfirmRequest';
+import { FcInfo } from 'react-icons/fc';
 
 export const VerifyExperience: React.FC = () => {
   const navigate = useNavigate();
@@ -240,6 +241,18 @@ export const VerifyExperience: React.FC = () => {
                   )}
                 </Box>
               </Box>
+              <Box className="pro-tip-box">
+                <Box className="icon-box">
+                  <FcInfo color="#1991ff" />
+                  <Text className="pro-tip">Pro tip</Text>
+                </Box>
+                <Text className="tip">
+                  Ensure to add genuine peers for verification, as this can significantly impact your employability.
+                  Greenie verifies peers' email IDs with phone numbers before commencing verification. To maintain the
+                  authenticity of the process, your verification report remains confidential and uneditable. Greenie
+                  recommends to trust the integrity of your verified profile.
+                </Text>
+              </Box>
               <Title className="add-peer-title">Add Peers to verify</Title>
               <Box className="add-peers-inputs">
                 <TextInput
@@ -328,7 +341,7 @@ export const VerifyExperience: React.FC = () => {
               </Box>
 
               <Button
-                disabled={addedPeers.length + sentRequests.length < 2}
+                disabled={addedPeers.length < 1 || addedPeers.length + sentRequests.length < 2}
                 className="primaryBtn"
                 onClick={handleProceed}
               >
@@ -373,6 +386,7 @@ export const VerifyExperience: React.FC = () => {
                 <Button
                   className="green-btn"
                   onClick={() => verificationStepDispatch({ type: ReviewActionType.NEXT_STEP })}
+                  style={{ width: '15rem' }}
                 >
                   Confirm and send request
                 </Button>
