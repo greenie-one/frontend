@@ -86,7 +86,7 @@ export const Review: React.FC = () => {
       <ConfirmationModal opened={opened} close={close} />
       <Box className="review-container">
         <Text className="question-text" w={'70%'}>
-          Thank you, could you please provide your best regards by crafting an exceptional review for your esteemed peer
+          Your review matters!! Share your experience with the candidate and help us build trustworthy.
         </Text>
         <Box className="text-area-box">
           <Textarea
