@@ -378,6 +378,7 @@ export const GlobalContextProvider: React.FC<{
         userLevel,
         setUserLevel,
         getProfile,
+        setProfileData,
       }}
     >
       {children}
