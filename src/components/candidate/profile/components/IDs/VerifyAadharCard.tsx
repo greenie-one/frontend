@@ -21,6 +21,7 @@ import emptyProfile from '../../assets/emptyProfile.png';
 // import errorIcon from '../../assets/errorIcon.png';
 // import { GrPowerReset } from 'react-icons/gr';
 import privacyPolicy from '../../../../auth/assets/Privacy Policy-Greenie.pdf';
+import consentNotice from '../../assets/Consent Notice .pdf';
 
 export const VerifyAadharCard = () => {
   const navigate = useNavigate();
@@ -350,9 +351,16 @@ export const VerifyAadharCard = () => {
                 </Text>
               </Box>
 
-              <a href={privacyPolicy} download={'Data and Privacy Policy'} className="policy">
-                Click to view Data and Privacy Policy
-              </a>
+              <Text style={{ textDecoration: 'none' }} className="policy">
+                Click to view{' '}
+                <a style={{ textDecoration: 'underline' }} href={consentNotice} download={'Consent Notice'}>
+                  Consent terms
+                </a>{' '}
+                and{' '}
+                <a style={{ textDecoration: 'underline' }} href={privacyPolicy} download={'Privacy Policy'}>
+                  Privacy Policy
+                </a>
+              </Text>
             </Box>
           </Box>
         )}
