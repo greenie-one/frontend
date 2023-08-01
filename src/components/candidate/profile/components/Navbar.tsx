@@ -211,9 +211,9 @@ export const Navbar = () => {
             </Menu>
             <Menu trigger="hover" position="bottom-end">
               <Menu.Target>
-                {profileData.profilePic ? (
+                {profileData?.profilePic ? (
                   <Group>
-                    <img className="profile-picture" src={profileData.profilePic} alt="Profile Piture" />
+                    <img className="profile-picture" src={profileData?.profilePic} alt="Profile Piture" />
                     <AiFillCaretDown className="down-arrow-icon" />
                   </Group>
                 ) : (
@@ -340,11 +340,11 @@ export const Navbar = () => {
                 </span>
               </Link>
             </Box>
-            {profileData.profilePic ? (
+            {profileData?.profilePic ? (
               <Box className="drawer-right-section">
                 <AiOutlineBell size={'22px'} className="bell-icon" />
                 <Link to={'/candidate/profile'}>
-                  <img className="profile-picture" src={profileData.profilePic} alt="Profile Piture" />
+                  <img className="profile-picture" src={profileData?.profilePic} alt="Profile Piture" />
                 </Link>
               </Box>
             ) : (
