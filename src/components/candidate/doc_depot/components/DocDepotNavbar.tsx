@@ -154,7 +154,7 @@ export const DocDepotNavbar = () => {
                   withAsterisk
                   className="inputClass"
                   nothingFound="No options"
-                  label="Select document type"
+                  label="Select work experience"
                   styles={() => ({
                     item: {
                       '&[data-selected]': {

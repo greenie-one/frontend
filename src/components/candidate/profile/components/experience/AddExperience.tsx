@@ -359,7 +359,7 @@ export const AddExperience = () => {
                   data-autofocus
                   withAsterisk
                   {...workExperienceForm.getInputProps('designation')}
-                  maxLength={45}
+                  maxLength={30}
                 />
               </Box>
               <Divider mb={'10px'} color="#e1e1e1" />
@@ -370,7 +370,7 @@ export const AddExperience = () => {
                   {...workExperienceForm.getInputProps('companyName')}
                   label="Enter your company name"
                   className="inputClass"
-                  maxLength={50}
+                  maxLength={30}
                 />
               </Box>
               <Box className="input-section">
@@ -406,6 +406,7 @@ export const AddExperience = () => {
                   {...workExperienceForm.getInputProps('linkedInUrl')}
                   label="Paste the LinkedIn company page link"
                   className="inputClass"
+                  type="url"
                 />
               </Box>
               <Box className="input-section">
@@ -449,6 +450,7 @@ export const AddExperience = () => {
                   label="Official work email"
                   className="inputClass"
                   {...workExperienceForm.getInputProps('email')}
+                  type="email"
                 />
               </Box>
 
@@ -683,12 +685,10 @@ export const AddExperience = () => {
                             <span>{index + 1}</span> {name.substring(0, 25)}
                           </Text>
                           <Select
-                            clearable
-                            searchable
-                            nothingFound="No options"
+                            disabled
                             data={[{ value: 'work', label: 'Work Experience' }]}
                             className="inputClass"
-                            label={'Select document type'}
+                            label={'Document type'}
                             styles={() => ({
                               item: {
                                 '&[data-selected]': {

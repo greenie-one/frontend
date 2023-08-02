@@ -21,6 +21,7 @@ import emptyProfile from '../../assets/emptyProfile.png';
 // import errorIcon from '../../assets/errorIcon.png';
 // import { GrPowerReset } from 'react-icons/gr';
 import privacyPolicy from '../../../../auth/assets/Privacy Policy-Greenie.pdf';
+import consentNotice from '../../assets/ConsentNotice.pdf';
 
 export const VerifyAadharCard = () => {
   const navigate = useNavigate();
@@ -329,7 +330,7 @@ export const VerifyAadharCard = () => {
           <Box className="document-container">
             <img src={AadharImg} className="document-img" alt="Aadhar Img" />
             <Box className="document-text-box">
-              <Title className="heading">Enter your Aadhaar number</Title>
+              <Title className="heading">Enter your Aadhar number</Title>
               <TextInput
                 label="Enter aadhar number"
                 className="inputClass"
@@ -344,15 +345,22 @@ export const VerifyAadharCard = () => {
               <Box className="checkbox-box">
                 <Checkbox checked={checked} onChange={() => setChecked(!checked)} className="checkbox" color="teal" />
                 <Text className="tearms-conditions">
-                  I understand that during the sign-up process and while using this website, I may be required to
-                  provide certain personal information, including but not limited to my name, email address, contact
-                  details, and any other information deemed necessary for registration and website usage.
+                  I hereby authorize Greenie to verify my Aadhar/PAN/DL details for authentication purposes. I have read
+                  the Consent Notice and I am aware that Greenie will use the information only for the intended purpose
+                  and my data will be handled as per laws. I am aware that I can withdraw this consent in the future.
                 </Text>
               </Box>
 
-              <a href={privacyPolicy} download={'Data and Privacy Policy'} className="policy">
-                Click to view Data and Privacy Policy
-              </a>
+              <Text style={{ textDecoration: 'none' }} className="policy">
+                Click to view{' '}
+                <a style={{ textDecoration: 'underline' }} href={consentNotice} download={'Consent Notice'}>
+                  Consent terms
+                </a>{' '}
+                and{' '}
+                <a style={{ textDecoration: 'underline' }} href={privacyPolicy} download={'Privacy Policy'}>
+                  Privacy Policy
+                </a>
+              </Text>
             </Box>
           </Box>
         )}

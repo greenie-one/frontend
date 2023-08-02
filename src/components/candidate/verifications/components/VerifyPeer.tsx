@@ -33,7 +33,8 @@ const VerificationHeading = () => {
 
 export const VerifyPeer = () => {
   const { classes: inputClasses } = OtpInputStyles();
-  const { unverifiedLink, peerUUID, getVerificationData, totalSteps, setActiveStep } = useVerificationContext();
+  const { unverifiedLink, peerUUID, getVerificationData, totalSteps, setActiveStep, otpTarget } =
+    useVerificationContext();
 
   const [countdown, setCountDown] = useState<number>(60);
   const [otpProcess, setOtpProcess] = useState<number>(0);
@@ -44,14 +45,10 @@ export const VerifyPeer = () => {
       title: 'Sending OTP...',
       message: 'Please wait while we send OTP to your phone number.',
     });
-    const requestBody: Record<'otpType', string> = {
-      otpType: unverifiedLink,
-    };
 
     const res = await HttpClient.callApi({
       url: `${peerVerificationAPIList.verifyPeer}/${peerUUID}/send-otp`,
-      method: 'POST',
-      body: requestBody,
+      method: 'GET',
     });
 
     if (res.ok) {
@@ -118,7 +115,7 @@ export const VerifyPeer = () => {
             <Box className="address-verification-container">
               <VerificationHeading />
               <Text className="address-verification-bold-title">
-                Enter the One-Time Password sent to your {unverifiedLink}.
+                Enter the One-Time Password sent to your {unverifiedLink} ({otpTarget}).
               </Text>
               <Box className="input-section">
                 <PinInput
