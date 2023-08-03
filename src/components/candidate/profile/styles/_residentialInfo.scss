@@ -233,7 +233,7 @@
   margin-block: 1rem;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.5rem;
 
   .location-search-box {
   }
@@ -244,6 +244,8 @@
     font-size: 0.9375rem;
     text-align: center;
     line-height: 1.5;
+    max-width: 50ch;
+    margin-inline: auto;
   }
 
   .map-box-container {
@@ -253,6 +255,7 @@
 
     .leaflet-container {
       height: 15rem;
+      z-index: 1;
     }
   }
 }

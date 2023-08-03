@@ -7,13 +7,19 @@ import { HttpClient } from '../../../../../../utils/generic/httpClient';
 import { searchEndpoints } from '../../../../../../assets/api/ApiList';
 import classes from '../../../styles/search-box.module.css';
 import { MdOutlineLocationOn, MdOutlineSearch } from 'react-icons/md';
+import { useForm } from '@mantine/form';
 
 type SearchBox = {
   innerComponent: boolean;
   setFetchedAddress?: React.Dispatch<React.SetStateAction<any>>;
+  residentialInfoForm?: ReturnType<typeof useForm<residentialInfoFormType>>;
 };
 
-export const SearchBox: React.FC<SearchBox> = ({ innerComponent, setFetchedAddress }): JSX.Element => {
+export const SearchBox: React.FC<SearchBox> = ({
+  innerComponent,
+  setFetchedAddress,
+  residentialInfoForm,
+}): JSX.Element => {
   const navigate = useNavigate();
   const { authClient, scrollToTop } = useGlobalContext();
 
@@ -56,6 +62,12 @@ export const SearchBox: React.FC<SearchBox> = ({ innerComponent, setFetchedAddre
       if (setFetchedAddress) {
         setFetchedAddress(address);
       }
+
+      if (residentialInfoForm) {
+        residentialInfoForm.setValues(address.address);
+      }
+
+      navigate('.', { replace: true, state: address });
     } else {
       navigate('/candidate/profile/address/addResidentialInfo', { state: address });
       scrollToTop();

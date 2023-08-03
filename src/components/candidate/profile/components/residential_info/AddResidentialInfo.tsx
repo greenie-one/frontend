@@ -69,6 +69,8 @@ export const AddResidentialInfo = () => {
     },
   });
 
+  console.log(residentialInfoForm);
+
   const handleToggleScreen = () => {
     residentialInfoForm.reset();
     navigate('/candidate/profile');
@@ -194,7 +196,11 @@ export const AddResidentialInfo = () => {
           </Box>
           <Box className="info-header-container">
             <Box className="location-search-box">
-              <SearchBox innerComponent={true} setFetchedAddress={setFetchedAddress} />
+              <SearchBox
+                innerComponent={true}
+                setFetchedAddress={setFetchedAddress}
+                residentialInfoForm={residentialInfoForm}
+              />
             </Box>
             <Text className="address-string">{fetchedAddress.addressString}</Text>
             <Box className="map-box-container">
