@@ -16,6 +16,17 @@ $dark: #191919;
 
   .residential-details {
     font-weight: 600;
+
+    @media screen and (max-width: 28em) {
+      flex-direction: column;
+
+      .residential-details-text-box {
+        margin-left: 0;
+        width: 100%;
+        text-align: center;
+        margin-block: 0.75rem;
+      }
+    }
   }
 
   .add-peer-title {
@@ -415,6 +426,15 @@ $dark: #191919;
   justify-content: space-between;
   position: relative;
 
+  @media screen and (max-width: 36em) {
+    width: 100%;
+  }
+
+  @media screen and (max-width: 28em) {
+    flex-direction: column;
+    height: 90px;
+  }
+
   label {
     position: absolute;
     top: 0;
@@ -440,6 +460,12 @@ $dark: #191919;
     height: 27px;
     font-size: 12px;
     width: 100px;
+
+    @media screen and (max-width: 28em) {
+      margin-left: 0;
+      margin-bottom: 8px;
+      margin-right: auto;
+    }
 
     .copy-text {
       margin-left: 0.25rem;
@@ -726,7 +752,7 @@ $dark: #191919;
       border-radius: 34px;
       border: 1px solid $lighterGray;
       height: 25px;
-      font-size: 10px;
+      font-size: 12px;
       width: 75px;
     }
   }
@@ -737,15 +763,19 @@ $dark: #191919;
     .pro-tip-box {
       padding: 1rem 0.5rem;
       width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
       .icon-box {
         .pro-tip {
-          font-size: 10px;
+          font-size: 13px;
         }
       }
       .tip {
-        font-size: 10px;
+        font-size: 13px;
         line-height: 14px;
         margin-left: 0.15rem;
+        text-align: center;
       }
     }
   }
