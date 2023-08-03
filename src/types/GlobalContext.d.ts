@@ -10,7 +10,6 @@ type GlobalContextType = {
   verifyLicenceForm: UseFormReturnType<verifyLicenceFormType>;
   profileForm: UseFormReturnType<profileFormType>;
   workExperienceForm: UseFormReturnType<workExperienceFormType>;
-  residentialInfoForm: UseFormReturnType<residentialInfoFormType>;
   skillForm: UseFormReturnType<skillFormType>;
   residentialInfoVerificationForm: UseFormReturnType<residentialInfoFormType>;
   peerAddressVerificationForm: UseFormReturnType<peerAddressVerificationFromType>;

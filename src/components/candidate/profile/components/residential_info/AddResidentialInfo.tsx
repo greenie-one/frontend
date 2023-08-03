@@ -1,5 +1,4 @@
 import { Box, Title, TextInput, Select, Checkbox, Button, Divider, Text } from '@mantine/core';
-import { DateInput } from '@mantine/dates';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
 import { useState } from 'react';
 import { BsArrowLeft } from 'react-icons/bs';
@@ -10,20 +9,66 @@ import {
 } from '../../../../../utils/functions/showNotification';
 import { HttpClient } from '../../../../../utils/generic/httpClient';
 import { residentialInfoAPIList } from '../../../../../assets/api/ApiList';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Layout } from '../Layout';
+import { hasLength, isNotEmpty, useForm } from '@mantine/form';
+import { SearchBox } from './components/SearchBox';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 
 export const AddResidentialInfo = () => {
   const navigate = useNavigate();
-  const { authClient, residentialInfoForm, setForceRender } = useGlobalContext();
+  const location = useLocation();
+
+  const { authClient, setForceRender } = useGlobalContext();
   const [checked, setChecked] = useState(false);
+  const [fetchedAddress, setFetchedAddress] = useState<any>(location.state as any);
+
+  console.log(fetchedAddress);
+
+  const residentialInfoForm = useForm<residentialInfoFormType>({
+    initialValues: {
+      address_line_1: fetchedAddress?.address.address_line_1 || '',
+      address_line_2: fetchedAddress?.address.address_line_2 || '',
+      landmark: '',
+      pincode: fetchedAddress?.address.pincode || '',
+      city: fetchedAddress?.address.city || '',
+      state: fetchedAddress?.address.state || '',
+      country: fetchedAddress?.address.country || '',
+      start_date: {
+        month: '',
+        year: '',
+      },
+      end_date: {
+        month: '',
+        year: '',
+      },
+      addressType: '',
+    },
+
+    validate: {
+      address_line_1: isNotEmpty('Please enter valid address'),
+      address_line_2: isNotEmpty('Please enter valid address'),
+      landmark: isNotEmpty('Please enter valid address'),
+      city: isNotEmpty('Please enter valid address'),
+      addressType: isNotEmpty('Please enter the address type'),
+      pincode: hasLength(6, 'Please enter valid pincode'),
+      state: isNotEmpty('Please enter your state/country'),
+      start_date: {
+        month: isNotEmpty('Please enter start month'),
+        year: isNotEmpty('Please enter start year'),
+      },
+      country: isNotEmpty('Please enter your country'),
+    },
+  });
+
   const handleToggleScreen = () => {
     residentialInfoForm.reset();
     navigate('/candidate/profile');
   };
 
   const handleCheck = () => {
-    residentialInfoForm.setFieldValue('end_date', '');
+    residentialInfoForm.setFieldValue('end_date.month', '');
+    residentialInfoForm.setFieldValue('end_date.year', '');
     setChecked(!checked);
   };
 
@@ -59,12 +104,19 @@ export const AddResidentialInfo = () => {
   };
 
   const checkEndDate = () => {
-    if (!checked && residentialInfoForm.values.end_date === '') {
-      residentialInfoForm.setFieldError('end_date', 'This field is required! Please enter a valid value.');
-      return false;
+    let isValid = true;
+
+    if (!checked && residentialInfoForm.values.end_date?.month === '') {
+      residentialInfoForm.setFieldError('end_date.month', 'Please enter end month.');
+      isValid = false;
     }
 
-    return true;
+    if (!checked && residentialInfoForm.values.end_date?.year === '') {
+      residentialInfoForm.setFieldError('end_date.year', 'Please enter end year.');
+      isValid = false;
+    }
+
+    return isValid;
   };
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -85,12 +137,14 @@ export const AddResidentialInfo = () => {
     });
 
     let requestBody: ResidentialInfoRequestBody = {} as ResidentialInfoRequestBody;
-    if (residentialInfoForm.values.end_date === '') {
+    if (residentialInfoForm.values.end_date?.month === '' || residentialInfoForm.values.end_date?.year === '') {
       Object.keys(residentialInfoForm.values).forEach((key) => {
+        const _key = key as keyof residentialInfoFormType;
+
         if (key !== 'end_date') {
           requestBody = {
             ...requestBody,
-            [key]: residentialInfoForm.values[key],
+            [key]: residentialInfoForm.values[_key],
           };
         }
       });
@@ -128,6 +182,25 @@ export const AddResidentialInfo = () => {
               <Text>Add Residential Info</Text>
             </Box>
           </Box>
+          <Box>
+            <Box>
+              <SearchBox innerComponent={true} setFetchedAddress={setFetchedAddress} />
+            </Box>
+            <Text>{fetchedAddress.addressString}</Text>
+            <Box>
+              <MapContainer center={[51.505, -0.09]} zoom={13} scrollWheelZoom={false}>
+                <TileLayer
+                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+                <Marker position={[51.505, -0.09]}>
+                  <Popup>
+                    A pretty CSS3 popup. <br /> Easily customizable.
+                  </Popup>
+                </Marker>
+              </MapContainer>
+            </Box>
+          </Box>
           <form onSubmit={handleSubmit}>
             <Box className="input-section">
               <Title className="title">Type of Address</Title>
@@ -137,7 +210,7 @@ export const AddResidentialInfo = () => {
                 nothingFound="No options"
                 data-autofocus
                 data={[
-                  { value: 'Permenent', label: 'Permenent' },
+                  { value: 'Permanent', label: 'Permanent' },
                   { value: 'Current', label: 'Current' },
                   { value: 'Temporary', label: 'Temporary' },
                 ]}
@@ -207,10 +280,11 @@ export const AddResidentialInfo = () => {
                 withAsterisk
                 type="number"
                 onChange={handlePincodeChange}
+                value={fetchedAddress?.address.pincode}
               />
             </Box>
             <Box className="input-section">
-              <Title className="title">State & Country</Title>
+              <Title className="title">State/Country</Title>
               <Box className="inner-input-section">
                 <TextInput
                   label="State"
@@ -229,31 +303,125 @@ export const AddResidentialInfo = () => {
             <Divider mb={'10px'} />
             <Box className="input-section">
               <Title className="title">Start Date</Title>
-              <DateInput
-                label="Start date"
-                withAsterisk
-                className="inputClass"
-                {...residentialInfoForm.getInputProps('start_date')}
-              />
+              <Box className="inner-input-section">
+                <Select
+                  clearable
+                  searchable
+                  nothingFound="No options"
+                  data-autofocus
+                  data={[
+                    { value: 'Permenent', label: 'Permenent' },
+                    { value: 'Current', label: 'Current' },
+                    { value: 'Temporary', label: 'Temporary' },
+                  ]}
+                  label="From Month"
+                  className="inputClass"
+                  {...residentialInfoForm.getInputProps('start_date.month')}
+                  withAsterisk
+                  styles={() => ({
+                    item: {
+                      '&[data-selected]': {
+                        '&, &:hover': {
+                          backgroundColor: '#17a672',
+                          color: 'white',
+                        },
+                      },
+                    },
+                  })}
+                />
+                <Select
+                  clearable
+                  searchable
+                  nothingFound="No options"
+                  data-autofocus
+                  data={[
+                    { value: 'Permenent', label: 'Permenent' },
+                    { value: 'Current', label: 'Current' },
+                    { value: 'Temporary', label: 'Temporary' },
+                  ]}
+                  label="From Year"
+                  className="inputClass"
+                  {...residentialInfoForm.getInputProps('start_date.year')}
+                  withAsterisk
+                  styles={() => ({
+                    item: {
+                      '&[data-selected]': {
+                        '&, &:hover': {
+                          backgroundColor: '#17a672',
+                          color: 'white',
+                        },
+                      },
+                    },
+                  })}
+                />
+              </Box>
             </Box>
+            <Checkbox
+              checked={checked}
+              onChange={handleCheck}
+              className="checkbox"
+              color="teal"
+              label="I currently live here"
+            />
             <Box className="input-section">
-              <Title className="title">End Date</Title>
+              <Title sx={{ color: checked ? '#D1D4DB !important' : '#191919 !important' }} className="title">
+                End Date
+              </Title>
 
-              <DateInput
-                withAsterisk={!checked}
-                disabled={checked}
-                label="End date"
-                className="inputClass"
-                {...residentialInfoForm.getInputProps('end_date')}
-              />
-
-              <Checkbox
-                checked={checked}
-                onChange={handleCheck}
-                className="checkbox"
-                color="teal"
-                label="I currently live here"
-              />
+              <Box className="inner-input-section">
+                <Select
+                  clearable
+                  searchable
+                  nothingFound="No options"
+                  data-autofocus
+                  data={[
+                    { value: 'Permenent', label: 'Permenent' },
+                    { value: 'Current', label: 'Current' },
+                    { value: 'Temporary', label: 'Temporary' },
+                  ]}
+                  label="From Month"
+                  className="inputClass"
+                  {...residentialInfoForm.getInputProps('end_date.month')}
+                  withAsterisk={!checked}
+                  disabled={checked}
+                  styles={() => ({
+                    item: {
+                      '&[data-selected]': {
+                        '&, &:hover': {
+                          backgroundColor: '#17a672',
+                          color: 'white',
+                        },
+                      },
+                    },
+                  })}
+                />
+                <Select
+                  clearable
+                  searchable
+                  nothingFound="No options"
+                  data-autofocus
+                  data={[
+                    { value: 'Permenent', label: 'Permenent' },
+                    { value: 'Current', label: 'Current' },
+                    { value: 'Temporary', label: 'Temporary' },
+                  ]}
+                  label="From Year"
+                  className="inputClass"
+                  {...residentialInfoForm.getInputProps('end_date.year')}
+                  withAsterisk={!checked}
+                  disabled={checked}
+                  styles={() => ({
+                    item: {
+                      '&[data-selected]': {
+                        '&, &:hover': {
+                          backgroundColor: '#17a672',
+                          color: 'white',
+                        },
+                      },
+                    },
+                  })}
+                />
+              </Box>
             </Box>
             <Divider />
             <Box className="btn-wrapper">

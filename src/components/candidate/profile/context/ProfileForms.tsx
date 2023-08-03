@@ -82,33 +82,6 @@ export const useProfileForms = () => {
     },
   });
 
-  const residentialInfoForm = useForm<residentialInfoFormType>({
-    initialValues: {
-      address_line_1: '',
-      address_line_2: '',
-      landmark: '',
-      pincode: '',
-      city: '',
-      state: '',
-      country: 'India',
-      start_date: '',
-      end_date: '',
-      addressType: '',
-    },
-
-    validate: {
-      address_line_1: isNotEmpty('Please enter valid address'),
-      address_line_2: isNotEmpty('Please enter valid address'),
-      landmark: isNotEmpty('Please enter valid address'),
-      city: isNotEmpty('Please enter valid address'),
-      addressType: isNotEmpty('Please enter the address type'),
-      pincode: hasLength(6, 'Please enter valid pincode'),
-      state: isNotEmpty('Please enter your state/country'),
-      start_date: isNotEmpty('Please enter start date'),
-      country: isNotEmpty('Please enter your country'),
-    },
-  });
-
   const skillForm = useForm<skillFormType>({
     initialValues: {
       skillName: '',
@@ -151,7 +124,6 @@ export const useProfileForms = () => {
     verifyPANForm,
     verifyLicenceForm,
     workExperienceForm,
-    residentialInfoForm,
     skillForm,
     residentialInfoVerificationForm,
     peerAddressVerificationForm,
