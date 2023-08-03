@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import { Box, List } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
 import { useDebounce } from '../../../../../../utils/hooks/useDebounce';
 import { useGlobalContext } from '../../../../../../context/GlobalContext';
 import { HttpClient } from '../../../../../../utils/generic/httpClient';
 import { searchEndpoints } from '../../../../../../assets/api/ApiList';
+import classes from '../../../styles/search-box.module.css';
+import { MdOutlineLocationOn, MdOutlineSearch } from 'react-icons/md';
 
 type SearchBox = {
   innerComponent: boolean;
@@ -61,22 +64,39 @@ export const SearchBox: React.FC<SearchBox> = ({ innerComponent, setFetchedAddre
 
   return (
     <>
-      <input
-        style={{ border: '1px solid' }}
-        type="search"
-        name="location-search"
-        id="location-search"
-        onChange={(e) => setAddressQuery(e.target.value)}
-      />
-      <div style={{ border: '1px solid' }}>
-        {addressList.map((address, idx) => {
-          return (
-            <button key={idx} onClick={(e) => handleSelectedAddress(e, address)}>
-              {address.addressString}
-            </button>
-          );
-        })}
-      </div>
+      <Box className={classes.searchBoxContainer}>
+        <Box className={classes.locationIconWrapper}>
+          <span className={classes.locationIconContainer}>
+            <MdOutlineLocationOn />
+          </span>
+        </Box>
+        <Box className={classes.searchInputContainer}>
+          <span className={classes.searchIconContainer}>
+            <MdOutlineSearch />
+          </span>
+          <input
+            type="search"
+            name="location-search"
+            id="location-search"
+            placeholder="Search your address"
+            onChange={(e) => setAddressQuery(e.target.value)}
+            className={classes.searchInputControl}
+          />
+          {addressList.length > 0 && (
+            <List className={classes.addressList}>
+              {addressList.map((address, idx) => {
+                return (
+                  <List.Item key={idx} className={classes.addressListItems}>
+                    <button onClick={(e) => handleSelectedAddress(e, address)} className={classes.addressButton}>
+                      {address.addressString}
+                    </button>
+                  </List.Item>
+                );
+              })}
+            </List>
+          )}
+        </Box>
+      </Box>
     </>
   );
 };

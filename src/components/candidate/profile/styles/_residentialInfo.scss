@@ -211,6 +211,34 @@
   }
 }
 
+.info-header-container {
+  margin-block: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  .location-search-box {
+  }
+
+  .address-string {
+    color: #697082;
+    font-weight: 400;
+    font-size: 0.9375rem;
+    text-align: center;
+    line-height: 1.5;
+  }
+
+  .map-box-container {
+    padding-block: 1rem;
+    border-top: 1px solid #d1d4db;
+    border-bottom: 1px solid #d1d4db;
+
+    .leaflet-container {
+      height: 15rem;
+    }
+  }
+}
+
 .add-residential-info {
   margin-top: 7rem;
   width: 94%;
@@ -243,6 +271,36 @@
       grid-template-columns: 49% 49%;
       align-items: center;
       justify-content: space-between;
+    }
+  }
+}
+
+.mantine-Modal-content {
+  overflow-y: unset;
+}
+
+.mantine-Modal-header {
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+}
+
+.search-box-container {
+  padding-inline: 1rem;
+  padding-block: 3rem 5rem;
+  display: grid;
+  place-items: center;
+  gap: 1.25rem;
+
+  .search-box-label {
+    font-weight: 600;
+    display: flex;
+    gap: 2px;
+
+    &::after {
+      display: inline-block;
+      content: '*';
+      font-size: 1.1rem;
+      color: #ff7272;
     }
   }
 }

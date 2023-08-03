@@ -6,10 +6,11 @@ import { ResidentialInfoCard } from './ResidentialInfoCard';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
 import { useNavigate } from 'react-router-dom';
 import { SearchBox } from './components/SearchBox';
-import { useDisclosure } from '@mantine/hooks';
+import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 
 export const ResidentialInfoSection = () => {
   const navigate = useNavigate();
+  const isMobile = useMediaQuery('(max-width: 768px)');
   const { residentialInfoData, scrollToTop } = useGlobalContext();
 
   const [searchModalOpened, { open: searchModalOpen, close: searchModalClose }] = useDisclosure(false);
@@ -48,8 +49,20 @@ export const ResidentialInfoSection = () => {
           </>
         )}
       </Box>
-      <Modal opened={searchModalOpened} onClose={searchModalClose}>
-        <SearchBox innerComponent={false} />
+      <Modal
+        title="Add Residential Information"
+        radius={'lg'}
+        className="modal"
+        size={'60%'}
+        fullScreen={isMobile}
+        centered
+        opened={searchModalOpened}
+        onClose={searchModalClose}
+      >
+        <Box className="search-box-container">
+          <Text className="search-box-label">Enter your location</Text>
+          <SearchBox innerComponent={false} />
+        </Box>
       </Modal>
 
       {residentialInfoData?.length === 0 ? (

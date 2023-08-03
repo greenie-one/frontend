@@ -14,6 +14,14 @@ import { Layout } from '../Layout';
 import { hasLength, isNotEmpty, useForm } from '@mantine/form';
 import { SearchBox } from './components/SearchBox';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+import { Icon } from 'leaflet';
+import mapMarker from '../../assets/map-marker.png';
+
+const marker = new Icon({
+  iconUrl: mapMarker,
+  iconSize: [40, 40],
+});
 
 export const AddResidentialInfo = () => {
   const navigate = useNavigate();
@@ -172,6 +180,8 @@ export const AddResidentialInfo = () => {
     }
   };
 
+  console.log(fetchedAddress);
+
   return (
     <>
       <Layout>
@@ -182,21 +192,23 @@ export const AddResidentialInfo = () => {
               <Text>Add Residential Info</Text>
             </Box>
           </Box>
-          <Box>
-            <Box>
+          <Box className="info-header-container">
+            <Box className="location-search-box">
               <SearchBox innerComponent={true} setFetchedAddress={setFetchedAddress} />
             </Box>
-            <Text>{fetchedAddress.addressString}</Text>
-            <Box>
-              <MapContainer center={[51.505, -0.09]} zoom={13} scrollWheelZoom={false}>
+            <Text className="address-string">{fetchedAddress.addressString}</Text>
+            <Box className="map-box-container">
+              <MapContainer
+                center={[fetchedAddress.position.latitude, fetchedAddress.position.longitude]}
+                zoom={12}
+                scrollWheelZoom={false}
+              >
                 <TileLayer
                   attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                <Marker position={[51.505, -0.09]}>
-                  <Popup>
-                    A pretty CSS3 popup. <br /> Easily customizable.
-                  </Popup>
+                <Marker position={[fetchedAddress.position.latitude, fetchedAddress.position.longitude]} icon={marker}>
+                  <Popup>{fetchedAddress.addressString}</Popup>
                 </Marker>
               </MapContainer>
             </Box>
