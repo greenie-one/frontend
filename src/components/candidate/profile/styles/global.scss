@@ -534,7 +534,7 @@
     input {
       height: 46px;
       border-radius: 6px;
-      font-size: 10px;
+      font-size: 13px;
       line-height: 12px;
       margin: 0 auto;
       margin-bottom: 10px;
@@ -545,9 +545,18 @@
     }
 
     label {
-      font-size: 10px;
+      font-size: 11px;
       line-height: 10px;
       padding-top: 8px;
+    }
+  }
+
+  .text-area-input {
+    label {
+      font-size: 11px;
+    }
+    textarea {
+      font-size: 13px;
     }
   }
 }
@@ -599,12 +608,6 @@
 }
 
 @media screen and (max-width: 512px) {
-  .text-area-input {
-    textarea {
-      font-size: 10px;
-    }
-  }
-
   .disclaimer-modal {
     .tearms-conditions {
       font-size: 12px;

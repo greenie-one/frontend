@@ -15,21 +15,39 @@
     justify-content: flex-start;
     margin-bottom: 2rem;
 
+    @media screen and (max-width: 28em) {
+      flex-direction: column;
+      align-items: center;
+    }
+
     .location {
       border: 1px solid $lighterGray;
       display: flex;
       align-items: center;
       justify-content: center;
-      height: 100%;
+      aspect-ratio: 1;
       border-radius: 50%;
       color: $lighterGray;
       min-width: 100px;
       min-height: 100px;
+
+      @media screen and (max-width: 28em) {
+        width: 50px;
+        height: 50px;
+        min-width: 50px;
+        min-height: 50px;
+      }
     }
 
     .address-box {
       margin-left: 1rem;
       width: 50%;
+      @media screen and (max-width: 28em) {
+        margin-left: 0;
+        width: calc(100% - 0.25rem);
+        text-align: center;
+        margin-block: 1rem;
+      }
       .address {
         margin-bottom: 1rem;
       }
