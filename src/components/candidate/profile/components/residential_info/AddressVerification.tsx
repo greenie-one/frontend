@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Title, Button, UseStylesOptions, MantineTheme, Modal } from '@mantine/core';
+import { Button, UseStylesOptions, MantineTheme, Modal } from '@mantine/core';
 import { MdVerified } from 'react-icons/md';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 import checkGif from '../../assets/94109-confirmation 1.gif';

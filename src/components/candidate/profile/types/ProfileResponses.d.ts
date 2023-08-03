@@ -29,7 +29,7 @@ type WorkExperience = {
   id: string;
   image?: string | null;
   linkedInUrl?: string;
-  noOfVerifications: 0;
+  noOfVerifications: number;
   salary: string;
   workMode: string;
   workType: string;

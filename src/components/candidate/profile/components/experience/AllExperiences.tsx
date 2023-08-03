@@ -10,7 +10,6 @@ import { Layout } from '../Layout';
 export const AllExperiences = () => {
   const navigate = useNavigate();
   const { workExperienceData } = useGlobalContext();
-  console.log(workExperienceData);
 
   const handleDetailsPage = (workId: string) => {
     navigate(`/candidate/profile/experience/${workId}`);

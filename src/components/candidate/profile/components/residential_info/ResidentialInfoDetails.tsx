@@ -55,8 +55,6 @@ export const ResidentialInfoDetails: React.FC = () => {
     }
   };
 
-  console.log(sentRequests);
-
   const [deleteModalOpened, { open: deleteModalOpen, close: deleteModalClose }] = useDisclosure(false);
 
   const handleDeleteResidentialInfo = (): void => {
