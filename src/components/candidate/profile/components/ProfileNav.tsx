@@ -27,6 +27,7 @@ export const ProfileNav = () => {
       scrollToTop();
     }
   };
+
   return (
     <Box className="profileNav">
       <Box className="profile-btn-wrapper">
