@@ -35,6 +35,7 @@ import { VerifyDrivingLicence } from './components/candidate/profile/components/
 import { CongratulationsScreen } from './components/candidate/profile/components/IDs/CongratulationsScreen';
 import { PeerVerification } from './components/candidate/profile/components/residential_info/addressVerification/peerVerification/PeerVerification';
 import { SelfVerification } from './components/candidate/profile/components/residential_info/addressVerification/selfVerification/SelfVerification';
+import { VerifyResidentialInfo } from './components/candidate/profile/components/residential_info/VerifyResidentialInfo';
 
 const App = () => {
   return (
@@ -69,6 +70,7 @@ const App = () => {
                 <Route path="address/addResidentialInfo" element={<AddResidentialInfo />} />
                 <Route path="address/allAddresses" element={<AllResidentialInfo />} />
                 <Route path="address/:id" element={<ResidentialInfoDetails />} />
+                <Route path="address/:id/verify" element={<VerifyResidentialInfo />} />
                 <Route path="location/:id/verify/me" element={<SelfVerification />} />
 
                 <Route path="skills/allSkills" element={<AllSkills />} />

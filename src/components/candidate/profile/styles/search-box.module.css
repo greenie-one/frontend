@@ -1,0 +1,82 @@
+.searchBoxContainer {
+  display: flex;
+  gap: 1rem;
+  align-items: stretch;
+  width: 100%;
+  justify-content: center;
+}
+
+.locationIconWrapper {
+  background: #f8f8f8;
+  border: 1px solid #f8f8f8;
+  width: 5rem;
+  height: 3rem;
+  display: grid;
+  place-items: center;
+  border-radius: 6rem;
+}
+
+.locationIconContainer {
+  display: grid;
+  place-items: center;
+  border-bottom: 2px solid #191819;
+  font-size: 1.5rem;
+}
+
+.searchInputContainer {
+  display: flex;
+  align-items: stretch;
+  border: 1px solid #d1d4db;
+  width: min(100%, 24rem);
+  position: relative;
+  border-radius: 6rem;
+}
+
+.searchIconContainer {
+  align-self: center;
+  color: #a4a4a4;
+  font-size: 1.5rem;
+  padding-inline: 0.8rem;
+}
+
+.searchInputControl {
+  flex: 1;
+  padding-block: 0.35rem;
+  color: #697082;
+  border-top-right-radius: 6rem;
+  border-bottom-right-radius: 6rem;
+}
+
+.addressList {
+  padding: 1.5rem;
+  position: absolute;
+  background: #ffffff;
+  left: 0;
+  width: 100%;
+  top: calc(100% + 0.75rem);
+  z-index: 999;
+  display: grid;
+  gap: 6px;
+  box-shadow:
+    0px 1.96875px 6.474999904632568px 0px rgba(0, 0, 0, 0.02),
+    0px 9px 18.200000762939453px 0px rgba(0, 0, 0, 0.03),
+    0px 22.78125px 48.82500076293945px 0px rgba(0, 0, 0, 0.04),
+    0px 45px 112px 0px rgba(0, 0, 0, 0.06);
+  border-radius: 1.25rem;
+}
+
+.addressListItems {
+  display: block;
+}
+
+.addressButton {
+  text-align: left;
+  color: #697082;
+  transition: all 0.15s linear;
+  font-size: 0.9375rem;
+}
+
+.addressButton:hover {
+  color: #191819;
+  transition: all 0.2s linear;
+}
