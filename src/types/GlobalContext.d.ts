@@ -26,4 +26,5 @@ type GlobalContextType = {
   userLevel: number;
   setUserLevel: React.Dispatch<React.SetStateAction<number>>;
   getProfile: () => void;
+  setProfileData: React.Dispatch<React.SetStateAction<UserProfileType>>;
 };

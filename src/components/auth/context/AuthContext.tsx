@@ -19,7 +19,7 @@ export const useAuthContext = () => useContext(AuthContext);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const navigate = useNavigate();
-  const { authClient } = useGlobalContext();
+  const { authClient, setProfileData } = useGlobalContext();
   const [authTokens] = useLocalStorage<AuthTokens>({
     key: 'auth-tokens',
   });
@@ -166,7 +166,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const getMyProfile = async () => {
-    const res = await HttpClient.callApiAuth(
+    const res = await HttpClient.callApiAuth<UserProfileType>(
       {
         url: `${profileAPIList.getMyProfile}`,
         method: 'GET',
@@ -175,6 +175,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     );
 
     if (res.ok) {
+      setProfileData(res.value);
       navigate('/candidate/profile');
     } else {
       dispatch({ type: 'CREATEPROFILE' });

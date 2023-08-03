@@ -21,7 +21,7 @@ import emptyProfile from '../../assets/emptyProfile.png';
 // import errorIcon from '../../assets/errorIcon.png';
 // import { GrPowerReset } from 'react-icons/gr';
 import privacyPolicy from '../../../../auth/assets/Privacy Policy-Greenie.pdf';
-import consentNotice from '../../assets/Consent Notice.pdf';
+import consentNotice from '../../assets/ConsentNotice.pdf';
 
 export const VerifyAadharCard = () => {
   const navigate = useNavigate();
