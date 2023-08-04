@@ -38,14 +38,8 @@ type ResidentialInfoRequestBody = {
   city: string;
   state: string;
   country: string;
-  start_date: {
-    month: string;
-    year: string;
-  };
-  end_date?: {
-    month: string;
-    year: string;
-  };
+  start_date: string;
+  end_date?: string;
   addressType: string;
 };
 

@@ -1,6 +1,6 @@
 import { Box, Title, TextInput, Select, Checkbox, Button, Divider, Text } from '@mantine/core';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BsArrowLeft } from 'react-icons/bs';
 import {
   showErrorNotification,
@@ -17,21 +17,40 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Icon } from 'leaflet';
 import mapMarker from '../../assets/map-marker.png';
+import { useDisclosure } from '@mantine/hooks';
+import { UpdateConfirmationModal } from './components/UpdateConfirmationModal';
 
 const marker = new Icon({
   iconUrl: mapMarker,
   iconSize: [40, 40],
 });
 
+const months = [
+  { value: '0', label: 'January' },
+  { value: '1', label: 'February' },
+  { value: '2', label: 'March' },
+  { value: '3', label: 'April' },
+  { value: '4', label: 'May' },
+  { value: '5', label: 'June' },
+  { value: '6', label: 'July' },
+  { value: '7', label: 'August' },
+  { value: '8', label: 'September' },
+  { value: '9', label: 'October' },
+  { value: '10', label: 'November' },
+  { value: '11', label: 'December' },
+];
+
 export const AddResidentialInfo = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const [confirmationModalOpened, { open: confirmationModalOpen, close: confirmationModalClose }] =
+    useDisclosure(false);
+
   const { authClient, setForceRender } = useGlobalContext();
   const [checked, setChecked] = useState(false);
   const [fetchedAddress, setFetchedAddress] = useState<any>(location.state as any);
-
-  console.log(fetchedAddress);
+  const [formUpdated, setFormUpdated] = useState<boolean>(false);
 
   const residentialInfoForm = useForm<residentialInfoFormType>({
     initialValues: {
@@ -69,8 +88,6 @@ export const AddResidentialInfo = () => {
     },
   });
 
-  console.log(residentialInfoForm);
-
   const handleToggleScreen = () => {
     residentialInfoForm.reset();
     navigate('/candidate/profile');
@@ -92,8 +109,6 @@ export const AddResidentialInfo = () => {
         .then((res) => res.json())
         .then((data) => {
           if (data[0].Status === 'Success' && data[0].PostOffice.length > 0) {
-            residentialInfoForm.setFieldValue('pincode', code);
-
             const state = data[0].PostOffice[0].State;
             const country = data[0].PostOffice[0].Country;
 
@@ -111,6 +126,8 @@ export const AddResidentialInfo = () => {
       residentialInfoForm.setFieldValue('state', '');
       residentialInfoForm.setFieldValue('country', '');
     }
+
+    residentialInfoForm.setFieldValue('pincode', code);
   };
 
   const checkEndDate = () => {
@@ -151,7 +168,19 @@ export const AddResidentialInfo = () => {
       Object.keys(residentialInfoForm.values).forEach((key) => {
         const _key = key as keyof residentialInfoFormType;
 
-        if (key !== 'end_date') {
+        if (_key === 'start_date') {
+          const startDate = new Date();
+          startDate.setUTCFullYear(
+            Number(residentialInfoForm.values[_key].year),
+            Number(residentialInfoForm.values[_key].month)
+          );
+          startDate.setDate(1);
+
+          requestBody = {
+            ...requestBody,
+            [key]: startDate.toISOString(),
+          };
+        } else if (key !== 'end_date') {
           requestBody = {
             ...requestBody,
             [key]: residentialInfoForm.values[_key],
@@ -159,7 +188,28 @@ export const AddResidentialInfo = () => {
         }
       });
     } else {
-      requestBody = { ...residentialInfoForm.values };
+      Object.keys(residentialInfoForm.values).forEach((key) => {
+        const _key = key as keyof residentialInfoFormType;
+
+        if (_key === 'start_date' || _key === 'end_date') {
+          const date = new Date();
+          date.setUTCFullYear(
+            Number(residentialInfoForm.values[_key]?.year),
+            Number(residentialInfoForm.values[_key]?.month)
+          );
+          date.setDate(1);
+
+          requestBody = {
+            ...requestBody,
+            [key]: date.toISOString(),
+          };
+        } else if (key !== 'end_date') {
+          requestBody = {
+            ...requestBody,
+            [key]: residentialInfoForm.values[_key],
+          };
+        }
+      });
     }
 
     const res = await HttpClient.callApiAuth<createResidentialInfo>(
@@ -182,7 +232,23 @@ export const AddResidentialInfo = () => {
     }
   };
 
-  console.log(fetchedAddress);
+  useEffect(() => {
+    setFormUpdated(
+      residentialInfoForm.isDirty('address_line_1') ||
+        residentialInfoForm.isDirty('address_line_2') ||
+        residentialInfoForm.isDirty('pincode') ||
+        residentialInfoForm.isDirty('city') ||
+        residentialInfoForm.isDirty('state') ||
+        residentialInfoForm.isDirty('country')
+    );
+  }, [
+    residentialInfoForm.isDirty('address_line_1'),
+    residentialInfoForm.isDirty('address_line_2'),
+    residentialInfoForm.isDirty('pincode'),
+    residentialInfoForm.isDirty('city'),
+    residentialInfoForm.isDirty('state'),
+    residentialInfoForm.isDirty('country'),
+  ]);
 
   return (
     <>
@@ -298,7 +364,7 @@ export const AddResidentialInfo = () => {
                 withAsterisk
                 type="number"
                 onChange={handlePincodeChange}
-                value={fetchedAddress?.address.pincode}
+                value={residentialInfoForm.values.pincode}
               />
             </Box>
             <Box className="input-section">
@@ -327,11 +393,7 @@ export const AddResidentialInfo = () => {
                   searchable
                   nothingFound="No options"
                   data-autofocus
-                  data={[
-                    { value: 'Permenent', label: 'Permenent' },
-                    { value: 'Current', label: 'Current' },
-                    { value: 'Temporary', label: 'Temporary' },
-                  ]}
+                  data={months}
                   label="From Month"
                   className="inputClass"
                   {...residentialInfoForm.getInputProps('start_date.month')}
@@ -347,30 +409,13 @@ export const AddResidentialInfo = () => {
                     },
                   })}
                 />
-                <Select
-                  clearable
-                  searchable
-                  nothingFound="No options"
-                  data-autofocus
-                  data={[
-                    { value: 'Permenent', label: 'Permenent' },
-                    { value: 'Current', label: 'Current' },
-                    { value: 'Temporary', label: 'Temporary' },
-                  ]}
+                <TextInput
                   label="From Year"
+                  maxLength={4}
                   className="inputClass"
-                  {...residentialInfoForm.getInputProps('start_date.year')}
                   withAsterisk
-                  styles={() => ({
-                    item: {
-                      '&[data-selected]': {
-                        '&, &:hover': {
-                          backgroundColor: '#17a672',
-                          color: 'white',
-                        },
-                      },
-                    },
-                  })}
+                  type="number"
+                  {...residentialInfoForm.getInputProps('start_date.year')}
                 />
               </Box>
             </Box>
@@ -392,11 +437,7 @@ export const AddResidentialInfo = () => {
                   searchable
                   nothingFound="No options"
                   data-autofocus
-                  data={[
-                    { value: 'Permenent', label: 'Permenent' },
-                    { value: 'Current', label: 'Current' },
-                    { value: 'Temporary', label: 'Temporary' },
-                  ]}
+                  data={months}
                   label="From Month"
                   className="inputClass"
                   {...residentialInfoForm.getInputProps('end_date.month')}
@@ -413,31 +454,14 @@ export const AddResidentialInfo = () => {
                     },
                   })}
                 />
-                <Select
-                  clearable
-                  searchable
-                  nothingFound="No options"
-                  data-autofocus
-                  data={[
-                    { value: 'Permenent', label: 'Permenent' },
-                    { value: 'Current', label: 'Current' },
-                    { value: 'Temporary', label: 'Temporary' },
-                  ]}
+                <TextInput
                   label="From Year"
+                  maxLength={4}
                   className="inputClass"
-                  {...residentialInfoForm.getInputProps('end_date.year')}
                   withAsterisk={!checked}
                   disabled={checked}
-                  styles={() => ({
-                    item: {
-                      '&[data-selected]': {
-                        '&, &:hover': {
-                          backgroundColor: '#17a672',
-                          color: 'white',
-                        },
-                      },
-                    },
-                  })}
+                  type="number"
+                  {...residentialInfoForm.getInputProps('end_date.year')}
                 />
               </Box>
             </Box>
@@ -446,11 +470,24 @@ export const AddResidentialInfo = () => {
               <Button variant="default" onClick={handleToggleScreen}>
                 Cancel
               </Button>
-              <Button color="teal" type="submit">
-                Save
-              </Button>
+              {formUpdated ? (
+                <Button color="teal" type="button" onClick={confirmationModalOpen}>
+                  Update
+                </Button>
+              ) : (
+                <Button color="teal" type="submit">
+                  Save
+                </Button>
+              )}
             </Box>
           </form>
+          <UpdateConfirmationModal
+            residentialInfoForm={residentialInfoForm}
+            setFetchedAddress={setFetchedAddress}
+            modalOpened={confirmationModalOpened}
+            modalClose={confirmationModalClose}
+            setFormUpdated={setFormUpdated}
+          />
         </section>
       </Layout>
     </>
