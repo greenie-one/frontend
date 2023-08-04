@@ -329,7 +329,7 @@ export const VerifyAadharCard = () => {
           <Box className="document-container">
             <img src={AadharImg} className="document-img" alt="Aadhar Img" />
             <Box className="document-text-box">
-              <Title className="heading">Enter your Aadhaar number</Title>
+              <Title className="heading">Enter your Aadhar number</Title>
               <TextInput
                 label="Enter aadhar number"
                 className="inputClass"
@@ -344,9 +344,9 @@ export const VerifyAadharCard = () => {
               <Box className="checkbox-box">
                 <Checkbox checked={checked} onChange={() => setChecked(!checked)} className="checkbox" color="teal" />
                 <Text className="tearms-conditions">
-                  I understand that during the sign-up process and while using this website, I may be required to
-                  provide certain personal information, including but not limited to my name, email address, contact
-                  details, and any other information deemed necessary for registration and website usage.
+                  I hereby authorize Greenie to verify my Aadhar/PAN/DL details for authentication purposes. I have read
+                  the Consent Notice and I am aware that Greenie will use the information only for the intended purpose
+                  and my data will be handled as per laws. I am aware that I can withdraw this consent in the future.
                 </Text>
               </Box>
 

@@ -60,7 +60,7 @@ export const RequestList: React.FC<{ activeListItem: number }> = ({ activeListIt
         />
       ) : (
         <Box className={notifications_container}>
-          <span className={notification_msg}>Need to verify the work experience by the peer</span>
+          <span className={notification_msg}>No Request Sent!</span>
         </Box>
       )}
     </article>

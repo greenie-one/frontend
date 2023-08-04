@@ -50,10 +50,10 @@ export const VerificationQuestions: React.FC<VerificationQuestionsProps> = ({
         <Text className="question-text">{question}</Text>
         <Box className="profile-details-actions">
           <Button className="green-outline-btn no-disable" onClick={approveHandler}>
-            Approve
+            Yes
           </Button>
           <Button className="dispute-btn no-disable" onClick={disputeModalOpen}>
-            Dispute
+            No
           </Button>
         </Box>
       </section>

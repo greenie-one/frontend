@@ -33,7 +33,8 @@ const VerificationHeading = () => {
 
 export const VerifyPeer = () => {
   const { classes: inputClasses } = OtpInputStyles();
-  const { unverifiedLink, peerUUID, getVerificationData, totalSteps, setActiveStep } = useVerificationContext();
+  const { unverifiedLink, peerUUID, getVerificationData, totalSteps, setActiveStep, otpTarget } =
+    useVerificationContext();
 
   const [countdown, setCountDown] = useState<number>(60);
   const [otpProcess, setOtpProcess] = useState<number>(0);
@@ -118,7 +119,7 @@ export const VerifyPeer = () => {
             <Box className="address-verification-container">
               <VerificationHeading />
               <Text className="address-verification-bold-title">
-                Enter the One-Time Password sent to your {unverifiedLink}.
+                Enter the One-Time Password sent to your {unverifiedLink} ({otpTarget}).
               </Text>
               <Box className="input-section">
                 <PinInput

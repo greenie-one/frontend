@@ -7,3 +7,24 @@
   gap: 1.5rem;
   min-height: 36rem;
 }
+
+@media screen and (max-width: 64em) {
+  .verifications_layout {
+    grid-template-columns: 15rem 1fr;
+  }
+}
+
+@media screen and (max-width: 53em) {
+  .verifications_layout {
+    grid-template-columns: 14rem 1fr;
+    gap: 1rem;
+  }
+}
+
+@media screen and (max-width: 47.5em) {
+  .verifications_layout {
+    grid-template-columns: 1fr;
+    grid-template-rows: max-content;
+    gap: 0.8rem;
+  }
+}
