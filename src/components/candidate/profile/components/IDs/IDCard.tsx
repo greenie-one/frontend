@@ -1,13 +1,14 @@
 import { Text, Box, Button } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
-import { MdVerified } from 'react-icons/md';
-import { CgSandClock } from 'react-icons/cg';
-import AadharImg from '../../assets/Aadhar.png';
-import PanImg from '../../assets/Pan.png';
-import DrivingLicence from '../../assets/DrivingLicence.png';
 
-export const IDCard: React.FC<VerificationIdCardProp> = ({ documentName, isVerified }) => {
+import PanImg from '../../assets/Pan.png';
+import AadharImg from '../../assets/Aadhar.png';
+import DrivingLicence from '../../assets/DrivingLicence.png';
+import { MdVerified } from 'react-icons/md';
+
+export const IDCard: React.FC<VerificationIdCardProp> = ({ documentName }) => {
   const navigate = useNavigate();
+
   const handleView = (documentName: string) => {
     if (documentName === 'AADHAR') {
       navigate('/candidate/profile/IDs/verify/Aadhar');
@@ -31,6 +32,7 @@ export const IDCard: React.FC<VerificationIdCardProp> = ({ documentName, isVerif
             </Button>
           </div>
         )}
+
         {documentName === 'PAN' && (
           <div className="blurBox">
             <img src={PanImg} />
@@ -39,6 +41,7 @@ export const IDCard: React.FC<VerificationIdCardProp> = ({ documentName, isVerif
             </Button>
           </div>
         )}
+
         {documentName === 'DRIVING_LICENSE' && (
           <div className="blurBox">
             <img src={DrivingLicence} />
@@ -48,19 +51,15 @@ export const IDCard: React.FC<VerificationIdCardProp> = ({ documentName, isVerif
           </div>
         )}
       </Box>
+
       <Box className="verification-id-text-box">
         {documentName === 'AADHAR' && <Text className="document-name">Aadhar Card</Text>}
         {documentName === 'PAN' && <Text className="document-name">PAN Card</Text>}
         {documentName === 'DRIVING_LICENSE' && <Text className="document-name">Driving License</Text>}
-        {isVerified ? (
-          <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
-            Verified
-          </Button>
-        ) : (
-          <Button leftIcon={<CgSandClock color="#FF7272" size={'16px'} />} className="pending">
-            Pending
-          </Button>
-        )}
+
+        <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
+          Verified
+        </Button>
       </Box>
     </Box>
   );
