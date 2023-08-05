@@ -48,7 +48,7 @@ type residentialInfoFormType = {
   country: string;
   start_date: string;
   end_date?: string;
-  address_type: string;
+  addressType: string;
 };
 
 type skillFormType = {

@@ -45,14 +45,10 @@ export const VerifyPeer = () => {
       title: 'Sending OTP...',
       message: 'Please wait while we send OTP to your phone number.',
     });
-    const requestBody: Record<'otpType', string> = {
-      otpType: unverifiedLink,
-    };
 
     const res = await HttpClient.callApi({
       url: `${peerVerificationAPIList.verifyPeer}/${peerUUID}/send-otp`,
-      method: 'POST',
-      body: requestBody,
+      method: 'GET',
     });
 
     if (res.ok) {
