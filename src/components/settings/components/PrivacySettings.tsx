@@ -4,20 +4,23 @@ import { privacySettingsStyles, detailsFormStyles, confirmationModalStyle } from
 import { useDisclosure } from '@mantine/hooks';
 import { MdOutlineInfo } from 'react-icons/md';
 import { useSettingsContext } from '../context/SettingsContext';
+import { HttpClient } from '../../../utils/generic/httpClient';
+import { useGlobalContext } from '../../../context/GlobalContext';
+import {
+  showErrorNotification,
+  showLoadingNotification,
+  showSuccessNotification,
+} from '../../../utils/functions/showNotification';
+import { userApiList } from '../../../assets/api/ApiList';
+import { useNavigate } from 'react-router-dom';
 
 export const PrivacySettings: React.FC = (): JSX.Element => {
+  const { authClient } = useGlobalContext();
+  const navigate = useNavigate();
+
   const { classes: privacyClasses } = privacySettingsStyles();
   const [opened, { open, close }] = useDisclosure(false);
   const { changeCurrentPassword, privacySettingsForm } = useSettingsContext();
-
-  const accountActions = [
-    {
-      action: 'Deactivate Account',
-    },
-    {
-      action: 'Close Account',
-    },
-  ];
 
   const { classes: formClasses } = detailsFormStyles();
   const { classes: modalStyles } = confirmationModalStyle();
@@ -40,6 +43,49 @@ export const PrivacySettings: React.FC = (): JSX.Element => {
     privacySettingsForm.setFieldValue('confirmPassword', '');
     close();
   };
+
+  const removeAuthTokens = () => {
+    showLoadingNotification({ title: 'Deleting Your Account', message: 'Please wait while we complete the action' });
+
+    setTimeout(() => {
+      authClient.deleteTokens();
+      navigate('/auth');
+    }, 600);
+
+    setTimeout(() => {
+      showSuccessNotification({
+        title: 'Account Deleted!',
+        message: 'You account have been successfully deleted',
+      });
+    }, 1100);
+  };
+
+  const deleteAccount = async () => {
+    const res = await HttpClient.callApiAuth(
+      {
+        url: userApiList.baseRoute,
+        method: 'DELETE',
+      },
+      authClient
+    );
+
+    if (res.ok) {
+      removeAuthTokens();
+    } else {
+      showErrorNotification('SOMETHING_WENT_WRONG');
+    }
+  };
+
+  const accountActions = [
+    {
+      action: 'Deactivate Account',
+      onClick: () => false,
+    },
+    {
+      action: 'Close Account',
+      onClick: deleteAccount,
+    },
+  ];
 
   return (
     <>
@@ -101,7 +147,7 @@ export const PrivacySettings: React.FC = (): JSX.Element => {
         />
         <Box className={privacyClasses.accountActionBtnsContainer}>
           {accountActions.map((actions, idx) => (
-            <button key={idx} className={privacyClasses.accountActionBtns}>
+            <button type="button" key={idx} onClick={actions.onClick} className={privacyClasses.accountActionBtns}>
               <span className={privacyClasses.accountActionIcon}>
                 <MdOutlineInfo />
               </span>
@@ -112,7 +158,7 @@ export const PrivacySettings: React.FC = (): JSX.Element => {
         <Button
           className={formClasses.formSubmitBtn}
           size="sm"
-          type="button"
+          type="submit"
           radius="xl"
           color="teal"
           onClick={handleOpenModal}
