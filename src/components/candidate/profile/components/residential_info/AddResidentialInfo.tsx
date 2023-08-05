@@ -12,6 +12,7 @@ import { HttpClient } from '../../../../../utils/generic/httpClient';
 import { residentialInfoAPIList } from '../../../../../assets/api/ApiList';
 import { useNavigate } from 'react-router-dom';
 import { Layout } from '../Layout';
+import dayjs from 'dayjs';
 
 export const AddResidentialInfo = () => {
   const navigate = useNavigate();
@@ -230,6 +231,7 @@ export const AddResidentialInfo = () => {
             <Box className="input-section">
               <Title className="title">Start Date</Title>
               <DateInput
+                maxDate={new Date()}
                 label="Start date"
                 withAsterisk
                 className="inputClass"
@@ -240,6 +242,8 @@ export const AddResidentialInfo = () => {
               <Title className="title">End Date</Title>
 
               <DateInput
+                maxDate={new Date()}
+                minDate={dayjs(residentialInfoForm.values.start_date).add(1, 'day').toDate()}
                 withAsterisk={!checked}
                 disabled={checked}
                 label="End date"

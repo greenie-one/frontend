@@ -29,6 +29,7 @@ import { MdRemoveCircle } from 'react-icons/md';
 import { skillExpertiseDict } from '../../../constants/dictionaries';
 import { Layout } from '../Layout';
 import { UndertakingText } from '../UndertakingText';
+import dayjs from 'dayjs';
 
 export const AddExperience = () => {
   const navigate = useNavigate();
@@ -469,6 +470,7 @@ export const AddExperience = () => {
               <Box className="input-section">
                 <Title className="title">Start Date</Title>
                 <DateInput
+                  maxDate={new Date()}
                   label="Start date"
                   className="inputClass"
                   withAsterisk
@@ -479,6 +481,8 @@ export const AddExperience = () => {
               <Box className="input-section">
                 <Title className="title">End Date</Title>
                 <DateInput
+                  maxDate={new Date()}
+                  minDate={dayjs(workExperienceForm.values.dateOfJoining).add(1, 'day').toDate()}
                   withAsterisk={!experienceChecked}
                   label="End date"
                   className="inputClass"
