@@ -1,23 +1,28 @@
-import { Text, Box, Button } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
+import { Text, Box, Button } from '@mantine/core';
 
-import PanImg from '../../assets/Pan.png';
-import AadharImg from '../../assets/Aadhar.png';
+import { useGlobalContext } from '../../../../../context/GlobalContext';
 import DrivingLicence from '../../assets/DrivingLicence.png';
+import AadharImg from '../../assets/Aadhar.png';
+import PanImg from '../../assets/Pan.png';
 import { MdVerified } from 'react-icons/md';
 
 export const IDCard: React.FC<VerificationIdCardProp> = ({ documentName }) => {
   const navigate = useNavigate();
+  const { scrollToTop } = useGlobalContext();
 
   const handleView = (documentName: string) => {
     if (documentName === 'AADHAR') {
-      navigate('/candidate/profile/IDs/verify/Aadhar');
+      scrollToTop();
+      navigate('/candidate/profile/IDs/verify/aadhar/details');
     }
     if (documentName === 'PAN') {
-      navigate('/candidate/profile/IDs/verify/pan');
+      scrollToTop();
+      navigate('/candidate/profile/IDs/verify/pan/details');
     }
     if (documentName === 'DRIVING_LICENSE') {
-      navigate('/candidate/profile/IDs/verify/licence');
+      scrollToTop();
+      navigate('/candidate/profile/IDs/verify/licence/details');
     }
   };
 
@@ -25,30 +30,21 @@ export const IDCard: React.FC<VerificationIdCardProp> = ({ documentName }) => {
     <Box className="verificationIdCard">
       <Box className="verificationIdImg">
         {documentName === 'AADHAR' && (
-          <div className="blurBox">
+          <Box className="blurBox" onClick={() => handleView('AADHAR')}>
             <img src={AadharImg} />
-            <Button className="viewBtn" onClick={() => handleView('AADHAR')}>
-              View
-            </Button>
-          </div>
+          </Box>
         )}
 
         {documentName === 'PAN' && (
-          <div className="blurBox">
+          <Box className="blurBox" onClick={() => handleView('PAN')}>
             <img src={PanImg} />
-            <Button className="viewBtn" onClick={() => handleView('PAN')}>
-              View
-            </Button>
-          </div>
+          </Box>
         )}
 
         {documentName === 'DRIVING_LICENSE' && (
-          <div className="blurBox">
+          <Box className="blurBox" onClick={() => handleView('DRIVING_LICENSE')}>
             <img src={DrivingLicence} />
-            <Button className="viewBtn" onClick={() => handleView('DRIVING_LICENSE')}>
-              View
-            </Button>
-          </div>
+          </Box>
         )}
       </Box>
 

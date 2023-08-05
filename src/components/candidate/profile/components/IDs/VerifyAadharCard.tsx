@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Text, Box, Button, Modal, Checkbox, createStyles, em, TextInput, Title, CopyButton } from '@mantine/core';
+import { Text, Box, Button, Modal, createStyles, em, TextInput, Title, CopyButton } from '@mantine/core';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
 
 import { HttpClient, Result } from '../../../../../utils/generic/httpClient';
@@ -19,12 +19,13 @@ import emptyProfile from '../../assets/emptyProfile.png';
 // import { GrPowerReset } from 'react-icons/gr';
 import { MdVerified, MdOutlineContentCopy } from 'react-icons/md';
 import checkImg from '../../assets/94109-confirmation 1.gif';
-import AadharImg from '../../assets/Aadhar.png';
+// import AadharImg from '../../assets/Aadhar.png';
 import { AiOutlineRight } from 'react-icons/ai';
 import { BsArrowLeft } from 'react-icons/bs';
 
-import privacyPolicy from '../../../../auth/assets/Privacy Policy-Greenie.pdf';
-import consentNotice from '../../assets/ConsentNotice.pdf';
+// import privacyPolicy from '../../../../auth/assets/Privacy Policy-Greenie.pdf';
+// import consentNotice from '../../assets/ConsentNotice.pdf';
+import { VerifyID } from './VerifyID';
 
 export const VerifyAadharCard = () => {
   const navigate = useNavigate();
@@ -147,17 +148,6 @@ export const VerifyAadharCard = () => {
   return (
     <Layout>
       <section className="container documents-container" style={{ marginTop: '7rem' }}>
-        {/* <Modal         radius={'lg'} className="modal" size={'40%'} fullScreen={isMobile} opened={opened} onClose={close} centered>
-        <Box className="error-modal">
-          <Text className="error-modal-title">Failed to connect to your Aadhaar</Text>
-          <img src={errorIcon} alt="Error Icon" />
-          <Button className="error-modal-btn">
-            <GrPowerReset size={'18px'} className="error-modal-icon" />
-            <Text>Retry</Text>
-          </Button>
-          <Text className="error-modal-text">Ff the problem persists, Please try again after few minutes</Text>
-        </Box>
-      </Modal> */}
         {aadharIsVerified ? (
           <Modal
             radius={'lg'}
@@ -339,42 +329,7 @@ export const VerifyAadharCard = () => {
             </Box>
           </Box>
         ) : (
-          <Box className="document-container">
-            <img src={AadharImg} className="document-img" alt="Aadhar Img" />
-            <Box className="document-text-box">
-              <Title className="heading">Enter your Aadhar number</Title>
-              <TextInput
-                label="Enter aadhar number"
-                className="inputClass"
-                withAsterisk
-                minLength={12}
-                maxLength={12}
-                {...verifyAadharForm.getInputProps('aadharNo')}
-              />
-              <Button disabled={!checked} onClick={handleOpenModal} className={checked ? 'greenBtn' : 'disabledBtn'}>
-                Click to verify
-              </Button>
-              <Box className="checkbox-box">
-                <Checkbox checked={checked} onChange={() => setChecked(!checked)} className="checkbox" color="teal" />
-                <Text className="tearms-conditions">
-                  I hereby authorize Greenie to verify my Aadhar/PAN/DL details for authentication purposes. I have read
-                  the Consent Notice and I am aware that Greenie will use the information only for the intended purpose
-                  and my data will be handled as per laws. I am aware that I can withdraw this consent in the future.
-                </Text>
-              </Box>
-
-              <Text style={{ textDecoration: 'none' }} className="policy">
-                Click to view{' '}
-                <a style={{ textDecoration: 'underline' }} href={consentNotice} download={'Consent Notice'}>
-                  Consent terms
-                </a>{' '}
-                and{' '}
-                <a style={{ textDecoration: 'underline' }} href={privacyPolicy} download={'Privacy Policy'}>
-                  Privacy Policy
-                </a>
-              </Text>
-            </Box>
-          </Box>
+          <VerifyID checked={checked} setChecked={setChecked} handleOpenModal={handleOpenModal} />
         )}
       </section>
     </Layout>

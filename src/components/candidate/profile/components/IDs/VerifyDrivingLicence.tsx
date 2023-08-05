@@ -1,19 +1,21 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Text, Box, Button, TextInput, Title, Checkbox } from '@mantine/core';
-import { BsArrowLeft } from 'react-icons/bs';
-import { AiOutlineRight } from 'react-icons/ai';
-import DrivingLicenceImg from '../../assets/DrivingLicence.png';
+
+import { HttpClient, Result } from '../../../../../utils/generic/httpClient';
 import { drivinglicenseAPIList } from '../../../../../assets/api/ApiList';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
+import { Layout } from '../Layout';
 import {
   showErrorNotification,
   showLoadingNotification,
   showSuccessNotification,
 } from '../../../../../utils/functions/showNotification';
-import { HttpClient, Result } from '../../../../../utils/generic/httpClient';
-import { useNavigate } from 'react-router-dom';
-import { Layout } from '../Layout';
+
+import { BsArrowLeft } from 'react-icons/bs';
+import { AiOutlineRight } from 'react-icons/ai';
 import emptyProfile from '../../assets/emptyProfile.png';
+import DrivingLicenceImg from '../../assets/DrivingLicence.png';
 import privacyPolicy from '../../../../auth/assets/Privacy Policy-Greenie.pdf';
 
 export const VerifyDrivingLicence = () => {
@@ -47,12 +49,14 @@ export const VerifyDrivingLicence = () => {
       }
     }
   };
+
   const handlePageChange = () => {
     verifyLicenceForm.setFieldValue('licenceNo', '');
     verifyLicenceForm.setFieldValue('dateOfBirth', null);
     setLicenseIsVerified(false);
     navigate('/candidate/profile');
   };
+
   return (
     <Layout>
       <section className="container" style={{ marginTop: '7rem' }}>

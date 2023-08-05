@@ -29,13 +29,12 @@ import { AddResidentialInfo } from './components/candidate/profile/components/re
 import { AddSkills } from './components/candidate/profile/components/skills/AddSkills';
 import { DocDepotPage } from './pages/DocDepotPage';
 import { MyVerifications } from './components/candidate/my_verifications';
-import { VerifyAadharCard } from './components/candidate/profile/components/IDs/VerifyAadharCard';
-import { VerifyPanCard } from './components/candidate/profile/components/IDs/VerifyPanCard';
-import { VerifyDrivingLicence } from './components/candidate/profile/components/IDs/VerifyDrivingLicence';
 import { CongratulationsScreen } from './components/candidate/profile/components/IDs/CongratulationsScreen';
 import { PeerVerification } from './components/candidate/profile/components/residential_info/addressVerification/peerVerification/PeerVerification';
 import { SelfVerification } from './components/candidate/profile/components/residential_info/addressVerification/selfVerification/SelfVerification';
 import { VerifyResidentialInfo } from './components/candidate/profile/components/residential_info/VerifyResidentialInfo';
+import { IDVerifiedDetails } from './components/candidate/profile/components/IDs/IDVerifiedDetails';
+// import { VerifyID } from './components/candidate/profile/components/IDs/VerifyID';
 
 const App = () => {
   return (
@@ -57,10 +56,9 @@ const App = () => {
                 <Route index element={<ProfilePage />} />
                 <Route path="settings" element={<SettingsPage />} />
 
-                <Route path="IDs/verify/aadhar" element={<VerifyAadharCard />} />
                 <Route path="IDs/verify/aadhar/congratulations" element={<CongratulationsScreen />} />
-                <Route path="IDs/verify/pan" element={<VerifyPanCard />} />
-                <Route path="IDs/verify/licence" element={<VerifyDrivingLicence />} />
+                <Route path="IDs/verify/:id/details" element={<IDVerifiedDetails />} />
+                {/* <Route path="IDs/verify/:id" element={<VerifyID />} /> */}
 
                 <Route path="experience/addExperience" element={<AddExperience />} />
                 <Route path="experience/allExperiences" element={<AllExperiences />} />
@@ -78,7 +76,6 @@ const App = () => {
                 <Route path="docDepot" element={<DocDepotPage />} />
                 <Route path="myVerification" element={<MyVerifications />} />
               </Route>
-              R
             </Route>
 
             <Route path="privacy" element={<PrivacyPolicyPage />} />

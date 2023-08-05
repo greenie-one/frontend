@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Text, Box, Button, Modal, Title, Checkbox } from '@mantine/core';
+import { Text, Box, Button, Modal, Title, Checkbox, Grid } from '@mantine/core';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
-import { Carousel } from '@mantine/carousel';
 
 import { useGlobalContext } from '../../../../../context/GlobalContext';
 import { UndertakingText } from '../UndertakingText';
@@ -126,7 +125,7 @@ export const IDSection: React.FC = () => {
                 onChange={() => setChecked((prev) => !prev)}
               />
               <Text className="tearms-conditions">
-                I have read the undertaking and i authorise Greenie to collect information on my behalf.
+                I have read the undertaking and I authorise Greenie to collect information on my behalf.
               </Text>
             </Box>
             <UndertakingText />
@@ -210,26 +209,13 @@ export const IDSection: React.FC = () => {
       )}
 
       {IDs?.length > 1 && (
-        <Carousel
-          withIndicators={false}
-          slideSize="33.33%"
-          slideGap={24}
-          slidesToScroll={1}
-          align="start"
-          styles={{ control: { display: 'none' } }}
-          breakpoints={[
-            { maxWidth: 'xs', slideSize: '100%' },
-            { maxWidth: 'md', slideSize: '50%' },
-          ]}
-        >
+        <Grid>
           {IDs?.map(({ id_type }, index) => (
-            <Carousel.Slide key={index}>
-              <Box>
-                <IDCard documentName={id_type} />
-              </Box>
-            </Carousel.Slide>
+            <Grid.Col span={4} key={index}>
+              <IDCard documentName={id_type} />
+            </Grid.Col>
           ))}
-        </Carousel>
+        </Grid>
       )}
     </section>
   );

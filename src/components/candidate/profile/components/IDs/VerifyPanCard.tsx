@@ -22,10 +22,11 @@ export const VerifyPanCard = () => {
   const { authClient, scrollToTop, verifyPANForm, setForceRender, profileData } = useGlobalContext();
   const [panIsVerified, setPanIsVerified] = useState<boolean>(false);
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     if (!verifyPANForm.validateField('panNo').hasError && checked) {
       showLoadingNotification({ title: 'Verifying your PAN Card...', message: 'Please wait while we verify your PAN' });
+
       const requestBody: IDRequestBody = { id_type: 'PAN', id_number: verifyPANForm.values.panNo };
       const res: Result<verifyPan> = await HttpClient.callApiAuth(
         {
@@ -35,10 +36,11 @@ export const VerifyPanCard = () => {
         },
         authClient
       );
+
       if (res.ok) {
         showSuccessNotification({ title: 'Success !', message: 'Verified your PAN successfully' });
-        setPanIsVerified(true);
         setForceRender((prev) => !prev);
+        setPanIsVerified(true);
         scrollToTop();
       } else {
         showErrorNotification(res.error.code);
