@@ -1,9 +1,22 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { Box, Button, Modal, Text, Chip, Group, CopyButton, Title, TextInput, Divider, Textarea } from '@mantine/core';
+import {
+  Box,
+  Button,
+  Modal,
+  Text,
+  Chip,
+  Group,
+  CopyButton,
+  Title,
+  TextInput,
+  Divider,
+  Textarea,
+  Rating,
+} from '@mantine/core';
 import axios from 'axios';
 import emptyProfile from '../../assets/emptyProfile.png';
-import level from '../../assets/level.png';
-import levelFilled from '../../assets/levelFilled.png';
+// import level from '../../assets/level.png';
+// import levelFilled from '../../assets/levelFilled.png';
 import medal from '../../assets/medal.png';
 import { profileAPIList } from '../../../../../assets/api/ApiList';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
@@ -15,6 +28,7 @@ import {
   showSuccessNotification,
 } from '../../../../../utils/functions/showNotification';
 import { HttpClient, Result } from '../../../../../utils/generic/httpClient';
+import { getStars } from '../../../../../utils/functions/getStars';
 
 const skillSetOne = [
   'Lone Wolf',
@@ -213,15 +227,15 @@ export const Userprofile = () => {
         </Box>
         <Box className="bio-name-box">
           <Text className="bio-name">
-            {profileData.firstName} {profileData.lastName}
+            {profileData?.firstName} {profileData?.lastName}
           </Text>
-          {IDs.length > 0 && <MdVerified className="name-verified" />}
+          {IDs?.length > 0 && <MdVerified className="name-verified" />}
         </Box>
 
         <Box className="chips">
           <Chip.Group>
             <Group>
-              {profileData.descriptionTags.map((tag: string) => (
+              {profileData?.descriptionTags?.map((tag: string) => (
                 <Chip key={tag} size={screenSize ? 'sm' : 'xs'}>
                   {tag}
                 </Chip>
@@ -233,44 +247,10 @@ export const Userprofile = () => {
         <Box className="bio-section-wrapper">
           <Box className="left-section">
             <Box className="level">
-              <Text className="level-heading">Level {userLevel}</Text>
-              {userLevel === 0 ? (
-                <Box className="level-wrapper">
-                  <img className="level-img" src={level} alt="level" />
-                  <img className="level-img" src={level} alt="level" />
-                  <img className="level-img" src={level} alt="level" />
-                  <img className="level-img" src={level} alt="level" />
-                  <img className="level-img" src={level} alt="level" />
-                </Box>
-              ) : (
-                <Box className="level-wrapper">
-                  {userLevel > 0 ? (
-                    <img className="level-img" src={levelFilled} alt="level" />
-                  ) : (
-                    <img src={level} alt="level" />
-                  )}
-                  {userLevel > 1 ? (
-                    <img className="level-img" src={levelFilled} alt="level" />
-                  ) : (
-                    <img className="level-img" src={level} alt="level" />
-                  )}
-                  {userLevel > 2 ? (
-                    <img className="level-img" src={levelFilled} alt="level" />
-                  ) : (
-                    <img className="level-img" src={level} alt="level" />
-                  )}
-                  {userLevel > 3 ? (
-                    <img className="level-img" src={levelFilled} alt="level" />
-                  ) : (
-                    <img className="level-img" src={level} alt="level" />
-                  )}
-                  {userLevel > 4 ? (
-                    <img className="level-img" src={levelFilled} alt="level" />
-                  ) : (
-                    <img className="level-img" src={level} alt="level" />
-                  )}
-                </Box>
-              )}
+              <Text className="level-heading">Level {getStars()}</Text>
+              <Box className="level-wrapper">
+                <Rating defaultValue={0} value={getStars()} readOnly />
+              </Box>
             </Box>
             <Box className="border-left"></Box>
 
@@ -282,9 +262,10 @@ export const Userprofile = () => {
               </Box>
             </Box>
           </Box>
+
           <Box className="border-left"></Box>
           <Box className="right-section">
-            {IDs.length > 0 ? (
+            {IDs?.length > 0 ? (
               <CopyButton value={greeneId} timeout={2000}>
                 {({ copied, copy }) => (
                   <Box className="greenie-id" onClick={copy}>

@@ -29,7 +29,7 @@ type WorkExperience = {
   id: string;
   image?: string | null;
   linkedInUrl?: string;
-  noOfVerifications: 0;
+  noOfVerifications: number;
   salary: string;
   workMode: string;
   workType: string;
@@ -43,7 +43,7 @@ type ResidentialInfoResponse = {
   id: string;
   address_line_1: string;
   address_line_2: string;
-  address_type: string;
+  addressType: string;
   landmark: string;
   pincode: number;
   city: string;
@@ -139,4 +139,7 @@ type SentRequestsResponseType = {
   phone: string;
   isVerificationCompleted: boolean;
   workExperience: string;
+  createdAt: string;
+  updatedAt: string;
+  peerPost: string;
 };

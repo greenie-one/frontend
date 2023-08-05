@@ -10,7 +10,6 @@ import {
 } from '../../../../../utils/functions/showNotification';
 import { HttpClient } from '../../../../../utils/generic/httpClient';
 import { residentialInfoAPIList } from '../../../../../assets/api/ApiList';
-import { states, countries } from '../../constants/SelectionOptions';
 import { useNavigate } from 'react-router-dom';
 import { Layout } from '../Layout';
 import dayjs from 'dayjs';
@@ -29,30 +28,77 @@ export const AddResidentialInfo = () => {
     setChecked(!checked);
   };
 
+  const handlePincodeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const code = event.target.value;
+
+    if (code.length === 6) {
+      fetch(`https://api.postalpincode.in/pincode/${code}`, {
+        method: 'GET',
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data[0].Status === 'Success' && data[0].PostOffice.length > 0) {
+            residentialInfoForm.setFieldValue('pincode', code);
+
+            const state = data[0].PostOffice[0].State;
+            const country = data[0].PostOffice[0].Country;
+
+            residentialInfoForm.setFieldValue('state', state);
+            residentialInfoForm.setFieldValue('country', country);
+          }
+
+          residentialInfoForm.setFieldError('pincode', 'Please enter a valid pincode!');
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    } else {
+      residentialInfoForm.setFieldError('pincode', 'Please enter a valid pincode!');
+      residentialInfoForm.setFieldValue('state', '');
+      residentialInfoForm.setFieldValue('country', '');
+    }
+  };
+
+  const checkEndDate = () => {
+    if (!checked && residentialInfoForm.values.end_date === '') {
+      residentialInfoForm.setFieldError('end_date', 'This field is required! Please enter a valid value.');
+      return false;
+    }
+
+    return true;
+  };
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    if (residentialInfoForm.validate().hasErrors) return;
+
+    if (residentialInfoForm.validate().hasErrors) {
+      checkEndDate();
+      return;
+    }
+
+    if (!checkEndDate()) {
+      return;
+    }
 
     showLoadingNotification({
       title: 'Wait !',
       message: 'Please wait while we update your residential information.',
     });
-    let requestBody: ResidentialInfoRequestBody;
-    if (residentialInfoForm.values.end_date == '') {
-      requestBody = {
-        address_line_1: residentialInfoForm.values.address_line_1,
-        address_line_2: residentialInfoForm.values.address_line_2,
-        landmark: residentialInfoForm.values.landmark,
-        pincode: residentialInfoForm.values.pincode,
-        city: residentialInfoForm.values.city,
-        state: residentialInfoForm.values.state,
-        country: residentialInfoForm.values.country,
-        start_date: residentialInfoForm.values.start_date,
-        addressType: residentialInfoForm.values.address_type,
-      };
+
+    let requestBody: ResidentialInfoRequestBody = {} as ResidentialInfoRequestBody;
+    if (residentialInfoForm.values.end_date === '') {
+      Object.keys(residentialInfoForm.values).forEach((key) => {
+        if (key !== 'end_date') {
+          requestBody = {
+            ...requestBody,
+            [key]: residentialInfoForm.values[key],
+          };
+        }
+      });
     } else {
-      requestBody = residentialInfoForm.values;
+      requestBody = { ...residentialInfoForm.values };
     }
+
     const res = await HttpClient.callApiAuth<createResidentialInfo>(
       {
         url: `${residentialInfoAPIList.postResidentialInfo}`,
@@ -98,7 +144,7 @@ export const AddResidentialInfo = () => {
                 ]}
                 label="Type of address"
                 className="inputClass"
-                {...residentialInfoForm.getInputProps('address_type')}
+                {...residentialInfoForm.getInputProps('addressType')}
                 withAsterisk
                 styles={() => ({
                   item: {
@@ -159,43 +205,25 @@ export const AddResidentialInfo = () => {
                 label="Pincode"
                 maxLength={6}
                 className="inputClass"
-                {...residentialInfoForm.getInputProps('pincode')}
                 withAsterisk
+                type="number"
+                onChange={handlePincodeChange}
               />
             </Box>
             <Box className="input-section">
-              <Title className="title">State/Country</Title>
+              <Title className="title">State & Country</Title>
               <Box className="inner-input-section">
-                <Select
-                  clearable
-                  searchable
-                  nothingFound="No options"
-                  data={states}
-                  label="Select state"
+                <TextInput
+                  label="State"
+                  readOnly={true}
                   className="inputClass"
                   {...residentialInfoForm.getInputProps('state')}
-                  withAsterisk
-                  styles={() => ({
-                    item: {
-                      '&[data-selected]': {
-                        '&, &:hover': {
-                          backgroundColor: '#17a672',
-                          color: 'white',
-                        },
-                      },
-                    },
-                  })}
                 />
-                <Select
-                  clearable
-                  searchable
-                  nothingFound="No options"
-                  data={countries}
-                  label="Select country"
+                <TextInput
+                  label="Country"
                   className="inputClass"
-                  value={'India'}
-                  readOnly
-                  withAsterisk
+                  readOnly={true}
+                  {...residentialInfoForm.getInputProps('country')}
                 />
               </Box>
             </Box>
@@ -216,6 +244,7 @@ export const AddResidentialInfo = () => {
               <DateInput
                 maxDate={new Date()}
                 minDate={dayjs(residentialInfoForm.values.start_date).add(1, 'day').toDate()}
+                withAsterisk={!checked}
                 disabled={checked}
                 label="End date"
                 className="inputClass"

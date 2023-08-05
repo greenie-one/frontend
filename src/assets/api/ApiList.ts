@@ -85,3 +85,11 @@ export const peerVerificationAPIList = {
   getDocuments: `${BASE_URL}/share/sharedWith`
 }
 
+export const addressVerificationAPIList = {
+  createPeer: `${BASE_URL}/peer/residential`,
+  getRequests: `${BASE_URL}/peer/residential/me`,
+  getVerificationData: `${BASE_URL}/peer/residential`,
+  sendVerificationOtp: `${BASE_URL}/peer/residential`,
+  peerCaptureLocation: `${BASE_URL}/location/capture/peer`,
+  selfCaptureLocation: `${BASE_URL}/location/capture/me`
+}
