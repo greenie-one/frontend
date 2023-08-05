@@ -1,5 +1,4 @@
 @use 'sass:math';
-
 @function rem($pixel) {
   @if math.is-unitless($pixel) {
     @return math.div($pixel, 16) + rem;
@@ -7,7 +6,6 @@
     @error 'Don\'t use units when using rem() function.';
   }
 }
-
 @function em($pixel) {
   @if math.is-unitless($pixel) {
     @return math.div($pixel, 16) + em;
@@ -15,7 +13,17 @@
     @error 'Don\'t use units when using em() function.';
   }
 }
+.report-background {
+  background-color: #17a672;
+  padding: 2rem;
+}
 .report-container {
+  padding-inline: 10rem;
+  padding-block: 2rem;
+  &.report-container-main {
+    background: white;
+    border-radius: rem(30);
+  }
   .report-name {
     margin-top: rem(20);
     font-weight: 500;
@@ -32,18 +40,17 @@
     display: flex;
     flex-direction: column;
     .report-container-head {
+      font-size: rem(40);
       .report-verifybtn {
-        font-size: rem(40);
         height: rem(30);
       }
       .greenie {
-        font-size: rem(40);
         font-weight: 700;
       }
     }
   }
   .report-folder-wrapper {
-    margin-top: 20px;
+    margin-top: rem(20);
     .doc-name {
       overflow: hidden;
       white-space: nowrap;
@@ -55,12 +62,18 @@
     .added-peers {
       border: 1px solid #ebebeb;
       display: grid;
-      grid-template-columns: 30% 20% 30% 20%;
+      grid-template-columns: 20% 40% 20% 20%;
       align-items: center;
       justify-content: flex-start;
       padding: 1rem;
-      font-size: 16px;
+      font-size: rem(16);
       width: 100%;
+      &.executive-peers {
+        grid-template-columns: 30% 20% 30% 20%;
+      }
+      &.added-peers-exp {
+        grid-template-columns: 40% 20% 20% 20%;
+      }
       &.added-exp-peers {
         grid-template-columns: 24% 20% 20% 16% 20%;
       }
@@ -72,6 +85,15 @@
         white-space: nowrap;
         text-overflow: ellipsis;
         max-width: 20ch;
+        &.name-wrap {
+          white-space: pre-wrap;
+        }
+        &.text-verified {
+          color: #17a672;
+        }
+        &.text-dispute {
+          color: #ff7272;
+        }
         &.title {
           font-weight: 600;
         }
@@ -82,20 +104,21 @@
     border: 1px solid #ebebeb;
     border-radius: 16px 16px 0 0;
     display: grid;
-    grid-template-columns: 30% 20% 30% 20%;
+    grid-template-columns: 20% 40% 20% 20%;
     margin: 2rem auto 0rem;
     padding: 1rem;
     font-weight: 500;
+    &.executive-header {
+      grid-template-columns: 30% 20% 30% 20%;
+    }
+    &.work-header {
+      grid-template-columns: 40% 20% 20% 20%;
+    }
+    &.add-peer-exp-header {
+      grid-template-columns: 24% 20% 20% 16% 20%;
+    }
   }
-  .add-peer-exp-header {
-    border: 1px solid #ebebeb;
-    border-radius: 16px 16px 0 0;
-    display: grid;
-    grid-template-columns: 24% 20% 20% 16% 20%;
-    margin: 2rem auto 0rem;
-    padding: 1rem;
-    font-weight: 500;
-  }
+
   .basic-info-box-wrapper {
     margin-top: 1rem;
     display: grid;
@@ -103,6 +126,23 @@
     grid-template-columns: 17% 25% 27% 27%;
     column-gap: 1rem;
     align-items: stretch;
+    &.review-box {
+      grid-template-columns: 45% 25% 25%;
+      .review-box-inner {
+        width: 70%;
+      }
+    }
+    &.verification-box {
+      grid-template-columns: 23% 12% 18% 23% 18%;
+      align-items: center;
+    }
+    &.box-address {
+      grid-template-columns: 15% 15% 15% 15% 15% 15%;
+    }
+    &.idreport-container {
+      grid-template-columns: 33% 31% 33%;
+      align-items: center;
+    }
     &.executive-wrapper {
       grid-template-columns: 25% 25% 25% 25%;
     }
@@ -113,7 +153,12 @@
       border: 1px solid #e1e1e1;
       border-radius: 1rem;
       padding: 1rem;
-      margin-block: 0.25rem;
+      // margin-block: 0.25rem;
+      &.idreport-box,
+      &.info-box-address {
+        border: none;
+        padding: 0rem;
+      }
       .report-verifybtn {
         border: none;
         align-items: center;
@@ -131,24 +176,36 @@
         letter-spacing: 0em;
         text-align: left;
         color: black;
-        margin-bottom: 0.5rem;
+        &.verification-heading {
+          font-size: 14px;
+          margin-bottom: rem(-10);
+        }
+
+        &.id-heading {
+          font-size: 20px;
+        }
       }
       .experience-details-box-text {
         color: #697082;
         font-size: 14px;
         display: flex;
         align-items: center;
+        margin-top: 0.5rem;
         overflow: hidden;
-        gap: 10px;
+        gap: rem(10);
         word-wrap: break-word;
+        &.request-text {
+          margin-top: rem(20);
+          color: black;
+          text-decoration: underline;
+          text-underline-offset: 4px;
+        }
         img {
           width: rem(25);
         }
       }
     }
   }
-  padding-inline: 10rem;
-  padding-block: 1rem;
   .report-container-head {
     display: flex;
     align-items: center;
@@ -171,7 +228,7 @@
     }
     .verified {
       font-size: 20px;
-      color: #9fe870;
+      color: #17a672;
     }
   }
   .greenie-text {
@@ -186,8 +243,11 @@
     .disclaimer-text {
       text-align: center;
       color: #2e2e48;
-      font-size: 20px;
-      font-weight: 500;
+      font-size: 22px;
+      font-weight: 700;
+      &.id-report {
+        text-align: start;
+      }
     }
     .disclaimer-details {
       margin-top: 1rem;
@@ -200,11 +260,15 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      &.residential-top {
+        margin-top: 0rem;
+      }
       .residential-address-left {
         color: #535253;
-        display: flex;
-        gap: 20px;
-        width: 20%;
+        gap: rem(20);
+        &.left-residential {
+          width: 20%;
+        }
         .profile-thumbnail {
           aspect-ratio: 1;
           width: 60px;
@@ -213,7 +277,7 @@
           border-radius: 50%;
           overflow: hidden;
           .profile-img {
-            width: 60px;
+            width: rem(60);
             aspect-ratio: 1;
           }
         }
@@ -222,7 +286,7 @@
           padding: 0px 0px;
         }
         &.workexperience {
-          width: 30%;
+          display: flex;
         }
         p:first-child {
           color: black;
@@ -232,9 +296,14 @@
       }
       .residential-address-right {
         text-decoration: underline;
+        text-underline-offset: 4px;
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: rem(10);
+        font-weight: 500;
+        &.right-view-profile {
+          text-decoration: none;
+        }
       }
     }
   }
@@ -269,7 +338,7 @@
       font-size: 16px;
       color: #a3a3a3;
       font-weight: 400;
-      margin-inline-start: 30px;
+      margin-inline-start: rem(30);
     }
   }
 }

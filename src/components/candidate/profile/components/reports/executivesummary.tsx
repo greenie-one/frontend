@@ -1,11 +1,14 @@
 import React from 'react';
 import { MdVerified } from 'react-icons/md';
 import { CgProfile } from 'react-icons/cg';
-import { Text, Box, Button } from '@mantine/core';
+import { Text, Box, Button, Progress, RingProgress } from '@mantine/core';
 import dummyThumbnail from '../../assets/johnMarston.png';
 import level from '../../assets/levelFilled.png';
+
 import './_report.scss';
 export const ExecutiveSummary: React.FC = (): JSX.Element => {
+  const percentage = 75;
+
   return (
     <>
       <main className="report-container">
@@ -25,7 +28,7 @@ export const ExecutiveSummary: React.FC = (): JSX.Element => {
           </div>
         </div>
         <div className="disclaimer-box">
-          <span className="disclaimer-text">Executive Summmary</span>
+          <span className="disclaimer-text">Executive Summary</span>
           <div className="residential-address">
             <div className="residential-address-left workexperience">
               <span className="profile-thumbnail">
@@ -34,16 +37,32 @@ export const ExecutiveSummary: React.FC = (): JSX.Element => {
               <div>
                 <p>Abhishek Deshmukh</p>
                 <p>Software Engineer</p>
-                <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified report-verifybtn">
+                <Button leftIcon={<MdVerified color="#17A672" size={'16px'} />} className="verified report-verifybtn">
                   Verified
                 </Button>
               </div>
             </div>
-            <div className="residential-address-right">
+            <div className="residential-address-right ">
               <CgProfile size={'20px'} />
               View profile
             </div>
-            <div className="residential-address-right">Total Completeness</div>
+
+            <div className="residential-address-right right-view-profile">
+              <div>
+                <RingProgress
+                  size={90}
+                  thickness={7}
+                  roundCaps
+                  sections={[{ value: 75, color: '#17a672' }]}
+                  label={
+                    <Text size="s" align="center" px="s" sx={{ pointerEvents: 'none' }}>
+                      75%
+                    </Text>
+                  }
+                />
+              </div>
+              Total Completeness
+            </div>
           </div>
         </div>
         <Box className="basic-info-box-wrapper wrapper-executive">
@@ -77,7 +96,7 @@ export const ExecutiveSummary: React.FC = (): JSX.Element => {
           </div>
         </div>
 
-        <Box className="add-peer-header">
+        <Box className="add-peer-header executive-header">
           <Text className="add-peer-header-text">Particular</Text>
           <Text className="add-peer-header-text">Status</Text>
           <Text className="add-peer-header-text">Status</Text>
@@ -85,22 +104,28 @@ export const ExecutiveSummary: React.FC = (): JSX.Element => {
         </Box>
 
         <Box className="added-peer-box">
-          <Box className="added-peers ">
-            <Text className="peer-name title">Personal Identification</Text>
-            <Text className="peer-name">Test</Text>
-            <Text className="peer-name">Test</Text>
-            <Text className="peer-name">Test</Text>
-          </Box>
-          <Box className="added-peers ">
-            <Text className="peer-name title">Residential Information</Text>
-            <Text className="peer-name">Test</Text>
-            <Text className="peer-name">Test</Text>
+          <Box className="added-peers executive-peers">
+            <Text className="peer-name ">Personal Identification</Text>
+            <Text className="peer-name text-verified">Verified</Text>
+            <Text className="peer-name">
+              <Progress value={50} size="xs" color="#8CF078" />
+            </Text>
             <Text className="peer-name">Test</Text>
           </Box>
-          <Box className="added-peers ">
-            <Text className="peer-name title">Work Experience</Text>
+          <Box className="added-peers executive-peers">
+            <Text className="peer-name ">Residential Information</Text>
+            <Text className="peer-name text-verified">Verified</Text>
+            <Text className="peer-name">
+              <Progress value={50} size="xs" color="#8CF078" />
+            </Text>
             <Text className="peer-name">Test</Text>
-            <Text className="peer-name">Test</Text>
+          </Box>
+          <Box className="added-peers executive-peers">
+            <Text className="peer-name ">Work Experience</Text>
+            <Text className="peer-name text-verified">Verified</Text>
+            <Text className="peer-name">
+              <Progress value={50} size="xs" color="#8CF078" />
+            </Text>
             <Text className="peer-name">Test</Text>
           </Box>
         </Box>
@@ -117,21 +142,21 @@ export const ExecutiveSummary: React.FC = (): JSX.Element => {
           <Box className="info-box">
             <Text className="experience-details-box-heading">Software Engineer Intern</Text>
             <Text className="experience-details-box-text">Infotech Solutions Pvt Ltd</Text>
-            <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified report-verifybtn">
+            <Button leftIcon={<MdVerified color="#17A672" size={'16px'} />} className="verified report-verifybtn">
               Verified
             </Button>
           </Box>
           <Box className="info-box">
             <Text className="experience-details-box-heading">Software Engineer</Text>
             <Text className="experience-details-box-text">App. 1901, Thornridge Circle</Text>
-            <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified report-verifybtn">
+            <Button leftIcon={<MdVerified color="#17A672" size={'16px'} />} className="verified report-verifybtn">
               Verified
             </Button>
           </Box>
           <Box className="info-box">
             <Text className="experience-details-box-heading">Senior Software Engineer</Text>
             <Text className="experience-details-box-text">Infosys Private Limited</Text>
-            <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified report-verifybtn">
+            <Button leftIcon={<MdVerified color="#17A672" size={'16px'} />} className="verified report-verifybtn">
               Verified
             </Button>
           </Box>
@@ -149,14 +174,14 @@ export const ExecutiveSummary: React.FC = (): JSX.Element => {
           <Box className="info-box">
             <Text className="experience-details-box-heading">Permanent Address</Text>
             <Text className="experience-details-box-text">1901 Thornridge Circle, Baner, Pune - 411006</Text>
-            <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified report-verifybtn">
+            <Button leftIcon={<MdVerified color="#17A672" size={'16px'} />} className="verified report-verifybtn">
               Verified
             </Button>
           </Box>
           <Box className="info-box">
             <Text className="experience-details-box-heading">Temporary Address</Text>
             <Text className="experience-details-box-text">1901 Thornridge Circle, Baner, Pune - 411006</Text>
-            <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified report-verifybtn">
+            <Button leftIcon={<MdVerified color="#17A672" size={'16px'} />} className="verified report-verifybtn">
               Verified
             </Button>
           </Box>

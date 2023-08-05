@@ -2928,6 +2928,60 @@
   grid-template-columns: 60% 40%;
 }
 
+.experience-details-box-heading {
+  font-family: Inter;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 27px;
+  letter-spacing: 0em;
+  text-align: left;
+  color: #191919;
+  margin-bottom: 0.5rem;
+}
+.experience-details-box-heading.referees-heading {
+  margin-top: 1.5rem;
+}
+
+.requests-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+.requests-wrapper .referees-request-box {
+  border: 1px solid #e1e1e1;
+  border-radius: 1rem;
+  padding: 1rem;
+  margin-block: 0.25rem;
+  margin-right: 0.5rem;
+}
+.requests-wrapper .referees-request-box .request-box-heading {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 18ch;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+.requests-wrapper .referees-request-box .request-box-text {
+  font-size: 13px;
+  color: gray;
+  margin-bottom: 0.5rem;
+}
+.requests-wrapper .referees-request-box .request-status {
+  font-weight: 500;
+  font-size: 12px;
+  color: #ff7272;
+  width: -moz-max-content;
+  width: max-content;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.requests-wrapper .referees-request-box .request-status .request-status-text {
+  margin-left: 0.25rem;
+}
+
 @media screen and (max-width: 900px) {
   .experience-details-screen .basic-info .basic-info-box-wrapper {
     grid-template-columns: 30% 35%;
@@ -3463,6 +3517,10 @@
   color: #191919;
   margin-bottom: 2rem;
 }
+.add-peer-box .pro-tip-box {
+  width: min(90%, 40rem);
+  margin-bottom: 2rem;
+}
 .add-peer-box .add-peers-inputs {
   width: 70%;
   display: grid;
@@ -3744,11 +3802,12 @@
 .see-peers-btn-wrapper {
   margin-top: 2rem;
   display: grid;
-  grid-template-columns: 50% 45%;
+  grid-template-columns: 1fr 1fr;
   align-items: center;
   justify-content: space-between;
   width: 100%;
   max-width: 375px;
+  gap: 1rem;
 }
 .see-peers-btn-wrapper .cancel-btn {
   border-radius: 24px;
@@ -4560,16 +4619,23 @@
 }
 .address-verification-container .logo-box .logo-text {
   font-family: "Gilroy-Bold" !important;
-  font-size: 23px;
+  font-size: 24px;
 }
 .address-verification-container .logo-box .logo-icon {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
   color: #8cf078;
   margin-left: 0.25rem;
+  font-size: 20px;
+  margin-top: 2px;
 }
 .address-verification-container .address-verification-dark-text {
   color: #191919;
-  width: 150px;
   margin-bottom: 1rem;
+  max-width: 18ch;
+  text-align: center;
+  margin-bottom: 2rem;
 }
 .address-verification-container .address-verification-dark-text span {
   font-weight: 600;
@@ -4589,7 +4655,7 @@
   letter-spacing: 0em;
   text-align: center;
   color: #191919;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 .address-verification-container .address-verification-bold-title {
   font-family: Inter;
@@ -4628,23 +4694,25 @@
   justify-content: space-between;
   margin-block: 1rem;
   position: relative;
+  flex-direction: column;
+  width: 100%;
 }
-.address-verification-container .profile-details img {
-  width: 64px;
-  height: 64px;
-}
-.address-verification-container .profile-details .verified-icon {
-  position: absolute;
-  color: #17a672;
+.address-verification-container .profile-details .profile-details-image {
+  display: grid;
+  place-items: center;
+  position: relative;
+  aspect-ratio: 1;
+  width: 5rem;
   border-radius: 50%;
-  bottom: 0;
-  background-color: #ffffff;
-  left: 45px;
-  width: 1.25rem;
-  height: 1.25rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  outline: 1px solid #e1e1e1;
+  overflow: hidden;
+}
+.address-verification-container .profile-details .profile-details-image img {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  -o-object-position: top;
+     object-position: top;
 }
 .address-verification-container .profile-details .address-verification-details-name {
   font-family: Inter;
@@ -4655,6 +4723,15 @@
   text-align: left;
   color: #191919;
   margin-left: 1rem;
+}
+.address-verification-container .profile-details .address-verification-details {
+  width: 100%;
+  max-width: 20rem;
+  text-align: center;
+}
+.address-verification-container .profile-details .address-verification-details .address-verification-details-address {
+  width: 100%;
+  max-width: 100%;
 }
 
 .address-verification-details-link {
@@ -4667,6 +4744,7 @@
   color: #697082;
   text-decoration: underline;
   margin-block: 1rem;
+  cursor: pointer;
 }
 
 .address-verification-details-box-header {
@@ -4723,6 +4801,8 @@
   text-align: center;
   color: #191919;
   margin-bottom: 1.5rem;
+  width: 85%;
+  margin-inline: auto;
 }
 .address-verification-modal .residential-details {
   margin-bottom: 2rem;
@@ -4853,8 +4933,8 @@
   border: 1px solid #d1d4db;
   line-height: 19px;
   letter-spacing: -0.02em;
-  width: 90%;
-  max-width: 350px;
+  width: -moz-max-content;
+  width: max-content;
   margin-bottom: 10px;
   display: flex;
   align-items: center;
@@ -4874,17 +4954,26 @@
   z-index: 1;
   color: #697082;
 }
+.copy-box .copy-link {
+  font-size: 15px;
+  cursor: pointer;
+}
+.copy-box .copy-link:hover {
+  text-decoration: underline;
+}
 .copy-box .copy-btn {
   display: flex;
   align-items: center;
   justify-content: center;
   background: transparent;
   color: #697082;
-  border-radius: 34px;
+  border-radius: 16px;
   border: 1px solid #e1e1e1;
   height: 27px;
   font-size: 12px;
-  width: 100px;
+  width: 80px;
+  margin-left: 0.8rem;
+  cursor: pointer;
 }
 .copy-box .copy-btn .copy-text {
   margin-left: 0.25rem;

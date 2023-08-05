@@ -3,8 +3,8 @@ import { MdVerified } from 'react-icons/md';
 import './_report.scss';
 export const Report: React.FC = (): JSX.Element => {
   return (
-    <>
-      <main className="report-container">
+    <div className="report-background">
+      <main className="report-container report-container-main">
         <div className="report-container-head">
           <div className="report-header">
             <span className="greenie">Greenie</span>
@@ -43,6 +43,6 @@ export const Report: React.FC = (): JSX.Element => {
           </p>
         </div>
       </main>
-    </>
+    </div>
   );
 };

@@ -24,10 +24,10 @@ export const WorkExperienceReport: React.FC = (): JSX.Element => {
         <div className="disclaimer-box">
           <span className="disclaimer-text">Work Experience (Verification parameters)</span>
           <div className="residential-address">
-            <div className="residential-address-left workexperience">
+            <div className="residential-address-left ">
               <p>Infotech Solutions Private Limited</p>
               <p>Greenie Verified on 20/04/2023</p>
-              <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified report-verifybtn">
+              <Button leftIcon={<MdVerified color="#17A672" size={'16px'} />} className="verified report-verifybtn">
                 Verified
               </Button>
             </div>
@@ -44,7 +44,7 @@ export const WorkExperienceReport: React.FC = (): JSX.Element => {
         </div>
 
         <Box className="add-peer-header">
-          <Text className="add-peer-header-text">Attitude</Text>
+          <Text className="add-peer-header-text">Particular</Text>
           <Text className="add-peer-header-text">Verified as</Text>
           <Text className="add-peer-header-text">Verified on</Text>
           <Text className="add-peer-header-text">Remarks</Text>
@@ -53,15 +53,21 @@ export const WorkExperienceReport: React.FC = (): JSX.Element => {
         <Box className="added-peer-box">
           <Box className="add-peers">
             <Box className="added-peers">
+              <Text className="peer-name title">Attitude</Text>
+              <Text className="peer-name">Moderately Collaborated</Text>
+              <Text className="peer-name">20/04/2023</Text>
+              <Text className="peer-name">Test</Text>
+            </Box>
+            <Box className="added-peers">
               <Text className="peer-name title">Rehire eligibility</Text>
-              <Text className="peer-name">Test</Text>
-              <Text className="peer-name">Test</Text>
+              <Text className="peer-name">No</Text>
+              <Text className="peer-name">20/04/2023</Text>
               <Text className="peer-name">Test</Text>
             </Box>
             <Box className="added-peers">
               <Text className="peer-name title">Exit procedure</Text>
-              <Text className="peer-name">Test</Text>
-              <Text className="peer-name">Test</Text>
+              <Text className="peer-name">Completed</Text>
+              <Text className="peer-name">20/04/2023</Text>
               <Text className="peer-name">Test</Text>
             </Box>
           </Box>

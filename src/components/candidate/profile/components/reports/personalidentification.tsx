@@ -17,10 +17,13 @@ export const PersonalIdentification: React.FC = (): JSX.Element => {
             <p className="greenie-text">www.greenie.one</p>
           </div>
           <div>
-            <p>Personal Identification</p>
+            <p>Background Verification Report</p>
           </div>
         </div>
 
+        <div className="disclaimer-box">
+          <span className="disclaimer-text">Personal Identification</span>
+        </div>
         <div className="location">
           <p>Aadhaar Card</p>
           <div className="location-date">
@@ -32,7 +35,7 @@ export const PersonalIdentification: React.FC = (): JSX.Element => {
         <Box className="add-peer-header">
           <Text className="add-peer-header-text">Particular</Text>
           <Text className="add-peer-header-text">Status</Text>
-          <Text className="add-peer-header-text">Status</Text>
+          <Text className="add-peer-header-text ">Status</Text>
           <Text className="add-peer-header-text">Remarks</Text>
         </Box>
 
@@ -40,7 +43,7 @@ export const PersonalIdentification: React.FC = (): JSX.Element => {
           <Box className="added-peers ">
             <Text className="peer-name title">Full Name</Text>
             <Text className="peer-name">Test</Text>
-            <Text className="peer-name">Test</Text>
+            <Text className="peer-name text-verified">Matched</Text>
             <Text className="peer-name">Test</Text>
           </Box>
         </Box>
@@ -64,7 +67,7 @@ export const PersonalIdentification: React.FC = (): JSX.Element => {
         <Box className="add-peer-header">
           <Text className="add-peer-header-text">Particular</Text>
           <Text className="add-peer-header-text">Status</Text>
-          <Text className="add-peer-header-text">Status</Text>
+          <Text className="add-peer-header-text ">Status</Text>
           <Text className="add-peer-header-text">Remarks</Text>
         </Box>
 
@@ -72,31 +75,31 @@ export const PersonalIdentification: React.FC = (): JSX.Element => {
           <Box className="added-peers ">
             <Text className="peer-name title">Full Name</Text>
             <Text className="peer-name">Test</Text>
-            <Text className="peer-name">Test</Text>
+            <Text className="peer-name text-verified">Matched</Text>
             <Text className="peer-name">Test</Text>
           </Box>
           <Box className="added-peers ">
             <Text className="peer-name title">PAN Number</Text>
             <Text className="peer-name">Test</Text>
-            <Text className="peer-name">Test</Text>
+            <Text className="peer-name text-verified">Matched</Text>
             <Text className="peer-name">Test</Text>
           </Box>
           <Box className="added-peers ">
             <Text className="peer-name title">DOB</Text>
             <Text className="peer-name">Test</Text>
-            <Text className="peer-name">Test</Text>
+            <Text className="peer-name text-verified">Matched</Text>
             <Text className="peer-name">Test</Text>
           </Box>
           <Box className="added-peers ">
             <Text className="peer-name title">PAN type</Text>
             <Text className="peer-name">Test</Text>
-            <Text className="peer-name">Test</Text>
+            <Text className="peer-name text-verified">Matched</Text>
             <Text className="peer-name">Test</Text>
           </Box>
           <Box className="added-peers ">
             <Text className="peer-name title">Phone Number</Text>
             <Text className="peer-name">Test</Text>
-            <Text className="peer-name">Test</Text>
+            <Text className="peer-name text-verified">Matched</Text>
             <Text className="peer-name">Test</Text>
           </Box>
         </Box>
@@ -120,7 +123,7 @@ export const PersonalIdentification: React.FC = (): JSX.Element => {
         <Box className="add-peer-header">
           <Text className="add-peer-header-text">Particular</Text>
           <Text className="add-peer-header-text">Status</Text>
-          <Text className="add-peer-header-text">Status</Text>
+          <Text className="add-peer-header-text ">Status</Text>
           <Text className="add-peer-header-text">Remarks</Text>
         </Box>
 
@@ -128,43 +131,43 @@ export const PersonalIdentification: React.FC = (): JSX.Element => {
           <Box className="added-peers ">
             <Text className="peer-name title">Full Name</Text>
             <Text className="peer-name">Test</Text>
-            <Text className="peer-name">Test</Text>
+            <Text className="peer-name text-verified">Matched</Text>
             <Text className="peer-name">Test</Text>
           </Box>
           <Box className="added-peers ">
             <Text className="peer-name title">Father’s Name</Text>
             <Text className="peer-name">Test</Text>
-            <Text className="peer-name">Test</Text>
+            <Text className="peer-name text-verified">Matched</Text>
             <Text className="peer-name">Test</Text>
           </Box>
           <Box className="added-peers ">
             <Text className="peer-name title">DL Number</Text>
             <Text className="peer-name">Test</Text>
-            <Text className="peer-name">Test</Text>
+            <Text className="peer-name text-verified">Matched</Text>
             <Text className="peer-name">Test</Text>
           </Box>
           <Box className="added-peers ">
             <Text className="peer-name title">DOB</Text>
             <Text className="peer-name">Test</Text>
-            <Text className="peer-name">Test</Text>
+            <Text className="peer-name text-verified">Matched</Text>
             <Text className="peer-name">Test</Text>
           </Box>
           <Box className="added-peers ">
             <Text className="peer-name title">Vehicle type</Text>
             <Text className="peer-name">Test</Text>
-            <Text className="peer-name">Test</Text>
+            <Text className="peer-name text-verified">Matched</Text>
             <Text className="peer-name">Test</Text>
           </Box>
           <Box className="added-peers ">
             <Text className="peer-name title">Phone Number</Text>
             <Text className="peer-name">Test</Text>
-            <Text className="peer-name">Test</Text>
+            <Text className="peer-name text-verified">Matched</Text>
             <Text className="peer-name">Test</Text>
           </Box>
           <Box className="added-peers ">
             <Text className="peer-name title">Blood Group</Text>
             <Text className="peer-name">Test</Text>
-            <Text className="peer-name">Test</Text>
+            <Text className="peer-name text-verified">Matched</Text>
             <Text className="peer-name">Test</Text>
           </Box>
         </Box>

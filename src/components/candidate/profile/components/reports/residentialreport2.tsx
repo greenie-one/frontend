@@ -1,6 +1,6 @@
 import React from 'react';
 import { MdVerified } from 'react-icons/md';
-import { Text, Box } from '@mantine/core';
+import { Text, Box, Button } from '@mantine/core';
 import './_report.scss';
 export const ResidentialReport2: React.FC = (): JSX.Element => {
   return (
@@ -24,9 +24,12 @@ export const ResidentialReport2: React.FC = (): JSX.Element => {
         <div className="disclaimer-box">
           <span className="disclaimer-text">Residential Information</span>
           <div className="residential-address">
-            <div className="residential-address-left">
+            <div className="residential-address-left left-residential">
               <p>Permanent Address</p>
               <p>1901 Thornridge Circle, Baner, Pune - 411006</p>
+              <Button leftIcon={<MdVerified color="#17A672" size={'16px'} />} className="verified report-verifybtn">
+                Verified
+              </Button>
             </div>
             <div className="residential-address-right">Locate on Google maps</div>
           </div>

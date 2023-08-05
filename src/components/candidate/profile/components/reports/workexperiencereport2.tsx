@@ -24,10 +24,10 @@ export const WorkExperienceReport2: React.FC = (): JSX.Element => {
         <div className="disclaimer-box">
           <span className="disclaimer-text">Work Experience (Verification parameters)</span>
           <div className="residential-address">
-            <div className="residential-address-left workexperience">
+            <div className="residential-address-left ">
               <p>Infotech Solutions Private Limited</p>
               <p>Greenie Verified on 20/04/2023</p>
-              <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
+              <Button leftIcon={<MdVerified color="#17A672" size={'16px'} />} className="verified report-verifybtn">
                 Verified
               </Button>
             </div>
@@ -40,7 +40,7 @@ export const WorkExperienceReport2: React.FC = (): JSX.Element => {
           <span>Reporting Manager</span>
         </div>
 
-        <Box className="add-peer-exp-header">
+        <Box className="add-peer-header add-peer-exp-header">
           <Text className="add-peer-header-text">Attitude</Text>
           <Text className="add-peer-header-text">Verified as</Text>
           <Text className="add-peer-header-text">Verified on</Text>
@@ -53,35 +53,35 @@ export const WorkExperienceReport2: React.FC = (): JSX.Element => {
             <Text className="peer-name title">Candidate Company ID</Text>
             <Text className="peer-name">Test</Text>
             <Text className="peer-name">Test</Text>
-            <Text className="peer-name">Test</Text>
+            <Text className="peer-name text-verified">Approved</Text>
             <Text className="peer-name">Test</Text>
           </Box>
           <Box className="added-peers added-exp-peers">
             <Text className="peer-name title">Department</Text>
             <Text className="peer-name">Test</Text>
             <Text className="peer-name">Test</Text>
-            <Text className="peer-name">Test</Text>
+            <Text className="peer-name text-verified">Approved</Text>
             <Text className="peer-name">Test</Text>
           </Box>
           <Box className="added-peers added-exp-peers">
             <Text className="peer-name title">Designation at work</Text>
             <Text className="peer-name">Test</Text>
             <Text className="peer-name">Test</Text>
-            <Text className="peer-name">Test</Text>
+            <Text className="peer-name text-verified">Approved</Text>
             <Text className="peer-name">Test</Text>
           </Box>
           <Box className="added-peers added-exp-peers">
             <Text className="peer-name title">Date of Joining</Text>
             <Text className="peer-name">Test</Text>
             <Text className="peer-name">Test</Text>
-            <Text className="peer-name">Test</Text>
+            <Text className="peer-name text-verified">Approved</Text>
             <Text className="peer-name">Test</Text>
           </Box>
           <Box className="added-peers added-exp-peers">
             <Text className="peer-name title">Date of Leaving</Text>
             <Text className="peer-name">Test</Text>
             <Text className="peer-name">Test</Text>
-            <Text className="peer-name">Test</Text>
+            <Text className="peer-name text-verified">Approved</Text>
             <Text className="peer-name">Test</Text>
           </Box>
         </Box>
@@ -104,35 +104,35 @@ export const WorkExperienceReport2: React.FC = (): JSX.Element => {
             <Text className="peer-name title">Candidate Company ID</Text>
             <Text className="peer-name">Test</Text>
             <Text className="peer-name">Test</Text>
-            <Text className="peer-name">Test</Text>
+            <Text className="peer-name text-dispute">Disputed</Text>
             <Text className="peer-name">Test</Text>
           </Box>
           <Box className="added-peers added-exp-peers">
             <Text className="peer-name title">Department</Text>
             <Text className="peer-name">Test</Text>
             <Text className="peer-name">Test</Text>
-            <Text className="peer-name">Test</Text>
+            <Text className="peer-name text-dispute">Disputed</Text>
             <Text className="peer-name">Test</Text>
           </Box>
           <Box className="added-peers added-exp-peers">
             <Text className="peer-name title">Designation at work</Text>
             <Text className="peer-name">Test</Text>
             <Text className="peer-name">Test</Text>
-            <Text className="peer-name">Test</Text>
+            <Text className="peer-name text-verified">Approved</Text>
             <Text className="peer-name">Test</Text>
           </Box>
           <Box className="added-peers added-exp-peers">
             <Text className="peer-name title">Date of Joining</Text>
             <Text className="peer-name">Test</Text>
             <Text className="peer-name">Test</Text>
-            <Text className="peer-name">Test</Text>
+            <Text className="peer-name text-verified">Approved</Text>
             <Text className="peer-name">Test</Text>
           </Box>
           <Box className="added-peers added-exp-peers">
             <Text className="peer-name title">Date of Leaving</Text>
             <Text className="peer-name">Test</Text>
             <Text className="peer-name">Test</Text>
-            <Text className="peer-name">Test</Text>
+            <Text className="peer-name text-verified">Approved</Text>
             <Text className="peer-name">Test</Text>
           </Box>
         </Box>

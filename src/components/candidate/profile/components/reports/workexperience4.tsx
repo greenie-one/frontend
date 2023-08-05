@@ -5,7 +5,7 @@ import { Text, Box, Button } from '@mantine/core';
 import pdfIcon from '../../assets/pdfIcon.png';
 import { Link } from 'react-router-dom';
 import './_report.scss';
-export const WorkExperienceReport3: React.FC = (): JSX.Element => {
+export const WorkExperienceReport4: React.FC = (): JSX.Element => {
   return (
     <>
       <main className="report-container">
@@ -19,31 +19,33 @@ export const WorkExperienceReport3: React.FC = (): JSX.Element => {
             </div>
             <p className="greenie-text">www.greenie.one</p>
           </div>
-          <div>
-            <p>Background Verification Report</p>
+        </div>
+
+        <div className="disclaimer-box">
+          <span className="disclaimer-text id-report">Work Experience</span>
+          <div className="residential-address">
+            <div className="residential-address-left ">
+              <p>Infotech Solutions Private Limited</p>
+              <p>Greenie Verified on 20/04/2023</p>
+            </div>
+            <div className="residential-address-right">Click to see Greenie profile</div>
           </div>
         </div>
 
         <div className="disclaimer-box">
-          <span className="disclaimer-text">Work Experience</span>
-          <div className="residential-address">
+          <div className="residential-address residential-top">
             <div className="residential-address-left ">
-              <p>Infotech Solutions Private Limited</p>
+              <p>Software Engineer</p>
               <p>Greenie Verified on 20/04/2023</p>
               <Button leftIcon={<MdVerified color="#17A672" size={'16px'} />} className="verified report-verifybtn">
                 Verified
               </Button>
             </div>
-            <div className="residential-address-right">View Company profile</div>
           </div>
         </div>
 
         <div className="location">
           <p>About Company</p>
-          <div className="location-date">
-            <p>Last updated</p>
-            <p>02/03/2023</p>
-          </div>
         </div>
         <Box className="basic-info-box-wrapper">
           <Box className="info-box">
@@ -61,10 +63,6 @@ export const WorkExperienceReport3: React.FC = (): JSX.Element => {
 
         <div className="location">
           <p>Basic Information</p>
-          <div className="location-date">
-            <p>Last updated</p>
-            <p>02/03/2023</p>
-          </div>
         </div>
 
         <Box className="basic-info-box-wrapper">
@@ -86,33 +84,20 @@ export const WorkExperienceReport3: React.FC = (): JSX.Element => {
           </Box>
         </Box>
 
-        <div className="peer-exp-name">
-          <p>Referees</p>
+        <div className="location">
+          <p>Verified By</p>
         </div>
-
-        <Box className="add-peer-header work-header">
-          <Text className="add-peer-header-text">Status</Text>
-          <Text className="add-peer-header-text">Particular</Text>
-          <Text className="add-peer-header-text">Status</Text>
-          <Text className="add-peer-header-text">Remarks</Text>
-        </Box>
-
-        <Box className="added-peer-box">
-          <Box className="added-peers added-peers-exp ">
-            <Text className="peer-name title">Manoj Shinde</Text>
-            <Text className="peer-name">Test</Text>
-            <Text className="peer-name text-verified ">Approved</Text>
-            <Text className="peer-name name-wrap">Abhishek is a very nice guy</Text>
+        <Box className="basic-info-box-wrapper executive-wrapper">
+          <Box className="info-box info-box-address">
+            <Text className="experience-details-box-heading">Nitin Prabhakar (Manager)</Text>
+            <Text className="experience-details-box-text">13/06/2023</Text>
           </Box>
-          <Box className="added-peers added-peers-exp">
-            <Text className="peer-name title">Nitin Prabhakar</Text>
-            <Text className="peer-name">Test</Text>
-            <Text className="peer-name text-verified ">Approved</Text>
-            <Text className="peer-name name-wrap">
-              Abhishek is a very nice guy and very hard working, but sometimes makes inappropriate jokes in office
-            </Text>
+          <Box className="info-box info-box-address">
+            <Text className="experience-details-box-heading">Manoj Shinde (HR)</Text>
+            <Text className="experience-details-box-text">13/06/2023</Text>
           </Box>
         </Box>
+
         <div className="peer-exp-name">
           <p>Documents</p>
         </div>
