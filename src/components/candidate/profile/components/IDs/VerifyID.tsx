@@ -1,10 +1,10 @@
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Box, Button, Checkbox, Text, TextInput, Title } from '@mantine/core';
+import { Box, Button, Checkbox, Text, TextInput, Title, Modal, createStyles, em } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
 
 import { Layout } from '../Layout';
 import { useIDVerificationMethods } from './IDFunctions';
-import { useProfileForms } from '../../context/ProfileForms';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
 
 import PanImg from '../../assets/Pan.png';
@@ -19,17 +19,22 @@ export const VerifyID: React.FC = () => {
   const params = useParams();
   const navigate = useNavigate();
 
-  const { scrollToTop } = useGlobalContext();
-  const { verifyAadharForm, verifyPANForm, verifyLicenceForm } = useProfileForms();
+  const { scrollToTop, verifyAadharForm, verifyPANForm, verifyLicenceForm } = useGlobalContext();
   const {
+    close,
+    opened,
     checked,
     setChecked,
+    secondsRemaining,
     handlePANSubmit,
     handleAadharModal,
     handleAadharSubmit,
     requestOTPForAadhar,
     handleDrivingLicenceSubmit,
   } = useIDVerificationMethods();
+
+  const { classes: otpInputClasses } = OtpInputStyles();
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   const handleContinue = () => {
     scrollToTop();
@@ -40,6 +45,54 @@ export const VerifyID: React.FC = () => {
     <>
       <Layout>
         <section className="container documents-container" style={{ marginTop: '7rem' }}>
+          <Modal
+            centered
+            className="modal"
+            size={'55%'}
+            fullScreen={isMobile}
+            opened={opened}
+            onClose={close}
+            styles={{
+              title: {
+                fontSize: '1.25rem',
+                fontWeight: 600,
+              },
+            }}
+            radius={'lg'}
+          >
+            <form className="otp-form" onSubmit={handleAadharSubmit}>
+              <Title className="title">OTP is sent to your linked phone number!</Title>
+              <Text className="disbled-Input-State">
+                {verifyAadharForm.values.aadharNo}
+                <span className="changeBtn" onClick={close}>
+                  Change
+                </span>
+              </Text>
+              <TextInput
+                classNames={otpInputClasses}
+                withAsterisk
+                maxLength={6}
+                pattern="[0-9]{6}"
+                {...verifyAadharForm.getInputProps('otp')}
+              />
+              {secondsRemaining === 0 ? (
+                <Button compact color="gray" variant="subtle" onClick={requestOTPForAadhar} className="resendLink">
+                  Resend
+                </Button>
+              ) : (
+                <Text fw={'light'} fz={'xs'} my={'md'}>
+                  Resend{' '}
+                  <Text fw={'500'} span>
+                    after {secondsRemaining}s
+                  </Text>
+                </Text>
+              )}
+              <Button type="submit" className="primaryBtn">
+                Verify
+              </Button>
+            </form>
+          </Modal>
+
           <Box className="see-all-header">
             <Box className="go-back-btn" onClick={() => navigate('/candidate/profile')}>
               <BsArrowLeft className="arrow-left-icon" size={'16px'} />
@@ -167,3 +220,31 @@ export const VerifyID: React.FC = () => {
     </>
   );
 };
+
+const OtpInputStyles = createStyles(() => ({
+  root: {
+    position: 'relative',
+    marginBlock: '8px',
+  },
+
+  input: {
+    width: '458px',
+    height: '68px',
+    fontSize: '16px',
+    fontWeight: 500,
+    borderRadius: '8px',
+    border: '1px solid #D1D4DB',
+    lineHeight: '19px',
+    letterSpacing: '24px',
+    color: '#697082',
+
+    [`@media screen and (max-width: ${em(1024)})`]: {
+      width: '350px',
+      height: '46px',
+      borderRadius: '6px',
+      fontSize: '14px',
+      lineHeight: '12px',
+      margin: '0 auto',
+    },
+  },
+}));

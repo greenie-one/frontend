@@ -11,19 +11,16 @@ import {
   showLoadingNotification,
   showSuccessNotification,
 } from '../../../../../utils/functions/showNotification';
-import { useProfileForms } from '../../context/ProfileForms';
 
 export const useIDVerificationMethods = () => {
   const navigate = useNavigate();
-  const { verifyAadharForm, verifyPANForm, verifyLicenceForm } = useProfileForms();
-  const { authClient, setForceRender, scrollToTop, profileData } = useGlobalContext();
+  const { authClient, scrollToTop, verifyAadharForm, verifyPANForm, verifyLicenceForm } = useGlobalContext();
 
   /********** AADHAR CARD METHODS **********/
   const [opened, { open, close }] = useDisclosure(false);
   const [checked, setChecked] = useState<boolean>(false);
-  const [aadharIsVerified, setAadharIsVerified] = useState<boolean>(false);
   const [secondsRemaining, setSecondsRemaining] = useState<number>(45);
-  const [verificationData, setVerificationData] = useState<AadharVerificationResponse>({
+  const [aadharVerificationData, setAadharVerificationData] = useState<AadharVerificationResponse>({
     requestId: '',
     taskId: '',
   });
@@ -36,7 +33,7 @@ export const useIDVerificationMethods = () => {
         message: 'Please wait while we verify your OTP',
       });
 
-      const { taskId, requestId } = verificationData;
+      const { taskId, requestId } = aadharVerificationData;
       const requestBody: IDVerificationOtpRequestBody = {
         otp: verifyAadharForm.values.otp,
         request_id: requestId,
@@ -54,9 +51,7 @@ export const useIDVerificationMethods = () => {
 
       if (res.ok) {
         showSuccessNotification({ title: 'Success !', message: 'OTP Verified Successfully' });
-        setAadharIsVerified(true);
         verifyAadharForm.reset();
-        setForceRender((prev) => !prev);
         navigate('/candidate/profile/IDs/verify/pan/details');
         close();
       } else {
@@ -85,7 +80,7 @@ export const useIDVerificationMethods = () => {
       showSuccessNotification({ title: 'Success !', message: 'OTP Sent to your linked phone number' });
       const { request_id, taskId } = res.value;
 
-      setVerificationData((prevState) => ({
+      setAadharVerificationData((prevState) => ({
         ...prevState,
         requestId: request_id,
         taskId: taskId,
@@ -96,7 +91,8 @@ export const useIDVerificationMethods = () => {
     }
   };
 
-  const handleAadharModal = async () => {
+  const handleAadharModal = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     if (!verifyAadharForm.validateField('aadharNo').hasError && checked) {
       requestOTPForAadhar();
 
@@ -181,5 +177,8 @@ export const useIDVerificationMethods = () => {
     handleDrivingLicenceSubmit,
     checked,
     setChecked,
+    secondsRemaining,
+    opened,
+    close,
   };
 };
