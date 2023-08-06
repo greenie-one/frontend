@@ -63,7 +63,7 @@ export const SelfVerification: React.FC = (): JSX.Element => {
 
     const res = await HttpClient.callApiAuth<CaptureSuccessResponse>(
       {
-        url: addressVerificationAPIList.selfCaptureLocation,
+        url: `${addressVerificationAPIList.selfCaptureLocation}/${id}`,
         method: 'POST',
         body: requestBody,
       },
