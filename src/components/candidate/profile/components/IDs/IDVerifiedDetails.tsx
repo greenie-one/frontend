@@ -17,11 +17,11 @@ export const IDVerifiedDetails: React.FC = () => {
     navigate('/candidate/profile');
   };
 
-  const details: DocsType | undefined = IDs?.find((item) => item.id_type.toLowerCase() === params.id?.toLowerCase());
-
   const formattedDate = (data: string) => {
     return data?.substring(0, 10).split('-').reverse().join('-');
   };
+
+  const details: DocsType | undefined = IDs?.find((item) => item.id_type.toLowerCase() === params.id?.toLowerCase());
 
   return (
     <>

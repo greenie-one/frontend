@@ -25,7 +25,7 @@ import { BsArrowLeft } from 'react-icons/bs';
 
 // import privacyPolicy from '../../../../auth/assets/Privacy Policy-Greenie.pdf';
 // import consentNotice from '../../assets/ConsentNotice.pdf';
-import { VerifyID } from './VerifyID';
+// import { VerifyID } from './VerifyID';
 
 export const VerifyAadharCard = () => {
   const navigate = useNavigate();
@@ -329,7 +329,8 @@ export const VerifyAadharCard = () => {
             </Box>
           </Box>
         ) : (
-          <VerifyID checked={checked} setChecked={setChecked} handleOpenModal={handleOpenModal} />
+          <></>
+          // <VerifyID checked={checked} setChecked={setChecked} handleOpenModal={handleOpenModal} />
         )}
       </section>
     </Layout>

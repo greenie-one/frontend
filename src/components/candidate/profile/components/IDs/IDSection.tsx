@@ -30,7 +30,7 @@ export const IDSection: React.FC = () => {
   const handlePageChange = (documentsType: string) => {
     if (documentsType === 'AADHAR') {
       scrollToTop();
-      navigate('/candidate/profile/IDs/verify/Aadhar');
+      navigate('/candidate/profile/IDs/verify/aadhar');
     }
     if (documentsType === 'PAN') {
       scrollToTop();
@@ -38,7 +38,7 @@ export const IDSection: React.FC = () => {
     }
     if (documentsType === 'DRIVING_LICENSE') {
       scrollToTop();
-      navigate('/candidate/profile/IDs/verify/licence');
+      navigate('/candidate/profile/IDs/verify/driving_licence');
     }
   };
 
@@ -50,59 +50,6 @@ export const IDSection: React.FC = () => {
 
   return (
     <section className="verificationId-section  container">
-      {isAgreed && IDs?.length === 0 && (
-        <Modal
-          radius={'lg'}
-          className="modal"
-          size={'55%'}
-          fullScreen={isMobile}
-          opened={opened}
-          onClose={onClose}
-          centered
-        >
-          <Box className="ids-modal">
-            <Text className="title">Select ID that you want to verify</Text>
-            <Box className="ids-wrapper">
-              <Box className="id-box" onClick={() => handlePageChange('AADHAR')}>
-                <img src={aadharLogo} alt="Aadhar logo" />
-                <Text className="id-name">Aadhar Card</Text>
-              </Box>
-              <Box className="id-box  disabled">
-                <img src={licenceLogo} alt="licence logo" />
-                <Text className="id-name">Passport</Text>
-                <Text className="coming-soon">Coming soon</Text>
-              </Box>
-            </Box>
-          </Box>
-        </Modal>
-      )}
-
-      {isAgreed && IDs?.length > 0 && (
-        <Modal
-          radius={'lg'}
-          className="modal"
-          size={'65%'}
-          fullScreen={isMobile}
-          opened={opened}
-          onClose={onClose}
-          centered
-        >
-          <Box className="ids-modal">
-            <Text className="title">Select ID that you want to verify</Text>
-            <Box className="ids-wrapper">
-              <Box className="id-box" onClick={() => handlePageChange('PAN')}>
-                <img src={panLogo} alt="Pan logo" />
-                <Text className="id-name">PAN Card</Text>
-              </Box>
-              <Box className="id-box" onClick={() => handlePageChange('DRIVING_LICENSE')}>
-                <img src={licenceLogo} alt="licence logo" />
-                <Text className="id-name">Driving Licence</Text>
-              </Box>
-            </Box>
-          </Box>
-        </Modal>
-      )}
-
       {!isAgreed && (
         <Modal
           centered
@@ -124,7 +71,7 @@ export const IDSection: React.FC = () => {
                 className="checkbox"
                 onChange={() => setChecked((prev) => !prev)}
               />
-              <Text className="tearms-conditions">
+              <Text className="terms-conditions">
                 I have read the undertaking and I authorise Greenie to collect information on my behalf.
               </Text>
             </Box>
@@ -136,12 +83,69 @@ export const IDSection: React.FC = () => {
         </Modal>
       )}
 
+      {isAgreed && (
+        <Modal
+          centered
+          size={'65%'}
+          radius={'lg'}
+          opened={opened}
+          className="modal"
+          onClose={onClose}
+          fullScreen={isMobile}
+        >
+          <Box className="ids-modal">
+            <Text className="title">Select ID that you want to verify</Text>
+            <Box className="ids-wrapper">
+              {IDs.some((id) => id.id_type === 'AADHAR') ? (
+                <>
+                  {!IDs.some((id) => id.id_type === 'PAN') && (
+                    <Box className="id-box" onClick={() => handlePageChange('PAN')}>
+                      <img src={panLogo} alt="Pan logo" />
+                      <Text className="id-name">PAN Card</Text>
+                    </Box>
+                  )}
+
+                  {!IDs.some((id) => id.id_type === 'DRIVING_LICENSE') && (
+                    <Box className="id-box" onClick={() => handlePageChange('DRIVING_LICENSE')}>
+                      <img src={licenceLogo} alt="licence logo" />
+                      <Text className="id-name">Driving Licence</Text>
+                    </Box>
+                  )}
+                </>
+              ) : (
+                <>
+                  <Box className="id-box" onClick={() => handlePageChange('AADHAR')}>
+                    <img src={aadharLogo} alt="Aadhar logo" />
+                    <Text className="id-name">Aadhar Card</Text>
+                  </Box>
+                  <Box className="id-box disabled">
+                    <img src={panLogo} alt="Pan logo" />
+                    <Text className="id-name">PAN Card</Text>
+                    <Text className="coming-soon">Verify Aadhar first</Text>
+                  </Box>
+                  <Box className="id-box disabled">
+                    <img src={licenceLogo} alt="licence logo" />
+                    <Text className="id-name">Driving Licence</Text>
+                    <Text className="coming-soon">Verify Aadhar first</Text>
+                  </Box>
+                  <Box className="id-box  disabled">
+                    <img src={licenceLogo} alt="licence logo" />
+                    <Text className="id-name">Passport</Text>
+                    <Text className="coming-soon">Coming soon</Text>
+                  </Box>
+                </>
+              )}
+            </Box>
+          </Box>
+        </Modal>
+      )}
+
       <Box className="header">
         <Box>
           <Text className="heading">{`Verification ID (${IDs?.length})`}</Text>
           <Text className="subheading">All government IDs, personal verification IDs etc.</Text>
         </Box>
-        {IDs?.length > 0 && (
+        {IDs?.length > 0 && IDs?.length < 3 && (
           <>
             <Box className="header-links">
               <Button leftIcon={<MdOutlineEdit />} onClick={open} className="edit-btn">

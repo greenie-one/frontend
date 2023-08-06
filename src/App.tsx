@@ -34,7 +34,7 @@ import { PeerVerification } from './components/candidate/profile/components/resi
 import { SelfVerification } from './components/candidate/profile/components/residential_info/addressVerification/selfVerification/SelfVerification';
 import { VerifyResidentialInfo } from './components/candidate/profile/components/residential_info/VerifyResidentialInfo';
 import { IDVerifiedDetails } from './components/candidate/profile/components/IDs/IDVerifiedDetails';
-// import { VerifyID } from './components/candidate/profile/components/IDs/VerifyID';
+import { VerifyID } from './components/candidate/profile/components/IDs/VerifyID';
 
 const App = () => {
   return (
@@ -58,7 +58,7 @@ const App = () => {
 
                 <Route path="IDs/verify/aadhar/congratulations" element={<CongratulationsScreen />} />
                 <Route path="IDs/verify/:id/details" element={<IDVerifiedDetails />} />
-                {/* <Route path="IDs/verify/:id" element={<VerifyID />} /> */}
+                <Route path="IDs/verify/:id" element={<VerifyID />} />
 
                 <Route path="experience/addExperience" element={<AddExperience />} />
                 <Route path="experience/allExperiences" element={<AllExperiences />} />

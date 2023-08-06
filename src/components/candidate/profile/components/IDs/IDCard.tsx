@@ -22,7 +22,7 @@ export const IDCard: React.FC<VerificationIdCardProp> = ({ documentName }) => {
     }
     if (documentName === 'DRIVING_LICENSE') {
       scrollToTop();
-      navigate('/candidate/profile/IDs/verify/licence/details');
+      navigate('/candidate/profile/IDs/verify/driving_licence/details');
     }
   };
 

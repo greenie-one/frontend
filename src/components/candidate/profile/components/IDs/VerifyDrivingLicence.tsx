@@ -185,7 +185,7 @@ export const VerifyDrivingLicence = () => {
               </Button>
               <Box className="checkbox-box">
                 <Checkbox checked={checked} onChange={() => setChecked(!checked)} className="checkbox" color="teal" />
-                <Text className="tearms-conditions">
+                <Text className="terms-conditions">
                   I hereby authorize Greenie to verify my Aadhar/PAN/DL details for authentication purposes. I have read
                   the Consent Notice and I am aware that Greenie will use the information only for the intended purpose
                   and my data will be handled as per laws. I am aware that I can withdraw this consent in the future.
