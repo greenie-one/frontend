@@ -117,16 +117,17 @@ export const IDSection: React.FC = () => {
                   <Box className="id-box" onClick={() => handlePageChange('AADHAR')}>
                     <img src={aadharLogo} alt="Aadhar logo" />
                     <Text className="id-name">Aadhar Card</Text>
+                    <Text className="coming-soon"></Text>
                   </Box>
                   <Box className="id-box disabled">
                     <img src={panLogo} alt="Pan logo" />
                     <Text className="id-name">PAN Card</Text>
-                    <Text className="coming-soon">Verify Aadhar first</Text>
+                    <Text className="coming-soon">Verify Aadhar First</Text>
                   </Box>
                   <Box className="id-box disabled">
                     <img src={licenceLogo} alt="licence logo" />
                     <Text className="id-name">Driving Licence</Text>
-                    <Text className="coming-soon">Verify Aadhar first</Text>
+                    <Text className="coming-soon">Verify Aadhar First</Text>
                   </Box>
                   <Box className="id-box  disabled">
                     <img src={licenceLogo} alt="licence logo" />
