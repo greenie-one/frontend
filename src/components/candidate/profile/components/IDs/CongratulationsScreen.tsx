@@ -17,6 +17,7 @@ export const CongratulationsScreen = () => {
   const userLevel = 1;
   const greeneId = profileData?.greenieId ?? '';
   const screenSize = useMediaQuery('(min-width: 768px)');
+
   const handleContinue = () => {
     scrollToTop();
     navigate('/candidate/profile');

@@ -320,7 +320,7 @@ export const AddExperience = () => {
 
           <Box className="checkbox-box">
             <Checkbox checked={checked} onChange={() => setChecked(!checked)} className="checkbox" color="teal" />
-            <Text className="tearms-conditions">
+            <Text className="terms-conditions">
               I have read the undertaking and i authorise Greenie to collect information on my behalf.
             </Text>
           </Box>
@@ -732,7 +732,7 @@ export const AddExperience = () => {
                   className="checkbox"
                   color="teal"
                 />
-                <Text className="tearms-conditions">
+                <Text className="terms-conditions">
                   I understand that during the upload process and while using this website, I may be required to provide
                   certain personal information, including but not limited to my name, email address, contact details,
                   and any other information deemed necessary for registration and website usage.

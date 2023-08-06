@@ -19,23 +19,13 @@
       margin-bottom: 24px;
       border-radius: 10px;
       background: #f2f4f2;
+
       .blurBox {
         display: flex;
         justify-content: center;
         align-items: center;
         img {
           filter: blur(6px);
-        }
-        .viewBtn {
-          position: absolute;
-          padding: 6px 12px;
-          background: #ffffff;
-          border: 1px solid #d1d4db;
-          border-radius: 34px;
-          font-weight: 500;
-          font-size: 16px;
-          line-height: 19px;
-          color: #697082;
         }
       }
     }

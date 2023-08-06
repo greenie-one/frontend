@@ -39,6 +39,7 @@ const months = [
   { value: '10', label: 'November' },
   { value: '11', label: 'December' },
 ];
+import dayjs from 'dayjs';
 
 export const AddResidentialInfo = () => {
   const navigate = useNavigate();
