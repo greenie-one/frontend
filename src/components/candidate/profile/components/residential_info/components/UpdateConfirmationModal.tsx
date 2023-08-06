@@ -61,6 +61,8 @@ export const UpdateConfirmationModal: React.FC<ModalPropsType> = ({
       if (res.value.length > 0) {
         const newAddress = res.value[0];
 
+        console.log(newAddress);
+
         setFetchedAddress(newAddress);
         residentialInfoForm.setValues(newAddress.address);
         navigate('.', { replace: true, state: res.value[0] });

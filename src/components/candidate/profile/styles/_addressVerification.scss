@@ -508,6 +508,12 @@ $dark: #191919;
       margin-right: auto;
     }
 
+    @media screen and (max-width: 28em) {
+      margin-left: 0;
+      margin-bottom: 8px;
+      margin-right: auto;
+    }
+
     .copy-text {
       margin-left: 0.25rem;
     }

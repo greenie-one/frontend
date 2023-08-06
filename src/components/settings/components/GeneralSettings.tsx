@@ -66,7 +66,12 @@ export const GeneralSettings: React.FC = (): JSX.Element => {
         <TextInput label="Email" className="inputClass" {...generalSettingsForm.getInputProps('emailId')} />
         <Title className={formClasses.detailsCategoryTitle}>Demographics</Title>
         <TextInput label="Age" className="inputClass" {...generalSettingsForm.getInputProps('age')} />
-        <DateInput label="Date of birth" className="inputClass" {...generalSettingsForm.getInputProps('dateOfBirth')} />
+        <DateInput
+          maxDate={new Date()}
+          label="Date of birth"
+          className="inputClass"
+          {...generalSettingsForm.getInputProps('dateOfBirth')}
+        />
         <Title className={formClasses.detailsCategoryTitle}>Aadhar details</Title>
         <TextInput
           label="Phone number linked with Aadhaar"
