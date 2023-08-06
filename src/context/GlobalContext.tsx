@@ -25,7 +25,6 @@ export const GlobalContextProvider: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
   const [forceRender, setForceRender] = useState<boolean>(true);
-  const [userLevel, setUserLevel] = useState<number>(0);
   const authClient = AuthClient.getInstance();
 
   const {
@@ -375,8 +374,6 @@ export const GlobalContextProvider: React.FC<{
         getResidentialInfo,
         deleteWorkExperience,
         deleteResidentialInfo,
-        userLevel,
-        setUserLevel,
         getProfile,
         setProfileData,
       }}

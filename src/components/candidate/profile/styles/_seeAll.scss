@@ -318,7 +318,7 @@
     .checkbox-box {
       display: flex;
 
-      .tearms-conditions {
+      .terms-conditions {
         margin-left: 0.75rem;
         color: $gray;
         margin-bottom: 1rem;
@@ -365,6 +365,9 @@
       max-height: 200px;
     }
     .left-img-box {
+      display: grid;
+      place-items: center;
+
       .verified-document-name {
         font-family: 'Inter';
         font-style: normal;
@@ -374,7 +377,15 @@
         letter-spacing: -0.02em;
         color: #282828;
         margin-bottom: 28px;
+        text-align: center;
       }
+    }
+    .left-text-box {
+      text-align: center;
+      background: #fafafa;
+      border-radius: 24px;
+      padding: 20px;
+      margin: 4px 0px;
     }
 
     .heading {
@@ -415,7 +426,7 @@
       grid-template-columns: 49% 49%;
     }
     .aadhar-second-row {
-      grid-template-columns: 29% 40% 29%;
+      grid-template-columns: 30% 68%;
     }
     .aadhar-third-row,
     .pan-second-row,
@@ -490,7 +501,7 @@
         }
       }
       .left-text-box {
-        margin-top: 30px;
+        margin-top: 90px;
         margin-bottom: 30px;
         margin-left: 20px;
         display: grid;
@@ -532,7 +543,7 @@
       margin: 0 auto;
     }
 
-    .tearms-conditions {
+    .terms-conditions {
       font-size: 14px;
     }
 

@@ -136,47 +136,57 @@
   .ids-wrapper {
     display: flex;
     justify-content: space-between;
-    max-width: 450px;
-    margin: 5rem auto;
+    align-items: stretch;
+    margin: 5rem 3rem;
+    gap: 1rem;
 
     .id-box {
+      border: 1px solid $lightGray;
+      padding: 1.5rem 1rem;
+      border-radius: 15px;
+      cursor: pointer;
+      position: relative;
+      flex: 1;
+      min-height: 180px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: space-between;
-      border: 1px solid $lightGray;
-      padding: 2rem;
-      border-radius: 24px;
-      cursor: pointer;
-      position: relative;
-      min-width: 200px;
+      justify-content: flex-start;
+      gap: 1rem;
+      transition: border 100ms linear;
+
+      &:hover {
+        border: 1px solid $gray;
+        transition: border 150ms linear;
+      }
 
       img {
-        height: 80px;
+        height: 50px;
       }
 
       .id-name {
         font-family: 'Inter';
         font-style: normal;
-        font-weight: 400;
+        font-weight: 500;
         font-size: 16px;
         line-height: 19px;
         letter-spacing: -0.02em;
         color: $dark;
-        margin-top: 16px;
+        text-align: center;
       }
 
       .coming-soon {
         font-family: 'Inter';
         font-style: normal;
         font-weight: 500;
-        font-size: 16px;
-        line-height: 15px;
-        color: $gray;
-        position: absolute;
-        bottom: -15px;
+        font-size: 14px;
+        line-height: 1.35;
+        color: $dark;
         background-color: $white;
         padding: 8px;
+        text-align: center;
+        height: 2rem;
+        margin-top: auto;
       }
     }
 
@@ -369,6 +379,26 @@
   }
 }
 
+@media screen and (max-width: 1280px) {
+  .ids-modal {
+    .ids-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      justify-content: space-between;
+
+      .id-box {
+        margin-bottom: 3rem;
+        margin-inline: 0;
+
+        img {
+          height: 80px;
+        }
+      }
+    }
+  }
+}
+
 @media screen and (max-width: 1200px) {
   .modal {
     form {
@@ -406,6 +436,28 @@
   }
 }
 
+@media screen and (max-width: 992px) {
+  .ids-modal {
+    .ids-wrapper {
+      display: grid;
+      grid-template-columns: 1fr;
+      align-items: center;
+      justify-content: space-between;
+      margin-inline: auto;
+      max-width: 250px;
+
+      .id-box {
+        margin-bottom: 3rem;
+        margin-inline: 0;
+
+        img {
+          height: 80px;
+        }
+      }
+    }
+  }
+}
+
 @media screen and (max-width: 768px) {
   .add-skills-wrapper {
     grid-template-columns: repeat(2, 49%);
@@ -421,26 +473,5 @@
 
   .add-skills-wrapper {
     grid-template-columns: 100%;
-  }
-}
-@media screen and (max-width: 970px) {
-  .ids-modal {
-    .ids-wrapper {
-      display: grid;
-      grid-template-columns: 100%;
-      align-items: center;
-      justify-content: space-between;
-      max-width: 200px;
-      margin: auto;
-
-      .id-box {
-        margin-bottom: 3rem;
-        margin-inline: 0;
-
-        img {
-          height: 80px;
-        }
-      }
-    }
   }
 }
