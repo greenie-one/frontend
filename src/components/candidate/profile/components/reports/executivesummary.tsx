@@ -50,8 +50,8 @@ export const ExecutiveSummary: React.FC = (): JSX.Element => {
             <div className="residential-address-right right-view-profile">
               <div>
                 <RingProgress
-                  size={90}
-                  thickness={7}
+                  size={65}
+                  thickness={4}
                   roundCaps
                   sections={[{ value: 75, color: '#17a672' }]}
                   label={
@@ -108,7 +108,10 @@ export const ExecutiveSummary: React.FC = (): JSX.Element => {
             <Text className="peer-name ">Personal Identification</Text>
             <Text className="peer-name text-verified">Verified</Text>
             <Text className="peer-name">
-              <Progress value={50} size="xs" color="#8CF078" />
+              <span className="peer-progress">
+                <Progress value={50} size="xs" color="#8CF078" />
+              </span>
+              <span>60%</span>
             </Text>
             <Text className="peer-name">Test</Text>
           </Box>
@@ -116,7 +119,10 @@ export const ExecutiveSummary: React.FC = (): JSX.Element => {
             <Text className="peer-name ">Residential Information</Text>
             <Text className="peer-name text-verified">Verified</Text>
             <Text className="peer-name">
-              <Progress value={50} size="xs" color="#8CF078" />
+              <span className="peer-progress">
+                <Progress value={50} size="xs" color="#8CF078" />
+              </span>
+              <span>60%</span>
             </Text>
             <Text className="peer-name">Test</Text>
           </Box>
@@ -124,7 +130,10 @@ export const ExecutiveSummary: React.FC = (): JSX.Element => {
             <Text className="peer-name ">Work Experience</Text>
             <Text className="peer-name text-verified">Verified</Text>
             <Text className="peer-name">
-              <Progress value={50} size="xs" color="#8CF078" />
+              <span className="peer-progress">
+                <Progress value={50} size="xs" color="#8CF078" />
+              </span>
+              <span>60%</span>
             </Text>
             <Text className="peer-name">Test</Text>
           </Box>

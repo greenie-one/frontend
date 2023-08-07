@@ -91,7 +91,7 @@ export const WorkExperienceReport2: React.FC = (): JSX.Element => {
           <span>HR</span>
         </div>
 
-        <Box className="add-peer-exp-header">
+        <Box className="add-peer-header add-peer-exp-header">
           <Text className="add-peer-header-text">Attitude</Text>
           <Text className="add-peer-header-text">Verified as</Text>
           <Text className="add-peer-header-text">Verified on</Text>

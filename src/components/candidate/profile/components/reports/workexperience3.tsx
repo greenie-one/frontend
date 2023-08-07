@@ -45,7 +45,7 @@ export const WorkExperienceReport3: React.FC = (): JSX.Element => {
             <p>02/03/2023</p>
           </div>
         </div>
-        <Box className="basic-info-box-wrapper">
+        <Box className="basic-info-box-wrapper work-wrapper">
           <Box className="info-box">
             <Text className="experience-details-box-heading">Company Type</Text>
             <Text className="experience-details-box-text">Permanent</Text>
@@ -67,7 +67,7 @@ export const WorkExperienceReport3: React.FC = (): JSX.Element => {
           </div>
         </div>
 
-        <Box className="basic-info-box-wrapper">
+        <Box className="basic-info-box-wrapper work-wrapper">
           <Box className="info-box">
             <Text className="experience-details-box-heading">Company ID</Text>
             <Text className="experience-details-box-text">GRN6543A</Text>

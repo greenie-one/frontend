@@ -41,7 +41,7 @@ export const ResidentialReport2: React.FC = (): JSX.Element => {
             <p>02/03/2023</p>
           </div>
         </div>
-        <Box className="basic-info-box-wrapper">
+        <Box className="basic-info-box-wrapper residence-wrapper">
           <Box className="info-box">
             <Text className="experience-details-box-heading">Address type</Text>
             <Text className="experience-details-box-text">Permanent</Text>
@@ -111,7 +111,7 @@ export const ResidentialReport2: React.FC = (): JSX.Element => {
             <p>02/03/2023</p>
           </div>
         </div>
-        <Box className="basic-info-box-wrapper">
+        <Box className="basic-info-box-wrapper executive-wrapper">
           <Box className="info-box">
             <Text className="experience-details-box-heading">Ashok Deshmukh</Text>
             <Text className="experience-details-box-text">Father</Text>
