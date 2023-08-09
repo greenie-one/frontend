@@ -21,7 +21,7 @@ export const ProfileSettings: React.FC = (): JSX.Element => {
   const { classes: formClasses } = detailsFormStyles();
   const { classes: profileClasses } = profileSettingsStyles();
   const { classes: modalStyles } = confirmationModalStyle();
-  const { profileForm, updateProfile } = useGlobalContext();
+  const { profileForm, updateProfile, profileData } = useGlobalContext();
   const [opened, { open, close }] = useDisclosure(false);
 
   const onFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -81,6 +81,7 @@ export const ProfileSettings: React.FC = (): JSX.Element => {
           minLength={3}
           label="First Name"
           className="inputClass"
+          placeholder={profileData.firstName}
           {...profileForm.getInputProps('firstName')}
         />
         <TextInput
@@ -88,6 +89,7 @@ export const ProfileSettings: React.FC = (): JSX.Element => {
           minLength={3}
           label="Last Name"
           className="inputClass"
+          placeholder={profileData.lastName}
           {...profileForm.getInputProps('lastName')}
         />
 
@@ -97,6 +99,7 @@ export const ProfileSettings: React.FC = (): JSX.Element => {
           className="text-area-input"
           minRows={8}
           {...profileForm.getInputProps('bio')}
+          placeholder={profileData.bio}
           maxLength={250}
         />
         <Box className={formClasses.detailsCategory}>
