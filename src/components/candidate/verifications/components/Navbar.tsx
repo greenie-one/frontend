@@ -4,6 +4,7 @@ import { useDisclosure } from '@mantine/hooks';
 import { createStyles, Drawer, List, Group, em, rem, Box, Flex, Button } from '@mantine/core';
 
 import { MdOutlineMenuOpen, MdVerified, MdOutlineClose } from 'react-icons/md';
+import privacyPolicy from '../../../auth/assets/Privacy Policy-Greenie.pdf';
 import { motion } from 'framer-motion';
 
 export const Navbar = () => {
@@ -34,16 +35,21 @@ export const Navbar = () => {
             </span>
           </Link>
         </Flex>
+
         <nav className={classes.navOptionsContainer}>
           <List className={classes.navOptionsList}>
-            <Link to="/#features">
-              <List.Item className={classes.navOptionsListItems}>Features</List.Item>
+            <Link to="#enterprises">
+              <List.Item className={classes.navOptionsListItems}>Enterprise</List.Item>
             </Link>
-            <Link to="/waitlist">
-              <List.Item className={classes.navOptionsListItems}>Pricing</List.Item>
+            <Link to="#candidates">
+              <List.Item className={classes.navOptionsListItems}>Candidates</List.Item>
             </Link>
+            <a href={privacyPolicy} download={'Data Security'}>
+              <List.Item className={classes.navOptionsListItems}>Data Security</List.Item>
+            </a>
           </List>
         </nav>
+
         <Group className={classes.headerBtnsContainer}>
           <Link to="/auth">
             <Button variant={'fill'} className={classes.tryBtn} radius={'xl'}>
@@ -51,6 +57,7 @@ export const Navbar = () => {
             </Button>
           </Link>
         </Group>
+
         {!opened ? (
           <span className={classes.menuBtn}>
             <MdOutlineMenuOpen role="button" className={classes.menuBtnIcon} onClick={open} />
@@ -70,12 +77,15 @@ export const Navbar = () => {
               </span>
             </Flex>
             <List className={classes.mobileNavOptionsList}>
-              <Link to="/#features" onClick={close}>
-                <List.Item className={classes.mobileNavOptionsListItems}>Features</List.Item>
+              <Link to="#enterprises" onClick={close}>
+                <List.Item className={classes.mobileNavOptionsListItems}>Enterprise</List.Item>
               </Link>
-              <Link to="/waitlist" onClick={close}>
-                <List.Item className={classes.mobileNavOptionsListItems}>Pricing</List.Item>
+              <Link to="#candidates" onClick={close}>
+                <List.Item className={classes.mobileNavOptionsListItems}>Candidates</List.Item>
               </Link>
+              <a href={privacyPolicy} onClick={close} download={'Data Security'}>
+                <List.Item className={classes.mobileNavOptionsListItems}>Data Security</List.Item>
+              </a>
             </List>
             <Group className={classes.mobileHeaderBtnsContainer}>
               <Link to="/auth" onClick={close}>

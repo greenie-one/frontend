@@ -4,6 +4,7 @@ import { createStyles, List, Title, Text, em, rem, Box, Flex } from '@mantine/co
 import { BsInstagram } from 'react-icons/bs';
 import { FiLinkedin } from 'react-icons/fi';
 import { MdOutlineMail, MdVerified } from 'react-icons/md';
+import privacyPolicy from '../auth/assets/Privacy Policy-Greenie.pdf';
 
 export const Footer: React.FC = (): JSX.Element => {
   const { classes } = useStyles();
@@ -96,12 +97,18 @@ export const Footer: React.FC = (): JSX.Element => {
           </span>
           <Text className={classes.madeInIndiaText}>Made In India</Text>
           <List className={classes.navOptionsList}>
-            <Link to="/#features">
+            <Link to="#enterprises">
+              <List.Item className={classes.navOptionsListItems}>Enterprise</List.Item>
+            </Link>
+            <Link to="#candidates">
+              <List.Item className={classes.navOptionsListItems}>Candidates</List.Item>
+            </Link>
+            <Link to="#features">
               <List.Item className={classes.navOptionsListItems}>Features</List.Item>
             </Link>
-            <Link to="/waitlist">
-              <List.Item className={classes.navOptionsListItems}>Pricing</List.Item>
-            </Link>
+            <a href={privacyPolicy} download={'Data Security'}>
+              <List.Item className={classes.navOptionsListItems}>Data Security</List.Item>
+            </a>
             {/* <List.Item className={classes.navOptionsListItems}>
                   About Us
               </List.Item>
