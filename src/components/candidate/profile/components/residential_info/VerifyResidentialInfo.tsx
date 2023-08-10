@@ -97,7 +97,7 @@ export const VerifyResidentialInfo: React.FC = () => {
     if (filteredInfo) {
       setResidentialInfo(filteredInfo);
     }
-  }, []);
+  }, [filteredInfo]);
 
   return (
     <>

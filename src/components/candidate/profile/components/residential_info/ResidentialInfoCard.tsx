@@ -25,7 +25,7 @@ export const ResidentialInfoCard: React.FC<ResidentialInfoCardProps> = ({
         </Box>
         <Box className="address-box">
           <Box className="address">
-            {address_line_1}, {address_line_2}, {landmark}, {city} {pincode}
+            {address_line_1} {address_line_2}, {landmark}, {city} {pincode}
           </Box>
           {isVerified ? (
             <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">

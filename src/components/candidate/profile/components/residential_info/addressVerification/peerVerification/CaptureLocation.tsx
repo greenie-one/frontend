@@ -6,6 +6,8 @@ import { HttpClient } from '../../../../../../../utils/generic/httpClient';
 import { addressVerificationAPIList } from '../../../../../../../assets/api/ApiList';
 import { useDisclosure } from '@mantine/hooks';
 import { ConfirmationModal } from '../components/ConfirmationModals';
+import { useNavigate } from 'react-router-dom';
+import { useGlobalContext } from '../../../../../../../context/GlobalContext';
 
 type CaptureLocationProps = {
   uuid: string;
@@ -27,6 +29,8 @@ const formattedDate = (data: string) => {
 };
 
 export const CaptureLocation: React.FC<CaptureLocationProps> = ({ uuid, peerData }): JSX.Element => {
+  const { scrollToTop } = useGlobalContext();
+  const navigate = useNavigate();
   const [opened, { open, close }] = useDisclosure(false);
 
   const [addressVerified, setAddressVerified] = React.useState<boolean | null>(null);
@@ -52,7 +56,7 @@ export const CaptureLocation: React.FC<CaptureLocationProps> = ({ uuid, peerData
     open();
   };
 
-  const setPosition = async (position: any) => {
+  const setPosition = async (position: { coords: CoordinatesType }) => {
     showLoadingNotification({
       title: 'Verifying Address...',
       message: 'Please wait while we verify your location.',
@@ -71,9 +75,19 @@ export const CaptureLocation: React.FC<CaptureLocationProps> = ({ uuid, peerData
 
     if (res.ok) {
       setAddressVerified(true);
+      showLoadingNotification({
+        title: 'Verified!',
+        message: 'Your location has been captured successfully!',
+      });
     } else {
       showErrorNotification(res.error.code);
-      setAddressVerified(false);
+
+      if (res.error.code === 'GR0058') {
+        navigate('.?verified=true');
+        scrollToTop();
+      } else {
+        setAddressVerified(false);
+      }
     }
   };
 
@@ -82,25 +96,25 @@ export const CaptureLocation: React.FC<CaptureLocationProps> = ({ uuid, peerData
 
     switch (error.code) {
       case error.PERMISSION_DENIED: {
-        showErrorNotification('Request for capturing location is denied.');
+        showErrorNotification('ACCESS_DENIED');
         break;
       }
 
       case error.POSITION_UNAVAILABLE: {
-        showErrorNotification('Location information is unavailable.');
+        showErrorNotification('INFORMATION_UNAVAILABLE');
         break;
       }
       case error.TIMEOUT: {
-        showErrorNotification('The request to get user location timed out.');
+        showErrorNotification('REQUEST_TIMED_OUT');
         break;
       }
       case error.UNKNOWN_ERROR: {
-        showErrorNotification('Something went wrong.');
+        showErrorNotification('SOMETHING_WENT_WRONG');
         break;
       }
 
       default: {
-        showErrorNotification('Something went wrong.');
+        showErrorNotification('SOMETHING_WENT_WRONG');
       }
     }
   };
@@ -151,7 +165,7 @@ export const CaptureLocation: React.FC<CaptureLocationProps> = ({ uuid, peerData
           <Title className="address-verification-details-main-title">
             Please allow permission to capture location to confirm the verification
           </Title>
-          <Button className="green-outline-btn" onClick={getLocation}>
+          <Button sx={{ marginTop: '2rem' }} className="green-outline-btn" onClick={getLocation}>
             Capture Location
           </Button>
         </Box>

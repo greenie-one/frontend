@@ -26,7 +26,7 @@ const formattedDate = (data: string) => {
 
 export const SelfVerification: React.FC = (): JSX.Element => {
   const { id } = useParams();
-  const { profileData, residentialInfoData, authClient } = useGlobalContext();
+  const { residentialInfoData, authClient } = useGlobalContext();
 
   const currentResidentialInfo = residentialInfoData.find((data) => data.id === id);
 
@@ -50,7 +50,7 @@ export const SelfVerification: React.FC = (): JSX.Element => {
     open();
   };
 
-  const setPosition = async (position: any) => {
+  const setPosition = async (position: { coords: CoordinatesType }) => {
     showLoadingNotification({
       title: 'Verifying Address...',
       message: 'Please wait while we verify your location.',

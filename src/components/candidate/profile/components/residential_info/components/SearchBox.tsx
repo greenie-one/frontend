@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Box, List } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
 import { useDebounce } from '../../../../../../utils/hooks/useDebounce';
@@ -11,7 +11,7 @@ import { useForm } from '@mantine/form';
 
 type SearchBox = {
   innerComponent: boolean;
-  setFetchedAddress?: React.Dispatch<React.SetStateAction<any>>;
+  setFetchedAddress?: React.Dispatch<React.SetStateAction<FetchedAddressType>>;
   residentialInfoForm?: ReturnType<typeof useForm<residentialInfoFormType>>;
 };
 
@@ -24,9 +24,12 @@ export const SearchBox: React.FC<SearchBox> = ({
   const { authClient, scrollToTop } = useGlobalContext();
 
   const [addressQuery, setAddressQuery] = useState<string>('');
-  const [addressList, setAddressList] = useState<Array<any>>([]);
+  const [addressList, setAddressList] = useState<Array<FetchedAddressType>>([]);
+  const [showSearchList, setShowSearchList] = useState<boolean>(false);
 
   const query = useDebounce(addressQuery);
+  const searchContainerRef = useRef<HTMLDivElement>(null);
+  const searchListContainerRef = useRef<HTMLOListElement>(null);
 
   const fetchAddresses = async (q: string) => {
     if (!q || q.length < 2) {
@@ -38,7 +41,7 @@ export const SearchBox: React.FC<SearchBox> = ({
       address: q,
     }).toString();
 
-    const res = await HttpClient.callApiAuth<Array<any>>(
+    const res = await HttpClient.callApiAuth<Array<FetchedAddressType>>(
       {
         url: `${searchEndpoints.searchAddress}?${queryParams}`,
         method: 'GET',
@@ -57,7 +60,8 @@ export const SearchBox: React.FC<SearchBox> = ({
     fetchAddresses(query);
   }, [query]);
 
-  const handleSelectedAddress = (event: React.MouseEvent<HTMLButtonElement>, address: any) => {
+  const handleSelectedAddress = (event: React.MouseEvent<HTMLButtonElement>, address: FetchedAddressType) => {
+    setShowSearchList(false);
     if (innerComponent) {
       if (setFetchedAddress) {
         setFetchedAddress(address);
@@ -74,6 +78,45 @@ export const SearchBox: React.FC<SearchBox> = ({
     }
   };
 
+  useEffect(() => {
+    document.addEventListener(
+      'click',
+      (event) => {
+        const targetElement = event.target;
+        if (searchListContainerRef.current && searchListContainerRef.current.contains(targetElement as Node)) {
+          return;
+        }
+
+        if (searchContainerRef.current && searchContainerRef.current.contains(targetElement as Node)) {
+          setShowSearchList(true);
+          return;
+        }
+
+        setShowSearchList(false);
+      },
+      true
+    );
+    return () => {
+      document.removeEventListener(
+        'click',
+        (event) => {
+          const targetElement = event.target;
+          if (searchListContainerRef.current && searchListContainerRef.current.contains(targetElement as Node)) {
+            return;
+          }
+
+          if (searchContainerRef.current && searchContainerRef.current.contains(targetElement as Node)) {
+            setShowSearchList(true);
+            return;
+          }
+
+          setShowSearchList(false);
+        },
+        true
+      );
+    };
+  }, []);
+
   return (
     <>
       <Box className={classes.searchBoxContainer}>
@@ -82,7 +125,7 @@ export const SearchBox: React.FC<SearchBox> = ({
             <MdOutlineLocationOn />
           </span>
         </Box>
-        <Box className={classes.searchInputContainer}>
+        <Box className={classes.searchInputContainer} ref={searchContainerRef}>
           <span className={classes.searchIconContainer}>
             <MdOutlineSearch />
           </span>
@@ -94,8 +137,8 @@ export const SearchBox: React.FC<SearchBox> = ({
             onChange={(e) => setAddressQuery(e.target.value)}
             className={classes.searchInputControl}
           />
-          {addressList.length > 0 && (
-            <List className={classes.addressList}>
+          {showSearchList && addressList.length > 0 && (
+            <List className={classes.addressList} ref={searchListContainerRef}>
               {addressList.map((address, idx) => {
                 return (
                   <List.Item key={idx} className={classes.addressListItems}>

@@ -47,6 +47,8 @@ export const ResidentialInfoDetails: React.FC = () => {
   const { id } = useParams();
   const filteredInfo = residentialInfoData.find((info: ResidentialInfoResponse) => info.id === id);
 
+  console.log(filteredInfo);
+
   const [sentRequests, setSentRequests] = useState<Array<GetAddressVerificationResponse>>([]);
 
   const handleAggree = () => {
@@ -110,7 +112,7 @@ export const ResidentialInfoDetails: React.FC = () => {
       setResidentialInfo(filteredInfo);
       getRequests();
     }
-  }, []);
+  }, [filteredInfo]);
 
   return (
     <>
@@ -333,9 +335,7 @@ export const ResidentialInfoDetails: React.FC = () => {
                 </Box>
               </Box>
             )}
-            {sentRequests.length > 0 ? (
-              <></>
-            ) : (
+            {!(sentRequests.length > 0 || residential?.isVerified) && (
               <Button className="green-btn" onClick={() => open()}>
                 Get Verified
               </Button>

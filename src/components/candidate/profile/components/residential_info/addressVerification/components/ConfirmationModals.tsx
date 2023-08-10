@@ -69,7 +69,7 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
                 </Button>
               </Box>
             </Box>
-            <Button className="green-btn" onClick={() => navigate('/')}>
+            <Button className="green-btn" onClick={() => navigate('.?verified=true')}>
               Continue
             </Button>
           </Box>

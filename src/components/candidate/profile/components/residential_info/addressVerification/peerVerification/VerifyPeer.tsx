@@ -7,6 +7,7 @@ import {
 } from '../../../../../../../utils/functions/showNotification';
 import { HttpClient } from '../../../../../../../utils/generic/httpClient';
 import { addressVerificationAPIList } from '../../../../../../../assets/api/ApiList';
+import { useNavigate } from 'react-router-dom';
 
 type VerifyPeerProps = {
   type: 'EMAIL' | 'MOBILE';
@@ -14,6 +15,8 @@ type VerifyPeerProps = {
   verificationBy: string;
   uuid: string;
   getPeerData: () => Promise<void>;
+  currentStep: number;
+  setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
 };
 
 export const VerifyPeer: React.FC<VerifyPeerProps> = ({
@@ -22,7 +25,10 @@ export const VerifyPeer: React.FC<VerifyPeerProps> = ({
   verificationBy,
   uuid,
   getPeerData,
+  currentStep,
+  setCurrentStep,
 }): JSX.Element => {
+  const navigate = useNavigate();
   const { classes: inputClasses } = OtpInputStyles();
 
   const [showOtpScreen, setShowOtpScreen] = useState<boolean>(false);
@@ -47,7 +53,7 @@ export const VerifyPeer: React.FC<VerifyPeerProps> = ({
 
       setCountDown(60);
 
-      showSuccessNotification({ title: 'Success !', message: 'OTP Sent to your phone number' });
+      showSuccessNotification({ title: 'Success !', message: `OTP Sent to your ${type}` });
     } else {
       showErrorNotification(res.error.code);
     }
@@ -76,10 +82,18 @@ export const VerifyPeer: React.FC<VerifyPeerProps> = ({
 
     if (res.ok) {
       await getPeerData();
+      setCurrentStep(1);
+      showSuccessNotification({ title: 'Success !', message: 'OTP verified successfully!' });
     } else {
       showErrorNotification(res.error.code);
     }
   };
+
+  useEffect(() => {
+    if (currentStep === 1) {
+      sendOtp();
+    }
+  }, [currentStep]);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -105,7 +119,9 @@ export const VerifyPeer: React.FC<VerifyPeerProps> = ({
             <Button className="green-outline-btn" onClick={sendOtp}>
               Click to send OTP
             </Button>
-            <Text className="address-verification-details-link">Not me</Text>
+            <Text className="address-verification-details-link" onClick={() => navigate('.?verified=true')}>
+              Not me
+            </Text>
           </Box>
         </Box>
       ) : (
