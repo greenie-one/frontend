@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Chip, Group, Title, TextInput, Textarea, Button, Modal, Text } from '@mantine/core';
 import { useGlobalContext } from '../../../context/GlobalContext';
+import { ProfileModal } from '../../candidate/profile/types/ProfileGeneral';
 import { useDisclosure } from '@mantine/hooks';
 import { confirmationModalStyle } from '../styles/articleContentStyles';
 import { detailsFormStyles, profileSettingsStyles } from '../styles/articleContentStyles';
@@ -23,6 +24,17 @@ export const ProfileSettings: React.FC = (): JSX.Element => {
   const { classes: modalStyles } = confirmationModalStyle();
   const { profileForm, updateProfile, profileData } = useGlobalContext();
   const [opened, { open, close }] = useDisclosure(false);
+  const [openModal, setOpenModal] = useState<ProfileModal>(null);
+
+  const handleOpenModal = (modalType: ProfileModal) => {
+    if (modalType === 'Save Profile') {
+      setOpenModal(modalType);
+      open();
+    } else {
+      setOpenModal(modalType);
+      open();
+    }
+  };
 
   const onFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -36,44 +48,83 @@ export const ProfileSettings: React.FC = (): JSX.Element => {
 
   return (
     <>
-      <Modal
-        opened={opened}
-        onClose={close}
-        title="Confirmation"
-        padding="xl"
-        radius="lg"
-        size="lg"
-        centered
-        classNames={modalStyles}
-      >
-        <Box className={modalStyles.confirmationMsgWrapper}>
-          <Text className={modalStyles.title}>Are you sure you want to update the changes made?</Text>
+      {openModal === 'Save Profile' && (
+        <Modal
+          opened={opened}
+          onClose={close}
+          title="Confirmation"
+          padding="xl"
+          radius="lg"
+          size="lg"
+          centered
+          classNames={modalStyles}
+        >
+          <Box className={modalStyles.confirmationMsgWrapper}>
+            <Text className={modalStyles.title}>Are you sure you want to update the changes made?</Text>
 
-          <Box className={modalStyles.modalBtnsContainer}>
-            {[
-              {
-                variant: 'filled',
-                text: 'Confirm',
-                action: handleConfirmation,
-              },
-              { variant: 'outline', text: 'Cancel', action: close },
-            ].map((btns, idx) => (
+            <Box className={modalStyles.modalBtnsContainer}>
+              {[
+                {
+                  variant: 'filled',
+                  text: 'Confirm',
+                  action: handleConfirmation,
+                },
+                { variant: 'outline', text: 'Cancel', action: close },
+              ].map((btns, idx) => (
+                <Button
+                  key={idx}
+                  className={modalStyles.modalActionBtns}
+                  onClick={btns.action}
+                  size="sm"
+                  type="button"
+                  radius="xl"
+                  variant={btns.variant}
+                  color="teal"
+                >
+                  {btns.text}
+                </Button>
+              ))}
+            </Box>
+          </Box>
+        </Modal>
+      )}
+      {openModal === 'Download' && (
+        <Modal opened={opened} onClose={close} padding="xl" radius="lg" size="lg" centered classNames={modalStyles}>
+          <Box className={modalStyles.downloadMsgWrapper}>
+            <Title className={modalStyles.title}>Enter your Email ID</Title>
+            <TextInput
+              maxLength={10}
+              minLength={3}
+              label="Email ID"
+              className="inputClass"
+              {...profileForm.getInputProps('email')}
+            />
+            <div className={formClasses.profiledetailsForm}>
               <Button
-                key={idx}
-                className={modalStyles.modalActionBtns}
-                onClick={btns.action}
+                className={formClasses.downloadBtn}
                 size="sm"
                 type="button"
                 radius="xl"
-                variant={btns.variant}
                 color="teal"
+                onClick={() => handleOpenModal('Save Profile')}
               >
-                {btns.text}
+                Submit
               </Button>
-            ))}
+              <Button
+                className={formClasses.downloadBtn}
+                size="sm"
+                type="button"
+                radius="xl"
+                color="teal"
+                onClick={() => handleOpenModal('Download')}
+              >
+                Download
+              </Button>
+            </div>
           </Box>
-        </Box>
-      </Modal>
+        </Modal>
+      )}
+
       <form className={formClasses.detailsCategory} onSubmit={onFormSubmit}>
         <Title className={formClasses.detailsCategoryTitle}>Name</Title>
         <TextInput
@@ -125,10 +176,28 @@ export const ProfileSettings: React.FC = (): JSX.Element => {
             </Group>
           </Chip.Group>
         </Box>
-
-        <Button className={formClasses.formSubmitBtn} size="sm" type="button" radius="xl" color="teal" onClick={open}>
-          Save
-        </Button>
+        <div className={formClasses.profiledetailsForm}>
+          <Button
+            className={formClasses.formSubmitBtn}
+            size="sm"
+            type="button"
+            radius="xl"
+            color="teal"
+            onClick={() => handleOpenModal('Save Profile')}
+          >
+            Save
+          </Button>
+          <Button
+            className={formClasses.formSubmitBtn}
+            size="sm"
+            type="button"
+            radius="xl"
+            color="teal"
+            onClick={() => handleOpenModal('Download')}
+          >
+            Download
+          </Button>
+        </div>
       </form>
     </>
   );

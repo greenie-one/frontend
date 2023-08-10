@@ -89,9 +89,11 @@ body {
       }
       .peer-name {
         overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        max-width: 20ch;
+        // white-space: nowrap;
+        // text-overflow: ellipsis;
+        // max-width: 20ch;
+        word-break: break-all;
+        padding-right: rem(7);
         display: flex;
         gap: 10px;
         align-items: center;
@@ -283,6 +285,7 @@ body {
       }
       .residential-address-left {
         color: #535253;
+        width: 35%;
         gap: rem(20);
         &.left-residential {
           width: 20%;

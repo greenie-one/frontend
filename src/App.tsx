@@ -44,7 +44,6 @@ const App = () => {
 
         <Routes>
           <Route path="/" element={<AppLayout />}>
-            {/* <Route path="/screens" element={<ReportScreens />}> */}
             <Route index element={<Landing />} />
             <Route path="/screens" element={<ReportScreens />} />
             <Route path="auth" element={<AuthPage />} />

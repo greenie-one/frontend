@@ -21,6 +21,7 @@ export const ReportScreens: React.FC = (): JSX.Element => {
       <PersonalIdentification />
       <ResidentialReport2 />
       <ResidentialReport />
+      <button onClick={() => window.print()}>PRINT</button>
     </>
   );
 };
