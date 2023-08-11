@@ -1,4 +1,4 @@
-import { Box, Title, TextInput, Select, Checkbox, Button, Divider, Text } from '@mantine/core';
+import { Box, Title, TextInput, Tooltip, Select, Checkbox, Button, Divider, Text } from '@mantine/core';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
 import { useState } from 'react';
 import { BsArrowLeft } from 'react-icons/bs';
@@ -17,6 +17,7 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Icon } from 'leaflet';
 import mapMarker from '../../assets/map-marker.png';
+import { FaRegQuestionCircle } from 'react-icons/fa';
 
 const marker = new Icon({
   iconUrl: mapMarker,
@@ -247,6 +248,7 @@ export const AddResidentialInfo = () => {
             <Text className="address-string">{fetchedAddress.addressString}</Text>
             <Box className="map-box-container">
               <MapContainer
+                key={JSON.stringify([fetchedAddress.position.latitude, fetchedAddress.position.longitude])}
                 center={[fetchedAddress.position.latitude, fetchedAddress.position.longitude]}
                 zoom={14}
                 scrollWheelZoom={false}
@@ -291,7 +293,14 @@ export const AddResidentialInfo = () => {
               />
             </Box>
             <Box className="input-section">
-              <Title className="title">Address Line 1</Title>
+              <Title className="title">
+                Address Line 1{'  '}
+                <Tooltip label="For best results enter the address as per the ID">
+                  <span>
+                    <FaRegQuestionCircle />
+                  </span>
+                </Tooltip>
+              </Title>
               <TextInput
                 data-autofocus
                 label="Address line 1"
