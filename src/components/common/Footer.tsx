@@ -5,6 +5,7 @@ import { BsInstagram } from 'react-icons/bs';
 import { FiLinkedin } from 'react-icons/fi';
 import { MdOutlineMail, MdVerified } from 'react-icons/md';
 import privacyPolicy from '../auth/assets/Privacy Policy-Greenie.pdf';
+import TermsAndConditions from '../auth/assets/terms_and_conditions-greenie.pdf';
 
 export const Footer: React.FC = (): JSX.Element => {
   const { classes } = useStyles();
@@ -95,7 +96,12 @@ export const Footer: React.FC = (): JSX.Element => {
               <Text>&copy; 2023 Greenie. All rights reserved</Text>
             </Flex>
           </span>
-          <Text className={classes.madeInIndiaText}>Made In India</Text>
+          <span style={{ display: 'flex', gap: '1rem' }}>
+            <Text className={classes.madeInIndiaText}>Made In India</Text>
+            <a href={TermsAndConditions} download={'Terms of Use'} className={classes.madeInIndiaText}>
+              Terms of Use
+            </a>
+          </span>
           <List className={classes.navOptionsList}>
             <Link to="#enterprises">
               <List.Item className={classes.navOptionsListItems}>Enterprise</List.Item>
