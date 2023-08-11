@@ -1,7 +1,6 @@
 import { Box, Button } from '@mantine/core';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useGlobalContext } from '../../../../context/GlobalContext';
-import CandidateFeedback from '../../../../utils/functions/CandidateFeedback';
 
 export const ProfileNav = () => {
   const navigate = useNavigate();
@@ -41,7 +40,6 @@ export const ProfileNav = () => {
         <Button variant="outline" className={isMyVerificationPage ? 'active' : ''} onClick={() => handleButtonClick(3)}>
           My Verification
         </Button>
-        <CandidateFeedback />
       </Box>
     </Box>
   );
