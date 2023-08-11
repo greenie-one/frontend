@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { HttpClient } from '../../../../../../../utils/generic/httpClient';
 import { addressVerificationAPIList } from '../../../../../../../assets/api/ApiList';
 
@@ -7,11 +7,14 @@ import { Layout } from '../../../Layout';
 import { WelcomeScreen } from './WelcomeScreen';
 import { CaptureLocation } from './CaptureLocation';
 import { VerifyPeer } from './VerifyPeer';
+import { CompleteVerification } from '../../../../../verifications/components/CompleteVerification';
+import { Navbar } from '../../../../../verifications/components/Navbar';
 
 type ErrorCodeType = 'GR0050' | 'GR0051' | 'GR0055' | '';
 
 export const PeerVerification: React.FC = (): JSX.Element => {
   const { uuid } = useParams();
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
   const [currentStep, setCurrentStep] = useState<number>(-1);
@@ -32,13 +35,20 @@ export const PeerVerification: React.FC = (): JSX.Element => {
       setErrorCode(res.error.code as ErrorCodeType);
       setErrorData(res.error as PeerVerificationErrorResponse);
     }
-
-    setCurrentStep(0);
   };
 
-  // useEffect(() => {
-  //   getPeerData();
-  // }, [uuid]);
+  useEffect(() => {
+    getPeerData();
+  }, [uuid]);
+
+  if (searchParams && searchParams.get('verified') === 'true') {
+    return (
+      <>
+        <Navbar />
+        <CompleteVerification />
+      </>
+    );
+  }
 
   if (errorCode === 'GR0055') {
     navigate('/');
@@ -48,8 +58,8 @@ export const PeerVerification: React.FC = (): JSX.Element => {
   return (
     <Layout>
       {currentStep === -1 ? (
-        <WelcomeScreen firstName="Bobby" getPeerData={getPeerData} />
-      ) : currentStep === 0 && errorCode !== '' ? (
+        <WelcomeScreen firstName={errorData.username} getPeerData={getPeerData} setCurrentStep={setCurrentStep} />
+      ) : currentStep >= 0 && errorCode !== '' ? (
         <>
           {errorCode === 'GR0050' ? (
             <VerifyPeer
@@ -58,6 +68,8 @@ export const PeerVerification: React.FC = (): JSX.Element => {
               verificationBy="Cousin"
               uuid={String(uuid)}
               getPeerData={getPeerData}
+              currentStep={currentStep}
+              setCurrentStep={setCurrentStep}
             />
           ) : (
             <></>
@@ -69,6 +81,8 @@ export const PeerVerification: React.FC = (): JSX.Element => {
               verificationBy="Cousin"
               uuid={String(uuid)}
               getPeerData={getPeerData}
+              currentStep={currentStep}
+              setCurrentStep={setCurrentStep}
             />
           ) : (
             <></>

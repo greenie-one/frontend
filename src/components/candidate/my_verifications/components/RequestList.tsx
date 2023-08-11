@@ -62,24 +62,9 @@ export const RequestList: React.FC<{ activeListItem: number }> = ({ activeListIt
     }
   };
 
-  const sortRequests = () => {
-    sentRequests.sort((a, b) => {
-      if (a.updatedAt > b.updatedAt) {
-        return -1;
-      }
-
-      if (a.updatedAt < b.updatedAt) {
-        return 1;
-      }
-
-      return 0;
-    });
-  };
-
   useEffect(() => {
     getWorkRequests();
     getAddressRequests();
-    sortRequests();
   }, [forceRenderList]);
 
   return activeListItem === 0 ? (

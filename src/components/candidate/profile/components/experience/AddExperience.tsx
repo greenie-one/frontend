@@ -1,5 +1,17 @@
 import { useState, useRef, useEffect } from 'react';
-import { Text, Box, Title, TextInput, Select, Checkbox, Button, Divider, Textarea, Modal } from '@mantine/core';
+import {
+  Text,
+  Box,
+  Title,
+  TextInput,
+  Select,
+  Checkbox,
+  Button,
+  Divider,
+  Textarea,
+  Modal,
+  NumberInput,
+} from '@mantine/core';
 import pdfIcon from '../../assets/pdfIcon.png';
 import { DateInput } from '@mantine/dates';
 import { MdOutlineDelete, MdVerified } from 'react-icons/md';
@@ -111,7 +123,11 @@ export const AddExperience = () => {
 
     Object.keys(workExperienceForm.values).forEach((key) => {
       if (workExperienceForm.values[key] !== '') {
-        requestBody = { ...requestBody, [key]: workExperienceForm.values[key] };
+        if (key === 'salary') {
+          requestBody = { ...requestBody, [key]: String(workExperienceForm.values[key]) };
+        } else {
+          requestBody = { ...requestBody, [key]: workExperienceForm.values[key] };
+        }
       }
     });
 
@@ -435,15 +451,18 @@ export const AddExperience = () => {
               </Box>
               <Box className="input-section">
                 <Title className="title">Salary (CTC)</Title>
-                <TextInput
+                <NumberInput
                   {...workExperienceForm.getInputProps('salary')}
                   withAsterisk
+                  hideControls
                   label="Enter your CTC in Rs."
+                  parser={(value) => value.replace(/\\s?|(,*)/g, '')}
+                  formatter={(value) =>
+                    !Number.isNaN(parseFloat(value)) ? `${value}`.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',') : ''
+                  }
                   className="inputClass"
-                  maxLength={13}
                 />
               </Box>
-
               <Box className="input-section">
                 <Title className="title">Work email</Title>
                 <TextInput
@@ -743,7 +762,7 @@ export const AddExperience = () => {
                 <Button type="button" className="cancel-btn" variant="default" onClick={handlePrevPage}>
                   Back
                 </Button>
-                {documents.length > 0 && documentsChecked ? (
+                {documentsChecked ? (
                   <Button className="green-btn" onClick={handleDocumentContinue}>
                     Continue
                   </Button>
