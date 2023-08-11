@@ -40,8 +40,6 @@ export const RequestList: React.FC<{ activeListItem: number }> = ({ activeListIt
     );
 
     if (res.ok) {
-      console.log(res);
-
       setSentRequests((current) => [...current, ...res.value]);
     } else {
       showErrorNotification(res.error.code);
@@ -58,8 +56,6 @@ export const RequestList: React.FC<{ activeListItem: number }> = ({ activeListIt
     );
 
     if (res.ok) {
-      console.log(res);
-
       setSentRequests((current) => [...current, ...res.value]);
     } else {
       showErrorNotification(res.error.code);
@@ -69,7 +65,7 @@ export const RequestList: React.FC<{ activeListItem: number }> = ({ activeListIt
   useEffect(() => {
     getWorkRequests();
     getAddressRequests();
-  }, []);
+  }, [forceRenderList]);
 
   return activeListItem === 0 ? (
     <article className={requestList_container}>

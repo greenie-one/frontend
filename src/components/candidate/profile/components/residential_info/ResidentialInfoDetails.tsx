@@ -47,8 +47,6 @@ export const ResidentialInfoDetails: React.FC = () => {
   const { id } = useParams();
   const filteredInfo = residentialInfoData.find((info: ResidentialInfoResponse) => info.id === id);
 
-  console.log(filteredInfo);
-
   const [sentRequests, setSentRequests] = useState<Array<GetAddressVerificationResponse>>([]);
 
   const handleAggree = () => {
