@@ -19,29 +19,30 @@ export const PrivacySettings: React.FC = (): JSX.Element => {
   const navigate = useNavigate();
 
   const { classes: privacyClasses } = privacySettingsStyles();
-  const [opened, { open, close }] = useDisclosure(false);
+  const [passwordModalOpened, { open: passwordModalOpen, close: passwordModalClose }] = useDisclosure(false);
+  const [closeAccountModalOpened, { open: closeAccountModalOpen, close: closeAccountModalClose }] =
+    useDisclosure(false);
   const { changeCurrentPassword, privacySettingsForm } = useSettingsContext();
 
   const { classes: formClasses } = detailsFormStyles();
-  const { classes: modalStyles } = confirmationModalStyle();
   const { classes: inputClasses } = inputStyles();
 
   const handleOpenModal = () => {
     if (!privacySettingsForm.validate().hasErrors) {
-      open();
+      passwordModalOpen();
     }
   };
 
   const handleConfirmation = () => {
     changeCurrentPassword();
-    close();
+    passwordModalClose();
   };
 
   const onClose = () => {
     privacySettingsForm.setFieldValue('currentPassword', '');
     privacySettingsForm.setFieldValue('newPassword', '');
     privacySettingsForm.setFieldValue('confirmPassword', '');
-    close();
+    passwordModalClose();
   };
 
   const removeAuthTokens = () => {
@@ -74,60 +75,31 @@ export const PrivacySettings: React.FC = (): JSX.Element => {
     } else {
       showErrorNotification('SOMETHING_WENT_WRONG');
     }
+
+    closeAccountModalClose();
   };
 
   const accountActions = [
     {
-      action: 'Deactivate Account',
-      onClick: () => false,
-    },
-    {
       action: 'Close Account',
-      onClick: deleteAccount,
+      onClick: closeAccountModalOpen,
     },
   ];
 
   return (
     <>
-      <Modal
-        opened={opened}
+      <ConfirmationModal
+        message="Are you sure you want to update the changes made?"
+        opened={passwordModalOpened}
         onClose={onClose}
-        title="Confirmation"
-        padding="xl"
-        radius="lg"
-        size="lg"
-        centered
-        classNames={modalStyles}
-      >
-        <Box className={modalStyles.confirmationMsgWrapper}>
-          <Text className={modalStyles.title}>Are you sure you want to update the changes made?</Text>
-
-          <Box className={modalStyles.modalBtnsContainer}>
-            <Button
-              className={modalStyles.modalActionBtns}
-              onClick={handleConfirmation}
-              size="sm"
-              type="button"
-              radius="xl"
-              variant="filled"
-              color="teal"
-            >
-              Confirm
-            </Button>
-            <Button
-              className={modalStyles.modalActionBtns}
-              onClick={onClose}
-              size="sm"
-              type="button"
-              radius="xl"
-              variant="outline"
-              color="teal"
-            >
-              Cancel
-            </Button>
-          </Box>
-        </Box>
-      </Modal>
+        handleConfirmation={handleConfirmation}
+      />
+      <ConfirmationModal
+        message="Are you sure you want delete your account?"
+        opened={closeAccountModalOpened}
+        onClose={closeAccountModalClose}
+        handleConfirmation={deleteAccount}
+      />
       <form className={formClasses.detailsCategory}>
         <Title className={formClasses.detailsCategoryTitle}>Change password</Title>
         <PasswordInput
@@ -167,6 +139,59 @@ export const PrivacySettings: React.FC = (): JSX.Element => {
         </Button>
       </form>
     </>
+  );
+};
+
+type ConfirmationModalProps = {
+  message: string;
+  opened: boolean;
+  onClose: () => void;
+  handleConfirmation: () => void | Promise<void>;
+};
+
+const ConfirmationModal = (props: ConfirmationModalProps) => {
+  const { classes: modalStyles } = confirmationModalStyle();
+
+  return (
+    <Modal
+      opened={props.opened}
+      onClose={props.onClose}
+      title="Confirmation"
+      padding="xl"
+      radius="lg"
+      size="lg"
+      centered
+      classNames={modalStyles}
+    >
+      <Box className={modalStyles.confirmationMsgWrapper}>
+        <Text className={modalStyles.title}>{props.message}</Text>
+
+        <Box className={modalStyles.modalBtnsContainer}>
+          <Button
+            className={modalStyles.modalActionBtns}
+            onClick={props.handleConfirmation}
+            size="sm"
+            type="button"
+            radius="xl"
+            variant="filled"
+            color="teal"
+          >
+            Confirm
+          </Button>
+          <Button
+            className={modalStyles.modalActionBtns}
+            onClick={props.onClose}
+            size="sm"
+            type="button"
+            radius="xl"
+            variant="outline"
+            color="teal"
+          >
+            Cancel
+          </Button>
+        </Box>
+      </Box>
+    </Modal>
   );
 };
 

@@ -9,7 +9,6 @@ type ExperienceCardProp = {
 
 type VerificationIdCardProp = {
   documentName: string;
-  isVerified: boolean;
 };
 
 type ResidentialInfoCardProps = {

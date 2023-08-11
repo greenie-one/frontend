@@ -93,3 +93,7 @@ export const addressVerificationAPIList = {
   peerCaptureLocation: `${BASE_URL}/location/capture/peer`,
   selfCaptureLocation: `${BASE_URL}/location/capture/me`
 }
+
+export const searchEndpoints = {
+  searchAddress: `${BASE_URL}/location/autocomplete`,
+}

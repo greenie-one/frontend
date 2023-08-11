@@ -110,7 +110,7 @@ export const ResidentialInfoDetails: React.FC = () => {
       setResidentialInfo(filteredInfo);
       getRequests();
     }
-  }, []);
+  }, [filteredInfo]);
 
   return (
     <>
@@ -130,7 +130,7 @@ export const ResidentialInfoDetails: React.FC = () => {
 
             <Box className="checkbox-box">
               <Checkbox checked={checked} onChange={() => setChecked(!checked)} className="checkbox" color="teal" />
-              <Text className="tearms-conditions">
+              <Text className="terms-conditions">
                 I undertake and understand that by adding my address on Greenie, I am providing accurate and true
                 information. I acknowledge that this information will be used solely for the intended purpose of address
                 verification. I consent to the collection and processing of my data for this purpose and I am aware that
@@ -333,9 +333,7 @@ export const ResidentialInfoDetails: React.FC = () => {
                 </Box>
               </Box>
             )}
-            {sentRequests.length > 0 ? (
-              <></>
-            ) : (
+            {!(sentRequests.length > 0 || residential?.isVerified) && (
               <Button className="green-btn" onClick={() => open()}>
                 Get Verified
               </Button>

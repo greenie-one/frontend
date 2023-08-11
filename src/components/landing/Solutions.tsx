@@ -27,7 +27,7 @@ const forCandidates = [
 
 export const LandingSolutions = () => {
   return (
-    <section className="solutions">
+    <section id="enterprises" className="solutions">
       <LandingSectionHeading
         heading="Greenie's solution for you"
         subheading="Streamlining background checks with State-of-the-Art technology redefining trust in the verification industry"
@@ -53,11 +53,12 @@ export const LandingSolutions = () => {
             <Box className="card">
               <img src={speechBubble} alt="Speech Bubble Icon" />
             </Box>
-            <Box className="card">
+            <Box id="candidates" className="card">
               <img src={speedometer} alt="Speedometer Icon" />
             </Box>
           </Box>
         </Box>
+
         <Box className="solutions-box">
           <Box className="text-box">
             <Title className="heading">For Candidates</Title>

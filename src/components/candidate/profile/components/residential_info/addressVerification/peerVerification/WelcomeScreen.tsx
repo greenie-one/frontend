@@ -5,9 +5,19 @@ import { MdVerified } from 'react-icons/md';
 type WelcomeScreenProps = {
   firstName: string;
   getPeerData: () => Promise<void>;
+  setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
 };
 
-export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ firstName, getPeerData }): JSX.Element => {
+export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
+  firstName,
+  getPeerData,
+  setCurrentStep,
+}): JSX.Element => {
+  const handleProceed = async () => {
+    await getPeerData();
+    setCurrentStep(0);
+  };
+
   return (
     <>
       <Box className="container" style={{ marginTop: '8rem' }}>
@@ -20,9 +30,10 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ firstName, getPeer
             </span>
           </Box>
           <Text className="address-verification-dark-text">
-            <span>{firstName}</span> wants you to verify his address
+            You have been chosen as a peer to verify address of <span>{firstName}</span>. Kindly be a valuable reference
+            and help elevate their profile.
           </Text>
-          <Button className="green-outline-btn" onClick={getPeerData}>
+          <Button className="green-outline-btn" onClick={handleProceed}>
             Proceed
           </Button>
         </Box>

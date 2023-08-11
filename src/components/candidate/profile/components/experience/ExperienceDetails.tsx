@@ -142,7 +142,7 @@ export const ExperienceDetails: React.FC = () => {
 
             <Box className="checkbox-box">
               <Checkbox checked={checked} onChange={() => setChecked(!checked)} className="checkbox" color="teal" />
-              <Text className="tearms-conditions">
+              <Text className="terms-conditions">
                 I have read the undertaking and i authorise Greenie to collect information on my behalf.
               </Text>
             </Box>

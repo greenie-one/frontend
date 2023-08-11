@@ -19,7 +19,7 @@ export const ProfileBar = () => {
           ) : (
             <Box className="image-box">
               <img src={emptyProfile} alt="Profile Image" />
-              {IDs.length > 0 && <MdVerified color="#17a672" className="verified-icon" size={'24px'} />}
+              {IDs?.length > 0 && <MdVerified color="#17a672" className="verified-icon" size={'24px'} />}
             </Box>
           )}
 

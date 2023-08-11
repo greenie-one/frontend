@@ -34,8 +34,9 @@ export const LandingHero = () => {
       <_2ColumnLayout>
         <Box className={classes.heroContentContainer}>
           <Title order={1} className={classes.heroTitle}>
-            <span className={classes.highlight}>Unlocking</span> <br />
-            The Future Of <br /> Background Verification
+            <span className={classes.highlight}>Unlock Opportunities</span> <br />
+            With Pre-Verified
+            <br /> Professionals
           </Title>
           <Text className={classes.heroText}>
             Experience verifications, document storage, contract creation, sharing of verification reports on our secure

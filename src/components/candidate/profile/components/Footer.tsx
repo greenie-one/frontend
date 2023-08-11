@@ -1,7 +1,7 @@
 import { Box, Text, List } from '@mantine/core';
-import { RiFacebookCircleLine } from 'react-icons/ri';
 import { FaInstagram } from 'react-icons/fa';
 import { AiOutlineLinkedin } from 'react-icons/ai';
+import { FiMail } from 'react-icons/fi';
 import { MdVerified } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import privacyPolicy from '../../../auth/assets/Privacy Policy-Greenie.pdf';
@@ -22,12 +22,12 @@ export const Footer = () => {
         <Box className="right-box">
           <nav className="footer-nav">
             <List className="footer-links">
-              <Link to={privacyPolicy} download={'Privacy Policy'}>
+              <a href={privacyPolicy} download={'Privacy Policy'}>
                 <List.Item className="footer-link">Privacy Policy</List.Item>
-              </Link>
-              <Link to={termsAndConditions} download={'Terms and Conditions'}>
+              </a>
+              <a href={termsAndConditions} download={'Terms and Conditions'}>
                 <List.Item className="footer-link">Terms and Conditions</List.Item>
-              </Link>
+              </a>
               <Link to={''}>
                 <List.Item className="footer-link">Help</List.Item>
               </Link>
@@ -38,13 +38,19 @@ export const Footer = () => {
           </nav>
           <List className="footer-socials">
             <List.Item className="footer-social-icon">
-              <RiFacebookCircleLine color="#898989" size={'22px'} />
+              <a href="https://instagram.com/greenie.one?igshid=ZDdkNTZiNTM=" target="_blank" rel="noopener noreferrer">
+                <FaInstagram color="#898989" size={'22px'} />
+              </a>
             </List.Item>
             <List.Item className="footer-social-icon">
-              <FaInstagram color="#898989" size={'22px'} />
+              <a href="https://www.linkedin.com/company/gogreenie/" target="_blank" rel="noopener noreferrer">
+                <AiOutlineLinkedin color="#898989" size={'22px'} />
+              </a>
             </List.Item>
             <List.Item className="footer-social-icon">
-              <AiOutlineLinkedin color="#898989" size={'22px'} />
+              <a href="mailto:office@greenie.one" target="_blank" rel="noopener noreferrer">
+                <FiMail color="#898989" size={'22px'} />
+              </a>
             </List.Item>
           </List>
         </Box>
