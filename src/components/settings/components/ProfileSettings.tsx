@@ -5,6 +5,8 @@ import { ProfileModal } from '../../candidate/profile/types/ProfileGeneral';
 import { useDisclosure } from '@mantine/hooks';
 import { confirmationModalStyle } from '../styles/articleContentStyles';
 import { detailsFormStyles, profileSettingsStyles } from '../styles/articleContentStyles';
+// import { PDFDownloadLink } from '@react-pdf/renderer';
+// import { ReportScreens } from '../../candidate/profile/components/reports/ReportScreens';
 
 const introductionTags = [
   'Team Player',
@@ -110,6 +112,7 @@ export const ProfileSettings: React.FC = (): JSX.Element => {
               >
                 Submit
               </Button>
+              {/* <PDFDownloadLink document={<ReportScreens />} fileName="FORM"> */}
               <Button
                 className={formClasses.downloadBtn}
                 size="sm"
@@ -120,6 +123,7 @@ export const ProfileSettings: React.FC = (): JSX.Element => {
               >
                 Download
               </Button>
+              {/* </PDFDownloadLink> */}
             </div>
           </Box>
         </Modal>

@@ -8,10 +8,12 @@ import { WorkExperienceReport2 } from './workexperiencereport2';
 import { PersonalIdentification } from './personalidentification';
 import { ResidentialReport } from './residentialreport';
 import { ResidentialReport2 } from './residentialreport2';
+import { Document } from '@react-pdf/renderer';
+
 import './_report.scss';
 export const ReportScreens: React.FC = (): JSX.Element => {
   return (
-    <>
+    <Document>
       <FrontReport />
       <Report />
       <ExecutiveSummary />
@@ -22,6 +24,6 @@ export const ReportScreens: React.FC = (): JSX.Element => {
       <ResidentialReport2 />
       <ResidentialReport />
       <button onClick={() => window.print()}>PRINT</button>
-    </>
+    </Document>
   );
 };
