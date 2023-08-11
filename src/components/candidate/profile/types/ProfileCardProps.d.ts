@@ -9,7 +9,6 @@ type ExperienceCardProp = {
 
 type VerificationIdCardProp = {
   documentName: string;
-  isVerified: boolean;
 };
 
 type ResidentialInfoCardProps = {
@@ -34,5 +33,5 @@ type ResidentialInfoDetailsCardProps = {
   city: string;
   state: string;
   country: string;
-  address_type: string;
+  addressType: string;
 };

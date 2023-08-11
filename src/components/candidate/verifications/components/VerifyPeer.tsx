@@ -9,6 +9,7 @@ import {
 } from '../../../../utils/functions/showNotification';
 import { peerVerificationAPIList } from '../../../../assets/api/ApiList';
 import { peerPost } from '../../constants/dictionaries';
+import { MdVerified } from 'react-icons/md';
 
 type OtpVerificationBody = {
   otpType: string;
@@ -20,6 +21,17 @@ const VerificationHeading = () => {
 
   return (
     <>
+      <Title className="address-verification-details-main-title">Welcome to</Title>
+      <Box className="logo-box">
+        <Text className="logo-text">Greenie</Text>
+        <span className="logo-icon">
+          <MdVerified />
+        </span>
+      </Box>
+      <Text className="address-verification-dark-text">
+        You have been chosen as a peer to verify work experience of <span>{'Raunak Rane'}</span>. Kindly be a valuable
+        reference and help elevate their profile.
+      </Text>
       <Title className="address-verification-details-main-title" style={{ textAlign: 'center' }}>
         Please verify your {unverifiedLink} to confirm your identity
       </Title>
@@ -45,14 +57,10 @@ export const VerifyPeer = () => {
       title: 'Sending OTP...',
       message: 'Please wait while we send OTP to your phone number.',
     });
-    const requestBody: Record<'otpType', string> = {
-      otpType: unverifiedLink,
-    };
 
     const res = await HttpClient.callApi({
       url: `${peerVerificationAPIList.verifyPeer}/${peerUUID}/send-otp`,
-      method: 'POST',
-      body: requestBody,
+      method: 'GET',
     });
 
     if (res.ok) {

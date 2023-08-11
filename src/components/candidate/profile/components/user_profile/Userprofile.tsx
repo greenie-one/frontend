@@ -1,20 +1,34 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { Box, Button, Modal, Text, Chip, Group, CopyButton, Title, TextInput, Divider, Textarea } from '@mantine/core';
-import axios from 'axios';
-import emptyProfile from '../../assets/emptyProfile.png';
-import level from '../../assets/level.png';
-import levelFilled from '../../assets/levelFilled.png';
-import medal from '../../assets/medal.png';
-import { profileAPIList } from '../../../../../assets/api/ApiList';
+import {
+  Box,
+  Button,
+  Modal,
+  Text,
+  Chip,
+  Group,
+  CopyButton,
+  Title,
+  TextInput,
+  Divider,
+  Textarea,
+  Rating,
+} from '@mantine/core';
 import { useMediaQuery, useDisclosure } from '@mantine/hooks';
+import axios from 'axios';
+
 import { useGlobalContext } from '../../../../../context/GlobalContext';
-import { MdVerified, MdOutlineEdit, MdOutlineContentCopy } from 'react-icons/md';
+import { profileAPIList } from '../../../../../assets/api/ApiList';
 import {
   showErrorNotification,
   showLoadingNotification,
   showSuccessNotification,
 } from '../../../../../utils/functions/showNotification';
 import { HttpClient, Result } from '../../../../../utils/generic/httpClient';
+import { getStars } from '../../../../../utils/functions/getStars';
+
+import { MdVerified, MdOutlineEdit, MdOutlineContentCopy } from 'react-icons/md';
+import emptyProfile from '../../assets/emptyProfile.png';
+import medal from '../../assets/medal.png';
 
 const skillSetOne = [
   'Lone Wolf',
@@ -29,11 +43,11 @@ const skillSetOne = [
 ];
 
 export const Userprofile = () => {
-  const { authClient, setForceRender, forceRender, profileData, profileForm, updateProfile, IDs, userLevel } =
-    useGlobalContext();
-
+  const { authClient, setForceRender, forceRender, profileData, profileForm, updateProfile, IDs } = useGlobalContext();
   const authToken = authClient.getAccessToken();
+
   const [profileImage, setProfileImage] = useState<string | undefined>(undefined);
+
   //-------------profile photo------------------------
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -45,15 +59,18 @@ export const Userprofile = () => {
 
   const onImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     showLoadingNotification({ title: 'Wait !', message: 'Please wait while we update your profile picture' });
+
     if (event.target.files && event.target.files[0]) {
       const formData = new FormData();
       formData.append('profilePicture', event.target.files[0]);
+
       const res = await axios.post(`${profileAPIList.updateProfilePicture}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${authToken}`,
         },
       });
+
       const resp: Result<UpdateResponse> = await HttpClient.callApiAuth(
         {
           url: `${profileAPIList.updateProfile}`,
@@ -62,9 +79,11 @@ export const Userprofile = () => {
         },
         authClient
       );
+
       if (resp.ok) {
         showSuccessNotification({ title: 'Success !', message: 'Profile picture is updated !' });
-        setForceRender(!forceRender);
+        setForceRender((prev) => !prev);
+
         if (fileInputRef.current) {
           fileInputRef.current.value = '';
         }
@@ -108,13 +127,13 @@ export const Userprofile = () => {
   return (
     <>
       <Modal
-        className="modal"
         size={'65%'}
-        fullScreen={isMobile}
-        opened={opened}
-        onClose={onClose}
-        title="Update Profile"
         radius={'lg'}
+        opened={opened}
+        className="modal"
+        onClose={onClose}
+        fullScreen={isMobile}
+        title="Update Profile"
       >
         <form onSubmit={handleSubmit}>
           <Box className="input-section">
@@ -129,6 +148,7 @@ export const Userprofile = () => {
               placeholder={profileData.firstName}
             />
           </Box>
+
           <Box className="input-section">
             <Title className="title">Last Name</Title>
             <TextInput
@@ -142,6 +162,7 @@ export const Userprofile = () => {
             />
           </Box>
           <Divider mb={'10px'} />
+
           <Box className="input-section">
             <Title className="title">Tell Us about yourself</Title>
             <Textarea
@@ -154,6 +175,7 @@ export const Userprofile = () => {
             />
           </Box>
           <Divider mb={'10px'} />
+
           <Box>
             <Title className="title" align="center">
               Introduce yourself in 3 words
@@ -207,21 +229,22 @@ export const Userprofile = () => {
           <input type="file" accept="image/*" ref={fileInputRef} style={{ display: 'none' }} onChange={onImageChange} />
         </Box>
       </section>
+
       <section className="bio-section container">
         <Box className="icon" onClick={open}>
           <MdOutlineEdit size={'22px'} className="btn" />
         </Box>
         <Box className="bio-name-box">
           <Text className="bio-name">
-            {profileData.firstName} {profileData.lastName}
+            {profileData?.firstName} {profileData?.lastName}
           </Text>
-          {IDs.length > 0 && <MdVerified className="name-verified" />}
+          {IDs?.length > 0 && <MdVerified className="name-verified" />}
         </Box>
 
         <Box className="chips">
           <Chip.Group>
             <Group>
-              {profileData.descriptionTags.map((tag: string) => (
+              {profileData?.descriptionTags?.map((tag: string) => (
                 <Chip key={tag} size={screenSize ? 'sm' : 'xs'}>
                   {tag}
                 </Chip>
@@ -233,44 +256,10 @@ export const Userprofile = () => {
         <Box className="bio-section-wrapper">
           <Box className="left-section">
             <Box className="level">
-              <Text className="level-heading">Level {userLevel}</Text>
-              {userLevel === 0 ? (
-                <Box className="level-wrapper">
-                  <img className="level-img" src={level} alt="level" />
-                  <img className="level-img" src={level} alt="level" />
-                  <img className="level-img" src={level} alt="level" />
-                  <img className="level-img" src={level} alt="level" />
-                  <img className="level-img" src={level} alt="level" />
-                </Box>
-              ) : (
-                <Box className="level-wrapper">
-                  {userLevel > 0 ? (
-                    <img className="level-img" src={levelFilled} alt="level" />
-                  ) : (
-                    <img src={level} alt="level" />
-                  )}
-                  {userLevel > 1 ? (
-                    <img className="level-img" src={levelFilled} alt="level" />
-                  ) : (
-                    <img className="level-img" src={level} alt="level" />
-                  )}
-                  {userLevel > 2 ? (
-                    <img className="level-img" src={levelFilled} alt="level" />
-                  ) : (
-                    <img className="level-img" src={level} alt="level" />
-                  )}
-                  {userLevel > 3 ? (
-                    <img className="level-img" src={levelFilled} alt="level" />
-                  ) : (
-                    <img className="level-img" src={level} alt="level" />
-                  )}
-                  {userLevel > 4 ? (
-                    <img className="level-img" src={levelFilled} alt="level" />
-                  ) : (
-                    <img className="level-img" src={level} alt="level" />
-                  )}
-                </Box>
-              )}
+              <Text className="level-heading">Level {getStars()}</Text>
+              <Box className="level-wrapper">
+                <Rating defaultValue={0} value={getStars()} readOnly />
+              </Box>
             </Box>
             <Box className="border-left"></Box>
 
@@ -282,9 +271,10 @@ export const Userprofile = () => {
               </Box>
             </Box>
           </Box>
+
           <Box className="border-left"></Box>
           <Box className="right-section">
-            {IDs.length > 0 ? (
+            {IDs?.length > 0 ? (
               <CopyButton value={greeneId} timeout={2000}>
                 {({ copied, copy }) => (
                   <Box className="greenie-id" onClick={copy}>
@@ -307,6 +297,7 @@ export const Userprofile = () => {
             )}
           </Box>
         </Box>
+
         <Box className="bio-text">
           <Text> {profileData.bio}</Text>
         </Box>

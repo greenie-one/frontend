@@ -19,7 +19,6 @@ import pdfIcon from '../../assets/pdfIcon.png';
 import { Link } from 'react-router-dom';
 import { UndertakingText } from '../UndertakingText';
 import { peerVerificationAPIList } from '../../../../../assets/api/ApiList';
-import { RequestListType } from '../../../my_verifications/components/RequestList';
 import { peerPost } from '../../../constants/dictionaries';
 
 const months = [
@@ -47,7 +46,7 @@ export const ExperienceDetails: React.FC = () => {
   const { deleteWorkExperience, workExperienceData, scrollToTop, skillData, authClient } = useGlobalContext();
   const [checked, setChecked] = useState<boolean>(false);
   const [experienceDocuments, setExperienceDocuments] = useState<ExperienceDocuments[]>([]);
-  const [sentRequests, setSentRequests] = useState<Array<RequestListType>>([]);
+  const [sentRequests, setSentRequests] = useState<Array<SentRequestsResponseType>>([]);
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
   const [deleteModalOpened, { open: deleteModalOpen, close: deleteModalClose }] = useDisclosure(false);
@@ -78,7 +77,6 @@ export const ExperienceDetails: React.FC = () => {
     );
 
     if (res.ok) {
-      setSentRequests(res.value);
       const filteredData = res.value.filter((request) => request.workExperience === id);
       setSentRequests(filteredData);
     } else {
@@ -144,7 +142,7 @@ export const ExperienceDetails: React.FC = () => {
 
             <Box className="checkbox-box">
               <Checkbox checked={checked} onChange={() => setChecked(!checked)} className="checkbox" color="teal" />
-              <Text className="tearms-conditions">
+              <Text className="terms-conditions">
                 I have read the undertaking and i authorise Greenie to collect information on my behalf.
               </Text>
             </Box>

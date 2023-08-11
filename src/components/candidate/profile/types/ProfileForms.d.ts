@@ -46,9 +46,15 @@ type residentialInfoFormType = {
   city: string;
   state: string;
   country: string;
-  start_date: string;
-  end_date?: string;
-  address_type: string;
+  start_date: {
+    month: string;
+    year: string;
+  };
+  end_date?: {
+    month: string;
+    year: string;
+  };
+  addressType: string;
 };
 
 type skillFormType = {

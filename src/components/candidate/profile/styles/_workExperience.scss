@@ -46,7 +46,7 @@
   .checkbox-box {
     display: flex;
 
-    .tearms-conditions {
+    .terms-conditions {
       margin-left: 0.75rem;
       color: $gray;
       margin-bottom: 1rem;
@@ -662,6 +662,65 @@
   grid-template-columns: 60% 40%;
 }
 
+.experience-details-box-heading {
+  font-family: Inter;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 27px;
+  letter-spacing: 0em;
+  text-align: left;
+  color: $dark;
+  margin-bottom: 0.5rem;
+
+  &.referees-heading {
+    margin-top: 1.5rem;
+  }
+}
+
+.requests-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+
+  .referees-request-box {
+    border: 1px solid #e1e1e1;
+    border-radius: 1rem;
+    padding: 1rem;
+    margin-block: 0.25rem;
+    margin-right: 0.5rem;
+
+    .request-box-heading {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      max-width: 18ch;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+
+    .request-box-text {
+      font-size: 13px;
+      color: gray;
+      margin-bottom: 0.5rem;
+    }
+
+    .request-status {
+      font-weight: 500;
+      font-size: 12px;
+      color: #ff7272;
+      width: max-content;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      .request-status-text {
+        margin-left: 0.25rem;
+      }
+    }
+  }
+}
+
 @media screen and (max-width: 900px) {
   .experience-details-screen {
     .basic-info {
@@ -749,7 +808,7 @@
 
   .experience-add-documents {
     .checkbox-box {
-      .tearms-conditions {
+      .terms-conditions {
         font-size: 14px;
       }
     }

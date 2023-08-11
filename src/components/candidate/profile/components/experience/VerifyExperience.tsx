@@ -28,14 +28,13 @@ import { ExperienceDocuments } from '../../types/ProfileGeneral';
 import { Layout } from '../Layout';
 import { ConfirmRequest } from './peer_verfication/ConfirmRequest';
 import { FcInfo } from 'react-icons/fc';
-import { RequestListType } from '../../../my_verifications/components/RequestList';
 
 export const VerifyExperience: React.FC = () => {
   const navigate = useNavigate();
   const [experience, setExperience] = useState<WorkExperience | undefined>({} as WorkExperience);
   const [createPeerResponse, setCreatePeerResponse] = useState<CreatePeerResponseType[]>([]);
 
-  const [sentRequests, setSentRequests] = useState<Array<RequestListType>>([]);
+  const [sentRequests, setSentRequests] = useState<Array<SentRequestsResponseType>>([]);
   const [addedPeers, setAddedPeers] = useState<Peer[]>([]);
   const [activePeer, setActivePeer] = useState<number>(0);
   const { authClient, scrollToTop, workExperienceData } = useGlobalContext();

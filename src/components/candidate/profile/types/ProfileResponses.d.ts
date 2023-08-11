@@ -1,6 +1,23 @@
 type DocsType = {
-  id_type: string;
-  isVerified: boolean;
+  id: string;
+  id_type: 'AADHAR' | 'PAN' | 'DRIVING_LICENSE';
+  id_number: string;
+  user: string;
+  address: {
+    address_line_1: string;
+    address_line_2: string;
+    city: string;
+    street: string;
+    country: string;
+    state: string;
+    pincode: string;
+    type: string;
+    _id: string;
+  };
+  fullName: string;
+  dob: string;
+  createdAt: Date | null;
+  updatedAt: Date | null;
 };
 
 type DocumentsResponse = {
@@ -29,7 +46,7 @@ type WorkExperience = {
   id: string;
   image?: string | null;
   linkedInUrl?: string;
-  noOfVerifications: 0;
+  noOfVerifications: number;
   salary: string;
   workMode: string;
   workType: string;
@@ -43,7 +60,7 @@ type ResidentialInfoResponse = {
   id: string;
   address_line_1: string;
   address_line_2: string;
-  address_type: string;
+  addressType: string;
   landmark: string;
   pincode: number;
   city: string;
@@ -139,4 +156,7 @@ type SentRequestsResponseType = {
   phone: string;
   isVerificationCompleted: boolean;
   workExperience: string;
+  createdAt: string;
+  updatedAt: string;
+  peerPost: string;
 };

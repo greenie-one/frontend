@@ -2,6 +2,10 @@ import { useEnv } from "../../utils/hooks/useEnv";
 
 const BASE_URL = useEnv("BASE_URL");
 
+export const userApiList = {
+  baseRoute: `${BASE_URL}/user`,
+}
+
 export const authApiList = {
   waitlist: `${BASE_URL}/waitlist`,
   signup: `${BASE_URL}/auth/signup`,
@@ -81,3 +85,15 @@ export const peerVerificationAPIList = {
   getDocuments: `${BASE_URL}/share/sharedWith`
 }
 
+export const addressVerificationAPIList = {
+  createPeer: `${BASE_URL}/peer/residential`,
+  getRequests: `${BASE_URL}/peer/residential/me`,
+  getVerificationData: `${BASE_URL}/peer/residential`,
+  sendVerificationOtp: `${BASE_URL}/peer/residential`,
+  peerCaptureLocation: `${BASE_URL}/location/capture/peer`,
+  selfCaptureLocation: `${BASE_URL}/location/capture/me`
+}
+
+export const searchEndpoints = {
+  searchAddress: `${BASE_URL}/location/autocomplete`,
+}
