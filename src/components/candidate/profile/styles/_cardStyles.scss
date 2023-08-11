@@ -126,13 +126,17 @@
     justify-content: flex-start;
 
     .address-box {
-      height: 130px;
+      height: 150px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       margin-bottom: 1rem;
 
       .pending {
+        width: 100px;
+      }
+
+      .verified {
         width: 100px;
       }
     }

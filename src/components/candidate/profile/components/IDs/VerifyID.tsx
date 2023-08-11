@@ -19,7 +19,7 @@ export const VerifyID: React.FC = () => {
   const params = useParams();
   const navigate = useNavigate();
 
-  const { scrollToTop, verifyAadharForm, verifyPANForm, verifyLicenceForm } = useGlobalContext();
+  const { verifyAadharForm, verifyPANForm, verifyLicenceForm } = useGlobalContext();
   const {
     close,
     opened,
@@ -35,11 +35,6 @@ export const VerifyID: React.FC = () => {
 
   const { classes: otpInputClasses } = OtpInputStyles();
   const isMobile = useMediaQuery('(max-width: 768px)');
-
-  const handleContinue = () => {
-    scrollToTop();
-    navigate('/candidate/profile/IDs/verify/aadhar/congratulations');
-  };
 
   return (
     <>

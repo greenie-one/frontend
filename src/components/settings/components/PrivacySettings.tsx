@@ -12,9 +12,6 @@ export const PrivacySettings: React.FC = (): JSX.Element => {
 
   const accountActions = [
     {
-      action: 'Deactivate Account',
-    },
-    {
       action: 'Close Account',
     },
   ];

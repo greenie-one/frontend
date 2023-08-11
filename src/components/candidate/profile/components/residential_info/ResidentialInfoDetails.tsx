@@ -110,7 +110,7 @@ export const ResidentialInfoDetails: React.FC = () => {
       setResidentialInfo(filteredInfo);
       getRequests();
     }
-  }, []);
+  }, [filteredInfo]);
 
   return (
     <>
@@ -333,9 +333,7 @@ export const ResidentialInfoDetails: React.FC = () => {
                 </Box>
               </Box>
             )}
-            {sentRequests.length > 0 ? (
-              <></>
-            ) : (
+            {!(sentRequests.length > 0 || residential?.isVerified) && (
               <Button className="green-btn" onClick={() => open()}>
                 Get Verified
               </Button>

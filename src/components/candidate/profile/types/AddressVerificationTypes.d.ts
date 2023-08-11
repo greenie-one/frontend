@@ -55,3 +55,25 @@ type PeerVerificationDataResponse = {
 
   residentialInfo: ResidentialInfoDataResponse;
 };
+
+type AddressType = {
+  address_line_1: string;
+  address_line_2: string;
+  city: string;
+  state: string;
+  country: string;
+  pincode: string;
+  type: string;
+};
+
+type CoordinatesType = {
+  latitude: number;
+  longitude: number;
+};
+
+type FetchedAddressType = {
+  id: string;
+  address: AddressType;
+  addressString: string;
+  position: CoordinatesType;
+};

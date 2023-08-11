@@ -62,11 +62,15 @@ export const ErrorMessage: Record<string, CustomError> = {
   "GR0054": {title:'Error !',message:'Peer already exists'},
   "GR0055": {title:'Error !',message:'Peer already verified'},
   "GR0056": {title:'Error !',message:'Give all fields for verification'},
+  "GR0058": {title:'Error !',message:'Location already captured'},
 
   // CUSTOM ERRORS
-  ["NO_SKILL"]: {title: "Error !", message: "Please add atleast one skill."},
-  ["MISSING_TAGS"]: {title: "Error !", message: "Please select document tags for all the documents."},
-  ["AUTH_TOKENS_NOT_SET"]: {title: "Error !", message: "Please Login"},
-  ["SOMETHING_WENT_WRONG"]: {title: "Error !", message: "Something went wrong. Please try again later."},
-  ["SIZE_EXCEEDS"]: {title: "Oops !", message: "File size exceeds the maximum allowed limit."}
+  "NO_SKILL": {title: "Error !", message: "Please add atleast one skill."},
+  "MISSING_TAGS": {title: "Error !", message: "Please select document tags for all the documents."},
+  "AUTH_TOKENS_NOT_SET": {title: "Error !", message: "Please Login"},
+  "SOMETHING_WENT_WRONG": {title: "Error !", message: "Something went wrong. Please try again later."},
+  "SIZE_EXCEEDS": {title: "Oops !", message: "File size exceeds the maximum allowed limit."},
+  "REQUEST_TIMED_OUT": {title: "Oops !", message: "The request to get user location timed out."},
+  "INFORMATION_UNAVAILABLE": {title: "Error !", message: "Location information is unavailable."},
+  "ACCESS_DENIED": {title: "Error !", message: "Request for capturing location is denied."},
 };

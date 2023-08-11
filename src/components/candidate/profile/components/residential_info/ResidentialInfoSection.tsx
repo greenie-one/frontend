@@ -7,6 +7,7 @@ import { useGlobalContext } from '../../../../../context/GlobalContext';
 import { useNavigate } from 'react-router-dom';
 import { SearchBox } from './components/SearchBox';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
+import { FcInfo } from 'react-icons/fc';
 
 export const ResidentialInfoSection = () => {
   const navigate = useNavigate();
@@ -55,12 +56,21 @@ export const ResidentialInfoSection = () => {
         className="modal"
         size={'60%'}
         fullScreen={isMobile}
-        centered
         opened={searchModalOpened}
         onClose={searchModalClose}
       >
         <Box className="search-box-container">
           <Text className="search-box-label">Enter your location</Text>
+          <Box className="pro-tip-box">
+            <Box className="icon-box">
+              <FcInfo color="#1991ff" />
+              <Text className="pro-tip">Pro tip</Text>
+            </Box>
+            <Text className="tip">
+              Search for a precise address, however if you encounter difficulty in locating your address, rest assured
+              that the system will identify accuracy within 250 meters radius.
+            </Text>
+          </Box>
           <SearchBox innerComponent={false} />
         </Box>
       </Modal>

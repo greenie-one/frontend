@@ -1,6 +1,6 @@
-import { Box, Title, TextInput, Select, Checkbox, Button, Divider, Text } from '@mantine/core';
+import { Box, Title, TextInput, Tooltip, Select, Checkbox, Button, Divider, Text } from '@mantine/core';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { BsArrowLeft } from 'react-icons/bs';
 import {
   showErrorNotification,
@@ -17,8 +17,7 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Icon } from 'leaflet';
 import mapMarker from '../../assets/map-marker.png';
-import { useDisclosure } from '@mantine/hooks';
-import { UpdateConfirmationModal } from './components/UpdateConfirmationModal';
+import { FaRegQuestionCircle } from 'react-icons/fa';
 
 const marker = new Icon({
   iconUrl: mapMarker,
@@ -44,13 +43,9 @@ export const AddResidentialInfo = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [confirmationModalOpened, { open: confirmationModalOpen, close: confirmationModalClose }] =
-    useDisclosure(false);
-
   const { authClient, setForceRender } = useGlobalContext();
   const [checked, setChecked] = useState(false);
-  const [fetchedAddress, setFetchedAddress] = useState<any>(location.state as any);
-  const [formUpdated, setFormUpdated] = useState<boolean>(false);
+  const [fetchedAddress, setFetchedAddress] = useState<FetchedAddressType>(location.state as FetchedAddressType);
 
   const residentialInfoForm = useForm<residentialInfoFormType>({
     initialValues: {
@@ -232,24 +227,6 @@ export const AddResidentialInfo = () => {
     }
   };
 
-  useEffect(() => {
-    setFormUpdated(
-      residentialInfoForm.isDirty('address_line_1') ||
-        residentialInfoForm.isDirty('address_line_2') ||
-        residentialInfoForm.isDirty('pincode') ||
-        residentialInfoForm.isDirty('city') ||
-        residentialInfoForm.isDirty('state') ||
-        residentialInfoForm.isDirty('country')
-    );
-  }, [
-    residentialInfoForm.isDirty('address_line_1'),
-    residentialInfoForm.isDirty('address_line_2'),
-    residentialInfoForm.isDirty('pincode'),
-    residentialInfoForm.isDirty('city'),
-    residentialInfoForm.isDirty('state'),
-    residentialInfoForm.isDirty('country'),
-  ]);
-
   return (
     <>
       <Layout>
@@ -271,8 +248,9 @@ export const AddResidentialInfo = () => {
             <Text className="address-string">{fetchedAddress.addressString}</Text>
             <Box className="map-box-container">
               <MapContainer
+                key={JSON.stringify([fetchedAddress.position.latitude, fetchedAddress.position.longitude])}
                 center={[fetchedAddress.position.latitude, fetchedAddress.position.longitude]}
-                zoom={12}
+                zoom={14}
                 scrollWheelZoom={false}
               >
                 <TileLayer
@@ -315,7 +293,14 @@ export const AddResidentialInfo = () => {
               />
             </Box>
             <Box className="input-section">
-              <Title className="title">Address Line 1</Title>
+              <Title className="title">
+                Address Line 1{'  '}
+                <Tooltip label="For best results enter the address as per the ID">
+                  <span>
+                    <FaRegQuestionCircle />
+                  </span>
+                </Tooltip>
+              </Title>
               <TextInput
                 data-autofocus
                 label="Address line 1"
@@ -470,24 +455,11 @@ export const AddResidentialInfo = () => {
               <Button variant="default" onClick={handleToggleScreen}>
                 Cancel
               </Button>
-              {formUpdated ? (
-                <Button color="teal" type="button" onClick={confirmationModalOpen}>
-                  Update
-                </Button>
-              ) : (
-                <Button color="teal" type="submit">
-                  Save
-                </Button>
-              )}
+              <Button color="teal" type="submit">
+                Save
+              </Button>
             </Box>
           </form>
-          <UpdateConfirmationModal
-            residentialInfoForm={residentialInfoForm}
-            setFetchedAddress={setFetchedAddress}
-            modalOpened={confirmationModalOpened}
-            modalClose={confirmationModalClose}
-            setFormUpdated={setFormUpdated}
-          />
         </section>
       </Layout>
     </>
