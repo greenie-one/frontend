@@ -4,6 +4,12 @@
   display: flex;
   align-items: center;
   flex-direction: column;
+  &.adminContainer {
+    margin-block-start: 120px;
+  }
+  &.reportContainer {
+    margin-block-start: 30px;
+  }
   .formText {
     margin-top: 15px;
     font-size: 25px;
@@ -13,6 +19,9 @@
   margin-inline: auto;
   margin-block: 5rem;
   width: 50%;
+  &.adminForm {
+    margin-block: 2rem;
+  }
   .sendmessage {
     margin-block-end: 0.3rem;
     font-size: 0.875rem;

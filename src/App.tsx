@@ -10,6 +10,7 @@ import { Waitlist } from './pages/Waitlist';
 import { ProfilePage } from './pages/ProfilePage';
 import { SettingsPage } from './pages/SettingsPage';
 import { HRForm } from './pages/HRForm';
+import { AdminForm } from './pages/AdminForm';
 import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage';
 import { TermsAndConditionsPage } from './pages/TermsAndConditionsPage';
 
@@ -57,6 +58,7 @@ const App = () => {
               <Route path="candidate/profile">
                 <Route index element={<ProfilePage />} />
                 <Route path="hr" element={<HRForm />} />
+                <Route path="admin" element={<AdminForm />} />
                 <Route path="settings" element={<SettingsPage />} />
 
                 <Route path="IDs/verify/aadhar" element={<VerifyAadharCard />} />

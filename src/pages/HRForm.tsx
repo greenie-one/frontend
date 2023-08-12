@@ -26,8 +26,7 @@ export const HRForm: React.FC = (): JSX.Element => {
       email: (val) => (/^\S+@\S+$/.test(val) ? null : 'Invalid email'),
     },
   });
-  console.log(form.values);
-  //   console.log(files);
+  // console.log(form.values);
   const handleFilesChange = (files: File[]) => {
     form.setFieldValue('files', files);
   };
