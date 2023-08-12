@@ -1,0 +1,36 @@
+@import '_variables';
+.hrFormContainer {
+  margin-block-start: 150px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  .formText {
+    margin-top: 15px;
+    font-size: 25px;
+  }
+}
+.hrForm {
+  margin-inline: auto;
+  margin-block: 5rem;
+  width: 50%;
+  .sendmessage {
+    margin-block-end: 0.3rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+  .sendInvite {
+    margin-inline: auto;
+    background-color: #12b886;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .hrFormContainer {
+    .formText {
+      font-size: 15px;
+    }
+    .formHeading {
+      font-size: 25px;
+    }
+  }
+}
