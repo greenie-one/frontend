@@ -32,6 +32,8 @@ type UserProfileType = {
   descriptionTags: string[];
   profilePic?: string;
   greenieId?: string;
+  email?: string;
+  phone?: string;
 };
 
 type WorkExperience = {
