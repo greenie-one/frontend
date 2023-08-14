@@ -28,6 +28,11 @@ export const ProfileSettings: React.FC = (): JSX.Element => {
   const [opened, { open, close }] = useDisclosure(false);
   const [openModal, setOpenModal] = useState<ProfileModal>(null);
 
+  const emailList = ['example1@example.com', 'example2@example.com', 'example3@example.com'];
+  const targetEmail = 'example2@example.com';
+
+  const [showButton, setShowButton] = useState<boolean>(emailList.includes(targetEmail));
+
   const handleOpenModal = (modalType: ProfileModal) => {
     if (modalType === 'Save Profile') {
       setOpenModal(modalType);
@@ -47,7 +52,7 @@ export const ProfileSettings: React.FC = (): JSX.Element => {
     updateProfile();
     close();
   };
-
+  // console.log(profileData.email);
   return (
     <>
       {openModal === 'Save Profile' && (
@@ -102,7 +107,7 @@ export const ProfileSettings: React.FC = (): JSX.Element => {
               {...profileForm.getInputProps('email')}
             />
             <div className={formClasses.profiledetailsForm}>
-              <Button
+              {/* <Button
                 className={formClasses.downloadBtn}
                 size="sm"
                 type="button"
@@ -111,18 +116,21 @@ export const ProfileSettings: React.FC = (): JSX.Element => {
                 onClick={() => handleOpenModal('Save Profile')}
               >
                 Submit
-              </Button>
+              </Button> */}
               {/* <PDFDownloadLink document={<ReportScreens />} fileName="FORM"> */}
-              <Button
-                className={formClasses.downloadBtn}
-                size="sm"
-                type="button"
-                radius="xl"
-                color="teal"
-                onClick={() => handleOpenModal('Download')}
-              >
-                Download
-              </Button>
+              {showButton && (
+                <Button
+                  className={formClasses.downloadBtn}
+                  size="sm"
+                  type="button"
+                  radius="xl"
+                  color="teal"
+                  onClick={() => handleOpenModal('Download')}
+                >
+                  Download
+                </Button>
+              )}
+
               {/* </PDFDownloadLink> */}
             </div>
           </Box>

@@ -15,10 +15,13 @@
 }
 body {
   // min-width: 840px;
+  // background-color: red !important;
 }
 
 .report-container {
-  width: 840px;
+  background-color: white;
+  width: 675px;
+  aspect-ratio: 1/1.414;
   margin-inline: auto;
   padding: 2rem;
   margin-block: 2rem;
@@ -29,6 +32,7 @@ body {
   }
   .report-background {
     background: white;
+    height: 100%;
     border-radius: 1.5rem;
     padding: 2rem;
   }
@@ -67,10 +71,11 @@ body {
     }
   }
   .added-peer-box {
+    font-size: 12px;
     .added-peers {
       border: 1px solid #ebebeb;
       display: grid;
-      grid-template-columns: 20% 40% 20% 20%;
+      grid-template-columns: 24% 36% 20% 20%;
       align-items: center;
       justify-content: flex-start;
       padding: 1rem;
@@ -82,7 +87,7 @@ body {
         grid-template-columns: 40% 20% 20% 20%;
       }
       &.added-exp-peers {
-        grid-template-columns: 24% 20% 20% 16% 20%;
+        grid-template-columns: 26% 18% 18% 16% 20%;
       }
       &:last-child {
         border-radius: 0px 0px 16px 16px;
@@ -119,10 +124,11 @@ body {
     border: 1px solid #ebebeb;
     border-radius: 16px 16px 0 0;
     display: grid;
-    grid-template-columns: 20% 40% 20% 20%;
+    grid-template-columns: 24% 36% 20% 20%;
     margin: 2rem auto 0rem;
     padding: 1rem;
     font-weight: 500;
+    font-size: 13px;
     &.executive-header {
       grid-template-columns: 30% 20% 30% 20%;
     }
@@ -130,7 +136,7 @@ body {
       grid-template-columns: 40% 20% 20% 20%;
     }
     &.add-peer-exp-header {
-      grid-template-columns: 24% 20% 20% 16% 20%;
+      grid-template-columns: 26% 18% 18% 16% 20%;
     }
   }
 
@@ -173,7 +179,7 @@ body {
     .info-box {
       border: 1px solid #e1e1e1;
       border-radius: 1rem;
-      padding: 0.8rem;
+      padding: 0.4rem;
       &.idreport-box,
       &.info-box-address {
         border: none;
@@ -190,7 +196,7 @@ body {
         align-items: center;
         gap: 5px;
         font-family: Inter;
-        font-size: 16px;
+        font-size: 13px;
         font-weight: 600;
         line-height: 27px;
         letter-spacing: 0em;
@@ -207,12 +213,12 @@ body {
       }
       .experience-details-box-text {
         color: #697082;
-        font-size: 14px;
+        font-size: 12px;
         display: flex;
         align-items: center;
         margin-top: 0.5rem;
         overflow: hidden;
-        gap: rem(10);
+        gap: rem(8);
         word-wrap: break-word;
         &.request-text {
           margin-top: rem(20);
@@ -221,7 +227,7 @@ body {
           text-underline-offset: 4px;
         }
         img {
-          width: rem(25);
+          width: rem(15);
         }
       }
     }
@@ -285,10 +291,10 @@ body {
       }
       .residential-address-left {
         color: #535253;
-        width: 35%;
+        width: 38%;
         gap: rem(20);
         &.left-residential {
-          width: 20%;
+          width: 30%;
         }
         .profile-thumbnail {
           aspect-ratio: 1;
@@ -298,7 +304,7 @@ body {
           border-radius: 50%;
           overflow: hidden;
           .profile-img {
-            width: rem(60);
+            width: rem(50);
             aspect-ratio: 1;
           }
         }
@@ -312,7 +318,7 @@ body {
         p:first-child {
           color: black;
           font-weight: 600;
-          font-size: 16px;
+          font-size: 14px;
         }
       }
       .residential-address-right {

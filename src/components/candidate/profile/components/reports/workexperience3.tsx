@@ -120,6 +120,7 @@ export const WorkExperienceReport3: React.FC = (): JSX.Element => {
           <Link to="" className="folder" target="_blank">
             <img src={pdfIcon} alt="PDF Icon" />
             <Text className="doc-name">TestTestTestTestTestTestTestTestTestTest</Text>
+            {/* <p>Download</p> */}
           </Link>
           <Link to="" className="folder" target="_blank">
             <img src={pdfIcon} alt="PDF Icon" />
