@@ -7,8 +7,6 @@ import level from '../../assets/levelFilled.png';
 
 import './_report.scss';
 export const ExecutiveSummary: React.FC = (): JSX.Element => {
-  const percentage = 75;
-
   return (
     <>
       <main className="report-container">

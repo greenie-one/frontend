@@ -52,7 +52,7 @@ export const CaptureLocation: React.FC<CaptureLocationProps> = ({ uuid, peerData
     open();
   };
 
-  const setPosition = async (position: any) => {
+  const setPosition = async (position: { coords: CoordinatesType }) => {
     showLoadingNotification({
       title: 'Verifying Address...',
       message: 'Please wait while we verify your location.',

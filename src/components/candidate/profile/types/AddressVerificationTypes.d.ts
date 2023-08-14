@@ -55,3 +55,8 @@ type PeerVerificationDataResponse = {
 
   residentialInfo: ResidentialInfoDataResponse;
 };
+
+type CoordinatesType = {
+  latitude: number;
+  longitude: number;
+};

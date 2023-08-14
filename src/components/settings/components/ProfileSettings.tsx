@@ -39,9 +39,8 @@ export const ProfileSettings: React.FC = (): JSX.Element => {
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
   };
-  console.log(profileData);
 
-  const [showButton, setShowButton] = useState<boolean>(emailList.includes(targetEmail));
+  // const [showButton, setShowButton] = useState<boolean>(emailList.includes(targetEmail));
   // const checkEmailInList = () => {
   //   setShowButton(emailList.includes(targetEmail));
   // };
@@ -207,7 +206,7 @@ export const ProfileSettings: React.FC = (): JSX.Element => {
           >
             Save
           </Button>
-          {showButton && (
+          {emailList.includes(targetEmail) && (
             <Button
               className={formClasses.formSubmitBtn}
               size="sm"

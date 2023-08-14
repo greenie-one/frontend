@@ -12,7 +12,7 @@ export const GeneralSettings: React.FC = (): JSX.Element => {
   const generalSettingsForm = useGeneralSettingsForm();
   const { classes: modalStyles } = confirmationModalStyle();
 
-  const { IDs, profileData } = useGlobalContext();
+  const { profileData } = useGlobalContext();
   const [opened, { open, close }] = useDisclosure(false);
   const onFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
