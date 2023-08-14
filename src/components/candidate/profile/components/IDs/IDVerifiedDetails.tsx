@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Box, Button, Text, Title } from '@mantine/core';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
 
@@ -8,13 +8,18 @@ import { AiOutlineRight } from 'react-icons/ai';
 import emptyProfile from '../../assets/emptyProfile.png';
 
 export const IDVerifiedDetails: React.FC = () => {
-  const navigate = useNavigate();
   const params = useParams();
+  const navigate = useNavigate();
+  const { state } = useLocation();
   const { profileData, scrollToTop, IDs } = useGlobalContext();
 
   const handleContinue = () => {
     scrollToTop();
-    navigate('/candidate/profile');
+    if (state === 'showCongratsScreen') {
+      navigate('/candidate/profile/IDs/verify/aadhar/congratulations');
+    } else {
+      navigate('/candidate/profile');
+    }
   };
 
   const formattedDate = (data: string) => {
@@ -36,7 +41,7 @@ export const IDVerifiedDetails: React.FC = () => {
             <Box className="go-back-btn">
               <Text>Verification ID</Text>
               <AiOutlineRight className="arrow-right-icon" size={'16px'} />
-              <Text>{params.id?.toUpperCase()} Details</Text>
+              <Text>{params.id?.toUpperCase().replace('_', ' ')} Details</Text>
             </Box>
           </Box>
 
@@ -63,11 +68,11 @@ export const IDVerifiedDetails: React.FC = () => {
             <Box className="document-verified-right-box">
               <Box className="box-row aadhar-first-row">
                 <Box className="details-box">
-                  <Title className="details-title">{params.id?.toUpperCase()} number</Title>
+                  <Title className="details-title">{params.id?.toUpperCase().replace('_', ' ')} number</Title>
                   <Text className="details-detail">{details?.id_number}</Text>
                 </Box>
                 <Box className="details-box">
-                  <Title className="details-title">Full Name</Title>
+                  <Title className="details-title">Full Name (as per ID)</Title>
                   <Text className="details-detail">{details?.fullName}</Text>
                 </Box>
               </Box>
