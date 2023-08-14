@@ -42,18 +42,18 @@ export const VerifyID: React.FC = () => {
         <section className="container documents-container" style={{ marginTop: '7rem' }}>
           <Modal
             centered
-            className="modal"
             size={'55%'}
-            fullScreen={isMobile}
+            radius={'lg'}
             opened={opened}
             onClose={close}
+            className="modal"
+            fullScreen={isMobile}
             styles={{
               title: {
                 fontSize: '1.25rem',
                 fontWeight: 600,
               },
             }}
-            radius={'lg'}
           >
             <form className="otp-form" onSubmit={handleAadharSubmit}>
               <Title className="title">OTP is sent to your linked phone number!</Title>
@@ -64,10 +64,10 @@ export const VerifyID: React.FC = () => {
                 </span>
               </Text>
               <TextInput
-                classNames={otpInputClasses}
                 withAsterisk
                 maxLength={6}
                 pattern="[0-9]{6}"
+                classNames={otpInputClasses}
                 {...verifyAadharForm.getInputProps('otp')}
               />
               {secondsRemaining === 0 ? (
@@ -97,7 +97,7 @@ export const VerifyID: React.FC = () => {
             <Box className="go-back-btn">
               <Text>Verification ID</Text>
               <AiOutlineRight className="arrow-right-icon" size={'16px'} />
-              <Text>{params.id?.toUpperCase()} Details</Text>
+              <Text>{params.id?.toUpperCase().replace('_', ' ')} Details</Text>
             </Box>
           </Box>
 
@@ -113,7 +113,7 @@ export const VerifyID: React.FC = () => {
             )}
 
             <form className="document-text-box">
-              <Title className="heading">Enter your {params?.id?.toUpperCase()} number</Title>
+              <Title className="heading">Enter your {params.id?.toUpperCase().replace('_', ' ')} number</Title>
 
               {params?.id?.toLowerCase() === 'aadhar' && (
                 <>

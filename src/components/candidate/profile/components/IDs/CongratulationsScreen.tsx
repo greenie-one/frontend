@@ -1,26 +1,22 @@
-import { Text, Box, Title, Button, Chip, Group, CopyButton } from '@mantine/core';
-import { MdVerified, MdOutlineContentCopy } from 'react-icons/md';
-import checkGif from '../../assets/94109-confirmation 1.gif';
-import level from '../../assets/level.png';
-import levelFilled from '../../assets/levelFilled.png';
-import medal from '../../assets/medal.png';
-import { useMediaQuery } from '@mantine/hooks';
-import { useGlobalContext } from '../../../../../context/GlobalContext';
-import { Layout } from '../Layout';
-import emptyProfile from '../../assets/emptyProfile.png';
 import { useNavigate } from 'react-router-dom';
+import { Text, Box, Title, Button, CopyButton } from '@mantine/core';
+import { Layout } from '../Layout';
+
+import { useGlobalContext } from '../../../../../context/GlobalContext';
+import checkGif from '../../assets/94109-confirmation 1.gif';
+import { MdVerified } from 'react-icons/md';
+import { BsCheck } from 'react-icons/bs';
+import { GoCopy } from 'react-icons/go';
 
 export const CongratulationsScreen = () => {
   const navigate = useNavigate();
   const { scrollToTop, profileData } = useGlobalContext();
 
-  const userLevel = 1;
   const greeneId = profileData?.greenieId ?? '';
-  const screenSize = useMediaQuery('(min-width: 768px)');
 
   const handleContinue = () => {
     scrollToTop();
-    navigate('/candidate/profile');
+    navigate('/candidate/profile/IDs/verify/aadhar/details');
   };
 
   return (
@@ -31,82 +27,36 @@ export const CongratulationsScreen = () => {
           <Title className="title">Congratulations!</Title>
           <Text className="sub-title">You are a part of the Greenie Community</Text>
           <Text className="sub-text">You have achieved a star rating. You are among top 2% on Greenie.</Text>
-          <Box className="congrats-profile-section">
-            <Box className="profile-section">
-              <Box className="cover-photo"></Box>
-              <Box className="profile-photo">
-                {profileData.profilePic ? (
-                  <img src={profileData.profilePic} alt="emptyProfile" />
-                ) : (
-                  <img src={emptyProfile} alt="emptyProfile" />
-                )}
-              </Box>
-            </Box>
-            <Box className="bio-section container">
-              <Box className="bio-name-box">
-                <Text className="bio-name">
-                  {profileData.firstName} {profileData.lastName}
-                  <span>
-                    <MdVerified size={'19px'} color="#8cf078" />
-                  </span>
-                </Text>
-              </Box>
 
-              <Box>
-                <Chip.Group>
-                  <Group className="chips">
-                    {profileData.descriptionTags.map((tag: string) => (
-                      <Chip key={tag} size={screenSize ? 'sm' : 'xs'}>
-                        {tag}
-                      </Chip>
-                    ))}
-                  </Group>
-                </Chip.Group>
-              </Box>
+          <Box>
+            <Text fz="lg" fw={500}>
+              Your Greenie ID is generated
+            </Text>
+            <Title order={2} sx={{ marginTop: '0.5rem' }}>
+              {greeneId || 'GRN1208'}
+            </Title>
+          </Box>
 
-              <Box className="bio-section-wrapper">
-                <Box className="left-section">
-                  <Box className="level">
-                    <Text className="level-heading">Level {userLevel}</Text>
-
-                    <Box className="level-wrapper">
-                      <img className="level-img" src={levelFilled} alt="level" />
-                      <img className="level-img" src={level} alt="level" />
-                      <img className="level-img" src={level} alt="level" />
-                      <img className="level-img" src={level} alt="level" />
-                      <img className="level-img" src={level} alt="level" />
-                    </Box>
-                  </Box>
-                  <Box className="border-left"></Box>
-
-                  <Box className="medal-wrapper">
-                    <img className="medal-icon" src={medal} alt="Medal Icon" />
-                    <Box className="medal-text-box">
-                      <Text className="top-text">No rank</Text>
-                      <Text className="percentage">#</Text>
-                    </Box>
-                  </Box>
-                </Box>
-                <Box className="border-left"></Box>
-                <Box className="right-section">
-                  <CopyButton value={greeneId} timeout={2000}>
-                    {({ copied, copy }) => (
-                      <Box className="greenie-id" onClick={copy}>
-                        <Box className="icon-box">
-                          <MdOutlineContentCopy size={'18px'} color="#17a672" />
-                        </Box>
-
-                        <Box>
-                          <Text className="greenie-id-heading">Share Greenie ID </Text>
-                          {copied ? <Text className="id">Copied</Text> : <Text className="id">{greeneId}</Text>}
-                        </Box>
-                      </Box>
-                    )}
-                  </CopyButton>
-                </Box>
-              </Box>
-              <Text className="bio-text">{profileData.bio}</Text>
-            </Box>
+          <Box sx={{ margin: '1.25rem 0 1.5rem' }}>
+            <Button
+              className="verified"
+              sx={{ marginRight: '1rem' }}
+              leftIcon={<MdVerified color="#8CF078" size={'16px'} />}
+            >
+              Verified
+            </Button>
+            <CopyButton value={greeneId} timeout={2000}>
+              {({ copied, copy }) => (
+                <Button
+                  onClick={copy}
+                  className="copied"
+                  color={copied ? 'teal' : 'blue'}
+                  leftIcon={copied ? <BsCheck color="#8CF078" size={'16px'} /> : <GoCopy color="gray" size={'16px'} />}
+                >
+                  {copied ? 'Copied Greenie ID' : 'Copy Greenie ID'}
+                </Button>
+              )}
+            </CopyButton>
           </Box>
 
           <Button className="primaryBtn" onClick={handleContinue}>
