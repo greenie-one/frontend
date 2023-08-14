@@ -11,7 +11,7 @@ export const GeneralSettings: React.FC = (): JSX.Element => {
   const { classes: formClasses } = detailsFormStyles();
   const { classes: modalStyles } = confirmationModalStyle();
 
-  const { IDs } = useGlobalContext();
+  const { IDs, profileData } = useGlobalContext();
   const [opened, { open, close }] = useDisclosure(false);
 
   const handleConfirmation = () => {
@@ -51,13 +51,13 @@ export const GeneralSettings: React.FC = (): JSX.Element => {
   return (
     <>
       <Modal
-        opened={opened}
-        onClose={close}
-        title="Confirmation"
-        padding="xl"
-        radius="lg"
-        size="lg"
         centered
+        size="lg"
+        radius="lg"
+        padding="xl"
+        onClose={close}
+        opened={opened}
+        title="Confirmation"
         classNames={modalStyles}
       >
         <Box className={modalStyles.confirmationMsgWrapper}>
@@ -91,8 +91,18 @@ export const GeneralSettings: React.FC = (): JSX.Element => {
 
       <form className={formClasses.detailsCategory}>
         <Title className={formClasses.detailsCategoryTitle}>Contact details</Title>
-        <TextInput label="Phone number" className="inputClass" {...generalSettingsForm.getInputProps('phoneNumber')} />
-        <TextInput label="Email" className="inputClass" {...generalSettingsForm.getInputProps('emailId')} />
+        <TextInput
+          label="Phone number"
+          className="inputClass"
+          placeholder={profileData.phone}
+          {...generalSettingsForm.getInputProps('phoneNumber')}
+        />
+        <TextInput
+          label="Email"
+          className="inputClass"
+          placeholder={profileData.email}
+          {...generalSettingsForm.getInputProps('emailId')}
+        />
 
         <Title className={formClasses.detailsCategoryTitle}>Demographics</Title>
         <TextInput disabled value={getAge(aadharDetails?.dob ?? '')} label="Age" className="inputClass" />
