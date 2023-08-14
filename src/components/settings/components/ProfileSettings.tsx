@@ -3,6 +3,7 @@ import { Box, Chip, Group, Title, TextInput, Textarea, Button, Modal, Text } fro
 import { useGlobalContext } from '../../../context/GlobalContext';
 import { ProfileModal } from '../../candidate/profile/types/ProfileGeneral';
 import { useDisclosure } from '@mantine/hooks';
+import { useNavigate } from 'react-router-dom';
 import { confirmationModalStyle } from '../styles/articleContentStyles';
 import { detailsFormStyles, profileSettingsStyles } from '../styles/articleContentStyles';
 // import { PDFDownloadLink } from '@react-pdf/renderer';
@@ -21,6 +22,8 @@ const introductionTags = [
 ];
 
 export const ProfileSettings: React.FC = (): JSX.Element => {
+  const navigate = useNavigate();
+
   const { classes: formClasses } = detailsFormStyles();
   const { classes: profileClasses } = profileSettingsStyles();
   const { classes: modalStyles } = confirmationModalStyle();
@@ -28,11 +31,24 @@ export const ProfileSettings: React.FC = (): JSX.Element => {
   const [opened, { open, close }] = useDisclosure(false);
   const [openModal, setOpenModal] = useState<ProfileModal>(null);
 
-  const emailList = ['example1@example.com', 'example2@example.com', 'example3@example.com'];
-  const targetEmail = 'example2@example.com';
+  const emailList = ['tanvitomar0579@gmail.com', 'swanandwagh7@gmail.com', 'example@.com'];
+  const targetEmail = String(profileData.email);
+
+  const [email, setEmail] = useState('');
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(event.target.value);
+  };
+  console.log(profileData);
 
   const [showButton, setShowButton] = useState<boolean>(emailList.includes(targetEmail));
-
+  // const checkEmailInList = () => {
+  //   setShowButton(emailList.includes(targetEmail));
+  // };
+  const handleFormSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    navigate(`/screens?email=${email}`);
+  };
   const handleOpenModal = (modalType: ProfileModal) => {
     if (modalType === 'Save Profile') {
       setOpenModal(modalType);
@@ -99,13 +115,7 @@ export const ProfileSettings: React.FC = (): JSX.Element => {
         <Modal opened={opened} onClose={close} padding="xl" radius="lg" size="lg" centered classNames={modalStyles}>
           <Box className={modalStyles.downloadMsgWrapper}>
             <Title className={modalStyles.title}>Enter your Email ID</Title>
-            <TextInput
-              maxLength={10}
-              minLength={3}
-              label="Email ID"
-              className="inputClass"
-              {...profileForm.getInputProps('email')}
-            />
+            <TextInput label="Email ID" className="inputClass" value={email} onChange={handleInputChange} />
             <div className={formClasses.profiledetailsForm}>
               {/* <Button
                 className={formClasses.downloadBtn}
@@ -118,18 +128,16 @@ export const ProfileSettings: React.FC = (): JSX.Element => {
                 Submit
               </Button> */}
               {/* <PDFDownloadLink document={<ReportScreens />} fileName="FORM"> */}
-              {showButton && (
-                <Button
-                  className={formClasses.downloadBtn}
-                  size="sm"
-                  type="button"
-                  radius="xl"
-                  color="teal"
-                  onClick={() => handleOpenModal('Download')}
-                >
-                  Download
-                </Button>
-              )}
+              <Button
+                className={formClasses.downloadBtn}
+                size="sm"
+                type="button"
+                radius="xl"
+                color="teal"
+                onClick={handleFormSubmit}
+              >
+                Generate Report
+              </Button>
 
               {/* </PDFDownloadLink> */}
             </div>
@@ -158,12 +166,12 @@ export const ProfileSettings: React.FC = (): JSX.Element => {
 
         <Title className={formClasses.detailsCategoryTitle}>Bio</Title>
         <Textarea
+          minRows={8}
+          maxLength={250}
           label="Edit your bio"
           className="text-area-input"
-          minRows={8}
-          {...profileForm.getInputProps('bio')}
           placeholder={profileData.bio}
-          maxLength={250}
+          {...profileForm.getInputProps('bio')}
         />
         <Box className={formClasses.detailsCategory}>
           <Title order={3} className={formClasses.detailsCategoryTitle}>
@@ -199,16 +207,18 @@ export const ProfileSettings: React.FC = (): JSX.Element => {
           >
             Save
           </Button>
-          <Button
-            className={formClasses.formSubmitBtn}
-            size="sm"
-            type="button"
-            radius="xl"
-            color="teal"
-            onClick={() => handleOpenModal('Download')}
-          >
-            Download
-          </Button>
+          {showButton && (
+            <Button
+              className={formClasses.formSubmitBtn}
+              size="sm"
+              type="button"
+              radius="xl"
+              color="teal"
+              onClick={() => handleOpenModal('Download')}
+            >
+              Download
+            </Button>
+          )}
         </div>
       </form>
     </>

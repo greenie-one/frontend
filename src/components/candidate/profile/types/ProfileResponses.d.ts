@@ -1,6 +1,23 @@
 type DocsType = {
-  id_type: string;
-  isVerified: boolean;
+  id: string;
+  id_type: 'AADHAR' | 'PAN' | 'DRIVING_LICENSE';
+  id_number: string;
+  user: string;
+  address: {
+    address_line_1: string;
+    address_line_2: string;
+    city: string;
+    street: string;
+    country: string;
+    state: string;
+    pincode: string;
+    type: string;
+    _id: string;
+  };
+  fullName: string;
+  dob: string;
+  createdAt: Date | null;
+  updatedAt: Date | null;
 };
 
 type DocumentsResponse = {
@@ -15,6 +32,8 @@ type UserProfileType = {
   descriptionTags: string[];
   profilePic?: string;
   greenieId?: string;
+  email?: string;
+  phone?: string;
 };
 
 type WorkExperience = {
