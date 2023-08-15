@@ -163,48 +163,28 @@ type SentRequestsResponseType = {
   peerPost: string;
 };
 
+type AadharDataType = {
+  user_full_name: string;
+  user_aadhaar_number: string;
+  user_dob: string;
+  user_gender: string;
+};
+
+type PanDataType = {
+  pan_number: string;
+  user_full_name: string;
+  masked_aadhaar: string;
+  user_email: string;
+  user_phone_number: string;
+  user_gender: string;
+  aadhaar_linked_status: boolean;
+  pan_type: string;
+};
+
 type IdDetails = {
   idType: string;
   idNumber: string;
-  data: {
-    user_full_name: string;
-    user_aadhaar_number: string;
-    user_dob: string;
-    user_gender: string;
-    user_address: {
-      country: string;
-      dist: string;
-      state: string;
-      po: string;
-      loc: string;
-      vtc: string;
-      subdist: string;
-      street: string;
-      house: string;
-      landmark: string;
-    };
-    address_zip: string;
-    user_profile_image: string;
-    user_has_image: boolean;
-    aadhaar_xml_raw: string;
-    user_zip_data: string;
-    user_parent_name: string;
-    aadhaar_share_code: string;
-    user_mobile_verified: boolean;
-    reference_id: string;
-  };
-  address: {
-    country: string;
-    dist: string;
-    state: string;
-    po: string;
-    loc: string;
-    vtc: string;
-    subdist: string;
-    street: string;
-    house: string;
-    landmark: string;
-  };
+  data: AadharDataType | PanDataType;
   normalizedAddress: {
     address_line_1: string;
     address_line_2: string;
@@ -216,14 +196,16 @@ type IdDetails = {
     type: string;
   };
 };
+
 type WorkExperience = {
   designation: string;
   companyName: string;
   companyType: string;
   companyId: string;
+  linkedInUrl?: string;
   workEmail: string;
   dateOfJoining: Date;
-  dateOfLeaving: Date;
+  dateOfLeaving?: Date;
   worktype: string;
 };
 
@@ -234,6 +216,7 @@ type ResidentialType = {
   landmark: string;
   pincode: number;
   startDate: string;
+  endDate?: string;
   city: string;
   country: string;
   addressType: string;
@@ -241,7 +224,9 @@ type ResidentialType = {
 };
 
 type ReportData = {
-  accountDetails: {};
+  accountDetails: {
+    greenieId?: string;
+  };
   workExperienceDetails: WorkExperience[];
   ResidentialDetails: ResidentialType[];
   idDetails: IdDetails[];
