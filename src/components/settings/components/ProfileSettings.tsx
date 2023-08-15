@@ -1,7 +1,8 @@
 import React from 'react';
 import { Box, Chip, Group, Title, TextInput, Textarea, Button, Modal, Text } from '@mantine/core';
-import { useGlobalContext } from '../../../context/GlobalContext';
 import { useDisclosure } from '@mantine/hooks';
+
+import { useGlobalContext } from '../../../context/GlobalContext';
 import { confirmationModalStyle } from '../styles/articleContentStyles';
 import { detailsFormStyles, profileSettingsStyles } from '../styles/articleContentStyles';
 
@@ -21,7 +22,7 @@ export const ProfileSettings: React.FC = (): JSX.Element => {
   const { classes: formClasses } = detailsFormStyles();
   const { classes: profileClasses } = profileSettingsStyles();
   const { classes: modalStyles } = confirmationModalStyle();
-  const { profileForm, updateProfile } = useGlobalContext();
+  const { profileForm, updateProfile, profileData } = useGlobalContext();
   const [opened, { open, close }] = useDisclosure(false);
 
   const onFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -37,13 +38,13 @@ export const ProfileSettings: React.FC = (): JSX.Element => {
   return (
     <>
       <Modal
-        opened={opened}
-        onClose={close}
-        title="Confirmation"
-        padding="xl"
-        radius="lg"
-        size="lg"
         centered
+        size="lg"
+        radius="lg"
+        padding="xl"
+        onClose={close}
+        opened={opened}
+        title="Confirmation"
         classNames={modalStyles}
       >
         <Box className={modalStyles.confirmationMsgWrapper}>
@@ -77,27 +78,30 @@ export const ProfileSettings: React.FC = (): JSX.Element => {
       <form className={formClasses.detailsCategory} onSubmit={onFormSubmit}>
         <Title className={formClasses.detailsCategoryTitle}>Name</Title>
         <TextInput
-          maxLength={10}
+          maxLength={20}
           minLength={3}
           label="First Name"
           className="inputClass"
+          placeholder={profileData.firstName}
           {...profileForm.getInputProps('firstName')}
         />
         <TextInput
-          maxLength={10}
+          maxLength={20}
           minLength={3}
           label="Last Name"
           className="inputClass"
+          placeholder={profileData.lastName}
           {...profileForm.getInputProps('lastName')}
         />
 
         <Title className={formClasses.detailsCategoryTitle}>Bio</Title>
         <Textarea
+          minRows={8}
+          maxLength={250}
           label="Edit your bio"
           className="text-area-input"
-          minRows={8}
+          placeholder={profileData.bio}
           {...profileForm.getInputProps('bio')}
-          maxLength={250}
         />
         <Box className={formClasses.detailsCategory}>
           <Title order={3} className={formClasses.detailsCategoryTitle}>
