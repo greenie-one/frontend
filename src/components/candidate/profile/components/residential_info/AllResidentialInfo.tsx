@@ -8,6 +8,10 @@ import { useGlobalContext } from '../../../../../context/GlobalContext';
 import { useNavigate } from 'react-router-dom';
 import { Layout } from '../Layout';
 
+const formattedDate = (data: string) => {
+  return data?.substring(0, 10).split('-').reverse().join('-');
+};
+
 export const AllResidentialInfo = () => {
   const { residentialInfoData } = useGlobalContext();
 
@@ -54,6 +58,7 @@ export const AllResidentialInfo = () => {
                       <Box className="address">
                         {info.address_line_1}, {info.address_line_2}, {info.landmark}, {info.city} {info.pincode}
                       </Box>
+                      <Box className="address-type">{info.addressType} Address</Box>
                       {info.isVerified ? (
                         <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
                           Verified
@@ -69,7 +74,8 @@ export const AllResidentialInfo = () => {
                     <Box>
                       <Text className="since-text">Since</Text>
                       <Text className="tenure">
-                        {info.start_date?.toString().substring(3, 15)} - {info.end_date?.toString().substring(3, 15)}
+                        {formattedDate(String(info.start_date))} -{' '}
+                        {info.end_date ? formattedDate(String(info.end_date)) : 'Present'}
                       </Text>
                     </Box>
                   </Box>
