@@ -14,7 +14,8 @@ import {
 
 export const useIDVerificationMethods = () => {
   const navigate = useNavigate();
-  const { authClient, scrollToTop, verifyAadharForm, verifyPANForm, verifyLicenceForm } = useGlobalContext();
+  const { authClient, scrollToTop, verifyAadharForm, verifyPANForm, verifyLicenceForm, setForceRender } =
+    useGlobalContext();
 
   /********** AADHAR CARD METHODS **********/
   const [opened, { open, close }] = useDisclosure(false);
@@ -52,7 +53,8 @@ export const useIDVerificationMethods = () => {
       if (res.ok) {
         showSuccessNotification({ title: 'Success !', message: 'OTP Verified Successfully' });
         verifyAadharForm.reset();
-        navigate('/candidate/profile/IDs/verify/pan/details');
+        setForceRender((prev) => !prev);
+        navigate('/candidate/profile/IDs/verify/aadhar/details', { state: 'showCongratsScreen' });
         close();
       } else {
         showErrorNotification(res.error.code);
@@ -133,6 +135,7 @@ export const useIDVerificationMethods = () => {
       if (res.ok) {
         showSuccessNotification({ title: 'Success !', message: 'Verified PAN successfully' });
         scrollToTop();
+        setForceRender((prev) => !prev);
         navigate('/candidate/profile/IDs/verify/pan/details');
       } else {
         showErrorNotification(res.error.code);
@@ -162,6 +165,7 @@ export const useIDVerificationMethods = () => {
       if (res.ok) {
         showSuccessNotification({ title: 'Success !', message: 'Verified Licence successfully' });
         scrollToTop();
+        setForceRender((prev) => !prev);
         navigate('/candidate/profile/IDs/verify/driving_licence/details');
       } else {
         showErrorNotification(res.error.code);

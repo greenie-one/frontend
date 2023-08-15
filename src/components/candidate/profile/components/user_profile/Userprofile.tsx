@@ -140,12 +140,12 @@ export const Userprofile = () => {
             <Title className="title">First Name</Title>
             <TextInput
               withAsterisk
-              label="Your first name"
-              className="inputClass"
-              {...profileForm.getInputProps('firstName')}
-              maxLength={10}
               minLength={3}
+              maxLength={10}
+              className="inputClass"
+              label="Your first name"
               placeholder={profileData.firstName}
+              {...profileForm.getInputProps('firstName')}
             />
           </Box>
 
@@ -153,12 +153,12 @@ export const Userprofile = () => {
             <Title className="title">Last Name</Title>
             <TextInput
               withAsterisk
+              minLength={3}
+              maxLength={10}
               label="Your last name"
               className="inputClass"
-              {...profileForm.getInputProps('lastName')}
-              maxLength={10}
-              minLength={3}
               placeholder={profileData.lastName}
+              {...profileForm.getInputProps('lastName')}
             />
           </Box>
           <Divider mb={'10px'} />
@@ -167,11 +167,11 @@ export const Userprofile = () => {
             <Title className="title">Tell Us about yourself</Title>
             <Textarea
               withAsterisk
+              maxLength={150}
               label="Your bio"
               className="text-area-input"
-              {...profileForm.getInputProps('bio')}
-              maxLength={150}
               placeholder={profileData.bio}
+              {...profileForm.getInputProps('bio')}
             />
           </Box>
           <Divider mb={'10px'} />
