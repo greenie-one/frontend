@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Chip, Group, Title, TextInput, Textarea, Button, Modal, Text } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
-
 import { useGlobalContext } from '../../../context/GlobalContext';
+import { ProfileModal } from '../../candidate/profile/types/ProfileGeneral';
+import { useDisclosure } from '@mantine/hooks';
+import { useNavigate } from 'react-router-dom';
 import { confirmationModalStyle } from '../styles/articleContentStyles';
 import { detailsFormStyles, profileSettingsStyles } from '../styles/articleContentStyles';
+// import { PDFDownloadLink } from '@react-pdf/renderer';
+// import { ReportScreens } from '../../candidate/profile/components/reports/ReportScreens';
 
 const introductionTags = [
   'Team Player',
@@ -19,11 +22,41 @@ const introductionTags = [
 ];
 
 export const ProfileSettings: React.FC = (): JSX.Element => {
+  const navigate = useNavigate();
+
   const { classes: formClasses } = detailsFormStyles();
   const { classes: profileClasses } = profileSettingsStyles();
   const { classes: modalStyles } = confirmationModalStyle();
   const { profileForm, updateProfile, profileData } = useGlobalContext();
   const [opened, { open, close }] = useDisclosure(false);
+  const [openModal, setOpenModal] = useState<ProfileModal>(null);
+
+  const emailList = ['tanvitomar0579@gmail.com', 'swanandwagh7@gmail.com', 'example@.com'];
+  const targetEmail = String(profileData.email);
+
+  const [email, setEmail] = useState('');
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(event.target.value);
+  };
+
+  // const [showButton, setShowButton] = useState<boolean>(emailList.includes(targetEmail));
+  // const checkEmailInList = () => {
+  //   setShowButton(emailList.includes(targetEmail));
+  // };
+  const handleFormSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    navigate(`/screens?email=${email}`);
+  };
+  const handleOpenModal = (modalType: ProfileModal) => {
+    if (modalType === 'Save Profile') {
+      setOpenModal(modalType);
+      open();
+    } else {
+      setOpenModal(modalType);
+      open();
+    }
+  };
 
   const onFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -34,51 +67,87 @@ export const ProfileSettings: React.FC = (): JSX.Element => {
     updateProfile();
     close();
   };
-
+  console.log(profileData);
   return (
     <>
-      <Modal
-        centered
-        size="lg"
-        radius="lg"
-        padding="xl"
-        onClose={close}
-        opened={opened}
-        title="Confirmation"
-        classNames={modalStyles}
-      >
-        <Box className={modalStyles.confirmationMsgWrapper}>
-          <Text className={modalStyles.title}>Are you sure you want to update the changes made?</Text>
+      {openModal === 'Save Profile' && (
+        <Modal
+          opened={opened}
+          onClose={close}
+          title="Confirmation"
+          padding="xl"
+          radius="lg"
+          size="lg"
+          centered
+          classNames={modalStyles}
+        >
+          <Box className={modalStyles.confirmationMsgWrapper}>
+            <Text className={modalStyles.title}>Are you sure you want to update the changes made?</Text>
 
-          <Box className={modalStyles.modalBtnsContainer}>
-            {[
-              {
-                variant: 'filled',
-                text: 'Confirm',
-                action: handleConfirmation,
-              },
-              { variant: 'outline', text: 'Cancel', action: close },
-            ].map((btns, idx) => (
-              <Button
-                key={idx}
-                className={modalStyles.modalActionBtns}
-                onClick={btns.action}
+            <Box className={modalStyles.modalBtnsContainer}>
+              {[
+                {
+                  variant: 'filled',
+                  text: 'Confirm',
+                  action: handleConfirmation,
+                },
+                { variant: 'outline', text: 'Cancel', action: close },
+              ].map((btns, idx) => (
+                <Button
+                  key={idx}
+                  className={modalStyles.modalActionBtns}
+                  onClick={btns.action}
+                  size="sm"
+                  type="button"
+                  radius="xl"
+                  variant={btns.variant}
+                  color="teal"
+                >
+                  {btns.text}
+                </Button>
+              ))}
+            </Box>
+          </Box>
+        </Modal>
+      )}
+      {openModal === 'Download' && (
+        <Modal opened={opened} onClose={close} padding="xl" radius="lg" size="lg" centered classNames={modalStyles}>
+          <Box className={modalStyles.downloadMsgWrapper}>
+            <Title className={modalStyles.title}>Enter your Email ID</Title>
+            <TextInput label="Email ID" className="inputClass" value={email} onChange={handleInputChange} />
+            <div className={formClasses.profiledetailsForm}>
+              {/* <Button
+                className={formClasses.downloadBtn}
                 size="sm"
                 type="button"
                 radius="xl"
-                variant={btns.variant}
                 color="teal"
+                onClick={() => handleOpenModal('Save Profile')}
               >
-                {btns.text}
+                Submit
+              </Button> */}
+              {/* <PDFDownloadLink document={<ReportScreens />} fileName="FORM"> */}
+              <Button
+                className={formClasses.downloadBtn}
+                size="sm"
+                type="button"
+                radius="xl"
+                color="teal"
+                onClick={handleFormSubmit}
+              >
+                Generate Report
               </Button>
-            ))}
+
+              {/* </PDFDownloadLink> */}
+            </div>
           </Box>
-        </Box>
-      </Modal>
+        </Modal>
+      )}
+
       <form className={formClasses.detailsCategory} onSubmit={onFormSubmit}>
         <Title className={formClasses.detailsCategoryTitle}>Name</Title>
         <TextInput
-          maxLength={10}
+          maxLength={20}
           minLength={3}
           label="First Name"
           className="inputClass"
@@ -86,7 +155,7 @@ export const ProfileSettings: React.FC = (): JSX.Element => {
           {...profileForm.getInputProps('firstName')}
         />
         <TextInput
-          maxLength={10}
+          maxLength={20}
           minLength={3}
           label="Last Name"
           className="inputClass"
@@ -126,10 +195,30 @@ export const ProfileSettings: React.FC = (): JSX.Element => {
             </Group>
           </Chip.Group>
         </Box>
-
-        <Button className={formClasses.formSubmitBtn} size="sm" type="button" radius="xl" color="teal" onClick={open}>
-          Save
-        </Button>
+        <div className={formClasses.profiledetailsForm}>
+          <Button
+            className={formClasses.formSubmitBtn}
+            size="sm"
+            type="button"
+            radius="xl"
+            color="teal"
+            onClick={() => handleOpenModal('Save Profile')}
+          >
+            Save
+          </Button>
+          {emailList.includes(targetEmail) && (
+            <Button
+              className={formClasses.formSubmitBtn}
+              size="sm"
+              type="button"
+              radius="xl"
+              color="teal"
+              onClick={() => handleOpenModal('Download')}
+            >
+              Download
+            </Button>
+          )}
+        </div>
       </form>
     </>
   );

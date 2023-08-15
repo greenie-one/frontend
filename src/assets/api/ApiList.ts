@@ -97,3 +97,5 @@ export const addressVerificationAPIList = {
 export const searchEndpoints = {
   searchAddress: `${BASE_URL}/location/autocomplete`,
 }
+
+export const reportAPI = `${BASE_URL}/report`;

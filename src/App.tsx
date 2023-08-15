@@ -9,13 +9,15 @@ import { Waitlist } from './pages/Waitlist';
 
 import { ProfilePage } from './pages/ProfilePage';
 import { SettingsPage } from './pages/SettingsPage';
+import { HRForm } from './pages/HRForm';
+import { AdminForm } from './pages/AdminForm';
 import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage';
 import { TermsAndConditionsPage } from './pages/TermsAndConditionsPage';
 
 import { AuthVerificationLayout } from './utils/constants/AuthVerification';
 import { GoogleAuthRedirect } from './components/auth/components/google/GoogleAuthRedirect';
 import { AppLayout } from './components/layouts/AppLayout';
-
+import { ReportScreens } from './components/candidate/profile/components/reports/ReportScreens';
 import { ExperienceVerification } from './pages/ExperienceVerification';
 import { AllExperiences } from './components/candidate/profile/components/experience/AllExperiences';
 import { ExperienceDetails } from './components/candidate/profile/components/experience/ExperienceDetails';
@@ -45,6 +47,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<AppLayout />}>
             <Route index element={<Landing />} />
+            <Route path="/screens" element={<ReportScreens />} />
             <Route path="auth" element={<AuthPage />} />
             <Route path="waitlist" element={<Waitlist />} />
             <Route path="oauth/google/callback" element={<GoogleAuthRedirect />} />
@@ -54,6 +57,8 @@ const App = () => {
             <Route element={<AuthVerificationLayout />}>
               <Route path="candidate/profile">
                 <Route index element={<ProfilePage />} />
+                <Route path="hr" element={<HRForm />} />
+                <Route path="admin" element={<AdminForm />} />
                 <Route path="settings" element={<SettingsPage />} />
 
                 <Route path="IDs/verify/aadhar/congratulations" element={<CongratulationsScreen />} />
@@ -76,6 +81,7 @@ const App = () => {
                 <Route path="docDepot" element={<DocDepotPage />} />
                 <Route path="myVerification" element={<MyVerifications />} />
               </Route>
+              R
             </Route>
 
             <Route path="privacy" element={<PrivacyPolicyPage />} />

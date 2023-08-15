@@ -10,6 +10,7 @@ type GlobalContextType = {
   verifyLicenceForm: UseFormReturnType<verifyLicenceFormType>;
   profileForm: UseFormReturnType<profileFormType>;
   workExperienceForm: UseFormReturnType<workExperienceFormType>;
+  residentialInfoForm: UseFormReturnType<residentialInfoFormType>;
   skillForm: UseFormReturnType<skillFormType>;
   residentialInfoVerificationForm: UseFormReturnType<residentialInfoFormType>;
   peerAddressVerificationForm: UseFormReturnType<peerAddressVerificationFromType>;
@@ -23,6 +24,8 @@ type GlobalContextType = {
   getResidentialInfo: () => void;
   deleteWorkExperience: (id: string) => void;
   deleteResidentialInfo: (id: string) => void;
+  userLevel: number;
+  setUserLevel: React.Dispatch<React.SetStateAction<number>>;
   getProfile: () => void;
   setProfileData: React.Dispatch<React.SetStateAction<UserProfileType>>;
 };

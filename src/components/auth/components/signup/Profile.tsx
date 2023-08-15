@@ -124,7 +124,7 @@ const Profile = () => {
             className="inputClass"
             {...profileForm.getInputProps('firstName')}
             ref={firstNameRef}
-            maxLength={10}
+            maxLength={20}
             minLength={3}
           />
           <TextInput
@@ -132,7 +132,7 @@ const Profile = () => {
             className="inputClass"
             {...profileForm.getInputProps('lastName')}
             ref={lastNameRef}
-            maxLength={10}
+            maxLength={20}
             minLength={3}
           />
           <Button type="submit" className="primaryBtn" onClick={nextStep}>

@@ -13,7 +13,6 @@ export const CongratulationsScreen = () => {
   const { scrollToTop, profileData } = useGlobalContext();
 
   const greeneId = profileData?.greenieId ?? '';
-
   const handleContinue = () => {
     scrollToTop();
     navigate('/candidate/profile/IDs/verify/aadhar/details');

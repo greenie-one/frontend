@@ -141,7 +141,7 @@ export const Userprofile = () => {
             <TextInput
               withAsterisk
               minLength={3}
-              maxLength={10}
+              maxLength={20}
               className="inputClass"
               label="Your first name"
               placeholder={profileData.firstName}
@@ -154,7 +154,7 @@ export const Userprofile = () => {
             <TextInput
               withAsterisk
               minLength={3}
-              maxLength={10}
+              maxLength={20}
               label="Your last name"
               className="inputClass"
               placeholder={profileData.lastName}

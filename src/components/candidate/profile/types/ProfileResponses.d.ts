@@ -162,3 +162,87 @@ type SentRequestsResponseType = {
   updatedAt: string;
   peerPost: string;
 };
+
+type IdDetails = {
+  idType: string;
+  idNumber: string;
+  data: {
+    user_full_name: string;
+    user_aadhaar_number: string;
+    user_dob: string;
+    user_gender: string;
+    user_address: {
+      country: string;
+      dist: string;
+      state: string;
+      po: string;
+      loc: string;
+      vtc: string;
+      subdist: string;
+      street: string;
+      house: string;
+      landmark: string;
+    };
+    address_zip: string;
+    user_profile_image: string;
+    user_has_image: boolean;
+    aadhaar_xml_raw: string;
+    user_zip_data: string;
+    user_parent_name: string;
+    aadhaar_share_code: string;
+    user_mobile_verified: boolean;
+    reference_id: string;
+  };
+  address: {
+    country: string;
+    dist: string;
+    state: string;
+    po: string;
+    loc: string;
+    vtc: string;
+    subdist: string;
+    street: string;
+    house: string;
+    landmark: string;
+  };
+  normalizedAddress: {
+    address_line_1: string;
+    address_line_2: string;
+    city: string;
+    street: string;
+    country: string;
+    state: string;
+    pincode: string;
+    type: string;
+  };
+};
+type WorkExperience = {
+  designation: string;
+  companyName: string;
+  companyType: string;
+  companyId: string;
+  workEmail: string;
+  dateOfJoining: Date;
+  dateOfLeaving: Date;
+  worktype: string;
+};
+
+type ResidentialType = {
+  id: string;
+  address_line_1: string;
+  address_line_2: string;
+  landmark: string;
+  pincode: number;
+  startDate: string;
+  city: string;
+  country: string;
+  addressType: string;
+  location: string;
+};
+
+type ReportData = {
+  accountDetails: {};
+  workExperienceDetails: WorkExperience[];
+  ResidentialDetails: ResidentialType[];
+  idDetails: IdDetails[];
+};

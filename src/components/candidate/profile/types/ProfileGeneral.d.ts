@@ -96,3 +96,5 @@ type ExperienceDocuments = {
 };
 
 type ExperienceDetailsModal = 'Verify Experience' | 'Show Documents' | 'Show Skills' | null;
+
+type ProfileModal = 'Save Profile' | 'Download' | null;
