@@ -645,8 +645,8 @@ export const AddExperience = () => {
               {selectedSkills.length > 0 && <Divider color="#ebebeb" />}
 
               <Box className="btn-wrapper">
-                <Button type="button" className="cancel-btn" variant="default" onClick={handlePrevPage}>
-                  Back
+                <Button type="button" className="cancel-btn" variant="default" onClick={() => setActive(3)}>
+                  Skip
                 </Button>
                 {selectedSkills.length > 0 ? (
                   <Button className="green-btn" onClick={handleSkillContinue}>
@@ -759,8 +759,8 @@ export const AddExperience = () => {
               </Box>
 
               <Box className="btn-wrapper">
-                <Button type="button" className="cancel-btn" variant="default" onClick={handlePrevPage}>
-                  Back
+                <Button type="button" className="cancel-btn" variant="default" onClick={handleDocumentContinue}>
+                  Skip
                 </Button>
                 {documentsChecked ? (
                   <Button className="green-btn" onClick={handleDocumentContinue}>

@@ -143,7 +143,7 @@ export const Userprofile = () => {
               label="Your first name"
               className="inputClass"
               {...profileForm.getInputProps('firstName')}
-              maxLength={10}
+              maxLength={20}
               minLength={3}
               placeholder={profileData.firstName}
             />
@@ -156,7 +156,7 @@ export const Userprofile = () => {
               label="Your last name"
               className="inputClass"
               {...profileForm.getInputProps('lastName')}
-              maxLength={10}
+              maxLength={20}
               minLength={3}
               placeholder={profileData.lastName}
             />
