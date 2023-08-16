@@ -78,7 +78,7 @@ export const ProfileSettings: React.FC = (): JSX.Element => {
       <form className={formClasses.detailsCategory} onSubmit={onFormSubmit}>
         <Title className={formClasses.detailsCategoryTitle}>Name</Title>
         <TextInput
-          maxLength={10}
+          maxLength={20}
           minLength={3}
           label="First Name"
           className="inputClass"
@@ -86,7 +86,7 @@ export const ProfileSettings: React.FC = (): JSX.Element => {
           {...profileForm.getInputProps('firstName')}
         />
         <TextInput
-          maxLength={10}
+          maxLength={20}
           minLength={3}
           label="Last Name"
           className="inputClass"

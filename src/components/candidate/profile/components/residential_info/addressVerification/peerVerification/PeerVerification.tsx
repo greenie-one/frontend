@@ -65,7 +65,7 @@ export const PeerVerification: React.FC = (): JSX.Element => {
             <VerifyPeer
               type="EMAIL"
               peerName={errorData.name}
-              verificationBy="Cousin"
+              verificationBy={errorData.verificationBy}
               uuid={String(uuid)}
               getPeerData={getPeerData}
               currentStep={currentStep}
