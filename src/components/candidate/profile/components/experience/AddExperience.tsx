@@ -49,6 +49,7 @@ export const AddExperience = () => {
   const [documentsChecked, setDocumentsChecked] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [documents, setDocuments] = useState<ExperienceDocuments[]>([]);
+
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [workExperienceId, setworkExperienceId] = useState<string>('');
   const { authClient, workExperienceForm, skillForm, scrollToTop, setForceRender, forceRender, workExperienceData } =
@@ -60,6 +61,7 @@ export const AddExperience = () => {
   const [opened, { open, close }] = useDisclosure(false);
 
   const [selectedSkills, setSelectedSkills] = useState<Skill[]>([]);
+  const [postedSkills, setPostedSkills] = useState<Skill[]>([]);
   const [active, setActive] = useState<number>(1);
 
   const handleRemoveSkills = (_id: number) => {
@@ -155,6 +157,17 @@ export const AddExperience = () => {
   };
 
   const handleAddSkill = () => {
+    const newSkillValue = JSON.stringify({
+      ...skillForm.values,
+      workExperience: workExperienceId,
+    });
+    for (const skill of selectedSkills) {
+      const skillsString = JSON.stringify(skill);
+
+      if (skillsString === newSkillValue) {
+        return;
+      }
+    }
     if (!skillForm.validate().hasErrors && workExperienceId !== null) {
       setSelectedSkills((prevSkills: Skill[]) => [
         ...prevSkills,
@@ -168,13 +181,26 @@ export const AddExperience = () => {
   };
 
   const handleSkillContinue = async () => {
-    if (selectedSkills.length < 1) {
+    if (JSON.stringify(selectedSkills) === JSON.stringify(postedSkills)) {
+      setActive(3);
+      return;
+    }
+    let postSkillsList: Skill[] = [];
+
+    for (const skill of selectedSkills) {
+      if (postedSkills.filter((_skill) => JSON.stringify(_skill) === JSON.stringify(skill)).length === 0) {
+        postSkillsList.push(skill);
+      }
+    }
+    console.log(postedSkills);
+    if (postSkillsList.length < 1) {
+      setActive(3);
       showErrorNotification('NO_SKILL');
     }
-    if (selectedSkills.length > 0) {
+    if (postSkillsList.length > 0) {
       showLoadingNotification({ title: 'Please wait !', message: 'We are adding your skill' });
 
-      for (const skill of selectedSkills) {
+      for (const skill of postSkillsList) {
         const requestBody: SkillRequestBody = skill;
         const res = await HttpClient.callApiAuth(
           {
@@ -186,7 +212,13 @@ export const AddExperience = () => {
         );
         if (res.ok) {
           showSuccessNotification({ title: 'Success !', message: 'New skills added to your profile.' });
-
+          setPostedSkills((current) => {
+            for (const skill of postSkillsList) {
+              current.push(skill);
+            }
+            return current;
+          });
+          postSkillsList = [];
           setActive(3);
         }
       }

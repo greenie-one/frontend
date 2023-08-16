@@ -31,7 +31,7 @@ export const ProfileSettings: React.FC = (): JSX.Element => {
   const [opened, { open, close }] = useDisclosure(false);
   const [openModal, setOpenModal] = useState<ProfileModal>(null);
 
-  const emailList = ['tanvitomar0579@gmail.com', 'swanandwagh7@gmail.com', 'example@.com'];
+  const emailList = ['tanvitomar0579@gmail.com', 'tanvitomar592@gmail.com', 'swanandwagh7@gmail.com', 'example@.com'];
   const targetEmail = String(profileData.email);
 
   const [email, setEmail] = useState('');

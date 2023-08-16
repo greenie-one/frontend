@@ -31,29 +31,30 @@ export const WorkExperienceReport3: React.FC<ChildComponentProps> = ({ workExper
 
         <div className="disclaimer-box">
           <span className="disclaimer-text">Work Experience</span>
-          <div className="residential-address">
-            <div className="residential-address-left ">
-              <p>Infotech Solutions Private Limited</p>
-              <p>Greenie Verified on 20/04/2023</p>
-              <Button leftIcon={<MdVerified color="#17A672" size={'16px'} />} className="verified report-verifybtn">
-                Verified
-              </Button>
-            </div>
-            <div className="residential-address-right">View Company profile</div>
-          </div>
         </div>
-        {workExperienceDetails.length > 0 ? (
-          <div className="location">
-            <p>About Company</p>
-            <div className="location-date">
-              <p>Last updated</p>
-              <p>02/03/2023</p>
+
+        {workExperienceDetails.map((experience, index) => (
+          <>
+            <div className="disclaimer-box">
+              <div className="residential-address residential-top ">
+                <div className="residential-address-left ">
+                  <p>{experience.companyName}</p>
+                  <p>Greenie Verified on 20/04/2023</p>
+                  <Button leftIcon={<MdVerified color="#17A672" size={'16px'} />} className="verified report-verifybtn">
+                    Verified
+                  </Button>
+                </div>
+                <div className="residential-address-right">View Company profile</div>
+              </div>
             </div>
-          </div>
-        ) : null}
-        <Box className="basic-info-box-wrapper work-wrapper">
-          {workExperienceDetails.map((experience, index) => (
-            <>
+            <div className="location">
+              <p>About Company</p>
+              <div className="location-date">
+                <p>Last updated</p>
+                <p>02/03/2023</p>
+              </div>
+            </div>
+            <Box className="basic-info-box-wrapper work-wrapper">
               <Box className="info-box">
                 <Text className="experience-details-box-heading">Company Type</Text>
                 <Text className="experience-details-box-text">{experience.companyType}</Text>
@@ -63,31 +64,26 @@ export const WorkExperienceReport3: React.FC<ChildComponentProps> = ({ workExper
                   <BsLinkedin color="#0077b5" />
                   LinkedIn
                 </Text>
-                <Text className="experience-details-box-text">View Profile</Text>
+                <a href={experience.linkedInUrl} target="_blank" rel="noopener noreferrer">
+                  <Text className="experience-details-box-text">View Profile</Text>
+                </a>
               </Box>
-            </>
-          ))}
-        </Box>
-        {workExperienceDetails.length > 0 ? (
-          <div className="location">
-            <p>Basic Information</p>
-            <div className="location-date">
-              <p>Last updated</p>
-              <p>02/03/2023</p>
+            </Box>
+            <div className="location">
+              <p>Basic Information</p>
+              <div className="location-date">
+                <p>Last updated</p>
+                <p>02/03/2023</p>
+              </div>
             </div>
-          </div>
-        ) : null}
-
-        <Box className="basic-info-box-wrapper work-wrapper">
-          {workExperienceDetails.map((experience, index) => (
-            <>
+            <Box className="basic-info-box-wrapper work-wrapper">
               <Box className="info-box">
                 <Text className="experience-details-box-heading">Company ID</Text>
                 <Text className="experience-details-box-text">{experience.companyId}</Text>
               </Box>
               <Box className="info-box">
                 <Text className="experience-details-box-heading">LinkedIn</Text>
-                <Text className="experience-details-box-text">abhishek@infotech.com</Text>
+                <Text className="experience-details-box-text">{experience.linkedInUrl}</Text>
               </Box>
               <Box className="info-box">
                 <Text className="experience-details-box-heading">Tenure</Text>
@@ -100,9 +96,9 @@ export const WorkExperienceReport3: React.FC<ChildComponentProps> = ({ workExper
                 <Text className="experience-details-box-heading">Work Type</Text>
                 <Text className="experience-details-box-text">{experience.worktype}</Text>
               </Box>
-            </>
-          ))}
-        </Box>
+            </Box>
+          </>
+        ))}
 
         <div className="peer-exp-name">
           <p>Referees</p>

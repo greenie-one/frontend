@@ -8,9 +8,15 @@ import './_report.scss';
 
 interface ChildComponentProps {
   workExperienceDetails: WorkExperience[];
+  ResidentialInfo: ResidentialType[];
+  AccountDetails: ReportData['accountDetails'];
 }
 
-export const ExecutiveSummary: React.FC<ChildComponentProps> = ({ workExperienceDetails }) => {
+export const ExecutiveSummary: React.FC<ChildComponentProps> = ({
+  AccountDetails,
+  ResidentialInfo,
+  workExperienceDetails,
+}) => {
   return (
     <>
       <main className="report-container">
@@ -70,7 +76,7 @@ export const ExecutiveSummary: React.FC<ChildComponentProps> = ({ workExperience
         <Box className="basic-info-box-wrapper wrapper-executive">
           <Box className="info-box">
             <Text className="experience-details-box-heading">Greenie ID</Text>
-            <Text className="experience-details-box-text">GRN6543A</Text>
+            <Text className="experience-details-box-text">{AccountDetails?.greenieId}</Text>
           </Box>
           <Box className="info-box">
             <Text className="experience-details-box-heading">Greenie rating</Text>
@@ -143,7 +149,7 @@ export const ExecutiveSummary: React.FC<ChildComponentProps> = ({ workExperience
 
         {workExperienceDetails.length > 0 ? (
           <div className="location">
-            <p>Work Experience (2)</p>
+            <p>Work Experience ({workExperienceDetails.length})</p>
             <div className="location-date">
               <p>Verified on</p>
               <p>02/03/2023</p>
@@ -162,30 +168,27 @@ export const ExecutiveSummary: React.FC<ChildComponentProps> = ({ workExperience
             </Box>
           ))}
         </Box>
-
-        <div className="location">
-          <p>Residential Addresses (2)</p>
-          <div className="location-date">
-            <p>Verified on</p>
-            <p>02/03/2023</p>
+        {ResidentialInfo.length > 0 ? (
+          <div className="location">
+            <p>Residential Addresses ({ResidentialInfo.length})</p>
+            <div className="location-date">
+              <p>Verified on</p>
+              <p>02/03/2023</p>
+            </div>
           </div>
-        </div>
-
+        ) : null}
         <Box className="basic-info-box-wrapper executive-wrapper">
-          <Box className="info-box">
-            <Text className="experience-details-box-heading">Permanent Address</Text>
-            <Text className="experience-details-box-text">1901 Thornridge Circle, Baner, Pune - 411006</Text>
-            <Button leftIcon={<MdVerified color="#17A672" size={'16px'} />} className="verified report-verifybtn">
-              Verified
-            </Button>
-          </Box>
-          <Box className="info-box">
-            <Text className="experience-details-box-heading">Temporary Address</Text>
-            <Text className="experience-details-box-text">1901 Thornridge Circle, Baner, Pune - 411006</Text>
-            <Button leftIcon={<MdVerified color="#17A672" size={'16px'} />} className="verified report-verifybtn">
-              Verified
-            </Button>
-          </Box>
+          {ResidentialInfo.map((resident, index) => (
+            <Box key={index} className="info-box">
+              <Text className="experience-details-box-heading">{resident.addressType} Address</Text>
+              <Text className="experience-details-box-text">
+                {resident.address_line_1}, {resident.address_line_2}, {resident.city} - {resident.pincode}
+              </Text>
+              <Button leftIcon={<MdVerified color="#17A672" size={'16px'} />} className="verified report-verifybtn">
+                Verified
+              </Button>
+            </Box>
+          ))}
         </Box>
       </main>
     </>

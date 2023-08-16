@@ -2,7 +2,12 @@ import React from 'react';
 import { MdVerified } from 'react-icons/md';
 import { Text, Box, Button } from '@mantine/core';
 import './_report.scss';
-export const ResidentialReport2: React.FC = (): JSX.Element => {
+
+interface ChildComponentProps {
+  ResidentialInfo: ResidentialType[];
+}
+
+export const ResidentialReport2: React.FC<ChildComponentProps> = ({ ResidentialInfo }) => {
   return (
     <>
       <main className="report-container">
@@ -23,16 +28,21 @@ export const ResidentialReport2: React.FC = (): JSX.Element => {
 
         <div className="disclaimer-box">
           <span className="disclaimer-text">Residential Information</span>
-          <div className="residential-address">
-            <div className="residential-address-left left-residential">
-              <p>Permanent Address</p>
-              <p>1901 Thornridge Circle, Baner, Pune - 411006</p>
-              <Button leftIcon={<MdVerified color="#17A672" size={'16px'} />} className="verified report-verifybtn">
-                Verified
-              </Button>
+          {ResidentialInfo.map((resident, index) => (
+            <div key={index} className="residential-address">
+              <div className="residential-address-left left-residential">
+                <p>{resident.addressType} Address</p>
+                <p>
+                  {' '}
+                  {resident.address_line_1} {resident.address_line_2} {resident.city} - {resident.pincode}
+                </p>
+                <Button leftIcon={<MdVerified color="#17A672" size={'16px'} />} className="verified report-verifybtn">
+                  Verified
+                </Button>
+              </div>
+              <div className="residential-address-right">Locate on Google maps</div>
             </div>
-            <div className="residential-address-right">Locate on Google maps</div>
-          </div>
+          ))}
         </div>
         <div className="location">
           <p>About Residence</p>
@@ -41,24 +51,28 @@ export const ResidentialReport2: React.FC = (): JSX.Element => {
             <p>02/03/2023</p>
           </div>
         </div>
-        <Box className="basic-info-box-wrapper residence-wrapper">
-          <Box className="info-box">
-            <Text className="experience-details-box-heading">Address type</Text>
-            <Text className="experience-details-box-text">Permanent</Text>
+        {ResidentialInfo.map((resident, index) => (
+          <Box key={index} className="basic-info-box-wrapper residence-wrapper">
+            <Box className="info-box">
+              <Text className="experience-details-box-heading">Address type</Text>
+              <Text className="experience-details-box-text">{resident.addressType} </Text>
+            </Box>
+            <Box className="info-box">
+              <Text className="experience-details-box-heading">Tenure</Text>
+              <Text className="experience-details-box-text">
+                {resident.startDate.substring(0, 4)} - {resident.endDate ? resident.endDate.substring(0, 4) : 'Present'}
+              </Text>
+            </Box>
+            <Box className="info-box">
+              <Text className="experience-details-box-heading">Address Line 1</Text>
+              <Text className="experience-details-box-text">{resident.address_line_1} </Text>
+            </Box>
+            <Box className="info-box">
+              <Text className="experience-details-box-heading">Address Line 2</Text>
+              <Text className="experience-details-box-text">{resident.address_line_2}</Text>
+            </Box>
           </Box>
-          <Box className="info-box">
-            <Text className="experience-details-box-heading">Tenure</Text>
-            <Text className="experience-details-box-text">2021 - Present (2y 4m)</Text>
-          </Box>
-          <Box className="info-box">
-            <Text className="experience-details-box-heading">Address Line 1</Text>
-            <Text className="experience-details-box-text">App. 1901, Thornridge Circle</Text>
-          </Box>
-          <Box className="info-box">
-            <Text className="experience-details-box-heading">Address Line 2</Text>
-            <Text className="experience-details-box-text">Baner, Pune - 411006</Text>
-          </Box>
-        </Box>
+        ))}
 
         <div className="location">
           <p>Geographic Information</p>

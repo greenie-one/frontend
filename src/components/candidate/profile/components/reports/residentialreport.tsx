@@ -2,7 +2,12 @@ import React from 'react';
 import { MdVerified } from 'react-icons/md';
 import { Button } from '@mantine/core';
 import './_report.scss';
-export const ResidentialReport: React.FC = (): JSX.Element => {
+
+interface ChildComponentProps {
+  ResidentialInfo: ResidentialType[];
+}
+
+export const ResidentialReport: React.FC<ChildComponentProps> = ({ ResidentialInfo }) => {
   return (
     <>
       <main className="report-container">
@@ -23,16 +28,20 @@ export const ResidentialReport: React.FC = (): JSX.Element => {
 
         <div className="disclaimer-box">
           <span className="disclaimer-text">Residential Information</span>
-          <div className="residential-address">
-            <div className="residential-address-left left-residential">
-              <p>Permanent Address</p>
-              <p>1901 Thornridge Circle, Baner, Pune - 411006</p>
-              <Button leftIcon={<MdVerified color="#17A672" size={'16px'} />} className="verified report-verifybtn">
-                Verified
-              </Button>
+          {ResidentialInfo.map((resident, index) => (
+            <div key={index} className="residential-address">
+              <div className="residential-address-left left-residential">
+                <p>{resident.addressType} Address</p>
+                <p>
+                  {resident.address_line_1} {resident.address_line_2} {resident.city} - {resident.pincode}
+                </p>
+                <Button leftIcon={<MdVerified color="#17A672" size={'16px'} />} className="verified report-verifybtn">
+                  Verified
+                </Button>
+              </div>
+              <div className="residential-address-right">Locate on Google maps</div>
             </div>
-            <div className="residential-address-right">Locate on Google maps</div>
-          </div>
+          ))}
         </div>
         <div className="location">
           <p>Location Accuracy</p>

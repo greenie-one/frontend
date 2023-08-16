@@ -168,17 +168,23 @@ type AadharDataType = {
   user_aadhaar_number: string;
   user_dob: string;
   user_gender: string;
+  pan_number: string;
+  pan_type: string;
+  user_phone_number: string;
+  aadhaar_linked_status: string;
 };
 
 type PanDataType = {
   pan_number: string;
+  pan_type: string;
   user_full_name: string;
   masked_aadhaar: string;
   user_email: string;
   user_phone_number: string;
   user_gender: string;
   aadhaar_linked_status: boolean;
-  pan_type: string;
+  user_dob: string;
+  aadhaar_linked_status: string;
 };
 
 type IdDetails = {

@@ -2,7 +2,13 @@ import React from 'react';
 import { MdVerified } from 'react-icons/md';
 import { Button, Text, Box } from '@mantine/core';
 import './_report.scss';
-export const WorkExperienceReport: React.FC = (): JSX.Element => {
+interface ChildComponentProps {
+  workExperienceDetails: WorkExperience[];
+}
+
+export const WorkExperienceReport: React.FC<ChildComponentProps> = ({ workExperienceDetails }) => {
+  console.log(workExperienceDetails);
+
   return (
     <>
       <main className="report-container">
@@ -23,16 +29,18 @@ export const WorkExperienceReport: React.FC = (): JSX.Element => {
 
         <div className="disclaimer-box">
           <span className="disclaimer-text">Work Experience (Verification parameters)</span>
-          <div className="residential-address">
-            <div className="residential-address-left ">
-              <p>Infotech Solutions Private Limited</p>
-              <p>Greenie Verified on 20/04/2023</p>
-              <Button leftIcon={<MdVerified color="#17A672" size={'16px'} />} className="verified report-verifybtn">
-                Verified
-              </Button>
+          {workExperienceDetails.map((experience, index) => (
+            <div key={index} className="residential-address">
+              <div className="residential-address-left ">
+                <p>{experience.companyName}</p>
+                <p>Greenie Verified on 20/04/2023</p>
+                <Button leftIcon={<MdVerified color="#17A672" size={'16px'} />} className="verified report-verifybtn">
+                  Verified
+                </Button>
+              </div>
+              <div className="residential-address-right">View Company profile</div>
             </div>
-            <div className="residential-address-right">View Company profile</div>
-          </div>
+          ))}
         </div>
 
         <div className="location">
