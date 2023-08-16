@@ -140,51 +140,55 @@ export const PersonalIdentification: React.FC<ChildComponentProps> = ({ IdDetail
           <Text className="add-peer-header-text ">Status</Text>
           <Text className="add-peer-header-text">Remarks</Text>
         </Box>
-
-        <Box className="added-peer-box">
-          <Box className="added-peers ">
-            <Text className="peer-name title">Full Name</Text>
-            <Text className="peer-name">Test</Text>
-            <Text className="peer-name text-verified">Matched</Text>
-            <Text className="peer-name">Test</Text>
-          </Box>
-          <Box className="added-peers ">
-            <Text className="peer-name title">Father’s Name</Text>
-            <Text className="peer-name">Test</Text>
-            <Text className="peer-name text-verified">Matched</Text>
-            <Text className="peer-name">Test</Text>
-          </Box>
-          <Box className="added-peers ">
-            <Text className="peer-name title">DL Number</Text>
-            <Text className="peer-name">Test</Text>
-            <Text className="peer-name text-verified">Matched</Text>
-            <Text className="peer-name">Test</Text>
-          </Box>
-          <Box className="added-peers ">
-            <Text className="peer-name title">DOB</Text>
-            <Text className="peer-name">Test</Text>
-            <Text className="peer-name text-verified">Matched</Text>
-            <Text className="peer-name">Test</Text>
-          </Box>
-          <Box className="added-peers ">
-            <Text className="peer-name title">Vehicle type</Text>
-            <Text className="peer-name">Test</Text>
-            <Text className="peer-name text-verified">Matched</Text>
-            <Text className="peer-name">Test</Text>
-          </Box>
-          <Box className="added-peers ">
-            <Text className="peer-name title">Phone Number</Text>
-            <Text className="peer-name">Test</Text>
-            <Text className="peer-name text-verified">Matched</Text>
-            <Text className="peer-name">Test</Text>
-          </Box>
-          <Box className="added-peers ">
-            <Text className="peer-name title">Blood Group</Text>
-            <Text className="peer-name">Test</Text>
-            <Text className="peer-name text-verified">Matched</Text>
-            <Text className="peer-name">Test</Text>
-          </Box>
-        </Box>
+        {IdDetails.map(
+          (id, index) =>
+            id.idType == 'DRIVING_LICENSE' && (
+              <Box key={index} className="added-peer-box">
+                <Box className="added-peers ">
+                  <Text className="peer-name title">Full Name</Text>
+                  <Text className="peer-name">{id.data.user_full_name}</Text>
+                  <Text className="peer-name text-verified">Matched</Text>
+                  <Text className="peer-name">Test</Text>
+                </Box>
+                <Box className="added-peers ">
+                  <Text className="peer-name title">Father’s Name</Text>
+                  <Text className="peer-name">{id.data.father_or_husband}</Text>
+                  <Text className="peer-name text-verified">Matched</Text>
+                  <Text className="peer-name">Test</Text>
+                </Box>
+                <Box className="added-peers ">
+                  <Text className="peer-name title">DL Number</Text>
+                  <Text className="peer-name">{id.data.dl_number}</Text>
+                  <Text className="peer-name text-verified">Matched</Text>
+                  <Text className="peer-name">Test</Text>
+                </Box>
+                <Box className="added-peers ">
+                  <Text className="peer-name title">DOB</Text>
+                  <Text className="peer-name">{id.data.user_dob}</Text>
+                  <Text className="peer-name text-verified">Matched</Text>
+                  <Text className="peer-name">Test</Text>
+                </Box>
+                <Box className="added-peers ">
+                  <Text className="peer-name title">Vehicle type</Text>
+                  <Text className="peer-name">Test</Text>
+                  <Text className="peer-name text-verified">Matched</Text>
+                  <Text className="peer-name">Test</Text>
+                </Box>
+                <Box className="added-peers ">
+                  <Text className="peer-name title">Phone Number</Text>
+                  <Text className="peer-name">Test</Text>
+                  <Text className="peer-name text-verified">Matched</Text>
+                  <Text className="peer-name">Test</Text>
+                </Box>
+                <Box className="added-peers ">
+                  <Text className="peer-name title">Blood Group</Text>
+                  <Text className="peer-name">{id.data.user_blood_group}</Text>
+                  <Text className="peer-name text-verified">Matched</Text>
+                  <Text className="peer-name">Test</Text>
+                </Box>
+              </Box>
+            )
+        )}
       </main>
     </>
   );

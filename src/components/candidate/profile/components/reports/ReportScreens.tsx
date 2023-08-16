@@ -42,7 +42,7 @@ export const ReportScreens: React.FC = (): JSX.Element => {
     );
 
     if (res.ok) {
-      console.log(res);
+      // console.log(res);
       setAccountDetails(res.value.accountDetails);
       setIdDetails(res.value.idDetails);
       setWorkExperienceDetails(res.value.workExperienceDetails);

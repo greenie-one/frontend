@@ -51,7 +51,7 @@ type WorkExperience = {
   noOfVerifications: number;
   salary: string;
   workMode: string;
-  workType: string;
+  worktype: string;
 };
 
 type workExperienceResponse = {
@@ -172,6 +172,9 @@ type AadharDataType = {
   pan_type: string;
   user_phone_number: string;
   aadhaar_linked_status: string;
+  father_or_husband: string;
+  dl_number: string;
+  user_blood_group: string;
 };
 
 type PanDataType = {
@@ -185,12 +188,27 @@ type PanDataType = {
   aadhaar_linked_status: boolean;
   user_dob: string;
   aadhaar_linked_status: string;
+  father_or_husband: string;
+  dl_number: string;
+  user_blood_group: string;
+};
+
+type DrivingLicence = {
+  user_full_name: string;
+  father_or_husband: string;
+  dl_number: string;
+  user_dob: string;
+  user_blood_group: string;
+  user_phone_number: string;
+  pan_number: string;
+  pan_type: string;
+  aadhaar_linked_status: string;
 };
 
 type IdDetails = {
   idType: string;
   idNumber: string;
-  data: AadharDataType | PanDataType;
+  data: AadharDataType | PanDataType | DrivingLicence;
   normalizedAddress: {
     address_line_1: string;
     address_line_2: string;

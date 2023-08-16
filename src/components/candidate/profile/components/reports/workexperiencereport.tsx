@@ -38,7 +38,9 @@ export const WorkExperienceReport: React.FC<ChildComponentProps> = ({ workExperi
                   Verified
                 </Button>
               </div>
-              <div className="residential-address-right">View Company profile</div>
+              <a href={experience.linkedInUrl} target="_blank" rel="noopener noreferrer">
+                <div className="residential-address-right">View Company profile</div>
+              </a>
             </div>
           ))}
         </div>
