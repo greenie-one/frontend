@@ -18,6 +18,7 @@ import 'leaflet/dist/leaflet.css';
 import { Icon } from 'leaflet';
 import mapMarker from '../../assets/map-marker.png';
 import { IoInformationCircleSharp } from 'react-icons/io5';
+import dayjs from 'dayjs';
 
 const marker = new Icon({
   iconUrl: mapMarker,
@@ -53,6 +54,8 @@ export const AddResidentialInfo = () => {
 
   const [checked, setChecked] = useState(false);
   const [addressTypeOptions, setAddressTypeOptions] = useState<Array<{ value: string; label: string }>>(optionData);
+  const [startYearOptions, setStartYearOptions] = useState<Array<string>>([]);
+  const [endYearOptions, setEndYearOptions] = useState<Array<string>>([]);
   const [fetchedAddress, setFetchedAddress] = useState<FetchedAddressType>(location.state as FetchedAddressType);
 
   const residentialInfoForm = useForm<residentialInfoFormType>({
@@ -235,6 +238,51 @@ export const AddResidentialInfo = () => {
     }
   };
 
+  const generateYearOptions = () => {
+    const currentYear = dayjs().year();
+    const yearOptions: Array<string> = [];
+
+    for (let i = currentYear; i >= 1947; i--) {
+      yearOptions.push(String(i));
+    }
+
+    setStartYearOptions(yearOptions);
+    setEndYearOptions(yearOptions);
+  };
+
+  const checkStartYearValidity = () => {
+    if (residentialInfoForm.values.end_date?.year === '') {
+      return;
+    }
+
+    const endYear = residentialInfoForm.values.end_date?.year || dayjs().year();
+    const updatedStartYearOption: Array<string> = [];
+    for (let i = Number(endYear); i >= 1947; i--) {
+      updatedStartYearOption.push(String(i));
+    }
+
+    setStartYearOptions(updatedStartYearOption);
+  };
+
+  const checkEndYearValidity = () => {
+    if (residentialInfoForm.values.start_date?.year === '') {
+      return;
+    }
+
+    const startYear = residentialInfoForm.values.start_date?.year || dayjs().year();
+    const updatedEndYearOption: Array<string> = [];
+    for (let i = dayjs().year(); i >= Number(startYear); i--) {
+      updatedEndYearOption.push(String(i));
+    }
+
+    setEndYearOptions(updatedEndYearOption);
+  };
+
+  useEffect(() => {
+    checkStartYearValidity();
+    checkEndYearValidity();
+  }, [residentialInfoForm.isDirty('end_date.year'), residentialInfoForm.isDirty('start_date.year')]);
+
   useEffect(() => {
     residentialInfoData.forEach((info) => {
       if (info.addressType === 'Current') {
@@ -247,6 +295,8 @@ export const AddResidentialInfo = () => {
         setAddressTypeOptions([...optionData].filter((option) => option.value !== 'Permanent'));
       }
     });
+
+    generateYearOptions();
   }, [residentialInfoData]);
 
   return (
@@ -412,13 +462,27 @@ export const AddResidentialInfo = () => {
                     },
                   })}
                 />
-                <TextInput
+                <Select
+                  clearable
+                  searchable
+                  nothingFound="No options"
+                  data-autofocus
+                  data={startYearOptions}
                   label="From Year"
-                  maxLength={4}
                   className="inputClass"
-                  withAsterisk
-                  type="number"
                   {...residentialInfoForm.getInputProps('start_date.year')}
+                  withAsterisk={!checked}
+                  disabled={checked}
+                  styles={() => ({
+                    item: {
+                      '&[data-selected]': {
+                        '&, &:hover': {
+                          backgroundColor: '#17a672',
+                          color: 'white',
+                        },
+                      },
+                    },
+                  })}
                 />
               </Box>
             </Box>
@@ -441,7 +505,7 @@ export const AddResidentialInfo = () => {
                   nothingFound="No options"
                   data-autofocus
                   data={months}
-                  label="From Month"
+                  label="To Month"
                   className="inputClass"
                   {...residentialInfoForm.getInputProps('end_date.month')}
                   withAsterisk={!checked}
@@ -457,14 +521,27 @@ export const AddResidentialInfo = () => {
                     },
                   })}
                 />
-                <TextInput
-                  label="From Year"
-                  maxLength={4}
+                <Select
+                  clearable
+                  searchable
+                  nothingFound="No options"
+                  data-autofocus
+                  data={endYearOptions}
+                  label="To Year"
                   className="inputClass"
+                  {...residentialInfoForm.getInputProps('end_date.year')}
                   withAsterisk={!checked}
                   disabled={checked}
-                  type="number"
-                  {...residentialInfoForm.getInputProps('end_date.year')}
+                  styles={() => ({
+                    item: {
+                      '&[data-selected]': {
+                        '&, &:hover': {
+                          backgroundColor: '#17a672',
+                          color: 'white',
+                        },
+                      },
+                    },
+                  })}
                 />
               </Box>
             </Box>
