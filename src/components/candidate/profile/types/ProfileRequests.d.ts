@@ -23,6 +23,11 @@ type IDRequestBody = {
   id_type: 'AADHAR' | 'PAN' | 'DRIVING_LICENSE';
   id_number: string;
 };
+type IDRequestBodyLic = {
+  id_type: 'DRIVING_LICENSE';
+  id_number: string;
+  dob: string;
+};
 
 type IDVerificationOtpRequestBody = {
   otp: string;
