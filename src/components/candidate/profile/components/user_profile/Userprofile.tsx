@@ -61,6 +61,11 @@ export const Userprofile = () => {
     showLoadingNotification({ title: 'Wait !', message: 'Please wait while we update your profile picture' });
 
     if (event.target.files && event.target.files[0]) {
+      if (event.target.files[0].size > 5 * 1024 * 1024) {
+        showErrorNotification('SIZE_EXCEEDS');
+        return;
+      }
+
       const formData = new FormData();
       formData.append('profilePicture', event.target.files[0]);
 
@@ -225,7 +230,7 @@ export const Userprofile = () => {
           )}
 
           <Button leftIcon={<MdOutlineEdit />} className="edit-btn" onClick={openFileInput}>
-            Change picture
+            Change Picture
           </Button>
           <input type="file" accept="image/*" ref={fileInputRef} style={{ display: 'none' }} onChange={onImageChange} />
         </Box>

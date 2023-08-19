@@ -240,6 +240,7 @@ export const GlobalContextProvider: React.FC<{
   };
 
   const deleteWorkExperience = async (id: string) => {
+    console.log(id);
     showLoadingNotification({ title: 'Please wait !', message: 'Wait while we delete your Work Experience' });
     const res = await HttpClient.callApiAuth(
       {
