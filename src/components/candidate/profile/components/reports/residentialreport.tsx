@@ -1,6 +1,7 @@
 import React from 'react';
 import { MdVerified } from 'react-icons/md';
 import { Button } from '@mantine/core';
+import { ReportTop } from './ReportTop';
 import './_report.scss';
 
 interface ChildComponentProps {
@@ -11,20 +12,7 @@ export const ResidentialReport: React.FC<ChildComponentProps> = ({ ResidentialIn
   return (
     <>
       <main className="report-container">
-        <div className="report-container-head report-res">
-          <div>
-            <div className="report-header">
-              <span className="greenie">Greenie</span>
-              <span className="verified report-verifybtn">
-                <MdVerified />
-              </span>
-            </div>
-            <p className="greenie-text">www.greenie.one</p>
-          </div>
-          <div>
-            <p>Background Verification Report</p>
-          </div>
-        </div>
+        <ReportTop />
 
         <div className="disclaimer-box">
           <span className="disclaimer-text">Residential Information</span>

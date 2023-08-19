@@ -1,6 +1,7 @@
 import React from 'react';
 import { MdVerified } from 'react-icons/md';
 import { Text, Box, Button } from '@mantine/core';
+import { ReportTop } from './ReportTop';
 import './_report.scss';
 
 interface ChildComponentProps {
@@ -11,21 +12,7 @@ export const ResidentialReport2: React.FC<ChildComponentProps> = ({ ResidentialI
   return (
     <>
       <main className="report-container">
-        <div className="report-container-head report-res">
-          <div>
-            <div className="report-header">
-              <span className="greenie">Greenie</span>
-              <span className="verified report-verifybtn">
-                <MdVerified />
-              </span>
-            </div>
-            <p className="greenie-text">www.greenie.one</p>
-          </div>
-          <div>
-            <p>Background Verification Report</p>
-          </div>
-        </div>
-
+        <ReportTop />
         <div className="disclaimer-box">
           <span className="disclaimer-text">Residential Information</span>
           {ResidentialInfo.map((resident, index) => (
@@ -60,7 +47,8 @@ export const ResidentialReport2: React.FC<ChildComponentProps> = ({ ResidentialI
             <Box className="info-box">
               <Text className="experience-details-box-heading">Tenure</Text>
               <Text className="experience-details-box-text">
-                {resident.startDate.substring(0, 4)} - {resident.endDate ? resident.endDate.substring(0, 4) : 'Present'}
+                {resident.start_date.substring(0, 4)} -{' '}
+                {resident.endDate ? resident.endDate.substring(0, 4) : 'Present'}
               </Text>
             </Box>
             <Box className="info-box">

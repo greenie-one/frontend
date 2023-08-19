@@ -4,6 +4,7 @@ import { BsLinkedin } from 'react-icons/bs';
 import { Text, Box, Button } from '@mantine/core';
 import pdfIcon from '../../assets/pdfIcon.png';
 import { Link } from 'react-router-dom';
+import { ReportTop } from './ReportTop';
 import './_report.scss';
 
 interface ChildComponentProps {
@@ -14,27 +15,14 @@ export const WorkExperienceReport3: React.FC<ChildComponentProps> = ({ workExper
   return (
     <>
       <main className="report-container">
-        <div className="report-container-head report-res">
-          <div>
-            <div className="report-header">
-              <span className="greenie">Greenie</span>
-              <span className="verified report-verifybtn">
-                <MdVerified />
-              </span>
-            </div>
-            <p className="greenie-text">www.greenie.one</p>
-          </div>
-          <div>
-            <p>Background Verification Report</p>
-          </div>
-        </div>
+        <ReportTop />
 
         <div className="disclaimer-box">
           <span className="disclaimer-text">Work Experience</span>
         </div>
 
         {workExperienceDetails.map((experience, index) => (
-          <>
+          <div key={index}>
             <div className="disclaimer-box">
               <div className="residential-address residential-top ">
                 <div className="residential-address-left ">
@@ -90,7 +78,7 @@ export const WorkExperienceReport3: React.FC<ChildComponentProps> = ({ workExper
               <Box className="info-box">
                 <Text className="experience-details-box-heading">Tenure</Text>
                 <Text className="experience-details-box-text">
-                  {experience.dateOfJoining.substring(0, 4)} -{' '}
+                  {experience.dateOfJoining.substring(4, 15)} -{' '}
                   {experience.dateOfLeaving ? experience.dateOfLeaving.substring(0, 4) : 'Present'}
                 </Text>
               </Box>
@@ -99,7 +87,7 @@ export const WorkExperienceReport3: React.FC<ChildComponentProps> = ({ workExper
                 <Text className="experience-details-box-text">{experience.worktype}</Text>
               </Box>
             </Box>
-          </>
+          </div>
         ))}
 
         <div className="peer-exp-name">

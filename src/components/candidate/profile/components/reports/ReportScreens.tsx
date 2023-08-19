@@ -3,7 +3,7 @@ import { Report } from './Report';
 import { Button } from '@mantine/core';
 import { FrontReport } from './frontreport';
 import { ExecutiveSummary } from './executivesummary';
-import { WorkExperienceReport } from './workexperiencereport';
+import { WorkExperienceReport1 } from './workexperiencereport';
 import { WorkExperienceReport3 } from './workexperience3';
 import { WorkExperienceReport2 } from './workexperiencereport2';
 import { PersonalIdentification } from './personalidentification';
@@ -11,7 +11,7 @@ import { ResidentialReport } from './residentialreport';
 import { ResidentialReport2 } from './residentialreport2';
 // import { Document } from '@react-pdf/renderer';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
-import { PageNotFound } from '../../../../../pages/PageNotFound';
+// import { PageNotFound } from '../../../../../pages/PageNotFound';
 import { useLocation } from 'react-router-dom';
 import { HttpClient } from '../../../../../utils/generic/httpClient';
 import { showErrorNotification } from '../../../../../utils/functions/showNotification';
@@ -24,10 +24,11 @@ export const ReportScreens: React.FC = (): JSX.Element => {
   const email = searchParams.get('email') || '';
 
   const { authClient, profileData } = useGlobalContext();
-  const emailList = ['tanvitomar0579@gmail.com', 'tanvitomar592@gmail.com', 'swanandwagh7@gmail.com', 'example@.com'];
+  // const emailList = ['tanvitomar0579@gmail.com', 'tanvitomar592@gmail.com', 'swanandwagh7@gmail.com', 'example@.com'];
   // const targetEmail = String(profileData.email);
 
   const [workExperienceDetails, setWorkExperienceDetails] = useState<WorkExperience[]>([]);
+  const [peerDetails, setPeerDetails] = useState<WorkPeerReportResponse[]>([]);
   const [ResidentialInfo, setResidentialInfo] = useState<ResidentialType[]>([]);
   const [IdDetails, setIdDetails] = useState<IdDetails[]>([]);
   const [AccountDetails, setAccountDetails] = useState<ReportData['accountDetails']>();
@@ -42,42 +43,43 @@ export const ReportScreens: React.FC = (): JSX.Element => {
     );
 
     if (res.ok) {
-      // console.log(res);
+      console.log(res);
       setAccountDetails(res.value.accountDetails);
       setIdDetails(res.value.idDetails);
-      setWorkExperienceDetails(res.value.workExperienceDetails);
-      setResidentialInfo(res.value.ResidentialDetails);
+      setWorkExperienceDetails(res.value.workExperienceDetails.workExp.workExperiences);
+      setResidentialInfo(res.value.ResidentialDetails.residentialInfo.residentialInfos);
+      setPeerDetails(res.value.workExperienceDetails.peers);
     } else {
       showErrorNotification(res.error.code);
     }
   };
-  // console.log(AccountDetails);
   useEffect(() => {
     getReportData();
   }, [profileData.id]);
 
-  if (!emailList.includes(email)) {
-    return <PageNotFound />;
-  } else {
-    return (
-      <>
-        <FrontReport />
-        <Report />
-        <ExecutiveSummary
-          AccountDetails={AccountDetails}
-          ResidentialInfo={ResidentialInfo}
-          workExperienceDetails={workExperienceDetails}
-        />
-        <WorkExperienceReport workExperienceDetails={workExperienceDetails} />
-        <WorkExperienceReport2 workExperienceDetails={workExperienceDetails} />
-        <WorkExperienceReport3 workExperienceDetails={workExperienceDetails} />
-        <PersonalIdentification IdDetails={IdDetails} />
-        <ResidentialReport2 ResidentialInfo={ResidentialInfo} />
-        <ResidentialReport ResidentialInfo={ResidentialInfo} />
-        <Button className="printbtn" onClick={() => window.print()} size="sm" type="button" radius="xl" color="teal">
-          PRINT
-        </Button>
-      </>
-    );
-  }
+  // if (!emailList.includes(email)) {
+  //   return <PageNotFound />;
+  // } else {
+  return (
+    <>
+      <FrontReport />
+      <Report />
+      <ExecutiveSummary
+        IdDetails={IdDetails}
+        AccountDetails={AccountDetails}
+        ResidentialInfo={ResidentialInfo}
+        workExperienceDetails={workExperienceDetails}
+      />
+      <PersonalIdentification IdDetails={IdDetails} />
+      <WorkExperienceReport3 workExperienceDetails={workExperienceDetails} />
+      <WorkExperienceReport2 peerDetails={peerDetails} workExperienceDetails={workExperienceDetails} />
+      <WorkExperienceReport1 workExperienceDetails={workExperienceDetails} />
+      <ResidentialReport2 ResidentialInfo={ResidentialInfo} />
+      <ResidentialReport ResidentialInfo={ResidentialInfo} />
+      <Button className="printbtn" onClick={() => window.print()} size="sm" type="button" radius="xl" color="teal">
+        PRINT
+      </Button>
+    </>
+  );
+  // }
 };

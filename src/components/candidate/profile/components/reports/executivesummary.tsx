@@ -4,15 +4,18 @@ import { CgProfile } from 'react-icons/cg';
 import { Text, Box, Button, Progress, RingProgress } from '@mantine/core';
 import dummyThumbnail from '../../assets/johnMarston.png';
 import level from '../../assets/levelFilled.png';
+import { ReportTop } from './ReportTop';
 import './_report.scss';
 
 interface ChildComponentProps {
-  workExperienceDetails: WorkExperience[];
-  ResidentialInfo: ResidentialType[];
+  IdDetails: IdDetails[];
   AccountDetails: ReportData['accountDetails'];
+  ResidentialInfo: ResidentialType[];
+  workExperienceDetails: WorkExperience[];
 }
 
 export const ExecutiveSummary: React.FC<ChildComponentProps> = ({
+  IdDetails,
   AccountDetails,
   ResidentialInfo,
   workExperienceDetails,
@@ -20,21 +23,7 @@ export const ExecutiveSummary: React.FC<ChildComponentProps> = ({
   return (
     <>
       <main className="report-container">
-        <div className="report-container-head report-res">
-          <div>
-            <div className="report-header">
-              <span className="greenie">Greenie</span>
-              <span className="verified report-verifybtn">
-                <MdVerified />
-              </span>
-            </div>
-
-            <p className="greenie-text">www.greenie.one</p>
-          </div>
-          <div>
-            <p>Background Verification Report</p>
-          </div>
-        </div>
+        <ReportTop />
         <div className="disclaimer-box">
           <span className="disclaimer-text">Executive Summary</span>
           <div className="residential-address">
@@ -100,7 +89,12 @@ export const ExecutiveSummary: React.FC<ChildComponentProps> = ({
           <p>Aadhaar Card</p>
           <div className="location-date">
             <p>Last updated</p>
-            <p>02/03/2023</p>
+            {IdDetails.map(
+              (id, index) =>
+                id.id_type == 'AADHAR' && (
+                  <p key={index}>{id.updatedAt.substring(0, 10).split('-').reverse().join('/')}</p>
+                )
+            )}
           </div>
         </div>
 

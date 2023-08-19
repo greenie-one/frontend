@@ -31,8 +31,8 @@ export const ProfileSettings: React.FC = (): JSX.Element => {
   const [opened, { open, close }] = useDisclosure(false);
   const [openModal, setOpenModal] = useState<ProfileModal>(null);
 
-  const emailList = ['tanvitomar0579@gmail.com', 'tanvitomar592@gmail.com', 'swanandwagh7@gmail.com', 'example@.com'];
-  const targetEmail = String(profileData.email);
+  // const emailList = ['tanvitomar0579@gmail.com', 'tanvitomar592@gmail.com', 'swanandwagh7@gmail.com', 'example@.com'];
+  // const targetEmail = String(profileData.email);
 
   const [email, setEmail] = useState('');
 
@@ -67,7 +67,7 @@ export const ProfileSettings: React.FC = (): JSX.Element => {
     updateProfile();
     close();
   };
-  console.log(profileData);
+  // console.log(profileData);
   return (
     <>
       {openModal === 'Save Profile' && (
@@ -206,18 +206,18 @@ export const ProfileSettings: React.FC = (): JSX.Element => {
           >
             Save
           </Button>
-          {emailList.includes(targetEmail) && (
-            <Button
-              className={formClasses.formSubmitBtn}
-              size="sm"
-              type="button"
-              radius="xl"
-              color="teal"
-              onClick={() => handleOpenModal('Download')}
-            >
-              Download
-            </Button>
-          )}
+          {/* {emailList.includes(targetEmail) && ( */}
+          <Button
+            className={formClasses.formSubmitBtn}
+            size="sm"
+            type="button"
+            radius="xl"
+            color="teal"
+            onClick={() => handleOpenModal('Download')}
+          >
+            Download
+          </Button>
+          {/* )} */}
         </div>
       </form>
     </>

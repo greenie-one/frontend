@@ -163,62 +163,28 @@ type SentRequestsResponseType = {
   peerPost: string;
 };
 
-type AadharDataType = {
-  user_full_name: string;
-  user_aadhaar_number: string;
-  user_dob: string;
-  user_gender: string;
-  pan_number: string;
-  pan_type: string;
-  user_phone_number: string;
-  aadhaar_linked_status: string;
-  father_or_husband: string;
-  dl_number: string;
-  user_blood_group: string;
-};
-
-type PanDataType = {
-  pan_number: string;
-  pan_type: string;
-  user_full_name: string;
-  masked_aadhaar: string;
-  user_email: string;
-  user_phone_number: string;
-  user_gender: string;
-  aadhaar_linked_status: boolean;
-  user_dob: string;
-  aadhaar_linked_status: string;
-  father_or_husband: string;
-  dl_number: string;
-  user_blood_group: string;
-};
-
-type DrivingLicence = {
-  user_full_name: string;
-  father_or_husband: string;
-  dl_number: string;
-  user_dob: string;
-  user_blood_group: string;
-  user_phone_number: string;
-  pan_number: string;
-  pan_type: string;
-  aadhaar_linked_status: string;
+type NormalizedAddress = {
+  address_line_1: string;
+  address_line_2: string;
+  street: string;
+  city: string;
+  state: string;
+  country: string;
+  pincode: string;
+  type: string;
 };
 
 type IdDetails = {
-  idType: string;
-  idNumber: string;
-  data: AadharDataType | PanDataType | DrivingLicence;
-  normalizedAddress: {
-    address_line_1: string;
-    address_line_2: string;
-    city: string;
-    street: string;
-    country: string;
-    state: string;
-    pincode: string;
-    type: string;
-  };
+  id: string;
+  id_type: string;
+  id_number: string;
+  user: string;
+  address: NormalizedAddress[];
+  dob: string;
+  fullName: string;
+  location: string;
+  createdAt: Date;
+  updatedAt: string;
 };
 
 type WorkExperience = {
@@ -239,7 +205,7 @@ type ResidentialType = {
   address_line_2: string;
   landmark: string;
   pincode: number;
-  startDate: string;
+  start_date: string;
   endDate?: string;
   city: string;
   country: string;
@@ -247,11 +213,39 @@ type ResidentialType = {
   location: string;
 };
 
+type WorkPeerReportResponse = {
+  ref: string;
+  name: string;
+  email: string;
+  phone: string;
+  emailVerified?: boolean;
+  phoneVerified?: boolean;
+  verificationBy: WorkVerificationBy;
+  selectedFields?: SelectedFields;
+  allQuestions?: AllQuestions;
+  otherQuestions: HRQuestions;
+  skills: SkillsVerification[];
+  documents: DocumentVerification[];
+  createdAt?: Date;
+  updatedAt?: Date;
+  isVerificationCompleted?: boolean;
+};
+
 type ReportData = {
   accountDetails: {
     greenieId?: string;
   };
-  workExperienceDetails: WorkExperience[];
-  ResidentialDetails: ResidentialType[];
+  workExperienceDetails: {
+    peers: WorkPeerReportResponse[];
+    workExp: {
+      workExperiences: WorkExperience[];
+    };
+  };
+  ResidentialDetails: {
+    residentialPeers: GetUserPeersResponse[];
+    residentialInfo: {
+      residentialInfos: ResidentialType[];
+    };
+  };
   idDetails: IdDetails[];
 };

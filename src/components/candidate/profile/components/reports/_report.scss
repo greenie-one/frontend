@@ -94,9 +94,6 @@ body {
       }
       .peer-name {
         overflow: hidden;
-        // white-space: nowrap;
-        // text-overflow: ellipsis;
-        // max-width: 20ch;
         word-break: break-all;
         padding-right: rem(7);
         display: flex;
