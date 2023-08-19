@@ -26,6 +26,12 @@ body {
   padding: 2rem;
   margin-block: 2rem;
   font-size: rem(14);
+  .breakLine {
+    background: black;
+    height: 1px;
+    position: relative;
+    top: rem(35);
+  }
   &.report-container-main {
     background-color: #17a672;
     padding: 1rem;

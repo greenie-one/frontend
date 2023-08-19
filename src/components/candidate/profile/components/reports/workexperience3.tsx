@@ -1,6 +1,7 @@
 import React from 'react';
 import { MdVerified } from 'react-icons/md';
 import { BsLinkedin } from 'react-icons/bs';
+import { CgSandClock } from 'react-icons/cg';
 import { Text, Box, Button } from '@mantine/core';
 import pdfIcon from '../../assets/pdfIcon.png';
 import { Link } from 'react-router-dom';
@@ -9,9 +10,10 @@ import './_report.scss';
 
 interface ChildComponentProps {
   workExperienceDetails: WorkExperience[];
+  peerDetails: WorkPeerReportResponse[];
 }
 
-export const WorkExperienceReport3: React.FC<ChildComponentProps> = ({ workExperienceDetails }) => {
+export const WorkExperienceReport3: React.FC<ChildComponentProps> = ({ peerDetails, workExperienceDetails }) => {
   return (
     <>
       <main className="report-container">
@@ -27,14 +29,19 @@ export const WorkExperienceReport3: React.FC<ChildComponentProps> = ({ workExper
               <div className="residential-address residential-top ">
                 <div className="residential-address-left ">
                   <p>{experience.companyName}</p>
-                  <p>Greenie Verified on 20/04/2023</p>
-                  <Button leftIcon={<MdVerified color="#17A672" size={'16px'} />} className="verified report-verifybtn">
-                    Verified
-                  </Button>
+                  {experience.noOfVerifications >= 2 ? (
+                    <Button
+                      leftIcon={<MdVerified color="#17A672" size={'16px'} />}
+                      className="verified report-verifybtn"
+                    >
+                      Verified
+                    </Button>
+                  ) : (
+                    <Button leftIcon={<CgSandClock size={'16px'} />} className="pending report-verifybtn">
+                      Pending
+                    </Button>
+                  )}
                 </div>
-                <a href={experience.linkedInUrl} target="_blank" rel="noopener noreferrer">
-                  <div className="residential-address-right">View Company profile</div>
-                </a>
               </div>
             </div>
             <div className="location">
@@ -87,6 +94,7 @@ export const WorkExperienceReport3: React.FC<ChildComponentProps> = ({ workExper
                 <Text className="experience-details-box-text">{experience.worktype}</Text>
               </Box>
             </Box>
+            <hr className="breakLine"></hr>
           </div>
         ))}
 
@@ -102,20 +110,16 @@ export const WorkExperienceReport3: React.FC<ChildComponentProps> = ({ workExper
         </Box>
 
         <Box className="added-peer-box">
-          <Box className="added-peers added-peers-exp ">
-            <Text className="peer-name title">Manoj Shinde</Text>
-            <Text className="peer-name">Test</Text>
-            <Text className="peer-name text-verified ">Approved</Text>
-            <Text className="peer-name name-wrap">Abhishek is a very nice guy</Text>
-          </Box>
-          <Box className="added-peers added-peers-exp">
-            <Text className="peer-name title">Nitin Prabhakar</Text>
-            <Text className="peer-name">Test</Text>
-            <Text className="peer-name text-verified ">Approved</Text>
-            <Text className="peer-name name-wrap">
-              Abhishek is a very nice guy and very hard working, but sometimes makes inappropriate jokes in office
-            </Text>
-          </Box>
+          {peerDetails.map((peer, i) => (
+            <Box key={i} className="added-peers added-peers-exp ">
+              <Text className="peer-name title">{peer.name}</Text>
+              <Text className="peer-name">{peer.verificationBy}</Text>
+              <Text className={`peer-name ${peer.isVerificationCompleted ? 'text-verified' : 'text-dispute'}`}>
+                {peer.isVerificationCompleted ? 'Approved' : 'Not Approved'}
+              </Text>
+              <Text className="peer-name name-wrap">{peer.allQuestions.review}</Text>
+            </Box>
+          ))}
         </Box>
         <div className="peer-exp-name">
           <p>Documents</p>
@@ -123,7 +127,7 @@ export const WorkExperienceReport3: React.FC<ChildComponentProps> = ({ workExper
         <Box className="folder-wrapper report-folder-wrapper">
           <Link to="" className="folder" target="_blank">
             <img src={pdfIcon} alt="PDF Icon" />
-            <Text className="doc-name">TestTestTestTestTestTestTestTestTestTest</Text>
+            <Text className="doc-name">Test</Text>
             {/* <p>Download</p> */}
           </Link>
           <Link to="" className="folder" target="_blank">

@@ -1,6 +1,7 @@
 import React from 'react';
 import { MdVerified } from 'react-icons/md';
 import { CgProfile } from 'react-icons/cg';
+import { CgSandClock } from 'react-icons/cg';
 import { Text, Box, Button, Progress, RingProgress } from '@mantine/core';
 import dummyThumbnail from '../../assets/johnMarston.png';
 import level from '../../assets/levelFilled.png';
@@ -86,16 +87,7 @@ export const ExecutiveSummary: React.FC<ChildComponentProps> = ({
           </Box>
         </Box>
         <div className="location">
-          <p>Aadhaar Card</p>
-          <div className="location-date">
-            <p>Last updated</p>
-            {IdDetails.map(
-              (id, index) =>
-                id.id_type == 'AADHAR' && (
-                  <p key={index}>{id.updatedAt.substring(0, 10).split('-').reverse().join('/')}</p>
-                )
-            )}
-          </div>
+          <p>Summary</p>
         </div>
 
         <Box className="add-peer-header executive-header">
@@ -144,10 +136,6 @@ export const ExecutiveSummary: React.FC<ChildComponentProps> = ({
         {workExperienceDetails.length > 0 ? (
           <div className="location">
             <p>Work Experience ({workExperienceDetails.length})</p>
-            <div className="location-date">
-              <p>Verified on</p>
-              <p>02/03/2023</p>
-            </div>
           </div>
         ) : null}
 
@@ -156,19 +144,21 @@ export const ExecutiveSummary: React.FC<ChildComponentProps> = ({
             <Box key={index} className="info-box">
               <Text className="experience-details-box-heading">{experience.designation}</Text>
               <Text className="experience-details-box-text">{experience.companyName}</Text>
-              <Button leftIcon={<MdVerified color="#17A672" size={'16px'} />} className="verified report-verifybtn">
-                Verified
-              </Button>
+              {experience.noOfVerifications >= 2 ? (
+                <Button leftIcon={<MdVerified color="#17A672" size={'16px'} />} className="verified report-verifybtn">
+                  Verified
+                </Button>
+              ) : (
+                <Button leftIcon={<CgSandClock size={'16px'} />} className="pending report-verifybtn">
+                  Pending
+                </Button>
+              )}
             </Box>
           ))}
         </Box>
         {ResidentialInfo.length > 0 ? (
           <div className="location">
             <p>Residential Addresses ({ResidentialInfo.length})</p>
-            <div className="location-date">
-              <p>Verified on</p>
-              <p>02/03/2023</p>
-            </div>
           </div>
         ) : null}
         <Box className="basic-info-box-wrapper executive-wrapper">

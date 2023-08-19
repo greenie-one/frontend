@@ -9,9 +9,7 @@ import { WorkExperienceReport2 } from './workexperiencereport2';
 import { PersonalIdentification } from './personalidentification';
 import { ResidentialReport } from './residentialreport';
 import { ResidentialReport2 } from './residentialreport2';
-// import { Document } from '@react-pdf/renderer';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
-// import { PageNotFound } from '../../../../../pages/PageNotFound';
 import { useLocation } from 'react-router-dom';
 import { HttpClient } from '../../../../../utils/generic/httpClient';
 import { showErrorNotification } from '../../../../../utils/functions/showNotification';
@@ -63,19 +61,28 @@ export const ReportScreens: React.FC = (): JSX.Element => {
   return (
     <>
       <FrontReport />
+      <hr></hr>
       <Report />
+      <hr></hr>
       <ExecutiveSummary
         IdDetails={IdDetails}
         AccountDetails={AccountDetails}
         ResidentialInfo={ResidentialInfo}
         workExperienceDetails={workExperienceDetails}
       />
+      <hr></hr>
       <PersonalIdentification IdDetails={IdDetails} />
-      <WorkExperienceReport3 workExperienceDetails={workExperienceDetails} />
+      <hr></hr>
+      <WorkExperienceReport3 peerDetails={peerDetails} workExperienceDetails={workExperienceDetails} />
+      <hr></hr>
       <WorkExperienceReport2 peerDetails={peerDetails} workExperienceDetails={workExperienceDetails} />
-      <WorkExperienceReport1 workExperienceDetails={workExperienceDetails} />
+      <hr></hr>
+      <WorkExperienceReport1 peerDetails={peerDetails} workExperienceDetails={workExperienceDetails} />
+      <hr></hr>
       <ResidentialReport2 ResidentialInfo={ResidentialInfo} />
+      <hr></hr>
       <ResidentialReport ResidentialInfo={ResidentialInfo} />
+      <hr></hr>
       <Button className="printbtn" onClick={() => window.print()} size="sm" type="button" radius="xl" color="teal">
         PRINT
       </Button>

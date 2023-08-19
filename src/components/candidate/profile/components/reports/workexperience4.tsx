@@ -26,7 +26,6 @@ export const WorkExperienceReport4: React.FC = (): JSX.Element => {
           <div className="residential-address">
             <div className="residential-address-left ">
               <p>Infotech Solutions Private Limited</p>
-              <p>Greenie Verified on 20/04/2023</p>
             </div>
             <div className="residential-address-right">Click to see Greenie profile</div>
           </div>
@@ -36,7 +35,6 @@ export const WorkExperienceReport4: React.FC = (): JSX.Element => {
           <div className="residential-address residential-top">
             <div className="residential-address-left ">
               <p>Software Engineer</p>
-              <p>Greenie Verified on 20/04/2023</p>
               <Button leftIcon={<MdVerified color="#17A672" size={'16px'} />} className="verified report-verifybtn">
                 Verified
               </Button>

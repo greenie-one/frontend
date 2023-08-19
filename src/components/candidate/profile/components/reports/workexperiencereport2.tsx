@@ -2,6 +2,7 @@ import React from 'react';
 import { MdVerified } from 'react-icons/md';
 import { Text, Box, Button } from '@mantine/core';
 import { ReportTop } from './ReportTop';
+import { CgSandClock } from 'react-icons/cg';
 import './_report.scss';
 
 interface ChildComponentProps {
@@ -22,14 +23,19 @@ export const WorkExperienceReport2: React.FC<ChildComponentProps> = ({ peerDetai
               <div key={index} className="residential-address">
                 <div className="residential-address-left ">
                   <p>{experience.companyName}</p>
-                  <p>Greenie Verified on 20/04/2023</p>
-                  <Button leftIcon={<MdVerified color="#17A672" size={'16px'} />} className="verified report-verifybtn">
-                    Verified
-                  </Button>
+                  {experience.noOfVerifications >= 2 ? (
+                    <Button
+                      leftIcon={<MdVerified color="#17A672" size={'16px'} />}
+                      className="verified report-verifybtn"
+                    >
+                      Verified
+                    </Button>
+                  ) : (
+                    <Button leftIcon={<CgSandClock size={'16px'} />} className="pending report-verifybtn">
+                      Pending
+                    </Button>
+                  )}
                 </div>
-                <a href={experience.linkedInUrl} target="_blank" rel="noopener noreferrer">
-                  <div className="residential-address-right">View Company profile</div>
-                </a>
               </div>
 
               {peerDetails.map(
@@ -52,42 +58,75 @@ export const WorkExperienceReport2: React.FC<ChildComponentProps> = ({ peerDetai
                         <Box className="added-peers added-exp-peers">
                           <Text className="peer-name title">Candidate Company ID</Text>
                           <Text className="peer-name">{experience.companyId}</Text>
-                          <Text className="peer-name">Test</Text>
-                          <Text className="peer-name text-verified">Approved</Text>
+                          <Text className="peer-name">
+                            {peer.updatedAt?.substring(0, 10).split('-').reverse().join('/')}
+                          </Text>
+                          <Text
+                            className={`peer-name ${peer.isVerificationCompleted ? 'text-verified' : 'text-dispute'}`}
+                          >
+                            {peer.isVerificationCompleted ? 'Approved' : 'Rejected'}
+                          </Text>
                           <Text className="peer-name">Test</Text>
                         </Box>
                         <Box className="added-peers added-exp-peers">
                           <Text className="peer-name title">Department</Text>
                           <Text className="peer-name">{experience.department}</Text>
-                          <Text className="peer-name">Test</Text>
-                          <Text className="peer-name text-verified">Approved</Text>
+                          <Text className="peer-name">
+                            {peer.updatedAt?.substring(0, 10).split('-').reverse().join('/')}
+                          </Text>
+                          <Text
+                            className={`peer-name ${peer.isVerificationCompleted ? 'text-verified' : 'text-dispute'}`}
+                          >
+                            {peer.isVerificationCompleted ? 'Approved' : 'Rejected'}
+                          </Text>
                           <Text className="peer-name">Test</Text>
                         </Box>
                         <Box className="added-peers added-exp-peers">
                           <Text className="peer-name title">Designation at work</Text>
                           <Text className="peer-name">{experience.designation}</Text>
-                          <Text className="peer-name">Test</Text>
-                          <Text className="peer-name text-verified">Approved</Text>
+                          <Text className="peer-name">
+                            {peer.updatedAt?.substring(0, 10).split('-').reverse().join('/')}
+                          </Text>
+                          <Text
+                            className={`peer-name ${peer.isVerificationCompleted ? 'text-verified' : 'text-dispute'}`}
+                          >
+                            {peer.isVerificationCompleted ? 'Approved' : 'Rejected'}
+                          </Text>
                           <Text className="peer-name">Test</Text>
                         </Box>
                         <Box className="added-peers added-exp-peers">
                           <Text className="peer-name title">Date of Joining</Text>
                           <Text className="peer-name">{experience.dateOfJoining?.substring(4, 15)}</Text>
-                          <Text className="peer-name">Test</Text>
-                          <Text className="peer-name text-verified">Approved</Text>
+                          <Text className="peer-name">
+                            {peer.updatedAt?.substring(0, 10).split('-').reverse().join('/')}
+                          </Text>
+                          <Text
+                            className={`peer-name ${peer.isVerificationCompleted ? 'text-verified' : 'text-dispute'}`}
+                          >
+                            {peer.isVerificationCompleted ? 'Approved' : 'Rejected'}
+                          </Text>
                           <Text className="peer-name">Test</Text>
                         </Box>
                         <Box className="added-peers added-exp-peers">
                           <Text className="peer-name title">Date of Leaving</Text>
-                          <Text className="peer-name">{experience.dateOfLeaving?.substring(0, 10)}</Text>
-                          <Text className="peer-name">Test</Text>
-                          <Text className="peer-name text-verified">Approved</Text>
+                          <Text className="peer-name">
+                            {experience.dateOfLeaving?.substring(0, 10)
+                              ? experience.dateOfLeaving?.substring(0, 10)
+                              : 'Currently Working'}
+                          </Text>
+                          <Text className="peer-name">
+                            {peer.updatedAt?.substring(0, 10).split('-').reverse().join('/')}
+                          </Text>
+                          <Text className="peer-name text-verified text-dispute">
+                            {peer.isVerificationCompleted ? 'Approved' : 'Rejected'}
+                          </Text>
                           <Text className="peer-name">Test</Text>
                         </Box>
                       </Box>
                     </div>
                   )
               )}
+              <hr className="breakLine"></hr>
             </>
           ))}
         </div>

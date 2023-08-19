@@ -80,32 +80,43 @@ export const PersonalIdentification: React.FC<ChildComponentProps> = ({ IdDetail
               <Box key={index} className="added-peer-box">
                 <Box className="added-peers ">
                   <Text className="peer-name title">Full Name</Text>
-                  <Text className="peer-name">{id.fullName}</Text>
-                  <Text className="peer-name text-verified">Matched</Text>
+                  <Text className="peer-name">{id.fullName ? id.fullName : '-'}</Text>
+                  <Text className={`peer-name ${id.fullName ? 'text-verified' : 'text-dispute'}`}>
+                    {id.fullName ? 'Matched' : 'Not Matched'}
+                  </Text>
                   <Text className="peer-name">Test</Text>
                 </Box>
                 <Box className="added-peers ">
                   <Text className="peer-name title">PAN Number</Text>
-                  <Text className="peer-name">{id.id_number}</Text>
-                  <Text className="peer-name text-verified">Matched</Text>
+                  <Text className="peer-name">{id.id_number ? id.id_number : '-'}</Text>
+
+                  <Text className={`peer-name ${id.id_number ? 'text-verified' : 'text-dispute'}`}>
+                    {id.id_number ? 'Matched' : 'Not Matched'}
+                  </Text>
                   <Text className="peer-name">Test</Text>
                 </Box>
                 <Box className="added-peers ">
                   <Text className="peer-name title">DOB</Text>
-                  <Text className="peer-name">{id.dob}</Text>
-                  <Text className="peer-name text-verified">Matched</Text>
+                  <Text className="peer-name">{id.dob ? id.dob : '-'}</Text>
+                  <Text className={`peer-name ${id.dob ? 'text-verified' : 'text-dispute'}`}>
+                    {id.dob ? 'Matched' : 'Not Matched'}
+                  </Text>
                   <Text className="peer-name">Test</Text>
                 </Box>
                 <Box className="added-peers ">
                   <Text className="peer-name title">PAN type</Text>
-                  <Text className="peer-name"></Text>
-                  <Text className="peer-name text-verified">Matched</Text>
+                  <Text className="peer-name">{id.panType ? id.panType : '-'}</Text>
+                  <Text className={`peer-name ${id.panType ? 'text-verified' : 'text-dispute'}`}>
+                    {id.panType ? 'Matched' : 'Not Matched'}
+                  </Text>
                   <Text className="peer-name">Test</Text>
                 </Box>
                 <Box className="added-peers ">
                   <Text className="peer-name title">Phone Number</Text>
-                  <Text className="peer-name"></Text>
-                  <Text className="peer-name text-verified">Matched</Text>
+                  <Text className="peer-name">{id.phoneNumber ? id.phoneNumber : '-'}</Text>
+                  <Text className={`peer-name ${id.phoneNumber ? 'text-verified' : 'text-dispute'}`}>
+                    {id.phoneNumber ? 'Matched' : 'Not Matched'}
+                  </Text>
                   <Text className="peer-name">Test</Text>
                 </Box>
               </Box>
@@ -145,45 +156,59 @@ export const PersonalIdentification: React.FC<ChildComponentProps> = ({ IdDetail
               <Box key={index} className="added-peer-box">
                 <Box className="added-peers ">
                   <Text className="peer-name title">Full Name</Text>
-                  <Text className="peer-name">{id.fullName}</Text>
-                  <Text className="peer-name text-verified">Matched</Text>
-                  <Text className="peer-name">Test</Text>
+                  <Text className="peer-name">{id.fullName ? id.fullName : '-'}</Text>
+                  <Text className={`peer-name ${id.fullName ? 'text-verified' : 'text-dispute'}`}>
+                    {id.fullName ? 'Matched' : 'Not Matched'}
+                  </Text>
+                  <Text className="peer-name">{id.fullName ? 'API' : '-'}</Text>
                 </Box>
                 <Box className="added-peers ">
                   <Text className="peer-name title">Father’s Name</Text>
-                  <Text className="peer-name"></Text>
-                  <Text className="peer-name text-verified">Matched</Text>
-                  <Text className="peer-name">Test</Text>
+                  <Text className="peer-name">{id.fatherName ? id.fatherName : '-'}</Text>
+                  <Text className={`peer-name ${id.fatherName ? 'text-verified' : 'text-dispute'}`}>
+                    {id.fatherName ? 'Matched' : 'Not Matched'}
+                  </Text>
+                  <Text className="peer-name">{id.fatherName ? 'API' : '-'}</Text>
                 </Box>
                 <Box className="added-peers ">
                   <Text className="peer-name title">DL Number</Text>
-                  <Text className="peer-name">{id.id_number}</Text>
-                  <Text className="peer-name text-verified">Matched</Text>
-                  <Text className="peer-name">Test</Text>
+                  <Text className="peer-name">{id.id_number ? id.id_number : '-'}</Text>
+                  <Text className={`peer-name ${id.id_number ? 'text-verified' : 'text-dispute'}`}>
+                    {id.id_number ? 'Matched' : 'Not Matched'}{' '}
+                  </Text>
+                  <Text className="peer-name">{id.id_number ? 'API' : '-'}</Text>
                 </Box>
                 <Box className="added-peers ">
                   <Text className="peer-name title">DOB</Text>
-                  <Text className="peer-name">{id.dob}</Text>
-                  <Text className="peer-name text-verified">Matched</Text>
-                  <Text className="peer-name">Test</Text>
+                  <Text className="peer-name">{id.dob ? id.dob : '-'}</Text>
+                  <Text className={`peer-name ${id.dob ? 'text-verified' : 'text-dispute'}`}>
+                    {id.dob ? 'Matched' : 'Not Matched'}
+                  </Text>
+                  <Text className="peer-name">{id.dob ? 'API' : '-'}</Text>
                 </Box>
                 <Box className="added-peers ">
                   <Text className="peer-name title">Vehicle type</Text>
-                  <Text className="peer-name"></Text>
-                  <Text className="peer-name text-verified">Matched</Text>
-                  <Text className="peer-name">Test</Text>
+                  <Text className="peer-name">{id.vehicleType ? id.vehicleType : '-'}</Text>
+                  <Text className={`peer-name ${id.vehicleType ? 'text-verified' : 'text-dispute'}`}>
+                    {id.vehicleType ? 'Matched' : 'Not Matched'}
+                  </Text>
+                  <Text className="peer-name">{id.vehicleType ? 'API' : '-'}</Text>
                 </Box>
                 <Box className="added-peers ">
                   <Text className="peer-name title">Phone Number</Text>
-                  <Text className="peer-name"></Text>
-                  <Text className="peer-name text-verified">Matched</Text>
-                  <Text className="peer-name">Test</Text>
+                  <Text className="peer-name">{id.phoneNumber ? id.phoneNumber : '-'}</Text>
+                  <Text className={`peer-name ${id.phoneNumber ? 'text-verified' : 'text-dispute'}`}>
+                    {id.phoneNumber ? 'Matched' : 'Not Matched'}
+                  </Text>
+                  <Text className="peer-name">{id.phoneNumber ? 'API' : '-'}</Text>
                 </Box>
                 <Box className="added-peers ">
                   <Text className="peer-name title">Blood Group</Text>
-                  <Text className="peer-name"></Text>
-                  <Text className="peer-name text-verified">Matched</Text>
-                  <Text className="peer-name">Test</Text>
+                  <Text className="peer-name">{id.bloodGroup ? id.bloodGroup : '-'}</Text>
+                  <Text className={`peer-name ${id.bloodGroup ? 'text-verified' : 'text-dispute'}`}>
+                    {id.bloodGroup ? 'Matched' : 'Not Matched'}
+                  </Text>
+                  <Text className="peer-name">{id.bloodGroup ? 'API' : '-'}</Text>
                 </Box>
               </Box>
             )

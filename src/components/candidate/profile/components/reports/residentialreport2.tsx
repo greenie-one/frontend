@@ -1,5 +1,6 @@
 import React from 'react';
 import { MdVerified } from 'react-icons/md';
+import { CgSandClock } from 'react-icons/cg';
 import { Text, Box, Button } from '@mantine/core';
 import { ReportTop } from './ReportTop';
 import './_report.scss';
@@ -23,11 +24,16 @@ export const ResidentialReport2: React.FC<ChildComponentProps> = ({ ResidentialI
                   {' '}
                   {resident.address_line_1} {resident.address_line_2} {resident.city} - {resident.pincode}
                 </p>
-                <Button leftIcon={<MdVerified color="#17A672" size={'16px'} />} className="verified report-verifybtn">
-                  Verified
-                </Button>
+                {resident.isVerified ? (
+                  <Button leftIcon={<MdVerified color="#17A672" size={'16px'} />} className="verified report-verifybtn">
+                    Verified
+                  </Button>
+                ) : (
+                  <Button leftIcon={<CgSandClock size={'16px'} />} className="pending report-verifybtn">
+                    Pending
+                  </Button>
+                )}
               </div>
-              <div className="residential-address-right">Locate on Google maps</div>
             </div>
           ))}
         </div>
@@ -39,86 +45,100 @@ export const ResidentialReport2: React.FC<ChildComponentProps> = ({ ResidentialI
           </div>
         </div>
         {ResidentialInfo.map((resident, index) => (
-          <Box key={index} className="basic-info-box-wrapper residence-wrapper">
-            <Box className="info-box">
-              <Text className="experience-details-box-heading">Address type</Text>
-              <Text className="experience-details-box-text">{resident.addressType} </Text>
+          <div key={index}>
+            <Box className="basic-info-box-wrapper residence-wrapper">
+              <Box className="info-box">
+                <Text className="experience-details-box-heading">Address type</Text>
+                <Text className="experience-details-box-text">{resident.addressType} </Text>
+              </Box>
+              <Box className="info-box">
+                <Text className="experience-details-box-heading">Tenure</Text>
+                <Text className="experience-details-box-text">
+                  {resident.start_date.substring(0, 4)} -{' '}
+                  {resident.endDate ? resident.endDate.substring(0, 4) : 'Present'}
+                </Text>
+              </Box>
+              <Box className="info-box">
+                <Text className="experience-details-box-heading">Address Line 1</Text>
+                <Text className="experience-details-box-text">{resident.address_line_1} </Text>
+              </Box>
+              <Box className="info-box">
+                <Text className="experience-details-box-heading">Address Line 2</Text>
+                <Text className="experience-details-box-text">{resident.address_line_2}</Text>
+              </Box>
             </Box>
-            <Box className="info-box">
-              <Text className="experience-details-box-heading">Tenure</Text>
-              <Text className="experience-details-box-text">
-                {resident.start_date.substring(0, 4)} -{' '}
-                {resident.endDate ? resident.endDate.substring(0, 4) : 'Present'}
-              </Text>
+            <div className="location">
+              <p>Geographic Information</p>
+              <div className="location-date">
+                <p>Last updated</p>
+                <p>02/03/2023</p>
+              </div>
+            </div>
+
+            <Box className="add-peer-header">
+              <Text className="add-peer-header-text">Particular</Text>
+              <Text className="add-peer-header-text">Value</Text>
+              <Text className="add-peer-header-text">Remarks</Text>
             </Box>
-            <Box className="info-box">
-              <Text className="experience-details-box-heading">Address Line 1</Text>
-              <Text className="experience-details-box-text">{resident.address_line_1} </Text>
+
+            <Box className="added-peer-box">
+              <Box className="add-peers">
+                <Box className="added-peers">
+                  <Text className="peer-name title">Landmark</Text>
+                  <Text className="peer-name">{resident.landmark}</Text>
+                  <Text className="peer-name">Geographic </Text>
+                </Box>
+                <Box className="added-peers">
+                  <Text className="peer-name title">Pincode</Text>
+                  <Text className="peer-name">{resident.pincode}</Text>
+                  <Text className="peer-name">Geographic </Text>
+                </Box>
+                <Box className="added-peers">
+                  <Text className="peer-name title">City</Text>
+                  <Text className="peer-name">{resident.city}</Text>
+                  <Text className="peer-name">Geographic </Text>
+                </Box>
+                <Box className="added-peers">
+                  <Text className="peer-name title">State</Text>
+                  <Text className="peer-name">{resident.state}</Text>
+                  <Text className="peer-name">Geographic </Text>
+                </Box>
+                <Box className="added-peers">
+                  <Text className="peer-name title">Country</Text>
+                  <Text className="peer-name">{resident.country}</Text>
+                  <Text className="peer-name">Geographic </Text>
+                </Box>
+              </Box>
             </Box>
-            <Box className="info-box">
-              <Text className="experience-details-box-heading">Address Line 2</Text>
-              <Text className="experience-details-box-text">{resident.address_line_2}</Text>
+
+            <div className="location">
+              <p>Verified By</p>
+              <div className="location-date">
+                <p>Last updated</p>
+                <p>02/03/2023</p>
+              </div>
+            </div>
+            <div className="peer-exp-name">
+              <p>Referees</p>
+            </div>
+
+            <Box className="add-peer-header work-header">
+              <Text className="add-peer-header-text">Status</Text>
+              <Text className="add-peer-header-text">Particular</Text>
+              <Text className="add-peer-header-text">Status</Text>
+              <Text className="add-peer-header-text">Remarks</Text>
             </Box>
-          </Box>
+
+            <Box className="added-peer-box">
+              <Box className="added-peers added-peers-exp ">
+                <Text className="peer-name title"></Text>
+                <Text className="peer-name"></Text>
+                <Text className="peer-name text-verified text-dispute "></Text>
+                <Text className="peer-name name-wrap"></Text>
+              </Box>
+            </Box>
+          </div>
         ))}
-
-        <div className="location">
-          <p>Geographic Information</p>
-          <div className="location-date">
-            <p>Last updated</p>
-            <p>02/03/2023</p>
-          </div>
-        </div>
-
-        <Box className="add-peer-header">
-          <Text className="add-peer-header-text">Particular</Text>
-          <Text className="add-peer-header-text">Verified as</Text>
-          <Text className="add-peer-header-text">Verified on</Text>
-          <Text className="add-peer-header-text">Remarks</Text>
-        </Box>
-
-        <Box className="added-peer-box">
-          <Box className="add-peers">
-            <Box className="added-peers">
-              <Text className="peer-name title">Landmark</Text>
-              <Text className="peer-name">Test</Text>
-              <Text className="peer-name">Test</Text>
-              <Text className="peer-name">Test</Text>
-            </Box>
-            <Box className="added-peers">
-              <Text className="peer-name title">Landmark</Text>
-              <Text className="peer-name">Test</Text>
-              <Text className="peer-name">Test</Text>
-              <Text className="peer-name">Test</Text>
-            </Box>
-            <Box className="added-peers">
-              <Text className="peer-name title">Landmark</Text>
-              <Text className="peer-name">Test</Text>
-              <Text className="peer-name">Test</Text>
-              <Text className="peer-name">Test</Text>
-            </Box>
-            <Box className="added-peers">
-              <Text className="peer-name title">Landmark</Text>
-              <Text className="peer-name">Test</Text>
-              <Text className="peer-name">Test</Text>
-              <Text className="peer-name">Test</Text>
-            </Box>
-          </Box>
-        </Box>
-
-        <div className="location">
-          <p>Verified By</p>
-          <div className="location-date">
-            <p>Last updated</p>
-            <p>02/03/2023</p>
-          </div>
-        </div>
-        <Box className="basic-info-box-wrapper executive-wrapper">
-          <Box className="info-box">
-            <Text className="experience-details-box-heading">Ashok Deshmukh</Text>
-            <Text className="experience-details-box-text">Father</Text>
-          </Box>
-        </Box>
       </main>
     </>
   );

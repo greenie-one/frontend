@@ -185,6 +185,11 @@ type IdDetails = {
   location: string;
   createdAt: Date;
   updatedAt: string;
+  fatherName: string;
+  vehicleType: string;
+  phoneNumber: string;
+  bloodGroup: string;
+  panType: string;
 };
 
 type WorkExperience = {
@@ -194,8 +199,8 @@ type WorkExperience = {
   companyId: string;
   linkedInUrl?: string;
   workEmail: string;
-  dateOfJoining: Date;
-  dateOfLeaving?: Date;
+  dateOfJoining: string;
+  dateOfLeaving?: string;
   worktype: string;
 };
 
@@ -211,6 +216,8 @@ type ResidentialType = {
   country: string;
   addressType: string;
   location: string;
+  state: string;
+  isVerified: string;
 };
 
 type WorkPeerReportResponse = {
@@ -226,8 +233,8 @@ type WorkPeerReportResponse = {
   otherQuestions: HRQuestions;
   skills: SkillsVerification[];
   documents: DocumentVerification[];
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt?: string;
+  updatedAt?: string;
   isVerificationCompleted?: boolean;
 };
 
