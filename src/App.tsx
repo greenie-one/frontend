@@ -79,7 +79,6 @@ const App = () => {
                 <Route path="docDepot" element={<DocDepotPage />} />
                 <Route path="myVerification" element={<MyVerifications />} />
               </Route>
-              R
             </Route>
 
             <Route path="privacy" element={<PrivacyPolicyPage />} />
