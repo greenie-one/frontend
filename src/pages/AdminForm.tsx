@@ -55,7 +55,7 @@ export const AdminForm: React.FC = (): JSX.Element => {
     };
 
     showLoadingNotification({ title: 'Please Wait', message: 'Creating new account...' });
-    const res = await HttpClient.callApiAuth<any>(
+    const res = await HttpClient.callApiAuth<{ message: string }>(
       {
         url: `${BASE_URL}/utils/admin/create_account`,
         method: 'POST',
@@ -99,8 +99,8 @@ export const AdminForm: React.FC = (): JSX.Element => {
         showErrorNotification(res.error.code);
         throw new Error(JSON.stringify(res.error));
       }
-    } catch (err: any) {
-      console.error('~ AdminForm.tsx ~ onGenerateReportFormSubmit(): ', JSON.parse(err));
+    } catch (err: unknown) {
+      console.error('~ AdminForm.tsx ~ onGenerateReportFormSubmit(): ', JSON.parse(String(err)));
     }
   };
 
