@@ -17,7 +17,6 @@ import { TermsAndConditionsPage } from './pages/TermsAndConditionsPage';
 import { AuthVerificationLayout } from './utils/constants/AuthVerification';
 import { GoogleAuthRedirect } from './components/auth/components/google/GoogleAuthRedirect';
 import { AppLayout } from './components/layouts/AppLayout';
-import { ReportScreens } from './components/candidate/profile/components/reports/ReportScreens';
 import { ExperienceVerification } from './pages/ExperienceVerification';
 import { AllExperiences } from './components/candidate/profile/components/experience/AllExperiences';
 import { ExperienceDetails } from './components/candidate/profile/components/experience/ExperienceDetails';
@@ -47,7 +46,6 @@ const App = () => {
         <Routes>
           <Route path="/" element={<AppLayout />}>
             <Route index element={<Landing />} />
-            <Route path="/screens" element={<ReportScreens />} />
             <Route path="auth" element={<AuthPage />} />
             <Route path="waitlist" element={<Waitlist />} />
             <Route path="oauth/google/callback" element={<GoogleAuthRedirect />} />

@@ -40,6 +40,7 @@ type PeerVerificationErrorResponse = {
   phone: string;
   email: string;
   username: string;
+  verificationBy: string;
 };
 
 type PeerVerificationDataResponse = {

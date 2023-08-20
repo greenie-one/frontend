@@ -1,24 +1,44 @@
 @import '_variables';
+.page-container {
+  margin-top: 6rem;
+  padding-block: 4rem;
+  padding-inline: 1.5rem;
+
+  .tabList {
+    width: min(100%, 40rem);
+    margin-inline: auto;
+
+    .tabBtn {
+      width: 50%;
+      font-weight: 500;
+    }
+  }
+}
+
 .hrFormContainer {
   margin-block-start: 150px;
   display: flex;
   align-items: center;
   flex-direction: column;
+
   &.adminContainer {
     margin-block-start: 120px;
   }
+
   &.reportContainer {
     margin-block-start: 30px;
   }
+
   .formText {
     margin-top: 15px;
     font-size: 25px;
   }
 }
+
 .hrForm {
   margin-inline: auto;
   margin-block: 5rem;
-  width: 50%;
+  width: min(100%, 40rem);
   &.adminForm {
     margin-block: 2rem;
   }

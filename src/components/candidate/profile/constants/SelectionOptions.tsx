@@ -6,7 +6,7 @@ export const workType = [
 export const modeOfWork = [
   { value: 'Full-time', label: 'Full-time' },
   { value: 'Part-time', label: 'Part-time' },
-  { value: 'Internship', label: 'Intership' },
+  { value: 'Internship', label: 'Internship' },
   { value: 'Contract', label: 'Contract' },
 ];
 
