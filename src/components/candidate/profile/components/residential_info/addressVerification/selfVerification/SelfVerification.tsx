@@ -114,7 +114,6 @@ export const SelfVerification: React.FC = (): JSX.Element => {
           close={close}
           addressVerified={addressVerified}
           residentialData={currentResidentialInfo as ResidentialInfoResponse}
-          verificationType="self"
         />
       ) : (
         <></>

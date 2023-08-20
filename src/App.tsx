@@ -9,13 +9,14 @@ import { Waitlist } from './pages/Waitlist';
 
 import { ProfilePage } from './pages/ProfilePage';
 import { SettingsPage } from './pages/SettingsPage';
+import { HRForm } from './pages/HRForm';
+import { AdminForm } from './pages/AdminForm';
 import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage';
 import { TermsAndConditionsPage } from './pages/TermsAndConditionsPage';
 
 import { AuthVerificationLayout } from './utils/constants/AuthVerification';
 import { GoogleAuthRedirect } from './components/auth/components/google/GoogleAuthRedirect';
 import { AppLayout } from './components/layouts/AppLayout';
-
 import { ExperienceVerification } from './pages/ExperienceVerification';
 import { AllExperiences } from './components/candidate/profile/components/experience/AllExperiences';
 import { ExperienceDetails } from './components/candidate/profile/components/experience/ExperienceDetails';
@@ -54,6 +55,8 @@ const App = () => {
             <Route element={<AuthVerificationLayout />}>
               <Route path="candidate/profile">
                 <Route index element={<ProfilePage />} />
+                <Route path="hr" element={<HRForm />} />
+                <Route path="admin" element={<AdminForm />} />
                 <Route path="settings" element={<SettingsPage />} />
 
                 <Route path="IDs/verify/aadhar/congratulations" element={<CongratulationsScreen />} />

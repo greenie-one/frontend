@@ -31,7 +31,7 @@ export const ResidentialInfoSection = () => {
       <Box className="header">
         <Box>
           <Text className="heading">{`Residential Information (${residentialInfoData?.length})`}</Text>
-          <Text className="subheading">All Your Addresses</Text>
+          <Text className="subheading">All your permanent and temporary addresses</Text>
         </Box>
 
         {residentialInfoData?.length > 0 && (

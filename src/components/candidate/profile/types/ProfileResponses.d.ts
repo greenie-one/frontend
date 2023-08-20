@@ -51,7 +51,7 @@ type WorkExperience = {
   noOfVerifications: number;
   salary: string;
   workMode: string;
-  workType: string;
+  worktype: string;
 };
 
 type workExperienceResponse = {
@@ -161,4 +161,91 @@ type SentRequestsResponseType = {
   createdAt: string;
   updatedAt: string;
   peerPost: string;
+};
+
+type NormalizedAddress = {
+  address_line_1: string;
+  address_line_2: string;
+  street: string;
+  city: string;
+  state: string;
+  country: string;
+  pincode: string;
+  type: string;
+};
+
+type IdDetails = {
+  id: string;
+  id_type: string;
+  id_number: string;
+  user: string;
+  address: NormalizedAddress[];
+  dob: string;
+  fullName: string;
+  location: string;
+  createdAt: Date;
+  updatedAt: string;
+};
+
+type WorkExperience = {
+  designation: string;
+  companyName: string;
+  companyType: string;
+  companyId: string;
+  linkedInUrl?: string;
+  workEmail: string;
+  dateOfJoining: Date;
+  dateOfLeaving?: Date;
+  worktype: string;
+};
+
+type ResidentialType = {
+  id: string;
+  address_line_1: string;
+  address_line_2: string;
+  landmark: string;
+  pincode: number;
+  start_date: string;
+  endDate?: string;
+  city: string;
+  country: string;
+  addressType: string;
+  location: string;
+};
+
+type WorkPeerReportResponse = {
+  ref: string;
+  name: string;
+  email: string;
+  phone: string;
+  emailVerified?: boolean;
+  phoneVerified?: boolean;
+  verificationBy: WorkVerificationBy;
+  selectedFields?: SelectedFields;
+  allQuestions?: AllQuestions;
+  otherQuestions: HRQuestions;
+  skills: SkillsVerification[];
+  documents: DocumentVerification[];
+  createdAt?: Date;
+  updatedAt?: Date;
+  isVerificationCompleted?: boolean;
+};
+
+type ReportData = {
+  accountDetails: {
+    greenieId?: string;
+  };
+  workExperienceDetails: {
+    peers: WorkPeerReportResponse[];
+    workExp: {
+      workExperiences: WorkExperience[];
+    };
+  };
+  ResidentialDetails: {
+    residentialPeers: GetUserPeersResponse[];
+    residentialInfo: {
+      residentialInfos: ResidentialType[];
+    };
+  };
+  idDetails: IdDetails[];
 };

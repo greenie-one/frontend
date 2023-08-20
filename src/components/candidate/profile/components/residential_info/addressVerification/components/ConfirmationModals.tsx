@@ -6,7 +6,6 @@ import checkGif from '../../../../assets/94109-confirmation 1.gif';
 import location from '../../../../assets/location.png';
 import locationError from '../../../../assets/locationError.png';
 import { MdVerified } from 'react-icons/md';
-import { FcInfo } from 'react-icons/fc';
 
 type ConfirmationModalProps = {
   opened: boolean;
@@ -14,7 +13,6 @@ type ConfirmationModalProps = {
   addressVerified: boolean;
   peerData?: PeerVerificationDataResponse;
   residentialData?: ResidentialInfoResponse;
-  verificationType: 'self' | 'peer';
 };
 
 export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
@@ -23,7 +21,6 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
   addressVerified,
   peerData,
   residentialData,
-  verificationType,
 }): JSX.Element => {
   const navigate = useNavigate();
   const isMobile = useMediaQuery('(max-width: 768px)');
@@ -72,29 +69,7 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
                 </Button>
               </Box>
             </Box>
-            {verificationType === 'self' && (
-              <Box style={{ width: 'min(100%, 32rem)' }} className="pro-tip-box">
-                <Box className="icon-box">
-                  <FcInfo color="#1991ff" />
-                  <Text className="pro-tip">Pro tip</Text>
-                </Box>
-                <Text className="tip">
-                  Verification of address does not determine the authenticity of the location. Greenie will only
-                  authenticate the exact address claimed and the one verified in the Verification Report. You are the
-                  owner of the report but it is only visible to an enterprise or HR/Recruiter whoever you allow.
-                </Text>
-              </Box>
-            )}
-            <Button
-              className="green-btn"
-              onClick={() => {
-                if (verificationType === 'self') {
-                  navigate('/candidate/profile');
-                } else {
-                  navigate('.?verified=true');
-                }
-              }}
-            >
+            <Button className="green-btn" onClick={() => navigate('.?verified=true')}>
               Continue
             </Button>
           </Box>

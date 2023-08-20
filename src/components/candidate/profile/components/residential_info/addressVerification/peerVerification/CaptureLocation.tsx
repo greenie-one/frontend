@@ -8,7 +8,6 @@ import { useDisclosure } from '@mantine/hooks';
 import { ConfirmationModal } from '../components/ConfirmationModals';
 import { useNavigate } from 'react-router-dom';
 import { useGlobalContext } from '../../../../../../../context/GlobalContext';
-import { FcInfo } from 'react-icons/fc';
 
 type CaptureLocationProps = {
   uuid: string;
@@ -123,13 +122,7 @@ export const CaptureLocation: React.FC<CaptureLocationProps> = ({ uuid, peerData
   return (
     <>
       {addressVerified !== null ? (
-        <ConfirmationModal
-          verificationType="peer"
-          opened={opened}
-          close={close}
-          addressVerified={addressVerified}
-          peerData={peerData}
-        />
+        <ConfirmationModal opened={opened} close={close} addressVerified={addressVerified} peerData={peerData} />
       ) : (
         <></>
       )}
@@ -153,16 +146,6 @@ export const CaptureLocation: React.FC<CaptureLocationProps> = ({ uuid, peerData
                 {peerData.residentialInfo.landmark}, {peerData.residentialInfo.city}, {peerData.residentialInfo.pincode}
               </Text>
             </Box>
-          </Box>
-          <Box style={{ width: 'min(100%, 40rem)' }} className="pro-tip-box">
-            <Box className="icon-box">
-              <FcInfo color="#1991ff" />
-              <Text className="pro-tip">Pro tip</Text>
-            </Box>
-            <Text className="tip">
-              To achieve accurate authentication of the address for <strong>{peerData.user.name}</strong> , please make
-              sure you are present at the address mentioned while capturing location
-            </Text>
           </Box>
           <Box className="address-verification-details-box-header">
             <Text>Sr. No.</Text>

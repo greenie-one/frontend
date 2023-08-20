@@ -36,34 +36,3 @@
   place-items: center;
   font-size: 1.25rem;
 }
-
-@media screen and (max-width: 53em) {
-  .option_list_items {
-    padding-inline: 1rem;
-    padding-block: 0.5rem;
-    font-size: 0.9rem;
-    gap: 6px;
-  }
-}
-
-@media screen and (max-width: 47.5em) {
-  .option_list {
-    grid-template-columns: 1fr 1fr 1fr;
-  }
-
-  .option_list_items {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-}
-
-@media screen and (max-width: 37em) {
-  .option_list_items {
-    padding-inline: 0.5rem;
-    padding-block: 0.5rem;
-    font-size: 0.8rem;
-    gap: 5px;
-    text-align: center;
-  }
-}

@@ -1,6 +1,6 @@
 import { useEnv } from "../../utils/hooks/useEnv";
 
-const BASE_URL = useEnv("BASE_URL");
+export const BASE_URL = useEnv("BASE_URL");
 
 export const userApiList = {
   baseRoute: `${BASE_URL}/user`,
@@ -97,3 +97,5 @@ export const addressVerificationAPIList = {
 export const searchEndpoints = {
   searchAddress: `${BASE_URL}/location/autocomplete`,
 }
+
+export const reportAPI = `${BASE_URL}/report`;

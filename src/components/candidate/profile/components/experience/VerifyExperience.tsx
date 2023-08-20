@@ -112,15 +112,6 @@ export const VerifyExperience: React.FC = () => {
 
   const handleCreatePeer = async () => {
     if (peerVerificationForm.validate().hasErrors) return;
-
-    if (experience?.email === peerVerificationForm.values.email) {
-      peerVerificationForm.setFieldError(
-        'email',
-        'Work email cannot be added as peer email! Please add another email.'
-      );
-      return;
-    }
-
     if (!checkDuplicateEmail(peerVerificationForm.values.email)) {
       peerVerificationForm.setFieldError('email', 'Email already added! Please add another email.');
       return;
