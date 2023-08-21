@@ -79,7 +79,15 @@ export const WorkExperienceReport2: React.FC<ChildComponentProps> = ({ peerDetai
                                   return (
                                     <Box key={idx} className="added-peers added-exp-peers">
                                       <Text className="peer-name title">{optionalAttrDict[field]}</Text>
-                                      <Text className="peer-name">{experience[field as keyof WorkExperience]}</Text>
+                                      <Text className="peer-name">
+                                        {field === 'dateOfJoining' || field === 'dateOfLeaving'
+                                          ? String(experience[field as keyof WorkExperience])
+                                              .substring(0, 10)
+                                              .split('-')
+                                              .reverse()
+                                              .join('-')
+                                          : experience[field as keyof WorkExperience]}
+                                      </Text>
                                       <Text className="peer-name">
                                         {peer.isVerificationCompleted
                                           ? peer.updatedAt?.substring(0, 10).split('-').reverse().join('-')
