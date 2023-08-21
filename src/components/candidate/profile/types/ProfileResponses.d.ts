@@ -51,7 +51,8 @@ type WorkExperience = {
   noOfVerifications: number;
   salary: string;
   workMode: string;
-  worktype: string;
+  workType: string;
+  updatedAt: string;
 };
 
 type workExperienceResponse = {
@@ -186,10 +187,15 @@ type IdDetails = {
   createdAt: Date;
   updatedAt: string;
   fatherName: string;
-  vehicleType: string;
+  VehicleType: string[];
   phoneNumber: string;
   bloodGroup: string;
+  pan_type: string;
+  aadharLinked: boolean;
   panType: string;
+  phoneNumber: string;
+  dateOfIssue: string;
+  dateOfExpiry: string;
 };
 
 type WorkExperience = {
@@ -245,7 +251,25 @@ type AccountDetails = {
   lastName: string;
 };
 
+type PeersResponse = {
+  createdAt: string;
+  email: string;
+  id: string;
+  isVerificationCompleted: boolean;
+  name: string;
+  phone: Number;
+  ref: string;
+  updatedAt: string;
+  verificationBy: string;
+};
+
+type DocumentResponse = {
+  name: string;
+  privateUrl: string;
+};
+
 type WorkExperienceDetails = {
+  documents: DocumentResponse[];
   peers: WorkPeerReportResponse[];
   workExp: {
     workExperiences: WorkExperience[];
@@ -253,7 +277,7 @@ type WorkExperienceDetails = {
 };
 
 type ResidentialDetailsResponse = {
-  residentialPeers: GetUserPeersResponse[];
+  residentialPeers: PeersResponse[];
   residentialInfo: ResidentialType[];
 };
 

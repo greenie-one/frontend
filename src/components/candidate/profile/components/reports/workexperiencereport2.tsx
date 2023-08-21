@@ -64,9 +64,11 @@ export const WorkExperienceReport2: React.FC<ChildComponentProps> = ({ peerDetai
                           <Text
                             className={`peer-name ${peer.isVerificationCompleted ? 'text-verified' : 'text-dispute'}`}
                           >
-                            {peer.isVerificationCompleted ? 'Approved' : 'Rejected'}
+                            {peer.isVerificationCompleted ? 'Approved' : 'Pending'}
                           </Text>
-                          <Text className="peer-name">Test</Text>
+                          <Text className="peer-name">
+                            {peer.isVerificationCompleted ? 'Mobile,Phone No. and Email' : 'No Remarks'}
+                          </Text>
                         </Box>
                         <Box className="added-peers added-exp-peers">
                           <Text className="peer-name title">Department</Text>
@@ -77,9 +79,11 @@ export const WorkExperienceReport2: React.FC<ChildComponentProps> = ({ peerDetai
                           <Text
                             className={`peer-name ${peer.isVerificationCompleted ? 'text-verified' : 'text-dispute'}`}
                           >
-                            {peer.isVerificationCompleted ? 'Approved' : 'Rejected'}
+                            {peer.isVerificationCompleted ? 'Approved' : 'Pending'}
                           </Text>
-                          <Text className="peer-name">Test</Text>
+                          <Text className="peer-name">
+                            {peer.isVerificationCompleted ? 'Mobile,Phone No. and Email' : 'No Remarks'}
+                          </Text>
                         </Box>
                         <Box className="added-peers added-exp-peers">
                           <Text className="peer-name title">Designation at work</Text>
@@ -90,9 +94,11 @@ export const WorkExperienceReport2: React.FC<ChildComponentProps> = ({ peerDetai
                           <Text
                             className={`peer-name ${peer.isVerificationCompleted ? 'text-verified' : 'text-dispute'}`}
                           >
-                            {peer.isVerificationCompleted ? 'Approved' : 'Rejected'}
+                            {peer.isVerificationCompleted ? 'Approved' : 'Pending'}
                           </Text>
-                          <Text className="peer-name">Test</Text>
+                          <Text className="peer-name">
+                            {peer.isVerificationCompleted ? 'Mobile,Phone No. and Email' : 'No Remarks'}
+                          </Text>
                         </Box>
                         <Box className="added-peers added-exp-peers">
                           <Text className="peer-name title">Date of Joining</Text>
@@ -103,9 +109,11 @@ export const WorkExperienceReport2: React.FC<ChildComponentProps> = ({ peerDetai
                           <Text
                             className={`peer-name ${peer.isVerificationCompleted ? 'text-verified' : 'text-dispute'}`}
                           >
-                            {peer.isVerificationCompleted ? 'Approved' : 'Rejected'}
+                            {peer.isVerificationCompleted ? 'Approved' : 'Pending'}
                           </Text>
-                          <Text className="peer-name">Test</Text>
+                          <Text className="peer-name">
+                            {peer.isVerificationCompleted ? 'Mobile,Phone No. and Email' : 'No Remarks'}
+                          </Text>
                         </Box>
                         <Box className="added-peers added-exp-peers">
                           <Text className="peer-name title">Date of Leaving</Text>
@@ -118,9 +126,11 @@ export const WorkExperienceReport2: React.FC<ChildComponentProps> = ({ peerDetai
                             {peer.updatedAt?.substring(0, 10).split('-').reverse().join('/')}
                           </Text>
                           <Text className="peer-name text-verified text-dispute">
-                            {peer.isVerificationCompleted ? 'Approved' : 'Rejected'}
+                            {peer.isVerificationCompleted ? 'Approved' : 'Pending'}
                           </Text>
-                          <Text className="peer-name">Test</Text>
+                          <Text className="peer-name">
+                            {peer.isVerificationCompleted ? 'Mobile,Phone No. and Email' : 'No Remarks'}
+                          </Text>
                         </Box>
                       </Box>
                     </div>

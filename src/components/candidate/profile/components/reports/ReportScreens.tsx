@@ -4,11 +4,11 @@ import { Button } from '@mantine/core';
 import { FrontReport } from './frontreport';
 import { ExecutiveSummary } from './executivesummary';
 import { PersonalIdentification } from './personalidentification';
-// import { WorkExperienceReport1 } from './workexperiencereport';
-// import { WorkExperienceReport3 } from './workexperience3';
-// import { WorkExperienceReport2 } from './workexperiencereport2';
-// import { ResidentialReport } from './residentialreport';
-// import { ResidentialReport2 } from './residentialreport2';
+import { WorkExperienceReport3 } from './workexperience3';
+import { WorkExperienceReport1 } from './workexperiencereport';
+import { WorkExperienceReport2 } from './workexperiencereport2';
+import { ResidentialReport } from './residentialreport';
+import { ResidentialReport2 } from './residentialreport2';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
 import { useLocation } from 'react-router-dom';
 import { HttpClient } from '../../../../../utils/generic/httpClient';
@@ -23,14 +23,14 @@ export const ReportScreens: React.FC = (): JSX.Element => {
   const [pending, setPending] = useState<boolean>(true);
 
   const { authClient, profileData } = useGlobalContext();
-  // const emailList = ['tanvitomar0579@gmail.com', 'tanvitomar592@gmail.com', 'swanandwagh7@gmail.com', 'example@.com'];
-  // const targetEmail = String(profileData.email);
 
+  const [IdDetails, setIdDetails] = useState<IdDetailsResponse>({} as IdDetailsResponse);
+  const [AccountDetails, setAccountDetails] = useState<AccountDetails>({} as AccountDetails);
   const [workExperienceDetails, setWorkExperienceDetails] = useState<WorkExperience[]>([]);
   const [peerDetails, setPeerDetails] = useState<WorkPeerReportResponse[]>([]);
   const [ResidentialInfo, setResidentialInfo] = useState<ResidentialType[]>([]);
-  const [IdDetails, setIdDetails] = useState<IdDetailsResponse>();
-  const [AccountDetails, setAccountDetails] = useState<AccountDetails>();
+  const [residentialPeer, setResidentialPeer] = useState<PeersResponse[]>([]);
+  const [document, setDocument] = useState<DocumentResponse[]>([]);
 
   const getReportData = async () => {
     const res = await HttpClient.callApiAuth<ReportData>(
@@ -43,6 +43,8 @@ export const ReportScreens: React.FC = (): JSX.Element => {
 
     if (res.ok) {
       console.log(res);
+      setDocument(res.value.workExperienceDetails.documents);
+      setResidentialPeer(res.value.ResidentialDetails.residentialPeers);
       setAccountDetails(res.value.accountDetails);
       setIdDetails(res.value.idDetails);
       setWorkExperienceDetails(res.value.workExperienceDetails.workExp.workExperiences);
@@ -52,13 +54,13 @@ export const ReportScreens: React.FC = (): JSX.Element => {
       showErrorNotification(res.error.code);
     }
   };
-  console.log(AccountDetails);
+  console.log(document);
   // console.log(AccountDetails);
   // console.log(ResidentialInfo);
   // console.log(workExperienceDetails);
   useEffect(() => {
     getReportData();
-  }, [profileData.id]);
+  }, [email]);
 
   // if (!emailList.includes(email)) {
   //   return <PageNotFound />;
@@ -78,15 +80,19 @@ export const ReportScreens: React.FC = (): JSX.Element => {
       <hr></hr>
       <PersonalIdentification IdDetails={IdDetails} />
       <hr></hr>
-      {/* <WorkExperienceReport3 peerDetails={peerDetails} workExperienceDetails={workExperienceDetails} />
+      <WorkExperienceReport3
+        document={document}
+        peerDetails={peerDetails}
+        workExperienceDetails={workExperienceDetails}
+      />
       <hr></hr>
       <WorkExperienceReport2 peerDetails={peerDetails} workExperienceDetails={workExperienceDetails} />
       <hr></hr>
       <WorkExperienceReport1 peerDetails={peerDetails} workExperienceDetails={workExperienceDetails} />
       <hr></hr>
-      <ResidentialReport2 ResidentialInfo={ResidentialInfo} />
+      <ResidentialReport2 residentialPeer={residentialPeer} ResidentialInfo={ResidentialInfo} />
       <hr></hr>
-      <ResidentialReport ResidentialInfo={ResidentialInfo} /> */}
+      <ResidentialReport ResidentialInfo={ResidentialInfo} />
       <hr></hr>
       <Button className="printbtn" onClick={() => window.print()} size="sm" type="button" radius="xl" color="teal">
         PRINT

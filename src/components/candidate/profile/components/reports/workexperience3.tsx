@@ -4,16 +4,20 @@ import { BsLinkedin } from 'react-icons/bs';
 import { CgSandClock } from 'react-icons/cg';
 import { Text, Box, Button } from '@mantine/core';
 import pdfIcon from '../../assets/pdfIcon.png';
-import { Link } from 'react-router-dom';
 import { ReportTop } from './ReportTop';
 import './_report.scss';
 
 interface ChildComponentProps {
   workExperienceDetails: WorkExperience[];
   peerDetails: WorkPeerReportResponse[];
+  document: DocumentResponse[];
 }
 
-export const WorkExperienceReport3: React.FC<ChildComponentProps> = ({ peerDetails, workExperienceDetails }) => {
+export const WorkExperienceReport3: React.FC<ChildComponentProps> = ({
+  document,
+  peerDetails,
+  workExperienceDetails,
+}) => {
   return (
     <>
       <main className="report-container">
@@ -48,7 +52,7 @@ export const WorkExperienceReport3: React.FC<ChildComponentProps> = ({ peerDetai
               <p>About Company</p>
               <div className="location-date">
                 <p>Last updated</p>
-                <p>02/03/2023</p>
+                <p>{experience.updatedAt.substring(0, 10).split('-').reverse().join('/')}</p>
               </div>
             </div>
             <Box className="basic-info-box-wrapper work-wrapper">
@@ -61,26 +65,24 @@ export const WorkExperienceReport3: React.FC<ChildComponentProps> = ({ peerDetai
                   <BsLinkedin color="#0077b5" />
                   LinkedIn
                 </Text>
-                <a href={experience.linkedInUrl} target="_blank" rel="noopener noreferrer">
+                <a href={experience?.linkedInUrl} target="_blank" rel="noopener noreferrer">
                   <Text className="experience-details-box-text">View Profile</Text>
                 </a>
               </Box>
             </Box>
             <div className="location">
               <p>Basic Information</p>
-              <div className="location-date">
-                <p>Last updated</p>
-                <p>02/03/2023</p>
-              </div>
             </div>
             <Box className="basic-info-box-wrapper work-wrapper">
               <Box className="info-box">
                 <Text className="experience-details-box-heading">Company ID</Text>
-                <Text className="experience-details-box-text">{experience.companyId}</Text>
+                <Text className="experience-details-box-text">{experience.companyId ? experience.companyId : '-'}</Text>
               </Box>
               <Box className="info-box">
                 <Text className="experience-details-box-heading">LinkedIn</Text>
-                <Text className="experience-details-box-text">{experience.linkedInUrl}</Text>
+                <Text className="experience-details-box-text">
+                  {experience.linkedInUrl ? experience.linkedInUrl : '-'}
+                </Text>
               </Box>
               <Box className="info-box">
                 <Text className="experience-details-box-heading">Tenure</Text>
@@ -91,61 +93,56 @@ export const WorkExperienceReport3: React.FC<ChildComponentProps> = ({ peerDetai
               </Box>
               <Box className="info-box">
                 <Text className="experience-details-box-heading">Work Type</Text>
-                <Text className="experience-details-box-text">{experience.worktype}</Text>
+                <Text className="experience-details-box-text">{experience.workType}</Text>
               </Box>
             </Box>
+            {peerDetails.map(
+              (peer, i) =>
+                peer.ref == experience.id && (
+                  <div key={i}>
+                    <div className="peer-exp-name">
+                      <p>Referees</p>
+                    </div>
+
+                    <Box className="add-peer-header work-header">
+                      <Text className="add-peer-header-text">Status</Text>
+                      <Text className="add-peer-header-text">Particular</Text>
+                      <Text className="add-peer-header-text">Status</Text>
+                      <Text className="add-peer-header-text">Remarks</Text>
+                    </Box>
+
+                    <Box className="added-peer-box">
+                      {peerDetails.map((peer, i) => (
+                        <Box key={i} className="added-peers added-peers-exp ">
+                          <Text className="peer-name title">{peer.name}</Text>
+                          <Text className="peer-name">{peer.verificationBy}</Text>
+                          <Text
+                            className={`peer-name ${peer.isVerificationCompleted ? 'text-verified' : 'text-dispute'}`}
+                          >
+                            {peer.isVerificationCompleted ? 'Approved' : 'Not Approved'}
+                          </Text>
+                          <Text className="peer-name name-wrap">{peer.allQuestions.review}</Text>
+                        </Box>
+                      ))}
+                    </Box>
+                  </div>
+                )
+            )}
             <hr className="breakLine"></hr>
           </div>
         ))}
 
         <div className="peer-exp-name">
-          <p>Referees</p>
-        </div>
-
-        <Box className="add-peer-header work-header">
-          <Text className="add-peer-header-text">Status</Text>
-          <Text className="add-peer-header-text">Particular</Text>
-          <Text className="add-peer-header-text">Status</Text>
-          <Text className="add-peer-header-text">Remarks</Text>
-        </Box>
-
-        <Box className="added-peer-box">
-          {peerDetails.map((peer, i) => (
-            <Box key={i} className="added-peers added-peers-exp ">
-              <Text className="peer-name title">{peer.name}</Text>
-              <Text className="peer-name">{peer.verificationBy}</Text>
-              <Text className={`peer-name ${peer.isVerificationCompleted ? 'text-verified' : 'text-dispute'}`}>
-                {peer.isVerificationCompleted ? 'Approved' : 'Not Approved'}
-              </Text>
-              <Text className="peer-name name-wrap">{peer.allQuestions.review}</Text>
-            </Box>
-          ))}
-        </Box>
-        <div className="peer-exp-name">
           <p>Documents</p>
         </div>
         <Box className="folder-wrapper report-folder-wrapper">
-          <Link to="" className="folder" target="_blank">
-            <img src={pdfIcon} alt="PDF Icon" />
-            <Text className="doc-name">Test</Text>
-            {/* <p>Download</p> */}
-          </Link>
-          <Link to="" className="folder" target="_blank">
-            <img src={pdfIcon} alt="PDF Icon" />
-            <Text className="doc-name">Test</Text>
-          </Link>
-          <Link to="" className="folder" target="_blank">
-            <img src={pdfIcon} alt="PDF Icon" />
-            <Text className="doc-name">Test</Text>
-          </Link>
-          <Link to="" className="folder" target="_blank">
-            <img src={pdfIcon} alt="PDF Icon" />
-            <Text className="doc-name">Test</Text>
-          </Link>
-          <Link to="" className="folder" target="_blank">
-            <img src={pdfIcon} alt="PDF Icon" />
-            <Text className="doc-name">Test</Text>
-          </Link>
+          {document.map((doc, i) => (
+            <div key={i} className="folder">
+              <img src={pdfIcon} alt="PDF Icon" />
+              <Text className="doc-name">{doc.name}</Text>
+              {/* <p>Download</p> */}
+            </div>
+          ))}
         </Box>
       </main>
     </>
