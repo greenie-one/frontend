@@ -3,9 +3,9 @@ import { Text, Box } from '@mantine/core';
 import { ReportTop } from './ReportTop';
 import './_report.scss';
 
-interface ChildComponentProps {
-  IdDetails: IdDetails[];
-}
+type ChildComponentProps = {
+  IdDetails: IdDetailsResponse | undefined;
+};
 
 export const PersonalIdentification: React.FC<ChildComponentProps> = ({ IdDetails }) => {
   return (
@@ -19,12 +19,14 @@ export const PersonalIdentification: React.FC<ChildComponentProps> = ({ IdDetail
           <p>Aadhaar Card</p>
           <div className="location-date">
             <p>Last updated</p>
-            {IdDetails.map(
+            {/* {IdDetails.map(
               (id, index) =>
                 id.id_type == 'AADHAR' && (
                   <p key={index}>{id.updatedAt.substring(0, 10).split('-').reverse().join('/')}</p>
                 )
-            )}
+            )} */}
+
+            <p>{IdDetails ? IdDetails.aadhar?.updatedAt.substring(0, 10).split('-').reverse().join('/') : '-'}</p>
           </div>
         </div>
 
@@ -53,10 +55,7 @@ export const PersonalIdentification: React.FC<ChildComponentProps> = ({ IdDetail
           <p>PAN Card</p>
           <div className="location-date">
             <p>Last updated</p>
-            {IdDetails.map(
-              (id, index) =>
-                id.id_type == 'PAN' && <p key={index}>{id.updatedAt.substring(0, 10).split('-').reverse().join('/')}</p>
-            )}
+            <p>{IdDetails ? IdDetails.pan?.updatedAt.substring(0, 10).split('-').reverse().join('/') : '-'}</p>
           </div>
           <div className="location-date">
             <p>Aadhaar Linked</p>
@@ -74,54 +73,49 @@ export const PersonalIdentification: React.FC<ChildComponentProps> = ({ IdDetail
           <Text className="add-peer-header-text ">Status</Text>
           <Text className="add-peer-header-text">Remarks</Text>
         </Box>
-        {IdDetails.map(
-          (id, index) =>
-            id.id_type == 'PAN' && (
-              <Box key={index} className="added-peer-box">
-                <Box className="added-peers ">
-                  <Text className="peer-name title">Full Name</Text>
-                  <Text className="peer-name">{id.fullName ? id.fullName : '-'}</Text>
-                  <Text className={`peer-name ${id.fullName ? 'text-verified' : 'text-dispute'}`}>
-                    {id.fullName ? 'Matched' : 'Not Matched'}
-                  </Text>
-                  <Text className="peer-name">Test</Text>
-                </Box>
-                <Box className="added-peers ">
-                  <Text className="peer-name title">PAN Number</Text>
-                  <Text className="peer-name">{id.id_number ? id.id_number : '-'}</Text>
+        <Box className="added-peer-box">
+          <Box className="added-peers ">
+            <Text className="peer-name title">Full Name</Text>
+            <Text className="peer-name">{IdDetails.aadhar.fullName ? IdDetails.aadhar.fullName : '-'}</Text>
+            <Text className={`peer-name ${IdDetails.aadhar.fullName ? 'text-verified' : 'text-dispute'}`}>
+              {IdDetails.aadhar.fullName ? 'Matched' : 'Not Matched'}
+            </Text>
+            <Text className="peer-name">Test</Text>
+          </Box>
+          <Box className="added-peers ">
+            <Text className="peer-name title">PAN Number</Text>
+            <Text className="peer-name">{IdDetails.aadhar.id_number ? IdDetails.aadhar.id_number : '-'}</Text>
 
-                  <Text className={`peer-name ${id.id_number ? 'text-verified' : 'text-dispute'}`}>
-                    {id.id_number ? 'Matched' : 'Not Matched'}
-                  </Text>
-                  <Text className="peer-name">Test</Text>
-                </Box>
-                <Box className="added-peers ">
-                  <Text className="peer-name title">DOB</Text>
-                  <Text className="peer-name">{id.dob ? id.dob : '-'}</Text>
-                  <Text className={`peer-name ${id.dob ? 'text-verified' : 'text-dispute'}`}>
-                    {id.dob ? 'Matched' : 'Not Matched'}
-                  </Text>
-                  <Text className="peer-name">Test</Text>
-                </Box>
-                <Box className="added-peers ">
-                  <Text className="peer-name title">PAN type</Text>
-                  <Text className="peer-name">{id.panType ? id.panType : '-'}</Text>
-                  <Text className={`peer-name ${id.panType ? 'text-verified' : 'text-dispute'}`}>
-                    {id.panType ? 'Matched' : 'Not Matched'}
-                  </Text>
-                  <Text className="peer-name">Test</Text>
-                </Box>
-                <Box className="added-peers ">
-                  <Text className="peer-name title">Phone Number</Text>
-                  <Text className="peer-name">{id.phoneNumber ? id.phoneNumber : '-'}</Text>
-                  <Text className={`peer-name ${id.phoneNumber ? 'text-verified' : 'text-dispute'}`}>
-                    {id.phoneNumber ? 'Matched' : 'Not Matched'}
-                  </Text>
-                  <Text className="peer-name">Test</Text>
-                </Box>
-              </Box>
-            )
-        )}
+            <Text className={`peer-name ${IdDetails.aadhar.id_number ? 'text-verified' : 'text-dispute'}`}>
+              {IdDetails.aadhar.id_number ? 'Matched' : 'Not Matched'}
+            </Text>
+            <Text className="peer-name">Test</Text>
+          </Box>
+          <Box className="added-peers ">
+            <Text className="peer-name title">DOB</Text>
+            <Text className="peer-name">{IdDetails.aadhar.dob ? IdDetails.aadhar.dob : '-'}</Text>
+            <Text className={`peer-name ${IdDetails.aadhar.dob ? 'text-verified' : 'text-dispute'}`}>
+              {IdDetails.aadhar.dob ? 'Matched' : 'Not Matched'}
+            </Text>
+            <Text className="peer-name">Test</Text>
+          </Box>
+          <Box className="added-peers ">
+            <Text className="peer-name title">PAN type</Text>
+            <Text className="peer-name">{id.panType ? id.panType : '-'}</Text>
+            <Text className={`peer-name ${id.panType ? 'text-verified' : 'text-dispute'}`}>
+              {id.panType ? 'Matched' : 'Not Matched'}
+            </Text>
+            <Text className="peer-name">Test</Text>
+          </Box>
+          <Box className="added-peers ">
+            <Text className="peer-name title">Phone Number</Text>
+            <Text className="peer-name">{id.phoneNumber ? id.phoneNumber : '-'}</Text>
+            <Text className={`peer-name ${id.phoneNumber ? 'text-verified' : 'text-dispute'}`}>
+              {id.phoneNumber ? 'Matched' : 'Not Matched'}
+            </Text>
+            <Text className="peer-name">Test</Text>
+          </Box>
+        </Box>
 
         <div className="location">
           <p>Driving License</p>

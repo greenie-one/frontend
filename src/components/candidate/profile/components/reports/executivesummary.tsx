@@ -8,12 +8,12 @@ import level from '../../assets/levelFilled.png';
 import { ReportTop } from './ReportTop';
 import './_report.scss';
 
-interface ChildComponentProps {
-  IdDetails: IdDetails[];
-  AccountDetails: ReportData['accountDetails'];
+type ChildComponentProps = {
+  IdDetails: IdDetailsResponse | undefined;
+  AccountDetails: AccountDetails | undefined;
   ResidentialInfo: ResidentialType[];
   workExperienceDetails: WorkExperience[];
-}
+};
 
 export const ExecutiveSummary: React.FC<ChildComponentProps> = ({
   IdDetails,
@@ -21,6 +21,7 @@ export const ExecutiveSummary: React.FC<ChildComponentProps> = ({
   ResidentialInfo,
   workExperienceDetails,
 }) => {
+  // console.log(IdDetails.aadhar);
   return (
     <>
       <main className="report-container">
@@ -33,7 +34,11 @@ export const ExecutiveSummary: React.FC<ChildComponentProps> = ({
                 <img src={dummyThumbnail} className="profile-img" />
               </span>
               <div>
-                <p>Abhishek Deshmukh</p>
+                {AccountDetails ? (
+                  <p>
+                    {AccountDetails.firstName} {AccountDetails.lastName}
+                  </p>
+                ) : null}
                 <p>Software Engineer</p>
                 <Button leftIcon={<MdVerified color="#17A672" size={'16px'} />} className="verified report-verifybtn">
                   Verified
@@ -66,7 +71,7 @@ export const ExecutiveSummary: React.FC<ChildComponentProps> = ({
         <Box className="basic-info-box-wrapper wrapper-executive">
           <Box className="info-box">
             <Text className="experience-details-box-heading">Greenie ID</Text>
-            <Text className="experience-details-box-text">{AccountDetails?.greenieId}</Text>
+            <Text className="experience-details-box-text">{AccountDetails ? AccountDetails.greenieId : '-'}</Text>
           </Box>
           <Box className="info-box">
             <Text className="experience-details-box-heading">Greenie rating</Text>

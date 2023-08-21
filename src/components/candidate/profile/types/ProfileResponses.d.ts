@@ -238,21 +238,33 @@ type WorkPeerReportResponse = {
   isVerificationCompleted?: boolean;
 };
 
+type AccountDetails = {
+  email: string;
+  firstName: string;
+  greenieId: string;
+  lastName: string;
+};
+
+type WorkExperienceDetails = {
+  peers: WorkPeerReportResponse[];
+  workExp: {
+    workExperiences: WorkExperience[];
+  };
+};
+
+type ResidentialDetailsResponse = {
+  residentialPeers: GetUserPeersResponse[];
+  residentialInfo: ResidentialType[];
+};
+
+type IdDetailsResponse = {
+  aadhar: IdDetails | null;
+  pan: IdDetails | null;
+  dl: IdDetails | null;
+};
 type ReportData = {
-  accountDetails: {
-    greenieId?: string;
-  };
-  workExperienceDetails: {
-    peers: WorkPeerReportResponse[];
-    workExp: {
-      workExperiences: WorkExperience[];
-    };
-  };
-  ResidentialDetails: {
-    residentialPeers: GetUserPeersResponse[];
-    residentialInfo: {
-      residentialInfos: ResidentialType[];
-    };
-  };
-  idDetails: IdDetails[];
+  accountDetails: AccountDetails;
+  workExperienceDetails: WorkExperienceDetails;
+  ResidentialDetails: ResidentialDetailsResponse;
+  idDetails: IdDetailsResponse;
 };
