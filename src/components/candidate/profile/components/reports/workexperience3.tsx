@@ -138,8 +138,13 @@ export const WorkExperienceReport3: React.FC<ChildComponentProps> = ({
         <Box className="folder-wrapper report-folder-wrapper">
           {document.map((doc, i) => (
             <div key={i} className="folder">
-              <img src={pdfIcon} alt="PDF Icon" />
-              <Text className="doc-name">{doc.name}</Text>
+              <div className="folder-flex">
+                <img src={pdfIcon} alt="PDF Icon" />
+                <Text className="doc-name">{doc.name}</Text>
+              </div>
+              <a href={doc.privateUrl} className="download-btn">
+                Download
+              </a>
               {/* <p>Download</p> */}
             </div>
           ))}

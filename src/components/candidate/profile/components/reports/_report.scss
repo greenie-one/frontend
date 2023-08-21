@@ -70,11 +70,27 @@ body {
   }
   .report-folder-wrapper {
     margin-top: rem(20);
-    .doc-name {
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      max-width: 20ch;
+    .folder {
+      height: fit-content;
+      align-items: start;
+      gap: rem(8);
+      display: flex;
+      flex-direction: column;
+      .download-btn {
+        color: #697082;
+        text-decoration: underline;
+      }
+      .folder-flex {
+        align-items: center;
+        display: flex;
+        flex-direction: row;
+        .doc-name {
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          max-width: 20ch;
+        }
+      }
     }
   }
   .added-peer-box {
