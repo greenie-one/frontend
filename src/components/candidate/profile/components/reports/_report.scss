@@ -20,10 +20,10 @@ body {
 
 .report-container {
   background-color: white;
-  width: 675px;
-  aspect-ratio: 1/1.414;
+  // aspect-ratio: 1/1.414;
   margin-inline: auto;
-  padding: 2rem;
+  padding-block: 2rem;
+  padding-inline: 10rem;
   margin-block: 2rem;
   font-size: rem(14);
   .breakLine {
@@ -35,6 +35,7 @@ body {
   &.report-container-main {
     background-color: #17a672;
     padding: 1rem;
+    margin: 10rem;
   }
   .report-background {
     background: white;
@@ -77,11 +78,11 @@ body {
     }
   }
   .added-peer-box {
-    font-size: 12px;
+    font-size: 14px;
     .added-peers {
       border: 1px solid #ebebeb;
       display: grid;
-      grid-template-columns: 24% 36% 20% 20%;
+      grid-template-columns: 25% 40% 35%;
       align-items: center;
       justify-content: flex-start;
       padding: 1rem;
@@ -90,7 +91,7 @@ body {
         grid-template-columns: 30% 20% 30% 20%;
       }
       &.added-peers-exp {
-        grid-template-columns: 40% 20% 20% 20%;
+        grid-template-columns: 25% 25% 20% 30%;
       }
       &.added-exp-peers {
         grid-template-columns: 26% 18% 18% 16% 20%;
@@ -127,16 +128,16 @@ body {
     border: 1px solid #ebebeb;
     border-radius: 16px 16px 0 0;
     display: grid;
-    grid-template-columns: 24% 36% 20% 20%;
+    grid-template-columns: 25% 40% 35%;
     margin: 2rem auto 0rem;
     padding: 1rem;
     font-weight: 500;
-    font-size: 13px;
+    font-size: 16px;
     &.executive-header {
       grid-template-columns: 30% 20% 30% 20%;
     }
     &.work-header {
-      grid-template-columns: 40% 20% 20% 20%;
+      grid-template-columns: 25% 25% 20% 30%;
     }
     &.add-peer-exp-header {
       grid-template-columns: 26% 18% 18% 16% 20%;
@@ -147,15 +148,15 @@ body {
     margin-top: 1rem;
     display: grid;
     align-items: center;
-    grid-template-columns: 15% 19% 20% 40%;
-    column-gap: 1rem;
+    grid-template-columns: 14% 16% 20% 38%;
+    column-gap: 2rem;
     row-gap: 1rem;
     align-items: stretch;
     &.work-wrapper {
-      grid-template-columns: 20% 20% 27% 27%;
+      grid-template-columns: 18% 25% 25% 20%;
     }
     &.residence-wrapper {
-      grid-template-columns: 18% 24% 28% 24%;
+      grid-template-columns: 18% 24% 25% 24%;
     }
     &.review-box {
       grid-template-columns: 45% 25% 25%;
@@ -183,7 +184,7 @@ body {
     .info-box {
       border: 1px solid #e1e1e1;
       border-radius: 1rem;
-      padding: 0.4rem;
+      padding: 1rem;
       &.idreport-box,
       &.info-box-address {
         border: none;
@@ -200,7 +201,7 @@ body {
         align-items: center;
         gap: 5px;
         font-family: Inter;
-        font-size: 13px;
+        font-size: 16px;
         font-weight: 600;
         line-height: 27px;
         letter-spacing: 0em;
@@ -217,7 +218,7 @@ body {
       }
       .experience-details-box-text {
         color: #697082;
-        font-size: 12px;
+        font-size: 16px;
         display: flex;
         align-items: center;
         margin-top: 0.5rem;
@@ -231,7 +232,8 @@ body {
           text-underline-offset: 4px;
         }
         img {
-          width: rem(15);
+          width: rem(20);
+          display: flex;
         }
       }
     }
@@ -253,7 +255,7 @@ body {
       justify-content: space-between;
     }
     .greenie {
-      font-size: 25px;
+      font-size: 32px;
       font-weight: 700;
     }
     .verified {
@@ -273,7 +275,7 @@ body {
     .disclaimer-text {
       text-align: center;
       color: #2e2e48;
-      font-size: 20px;
+      font-size: 24px;
       font-weight: 600;
       &.id-report {
         text-align: start;
@@ -283,7 +285,7 @@ body {
       margin-top: 1rem;
       line-height: 1.8;
       color: #79819a;
-      font-size: 15px;
+      font-size: 18px;
     }
     .residential-address {
       margin-top: 4rem;
@@ -305,12 +307,13 @@ body {
           border-radius: 50%;
           overflow: hidden;
           .profile-img {
-            width: rem(50);
+            width: rem(70);
             aspect-ratio: 1;
           }
         }
         .report-verifybtn {
           border: none;
+          font-size: 13px;
           padding: 0px 0px;
         }
         &.workexperience {
@@ -319,7 +322,7 @@ body {
         p:first-child {
           color: black;
           font-weight: 600;
-          font-size: 14px;
+          font-size: 18px;
         }
       }
       .residential-address-right {
@@ -369,9 +372,4 @@ body {
       margin-inline-start: rem(30);
     }
   }
-}
-.printbtn {
-  display: flex;
-  margin-inline: auto;
-  margin-bottom: rem(150);
 }

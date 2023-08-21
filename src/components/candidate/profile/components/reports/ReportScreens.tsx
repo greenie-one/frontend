@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Report } from './Report';
-import { Button } from '@mantine/core';
 import { FrontReport } from './frontreport';
 import { ExecutiveSummary } from './executivesummary';
 import { PersonalIdentification } from './personalidentification';
@@ -94,9 +93,6 @@ export const ReportScreens: React.FC = (): JSX.Element => {
       <hr></hr>
       <ResidentialReport ResidentialInfo={ResidentialInfo} />
       <hr></hr>
-      <Button className="printbtn" onClick={() => window.print()} size="sm" type="button" radius="xl" color="teal">
-        PRINT
-      </Button>
     </>
   );
   // }
