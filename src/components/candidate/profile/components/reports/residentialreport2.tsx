@@ -73,7 +73,7 @@ export const ResidentialReport2: React.FC<ChildComponentProps> = ({ residentialP
                   <p>Geographic Information</p>
                 </div>
 
-                <Box className="add-peer-header">
+                <Box className="add-peer-header header-residential">
                   <Text className="add-peer-header-text">Particular</Text>
                   <Text className="add-peer-header-text">Value</Text>
                   <Text className="add-peer-header-text">Remarks</Text>
@@ -81,27 +81,27 @@ export const ResidentialReport2: React.FC<ChildComponentProps> = ({ residentialP
 
                 <Box className="added-peer-box">
                   <Box className="add-peers">
-                    <Box className="added-peers">
+                    <Box className="added-peers header-residential">
                       <Text className="peer-name title">Landmark</Text>
                       <Text className="peer-name">{resident.landmark}</Text>
                       <Text className="peer-name">{resident.landmark ? 'Geolocation API' : '-'} </Text>
                     </Box>
-                    <Box className="added-peers">
+                    <Box className="added-peers header-residential">
                       <Text className="peer-name title">Pincode</Text>
                       <Text className="peer-name">{resident.pincode}</Text>
                       <Text className="peer-name">{resident.pincode ? 'Geolocation API' : '-'} </Text>
                     </Box>
-                    <Box className="added-peers">
+                    <Box className="added-peers header-residential">
                       <Text className="peer-name title">City</Text>
                       <Text className="peer-name">{resident.city}</Text>
                       <Text className="peer-name">{resident.city ? 'Geolocation API' : '-'} </Text>
                     </Box>
-                    <Box className="added-peers">
+                    <Box className="added-peers header-residential">
                       <Text className="peer-name title">State</Text>
                       <Text className="peer-name">{resident.state}</Text>
                       <Text className="peer-name">{resident.state ? 'Geolocation API' : '-'} </Text>
                     </Box>
-                    <Box className="added-peers">
+                    <Box className="added-peers header-residential">
                       <Text className="peer-name title">Country</Text>
                       <Text className="peer-name">{resident.country}</Text>
                       <Text className="peer-name">{resident.country ? 'Geolocation API' : '-'} </Text>

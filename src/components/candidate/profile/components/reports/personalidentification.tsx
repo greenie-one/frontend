@@ -45,7 +45,7 @@ export const PersonalIdentification: React.FC<ChildComponentProps> = ({ IdDetail
           </>
         ) : null}
 
-        <div className="location">
+        <div className="location mobile-location">
           <p>PAN Card</p>
           <div className="location-date">
             <p>Aadhaar Linked</p>
@@ -108,7 +108,7 @@ export const PersonalIdentification: React.FC<ChildComponentProps> = ({ IdDetail
             </Box>
           </Box>
         ) : null}
-        <div className="location">
+        <div className="location mobile-location">
           <p>Driving License</p>
           <div className="location-date">
             <p>Date of Issue</p>
