@@ -8,6 +8,10 @@ import './_report.scss';
 interface ChildComponentProps {
   ResidentialInfo: ResidentialType[];
 }
+const data = [
+  ['1', '2', '3', '4'],
+  ['1', '2', '3', '4'],
+];
 
 export const ResidentialReport: React.FC<ChildComponentProps> = ({ ResidentialInfo }) => {
   return (
@@ -45,6 +49,23 @@ export const ResidentialReport: React.FC<ChildComponentProps> = ({ ResidentialIn
                   <p>Last updated</p>
                   {/* <p>{resident.updatedAt}</p> */}
                 </div>
+              </div>
+              <div className="table">
+                <div className="row">
+                  <div className="cell">Description</div>
+                  <div className="cell">Source</div>
+                  <div className="cell">Location Resolution Logic</div>
+                  <div className="cell">Legend</div>
+                </div>
+                {data.map((rowData, i) => (
+                  <div key={i} className="row">
+                    {rowData.map((cellData, ind) => (
+                      <div key={ind} className="cell">
+                        {cellData}
+                      </div>
+                    ))}
+                  </div>
+                ))}
               </div>
             </>
           ))}
