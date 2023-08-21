@@ -1,7 +1,12 @@
 import React from 'react';
 import { MdVerified } from 'react-icons/md';
 import './_report.scss';
-export const FrontReport: React.FC = (): JSX.Element => {
+
+type FrontReportProps = {
+  userName: string;
+};
+
+export const FrontReport: React.FC<FrontReportProps> = ({ userName }): JSX.Element => {
   return (
     <>
       <main className="report-container front-report">
@@ -11,7 +16,7 @@ export const FrontReport: React.FC = (): JSX.Element => {
             <MdVerified />
           </span>
         </div>
-        <p className="report-name">Abhishek Deshmukh</p>
+        <p className="report-name">{userName}</p>
         <p className="report-verify">Background verification report</p>
       </main>
     </>

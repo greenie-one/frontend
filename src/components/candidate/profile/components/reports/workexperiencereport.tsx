@@ -48,13 +48,6 @@ export const WorkExperienceReport1: React.FC<ChildComponentProps> = ({ peerDetai
                         </div>
                       </div>
 
-                      <Box className="add-peer-header">
-                        <Text className="add-peer-header-text">Particular</Text>
-                        <Text className="add-peer-header-text">Verified as</Text>
-                        <Text className="add-peer-header-text">Verified on</Text>
-                        <Text className="add-peer-header-text">Remarks</Text>
-                      </Box>
-
                       <Box className="added-peer-box">
                         <Box className="add-peers">
                           <Box className="added-peers">

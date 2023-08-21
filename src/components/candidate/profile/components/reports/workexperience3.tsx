@@ -7,11 +7,19 @@ import pdfIcon from '../../assets/pdfIcon.png';
 import { ReportTop } from './ReportTop';
 import './_report.scss';
 
-interface ChildComponentProps {
+type ChildComponentProps = {
   workExperienceDetails: WorkExperience[];
   peerDetails: WorkPeerReportResponse[];
   document: DocumentResponse[];
-}
+};
+
+const WorkPeerType: Record<string, string> = {
+  LINE_MANAGER: 'Line Manager',
+  REPORTING_MANAGER: 'Reporting Manager',
+  HR: 'HR',
+  COLLEAGUE: 'Colleague',
+  CXO: 'CXO',
+};
 
 export const WorkExperienceReport3: React.FC<ChildComponentProps> = ({
   document,
@@ -96,54 +104,60 @@ export const WorkExperienceReport3: React.FC<ChildComponentProps> = ({
                 <Text className="experience-details-box-text">{experience.workType}</Text>
               </Box>
             </Box>
-            {peerDetails.map(
-              (peer, i) =>
-                peer.ref == experience.id && (
-                  <div key={i}>
-                    <div className="peer-exp-name">
-                      <p>Referees</p>
-                    </div>
+            {peerDetails.filter((peer) => peer.ref === experience.id).length > 0 ? (
+              <div>
+                <div className="peer-exp-name">
+                  <p>Referees</p>
+                </div>
 
-                    <Box className="add-peer-header work-header">
-                      <Text className="add-peer-header-text">Status</Text>
-                      <Text className="add-peer-header-text">Particular</Text>
-                      <Text className="add-peer-header-text">Status</Text>
-                      <Text className="add-peer-header-text">Remarks</Text>
-                    </Box>
+                <Box className="add-peer-header work-header">
+                  <Text className="add-peer-header-text">Referee Name</Text>
+                  <Text className="add-peer-header-text">Referee Type</Text>
+                  <Text className="add-peer-header-text">Status</Text>
+                  <Text className="add-peer-header-text">Remarks</Text>
+                </Box>
 
-                    <Box className="added-peer-box">
-                      {peerDetails.map((peer, i) => (
-                        <Box key={i} className="added-peers added-peers-exp ">
-                          <Text className="peer-name title">{peer.name}</Text>
-                          <Text className="peer-name">{peer.verificationBy}</Text>
-                          <Text
-                            className={`peer-name ${peer.isVerificationCompleted ? 'text-verified' : 'text-dispute'}`}
-                          >
-                            {peer.isVerificationCompleted ? 'Approved' : 'Not Approved'}
-                          </Text>
-                          <Text className="peer-name name-wrap">{peer.allQuestions.review}</Text>
-                        </Box>
-                      ))}
-                    </Box>
-                  </div>
-                )
-            )}
+                <Box className="added-peer-box">
+                  {peerDetails
+                    .filter((peer) => peer.ref === experience.id)
+                    .map((peer, i) => (
+                      <Box key={i} className="added-peers added-peers-exp ">
+                        <Text className="peer-name title">{peer.name}</Text>
+                        <Text className="peer-name">{WorkPeerType[peer.verificationBy]}</Text>
+                        <Text
+                          className={`peer-name ${peer.isVerificationCompleted ? 'text-verified' : 'text-dispute'}`}
+                        >
+                          {peer.isVerificationCompleted ? 'Approved' : 'Not Approved'}
+                        </Text>
+                        <Text className="peer-name name-wrap">{peer.allQuestions.review}</Text>
+                      </Box>
+                    ))}
+                </Box>
+              </div>
+            ) : null}
+            {document.filter((doc) => doc.type === 'work' && doc.workExperience === experience.id).length > 0 ? (
+              <>
+                <div className="peer-exp-name">
+                  <p>Documents</p>
+                </div>
+                <Box className="folder-wrapper report-folder-wrapper">
+                  {document
+                    .filter((doc) => doc.type === 'work' && doc.workExperience === experience.id)
+                    .map((doc, i) => (
+                      <div key={i} className="folder">
+                        <img src={pdfIcon} alt="PDF Icon" />
+                        <Text className="doc-name">{doc.name}</Text>
+                        <a href={doc.privateUrl} target="_blank" rel="noopener noreferrer">
+                          Download
+                        </a>
+                      </div>
+                    ))}
+                </Box>
+              </>
+            ) : null}
             <hr className="breakLine"></hr>
           </div>
         ))}
-
-        <div className="peer-exp-name">
-          <p>Documents</p>
-        </div>
-        <Box className="folder-wrapper report-folder-wrapper">
-          {document.map((doc, i) => (
-            <div key={i} className="folder">
-              <img src={pdfIcon} alt="PDF Icon" />
-              <Text className="doc-name">{doc.name}</Text>
-              {/* <p>Download</p> */}
-            </div>
-          ))}
-        </Box>
       </main>
     </>
   );

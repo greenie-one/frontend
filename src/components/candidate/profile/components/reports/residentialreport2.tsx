@@ -5,10 +5,10 @@ import { Text, Box, Button } from '@mantine/core';
 import { ReportTop } from './ReportTop';
 import './_report.scss';
 
-interface ChildComponentProps {
+type ChildComponentProps = {
   ResidentialInfo: ResidentialType[];
   residentialPeer: PeersResponse[];
-}
+};
 
 export const ResidentialReport2: React.FC<ChildComponentProps> = ({ residentialPeer, ResidentialInfo }) => {
   return (
@@ -57,7 +57,7 @@ export const ResidentialReport2: React.FC<ChildComponentProps> = ({ residentialP
                     <Text className="experience-details-box-heading">Tenure</Text>
                     <Text className="experience-details-box-text">
                       {resident.start_date.substring(0, 4)} -{' '}
-                      {resident.endDate ? resident.endDate.substring(0, 4) : 'Present'}
+                      {resident.end_date ? resident.end_date.substring(0, 4) : 'Present'}
                     </Text>
                   </Box>
                   <Box className="info-box">
@@ -109,41 +109,63 @@ export const ResidentialReport2: React.FC<ChildComponentProps> = ({ residentialP
                   </Box>
                 </Box>
 
-                {residentialPeer.length &&
-                  residentialPeer.map(
-                    (peer, index) =>
-                      peer.ref == resident.id && (
-                        <>
-                          <div className="peer-exp-name">
-                            <p>Referees</p>
-                          </div>
+                {residentialPeer.filter((peer) => peer.ref == resident.id).length ? (
+                  residentialPeer
+                    .filter((peer) => peer.ref == resident.id)
+                    .map((peer, index) => (
+                      <React.Fragment key={index}>
+                        <div className="peer-exp-name">
+                          <p>Referees</p>
+                        </div>
 
-                          <Box className="add-peer-header work-header">
-                            <Text className="add-peer-header-text">Status</Text>
-                            <Text className="add-peer-header-text">Particular</Text>
-                            <Text className="add-peer-header-text">Status</Text>
-                            <Text className="add-peer-header-text">Remarks</Text>
-                          </Box>
+                        <Box className="add-peer-header work-header">
+                          <Text className="add-peer-header-text">Particular</Text>
+                          <Text className="add-peer-header-text">Peer Relation</Text>
+                          <Text className="add-peer-header-text">Status</Text>
+                          <Text className="add-peer-header-text">Remarks</Text>
+                        </Box>
 
-                          <Box className="added-peer-box">
-                            <Box className="added-peers added-peers-exp ">
-                              <Text className="peer-name title">{peer.name}</Text>
-                              <Text className="peer-name">{peer.verificationBy}</Text>
-                              <Text
-                                className={`peer-name ${
-                                  peer.isVerificationCompleted ? 'text-verified' : 'text-dispute'
-                                }`}
-                              >
-                                {peer.isVerificationCompleted ? 'Approved' : 'Pending'}
-                              </Text>
-                              <Text className="peer-name name-wrap">
-                                {peer.isVerificationCompleted ? 'Geolocation API' : 'No Remarks'}
-                              </Text>
-                            </Box>
+                        <Box className="added-peer-box">
+                          <Box className="added-peers added-peers-exp ">
+                            <Text className="peer-name title">{peer.name}</Text>
+                            <Text className="peer-name">{peer.verificationBy}</Text>
+                            <Text
+                              className={`peer-name ${peer.isVerificationCompleted ? 'text-verified' : 'text-dispute'}`}
+                            >
+                              {peer.isVerificationCompleted ? 'Approved' : 'Pending'}
+                            </Text>
+                            <Text className="peer-name name-wrap">
+                              {peer.isVerificationCompleted ? 'Geolocation API' : 'No Remarks'}
+                            </Text>
                           </Box>
-                        </>
-                      )
-                  )}
+                        </Box>
+                      </React.Fragment>
+                    ))
+                ) : resident.isVerified ? (
+                  <React.Fragment key={index}>
+                    <div className="peer-exp-name">
+                      <p>Referees</p>
+                    </div>
+
+                    <Box className="add-peer-header work-header">
+                      <Text className="add-peer-header-text">Particular</Text>
+                      <Text className="add-peer-header-text">Referee Relation</Text>
+                      <Text className="add-peer-header-text">Status</Text>
+                      <Text className="add-peer-header-text">Remarks</Text>
+                    </Box>
+
+                    <Box className="added-peer-box">
+                      <Box className="added-peers added-peers-exp ">
+                        <Text className="peer-name title">Self Verified</Text>
+                        <Text className="peer-name">Self</Text>
+                        <Text className="peer-name text-verified">Approved</Text>
+                        <Text className="peer-name name-wrap">Geolocation API</Text>
+                      </Box>
+                    </Box>
+                  </React.Fragment>
+                ) : (
+                  <React.Fragment></React.Fragment>
+                )}
                 <hr className="breakLine"></hr>
               </div>
             </>

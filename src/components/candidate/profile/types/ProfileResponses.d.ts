@@ -215,15 +215,22 @@ type ResidentialType = {
   address_line_1: string;
   address_line_2: string;
   landmark: string;
-  pincode: number;
-  start_date: string;
-  endDate?: string;
+  pincode: string;
   city: string;
-  country: string;
-  addressType: string;
-  location: string;
   state: string;
-  isVerified: string;
+  country: string;
+  start_date: string;
+  end_date?: string;
+  addressType: 'Current' | 'Permanent' | 'Temporary';
+  isVerified: boolean;
+  capturedLocation: {
+    longitude: number;
+    latitude: number;
+  };
+  location: {
+    longitude: number;
+    latitude: number;
+  };
 };
 
 type WorkPeerReportResponse = {
@@ -251,21 +258,46 @@ type AccountDetails = {
   lastName: string;
 };
 
+type VerificationState = 'PENDING' | 'APPROVED' | 'DISPUTED';
+type VerificationStatus = {
+  state: VerificationState;
+  dispute_type?: string | null;
+  dispute_reason?: string | null;
+};
+
 type PeersResponse = {
-  createdAt: string;
-  email: string;
-  id: string;
-  isVerificationCompleted: boolean;
-  name: string;
-  phone: Number;
   ref: string;
-  updatedAt: string;
+  name: string;
+  email: string;
+  phone: string;
+  emailVerified: boolean;
+  phoneVerified: boolean;
   verificationBy: string;
+  selectedFields: Record<string, VerificationStatus>;
+  allQuestions: {
+    attitudeRating: string;
+    designation: VerificationStatus;
+    peerPost: VerificationStatus;
+    review: string;
+  };
+  skills: {
+    id: string;
+    status: VerificationStatus;
+  }[];
+  documents: {
+    id: string;
+    status: VerificationStatus;
+  }[];
+  createdAt: string;
+  updatedAt: string;
+  isVerificationCompleted: boolean;
 };
 
 type DocumentResponse = {
   name: string;
   privateUrl: string;
+  type: string;
+  workExperience: string;
 };
 
 type WorkExperienceDetails = {

@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Report } from './Report';
-import { Button } from '@mantine/core';
 import { FrontReport } from './frontreport';
 import { ExecutiveSummary } from './executivesummary';
 import { PersonalIdentification } from './personalidentification';
 import { WorkExperienceReport3 } from './workexperience3';
-import { WorkExperienceReport1 } from './workexperiencereport';
 import { WorkExperienceReport2 } from './workexperiencereport2';
 import { ResidentialReport } from './residentialreport';
 import { ResidentialReport2 } from './residentialreport2';
@@ -54,20 +52,14 @@ export const ReportScreens: React.FC = (): JSX.Element => {
       showErrorNotification(res.error.code);
     }
   };
-  console.log(document);
-  // console.log(AccountDetails);
-  // console.log(ResidentialInfo);
-  // console.log(workExperienceDetails);
+
   useEffect(() => {
     getReportData();
   }, [email]);
 
-  // if (!emailList.includes(email)) {
-  //   return <PageNotFound />;
-  // } else {
   return (
     <>
-      <FrontReport />
+      <FrontReport userName={`${AccountDetails.firstName} ${AccountDetails.lastName}`} />
       <hr></hr>
       <Report />
       <hr></hr>
@@ -77,26 +69,27 @@ export const ReportScreens: React.FC = (): JSX.Element => {
         ResidentialInfo={ResidentialInfo}
         workExperienceDetails={workExperienceDetails}
       />
-      <hr></hr>
-      <PersonalIdentification IdDetails={IdDetails} />
-      <hr></hr>
-      <WorkExperienceReport3
-        document={document}
-        peerDetails={peerDetails}
-        workExperienceDetails={workExperienceDetails}
-      />
-      <hr></hr>
-      <WorkExperienceReport2 peerDetails={peerDetails} workExperienceDetails={workExperienceDetails} />
-      <hr></hr>
-      <WorkExperienceReport1 peerDetails={peerDetails} workExperienceDetails={workExperienceDetails} />
-      <hr></hr>
-      <ResidentialReport2 residentialPeer={residentialPeer} ResidentialInfo={ResidentialInfo} />
-      <hr></hr>
-      <ResidentialReport ResidentialInfo={ResidentialInfo} />
-      <hr></hr>
-      <Button className="printbtn" onClick={() => window.print()} size="sm" type="button" radius="xl" color="teal">
-        PRINT
-      </Button>
+      {(IdDetails.aadhar || IdDetails.pan || IdDetails.dl) && <PersonalIdentification IdDetails={IdDetails} />}
+      {workExperienceDetails.length > 0 && (
+        <>
+          <hr></hr>
+          <WorkExperienceReport3
+            document={document}
+            peerDetails={peerDetails}
+            workExperienceDetails={workExperienceDetails}
+          />
+          <hr></hr>
+          <WorkExperienceReport2 peerDetails={peerDetails} workExperienceDetails={workExperienceDetails} />
+        </>
+      )}
+      {ResidentialInfo.length > 0 && (
+        <>
+          <hr></hr>
+          <ResidentialReport2 residentialPeer={residentialPeer} ResidentialInfo={ResidentialInfo} />
+          <hr></hr>
+          <ResidentialReport ResidentialInfo={ResidentialInfo} />
+        </>
+      )}
     </>
   );
   // }
