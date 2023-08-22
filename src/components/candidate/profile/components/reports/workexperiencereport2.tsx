@@ -95,15 +95,19 @@ export const WorkExperienceReport2: React.FC<ChildComponentProps> = ({ peerDetai
                                       </Text>
                                       <Text
                                         className={`peer-name ${
-                                          peer.selectedFields[field].state === 'APPROVED'
+                                          peer.selectedFields[field].state === 'ACCEPTED'
                                             ? 'text-verified'
                                             : 'text-dispute'
                                         }`}
                                       >
-                                        {peer.selectedFields[field].state}
+                                        {peer.selectedFields[field].state === 'ACCEPTED'
+                                          ? 'Approved'
+                                          : peer.selectedFields[field].state === 'REJECTED'
+                                          ? 'Disputed'
+                                          : 'Pending'}
                                       </Text>
                                       <Text className="peer-name">
-                                        {peer.selectedFields[field].state === 'DISPUTED'
+                                        {peer.selectedFields[field].state === 'REJECTED'
                                           ? `${peer.selectedFields[field].dispute_type} - ${peer.selectedFields[field].dispute_reason}`
                                           : 'No Remarks'}
                                       </Text>
@@ -133,10 +137,10 @@ export const WorkExperienceReport2: React.FC<ChildComponentProps> = ({ peerDetai
                                       return (
                                         <Box key={idx} className="added-peers">
                                           <Text className="peer-name title">{allQuestionsParticulars[question]}</Text>
-                                          <Text className="peer-name">
+                                          <Text style={{ textTransform: 'capitalize' }} className="peer-name">
                                             {peer.allQuestions[question] === 'not-given'
                                               ? 'Not Given'
-                                              : peer.allQuestions[question]}
+                                              : peer.allQuestions[question].split('-').join(' ')}
                                           </Text>
                                           <Text className="peer-name">
                                             {peer.isVerificationCompleted
