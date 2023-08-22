@@ -120,7 +120,7 @@ body {
       }
       .peer-name {
         overflow: hidden;
-        word-break: break-all;
+        word-break: break-word;
         padding-right: rem(7);
         display: flex;
         gap: 10px;
@@ -393,6 +393,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+
     p {
       font-size: 18px;
       color: black;
@@ -415,6 +416,29 @@ body {
       }
     }
   }
+  .table {
+    border: 1px solid #ccc;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    .row {
+      display: grid;
+      grid-template-columns: 40% 20% 20% 20%;
+      border-top: 1px solid #ccc;
+      &:first-child {
+        background-color: #f0f0f0;
+        font-weight: 600;
+      }
+      .cell {
+        padding: 8px;
+        border-right: 1px solid #ccc;
+      }
+      .cell:last-child {
+        border-right: none;
+      }
+    }
+  }
+
   .peer-exp-name {
     margin-top: 4rem;
     display: flex;

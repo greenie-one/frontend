@@ -24,6 +24,11 @@ const markerGreen = new Icon({
   iconSize: [25, 25],
 });
 
+const data = [
+  ['1', '2', '3', '4'],
+  ['1', '2', '3', '4'],
+];
+
 export const ResidentialReport: React.FC<ChildComponentProps> = ({ ResidentialInfo }) => {
   return (
     <>
