@@ -1,14 +1,26 @@
-// import { useState } from 'react';
 import { Layout } from '../components/candidate/profile/components/Layout';
-import { useForm } from '@mantine/form';
-import { PasswordInput, Group, Stack, TextInput, Button, Text } from '@mantine/core';
+import { hasLength, useForm } from '@mantine/form';
+import { Box, PasswordInput, Group, Stack, TextInput, Button, Tabs } from '@mantine/core';
 import '../components/candidate/profile/styles/_hrForm.scss';
+import { useNavigate } from 'react-router-dom';
+import {
+  showErrorNotification,
+  showLoadingNotification,
+  showSuccessNotification,
+} from '../utils/functions/showNotification';
+import { HttpClient } from '../utils/generic/httpClient';
+import { BASE_URL, reportAPI } from '../assets/api/ApiList';
+import { useGlobalContext } from '../context/GlobalContext';
+
+type FormData = {
+  email: string;
+  password: string;
+};
 
 export const AdminForm: React.FC = (): JSX.Element => {
-  interface FormData {
-    email: string;
-    password: string;
-  }
+  const navigate = useNavigate();
+  const { authClient } = useGlobalContext();
+
   const form = useForm<FormData>({
     initialValues: {
       email: '',
@@ -16,6 +28,7 @@ export const AdminForm: React.FC = (): JSX.Element => {
     },
     validate: {
       email: (val) => (/^\S+@\S+$/.test(val) ? null : 'Invalid email'),
+      password: hasLength({ min: 9, max: 72 }, 'Password must have at least 9 characters'),
     },
   });
 
@@ -27,51 +40,112 @@ export const AdminForm: React.FC = (): JSX.Element => {
       email: (val) => (/^\S+@\S+$/.test(val) ? null : 'Invalid email'),
     },
   });
-  //   console.log(form.values);
-  //   console.log(reportForm.values);
-  const onFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+
+  const onFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    if (form.validate().hasErrors) {
+      return;
+    }
+
+    const requestBody = {
+      email: form.values.email,
+      password: form.values.password,
+      roles: ['hr'],
+    };
+
+    showLoadingNotification({ title: 'Please Wait', message: 'Creating new account...' });
+    const res = await HttpClient.callApiAuth<{ message: string }>(
+      {
+        url: `${BASE_URL}/utils/admin/create_account`,
+        method: 'POST',
+        body: requestBody,
+      },
+      authClient
+    );
+
+    if (res.ok) {
+      showSuccessNotification({ title: 'Success', message: 'New account created' });
+      form.reset();
+    } else {
+      showErrorNotification(res.error.code);
+    }
   };
-  const onGenerateReportFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+
+  const onGenerateReportFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    if (reportForm.validate().hasErrors) {
+      return;
+    }
+
+    const emailId = reportForm.values.email;
+
+    showLoadingNotification({ title: 'Please Wait', message: '' });
+
+    try {
+      const res = await HttpClient.callApiAuth<ReportData>(
+        {
+          url: `${reportAPI}?email=${emailId}`,
+          method: 'GET',
+        },
+        authClient
+      );
+
+      if (res.ok) {
+        navigate(`/screens?email=${emailId}`);
+        showSuccessNotification({ title: 'Success', message: '' });
+      } else {
+        showErrorNotification(res.error.code);
+        throw new Error(JSON.stringify(res.error));
+      }
+    } catch (err: unknown) {
+      console.error('~ AdminForm.tsx ~ onGenerateReportFormSubmit(): ', JSON.parse(String(err)));
+    }
   };
 
   return (
-    <>
-      <Layout>
-        <div>
-          <div className="hrFormContainer adminContainer">
-            <Text className="formText">Create Account</Text>
-          </div>
-          <form className="hrForm adminForm" onSubmit={onFormSubmit}>
-            <Stack>
-              <TextInput
-                required
-                label="Email"
-                placeholder="hello@gmail.com"
-                value={form.values.email}
-                onChange={(event) => form.setFieldValue('email', event.currentTarget.value)}
-                error={form.errors.email && 'Invalid email'}
-                radius="md"
-              />
-              <PasswordInput
-                required
-                label="Password"
-                placeholder="Enter password"
-                value={form.values.password}
-                onChange={(event) => form.setFieldValue('password', event.currentTarget.value)}
-                radius="md"
-              />
+    <Layout>
+      <Box className="page-container">
+        <Tabs defaultValue="createAccount" color="dark">
+          <Tabs.List className="tabList" position="center">
+            <Tabs.Tab className="tabBtn" value="createAccount">
+              Create an Account
+            </Tabs.Tab>
+            <Tabs.Tab className="tabBtn" value="generateReport">
+              Generate Report
+            </Tabs.Tab>
+          </Tabs.List>
+          <Tabs.Panel value="createAccount">
+            <form className="hrForm adminForm" onSubmit={onFormSubmit}>
+              <Stack>
+                <TextInput
+                  required
+                  label="Email"
+                  placeholder="hello@gmail.com"
+                  value={form.values.email}
+                  onChange={(event) => form.setFieldValue('email', event.currentTarget.value)}
+                  error={form.errors.email && 'Invalid email'}
+                  radius="md"
+                />
+                <PasswordInput
+                  required
+                  label="Password"
+                  placeholder="Enter password"
+                  value={form.values.password}
+                  onChange={(event) => form.setFieldValue('password', event.currentTarget.value)}
+                  radius="md"
+                />
 
-              <Group position="apart" mt="xl">
-                <Button className="sendInvite" type="submit" radius="xl">
-                  Generate Account
-                </Button>
-              </Group>
-            </Stack>
-          </form>
-          <div className="hrFormContainer reportContainer">
-            <Text className="formText">Enter Email for Report Generation</Text>
+                <Group position="apart" mt="xl">
+                  <Button className="sendInvite" type="submit" radius="xl">
+                    Create Account
+                  </Button>
+                </Group>
+              </Stack>
+            </form>
+          </Tabs.Panel>
+          <Tabs.Panel value="generateReport">
             <form className="hrForm adminForm" onSubmit={onGenerateReportFormSubmit}>
               <Stack>
                 <TextInput
@@ -90,9 +164,9 @@ export const AdminForm: React.FC = (): JSX.Element => {
                 </Group>
               </Stack>
             </form>
-          </div>
-        </div>
-      </Layout>
-    </>
+          </Tabs.Panel>
+        </Tabs>
+      </Box>
+    </Layout>
   );
 };

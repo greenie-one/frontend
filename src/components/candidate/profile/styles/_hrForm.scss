@@ -1,31 +1,162 @@
 @import '_variables';
+.page-container {
+  margin-top: 6rem;
+  padding-block: 4rem;
+  padding-inline: 1.5rem;
+
+  .tabList {
+    width: min(100%, 40rem);
+    margin-inline: auto;
+
+    .tabBtn {
+      width: 50%;
+      font-weight: 500;
+    }
+  }
+}
+
+.hrFormWrapper {
+  padding-inline: 1.5rem;
+
+  .dividerText {
+    display: block;
+    width: min(100%, 40rem);
+    margin-inline: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-block-start: -1rem;
+    margin-block-end: 2rem;
+    gap: 1rem;
+    color: hsl(223, 11%, 46%, 1);
+
+    &::before,
+    &::after {
+      content: '';
+      display: block;
+      flex: 1;
+      border-top: 1px solid hsl(223, 11%, 46%, 0.5);
+    }
+  }
+
+  .bulkUploadContainer {
+    width: min(100%, 40rem);
+    margin-inline: auto;
+    margin-block-end: 5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+
+    .addDocumentBtn {
+      background-color: #12b886;
+    }
+
+    .limit {
+      font-size: 0.9325rem;
+      text-transform: capitalize;
+      color: #191919;
+
+      .filesFormate {
+        text-transform: lowercase;
+      }
+    }
+
+    .inputFileNameBox {
+      border: 1px solid hsl(223, 11%, 46%, 0.35);
+      width: 100%;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      background-color: #ffffff;
+
+      .label {
+        font-size: 0.9325rem;
+        line-height: 1.2;
+        font-weight: 500;
+        border-bottom: 1px solid #687082;
+        color: #687082;
+      }
+
+      .fileInfoBox {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        color: #191919;
+
+        .inputFileName {
+          font-size: 1.075rem;
+          font-weight: 500;
+
+          &:hover {
+            text-decoration: underline;
+            cursor: pointer;
+          }
+
+          .fileIcon {
+            margin-right: 5px;
+            font-size: 1.75rem;
+            color: #1f6e43;
+          }
+        }
+
+        .iconGroup {
+          color: #687082;
+          font-size: 1.5rem;
+          display: flex;
+          gap: 0.5rem;
+        }
+      }
+    }
+  }
+}
+
 .hrFormContainer {
-  margin-block-start: 150px;
+  margin-block-start: 125px;
   display: flex;
   align-items: center;
   flex-direction: column;
+
   &.adminContainer {
     margin-block-start: 120px;
   }
+
   &.reportContainer {
     margin-block-start: 30px;
   }
+
+  .formHeading {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #191919;
+  }
+
   .formText {
-    margin-top: 15px;
-    font-size: 25px;
+    margin-top: 10px;
+    font-size: 1.15rem;
+    text-transform: capitalize;
+    font-weight: 500;
+    color: #2e2e48;
   }
 }
+
 .hrForm {
   margin-inline: auto;
-  margin-block: 5rem;
-  width: 50%;
+  margin-block: 3rem;
+  width: min(100%, 40rem);
+
   &.adminForm {
     margin-block: 2rem;
   }
-  .sendmessage {
+  .sendMessage {
+    margin-block-start: 0.65rem;
     margin-block-end: 0.3rem;
     font-size: 0.875rem;
     font-weight: 500;
+    color: #191919;
   }
   .sendInvite {
     margin-inline: auto;
@@ -39,7 +170,8 @@
       font-size: 15px;
     }
     .formHeading {
-      font-size: 25px;
+      font-size: 24px;
+      text-align: center;
     }
   }
 }

@@ -152,7 +152,11 @@ export const useIDVerificationMethods = () => {
         message: 'Please wait while we verify your licence',
       });
 
-      const requestBody: IDRequestBody = { id_type: 'DRIVING_LICENSE', id_number: verifyLicenceForm.values.licenceNo };
+      const requestBody: IDRequestBodyLic = {
+        id_type: 'DRIVING_LICENSE',
+        id_number: verifyLicenceForm.values.licenceNo,
+        dob: verifyLicenceForm.values.dateOfBirth,
+      };
       const res: Result<verifyLicence> = await HttpClient.callApiAuth(
         {
           url: `${drivinglicenseAPIList.verifylicense}`,
