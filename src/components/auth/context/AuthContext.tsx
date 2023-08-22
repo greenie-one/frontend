@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useReducer, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import jwt_decode from 'jwt-decode';
 
 import { useForm, isNotEmpty, matchesField, hasLength } from '@mantine/form';
 import { useLocalStorage } from '@mantine/hooks';
@@ -13,6 +14,11 @@ import {
   showLoadingNotification,
   showSuccessNotification,
 } from '../../../utils/functions/showNotification';
+
+type JWTDecodedType = {
+  email: string;
+  roles: ['default', 'admin', 'hr'];
+};
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 export const useAuthContext = () => useContext(AuthContext);
@@ -176,7 +182,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     if (res.ok) {
       setProfileData(res.value);
-      navigate('/candidate/profile');
+      const decoded: JWTDecodedType = jwt_decode(authTokens.accessToken);
+
+      if (decoded.roles.includes('admin')) {
+        navigate('/roles/admin');
+      } else if (decoded.roles.includes('hr')) {
+        navigate('/roles/hr');
+      } else {
+        navigate('/candidate/profile');
+      }
     } else {
       dispatch({ type: 'CREATEPROFILE' });
     }
