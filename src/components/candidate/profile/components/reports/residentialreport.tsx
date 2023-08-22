@@ -24,11 +24,6 @@ const markerGreen = new Icon({
   iconSize: [25, 25],
 });
 
-const data = [
-  ['1', '2', '3', '4'],
-  ['1', '2', '3', '4'],
-];
-
 export const ResidentialReport: React.FC<ChildComponentProps> = ({ ResidentialInfo }) => {
   return (
     <>
@@ -66,6 +61,34 @@ export const ResidentialReport: React.FC<ChildComponentProps> = ({ ResidentialIn
                     <div className="location-date">
                       <p>Last updated</p>
                       <p>02/03/2023</p>
+                    </div>
+                  </div>
+                  <div className="table">
+                    <div className="row">
+                      <div className="cell">Description</div>
+                      <div className="cell">Source</div>
+                      <div className="cell">Location Resolution Logic</div>
+                      <div className="cell">Legend</div>
+                    </div>
+                    <div className="row">
+                      <div className="cell">
+                        {resident.address_line_1} {resident.address_line_2} {resident.city} - {resident.pincode}
+                      </div>
+                      <div className="cell">Claimed Address</div>
+                      <div className="cell">Azure Maps API</div>
+                      <div className="cell">
+                        <p className="red-legend"></p>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="cell">
+                        {resident.capturedLocation.latitude}, {resident.capturedLocation.longitude}
+                      </div>
+                      <div className="cell">Captured Address</div>
+                      <div className="cell">Geo-Location API</div>
+                      <div className="cell">
+                        <p className="green-legend"></p>
+                      </div>
                     </div>
                   </div>
                   <div style={{ height: '20rem' }} className="map-box-container">

@@ -50,7 +50,7 @@ export const CaptureLocation: React.FC<CaptureLocationProps> = ({ uuid, peerData
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(setPosition, showError);
     } else {
-      showErrorNotification('Geolocation is not supported by this browser.');
+      showErrorNotification('Geo-Location is not supported by this browser.');
     }
 
     open();

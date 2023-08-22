@@ -18,15 +18,15 @@ type ChildComponentProps = {
 const calculateIDProgress = (idDetails: IdDetailsResponse): number => {
   let verifiedIdsCount = 0;
 
-  if (idDetails.aadhar !== null) {
+  if (idDetails.aadhar) {
     verifiedIdsCount += 1;
   }
 
-  if (idDetails.dl !== null) {
+  if (idDetails.dl) {
     verifiedIdsCount += 1;
   }
 
-  if (idDetails.pan !== null) {
+  if (idDetails.pan) {
     verifiedIdsCount += 1;
   }
 
@@ -64,15 +64,15 @@ const totalProgress = (
 ): number => {
   let starCount = 0;
 
-  if (idDetails.aadhar !== null) {
+  if (idDetails.aadhar) {
     starCount += 1;
   }
 
-  if (idDetails.dl !== null) {
+  if (idDetails.dl) {
     starCount += 1;
   }
 
-  if (idDetails.pan !== null) {
+  if (idDetails.pan) {
     starCount += 1;
   }
 
@@ -120,10 +120,6 @@ export const ExecutiveSummary: React.FC<ChildComponentProps> = ({
                 )}
               </div>
             </div>
-            {/* <div className="residential-address-right ">
-              <CgProfile size={'20px'} />
-              View profile
-            </div> */}
 
             <div className="residential-address-right right-view-profile">
               <div>
@@ -200,7 +196,7 @@ export const ExecutiveSummary: React.FC<ChildComponentProps> = ({
               </span>
               <span>{calculateResidentialProgress(ResidentialInfo)}%</span>
             </Text>
-            <Text className="peer-name">Geolocation API</Text>
+            <Text className="peer-name">Geo-Location API</Text>
           </Box>
           <Box className="added-peers executive-peers">
             <Text className="peer-name ">Work Experience</Text>

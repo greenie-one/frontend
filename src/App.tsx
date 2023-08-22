@@ -17,7 +17,6 @@ import { TermsAndConditionsPage } from './pages/TermsAndConditionsPage';
 import { AuthVerificationLayout } from './utils/constants/AuthVerification';
 import { GoogleAuthRedirect } from './components/auth/components/google/GoogleAuthRedirect';
 import { AppLayout } from './components/layouts/AppLayout';
-import { ReportScreens } from './components/candidate/profile/components/reports/ReportScreens';
 import { ExperienceVerification } from './pages/ExperienceVerification';
 import { AllExperiences } from './components/candidate/profile/components/experience/AllExperiences';
 import { ExperienceDetails } from './components/candidate/profile/components/experience/ExperienceDetails';
@@ -37,6 +36,8 @@ import { SelfVerification } from './components/candidate/profile/components/resi
 import { VerifyResidentialInfo } from './components/candidate/profile/components/residential_info/VerifyResidentialInfo';
 import { IDVerifiedDetails } from './components/candidate/profile/components/IDs/IDVerifiedDetails';
 import { VerifyID } from './components/candidate/profile/components/IDs/VerifyID';
+import { CandidateVerificationReport } from './components/candidate/profile/components/reports/CandidateVerificationReport';
+import { ReportScreens } from './components/candidate/profile/components/reports/ReportScreens';
 
 const App = () => {
   return (
@@ -47,6 +48,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<AppLayout />}>
             <Route index element={<Landing />} />
+            <Route path="/services/candidate-report" element={<CandidateVerificationReport />} />
             <Route path="/screens" element={<ReportScreens />} />
             <Route path="auth" element={<AuthPage />} />
             <Route path="waitlist" element={<Waitlist />} />

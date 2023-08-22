@@ -69,7 +69,7 @@ export const ReportScreens: React.FC = (): JSX.Element => {
         ResidentialInfo={ResidentialInfo}
         workExperienceDetails={workExperienceDetails}
       />
-      {(IdDetails.aadhar || IdDetails.pan || IdDetails.dl) && <PersonalIdentification IdDetails={IdDetails} />}
+      {<PersonalIdentification IdDetails={IdDetails} />}
       {workExperienceDetails.length > 0 && (
         <>
           <hr></hr>

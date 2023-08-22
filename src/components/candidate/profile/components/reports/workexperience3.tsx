@@ -95,8 +95,10 @@ export const WorkExperienceReport3: React.FC<ChildComponentProps> = ({
               <Box className="info-box">
                 <Text className="experience-details-box-heading">Tenure</Text>
                 <Text className="experience-details-box-text">
-                  {experience.dateOfJoining.substring(4, 15)} -{' '}
-                  {experience.dateOfLeaving ? experience.dateOfLeaving.substring(0, 4) : 'Present'}
+                  {experience.dateOfJoining.substring(0, 10).split('-').reverse().join('-')} -{' '}
+                  {experience.dateOfLeaving
+                    ? experience.dateOfLeaving.substring(0, 10).split('-').reverse().join('-')
+                    : 'Present'}
                 </Text>
               </Box>
               <Box className="info-box">
@@ -104,19 +106,18 @@ export const WorkExperienceReport3: React.FC<ChildComponentProps> = ({
                 <Text className="experience-details-box-text">{experience.workType}</Text>
               </Box>
             </Box>
-            {peerDetails.filter((peer) => peer.ref === experience.id).length > 0 ? (
-              <div>
-                <div className="peer-exp-name">
-                  <p>Referees</p>
-                </div>
+            <div>
+              <div className="peer-exp-name">
+                <p>Referees</p>
+              </div>
 
-                <Box className="add-peer-header work-header">
-                  <Text className="add-peer-header-text">Referee Name</Text>
-                  <Text className="add-peer-header-text">Referee Type</Text>
-                  <Text className="add-peer-header-text">Status</Text>
-                  <Text className="add-peer-header-text">Remarks</Text>
-                </Box>
-
+              <Box className="add-peer-header work-header">
+                <Text className="add-peer-header-text">Referee Name</Text>
+                <Text className="add-peer-header-text">Referee Type</Text>
+                <Text className="add-peer-header-text">Status</Text>
+                <Text className="add-peer-header-text">Remarks</Text>
+              </Box>
+              {peerDetails.filter((peer) => peer.ref === experience.id).length > 0 ? (
                 <Box className="added-peer-box">
                   {peerDetails
                     .filter((peer) => peer.ref === experience.id)
@@ -133,28 +134,43 @@ export const WorkExperienceReport3: React.FC<ChildComponentProps> = ({
                       </Box>
                     ))}
                 </Box>
+              ) : (
+                <Box className="added-peer-box">
+                  <Box className="added-peers added-peers-exp ">
+                    <Text className="peer-name title">No Referee</Text>
+                    <Text className="peer-name">-</Text>
+                    <Text className={`peer-name`}>-</Text>
+                    <Text className="peer-name name-wrap">-</Text>
+                  </Box>
+                </Box>
+              )}
+            </div>
+            <>
+              <div className="peer-exp-name">
+                <p>Documents</p>
               </div>
-            ) : null}
-            {document.filter((doc) => doc.type === 'work' && doc.workExperience === experience.id).length > 0 ? (
-              <>
-                <div className="peer-exp-name">
-                  <p>Documents</p>
-                </div>
+              {document.filter((doc) => doc.type === 'work' && doc.workExperience === experience.id).length > 0 ? (
                 <Box className="folder-wrapper report-folder-wrapper">
                   {document
                     .filter((doc) => doc.type === 'work' && doc.workExperience === experience.id)
                     .map((doc, i) => (
                       <div key={i} className="folder">
                         <img src={pdfIcon} alt="PDF Icon" />
-                        <Text className="doc-name">{doc.name}</Text>
-                        <a href={doc.privateUrl} target="_blank" rel="noopener noreferrer">
-                          Download
-                        </a>
+                        <Text className="doc-name">
+                          {doc.name.substring(0, 25)}
+                          {doc.name.length > 25 && '...'}
+                        </Text>
                       </div>
                     ))}
                 </Box>
-              </>
-            ) : null}
+              ) : (
+                <Box className="added-peer-box">
+                  <Box style={{ borderRadius: '1rem', marginTop: '1rem' }} className="added-peers added-peers-exp ">
+                    No Documents
+                  </Box>
+                </Box>
+              )}
+            </>
             <hr className="breakLine"></hr>
           </div>
         ))}

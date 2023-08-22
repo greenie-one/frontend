@@ -15,7 +15,7 @@ export const PersonalIdentification: React.FC<ChildComponentProps> = ({ IdDetail
         <div className="disclaimer-box">
           <span className="disclaimer-text">Personal Identification</span>
         </div>
-        {IdDetails.aadhar && (
+        {IdDetails.aadhar ? (
           <>
             <div className="location">
               <p>Aadhaar Card</p>
@@ -47,9 +47,23 @@ export const PersonalIdentification: React.FC<ChildComponentProps> = ({ IdDetail
               </>
             ) : null}
           </>
+        ) : (
+          <>
+            <div className="location">
+              <p>Aadhaar Card</p>
+            </div>
+            <Box className="added-peer-box">
+              <Box
+                style={{ borderRadius: '1rem', fontWeight: '500', marginTop: '1rem' }}
+                className="added-peers added-peers-exp "
+              >
+                Aadhar Not Verified
+              </Box>
+            </Box>
+          </>
         )}
 
-        {IdDetails.pan && (
+        {IdDetails.pan ? (
           <>
             <div className="location">
               <p>PAN Card</p>
@@ -115,8 +129,22 @@ export const PersonalIdentification: React.FC<ChildComponentProps> = ({ IdDetail
               </Box>
             ) : null}
           </>
+        ) : (
+          <>
+            <div className="location">
+              <p>PAN Card</p>
+            </div>
+            <Box className="added-peer-box">
+              <Box
+                style={{ borderRadius: '1rem', fontWeight: '500', marginTop: '1rem' }}
+                className="added-peers added-peers-exp "
+              >
+                PAN Not Verified
+              </Box>
+            </Box>
+          </>
         )}
-        {IdDetails.dl && (
+        {IdDetails.dl ? (
           <>
             <div className="location">
               <p>Driving License</p>
@@ -208,6 +236,20 @@ export const PersonalIdentification: React.FC<ChildComponentProps> = ({ IdDetail
                 </Box>
               </Box>
             ) : null}
+          </>
+        ) : (
+          <>
+            <div className="location">
+              <p>Driving License</p>
+            </div>
+            <Box className="added-peer-box">
+              <Box
+                style={{ borderRadius: '1rem', fontWeight: '500', marginTop: '1rem' }}
+                className="added-peers added-peers-exp "
+              >
+                Driving License Not Verified
+              </Box>
+            </Box>
           </>
         )}
       </main>
