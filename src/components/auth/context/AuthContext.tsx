@@ -186,8 +186,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       if (decoded.roles.includes('admin')) {
         navigate('/roles/admin');
-      } else if (decoded.roles.includes('hr')) {
-        navigate('/roles/hr');
       } else {
         navigate('/candidate/profile');
       }
@@ -198,7 +196,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   useEffect(() => {
     if (authTokens) {
-      getMyProfile();
+      const decoded: JWTDecodedType = jwt_decode(authTokens.accessToken);
+      if (decoded.roles.includes('hr')) {
+        navigate('/roles/hr');
+      } else {
+        getMyProfile();
+      }
     }
   }, [authTokens, forceRender]);
 
