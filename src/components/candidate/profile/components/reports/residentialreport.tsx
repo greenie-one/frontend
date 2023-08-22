@@ -4,12 +4,25 @@ import { CgSandClock } from 'react-icons/cg';
 import { Button } from '@mantine/core';
 import { ReportTop } from './ReportTop';
 import './_report.scss';
-import { MapContainer, TileLayer, Circle } from 'react-leaflet';
+import { MapContainer, TileLayer, Circle, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
+import { Icon } from 'leaflet';
+import mapMarker from '../../assets/map-marker.png';
+import mapMarkerGreen from '../../assets/map-marker-green.png';
 
 type ChildComponentProps = {
   ResidentialInfo: ResidentialType[];
 };
+
+const marker = new Icon({
+  iconUrl: mapMarker,
+  iconSize: [25, 25],
+});
+
+const markerGreen = new Icon({
+  iconUrl: mapMarkerGreen,
+  iconSize: [25, 25],
+});
 
 export const ResidentialReport: React.FC<ChildComponentProps> = ({ ResidentialInfo }) => {
   return (
@@ -52,10 +65,15 @@ export const ResidentialReport: React.FC<ChildComponentProps> = ({ ResidentialIn
                   </div>
                   <div style={{ height: '20rem' }} className="map-box-container">
                     <MapContainer
+                      bounds={[
+                        [resident.location.latitude, resident.location.longitude],
+                        [resident.capturedLocation.latitude, resident.capturedLocation.longitude],
+                      ]}
                       style={{ height: '20rem' }}
-                      center={[resident.location.latitude, resident.location.longitude]}
-                      zoom={12}
                       scrollWheelZoom={false}
+                      maxZoom={15}
+                      zoomControl={false}
+                      attributionControl={false}
                     >
                       <TileLayer
                         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -66,15 +84,30 @@ export const ResidentialReport: React.FC<ChildComponentProps> = ({ ResidentialIn
                         color={'#CC1034'}
                         fillColor={'#CC1034'}
                         fillOpacity={0.4}
-                        radius={2000}
-                      ></Circle>
+                        radius={500}
+                      >
+                        <Marker position={[resident.location.latitude, resident.location.longitude]} icon={marker}>
+                          <Popup>
+                            {resident.address_line_1} {resident.address_line_2} {resident.city} - {resident.pincode}
+                          </Popup>
+                        </Marker>
+                      </Circle>
                       <Circle
                         center={[resident.capturedLocation.latitude, resident.capturedLocation.longitude]}
-                        color={'#7dd71d'}
-                        fillColor={'#7dd71d'}
+                        color={'#17A672'}
+                        fillColor={'#17A672'}
                         fillOpacity={0.4}
-                        radius={2000}
-                      ></Circle>
+                        radius={500}
+                      >
+                        <Marker
+                          position={[resident.capturedLocation.latitude, resident.capturedLocation.longitude]}
+                          icon={markerGreen}
+                        >
+                          <Popup>
+                            {resident.capturedLocation.latitude}, {resident.capturedLocation.longitude}
+                          </Popup>
+                        </Marker>
+                      </Circle>
                     </MapContainer>
                   </div>
                 </React.Fragment>
