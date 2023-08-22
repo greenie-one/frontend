@@ -61,6 +61,7 @@ const LoginStepTwo = () => {
         email: loginForm.values.emailPhoneGreenieId,
         password: loginForm.values.password,
       };
+
       const res = await HttpClient.callApi<LoginResponse>({
         url: `${authApiList.login}`,
         method: 'POST',
