@@ -38,6 +38,8 @@ import { SelfVerification } from './components/candidate/profile/components/resi
 import { VerifyResidentialInfo } from './components/candidate/profile/components/residential_info/VerifyResidentialInfo';
 import { IDVerifiedDetails } from './components/candidate/profile/components/IDs/IDVerifiedDetails';
 import { VerifyID } from './components/candidate/profile/components/IDs/VerifyID';
+import { CandidateVerificationReport } from './components/candidate/profile/components/reports/CandidateVerificationReport';
+import { ReportScreens } from './components/candidate/profile/components/reports/ReportScreens';
 import { HRVerification } from './utils/constants/HRVerification';
 
 const App = () => {
@@ -49,6 +51,8 @@ const App = () => {
         <Routes>
           <Route path="/" element={<AppLayout />}>
             <Route index element={<Landing />} />
+            <Route path="/services/candidate-report" element={<CandidateVerificationReport />} />
+            <Route path="/screens" element={<ReportScreens />} />
             <Route path="auth" element={<AuthPage />} />
             <Route path="waitlist" element={<Waitlist />} />
             <Route path="oauth/google/callback" element={<GoogleAuthRedirect />} />

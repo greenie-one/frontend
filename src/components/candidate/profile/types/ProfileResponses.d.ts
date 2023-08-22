@@ -51,7 +51,8 @@ type WorkExperience = {
   noOfVerifications: number;
   salary: string;
   workMode: string;
-  worktype: string;
+  workType: string;
+  updatedAt: string;
 };
 
 type workExperienceResponse = {
@@ -185,6 +186,16 @@ type IdDetails = {
   location: string;
   createdAt: Date;
   updatedAt: string;
+  fatherName: string;
+  VehicleType: string[];
+  phoneNumber: string;
+  bloodGroup: string;
+  pan_type: string;
+  aadharLinked: boolean;
+  panType: string;
+  phoneNumber: string;
+  dateOfIssue: string;
+  dateOfExpiry: string;
 };
 
 type WorkExperience = {
@@ -194,8 +205,8 @@ type WorkExperience = {
   companyId: string;
   linkedInUrl?: string;
   workEmail: string;
-  dateOfJoining: Date;
-  dateOfLeaving?: Date;
+  dateOfJoining: string;
+  dateOfLeaving?: string;
   worktype: string;
 };
 
@@ -204,13 +215,22 @@ type ResidentialType = {
   address_line_1: string;
   address_line_2: string;
   landmark: string;
-  pincode: number;
-  start_date: string;
-  endDate?: string;
+  pincode: string;
   city: string;
+  state: string;
   country: string;
-  addressType: string;
-  location: string;
+  start_date: string;
+  end_date?: string;
+  addressType: 'Current' | 'Permanent' | 'Temporary';
+  isVerified: boolean;
+  capturedLocation: {
+    longitude: number;
+    latitude: number;
+  };
+  location: {
+    longitude: number;
+    latitude: number;
+  };
 };
 
 type WorkPeerReportResponse = {
@@ -226,26 +246,81 @@ type WorkPeerReportResponse = {
   otherQuestions: HRQuestions;
   skills: SkillsVerification[];
   documents: DocumentVerification[];
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt?: string;
+  updatedAt?: string;
   isVerificationCompleted?: boolean;
 };
 
+type AccountDetails = {
+  email: string;
+  firstName: string;
+  greenieId: string;
+  lastName: string;
+};
+
+type VerificationState = 'PENDING' | 'APPROVED' | 'DISPUTED';
+type VerificationStatus = {
+  state: VerificationState;
+  dispute_type?: string | null;
+  dispute_reason?: string | null;
+};
+
+type PeersResponse = {
+  ref: string;
+  name: string;
+  email: string;
+  phone: string;
+  emailVerified: boolean;
+  phoneVerified: boolean;
+  verificationBy: string;
+  selectedFields: Record<string, VerificationStatus>;
+  allQuestions: {
+    attitudeRating: string;
+    designation: VerificationStatus;
+    peerPost: VerificationStatus;
+    review: string;
+  };
+  skills: {
+    id: string;
+    status: VerificationStatus;
+  }[];
+  documents: {
+    id: string;
+    status: VerificationStatus;
+  }[];
+  createdAt: string;
+  updatedAt: string;
+  isVerificationCompleted: boolean;
+};
+
+type DocumentResponse = {
+  name: string;
+  privateUrl: string;
+  type: string;
+  workExperience: string;
+};
+
+type WorkExperienceDetails = {
+  documents: DocumentResponse[];
+  peers: WorkPeerReportResponse[];
+  workExp: {
+    workExperiences: WorkExperience[];
+  };
+};
+
+type ResidentialDetailsResponse = {
+  residentialPeers: PeersResponse[];
+  residentialInfo: ResidentialType[];
+};
+
+type IdDetailsResponse = {
+  aadhar: IdDetails | null;
+  pan: IdDetails | null;
+  dl: IdDetails | null;
+};
 type ReportData = {
-  accountDetails: {
-    greenieId?: string;
-  };
-  workExperienceDetails: {
-    peers: WorkPeerReportResponse[];
-    workExp: {
-      workExperiences: WorkExperience[];
-    };
-  };
-  ResidentialDetails: {
-    residentialPeers: GetUserPeersResponse[];
-    residentialInfo: {
-      residentialInfos: ResidentialType[];
-    };
-  };
-  idDetails: IdDetails[];
+  accountDetails: AccountDetails;
+  workExperienceDetails: WorkExperienceDetails;
+  ResidentialDetails: ResidentialDetailsResponse;
+  idDetails: IdDetailsResponse;
 };
