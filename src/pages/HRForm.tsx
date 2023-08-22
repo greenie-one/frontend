@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
-import { Layout } from '../components/candidate/profile/components/Layout';
+import { Footer } from '../components/candidate/profile/components/Footer';
+import { HRNavbar } from '../components/candidate/profile/components/HRNavbar';
 import { hasLength, isNotEmpty, useForm } from '@mantine/form';
 import { Textarea, Group, Stack, Title, TextInput, Button, Text } from '@mantine/core';
 import '../components/candidate/profile/styles/_hrForm.scss';
@@ -136,7 +137,8 @@ export const HRForm: React.FC = (): JSX.Element => {
 
   return (
     <>
-      <Layout>
+      <HRNavbar />
+      <main className="profile">
         <div className="hrFormWrapper">
           <div className="hrFormContainer">
             <Title className="formHeading">Welcome to </Title>
@@ -231,7 +233,8 @@ export const HRForm: React.FC = (): JSX.Element => {
             )}
           </div>
         </div>
-      </Layout>
+      </main>
+      <Footer />
     </>
   );
 };
