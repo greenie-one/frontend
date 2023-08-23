@@ -4,6 +4,7 @@
   border-radius: 1rem;
   display: flex;
   flex-direction: column;
+  /* align-items: center; */
   gap: 1.5rem;
 }
 
@@ -30,7 +31,6 @@
 .request_item_body {
   display: flex;
   flex-direction: column;
-  flex: 1;
 }
 
 .request_title {
@@ -48,11 +48,11 @@
 }
 
 .request_actions {
-  margin-inline-start: 0.25rem;
+  margin-inline-start: 1rem;
   display: flex;
   align-self: center;
   align-items: center;
-  gap: 0.75rem;
+  gap: 1rem;
 }
 
 .request_action_btns {
@@ -67,33 +67,4 @@
   background: transparent;
   border: 1px solid #697082;
   color: #697082;
-}
-
-@media screen and (max-width: 47.5em) {
-  .requestList_container {
-    padding: 2rem;
-  }
-}
-
-@media screen and (max-width: 37em) {
-  .request_item {
-    display: grid;
-    grid-template-columns: 3rem 1fr;
-    row-gap: 1rem;
-  }
-
-  .request_item_body {
-    justify-content: center;
-  }
-
-  .request_actions {
-    margin-inline-start: 0;
-    grid-column: -1/-2;
-    gap: 0.6rem;
-  }
-
-  .request_action_btns {
-    font-size: 0.85rem;
-    height: 1.9rem;
-  }
 }

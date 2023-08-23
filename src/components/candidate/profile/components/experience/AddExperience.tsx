@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import {
   Text,
   Box,
@@ -14,7 +14,7 @@ import {
 } from '@mantine/core';
 import pdfIcon from '../../assets/pdfIcon.png';
 import { DateInput } from '@mantine/dates';
-import { MdOutlineDelete, MdVerified } from 'react-icons/md';
+import { MdOutlineDelete } from 'react-icons/md';
 import { VscDebugRestart } from 'react-icons/vsc';
 import { GrAdd } from 'react-icons/gr';
 import linkedInImg from '../../../../auth/assets/linkedIn-logo.png';
@@ -25,7 +25,7 @@ import checkedIcon from '../../assets/check.png';
 import { workExperienceAPiList } from '../../../../../assets/api/ApiList';
 import { CgSandClock } from 'react-icons/cg';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
-import { HttpClient, Result } from '../../../../../utils/generic/httpClient';
+import { HttpClient } from '../../../../../utils/generic/httpClient';
 import { useNavigate } from 'react-router-dom';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import {
@@ -36,7 +36,6 @@ import {
 import { workType, modeOfWork, departments, companyTypes, skillRate } from '../../constants/SelectionOptions';
 import axios from 'axios';
 import { docDepotAPIList } from '../../../../../assets/api/ApiList';
-import { ExperienceDocuments } from '../../types/ProfileGeneral';
 import { MdRemoveCircle } from 'react-icons/md';
 import { skillExpertiseDict } from '../../../constants/dictionaries';
 import { Layout } from '../Layout';
@@ -48,10 +47,10 @@ export const AddExperience = () => {
   const [experienceChecked, setExperienceChecked] = useState(false);
   const [documentsChecked, setDocumentsChecked] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [documents, setDocuments] = useState<ExperienceDocuments[]>([]);
+  const [selectedFilesList, setSelectedFilesList] = useState<Array<File>>([]);
+  const [experienceId, setExperienceId] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [workExperienceId, setworkExperienceId] = useState<string>('');
-  const { authClient, workExperienceForm, skillForm, scrollToTop, setForceRender, forceRender, workExperienceData } =
+  const { authClient, setForceRender, deleteWorkExperience, workExperienceForm, skillForm, scrollToTop } =
     useGlobalContext();
   const authToken = authClient.getAccessToken();
 
@@ -92,6 +91,11 @@ export const AddExperience = () => {
   const checkOptionalErrors = () => {
     let hasErrors = false;
 
+    if (Number(workExperienceForm.values.salary) < 0) {
+      workExperienceForm.setFieldError('salary', 'Invalid CTC! Please enter a valid value.');
+      hasErrors = true;
+    }
+
     if (!experienceChecked) {
       if (workExperienceForm.values.dateOfLeaving === '') {
         workExperienceForm.setFieldError('dateOfLeaving', 'This field is required! Please enter a valid value.');
@@ -107,9 +111,7 @@ export const AddExperience = () => {
     return hasErrors;
   };
 
-  const handleExperienceContinue = async (event: React.FormEvent) => {
-    event.preventDefault();
-
+  const handleExperienceContinue = async () => {
     if (workExperienceForm.validate().hasErrors) {
       checkOptionalErrors();
       return;
@@ -119,93 +121,102 @@ export const AddExperience = () => {
       return;
     }
 
-    let requestBody: { [key: string]: string } = {} as { [key: string]: string };
+    setActive(2);
+    scrollToTop();
+  };
 
+  const createNewExperience = async () => {
+    showLoadingNotification({ title: 'Please wait !', message: 'We are adding your work experience.' });
+
+    let newExperienceRequestBody: Record<string, string> = {};
     Object.keys(workExperienceForm.values).forEach((key) => {
       if (workExperienceForm.values[key] !== '') {
         if (key === 'salary') {
-          requestBody = { ...requestBody, [key]: String(workExperienceForm.values[key]) };
+          newExperienceRequestBody = { ...newExperienceRequestBody, [key]: String(workExperienceForm.values[key]) };
         } else {
-          requestBody = { ...requestBody, [key]: workExperienceForm.values[key] };
+          newExperienceRequestBody = { ...newExperienceRequestBody, [key]: workExperienceForm.values[key] };
         }
       }
     });
-
-    showLoadingNotification({ title: 'Please wait !', message: 'We are adding your work experience.' });
 
     const res = await HttpClient.callApiAuth<createExperience>(
       {
         url: `${workExperienceAPiList.postWorkExperience}`,
         method: 'POST',
-        body: requestBody,
+        body: newExperienceRequestBody,
       },
       authClient
     );
 
     if (res.ok) {
-      setworkExperienceId(res.value.id);
-      showSuccessNotification({ title: 'Success !', message: 'New experience added to your profile.' });
-      setForceRender((prev) => !prev);
-      setActive(2);
-      scrollToTop();
-      workExperienceForm.reset();
+      return res.value.id;
     } else {
       showErrorNotification(res.error.code);
+      setActive(1);
+      throw new Error(res.error.code);
     }
   };
 
   const handleAddSkill = () => {
-    if (!skillForm.validate().hasErrors && workExperienceId !== null) {
-      setSelectedSkills((prevSkills: Skill[]) => [
-        ...prevSkills,
-        {
-          ...skillForm.values,
-          workExperience: workExperienceId,
-        },
-      ]);
-      skillForm.reset();
+    if (skillForm.validate().hasErrors) {
+      return;
     }
+
+    const currentSkill = skillForm.values;
+
+    for (const skill of selectedSkills) {
+      if (JSON.stringify(skill) === JSON.stringify(currentSkill)) {
+        return;
+      }
+    }
+
+    setSelectedSkills((prevSkills: Skill[]) => [...prevSkills, currentSkill]);
+    skillForm.reset();
   };
 
-  const handleSkillContinue = async () => {
+  const handleSkillContinue = () => {
     if (selectedSkills.length < 1) {
       showErrorNotification('NO_SKILL');
+      return;
     }
-    if (selectedSkills.length > 0) {
-      showLoadingNotification({ title: 'Please wait !', message: 'We are adding your skill' });
 
-      for (const skill of selectedSkills) {
-        const requestBody: SkillRequestBody = skill;
-        const res = await HttpClient.callApiAuth(
-          {
-            url: `${skillsAPIList.postSkill}`,
-            method: 'POST',
-            body: requestBody,
+    setActive(3);
+    skillForm.setFieldValue('skillName', '');
+    skillForm.setFieldValue('expertise', '');
+  };
+
+  const addSkillsToExperience = async (experienceId: string) => {
+    for (const skill of selectedSkills) {
+      const res = await HttpClient.callApiAuth(
+        {
+          url: `${skillsAPIList.postSkill}`,
+          method: 'POST',
+          body: {
+            ...skill,
+            workExperience: experienceId,
           },
-          authClient
-        );
-        if (res.ok) {
-          showSuccessNotification({ title: 'Success !', message: 'New skills added to your profile.' });
-
-          setActive(3);
-        }
+        },
+        authClient
+      );
+      if (!res.ok) {
+        showErrorNotification(res.error.code);
+        setActive(2);
+        throw new Error(res.error.code);
       }
-
-      setForceRender((prev) => !prev);
-      skillForm.setFieldValue('skillName', '');
-      skillForm.setFieldValue('expertise', '');
     }
   };
 
   const handleUploadDocument = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const fileInputTarget = event.target as typeof event.target & {
+      files: Array<File>;
+    };
     showLoadingNotification({ title: 'Please wait !', message: 'Please wait while we add your document' });
 
-    if (event.target.files && event.target.files[0]) {
-      if (event.target.files[0].size > 5 * 1024 * 1024) {
+    if (fileInputTarget.files && fileInputTarget.files[0]) {
+      if (fileInputTarget.files[0].size > 5 * 1024 * 1024) {
         showErrorNotification('SIZE_EXCEEDS');
-        setSelectedFile(null);
       } else {
-        setSelectedFile(event.target.files[0]);
+        setSelectedFile(fileInputTarget.files[0]);
         showSuccessNotification({ title: 'File selected ', message: '' });
       }
 
@@ -218,8 +229,48 @@ export const AddExperience = () => {
   const handleAddDocument = async () => {
     showLoadingNotification({ title: 'Please Wait !', message: 'Please wait while we add your documents' });
     if (selectedFile) {
+      setSelectedFilesList((current) => [...current, selectedFile]);
+      showSuccessNotification({ title: 'Success !', message: 'Document added successfully !' });
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+        setSelectedFile(null);
+      }
+    }
+  };
+
+  const handleRemoveDocument = async (index: number) => {
+    setSelectedFilesList((current) => {
+      return current.filter((file, fileIndex) => fileIndex !== index);
+    });
+  };
+
+  const createAddDocumentRequest = async (document: File, responseData: any, experienceId: string) => {
+    const documentRequestBody = {
+      name: document.name,
+      type: 'work',
+      privateUrl: responseData.url,
+      workExperience: experienceId,
+    };
+
+    const res = await HttpClient.callApiAuth<UpdateDocumentResponseType>(
+      {
+        url: `${docDepotAPIList.addDocument}`,
+        method: 'POST',
+        body: documentRequestBody,
+      },
+      authClient
+    );
+    if (!res.ok) {
+      showErrorNotification(res.error.code);
+      throw new Error(res.error.code);
+    }
+  };
+
+  const addDocumentsToExperience = async (experienceId: string) => {
+    for (const documents of selectedFilesList) {
       const formData = new FormData();
-      formData.append('document', selectedFile);
+      formData.append('document', documents);
+
       try {
         const res = await axios.post(`${docDepotAPIList.uploadDocument}`, formData, {
           headers: {
@@ -227,31 +278,14 @@ export const AddExperience = () => {
             Authorization: `Bearer ${authToken}`,
           },
         });
-        if (res.data) {
-          const requestBody = {
-            name: selectedFile.name,
-            type: 'work',
-            privateUrl: res.data.url,
-            workExperience: workExperienceId,
-          };
 
-          const resp: Result<UpdateDocumentResponseType> = await HttpClient.callApiAuth(
-            {
-              url: `${docDepotAPIList.addDocument}`,
-              method: 'POST',
-              body: requestBody,
-            },
-            authClient
-          );
-          if (resp.ok) {
-            showSuccessNotification({ title: 'Success !', message: 'Document added successfully !' });
-            setForceRender((prev) => !prev);
-          } else {
-            showErrorNotification(resp.error.code);
-          }
+        if (res.data) {
+          await createAddDocumentRequest(documents, res.data, experienceId);
         }
       } catch (error: unknown) {
         showErrorNotification('GR0000');
+        setActive(3);
+        throw new Error(String(error));
       } finally {
         if (fileInputRef.current) {
           fileInputRef.current.value = '';
@@ -261,63 +295,45 @@ export const AddExperience = () => {
     }
   };
 
-  const handleRemoveDocument = async (id: string) => {
-    showLoadingNotification({ title: 'Please Wait', message: 'Wait while we delete the document' });
-    const res: Result<DeleteDocumentResponseType> = await HttpClient.callApiAuth(
-      {
-        url: `${docDepotAPIList.deleteDocument}/${id}`,
-        method: 'DELETE',
-      },
-      authClient
-    );
-    if (res.ok) {
-      showSuccessNotification({ title: 'Success !', message: 'Document deleted successfully !' });
-      setForceRender((prev) => !prev);
-    } else {
-      showErrorNotification(res.error.code);
-    }
+  const handleFinish = async () => {
+    let experienceId;
+    try {
+      experienceId = await createNewExperience();
+      if (!experienceId) {
+        return;
+      }
 
-    setSelectedFile(null);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
-  };
+      setExperienceId(experienceId);
 
-  const handleDocumentContinue = () => {
-    scrollToTop();
-    setActive(4);
+      await addSkillsToExperience(experienceId);
+      await addDocumentsToExperience(experienceId);
+      setActive(4);
+    } catch (err: unknown) {
+      console.error('~ AddExperience.tsx ~ handleFinish(): ', err);
+
+      if (experienceId) {
+        deleteWorkExperience(experienceId);
+      }
+    }
   };
 
   const handleGoToVerification = () => {
+    setForceRender((current) => !current);
     scrollToTop();
-    navigate(`/candidate/profile/experience/${workExperienceId}/verify`);
+    navigate(`/candidate/profile/experience/${experienceId}/verify`);
+    workExperienceForm.reset();
+    setSelectedSkills([]);
+    setSelectedFilesList([]);
   };
 
   const handleProfilePage = () => {
+    setForceRender((current) => !current);
+
     navigate('/candidate/profile');
+    workExperienceForm.reset();
+    setSelectedSkills([]);
+    setSelectedFilesList([]);
   };
-
-  const getExperienceDocument = async () => {
-    const res: Result<ExperienceDocuments[]> = await HttpClient.callApiAuth(
-      {
-        url: `${docDepotAPIList.getAllDocuments}/work`,
-        method: 'GET',
-      },
-      authClient
-    );
-    if (res.ok) {
-      const filtered = res.value.filter((document) => document.workExperience === workExperienceId);
-      setDocuments(filtered);
-    } else {
-      showErrorNotification(res.error.code);
-    }
-  };
-
-  useEffect(() => {
-    if (authToken) {
-      getExperienceDocument();
-    }
-  }, [forceRender]);
 
   return (
     <>
@@ -578,7 +594,7 @@ export const AddExperience = () => {
                 <Button variant="default" className="cancel-btn" onClick={handlePrevPage}>
                   Back
                 </Button>
-                <Button type="submit" className="green-btn" onClick={handleExperienceContinue}>
+                <Button type="button" className="green-btn" onClick={handleExperienceContinue}>
                   Save
                 </Button>
               </Box>
@@ -698,14 +714,14 @@ export const AddExperience = () => {
                   (Only add <strong>.pdf</strong> files of size less than <strong>5 MB</strong>)
                 </Text>
               </Box>
-              {documents.length > 0 && (
+              {selectedFilesList.length > 0 && (
                 <Box className="added-documents-wrapper">
-                  {documents.map(({ _id, name }, index) => {
+                  {selectedFilesList.map((file, index) => {
                     return (
-                      <Box key={_id}>
+                      <Box key={index}>
                         <Box className="added-documents">
                           <Text className="document-name">
-                            <span>{index + 1}</span> {name.substring(0, 25)}
+                            <span>{index + 1}</span> {file.name.substring(0, 20)}...
                           </Text>
                           <Select
                             disabled
@@ -729,7 +745,7 @@ export const AddExperience = () => {
                               <BsCheckLg />
                               <Text className="added-text">Added</Text>
                             </Box>
-                            <Box className="add-document-icon" onClick={() => handleRemoveDocument(_id)}>
+                            <Box className="add-document-icon" onClick={() => handleRemoveDocument(index)}>
                               <MdOutlineDelete size={'18px'} color="#697082" />
                               <Text className="remove-text" color="#697082">
                                 Remove
@@ -737,38 +753,40 @@ export const AddExperience = () => {
                             </Box>
                           </Box>
                         </Box>
-                        {index < documents.length - 1 && <Divider />}
+                        {index < selectedFilesList.length - 1 && <Divider />}
                       </Box>
                     );
                   })}
                 </Box>
               )}
 
-              <Box className="checkbox-box">
-                <Checkbox
-                  checked={documentsChecked}
-                  onChange={() => setDocumentsChecked(!documentsChecked)}
-                  className="checkbox"
-                  color="teal"
-                />
-                <Text className="terms-conditions">
-                  I understand that during the upload process and while using this website, I may be required to provide
-                  certain personal information, including but not limited to my name, email address, contact details,
-                  and any other information deemed necessary for registration and website usage.
-                </Text>
-              </Box>
+              {selectedFilesList.length > 0 && (
+                <Box className="checkbox-box">
+                  <Checkbox
+                    checked={documentsChecked}
+                    onChange={() => setDocumentsChecked(!documentsChecked)}
+                    className="checkbox"
+                    color="teal"
+                  />
+                  <Text className="terms-conditions">
+                    I understand that during the upload process and while using this website, I may be required to
+                    provide certain personal information, including but not limited to my name, email address, contact
+                    details, and any other information deemed necessary for registration and website usage.
+                  </Text>
+                </Box>
+              )}
 
               <Box className="btn-wrapper">
-                <Button type="button" className="cancel-btn" variant="default" onClick={handleDocumentContinue}>
+                <Button type="button" className="cancel-btn" variant="default" onClick={handleFinish}>
                   Skip
                 </Button>
                 {documentsChecked ? (
-                  <Button className="green-btn" onClick={handleDocumentContinue}>
-                    Continue
+                  <Button className="green-btn" onClick={handleFinish}>
+                    Finish
                   </Button>
                 ) : (
                   <Button className="disabled-btn" disabled>
-                    Continue
+                    Finish
                   </Button>
                 )}
               </Box>
@@ -781,27 +799,21 @@ export const AddExperience = () => {
               <Text className="main-sub-heading">Let's get it verified</Text>
               <Box className="experience-details">
                 <Box className="experience-details-text-box">
-                  <Text className="designation">{workExperienceData[workExperienceData.length - 1].designation}</Text>
-                  <Text className="company-name">{workExperienceData[workExperienceData.length - 1].companyName}</Text>
-                  {workExperienceData[workExperienceData.length - 1].noOfVerifications >= 2 ? (
-                    <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
-                      Verified
-                    </Button>
-                  ) : (
-                    <Button leftIcon={<CgSandClock size={'16px'} />} className="pending">
-                      Pending
-                    </Button>
-                  )}
+                  <Text className="designation">{workExperienceForm.values.designation}</Text>
+                  <Text className="company-name">{workExperienceForm.values.designation.companyName}</Text>
+                  <Button leftIcon={<CgSandClock size={'16px'} />} className="pending">
+                    Pending
+                  </Button>
                 </Box>
               </Box>
               <Box className="docs-box">
                 <Title className="heading">With documents</Title>
                 <Box className="docs-wrapper">
-                  {documents.map((document, index) => {
+                  {selectedFilesList.map((file, index) => {
                     return (
                       <Box className="folder" key={index}>
                         <img src={pdfIcon} alt="folder-image" />
-                        <Text className="folder-text">{document.name.substring(0, 10)}...</Text>
+                        <Text className="folder-text">{file.name.substring(0, 10)}...</Text>
                       </Box>
                     );
                   })}

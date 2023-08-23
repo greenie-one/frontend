@@ -9,13 +9,16 @@ import { Waitlist } from './pages/Waitlist';
 
 import { ProfilePage } from './pages/ProfilePage';
 import { SettingsPage } from './pages/SettingsPage';
+import { HRForm } from './pages/HRForm';
+import { AdminForm } from './pages/AdminForm';
 import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage';
 import { TermsAndConditionsPage } from './pages/TermsAndConditionsPage';
 
 import { AuthVerificationLayout } from './utils/constants/AuthVerification';
+import { AdminVerification } from './utils/constants/AdminVerification';
+import { HRVerificationProtection } from './utils/constants/HRVerificationProtection';
 import { GoogleAuthRedirect } from './components/auth/components/google/GoogleAuthRedirect';
 import { AppLayout } from './components/layouts/AppLayout';
-
 import { ExperienceVerification } from './pages/ExperienceVerification';
 import { AllExperiences } from './components/candidate/profile/components/experience/AllExperiences';
 import { ExperienceDetails } from './components/candidate/profile/components/experience/ExperienceDetails';
@@ -35,6 +38,9 @@ import { SelfVerification } from './components/candidate/profile/components/resi
 import { VerifyResidentialInfo } from './components/candidate/profile/components/residential_info/VerifyResidentialInfo';
 import { IDVerifiedDetails } from './components/candidate/profile/components/IDs/IDVerifiedDetails';
 import { VerifyID } from './components/candidate/profile/components/IDs/VerifyID';
+import { CandidateVerificationReport } from './components/candidate/profile/components/reports/CandidateVerificationReport';
+import { ReportScreens } from './components/candidate/profile/components/reports/ReportScreens';
+import { HRVerification } from './utils/constants/HRVerification';
 
 const App = () => {
   return (
@@ -45,36 +51,50 @@ const App = () => {
         <Routes>
           <Route path="/" element={<AppLayout />}>
             <Route index element={<Landing />} />
+            <Route path="/services/candidate-report" element={<CandidateVerificationReport />} />
+            <Route path="/screens" element={<ReportScreens />} />
             <Route path="auth" element={<AuthPage />} />
             <Route path="waitlist" element={<Waitlist />} />
             <Route path="oauth/google/callback" element={<GoogleAuthRedirect />} />
             <Route path="/verification/:peer/:uuid" element={<ExperienceVerification />} />
             <Route path="/location/verify/:uuid" element={<PeerVerification />} />
+            <Route element={<AuthVerificationLayout />}>
+              <Route element={<HRVerification />}>
+                <Route path="roles/hr" element={<HRForm />} />
+              </Route>
+            </Route>
+            <Route element={<AuthVerificationLayout />}>
+              <Route element={<AdminVerification />}>
+                <Route path="roles/admin" element={<AdminForm />} />
+              </Route>
+            </Route>
 
             <Route element={<AuthVerificationLayout />}>
-              <Route path="candidate/profile">
-                <Route index element={<ProfilePage />} />
-                <Route path="settings" element={<SettingsPage />} />
+              <Route element={<HRVerificationProtection />}>
+                <Route path="candidate/profile">
+                  <Route index element={<ProfilePage />} />
+                  <Route path="settings" element={<SettingsPage />} />
 
-                <Route path="IDs/verify/aadhar/congratulations" element={<CongratulationsScreen />} />
-                <Route path="IDs/verify/:id/details" element={<IDVerifiedDetails />} />
-                <Route path="IDs/verify/:id" element={<VerifyID />} />
+                  <Route path="IDs/verify/aadhar/congratulations" element={<CongratulationsScreen />} />
+                  <Route path="IDs/verify/:id/details" element={<IDVerifiedDetails />} />
+                  <Route path="IDs/verify/:id" element={<VerifyID />} />
 
-                <Route path="experience/addExperience" element={<AddExperience />} />
-                <Route path="experience/allExperiences" element={<AllExperiences />} />
-                <Route path="experience/:id" element={<ExperienceDetails />} />
-                <Route path="experience/:id/verify" element={<VerifyExperience />} />
+                  <Route path="experience/addExperience" element={<AddExperience />} />
+                  <Route path="experience/allExperiences" element={<AllExperiences />} />
+                  <Route path="experience/:id" element={<ExperienceDetails />} />
+                  <Route path="experience/:id/verify" element={<VerifyExperience />} />
 
-                <Route path="address/addResidentialInfo" element={<AddResidentialInfo />} />
-                <Route path="address/allAddresses" element={<AllResidentialInfo />} />
-                <Route path="address/:id" element={<ResidentialInfoDetails />} />
-                <Route path="address/:id/verify" element={<VerifyResidentialInfo />} />
-                <Route path="location/:id/verify/me" element={<SelfVerification />} />
+                  <Route path="address/addResidentialInfo" element={<AddResidentialInfo />} />
+                  <Route path="address/allAddresses" element={<AllResidentialInfo />} />
+                  <Route path="address/:id" element={<ResidentialInfoDetails />} />
+                  <Route path="address/:id/verify" element={<VerifyResidentialInfo />} />
+                  <Route path="location/:id/verify/me" element={<SelfVerification />} />
 
-                <Route path="skills/allSkills" element={<AllSkills />} />
-                <Route path="skills/addSkills" element={<AddSkills />} />
-                <Route path="docDepot" element={<DocDepotPage />} />
-                <Route path="myVerification" element={<MyVerifications />} />
+                  <Route path="skills/allSkills" element={<AllSkills />} />
+                  <Route path="skills/addSkills" element={<AddSkills />} />
+                  <Route path="docDepot" element={<DocDepotPage />} />
+                  <Route path="myVerification" element={<MyVerifications />} />
+                </Route>
               </Route>
             </Route>
 

@@ -61,6 +61,11 @@ export const Userprofile = () => {
     showLoadingNotification({ title: 'Wait !', message: 'Please wait while we update your profile picture' });
 
     if (event.target.files && event.target.files[0]) {
+      if (event.target.files[0].size > 5 * 1024 * 1024) {
+        showErrorNotification('SIZE_EXCEEDS');
+        return;
+      }
+
       const formData = new FormData();
       formData.append('profilePicture', event.target.files[0]);
 
@@ -140,10 +145,10 @@ export const Userprofile = () => {
             <Title className="title">First Name</Title>
             <TextInput
               withAsterisk
-              label="Your first name"
-              className="inputClass"
-              maxLength={20}
               minLength={3}
+              maxLength={20}
+              className="inputClass"
+              label="Your first name"
               placeholder={profileData.firstName}
               {...profileForm.getInputProps('firstName')}
             />
@@ -153,11 +158,10 @@ export const Userprofile = () => {
             <Title className="title">Last Name</Title>
             <TextInput
               withAsterisk
+              minLength={3}
+              maxLength={20}
               label="Your last name"
               className="inputClass"
-              {...profileForm.getInputProps('lastName')}
-              maxLength={20}
-              minLength={3}
               placeholder={profileData.lastName}
               {...profileForm.getInputProps('lastName')}
             />
@@ -225,7 +229,7 @@ export const Userprofile = () => {
           )}
 
           <Button leftIcon={<MdOutlineEdit />} className="edit-btn" onClick={openFileInput}>
-            Change picture
+            Change Picture
           </Button>
           <input type="file" accept="image/*" ref={fileInputRef} style={{ display: 'none' }} onChange={onImageChange} />
         </Box>

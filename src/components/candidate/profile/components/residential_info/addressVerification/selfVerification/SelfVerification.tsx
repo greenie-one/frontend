@@ -44,7 +44,7 @@ export const SelfVerification: React.FC = (): JSX.Element => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(setPosition, showError);
     } else {
-      showErrorNotification('Geolocation is not supported by this browser.');
+      showErrorNotification('Geo-Location is not supported by this browser.');
     }
 
     open();
@@ -114,7 +114,6 @@ export const SelfVerification: React.FC = (): JSX.Element => {
           close={close}
           addressVerified={addressVerified}
           residentialData={currentResidentialInfo as ResidentialInfoResponse}
-          verificationType="self"
         />
       ) : (
         <></>

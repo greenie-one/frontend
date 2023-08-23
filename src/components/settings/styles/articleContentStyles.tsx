@@ -15,6 +15,11 @@ export const detailsFormStyles = createStyles(() => ({
     gap: '3rem',
   },
 
+  profiledetailsForm: {
+    display: 'flex',
+    gap: '3rem',
+  },
+
   detailsCategory: {
     display: 'grid',
     alignItems: 'start',
@@ -48,6 +53,9 @@ export const detailsFormStyles = createStyles(() => ({
     fontSize: rem(15),
     fontWeight: 500,
     marginBlockStart: rem(40),
+  },
+  downloadBtn: {
+    marginBlockStart: rem(0),
   },
 }));
 
@@ -107,6 +115,11 @@ export const confirmationModalStyle = createStyles(() => ({
     display: 'grid',
     placeItems: 'center',
     gap: rem(35),
+  },
+  downloadMsgWrapper: {
+    display: 'grid',
+    placeItems: 'center',
+    gap: rem(25),
   },
 
   confirmationMsg: {

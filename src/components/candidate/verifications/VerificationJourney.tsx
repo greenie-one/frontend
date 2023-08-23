@@ -18,7 +18,6 @@ import { Navbar } from './components/Navbar';
 import { HiMiniArrowLongLeft } from 'react-icons/hi2';
 import './styles/global.scss';
 import { useNavigate } from 'react-router-dom';
-import { PageNotFound } from '../../../pages/PageNotFound';
 
 export const VerificationJourney: React.FC = (): JSX.Element => {
   const navigate = useNavigate();
@@ -237,7 +236,7 @@ export const VerificationJourney: React.FC = (): JSX.Element => {
               </section>
             </main>
           ) : (
-            <PageNotFound />
+            <></>
           )}
         </>
       )}

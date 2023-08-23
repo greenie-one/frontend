@@ -63,14 +63,6 @@
     0px 22.78125px 48.82500076293945px 0px rgba(0, 0, 0, 0.04),
     0px 45px 112px 0px rgba(0, 0, 0, 0.06);
   border-radius: 1.25rem;
-  max-height: 16rem;
-  overflow-y: scroll;
-  -ms-overflow-style: none;
-  scrollbar-width: 0;
-}
-
-.addressList::-webkit-scrollbar {
-  display: none;
 }
 
 .addressListItems {
