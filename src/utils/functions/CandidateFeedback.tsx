@@ -1,30 +1,54 @@
-import { Modal, Button, Group, useMantineTheme, Box, Title, Textarea, Chip } from '@mantine/core';
-import { useDisclosure, useMediaQuery } from '@mantine/hooks';
+import { createStyles, Modal, Button, Group, Box, Title, rem, Chip } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
 import { useForm } from '@mantine/form';
 import check from '../../components/candidate/profile/assets/check.png';
+import { postUserFeedback } from './handleFeedbackProcess';
+import { useGlobalContext } from '../../context/GlobalContext';
 
-type FeedbackProps = {
-  flowName: string;
+const feedbackType = {
+  aadhar: 'Aadhar Verification',
+  pan: 'PAN Verification',
+  driving_license: 'Driving License Verification',
+  add_work_exp: 'Add Experience',
+  add_work_peer: 'Add Experience Verification Peer',
+  add_residential_info: 'Add Address Information',
+  add_residential_peer: 'Add Address Verification Peer',
 };
 
-export const CandidateFeedback: React.FC<FeedbackProps> = ({ flowName }): JSX.Element => {
-  const theme = useMantineTheme();
+type FeedbackProps = {
+  opened: boolean;
+  close: () => void;
+  feedback: keyof typeof feedbackType;
+  onFeedbackOver: () => void;
+};
+
+export const CandidateFeedback: React.FC<FeedbackProps> = ({
+  opened,
+  close,
+  feedback,
+  onFeedbackOver,
+}): JSX.Element => {
+  const { authClient } = useGlobalContext();
+  const { classes } = useStyles();
   const isMobile = useMediaQuery('(max-width: 50em)');
-  const [opened, { open, close }] = useDisclosure(false);
 
   const experienceChips = ['Bad', 'Poor', 'Alright', 'Good', 'Loved it'];
-  const referSomeoneChips = ['Nope', 'Maybe', 'Alright', 'I will', 'Already Refered'];
+  const referSomeoneChips = ['Nope', 'Maybe', 'Alright', 'I will', 'Already Referred'];
 
   const feedbackForm = useForm({
     initialValues: {
-      experience: '',
-      referSomeone: '',
-      feedback: '',
+      flowExperience: '',
+      referToSomeone: '',
+      message: '',
     },
   });
 
-  const submitFeedback = () => {
-    close();
+  const submitFeedback = async () => {
+    const success = await postUserFeedback(feedback, authClient, feedbackForm.values);
+    if (success) {
+      close();
+      onFeedbackOver();
+    }
   };
 
   return (
@@ -39,18 +63,16 @@ export const CandidateFeedback: React.FC<FeedbackProps> = ({ flowName }): JSX.El
         closeOnClickOutside={false}
         transitionProps={{ transition: 'fade', duration: 200 }}
         overlayProps={{
-          color: theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[2],
-          opacity: 0.55,
           blur: 3,
         }}
       >
-        <Box sx={{ margin: '.5rem .25rem' }}>
-          <Title order={3} align="center">
+        <Box className={classes.modalBody}>
+          <Title className={classes.modalTitle} order={3} align="center">
             We are Listening <img src={check} width={20} alt="tick" />
           </Title>
-          <Box sx={{ margin: '1.25rem 0 1rem' }}>
-            <p>How was your experience of {flowName} flow ?</p>
-            <Chip.Group {...feedbackForm.getInputProps('experience')}>
+          <Box className={classes.feedbackGroup}>
+            <p className={classes.feedbackTitle}>How was your experience of {feedbackType[feedback]} flow ?</p>
+            <Chip.Group {...feedbackForm.getInputProps('flowExperience')}>
               <Group position="center">
                 {experienceChips.map((data) => {
                   return (
@@ -62,9 +84,9 @@ export const CandidateFeedback: React.FC<FeedbackProps> = ({ flowName }): JSX.El
               </Group>
             </Chip.Group>
           </Box>
-          <Box sx={{ margin: '1rem 0' }}>
-            <p>How likely are you to refer Greenie to someone ?</p>
-            <Chip.Group {...feedbackForm.getInputProps('referSomeone')}>
+          <Box className={classes.feedbackGroup}>
+            <p className={classes.feedbackTitle}>How likely are you to refer Greenie to someone ?</p>
+            <Chip.Group {...feedbackForm.getInputProps('referToSomeone')}>
               <Group position="center">
                 {referSomeoneChips.map((data) => {
                   return (
@@ -76,24 +98,80 @@ export const CandidateFeedback: React.FC<FeedbackProps> = ({ flowName }): JSX.El
               </Group>
             </Chip.Group>
           </Box>
-          <Box>
-            <p>Any suggestions for us</p>
-            <Textarea {...feedbackForm.getInputProps('feedback')} />
+          <Box className={classes.suggestionsGroup}>
+            <p className={classes.feedbackTitle}>Any suggestions for us</p>
+            <textarea
+              className={classes.suggestionBox}
+              onChange={(event) => feedbackForm.setFieldValue('message', event.target.value)}
+            ></textarea>
           </Box>
-          <Button
-            color="teal"
-            onClick={submitFeedback}
-            sx={{ marginTop: '1rem' }}
-            disabled={feedbackForm.values.experience === '' || feedbackForm.values.referSomeone === ''}
-          >
-            Submit
-          </Button>
+          <Group position="center">
+            <Button
+              color="teal"
+              onClick={submitFeedback}
+              className={classes.formSubmitBtn}
+              disabled={feedbackForm.values.flowExperience === '' || feedbackForm.values.referToSomeone === ''}
+            >
+              Submit Feedback
+            </Button>
+          </Group>
         </Box>
       </Modal>
-
-      <Group position="center">
-        <Button onClick={open}>Open modal</Button>
-      </Group>
     </>
   );
 };
+
+const useStyles = createStyles(() => ({
+  modalBody: {
+    width: '45rem',
+    paddingBlock: '1rem 2rem',
+    paddingInline: '2rem',
+  },
+
+  modalTitle: {
+    fontWeight: 700,
+    color: '#191919',
+    fontSize: rem(24),
+    marginBlockEnd: '1rem',
+  },
+
+  feedbackGroup: {
+    marginBlock: '2rem',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: '0.75rem',
+  },
+
+  feedbackTitle: {
+    fontSize: rem(16),
+    fontWeight: 500,
+    color: '#191919',
+  },
+
+  suggestionsGroup: {
+    width: '100%',
+    marginBlockStart: '2rem',
+  },
+
+  suggestionBox: {
+    marginBlockStart: '6px',
+    width: '100%',
+    height: '10rem',
+    border: '1px solid',
+    borderColor: '#CED4DA',
+    borderRadius: '8px',
+    padding: '0.5em 0.75em',
+    color: '#191919',
+
+    '&:focus': {
+      border: 0,
+      outline: '1px solid #12B886',
+    },
+  },
+
+  formSubmitBtn: {
+    marginBlockStart: '1rem',
+    borderRadius: '3rem',
+  },
+}));

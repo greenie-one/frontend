@@ -19,6 +19,9 @@ import { Icon } from 'leaflet';
 import mapMarker from '../../assets/map-marker.png';
 import { IoInformationCircleSharp } from 'react-icons/io5';
 import dayjs from 'dayjs';
+import { feedbackExistCheck } from '../../../../../utils/functions/handleFeedbackProcess';
+import { useDisclosure } from '@mantine/hooks';
+import { CandidateFeedback } from '../../../../../utils/functions/CandidateFeedback';
 
 const marker = new Icon({
   iconUrl: mapMarker,
@@ -51,6 +54,7 @@ export const AddResidentialInfo = () => {
   const location = useLocation();
 
   const { authClient, setForceRender, residentialInfoData } = useGlobalContext();
+  const [feedbackModalOpened, { open: feedbackModalOpen, close: feedbackModalClose }] = useDisclosure();
 
   const [checked, setChecked] = useState(false);
   const [addressTypeOptions, setAddressTypeOptions] = useState<Array<{ value: string; label: string }>>(optionData);
@@ -556,6 +560,12 @@ export const AddResidentialInfo = () => {
             </Box>
           </form>
         </section>
+        <CandidateFeedback
+          feedback="add_residential_info"
+          opened={feedbackModalOpened}
+          close={feedbackModalClose}
+          onFeedbackOver={() => {}}
+        />
       </Layout>
     </>
   );
