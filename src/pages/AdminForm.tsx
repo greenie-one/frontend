@@ -1,5 +1,5 @@
 import { Layout } from '../components/candidate/profile/components/Layout';
-import { hasLength, useForm } from '@mantine/form';
+import { hasLength, isNotEmpty, useForm } from '@mantine/form';
 import { Box, PasswordInput, Group, Stack, TextInput, Button, Tabs } from '@mantine/core';
 import '../components/candidate/profile/styles/_hrForm.scss';
 import { useNavigate } from 'react-router-dom';
@@ -37,7 +37,7 @@ export const AdminForm: React.FC = (): JSX.Element => {
       email: '',
     },
     validate: {
-      email: (val) => (/^\S+@\S+$/.test(val) ? null : 'Invalid email'),
+      email: isNotEmpty('This field is required!'),
     },
   });
 
@@ -150,7 +150,7 @@ export const AdminForm: React.FC = (): JSX.Element => {
               <Stack>
                 <TextInput
                   required
-                  label="Email"
+                  label="Email or Phone"
                   placeholder="hello@gmail.com"
                   value={reportForm.values.email}
                   onChange={(event) => reportForm.setFieldValue('email', event.currentTarget.value)}
