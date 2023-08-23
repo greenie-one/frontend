@@ -218,16 +218,16 @@ export const ExperienceDetails: React.FC = () => {
           </Box>
           <Box className="experience-details-screen">
             <Box className="experience-details-wrapper">
-              <Box className="experience-details">
-                <Box className="experience-details-text-box">
+              <Box className="experience-details exp-top">
+                <Box className="experience-details-text-box detail-left">
                   <Text className="designation">{filteredExperience?.designation}</Text>
                   <Text className="company-name">{filteredExperience?.companyName}</Text>
                   {filteredExperience?.noOfVerifications >= 2 ? (
-                    <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
+                    <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified btn-exp">
                       Verified
                     </Button>
                   ) : (
-                    <Button leftIcon={<CgSandClock size={'16px'} />} className="pending">
+                    <Button leftIcon={<CgSandClock size={'16px'} />} className="pending btn-exp">
                       Pending
                     </Button>
                   )}
@@ -289,9 +289,9 @@ export const ExperienceDetails: React.FC = () => {
                 <Box className="comapny-type-box">
                   <Text className="experience-details-box-heading">Tenure</Text>
                   <Text className="experience-details-box-text">
-                    {filteredExperience?.dateOfJoining?.toString().substring(3, 15)} -{' '}
+                    {filteredExperience?.dateOfJoining?.toString().substring(0, 10)} -{' '}
                     {filteredExperience?.dateOfLeaving
-                      ? filteredExperience?.dateOfLeaving?.toString().substring(3, 15)
+                      ? filteredExperience?.dateOfLeaving?.toString().substring(0, 10)
                       : 'Present'}
                   </Text>
                 </Box>

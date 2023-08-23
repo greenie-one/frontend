@@ -40,7 +40,6 @@ export const ExperienceCard: React.FC<ExperienceCardProp> = ({
       showErrorNotification(res.error.code);
     }
   };
-
   useEffect(() => {
     getSentRequests();
   }, [authClient]);
@@ -90,10 +89,10 @@ export const ExperienceCard: React.FC<ExperienceCardProp> = ({
         <Text className="since-text">Since</Text>
 
         {companyEndYear === null ? (
-          <Text> {companyStartYear?.toString().substring(3, 15)} - Present</Text>
+          <Text className="tenure"> {companyStartYear?.toString().substring(0, 10)} - Present</Text>
         ) : (
           <Text className="tenure">
-            {companyStartYear?.toString().substring(3, 15)} - {companyEndYear?.toString().substring(3, 15)}
+            {companyStartYear?.toString().substring(0, 10)} - {companyEndYear?.toString().substring(0, 10)}
           </Text>
         )}
       </Box>
