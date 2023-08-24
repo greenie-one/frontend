@@ -323,8 +323,19 @@
 .experience-details-screen {
   .experience-details-wrapper {
     display: flex;
-    align-items: center;
-    justify-content: flex-start;
+    align-items: flex-end;
+    gap: 1rem;
+    justify-content: space-between;
+    @media screen and (max-width: 540px) {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .green-btn {
+      margin-bottom: 1rem;
+      @media screen and (max-width: 540px) {
+        margin-bottom: 2rem;
+      }
+    }
   }
   .experience-details {
     display: flex;
@@ -859,12 +870,12 @@
 
   .experience-details-screen {
     .about-company-box-wrapper {
-      grid-template-columns: 80%;
+      grid-template-columns: 1fr;
     }
 
     .basic-info {
       .basic-info-box-wrapper {
-        grid-template-columns: 80%;
+        grid-template-columns: 1fr;
       }
     }
   }

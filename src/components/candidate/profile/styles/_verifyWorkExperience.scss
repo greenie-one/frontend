@@ -156,13 +156,12 @@
   margin-bottom: 2.5rem;
   border: 1px solid #e1e1e1;
   &.exp-top {
-    border: none;
-    padding-inline: 0rem;
-  }
-
-  .pending {
-    border: none;
-    outline: none;
+    padding: 1.5rem;
+    min-width: 14rem;
+    align-items: flex-start;
+    .pending {
+      margin-top: 0.8rem;
+    }
   }
 
   .company-logo {
@@ -185,10 +184,6 @@
     place-items: center;
     &.detail-left {
       place-items: flex-start;
-      .btn-exp {
-        padding: 0;
-        border: none;
-      }
     }
 
     .designation {

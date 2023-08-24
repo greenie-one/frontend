@@ -116,7 +116,7 @@ type verifyPan = {
 
 type verifyLicence = {
   success: boolean;
-  driving_licence: string;
+  driving_license: string;
 };
 
 type createExperience = {

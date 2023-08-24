@@ -1,5 +1,4 @@
 import { Text, Box, Button, Modal, Title } from '@mantine/core';
-import { MdVerified } from 'react-icons/md';
 import { CgSandClock } from 'react-icons/cg';
 import { ExperienceDocuments, Peer } from '../../../types/ProfileGeneral';
 import { PeerDetails } from './PeerDetails';
@@ -109,15 +108,9 @@ export const ConfirmRequest: React.FC<ConfrimRequestPropsType> = ({
             <Box className="experience-details-text-box">
               <Text className="designation">{experience?.designation}</Text>
               <Text className="company-name">{experience?.companyName}</Text>
-              {experience && experience?.noOfVerifications >= 2 ? (
-                <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
-                  Verified
-                </Button>
-              ) : (
-                <Button leftIcon={<CgSandClock size={'16px'} />} className="pending">
-                  Pending
-                </Button>
-              )}
+              <Button leftIcon={<CgSandClock size={'16px'} />} className="pending">
+                Pending
+              </Button>
             </Box>
           </Box>
         </Box>
@@ -136,7 +129,7 @@ export const ConfirmRequest: React.FC<ConfrimRequestPropsType> = ({
       </Box>
       <Box className="see-peers-btn-wrapper">
         <Button className="green-btn" onClick={handleCreatePeerRequest}>
-          Confirm and send
+          Confirm and Send
         </Button>
         <Button
           className="cancel-btn"

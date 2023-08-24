@@ -77,22 +77,30 @@ export const IDVerifiedDetails: React.FC = () => {
                 </Box>
               </Box>
 
-              <Box className="box-row aadhar-second-row">
+              <Box className="box-row aadhar-first-row">
+                <Box className="details-box">
+                  <Title className="details-title">Address Line 1</Title>
+                  <Text className="details-detail">{details?.address?.address_line_1} </Text>
+                </Box>
+                {details?.address?.address_line_2 ? (
+                  <Box className="details-box">
+                    <Title className="details-title">Address Line 2</Title>
+                    <Text className="details-detail">{details?.address?.address_line_2} </Text>
+                  </Box>
+                ) : null}
+              </Box>
+
+              <Box className="box-row aadhar-first-row">
                 <Box className="details-box">
                   <Title className="details-title">State</Title>
                   <Text className="details-detail">{details?.address?.state}</Text>
                 </Box>
                 <Box className="details-box">
-                  <Title className="details-title">Address Line</Title>
-                  <Text className="details-detail">{details?.address?.address_line_1}</Text>
-                </Box>
-              </Box>
-
-              <Box className="box-row aadhar-third-row">
-                <Box className="details-box">
                   <Title className="details-title">Pincode</Title>
                   <Text className="details-detail">{details?.address?.pincode}</Text>
                 </Box>
+              </Box>
+              <Box className="box-row aadhar-first-row">
                 <Box className="details-box">
                   <Title className="details-title">Country</Title>
                   <Text className="details-detail">{details?.address?.country}</Text>

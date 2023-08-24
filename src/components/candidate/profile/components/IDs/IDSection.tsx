@@ -38,7 +38,7 @@ export const IDSection: React.FC = () => {
     }
     if (documentsType === 'DRIVING_LICENSE') {
       scrollToTop();
-      navigate('/candidate/profile/IDs/verify/driving_licence');
+      navigate('/candidate/profile/IDs/verify/driving_license');
     }
   };
 

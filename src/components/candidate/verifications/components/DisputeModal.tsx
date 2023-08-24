@@ -15,7 +15,15 @@ type DisputeModalProps = {
   setDisputedAttrs?: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
-const disputesReasons = ['Wrong or unable to confirm'];
+const disputesReasons = [
+  'Wrong or unable to confirm',
+  'Claim Not Recognised',
+  'Unable to verify',
+  'Achievements overstated',
+  'Scope of work inconsistency',
+  'Duration Discrepancy',
+  'Other',
+];
 
 export const DisputeModal: React.FC<DisputeModalProps> = ({
   attrId,

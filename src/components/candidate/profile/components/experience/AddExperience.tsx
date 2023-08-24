@@ -66,6 +66,26 @@ export const AddExperience = () => {
     setSelectedSkills(newSkillsList);
   };
 
+  const handleCTC = (event: React.FormEvent<HTMLInputElement>) => {
+    const inputElement = event.target as typeof event.target & {
+      value: string;
+    };
+    const currentValue = inputElement.value;
+    if (!currentValue) {
+      return;
+    }
+    const lastInput = currentValue.slice(-1);
+
+    const isDigit = lastInput.charCodeAt(0) >= 48 && lastInput.charCodeAt(0) <= 57;
+    const isComma = lastInput.charCodeAt(0) === 44;
+
+    if (!(isDigit || isComma)) {
+      inputElement.value = currentValue.toString().slice(0, -1);
+    }
+
+    workExperienceForm.setFieldValue('salary', inputElement.value);
+  };
+
   const handleCheck = () => {
     workExperienceForm.setFieldValue('dateOfLeaving', '');
     workExperienceForm.setFieldValue('description', '');
@@ -436,6 +456,7 @@ export const AddExperience = () => {
                   LinkedIn Url
                 </Title>
                 <TextInput
+                  withAsterisk
                   {...workExperienceForm.getInputProps('linkedInUrl')}
                   label="Paste the LinkedIn company page link"
                   className="inputClass"
@@ -468,7 +489,7 @@ export const AddExperience = () => {
               <Box className="input-section">
                 <Title className="title">Salary (CTC)</Title>
                 <NumberInput
-                  {...workExperienceForm.getInputProps('salary')}
+                  onInput={(e) => handleCTC(e)}
                   withAsterisk
                   hideControls
                   label="Enter your CTC in Rs."
@@ -479,7 +500,10 @@ export const AddExperience = () => {
                   className="inputClass"
                 />
               </Box>
-              <Box className="input-section">
+              <Box
+                className="input-section"
+                title="Use a business email that has been associated with your professional roles, If you enter a personal email then make sure it was used for business communication "
+              >
                 <Title className="title">Work email</Title>
                 <TextInput
                   withAsterisk
@@ -713,6 +737,11 @@ export const AddExperience = () => {
                 <Text className="limit">
                   (Only add <strong>.pdf</strong> files of size less than <strong>5 MB</strong>)
                 </Text>
+                <Text className="limit">
+                  <strong>
+                    All your information is secured and encrypted. It is only visible to individuals you authorise.{' '}
+                  </strong>
+                </Text>
               </Box>
               {selectedFilesList.length > 0 && (
                 <Box className="added-documents-wrapper">
@@ -769,9 +798,10 @@ export const AddExperience = () => {
                     color="teal"
                   />
                   <Text className="terms-conditions">
-                    I understand that during the upload process and while using this website, I may be required to
-                    provide certain personal information, including but not limited to my name, email address, contact
-                    details, and any other information deemed necessary for registration and website usage.
+                    I hereby affirm that the documents uploaded pertain directly to my stated work experience and do not
+                    violate any policies set forth by Greenie. I understand these documents will be stored securely and
+                    encrypted in the "Doc Depot", which I can access, modify, or delete as needed. I acknowledge that
+                    the information provided will be used exclusively for its intended purpose
                   </Text>
                 </Box>
               )}

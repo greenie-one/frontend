@@ -375,7 +375,7 @@ export const AddResidentialInfo = () => {
                 className="inputClass"
                 {...residentialInfoForm.getInputProps('address_line_1')}
                 withAsterisk
-                maxLength={40}
+                // maxLength={40}
               />
             </Box>
             <Box className="input-section ">

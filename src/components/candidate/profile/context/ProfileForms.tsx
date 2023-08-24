@@ -78,7 +78,8 @@ export const useProfileForms = () => {
       workMode: isNotEmpty('Please provide mode of work'),
       department: isNotEmpty('Please provide the department'),
       salary: isNotEmpty('Please provide your salary'),
-      email: isNotEmpty('Please enter your official work Email'),
+      email: isEmail('Please enter your official work Email'),
+      linkedInUrl: isNotEmpty('Please provide valid linkedinURL'),
     },
   });
 
