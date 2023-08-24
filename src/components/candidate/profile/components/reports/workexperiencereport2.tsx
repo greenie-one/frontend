@@ -34,161 +34,186 @@ export const WorkExperienceReport2: React.FC<ChildComponentProps> = ({ peerDetai
 
         <div className="disclaimer-box">
           <span className="disclaimer-text">Work Experience (Verification Parameters)</span>
-          {workExperienceDetails.map((experience, index) => {
-            if (peerDetails.filter((peer) => peer.ref === experience.id).length > 0) {
-              return (
-                <React.Fragment key={index}>
-                  <>
-                    <div key={index} className="residential-address">
-                      <div className="residential-address-left ">
-                        <p>{experience.companyName}</p>
-                        {experience.noOfVerifications >= 2 ? (
-                          <Button
-                            leftIcon={<MdVerified color="#17A672" size={'16px'} />}
-                            className="verified report-verifybtn"
-                          >
-                            Verified
-                          </Button>
-                        ) : (
-                          <Button leftIcon={<CgSandClock size={'16px'} />} className="pending report-verifybtn">
-                            Pending
-                          </Button>
-                        )}
-                      </div>
-                    </div>
+          {workExperienceDetails.length > 0 ? (
+            <>
+              {' '}
+              {workExperienceDetails.map((experience, index) => {
+                if (peerDetails.filter((peer) => peer.ref === experience.id).length > 0) {
+                  return (
+                    <React.Fragment key={index}>
+                      <>
+                        <div key={index} className="residential-address">
+                          <div className="residential-address-left ">
+                            <p>{experience.companyName}</p>
+                            {experience.noOfVerifications >= 2 ? (
+                              <Button
+                                leftIcon={<MdVerified color="#17A672" size={'16px'} />}
+                                className="verified report-verifybtn"
+                              >
+                                Verified
+                              </Button>
+                            ) : (
+                              <Button leftIcon={<CgSandClock size={'16px'} />} className="pending report-verifybtn">
+                                Pending
+                              </Button>
+                            )}
+                          </div>
+                        </div>
 
-                    {peerDetails.map(
-                      (peer, i) =>
-                        peer.ref == experience.id && (
-                          <React.Fragment key={i}>
-                            <div>
-                              <div className="peer-exp-name">
-                                <p>{peer.name}</p>
-                                <span>
-                                  {WorkPeerType[peer.verificationBy]} (Peer{i + 1})
-                                </span>
-                              </div>
+                        {peerDetails.map(
+                          (peer, i) =>
+                            peer.ref == experience.id && (
+                              <React.Fragment key={i}>
+                                <div>
+                                  <div className="peer-exp-name">
+                                    <p>{peer.name}</p>
+                                    <span>
+                                      {WorkPeerType[peer.verificationBy]} (Peer{i + 1})
+                                    </span>
+                                  </div>
 
-                              <Box className="add-peer-header add-peer-exp-header">
-                                <Text className="add-peer-header-text">Particular</Text>
-                                <Text className="add-peer-header-text">Verified As</Text>
-                                <Text className="add-peer-header-text">Verified On</Text>
-                                <Text className="add-peer-header-text">Status</Text>
-                                <Text className="add-peer-header-text">Remarks</Text>
-                              </Box>
-                              <Box className="added-peer-box">
-                                {Object.keys(peer.selectedFields).map((field, idx) => {
-                                  return (
-                                    <Box key={idx} className="added-peers added-exp-peers">
-                                      <Text className="peer-name title">{optionalAttrDict[field]}</Text>
-                                      <Text className="peer-name">
-                                        {field === 'dateOfJoining' || field === 'dateOfLeaving'
-                                          ? String(experience[field as keyof WorkExperience])
-                                              .substring(0, 10)
-                                              .split('-')
-                                              .reverse()
-                                              .join('-')
-                                          : experience[field as keyof WorkExperience]}
-                                      </Text>
-                                      <Text className="peer-name">
-                                        {peer.isVerificationCompleted
-                                          ? peer.updatedAt?.substring(0, 10).split('-').reverse().join('-')
-                                          : '-'}
-                                      </Text>
-                                      <Text
-                                        className={`peer-name ${
-                                          peer.selectedFields[field].state === 'ACCEPTED'
-                                            ? 'text-verified'
-                                            : 'text-dispute'
-                                        }`}
-                                      >
-                                        {peer.selectedFields[field].state === 'ACCEPTED'
-                                          ? 'Approved'
-                                          : peer.selectedFields[field].state === 'REJECTED'
-                                          ? 'Disputed'
-                                          : 'Pending'}
-                                      </Text>
-                                      <Text className="peer-name">
-                                        {peer.selectedFields[field].state === 'REJECTED'
-                                          ? `${peer.selectedFields[field].dispute_type} - ${peer.selectedFields[field].dispute_reason}`
-                                          : 'No Remarks'}
-                                      </Text>
-                                    </Box>
-                                  );
-                                })}
-                              </Box>
-                            </div>
-                            <div>
-                              <div className="location">
-                                <p>Conduct report</p>
-                                <div className="location-date">
-                                  <p>Last updated</p>
-                                  <p>{peer.updatedAt?.substring(0, 10).split('-').reverse().join('/')}</p>
-                                </div>
-                              </div>
-                              <Box className="add-peer-header">
-                                <Text className="add-peer-header-text">Particular</Text>
-                                <Text className="add-peer-header-text">Verified as</Text>
-                                <Text className="add-peer-header-text">Verified on</Text>
-                                <Text className="add-peer-header-text">Remarks</Text>
-                              </Box>
-                              <Box className="added-peer-box">
-                                <Box className="add-peers">
-                                  {Object.keys(peer.allQuestions).map((question, idx) => {
-                                    if (question === 'attitudeRating' || question === 'review') {
+                                  <Box className="add-peer-header add-peer-exp-header">
+                                    <Text className="add-peer-header-text">Particular</Text>
+                                    <Text className="add-peer-header-text">Verified As</Text>
+                                    <Text className="add-peer-header-text">Verified On</Text>
+                                    <Text className="add-peer-header-text">Status</Text>
+                                    <Text className="add-peer-header-text">Remarks</Text>
+                                  </Box>
+                                  <Box className="added-peer-box">
+                                    {Object.keys(peer.selectedFields).map((field, idx) => {
                                       return (
-                                        <Box key={idx} className="added-peers">
-                                          <Text className="peer-name title">{allQuestionsParticulars[question]}</Text>
-                                          <Text style={{ textTransform: 'capitalize' }} className="peer-name">
-                                            {peer.allQuestions[question] === 'not-given'
-                                              ? 'Not Given'
-                                              : peer.allQuestions[question].split('-').join(' ')}
+                                        <Box key={idx} className="added-peers added-exp-peers">
+                                          <Text className="peer-name title">{optionalAttrDict[field]}</Text>
+                                          <Text className="peer-name">
+                                            {field === 'dateOfJoining' || field === 'dateOfLeaving'
+                                              ? String(experience[field as keyof WorkExperience])
+                                                  .substring(0, 10)
+                                                  .split('-')
+                                                  .reverse()
+                                                  .join('-')
+                                              : experience[field as keyof WorkExperience]}
                                           </Text>
                                           <Text className="peer-name">
                                             {peer.isVerificationCompleted
                                               ? peer.updatedAt?.substring(0, 10).split('-').reverse().join('-')
                                               : '-'}
                                           </Text>
-                                          <Text className="peer-name">No Remarks</Text>
-                                        </Box>
-                                      );
-                                    } else {
-                                      return (
-                                        <Box key={idx} className="added-peers">
-                                          <Text className="peer-name title">{allQuestionsParticulars[question]}</Text>
-                                          <Text className="peer-name">
-                                            {question === 'peerPost'
-                                              ? WorkPeerType[peer.verificationBy]
-                                              : experience[question as keyof WorkExperience]}
+                                          <Text
+                                            className={`peer-name ${
+                                              peer.selectedFields[field].state === 'ACCEPTED'
+                                                ? 'text-verified'
+                                                : 'text-dispute'
+                                            }`}
+                                          >
+                                            {peer.selectedFields[field].state === 'ACCEPTED'
+                                              ? 'Approved'
+                                              : peer.selectedFields[field].state === 'REJECTED'
+                                              ? 'Disputed'
+                                              : 'Pending'}
                                           </Text>
                                           <Text className="peer-name">
-                                            {peer.isVerificationCompleted
-                                              ? peer.updatedAt?.substring(0, 10).split('-').reverse().join('-')
-                                              : '-'}
-                                          </Text>
-                                          <Text className="peer-name">
-                                            {peer.allQuestions[question].state === 'DISPUTED'
-                                              ? `${peer.allQuestions[question].dispute_type} - ${peer.allQuestions[question].dispute_reason}`
+                                            {peer.selectedFields[field].state === 'REJECTED'
+                                              ? `${peer.selectedFields[field].dispute_type} - ${peer.selectedFields[field].dispute_reason}`
                                               : 'No Remarks'}
                                           </Text>
                                         </Box>
                                       );
-                                    }
-                                  })}
-                                </Box>
-                              </Box>
-                              <hr className="breakLine"></hr>
-                            </div>
-                          </React.Fragment>
-                        )
-                    )}
-                  </>
-                </React.Fragment>
-              );
-            } else {
-              return <React.Fragment key={index}></React.Fragment>;
-            }
-          })}
+                                    })}
+                                  </Box>
+                                </div>
+                                <div>
+                                  <div className="location">
+                                    <p>Conduct report</p>
+                                    <div className="location-date">
+                                      <p>Last updated</p>
+                                      <p>{peer.updatedAt?.substring(0, 10).split('-').reverse().join('-')}</p>
+                                    </div>
+                                  </div>
+                                  <Box className="add-peer-header">
+                                    <Text className="add-peer-header-text">Particular</Text>
+                                    <Text className="add-peer-header-text">Verified as</Text>
+                                    <Text className="add-peer-header-text">Verified on</Text>
+                                    <Text className="add-peer-header-text">Remarks</Text>
+                                  </Box>
+                                  <Box className="added-peer-box">
+                                    <Box className="add-peers">
+                                      {Object.keys(peer.allQuestions).map((question, idx) => {
+                                        if (question === 'attitudeRating' || question === 'review') {
+                                          return (
+                                            <Box key={idx} className="added-peers">
+                                              <Text className="peer-name title">
+                                                {allQuestionsParticulars[question]}
+                                              </Text>
+                                              <Text style={{ textTransform: 'capitalize' }} className="peer-name">
+                                                {peer.allQuestions[question] === 'not-given'
+                                                  ? 'Not Given'
+                                                  : peer.allQuestions[question].split('-').join(' ')}
+                                              </Text>
+                                              <Text className="peer-name">
+                                                {peer.isVerificationCompleted
+                                                  ? peer.updatedAt?.substring(0, 10).split('-').reverse().join('-')
+                                                  : '-'}
+                                              </Text>
+                                              <Text className="peer-name">No Remarks</Text>
+                                            </Box>
+                                          );
+                                        } else {
+                                          return (
+                                            <Box key={idx} className="added-peers">
+                                              <Text className="peer-name title">
+                                                {allQuestionsParticulars[question]}
+                                              </Text>
+                                              <Text className="peer-name">
+                                                {question === 'peerPost'
+                                                  ? WorkPeerType[peer.verificationBy]
+                                                  : experience[question as keyof WorkExperience]}
+                                              </Text>
+                                              <Text className="peer-name">
+                                                {peer.isVerificationCompleted
+                                                  ? peer.updatedAt?.substring(0, 10).split('-').reverse().join('-')
+                                                  : '-'}
+                                              </Text>
+                                              <Text className="peer-name">
+                                                {peer.allQuestions[question].state === 'DISPUTED'
+                                                  ? `${peer.allQuestions[question].dispute_type} - ${peer.allQuestions[question].dispute_reason}`
+                                                  : 'No Remarks'}
+                                              </Text>
+                                            </Box>
+                                          );
+                                        }
+                                      })}
+                                    </Box>
+                                  </Box>
+                                  <hr className="breakLine"></hr>
+                                </div>
+                              </React.Fragment>
+                            )
+                        )}
+                      </>
+                    </React.Fragment>
+                  );
+                } else {
+                  return <React.Fragment key={index}></React.Fragment>;
+                }
+              })}
+            </>
+          ) : (
+            <Box className="added-peer-box">
+              <Box
+                style={{
+                  height: '5rem',
+                  borderRadius: '1rem',
+                  fontWeight: '500',
+                  marginTop: '1rem',
+                  gridTemplateColumns: '1fr',
+                  fontSize: '1rem',
+                }}
+                className="added-peers added-peers-exp "
+              >
+                No Work Experience Added
+              </Box>
+            </Box>
+          )}
         </div>
       </main>
     </>

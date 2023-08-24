@@ -44,7 +44,7 @@ export const WorkExperienceReport1: React.FC<ChildComponentProps> = ({ peerDetai
                         <p>Conduct report</p>
                         <div className="location-date">
                           <p>Last updated</p>
-                          <p>{peer.updatedAt?.substring(0, 10).split('-').reverse().join('/')}</p>
+                          <p>{peer.updatedAt?.substring(0, 10).split('-').reverse().join('-')}</p>
                         </div>
                       </div>
 

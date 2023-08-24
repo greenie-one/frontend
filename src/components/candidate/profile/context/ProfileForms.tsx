@@ -52,6 +52,9 @@ export const useProfileForms = () => {
     },
   });
 
+  const linkedInRegex =
+    /(^((https?:\/\/)?((www|\w\w)\.)?)linkedin\.com\/)((([\w]{2,3})?)|([^/]+\/(([\w|\d-&#?=])+\/?){1,}))$/gim;
+
   const workExperienceForm = useForm<workExperienceFormType>({
     initialValues: {
       designation: '',
@@ -79,7 +82,7 @@ export const useProfileForms = () => {
       department: isNotEmpty('Please provide the department'),
       salary: isNotEmpty('Please provide your salary'),
       email: isEmail('Please enter your official work Email'),
-      linkedInUrl: isNotEmpty('Please provide valid linkedinURL'),
+      linkedInUrl: (value) => (linkedInRegex.test(String(value)) ? null : 'Invalid LinkedIn URL'),
     },
   });
 

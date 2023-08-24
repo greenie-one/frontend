@@ -69,45 +69,47 @@ export const IDVerifiedDetails: React.FC = () => {
               <Box className="box-row aadhar-first-row">
                 <Box className="details-box">
                   <Title className="details-title">{params.id?.toUpperCase().replace('_', ' ')} number</Title>
-                  <Text className="details-detail">{details?.id_number}</Text>
+                  <Text className="details-detail">{details?.id_number ? details?.id_number : '-'}</Text>
                 </Box>
                 <Box className="details-box">
                   <Title className="details-title">Full Name (as per ID)</Title>
-                  <Text className="details-detail">{details?.fullName}</Text>
+                  <Text className="details-detail">{details?.fullName ? details?.fullName : '-'}</Text>
                 </Box>
               </Box>
 
               <Box className="box-row aadhar-first-row">
                 <Box className="details-box">
                   <Title className="details-title">Address Line 1</Title>
-                  <Text className="details-detail">{details?.address?.address_line_1} </Text>
+                  <Text className="details-detail">
+                    {details?.address?.address_line_1 ? details?.address?.address_line_1 : '-'}
+                  </Text>
                 </Box>
-                {details?.address?.address_line_2 ? (
-                  <Box className="details-box">
-                    <Title className="details-title">Address Line 2</Title>
-                    <Text className="details-detail">{details?.address?.address_line_2} </Text>
-                  </Box>
-                ) : null}
+                <Box className="details-box">
+                  <Title className="details-title">Address Line 2</Title>
+                  <Text className="details-detail">
+                    {details?.address?.address_line_2 ? details?.address?.address_line_2 : '-'}
+                  </Text>
+                </Box>
               </Box>
 
               <Box className="box-row aadhar-first-row">
                 <Box className="details-box">
                   <Title className="details-title">State</Title>
-                  <Text className="details-detail">{details?.address?.state}</Text>
+                  <Text className="details-detail">{details?.address?.state ? details?.address?.state : '-'}</Text>
                 </Box>
                 <Box className="details-box">
                   <Title className="details-title">Pincode</Title>
-                  <Text className="details-detail">{details?.address?.pincode}</Text>
+                  <Text className="details-detail">{details?.address?.pincode ? details?.address?.pincode : '-'}</Text>
                 </Box>
               </Box>
               <Box className="box-row aadhar-first-row">
                 <Box className="details-box">
                   <Title className="details-title">Country</Title>
-                  <Text className="details-detail">{details?.address?.country}</Text>
+                  <Text className="details-detail">{details?.address?.country ? details?.address?.country : '-'}</Text>
                 </Box>
                 <Box className="details-box">
                   <Title className="details-title">DOB</Title>
-                  <Text className="details-detail">{details?.dob}</Text>
+                  <Text className="details-detail">{details?.dob ? details?.dob : '-'}</Text>
                 </Box>
               </Box>
 

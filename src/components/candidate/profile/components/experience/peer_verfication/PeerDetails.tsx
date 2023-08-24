@@ -22,6 +22,7 @@ export const PeerDetails: React.FC<ConfirmPeerType> = ({
   experience,
 }) => {
   const { skillData } = useGlobalContext();
+
   return (
     <Box className="peer-details">
       <Box className="requesting-peer">
@@ -44,7 +45,12 @@ export const PeerDetails: React.FC<ConfirmPeerType> = ({
                 return (
                   <Box className="document" key={index}>
                     <img className="pdf-icon" src={pdfIcon} alt="pdf icon" />
-                    <Text className="document-name">{document.name.substring(0, 15)}</Text>
+                    <Text
+                      sx={{ width: '100%', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}
+                      className="document-name"
+                    >
+                      {document.name}
+                    </Text>
                   </Box>
                 );
               })}

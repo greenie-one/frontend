@@ -68,7 +68,7 @@ export const VerifyPeer = () => {
         setOtpProcess((prev) => prev + 1);
       }
 
-      setCountDown(60);
+      setCountDown(30);
 
       showSuccessNotification({ title: 'Success !', message: 'OTP Sent to your phone number' });
     } else {

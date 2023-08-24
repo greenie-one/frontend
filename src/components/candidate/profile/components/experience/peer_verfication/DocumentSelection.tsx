@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Text, Box, Button, Checkbox } from '@mantine/core';
+import { Text, Box, Checkbox } from '@mantine/core';
 import { docDepotAPIList } from '../../../../../../assets/api/ApiList';
 import { useGlobalContext } from '../../../../../../context/GlobalContext';
 import { HttpClient } from '../../../../../../utils/generic/httpClient';
@@ -7,7 +7,6 @@ import { showErrorNotification } from '../../../../../../utils/functions/showNot
 import { ExperienceDocuments } from '../../../types/ProfileGeneral';
 import { SelectionHeading } from './SelectionHeading';
 import { PageActionBtns } from './PageActionBtns';
-import { AiOutlinePlus } from 'react-icons/ai';
 import pdfIcon from '../../../assets/pdfIcon.png';
 import { CreatePeerResponseType } from '../../../types/ProfileGeneral';
 
@@ -72,17 +71,10 @@ export const DocumentSelection: React.FC<{
     <>
       <Box className="documents-action-section">
         <input type="file" ref={fileInputRef} style={{ display: 'none' }} />
-        <SelectionHeading heading="Documents" subHeading="Select the documents you want the peer to review">
-          <Box className="document-action-selector">
-            <Button
-              leftIcon={<AiOutlinePlus />}
-              className="document-action"
-              onClick={() => fileInputRef.current?.click()}
-            >
-              Add files
-            </Button>
-          </Box>
-        </SelectionHeading>
+        <SelectionHeading
+          heading="Documents"
+          subHeading="Select the documents you want the peer to review"
+        ></SelectionHeading>
         <Box className="selected-attribute-header">
           <Checkbox checked indeterminate readOnly />
           <Text>Select documents To Verify</Text>
