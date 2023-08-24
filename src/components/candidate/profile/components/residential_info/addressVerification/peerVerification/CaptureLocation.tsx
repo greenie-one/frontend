@@ -1,7 +1,11 @@
 import React from 'react';
 import { Text, Box, Title, Button } from '@mantine/core';
 import emptyProfile from '../../../../assets/emptyProfile.png';
-import { showErrorNotification, showLoadingNotification } from '../../../../../../../utils/functions/showNotification';
+import {
+  showErrorNotification,
+  showLoadingNotification,
+  showSuccessNotification,
+} from '../../../../../../../utils/functions/showNotification';
 import { HttpClient } from '../../../../../../../utils/generic/httpClient';
 import { addressVerificationAPIList } from '../../../../../../../assets/api/ApiList';
 import { useDisclosure } from '@mantine/hooks';
@@ -48,6 +52,7 @@ export const CaptureLocation: React.FC<CaptureLocationProps> = ({ uuid, peerData
     });
 
     if (navigator.geolocation) {
+      showSuccessNotification({ title: 'Success', message: 'Location Permission Granted' });
       navigator.geolocation.getCurrentPosition(setPosition, showError);
     } else {
       showErrorNotification('Geo-Location is not supported by this browser.');
@@ -75,7 +80,7 @@ export const CaptureLocation: React.FC<CaptureLocationProps> = ({ uuid, peerData
 
     if (res.ok) {
       setAddressVerified(true);
-      showLoadingNotification({
+      showSuccessNotification({
         title: 'Verified!',
         message: 'Your location has been captured successfully!',
       });
@@ -122,7 +127,13 @@ export const CaptureLocation: React.FC<CaptureLocationProps> = ({ uuid, peerData
   return (
     <>
       {addressVerified !== null ? (
-        <ConfirmationModal opened={opened} close={close} addressVerified={addressVerified} peerData={peerData} />
+        <ConfirmationModal
+          verificationType={'Peer'}
+          opened={opened}
+          close={close}
+          addressVerified={addressVerified}
+          peerData={peerData}
+        />
       ) : (
         <></>
       )}

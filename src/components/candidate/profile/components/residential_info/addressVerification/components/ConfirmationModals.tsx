@@ -13,6 +13,7 @@ type ConfirmationModalProps = {
   addressVerified: boolean;
   peerData?: PeerVerificationDataResponse;
   residentialData?: ResidentialInfoResponse;
+  verificationType: 'Peer' | 'Self';
 };
 
 export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
@@ -21,10 +22,19 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
   addressVerified,
   peerData,
   residentialData,
+  verificationType,
 }): JSX.Element => {
   const navigate = useNavigate();
   const isMobile = useMediaQuery('(max-width: 768px)');
 
+  const handleContinue = () => {
+    if (verificationType == 'Peer') {
+      navigate('.?verified=true');
+    } else if (verificationType == 'Self') {
+      navigate('/candidate/profile');
+    }
+    close();
+  };
   return (
     <>
       <Modal
@@ -32,10 +42,7 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
         size={'60%'}
         fullScreen={isMobile}
         opened={opened}
-        onClose={() => {
-          close();
-          navigate('/');
-        }}
+        onClose={handleContinue}
         centered
         radius={'lg'}
       >
@@ -69,13 +76,7 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
                 </Button>
               </Box>
             </Box>
-            <Button
-              className="green-btn"
-              onClick={() => {
-                close();
-                navigate('.?verified=true');
-              }}
-            >
+            <Button className="green-btn" onClick={handleContinue}>
               Continue
             </Button>
           </Box>

@@ -139,6 +139,13 @@
       .verified {
         width: 100px;
       }
+      .address-type {
+        font-size: 14px;
+        color: #17a672;
+        margin-bottom: 0.3rem;
+        font-weight: 600;
+        color: #697082;
+      }
     }
 
     .location {
@@ -157,7 +164,7 @@
       line-height: 20px;
       letter-spacing: -0.02em;
       color: $dark;
-      margin-bottom: 12px;
+      margin-bottom: 6px;
     }
   }
 

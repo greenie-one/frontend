@@ -170,7 +170,7 @@ export const useIDVerificationMethods = () => {
         showSuccessNotification({ title: 'Success !', message: 'Verified Licence successfully' });
         scrollToTop();
         setForceRender((prev) => !prev);
-        navigate('/candidate/profile/IDs/verify/driving_licence/details');
+        navigate('/candidate/profile/IDs/verify/driving_license/details');
       } else {
         showErrorNotification(res.error.code);
       }

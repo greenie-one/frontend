@@ -108,7 +108,7 @@ export const VerifyID: React.FC = () => {
 
             {params?.id?.toLowerCase() === 'pan' && <img src={PanImg} className="document-img" alt="Pan Card Image" />}
 
-            {params?.id?.toLowerCase() === 'driving_licence' && (
+            {params?.id?.toLowerCase() === 'driving_license' && (
               <img src={DrivingLicenceImg} className="document-img" alt="Driving Licence Image" />
             )}
 
@@ -157,7 +157,7 @@ export const VerifyID: React.FC = () => {
                 </>
               )}
 
-              {params?.id?.toLowerCase() === 'driving_licence' && (
+              {params?.id?.toLowerCase() === 'driving_license' && (
                 <>
                   <TextInput
                     withAsterisk

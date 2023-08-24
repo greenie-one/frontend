@@ -24,6 +24,7 @@ type VerificationContextType = {
   verificationResponse: PostVerificationDataType;
   setVerificationResponse: React.Dispatch<React.SetStateAction<PostVerificationDataType>>;
   personBeingVerified: string;
+  candidateName: string;
   peerVerified: boolean;
   otpTarget: string;
 };

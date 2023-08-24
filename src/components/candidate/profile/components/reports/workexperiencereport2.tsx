@@ -64,7 +64,9 @@ export const WorkExperienceReport2: React.FC<ChildComponentProps> = ({ peerDetai
                             <div>
                               <div className="peer-exp-name">
                                 <p>{peer.name}</p>
-                                <span>{WorkPeerType[peer.verificationBy]}</span>
+                                <span>
+                                  {WorkPeerType[peer.verificationBy]} (Peer{i + 1})
+                                </span>
                               </div>
 
                               <Box className="add-peer-header add-peer-exp-header">
@@ -175,11 +177,11 @@ export const WorkExperienceReport2: React.FC<ChildComponentProps> = ({ peerDetai
                                   })}
                                 </Box>
                               </Box>
+                              <hr className="breakLine"></hr>
                             </div>
                           </React.Fragment>
                         )
                     )}
-                    <hr className="breakLine"></hr>
                   </>
                 </React.Fragment>
               );
