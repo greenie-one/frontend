@@ -329,7 +329,15 @@
 .step-identifier {
   color: $gray;
   font-size: 16px;
-  margin-bottom: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.limit {
+  color: $gray;
+  font-size: 15.35px;
+  font-family: Inter;
+  width: min(100%, max-content);
+  text-decoration: underline;
 }
 
 .error-modal {

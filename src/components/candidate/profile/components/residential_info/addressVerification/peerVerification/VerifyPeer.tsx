@@ -32,7 +32,7 @@ export const VerifyPeer: React.FC<VerifyPeerProps> = ({
   const { classes: inputClasses } = OtpInputStyles();
 
   const [showOtpScreen, setShowOtpScreen] = useState<boolean>(false);
-  const [countdown, setCountDown] = useState<number>(60);
+  const [countdown, setCountDown] = useState<number>(30);
   const [otp, setOtp] = useState<string>();
 
   const sendOtp = async () => {
@@ -51,7 +51,7 @@ export const VerifyPeer: React.FC<VerifyPeerProps> = ({
         setShowOtpScreen(true);
       }
 
-      setCountDown(60);
+      setCountDown(30);
 
       showSuccessNotification({ title: 'Success !', message: `OTP Sent to your ${type}` });
     } else {

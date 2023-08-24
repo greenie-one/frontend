@@ -28,7 +28,7 @@ const ForgotPassword = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       setSecondsRemaining((prevSecondsRemaining) => prevSecondsRemaining - 1);
-    }, 1000);
+    }, 100);
 
     if (secondsRemaining === 0) {
       clearInterval(timer);

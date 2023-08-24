@@ -160,10 +160,29 @@ export const VerifyID: React.FC = () => {
               {params?.id?.toLowerCase() === 'driving_license' && (
                 <>
                   <TextInput
+                    minLength={8}
+                    maxLength={8}
                     withAsterisk
                     className="inputClass"
                     label="DOB as per license(DD/MM/YYYY)"
-                    {...verifyLicenceForm.getInputProps('dateOfBirth')}
+                    onInput={(event) => {
+                      const inputElement = event.target as typeof event.target & {
+                        value: string;
+                      };
+                      const currentValue = inputElement.value;
+                      if (!currentValue) {
+                        return;
+                      }
+                      const lastInput = currentValue.slice(-1);
+
+                      const isDigit = lastInput.charCodeAt(0) >= 48 && lastInput.charCodeAt(0) <= 57;
+
+                      if (!isDigit) {
+                        inputElement.value = currentValue.toString().slice(0, -1);
+                      }
+
+                      verifyLicenceForm.setFieldValue('dateOfBirth', inputElement.value);
+                    }}
                   />
                   <TextInput
                     withAsterisk

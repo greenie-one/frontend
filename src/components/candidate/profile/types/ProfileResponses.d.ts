@@ -231,6 +231,8 @@ type ResidentialType = {
     longitude: number;
     latitude: number;
   };
+  createdAt: string;
+  updatedAt: string;
 };
 
 type WorkPeerReportResponse = {

@@ -11,6 +11,7 @@ import {
   Textarea,
   Modal,
   NumberInput,
+  Tooltip,
 } from '@mantine/core';
 import pdfIcon from '../../assets/pdfIcon.png';
 import { DateInput } from '@mantine/dates';
@@ -41,6 +42,7 @@ import { skillExpertiseDict } from '../../../constants/dictionaries';
 import { Layout } from '../Layout';
 import { UndertakingText } from '../UndertakingText';
 import dayjs from 'dayjs';
+import { IoInformationCircleSharp } from 'react-icons/io5';
 
 export const AddExperience = () => {
   const navigate = useNavigate();
@@ -327,6 +329,7 @@ export const AddExperience = () => {
 
       await addSkillsToExperience(experienceId);
       await addDocumentsToExperience(experienceId);
+      showSuccessNotification({ title: 'Success', message: 'Work experience added successfully.' });
       setActive(4);
     } catch (err: unknown) {
       console.error('~ AddExperience.tsx ~ handleFinish(): ', err);
@@ -400,10 +403,13 @@ export const AddExperience = () => {
                 <Box className="progress-bar" bg={active === 3 ? '#9fe870' : '#F3F3F3'}></Box>
               </Box>
               <Text className="step-identifier">Step {active}/3</Text>
+              <Text className="limit">
+                All your information is secured and encrypted. It is only visible to individuals you authorise.{' '}
+              </Text>
             </>
           )}
           {active === 1 && (
-            <Box>
+            <Box sx={{ marginTop: '3rem' }}>
               <Box className="input-section">
                 <Title className="title">Job title</Title>
                 <TextInput
@@ -500,11 +506,21 @@ export const AddExperience = () => {
                   className="inputClass"
                 />
               </Box>
-              <Box
-                className="input-section"
-                title="Use a business email that has been associated with your professional roles, If you enter a personal email then make sure it was used for business communication "
-              >
-                <Title className="title">Work email</Title>
+              <Box className="input-section">
+                <Box sx={{ display: 'flex', gap: '0.1rem', alignItems: 'center' }} className="title">
+                  Work email
+                  <Tooltip
+                    multiline
+                    withArrow
+                    width={300}
+                    transitionProps={{ duration: 200 }}
+                    label="Use a business email that has been associated with your professional roles, If you enter a personal email then make sure it was used for business communication"
+                  >
+                    <span>
+                      <IoInformationCircleSharp size={18} color="#17a672" />
+                    </span>
+                  </Tooltip>
+                </Box>
                 <TextInput
                   withAsterisk
                   label="Official work email"
@@ -625,7 +641,7 @@ export const AddExperience = () => {
             </Box>
           )}
           {active === 2 && (
-            <Box>
+            <Box sx={{ marginTop: '3rem' }}>
               <Box className="input-section">
                 <Title className="title">Skill name</Title>
                 <TextInput
@@ -634,7 +650,7 @@ export const AddExperience = () => {
                   label="Eg. Frontend, Backend"
                   className="inputClass"
                   {...skillForm.getInputProps('skillName')}
-                  maxLength={15}
+                  maxLength={50}
                 />
               </Box>
               <Box className="input-section">
@@ -721,7 +737,7 @@ export const AddExperience = () => {
                 {selectedFile !== null && (
                   <Box className="inpute-file-name-box">
                     <Text className="label">File upload</Text>
-                    <Text className="input-file-name">{selectedFile?.name.substring(0, 15)}</Text>
+                    <Text className="input-file-name">{selectedFile?.name}</Text>
                     <Box className="icon-box">
                       <VscDebugRestart className="add-document-icon" onClick={() => fileInputRef.current?.click()} />
                       <MdOutlineDelete className="add-document-icon" onClick={() => setSelectedFile(null)} />
@@ -737,11 +753,6 @@ export const AddExperience = () => {
                 <Text className="limit">
                   (Only add <strong>.pdf</strong> files of size less than <strong>5 MB</strong>)
                 </Text>
-                <Text className="limit">
-                  <strong>
-                    All your information is secured and encrypted. It is only visible to individuals you authorise.{' '}
-                  </strong>
-                </Text>
               </Box>
               {selectedFilesList.length > 0 && (
                 <Box className="added-documents-wrapper">
@@ -750,7 +761,7 @@ export const AddExperience = () => {
                       <Box key={index}>
                         <Box className="added-documents">
                           <Text className="document-name">
-                            <span>{index + 1}</span> {file.name.substring(0, 20)}...
+                            <span>{index + 1}</span> {file.name}
                           </Text>
                           <Select
                             disabled

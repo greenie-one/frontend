@@ -54,7 +54,7 @@ export const PersonalIdentification: React.FC<ChildComponentProps> = ({ IdDetail
             </div>
             <Box className="added-peer-box">
               <Box
-                style={{ borderRadius: '1rem', fontWeight: '500', marginTop: '1rem' }}
+                style={{ borderRadius: '1rem', fontWeight: '500', marginTop: '1rem', gridTemplateColumns: '1fr' }}
                 className="added-peers added-peers-exp "
               >
                 Aadhar Not Verified
@@ -136,7 +136,7 @@ export const PersonalIdentification: React.FC<ChildComponentProps> = ({ IdDetail
             </div>
             <Box className="added-peer-box">
               <Box
-                style={{ borderRadius: '1rem', fontWeight: '500', marginTop: '1rem' }}
+                style={{ borderRadius: '1rem', fontWeight: '500', marginTop: '1rem', gridTemplateColumns: '1fr' }}
                 className="added-peers added-peers-exp "
               >
                 PAN Not Verified
@@ -244,7 +244,7 @@ export const PersonalIdentification: React.FC<ChildComponentProps> = ({ IdDetail
             </div>
             <Box className="added-peer-box">
               <Box
-                style={{ borderRadius: '1rem', fontWeight: '500', marginTop: '1rem' }}
+                style={{ borderRadius: '1rem', fontWeight: '500', marginTop: '1rem', gridTemplateColumns: '1fr' }}
                 className="added-peers added-peers-exp "
               >
                 Driving License Not Verified

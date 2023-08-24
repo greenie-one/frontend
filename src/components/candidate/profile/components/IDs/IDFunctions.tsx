@@ -20,7 +20,7 @@ export const useIDVerificationMethods = () => {
   /********** AADHAR CARD METHODS **********/
   const [opened, { open, close }] = useDisclosure(false);
   const [checked, setChecked] = useState<boolean>(false);
-  const [secondsRemaining, setSecondsRemaining] = useState<number>(45);
+  const [secondsRemaining, setSecondsRemaining] = useState<number>(30);
   const [aadharVerificationData, setAadharVerificationData] = useState<AadharVerificationResponse>({
     requestId: '',
     taskId: '',

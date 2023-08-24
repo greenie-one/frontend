@@ -31,7 +31,7 @@ const months = [
 ];
 
 const formattedDate = (data: string) => {
-  return data?.substring(0, 10).split('-').reverse().join('-');
+  return data?.substring(0, 10).split('-').reverse();
 };
 
 type VerificationType = 'MySelf' | 'Peer';

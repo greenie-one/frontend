@@ -350,10 +350,8 @@
 
 .see-peers-btn-wrapper {
   margin-top: 2rem;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
   align-items: center;
-  justify-content: space-between;
   width: 100%;
   max-width: 375px;
   gap: 1rem;
@@ -789,18 +787,24 @@
   margin-bottom: 1rem;
   background-color: #f5faff;
 
+  @media screen and (max-width: 640px) {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 0.25rem;
+  }
+
   .icon-box {
     display: flex;
     align-items: center;
 
     .pro-tip {
       font-family: Inter;
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 600;
       line-height: 24px;
-      letter-spacing: -0.6000000238418579px;
       text-align: left;
       margin-left: 0.25rem;
+      text-transform: capitalize;
     }
   }
 
@@ -808,9 +812,11 @@
     font-family: Inter;
     font-size: 13px;
     font-weight: 400;
-    line-height: 20px;
-    letter-spacing: -0.10000000149011612px;
     text-align: left;
+    @media screen and (max-width: 640px) {
+      text-align: center;
+      font-size: 12px;
+    }
   }
 }
 
@@ -1002,8 +1008,14 @@
   .mobile-see-peers-sidebar {
     display: flex;
   }
-  .select-attribute-btn-wrapper {
-    display: none;
+
+  .see-peers-btn-wrapper {
+    flex-direction: column;
+    max-width: unset;
+
+    button {
+      width: min(400px, 90%) !important;
+    }
   }
   .see-peers {
     .see-peers-box {
@@ -1199,18 +1211,8 @@
     }
   }
   .pro-tip-box {
-    padding: 1rem 0.5rem;
+    padding: 1rem;
     width: 100%;
-    .icon-box {
-      .pro-tip {
-        font-size: 8px;
-      }
-    }
-    .tip {
-      font-size: 8px;
-      line-height: 10px;
-      margin-left: 0.15rem;
-    }
   }
 }
 
