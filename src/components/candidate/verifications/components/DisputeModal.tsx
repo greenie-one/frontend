@@ -147,6 +147,7 @@ export const DisputeModal: React.FC<DisputeModalProps> = ({
           searchable
           nothingFound="No options"
           className="inputClass"
+          placeholder="Select reason for dispute"
           data={disputesReasons}
           label="Dispute type"
           styles={() => ({
