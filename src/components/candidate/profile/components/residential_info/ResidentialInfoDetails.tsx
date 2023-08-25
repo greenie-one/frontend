@@ -181,6 +181,7 @@ export const ResidentialInfoDetails: React.FC = () => {
       )}
       <DeleteConfirmationModal
         opened={deleteModalOpened}
+        deleteText="Residential Address"
         close={deleteModalClose}
         cb={() => handleDeleteResidentialInfo()}
       />

@@ -6,6 +6,11 @@ import pdfIcon from '../../profile/assets/pdfIcon.png';
 import { useDisclosure } from '@mantine/hooks';
 import { useVerificationContext } from '../context/VerificationContext';
 import { DisputeModal } from './DisputeModal';
+import {
+  showLoadingNotification,
+  showErrorNotification,
+  showSuccessNotification,
+} from '../../../../utils/functions/showNotification';
 
 export const VerifyDocuments = () => {
   const { setActiveStep, setVerificationResponse, verificationResponse, verificationData } = useVerificationContext();
@@ -16,6 +21,28 @@ export const VerifyDocuments = () => {
   const [approvedAttrs, setApprovedAttrs] = useState<string[]>([]);
   const [disputedAttrs, setDisputedAttrs] = useState<string[]>([]);
 
+  const viewPDFDocument = async (requestURL: string): Promise<void> => {
+    showLoadingNotification({ title: 'Please wait', message: '' });
+    try {
+      const res = await fetch(requestURL, {
+        method: 'GET',
+        headers: {
+          'content-type': 'application/json',
+        },
+      });
+      if (!res.ok) {
+        const error = await res.json();
+        showErrorNotification('SOMETHING_WENT_WRONG');
+        throw new Error(JSON.stringify(error));
+      }
+      const file = await res.blob();
+      const localFileURL = URL.createObjectURL(file);
+      showSuccessNotification({ title: 'Success', message: '' });
+      window.open(localFileURL, '_blank');
+    } catch (err: unknown) {
+      console.error('~ workexperience3.tsx ~ viewPDFDocument() ~ line 45 :', err);
+    }
+  };
   const approveHandler = (_id: string) => {
     const responseObj: DynamicObjectWithIdType = {
       id: _id,
@@ -79,9 +106,9 @@ export const VerifyDocuments = () => {
               <Box key={index} className="verify-documets-row">
                 <Box className="verify-document-name">
                   <img src={pdfIcon} alt="PDF Icon" />
-                  <a href={doc.privateUrl} target="_blank" rel="noopener noreferrer">
-                    <Text className="name">{doc.name}</Text>
-                  </a>
+                  <Text onClick={() => viewPDFDocument(doc.privateUrl)} className="name">
+                    {doc.name}
+                  </Text>
                 </Box>
                 <Box className="verification-documents-actions">
                   <Button

@@ -363,7 +363,7 @@ export const AddResidentialInfo = () => {
             <Box className="input-section">
               <Title className="title">
                 Address Line 1{'  '}
-                <Tooltip label="For best results enter the address as per the ID">
+                <Tooltip label="For best results enter an address as per verified ID">
                   <span>
                     <IoInformationCircleSharp size={22} color="#17a672" />
                   </span>

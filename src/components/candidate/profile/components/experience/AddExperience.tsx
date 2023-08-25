@@ -404,7 +404,8 @@ export const AddExperience = () => {
               </Box>
               <Text className="step-identifier">Step {active}/3</Text>
               <Text className="limit">
-                All your information is secured and encrypted. It is only visible to individuals you authorise.{' '}
+                All your information is <strong>secured</strong> and <strong>encrypted</strong> . It is only visible to
+                individuals you <strong>authorise</strong>.{' '}
               </Text>
             </>
           )}
