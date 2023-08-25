@@ -6,4 +6,7 @@
   grid-template-columns: 16rem 1fr;
   gap: 1.5rem;
   min-height: 36rem;
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
 }

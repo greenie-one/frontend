@@ -45,7 +45,10 @@ export const useProfileForms = () => {
       licenceNo: '',
       dateOfBirth: null,
     },
-
+    transformValues: (values) => ({
+      licenceNo: values.licenceNo.toUpperCase(),
+      dateOfBirth: values.dateOfBirth,
+    }),
     validate: {
       licenceNo: hasLength(15, 'Please enter valid licence number'),
       dateOfBirth: isNotEmpty('Please enter valid Date'),

@@ -5,6 +5,12 @@ import { CgSandClock } from 'react-icons/cg';
 import { Text, Box, Button } from '@mantine/core';
 import pdfIcon from '../../assets/pdfIcon.png';
 import { ReportTop } from './ReportTop';
+import { useGlobalContext } from '../../../../../context/GlobalContext';
+import {
+  showErrorNotification,
+  showLoadingNotification,
+  showSuccessNotification,
+} from '../../../../../utils/functions/showNotification';
 import './_report.scss';
 
 type ChildComponentProps = {
@@ -26,6 +32,32 @@ export const WorkExperienceReport3: React.FC<ChildComponentProps> = ({
   peerDetails,
   workExperienceDetails,
 }) => {
+  const { authClient } = useGlobalContext();
+  const viewPDFDocument = async (requestURL: string): Promise<void> => {
+    const authToken = authClient.getAccessToken();
+    showLoadingNotification({ title: 'Please wait', message: '' });
+    try {
+      const res = await fetch(requestURL, {
+        method: 'GET',
+        headers: {
+          'content-type': 'application/json',
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+      if (!res.ok) {
+        const error = await res.json();
+        showErrorNotification('SOMETHING_WENT_WRONG');
+        throw new Error(JSON.stringify(error));
+      }
+      const file = await res.blob();
+      const localFileURL = URL.createObjectURL(file);
+      showSuccessNotification({ title: 'Success', message: '' });
+      window.open(localFileURL, '_blank');
+    } catch (err: unknown) {
+      console.error('~ workexperience3.tsx ~ viewPDFDocument() ~ line 45 :', err);
+    }
+  };
+
   return (
     <>
       <main className="report-container">
@@ -174,6 +206,12 @@ export const WorkExperienceReport3: React.FC<ChildComponentProps> = ({
                               {doc.name.substring(0, 25)}
                               {doc.name.length > 25 && '...'}
                             </Text>
+                            <button
+                              style={{ textDecoration: 'underline', cursor: 'pointer', fontSize: '0.9325rem' }}
+                              onClick={() => viewPDFDocument(doc.privateUrl)}
+                            >
+                              View Document
+                            </button>
                           </div>
                         ))}
                     </Box>

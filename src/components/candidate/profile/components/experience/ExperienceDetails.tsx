@@ -375,6 +375,7 @@ export const ExperienceDetails: React.FC = () => {
           <DeleteConfirmationModal
             opened={deleteModalOpened}
             close={deleteModalClose}
+            deleteText="Work Experience"
             cb={() => handleDeleteWorkInfo(filteredExperience?.id)}
           />
         </Box>
