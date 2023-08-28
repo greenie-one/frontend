@@ -508,6 +508,17 @@
     display: flex;
     padding: 0.5rem 1rem;
     margin-top: 1rem;
+    &.noteConfirm {
+      @media (max-width: 1280px) {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .info-icon {
+        @media (max-width: 1280px) {
+          width: 18px;
+        }
+      }
+    }
 
     .note-heading {
       margin-left: 0.25rem;

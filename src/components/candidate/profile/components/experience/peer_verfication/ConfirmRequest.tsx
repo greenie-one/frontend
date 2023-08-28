@@ -88,7 +88,7 @@ export const ConfirmRequest: React.FC<ConfrimRequestPropsType> = ({
           <Button radius={'xl'} className="continue-btn" onClick={handleFinish}>
             See Request
           </Button>
-          <Box className="note" style={{ alignItems: 'center' }}>
+          <Box className="note noteConfirm" style={{ alignItems: 'center' }}>
             <AiFillInfoCircle className="info-icon" color="#1991ff" size={'40px'} />
             <Text className="note-heading" style={{ marginRight: '1rem' }}>
               Note
