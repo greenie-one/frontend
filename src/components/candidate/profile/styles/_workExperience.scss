@@ -64,6 +64,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding-bottom: 2rem;
 
   img {
     margin-bottom: 1rem;
@@ -87,11 +88,14 @@
     cursor: pointer;
     align-items: center;
   }
+
   .limit {
-    color: $gray;
-    font-size: 12px;
-    font-family: Inter;
-    letter-spacing: -0.24px;
+    text-decoration: none;
+    @media screen and (max-width: 540px) {
+      width: 90%;
+      margin-inline: auto;
+      text-align: center;
+    }
   }
 }
 
@@ -108,6 +112,13 @@
   position: relative;
   min-width: 50%;
 
+  @media screen and (max-width: 540px) {
+    flex-direction: column;
+    align-items: center;
+    min-width: unset;
+    width: 90%;
+  }
+
   .label {
     position: absolute;
     color: $gray;
@@ -118,12 +129,25 @@
   .input-file-name {
     color: $gray;
     text-align: left;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 25ch;
+
+    @media screen and (max-width: 540px) {
+      max-width: unset;
+      width: 100%;
+    }
   }
 
   .icon-box {
     color: $gray;
     font-size: 24px;
     margin-inline-start: 3rem;
+
+    @media screen and (max-width: 540px) {
+      margin-inline-start: 0;
+    }
 
     .add-document-icon {
       margin-inline: 0.5rem;
@@ -323,8 +347,19 @@
 .experience-details-screen {
   .experience-details-wrapper {
     display: flex;
-    align-items: center;
-    justify-content: flex-start;
+    align-items: flex-end;
+    gap: 1rem;
+    justify-content: space-between;
+    @media screen and (max-width: 540px) {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .green-btn {
+      margin-bottom: 1rem;
+      @media screen and (max-width: 540px) {
+        margin-bottom: 2rem;
+      }
+    }
   }
   .experience-details {
     display: flex;
@@ -859,12 +894,12 @@
 
   .experience-details-screen {
     .about-company-box-wrapper {
-      grid-template-columns: 80%;
+      grid-template-columns: 1fr;
     }
 
     .basic-info {
       .basic-info-box-wrapper {
-        grid-template-columns: 80%;
+        grid-template-columns: 1fr;
       }
     }
   }

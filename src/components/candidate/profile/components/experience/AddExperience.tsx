@@ -11,6 +11,7 @@ import {
   Textarea,
   Modal,
   NumberInput,
+  Tooltip,
 } from '@mantine/core';
 import pdfIcon from '../../assets/pdfIcon.png';
 import { DateInput } from '@mantine/dates';
@@ -41,6 +42,7 @@ import { skillExpertiseDict } from '../../../constants/dictionaries';
 import { Layout } from '../Layout';
 import { UndertakingText } from '../UndertakingText';
 import dayjs from 'dayjs';
+import { IoInformationCircleSharp } from 'react-icons/io5';
 
 export const AddExperience = () => {
   const navigate = useNavigate();
@@ -64,6 +66,26 @@ export const AddExperience = () => {
   const handleRemoveSkills = (_id: number) => {
     const newSkillsList = selectedSkills.filter((skill, id) => id !== _id);
     setSelectedSkills(newSkillsList);
+  };
+
+  const handleCTC = (event: React.FormEvent<HTMLInputElement>) => {
+    const inputElement = event.target as typeof event.target & {
+      value: string;
+    };
+    const currentValue = inputElement.value;
+    if (!currentValue) {
+      return;
+    }
+    const lastInput = currentValue.slice(-1);
+
+    const isDigit = lastInput.charCodeAt(0) >= 48 && lastInput.charCodeAt(0) <= 57;
+    const isComma = lastInput.charCodeAt(0) === 44;
+
+    if (!(isDigit || isComma)) {
+      inputElement.value = currentValue.toString().slice(0, -1);
+    }
+
+    workExperienceForm.setFieldValue('salary', inputElement.value);
   };
 
   const handleCheck = () => {
@@ -307,6 +329,7 @@ export const AddExperience = () => {
 
       await addSkillsToExperience(experienceId);
       await addDocumentsToExperience(experienceId);
+      showSuccessNotification({ title: 'Success', message: 'Work experience added successfully.' });
       setActive(4);
     } catch (err: unknown) {
       console.error('~ AddExperience.tsx ~ handleFinish(): ', err);
@@ -380,10 +403,14 @@ export const AddExperience = () => {
                 <Box className="progress-bar" bg={active === 3 ? '#9fe870' : '#F3F3F3'}></Box>
               </Box>
               <Text className="step-identifier">Step {active}/3</Text>
+              <Text className="limit">
+                All your information is <strong>secured</strong> and <strong>encrypted</strong> . It is only visible to
+                individuals you <strong>authorise</strong>.{' '}
+              </Text>
             </>
           )}
           {active === 1 && (
-            <Box>
+            <Box sx={{ marginTop: '3rem' }}>
               <Box className="input-section">
                 <Title className="title">Job title</Title>
                 <TextInput
@@ -436,6 +463,7 @@ export const AddExperience = () => {
                   LinkedIn Url
                 </Title>
                 <TextInput
+                  withAsterisk
                   {...workExperienceForm.getInputProps('linkedInUrl')}
                   label="Paste the LinkedIn company page link"
                   className="inputClass"
@@ -468,7 +496,7 @@ export const AddExperience = () => {
               <Box className="input-section">
                 <Title className="title">Salary (CTC)</Title>
                 <NumberInput
-                  {...workExperienceForm.getInputProps('salary')}
+                  onInput={(e) => handleCTC(e)}
                   withAsterisk
                   hideControls
                   label="Enter your CTC in Rs."
@@ -480,7 +508,20 @@ export const AddExperience = () => {
                 />
               </Box>
               <Box className="input-section">
-                <Title className="title">Work email</Title>
+                <Box sx={{ display: 'flex', gap: '0.1rem', alignItems: 'center' }} className="title">
+                  Work email
+                  <Tooltip
+                    multiline
+                    withArrow
+                    width={300}
+                    transitionProps={{ duration: 200 }}
+                    label="Use a business email that has been associated with your professional roles, If you enter a personal email then make sure it was used for business communication"
+                  >
+                    <span>
+                      <IoInformationCircleSharp size={18} color="#17a672" />
+                    </span>
+                  </Tooltip>
+                </Box>
                 <TextInput
                   withAsterisk
                   label="Official work email"
@@ -601,7 +642,7 @@ export const AddExperience = () => {
             </Box>
           )}
           {active === 2 && (
-            <Box>
+            <Box sx={{ marginTop: '3rem' }}>
               <Box className="input-section">
                 <Title className="title">Skill name</Title>
                 <TextInput
@@ -610,7 +651,7 @@ export const AddExperience = () => {
                   label="Eg. Frontend, Backend"
                   className="inputClass"
                   {...skillForm.getInputProps('skillName')}
-                  maxLength={15}
+                  maxLength={50}
                 />
               </Box>
               <Box className="input-section">
@@ -697,7 +738,7 @@ export const AddExperience = () => {
                 {selectedFile !== null && (
                   <Box className="inpute-file-name-box">
                     <Text className="label">File upload</Text>
-                    <Text className="input-file-name">{selectedFile?.name.substring(0, 15)}</Text>
+                    <Text className="input-file-name">{selectedFile?.name}</Text>
                     <Box className="icon-box">
                       <VscDebugRestart className="add-document-icon" onClick={() => fileInputRef.current?.click()} />
                       <MdOutlineDelete className="add-document-icon" onClick={() => setSelectedFile(null)} />
@@ -721,7 +762,7 @@ export const AddExperience = () => {
                       <Box key={index}>
                         <Box className="added-documents">
                           <Text className="document-name">
-                            <span>{index + 1}</span> {file.name.substring(0, 20)}...
+                            <span>{index + 1}</span> {file.name}
                           </Text>
                           <Select
                             disabled
@@ -769,9 +810,10 @@ export const AddExperience = () => {
                     color="teal"
                   />
                   <Text className="terms-conditions">
-                    I understand that during the upload process and while using this website, I may be required to
-                    provide certain personal information, including but not limited to my name, email address, contact
-                    details, and any other information deemed necessary for registration and website usage.
+                    I hereby affirm that the documents uploaded pertain directly to my stated work experience and do not
+                    violate any policies set forth by Greenie. I understand these documents will be stored securely and
+                    encrypted in the "Doc Depot", which I can access, modify, or delete as needed. I acknowledge that
+                    the information provided will be used exclusively for its intended purpose
                   </Text>
                 </Box>
               )}

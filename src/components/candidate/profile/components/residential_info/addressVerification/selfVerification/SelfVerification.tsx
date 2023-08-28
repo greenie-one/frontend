@@ -2,7 +2,11 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { Text, Box, Title, Button } from '@mantine/core';
 // import emptyProfile from '../../../../assets/emptyProfile.png';
-import { showErrorNotification, showLoadingNotification } from '../../../../../../../utils/functions/showNotification';
+import {
+  showErrorNotification,
+  showLoadingNotification,
+  showSuccessNotification,
+} from '../../../../../../../utils/functions/showNotification';
 import { HttpClient } from '../../../../../../../utils/generic/httpClient';
 import { addressVerificationAPIList } from '../../../../../../../assets/api/ApiList';
 import { useDisclosure } from '@mantine/hooks';
@@ -26,7 +30,7 @@ const formattedDate = (data: string) => {
 
 export const SelfVerification: React.FC = (): JSX.Element => {
   const { id } = useParams();
-  const { residentialInfoData, authClient } = useGlobalContext();
+  const { residentialInfoData, authClient, setForceRender } = useGlobalContext();
 
   const currentResidentialInfo = residentialInfoData.find((data) => data.id === id);
 
@@ -36,12 +40,11 @@ export const SelfVerification: React.FC = (): JSX.Element => {
   const getLocation = () => {
     setAddressVerified(null);
 
-    showLoadingNotification({
-      title: 'Capturing Location...',
-      message: 'Please provide access to capture your location.',
-    });
-
     if (navigator.geolocation) {
+      showLoadingNotification({
+        title: 'Capturing Location...',
+        message: 'Please provide access to capture your location.',
+      });
       navigator.geolocation.getCurrentPosition(setPosition, showError);
     } else {
       showErrorNotification('Geo-Location is not supported by this browser.');
@@ -51,11 +54,6 @@ export const SelfVerification: React.FC = (): JSX.Element => {
   };
 
   const setPosition = async (position: { coords: CoordinatesType }) => {
-    showLoadingNotification({
-      title: 'Verifying Address...',
-      message: 'Please wait while we verify your location.',
-    });
-
     const requestBody: LocationRequestType = {
       latitude: position.coords.latitude,
       longitude: position.coords.longitude,
@@ -72,6 +70,11 @@ export const SelfVerification: React.FC = (): JSX.Element => {
 
     if (res.ok) {
       setAddressVerified(true);
+      setForceRender((current) => !current);
+      showSuccessNotification({
+        title: 'Verified!',
+        message: 'Your location has been captured successfully!',
+      });
     } else {
       showErrorNotification(res.error.code);
       setAddressVerified(false);
@@ -110,6 +113,7 @@ export const SelfVerification: React.FC = (): JSX.Element => {
     <Layout>
       {addressVerified !== null ? (
         <ConfirmationModal
+          verificationType={'Self'}
           opened={opened}
           close={close}
           addressVerified={addressVerified}

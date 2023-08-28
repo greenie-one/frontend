@@ -124,41 +124,48 @@ const SentRequestActions: React.FC<SentRequestActionType> = ({
 export const RenderRequestList: React.FC<RenderRequestListProps> = ({
   requestList,
   setForceRenderList,
-}): JSX.Element[] => {
-  return requestList.map((request) => {
-    if (!request.isVerificationCompleted) {
-      return (
-        <Box key={request.id} className={request_item}>
-          <span className={profile_image}>
-            <img src={profileImage} alt="notification" />
-          </span>
-          <Box className={request_item_body}>
-            <span className={request_title}>
-              Request to verify your {request.peerPost ? 'Work Experience' : 'Address'}
-            </span>
-            <span className={request_msg}>
-              You have requested{' '}
-              <span className={request_name} style={{ color: '#000000', fontWeight: '500' }}>
-                {request.name}
-              </span>{' '}
-              to verify your {request.peerPost ? 'work experience' : 'address'}
-            </span>
-          </Box>
-          {request.isVerificationCompleted ? (
-            <Box className={request_actions}>
-              <Button className={request_action_btns}>Completed</Button>
-            </Box>
-          ) : (
-            <SentRequestActions
-              setForceRenderList={setForceRenderList}
-              requestId={request.id}
-              name={request.name}
-              createdAt={request.createdAt}
-            />
-          )}
-        </Box>
-      );
-    }
-    return <></>;
-  });
+}): JSX.Element => {
+  return (
+    <>
+      {[...requestList]
+        .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+        .map((request) => {
+          console.log(new Date(request.createdAt).getTime());
+          if (!request.isVerificationCompleted) {
+            return (
+              <Box key={request.id} className={request_item}>
+                <span className={profile_image}>
+                  <img src={profileImage} alt="notification" />
+                </span>
+                <Box className={request_item_body}>
+                  <span className={request_title}>
+                    Request to verify your {request.peerPost ? 'Work Experience' : 'Address'}
+                  </span>
+                  <span className={request_msg}>
+                    You have requested{' '}
+                    <span className={request_name} style={{ color: '#000000', fontWeight: '500' }}>
+                      {request.name}
+                    </span>{' '}
+                    to verify your {request.peerPost ? 'work experience' : 'address'}
+                  </span>
+                </Box>
+                {request.isVerificationCompleted ? (
+                  <Box className={request_actions}>
+                    <Button className={request_action_btns}>Completed</Button>
+                  </Box>
+                ) : (
+                  <SentRequestActions
+                    setForceRenderList={setForceRenderList}
+                    requestId={request.id}
+                    name={request.name}
+                    createdAt={request.createdAt}
+                  />
+                )}
+              </Box>
+            );
+          }
+          return <></>;
+        })}
+    </>
+  );
 };

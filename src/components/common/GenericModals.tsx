@@ -5,16 +5,17 @@ type ModalPropsType = {
   opened: boolean;
   close: () => void;
   cb?: () => void;
+  deleteText: string;
 };
 
-export const DeleteConfirmationModal: React.FC<ModalPropsType> = ({ cb, opened, close }): JSX.Element => {
+export const DeleteConfirmationModal: React.FC<ModalPropsType> = ({ cb, deleteText, opened, close }): JSX.Element => {
   const { classes } = useStyles();
 
   return (
     <Modal opened={opened} onClose={close} title="Confirmation" centered size="lg" padding="lg" radius="lg">
       <Box className={classes.modalContentContainer}>
         <Text className={classes.modalMsgText}>
-          You are about to Delete your information! <br /> Are you sure about this?
+          You are about to delete your {deleteText} ! <br /> Are you sure about this?
         </Text>
         <Button
           radius="xl"
@@ -25,7 +26,7 @@ export const DeleteConfirmationModal: React.FC<ModalPropsType> = ({ cb, opened, 
           }}
           className={classes.confirmActionBtn}
         >
-          Confirm & Deleting
+          Confirm & Delete
         </Button>
       </Box>
     </Modal>

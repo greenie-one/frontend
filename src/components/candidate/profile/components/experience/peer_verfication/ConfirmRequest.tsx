@@ -1,5 +1,4 @@
 import { Text, Box, Button, Modal, Title } from '@mantine/core';
-import { MdVerified } from 'react-icons/md';
 import { CgSandClock } from 'react-icons/cg';
 import { ExperienceDocuments, Peer } from '../../../types/ProfileGeneral';
 import { PeerDetails } from './PeerDetails';
@@ -89,10 +88,16 @@ export const ConfirmRequest: React.FC<ConfrimRequestPropsType> = ({
           <Button radius={'xl'} className="continue-btn" onClick={handleFinish}>
             See Request
           </Button>
-          <Box className="note">
-            <AiFillInfoCircle className="info-icon" color="#1991ff" size={'18px'} />
-            <Text className="note-heading">Note</Text>
-            <Text className="text">Candidates cannot see this verification process or its results.</Text>
+          <Box className="note noteConfirm" style={{ alignItems: 'center' }}>
+            <AiFillInfoCircle className="info-icon" color="#1991ff" size={'40px'} />
+            <Text className="note-heading" style={{ marginRight: '1rem' }}>
+              Note
+            </Text>
+            <Text className="text" style={{ fontWeight: '700' }}>
+              To maintain the authenticity and integrity of the verification process, you will not have access to modify
+              your verification report and comments made by peers in them. However, you will be the owner of the report
+              and can update it using Greenie.{' '}
+            </Text>
           </Box>
         </Box>
       </Modal>
@@ -109,15 +114,9 @@ export const ConfirmRequest: React.FC<ConfrimRequestPropsType> = ({
             <Box className="experience-details-text-box">
               <Text className="designation">{experience?.designation}</Text>
               <Text className="company-name">{experience?.companyName}</Text>
-              {experience && experience?.noOfVerifications >= 2 ? (
-                <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
-                  Verified
-                </Button>
-              ) : (
-                <Button leftIcon={<CgSandClock size={'16px'} />} className="pending">
-                  Pending
-                </Button>
-              )}
+              <Button leftIcon={<CgSandClock size={'16px'} />} className="pending">
+                Pending
+              </Button>
             </Box>
           </Box>
         </Box>
@@ -136,7 +135,7 @@ export const ConfirmRequest: React.FC<ConfrimRequestPropsType> = ({
       </Box>
       <Box className="see-peers-btn-wrapper">
         <Button className="green-btn" onClick={handleCreatePeerRequest}>
-          Confirm and send
+          Confirm and Send
         </Button>
         <Button
           className="cancel-btn"

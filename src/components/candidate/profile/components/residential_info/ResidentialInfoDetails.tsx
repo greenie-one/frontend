@@ -1,5 +1,5 @@
 import { Box, Text, Title, Button, Modal, Checkbox } from '@mantine/core';
-import { MdVerified, MdAddLocationAlt, MdDelete } from 'react-icons/md';
+import { MdVerified, MdAddLocationAlt } from 'react-icons/md';
 import { CgSandClock } from 'react-icons/cg';
 import location from '../../assets/location.png';
 import { useState, useEffect } from 'react';
@@ -31,7 +31,7 @@ const months = [
 ];
 
 const formattedDate = (data: string) => {
-  return data?.substring(0, 10).split('-').reverse().join('-');
+  return data?.substring(0, 10).split('-').reverse();
 };
 
 type VerificationType = 'MySelf' | 'Peer';
@@ -181,6 +181,7 @@ export const ResidentialInfoDetails: React.FC = () => {
       )}
       <DeleteConfirmationModal
         opened={deleteModalOpened}
+        deleteText="Residential Address"
         close={deleteModalClose}
         cb={() => handleDeleteResidentialInfo()}
       />
@@ -200,32 +201,33 @@ export const ResidentialInfoDetails: React.FC = () => {
           </Box>
           <Box className="info-detail-box">
             <Box className="info-detail-top-box">
-              <Box className="location">
-                <img className="location=img" src={location} alt="Location" />
-              </Box>
-              <Box className="address-box">
-                <Box className="address">
-                  {residential?.address_line_1}, {residential?.address_line_2}, {residential?.landmark},{' '}
-                  {residential?.city} {residential?.pincode}
+              <Box className="address-container">
+                <Box className="location">
+                  <img className="location=img" src={location} alt="Location" />
                 </Box>
-                {residential?.isVerified ? (
-                  <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
-                    Verified
-                  </Button>
-                ) : (
-                  <Button leftIcon={<CgSandClock size={'16px'} />} className="pending">
-                    Pending
-                  </Button>
-                )}
+                <Box className="address-box">
+                  <Box className="address">
+                    {residential?.address_line_1}, {residential?.address_line_2}, {residential?.landmark},{' '}
+                    {residential?.city} {residential?.pincode}
+                  </Box>
+                  {residential?.isVerified ? (
+                    <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
+                      Verified
+                    </Button>
+                  ) : (
+                    <Button leftIcon={<CgSandClock size={'16px'} />} className="pending">
+                      Pending
+                    </Button>
+                  )}
+                </Box>
               </Box>
+
               <Button
-                className="delete-btn"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  deleteModalOpen();
-                }}
+                disabled={sentRequests.length > 0 || residential?.isVerified}
+                className="green-btn"
+                onClick={() => open()}
               >
-                <MdDelete />
+                Get Verified
               </Button>
             </Box>
 
@@ -333,11 +335,17 @@ export const ResidentialInfoDetails: React.FC = () => {
                 </Box>
               </Box>
             )}
-            {!(sentRequests.length > 0 || residential?.isVerified) && (
-              <Button className="green-btn" onClick={() => open()}>
-                Get Verified
-              </Button>
-            )}
+
+            <Button
+              className="green-btn"
+              style={{ background: 'rgb(105, 112, 130)', marginTop: '2rem' }}
+              onClick={(event) => {
+                event.stopPropagation();
+                deleteModalOpen();
+              }}
+            >
+              Delete Address
+            </Button>
           </Box>
         </Box>
       </Layout>

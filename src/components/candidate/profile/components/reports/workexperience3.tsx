@@ -5,6 +5,12 @@ import { CgSandClock } from 'react-icons/cg';
 import { Text, Box, Button } from '@mantine/core';
 import pdfIcon from '../../assets/pdfIcon.png';
 import { ReportTop } from './ReportTop';
+import { useGlobalContext } from '../../../../../context/GlobalContext';
+import {
+  showErrorNotification,
+  showLoadingNotification,
+  showSuccessNotification,
+} from '../../../../../utils/functions/showNotification';
 import './_report.scss';
 
 type ChildComponentProps = {
@@ -26,6 +32,32 @@ export const WorkExperienceReport3: React.FC<ChildComponentProps> = ({
   peerDetails,
   workExperienceDetails,
 }) => {
+  const { authClient } = useGlobalContext();
+  const viewPDFDocument = async (requestURL: string): Promise<void> => {
+    const authToken = authClient.getAccessToken();
+    showLoadingNotification({ title: 'Please wait', message: '' });
+    try {
+      const res = await fetch(requestURL, {
+        method: 'GET',
+        headers: {
+          'content-type': 'application/json',
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+      if (!res.ok) {
+        const error = await res.json();
+        showErrorNotification('SOMETHING_WENT_WRONG');
+        throw new Error(JSON.stringify(error));
+      }
+      const file = await res.blob();
+      const localFileURL = URL.createObjectURL(file);
+      showSuccessNotification({ title: 'Success', message: '' });
+      window.open(localFileURL, '_blank');
+    } catch (err: unknown) {
+      console.error('~ workexperience3.tsx ~ viewPDFDocument() ~ line 45 :', err);
+    }
+  };
+
   return (
     <>
       <main className="report-container">
@@ -34,146 +66,186 @@ export const WorkExperienceReport3: React.FC<ChildComponentProps> = ({
         <div className="disclaimer-box">
           <span className="disclaimer-text">Work Experience</span>
         </div>
+        {workExperienceDetails.length > 0 ? (
+          <>
+            {workExperienceDetails.map((experience, index) => (
+              <div key={index}>
+                <div className="disclaimer-box">
+                  <div className="residential-address residential-top ">
+                    <div className="residential-address-left ">
+                      <p>{experience.companyName}</p>
+                      {experience.noOfVerifications >= 2 ? (
+                        <Button
+                          leftIcon={<MdVerified color="#17A672" size={'16px'} />}
+                          className="verified report-verifybtn"
+                        >
+                          Verified
+                        </Button>
+                      ) : (
+                        <Button leftIcon={<CgSandClock size={'16px'} />} className="pending report-verifybtn">
+                          Pending
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+                <div className="location">
+                  <p>About Company</p>
+                  <div className="location-date">
+                    <p>Last updated</p>
+                    <p>{experience.updatedAt.substring(0, 10).split('-').reverse().join('-')}</p>
+                  </div>
+                </div>
+                <Box className="basic-info-box-wrapper work-wrapper">
+                  <Box className="info-box">
+                    <Text className="experience-details-box-heading">Company Type</Text>
+                    <Text className="experience-details-box-text">{experience.companyType}</Text>
+                  </Box>
+                  <Box className="info-box">
+                    <Text className="experience-details-box-heading">
+                      <BsLinkedin color="#0077b5" />
+                      LinkedIn
+                    </Text>
+                    <a href={experience?.linkedInUrl} target="_blank" rel="noopener noreferrer">
+                      <Text className="experience-details-box-text">View Profile</Text>
+                    </a>
+                  </Box>
+                </Box>
+                <div className="location">
+                  <p>Basic Information</p>
+                </div>
+                <Box className="basic-info-box-wrapper work-wrapper">
+                  <Box className="info-box">
+                    <Text className="experience-details-box-heading">Company ID</Text>
+                    <Text className="experience-details-box-text">
+                      {experience.companyId ? experience.companyId : '-'}
+                    </Text>
+                  </Box>
+                  <Box className="info-box">
+                    <Text className="experience-details-box-heading">LinkedIn</Text>
+                    <Text className="experience-details-box-text">
+                      {experience.linkedInUrl ? (
+                        <a
+                          style={{ textDecoration: 'underline' }}
+                          href={experience.linkedInUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {experience.companyName}
+                        </a>
+                      ) : (
+                        '-'
+                      )}
+                    </Text>
+                  </Box>
+                  <Box className="info-box">
+                    <Text className="experience-details-box-heading">Tenure</Text>
+                    <Text className="experience-details-box-text">
+                      {experience.dateOfJoining.substring(0, 10).split('-').reverse().join('-')} -{' '}
+                      {experience.dateOfLeaving
+                        ? experience.dateOfLeaving.substring(0, 10).split('-').reverse().join('-')
+                        : 'Present'}
+                    </Text>
+                  </Box>
+                  <Box className="info-box">
+                    <Text className="experience-details-box-heading">Work Type</Text>
+                    <Text className="experience-details-box-text">{experience.workType}</Text>
+                  </Box>
+                </Box>
+                <div>
+                  <div className="peer-exp-name">
+                    <p>Referees</p>
+                  </div>
 
-        {workExperienceDetails.map((experience, index) => (
-          <div key={index}>
-            <div className="disclaimer-box">
-              <div className="residential-address residential-top ">
-                <div className="residential-address-left ">
-                  <p>{experience.companyName}</p>
-                  {experience.noOfVerifications >= 2 ? (
-                    <Button
-                      leftIcon={<MdVerified color="#17A672" size={'16px'} />}
-                      className="verified report-verifybtn"
-                    >
-                      Verified
-                    </Button>
+                  <Box className="add-peer-header work-header">
+                    <Text className="add-peer-header-text">Referee Name</Text>
+                    <Text className="add-peer-header-text">Referee Type</Text>
+                    <Text className="add-peer-header-text">Status</Text>
+                    <Text className="add-peer-header-text">Remarks</Text>
+                  </Box>
+                  {peerDetails.filter((peer) => peer.ref === experience.id).length > 0 ? (
+                    <Box className="added-peer-box">
+                      {peerDetails
+                        .filter((peer) => peer.ref === experience.id)
+                        .map((peer, i) => (
+                          <Box key={i} className="added-peers added-peers-exp ">
+                            <Text className="peer-name title">{peer.name}</Text>
+                            <Text className="peer-name">{WorkPeerType[peer.verificationBy]}</Text>
+                            <Text
+                              className={`peer-name ${peer.isVerificationCompleted ? 'text-verified' : 'text-dispute'}`}
+                            >
+                              {peer.isVerificationCompleted ? 'Approved' : 'Not Approved'}
+                            </Text>
+                            <Text className="peer-name name-wrap">{peer.allQuestions.review}</Text>
+                          </Box>
+                        ))}
+                    </Box>
                   ) : (
-                    <Button leftIcon={<CgSandClock size={'16px'} />} className="pending report-verifybtn">
-                      Pending
-                    </Button>
+                    <Box className="added-peer-box">
+                      <Box className="added-peers added-peers-exp ">
+                        <Text className="peer-name title">No Referee</Text>
+                        <Text className="peer-name">-</Text>
+                        <Text className={`peer-name`}>-</Text>
+                        <Text className="peer-name name-wrap">-</Text>
+                      </Box>
+                    </Box>
                   )}
                 </div>
-              </div>
-            </div>
-            <div className="location">
-              <p>About Company</p>
-              <div className="location-date">
-                <p>Last updated</p>
-                <p>{experience.updatedAt.substring(0, 10).split('-').reverse().join('/')}</p>
-              </div>
-            </div>
-            <Box className="basic-info-box-wrapper work-wrapper">
-              <Box className="info-box">
-                <Text className="experience-details-box-heading">Company Type</Text>
-                <Text className="experience-details-box-text">{experience.companyType}</Text>
-              </Box>
-              <Box className="info-box">
-                <Text className="experience-details-box-heading">
-                  <BsLinkedin color="#0077b5" />
-                  LinkedIn
-                </Text>
-                <a href={experience?.linkedInUrl} target="_blank" rel="noopener noreferrer">
-                  <Text className="experience-details-box-text">View Profile</Text>
-                </a>
-              </Box>
-            </Box>
-            <div className="location">
-              <p>Basic Information</p>
-            </div>
-            <Box className="basic-info-box-wrapper work-wrapper">
-              <Box className="info-box">
-                <Text className="experience-details-box-heading">Company ID</Text>
-                <Text className="experience-details-box-text">{experience.companyId ? experience.companyId : '-'}</Text>
-              </Box>
-              <Box className="info-box">
-                <Text className="experience-details-box-heading">LinkedIn</Text>
-                <Text className="experience-details-box-text">
-                  {experience.linkedInUrl ? experience.linkedInUrl : '-'}
-                </Text>
-              </Box>
-              <Box className="info-box">
-                <Text className="experience-details-box-heading">Tenure</Text>
-                <Text className="experience-details-box-text">
-                  {experience.dateOfJoining.substring(0, 10).split('-').reverse().join('-')} -{' '}
-                  {experience.dateOfLeaving
-                    ? experience.dateOfLeaving.substring(0, 10).split('-').reverse().join('-')
-                    : 'Present'}
-                </Text>
-              </Box>
-              <Box className="info-box">
-                <Text className="experience-details-box-heading">Work Type</Text>
-                <Text className="experience-details-box-text">{experience.workType}</Text>
-              </Box>
-            </Box>
-            <div>
-              <div className="peer-exp-name">
-                <p>Referees</p>
-              </div>
-
-              <Box className="add-peer-header work-header">
-                <Text className="add-peer-header-text">Referee Name</Text>
-                <Text className="add-peer-header-text">Referee Type</Text>
-                <Text className="add-peer-header-text">Status</Text>
-                <Text className="add-peer-header-text">Remarks</Text>
-              </Box>
-              {peerDetails.filter((peer) => peer.ref === experience.id).length > 0 ? (
-                <Box className="added-peer-box">
-                  {peerDetails
-                    .filter((peer) => peer.ref === experience.id)
-                    .map((peer, i) => (
-                      <Box key={i} className="added-peers added-peers-exp ">
-                        <Text className="peer-name title">{peer.name}</Text>
-                        <Text className="peer-name">{WorkPeerType[peer.verificationBy]}</Text>
-                        <Text
-                          className={`peer-name ${peer.isVerificationCompleted ? 'text-verified' : 'text-dispute'}`}
-                        >
-                          {peer.isVerificationCompleted ? 'Approved' : 'Not Approved'}
-                        </Text>
-                        <Text className="peer-name name-wrap">{peer.allQuestions.review}</Text>
+                <>
+                  <div className="peer-exp-name">
+                    <p>Documents</p>
+                  </div>
+                  {document.filter((doc) => doc.type === 'work' && doc.workExperience === experience.id).length > 0 ? (
+                    <Box className="folder-wrapper report-folder-wrapper">
+                      {document
+                        .filter((doc) => doc.type === 'work' && doc.workExperience === experience.id)
+                        .map((doc, i) => (
+                          <div key={i} className="folder">
+                            <img src={pdfIcon} alt="PDF Icon" />
+                            <Text className="doc-name">
+                              {doc.name.substring(0, 25)}
+                              {doc.name.length > 25 && '...'}
+                            </Text>
+                            <button
+                              style={{ textDecoration: 'underline', cursor: 'pointer', fontSize: '0.9325rem' }}
+                              onClick={() => viewPDFDocument(doc.privateUrl)}
+                            >
+                              View Document
+                            </button>
+                          </div>
+                        ))}
+                    </Box>
+                  ) : (
+                    <Box className="added-peer-box">
+                      <Box style={{ borderRadius: '1rem', marginTop: '1rem' }} className="added-peers added-peers-exp ">
+                        No Documents
                       </Box>
-                    ))}
-                </Box>
-              ) : (
-                <Box className="added-peer-box">
-                  <Box className="added-peers added-peers-exp ">
-                    <Text className="peer-name title">No Referee</Text>
-                    <Text className="peer-name">-</Text>
-                    <Text className={`peer-name`}>-</Text>
-                    <Text className="peer-name name-wrap">-</Text>
-                  </Box>
-                </Box>
-              )}
-            </div>
-            <>
-              <div className="peer-exp-name">
-                <p>Documents</p>
+                    </Box>
+                  )}
+                </>
+                <hr className="breakLine"></hr>
               </div>
-              {document.filter((doc) => doc.type === 'work' && doc.workExperience === experience.id).length > 0 ? (
-                <Box className="folder-wrapper report-folder-wrapper">
-                  {document
-                    .filter((doc) => doc.type === 'work' && doc.workExperience === experience.id)
-                    .map((doc, i) => (
-                      <div key={i} className="folder">
-                        <img src={pdfIcon} alt="PDF Icon" />
-                        <Text className="doc-name">
-                          {doc.name.substring(0, 25)}
-                          {doc.name.length > 25 && '...'}
-                        </Text>
-                      </div>
-                    ))}
-                </Box>
-              ) : (
-                <Box className="added-peer-box">
-                  <Box style={{ borderRadius: '1rem', marginTop: '1rem' }} className="added-peers added-peers-exp ">
-                    No Documents
-                  </Box>
-                </Box>
-              )}
-            </>
-            <hr className="breakLine"></hr>
-          </div>
-        ))}
+            ))}
+          </>
+        ) : (
+          <>
+            <Box className="added-peer-box">
+              <Box
+                style={{
+                  height: '5rem',
+                  borderRadius: '1rem',
+                  fontWeight: '500',
+                  marginTop: '1rem',
+                  gridTemplateColumns: '1fr',
+                  fontSize: '1rem',
+                }}
+                className="added-peers added-peers-exp "
+              >
+                No Work Experience Added
+              </Box>
+            </Box>
+          </>
+        )}
       </main>
     </>
   );

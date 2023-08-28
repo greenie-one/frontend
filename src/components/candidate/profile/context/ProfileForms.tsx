@@ -45,12 +45,18 @@ export const useProfileForms = () => {
       licenceNo: '',
       dateOfBirth: null,
     },
-
+    transformValues: (values) => ({
+      licenceNo: values.licenceNo.toUpperCase(),
+      dateOfBirth: values.dateOfBirth,
+    }),
     validate: {
       licenceNo: hasLength(15, 'Please enter valid licence number'),
       dateOfBirth: isNotEmpty('Please enter valid Date'),
     },
   });
+
+  const linkedInRegex =
+    /(^((https?:\/\/)?((www|\w\w)\.)?)linkedin\.com\/)((([\w]{2,3})?)|([^/]+\/(([\w|\d-&#?=])+\/?){1,}))$/gim;
 
   const workExperienceForm = useForm<workExperienceFormType>({
     initialValues: {
@@ -78,7 +84,8 @@ export const useProfileForms = () => {
       workMode: isNotEmpty('Please provide mode of work'),
       department: isNotEmpty('Please provide the department'),
       salary: isNotEmpty('Please provide your salary'),
-      email: isNotEmpty('Please enter your official work Email'),
+      email: isEmail('Please enter your official work Email'),
+      linkedInUrl: (value) => (linkedInRegex.test(String(value)) ? null : 'Invalid LinkedIn URL'),
     },
   });
 

@@ -20,6 +20,7 @@ type ResidentialInfoCardProps = {
   end_date: Date | null;
   isVerified: boolean;
   city: string;
+  addressType: string;
 };
 
 type ResidentialInfoDetailsCardProps = {
