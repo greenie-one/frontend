@@ -20,7 +20,6 @@ export const VerificationContextProvider: React.FC<{ children: React.ReactNode }
       disputeReason: '',
     },
     validate: {
-      disputeReason: isNotEmpty('Please provide more information'),
       disputeType: isNotEmpty('Please select dispute reason'),
     },
   });
@@ -35,6 +34,7 @@ export const VerificationContextProvider: React.FC<{ children: React.ReactNode }
     {} as PostVerificationDataType
   );
   const [personBeingVerified, setPersonBeingVerified] = useState<string>('');
+  const [candidateName, setCandidateName] = useState<string>('');
   const [peerVerified, setPeerVerified] = useState<boolean>(false);
   const [otpTarget, setOtpTarget] = useState<string>('');
 
@@ -47,7 +47,6 @@ export const VerificationContextProvider: React.FC<{ children: React.ReactNode }
     if (res.ok) {
       setUnverifiedLink('NONE');
       const responseData = res.value.data;
-
       if (responseData.documents.length > 0) {
         setTotalSteps((current) => current + 1);
       }
@@ -63,6 +62,7 @@ export const VerificationContextProvider: React.FC<{ children: React.ReactNode }
       setVerificationData(res.value);
     } else {
       setPersonBeingVerified((res.error as APIErrorPeer).name);
+      setCandidateName((res.error as APIErrorPeer).username);
       setActiveStep(0);
       switch (res.error.code) {
         case 'GR0050': {
@@ -136,6 +136,7 @@ export const VerificationContextProvider: React.FC<{ children: React.ReactNode }
     verificationResponse,
     setVerificationResponse,
     personBeingVerified,
+    candidateName,
     peerVerified,
     otpTarget,
   };

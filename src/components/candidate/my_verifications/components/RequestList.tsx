@@ -28,6 +28,7 @@ export type RequestListType = {
 export const RequestList: React.FC<{ activeListItem: number }> = ({ activeListItem }): JSX.Element => {
   const { authClient } = useGlobalContext();
   const [sentRequests, setSentRequests] = useState<Array<RequestListType>>([]);
+  const [sentAddressRequests, setSentAddressRequests] = useState<Array<RequestListType>>([]);
   const [forceRenderList, setForceRenderList] = useState<boolean>(true);
 
   const getWorkRequests = async () => {
@@ -63,10 +64,11 @@ export const RequestList: React.FC<{ activeListItem: number }> = ({ activeListIt
   };
 
   useEffect(() => {
+    setSentRequests([]);
     getWorkRequests();
     getAddressRequests();
   }, [forceRenderList]);
-
+  console.log(sentRequests);
   return activeListItem === 0 ? (
     <article className={requestList_container}>
       {sentRequests.length != 0 ? (

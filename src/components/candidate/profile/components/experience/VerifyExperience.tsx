@@ -187,7 +187,7 @@ export const VerifyExperience: React.FC = () => {
       getExperienceDocument();
       getSentRequests();
     }
-  }, []);
+  }, [experience?.id]);
 
   return (
     <Layout>
@@ -347,6 +347,36 @@ export const VerifyExperience: React.FC = () => {
               >
                 Proceed
               </Button>
+              {addedPeers.length < 1 || addedPeers.length + sentRequests.length < 2 ? (
+                <span
+                  style={{
+                    marginTop: '-1rem',
+                    fontSize: '0.89rem',
+                    border: '1px solid #e1e1e1',
+                    textAlign: 'center',
+                    padding: '0.75em 1em ',
+                    borderRadius: '1rem',
+                    background: '#f5faff',
+                    display: 'grid',
+                    fontWeight: 400,
+                  }}
+                >
+                  <strong
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '0.25rem',
+                    }}
+                  >
+                    <FcInfo size={17} color="#1991ff" />
+                    Pro Tip:
+                  </strong>{' '}
+                  At least two peers are necessary to verify Work Experience
+                </span>
+              ) : (
+                <></>
+              )}
             </Box>
           )}
           {currentStep === 1 && (
@@ -386,13 +416,14 @@ export const VerifyExperience: React.FC = () => {
                 <Button
                   className="green-btn"
                   onClick={() => verificationStepDispatch({ type: ReviewActionType.NEXT_STEP })}
-                  style={{ width: '15rem' }}
+                  style={{ width: '10rem' }}
                 >
-                  Confirm and send request
+                  Skip All
                 </Button>
                 <Button
                   className="cancel-btn"
                   onClick={() => verificationStepDispatch({ type: ReviewActionType.PREVIOUS_STEP })}
+                  style={{ width: '10rem' }}
                 >
                   Cancel
                 </Button>

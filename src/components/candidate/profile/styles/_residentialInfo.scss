@@ -12,58 +12,46 @@
 .info-detail-box {
   .info-detail-top-box {
     display: flex;
-    justify-content: flex-start;
+    gap: 1rem;
+    align-items: flex-end;
+    justify-content: space-between;
     margin-bottom: 2rem;
 
-    @media screen and (max-width: 28em) {
+    @media screen and (max-width: 640px) {
       flex-direction: column;
-      align-items: center;
+      align-items: flex-start;
+      gap: 1.5rem;
     }
-
-    .location {
-      border: 1px solid $lighterGray;
+    .address-container {
       display: flex;
+      gap: 1rem;
       align-items: center;
-      justify-content: center;
-      aspect-ratio: 1;
-      border-radius: 50%;
-      color: $lighterGray;
-      min-width: 100px;
-      min-height: 100px;
-
-      @media screen and (max-width: 28em) {
-        width: 50px;
-        height: 50px;
-        min-width: 50px;
-        min-height: 50px;
+      @media screen and (max-width: 640px) {
+        flex-direction: column;
+        align-items: flex-start;
       }
-    }
+      .location {
+        border: 1px solid $lighterGray;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        color: $lighterGray;
+        min-width: 100px;
+        min-height: 100px;
 
-    .address-box {
-      margin-left: 1rem;
-      width: 50%;
-      @media screen and (max-width: 28em) {
-        margin-left: 0;
-        width: calc(100% - 0.25rem);
-        text-align: center;
-        margin-block: 1rem;
+        @media screen and (max-width: 28em) {
+          width: 80px;
+          height: 80px;
+          min-width: 80px;
+          min-height: 80px;
+        }
       }
-      .address {
-        margin-bottom: 1rem;
-      }
-    }
-
-    .delete-btn {
-      width: 2rem;
-      height: 2rem;
-      background: transparent;
-      color: $gray;
-      padding: 0;
-      font-size: 1.25rem;
-
-      &:hover {
-        background: hsl(0, 100%, 72%, 0.2);
-        transition: all 150ms linear;
+      .address-box {
+        .address {
+          margin-bottom: 1rem;
+        }
       }
     }
   }

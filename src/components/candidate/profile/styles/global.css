@@ -136,7 +136,7 @@
   margin-bottom: 24px;
 }
 .container .link {
-  font-family: "Inter";
+  font-family: 'Inter';
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -286,13 +286,13 @@
   margin-bottom: 3px;
 }
 .footer .footer-container .footer-logo .text {
-  font-family: "Gilroy-Bold" !important;
+  font-family: 'Gilroy-Bold' !important;
   font-size: 24px;
   line-height: 28px;
   letter-spacing: -0.02em;
 }
 .footer .footer-container .mission-text {
-  font-family: "Gilroy-Bold" !important;
+  font-family: 'Gilroy-Bold' !important;
   font-size: 1.25rem;
   line-height: 28px;
   letter-spacing: -0.02em;
@@ -370,7 +370,7 @@
   text-align: center;
 }
 .disclaimer-modal .disclaimer-heading {
-  font-family: "Inter";
+  font-family: 'Inter';
   font-style: normal;
   font-weight: 600;
   font-size: 36px;
@@ -381,7 +381,7 @@
   text-align: center;
 }
 .disclaimer-modal .disclaimer-subHeading {
-  font-family: "Inter";
+  font-family: 'Inter';
   font-style: normal;
   font-weight: 400;
   font-size: 20px;
@@ -392,7 +392,7 @@
   text-align: center;
 }
 .disclaimer-modal .checkbox-box {
-  font-family: "Inter";
+  font-family: 'Inter';
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -704,7 +704,7 @@
 }
 .modal .congratulations-modal .sub-title {
   margin-block: 1rem;
-  font-family: "Inter";
+  font-family: 'Inter';
   font-style: normal;
   font-weight: 500;
   font-size: 1rem;
@@ -713,7 +713,7 @@
   color: #191919;
 }
 .modal .congratulations-modal .greenie-id {
-  font-family: "Inter";
+  font-family: 'Inter';
   font-style: normal;
   font-weight: 700;
   font-size: 2rem;
@@ -762,7 +762,7 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   -moz-column-gap: 12px;
-       column-gap: 12px;
+  column-gap: 12px;
   row-gap: 12px;
   align-items: center;
   justify-content: space-between;
@@ -814,7 +814,7 @@
   height: 80px;
 }
 .ids-modal .ids-wrapper .id-box .id-name {
-  font-family: "Inter";
+  font-family: 'Inter';
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -824,7 +824,7 @@
   margin-top: 16px;
 }
 .ids-modal .ids-wrapper .id-box .coming-soon {
-  font-family: "Inter";
+  font-family: 'Inter';
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
@@ -864,7 +864,7 @@
 }
 
 .employment-privacy-policy {
-  font-family: "Inter";
+  font-family: 'Inter';
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -910,7 +910,7 @@
   text-align: center;
 }
 .otp-form .warning {
-  font-family: "Inter";
+  font-family: 'Inter';
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -1099,7 +1099,7 @@
   align-items: center;
 }
 .navbar .logo .greenie {
-  font-family: "Inter";
+  font-family: 'Inter';
   font-weight: 700;
   font-size: 32px;
   line-height: 38px;
@@ -1137,7 +1137,7 @@
 }
 .profile-dropdown-menu .navOptionsList .navOptionItems {
   color: #697082;
-  cursor: "pointer";
+  cursor: 'pointer';
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -1146,14 +1146,14 @@
   padding-inline: 15px;
   padding-block: 6px;
   border-radius: 20px;
-  transition: "background 150ms linear";
+  transition: 'background 150ms linear';
   width: 100%;
 }
 .profile-dropdown-menu .navOptionsList .navOptionItems:hover {
   background: #f5f5f5;
 }
 .profile-dropdown-menu .navOptionsList .navOptionItems .navOptionsIcon {
-  color: "inherit";
+  color: 'inherit';
   font-size: 20px;
   display: flex;
   align-items: center;
@@ -1164,7 +1164,7 @@
   background: #f5f5f5;
 }
 .profile-dropdown-menu .navOptionsList .navOptionItems .navOptionsText {
-  color: "inherit";
+  color: 'inherit';
   font-size: rem(15);
   font-weight: 500;
 }
@@ -1297,7 +1297,7 @@
 .profile-section .profile-photo img {
   position: absolute;
   -o-object-position: top;
-     object-position: top;
+  object-position: top;
 }
 .profile-section .profile-photo .edit-btn {
   position: absolute;
@@ -1340,7 +1340,7 @@
   margin-bottom: 24px;
 }
 .bio-section .bio-name-box .bio-name {
-  font-family: "Gilroy-Bold" !important;
+  font-family: 'Gilroy-Bold' !important;
   font-size: 1.75rem;
   line-height: 38px;
   letter-spacing: -0.02em;
@@ -1447,7 +1447,7 @@
   justify-content: center;
 }
 .bio-section .bio-section-wrapper .greenie-id .greenie-id-heading {
-  font-family: "Inter";
+  font-family: 'Inter';
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
@@ -1456,7 +1456,7 @@
   padding-bottom: 2px;
 }
 .bio-section .bio-section-wrapper .greenie-id .id {
-  font-family: "Inter";
+  font-family: 'Inter';
   font-style: normal;
   font-weight: 700;
   font-size: 20px;
@@ -1830,7 +1830,7 @@
   font-size: 20px;
   line-height: 24px;
   letter-spacing: -0.02em;
-  font-family: "Inter";
+  font-family: 'Inter';
   cursor: pointer;
 }
 .see-all-header .go-back-btn {
@@ -1865,7 +1865,7 @@
   margin-bottom: 8px;
 }
 .skills-card-wrapper .skill-card .skill-card-header .designation {
-  font-family: "Inter";
+  font-family: 'Inter';
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -1948,7 +1948,7 @@
   margin-left: 8px;
 }
 .see-all-residential-info-card-wrapper .see-all-residentila-info-card .heading {
-  font-family: "Inter";
+  font-family: 'Inter';
   font-style: normal;
   font-weight: 600;
   font-size: 16px;
@@ -1965,7 +1965,7 @@
   display: grid;
   grid-template-columns: 15% 65% 20%;
   align-items: center;
-  font-family: "Inter";
+  font-family: 'Inter';
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -2003,7 +2003,7 @@
   grid-template-columns: repeat(5, 20%);
 }
 .see-all-residential-info-card-wrapper .see-all-residentila-info-card .residential-info-wrapper .details {
-  font-family: "Inter";
+  font-family: 'Inter';
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
@@ -2021,7 +2021,7 @@
   justify-content: center;
   background: rgba(0, 0, 0, 0.02);
   height: 156px;
-  font-family: "Inter";
+  font-family: 'Inter';
   font-style: normal;
   font-weight: 600;
   font-size: 16px;
@@ -2042,7 +2042,7 @@
   display: grid;
 }
 .document-container .document-text-box .heading {
-  font-family: "Inter";
+  font-family: 'Inter';
   font-style: normal;
   font-weight: 600;
   font-size: 16px;
@@ -2051,7 +2051,7 @@
   margin-bottom: 16px;
 }
 .document-container .document-text-box button {
-  font-family: "Inter";
+  font-family: 'Inter';
   border-radius: 34px;
   width: 180px;
   font-weight: 500;
@@ -2087,7 +2087,7 @@
 }
 
 .policy {
-  font-family: "Inter";
+  font-family: 'Inter';
   font-style: normal;
   font-weight: 600;
   font-size: 14px;
@@ -2112,7 +2112,7 @@
   max-height: 200px;
 }
 .document-verified-container .document-verified-left-box .left-img-box .verified-document-name {
-  font-family: "Inter";
+  font-family: 'Inter';
   font-style: normal;
   font-weight: 600;
   font-size: 20px;
@@ -2122,7 +2122,7 @@
   margin-bottom: 28px;
 }
 .document-verified-container .document-verified-left-box .heading {
-  font-family: "Inter";
+  font-family: 'Inter';
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -2131,7 +2131,7 @@
   color: #191919;
 }
 .document-verified-container .document-verified-left-box .details {
-  font-family: "Inter";
+  font-family: 'Inter';
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -2183,7 +2183,7 @@
   margin: 4px 0px;
 }
 .document-verified-container .document-verified-right-box .details-box .details-title {
-  font-family: "Inter";
+  font-family: 'Inter';
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -2192,7 +2192,7 @@
   margin-bottom: 30px;
 }
 .document-verified-container .document-verified-right-box .details-box .details-detail {
-  font-family: "Inter";
+  font-family: 'Inter';
   font-style: normal;
   font-weight: 600;
   font-size: 20px;
@@ -2532,7 +2532,7 @@
 }
 .experience-modal .sub-title {
   margin: 16px 0px;
-  font-family: "Inter";
+  font-family: 'Inter';
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
@@ -2725,7 +2725,7 @@
   align-items: center;
   grid-template-columns: 25% 30%;
   -moz-column-gap: 0.5rem;
-       column-gap: 0.5rem;
+  column-gap: 0.5rem;
   align-items: stretch;
 }
 .experience-details-screen .experience-details-box-text {
@@ -2743,7 +2743,7 @@
   align-items: center;
   grid-template-columns: 17% 25% 27% 27%;
   -moz-column-gap: 0.5rem;
-       column-gap: 0.5rem;
+  column-gap: 0.5rem;
   align-items: stretch;
 }
 .experience-details-screen .experience-details-links {
@@ -3179,21 +3179,21 @@
   display: flex;
   align-items: center;
   -moz-column-gap: 0.5rem;
-       column-gap: 0.5rem;
+  column-gap: 0.5rem;
   justify-content: flex-start;
 }
 .info-detail-box .about-info-box {
   display: flex;
   align-items: center;
   -moz-column-gap: 0.5rem;
-       column-gap: 0.5rem;
+  column-gap: 0.5rem;
   justify-content: flex-start;
 }
 .info-detail-box .geo-info-box {
   display: flex;
   align-items: center;
   -moz-column-gap: 0.5rem;
-       column-gap: 0.5rem;
+  column-gap: 0.5rem;
   justify-content: flex-start;
 }
 
@@ -3420,7 +3420,7 @@
   margin-inline: auto;
 }
 .congratulations-screen .title {
-  font-family: "Inter";
+  font-family: 'Inter';
   font-style: normal;
   font-weight: 700;
   font-size: 36px;
@@ -3431,7 +3431,7 @@
   margin-bottom: 1rem;
 }
 .congratulations-screen .sub-title {
-  font-family: "Inter";
+  font-family: 'Inter';
   font-style: normal;
   font-weight: 500;
   font-size: 24px;
@@ -3441,7 +3441,7 @@
   margin-bottom: 21px;
 }
 .congratulations-screen .sub-text {
-  font-family: "Inter";
+  font-family: 'Inter';
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -3831,7 +3831,7 @@
   margin-bottom: 0.5rem;
 }
 .verify-experience-modal .subHeading {
-  font-family: "Inter";
+  font-family: 'Inter';
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
@@ -4014,7 +4014,7 @@
 .selected-attributes .selected-attribute .document img {
   width: 1.75rem;
   -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
 }
 
 .action-btn {
@@ -4297,7 +4297,8 @@
     grid-template-columns: 35% 50% 15%;
     font-size: 12px;
   }
-  .add-peer-box .add-peer-header .add-peer-header-text:nth-child(3), .add-peer-box .add-peer-header .add-peer-header-text:nth-child(4) {
+  .add-peer-box .add-peer-header .add-peer-header-text:nth-child(3),
+  .add-peer-box .add-peer-header .add-peer-header-text:nth-child(4) {
     display: none;
   }
   .add-peer-box .added-peer-box {
@@ -4532,6 +4533,7 @@
   .pro-tip-box {
     padding: 1rem 0.5rem;
     width: 100%;
+    grid-template-columns: 1fr;
   }
   .pro-tip-box .icon-box .pro-tip {
     font-size: 8px;
@@ -4618,7 +4620,7 @@
   margin-bottom: 1.5rem;
 }
 .address-verification-container .logo-box .logo-text {
-  font-family: "Gilroy-Bold" !important;
+  font-family: 'Gilroy-Bold' !important;
   font-size: 24px;
 }
 .address-verification-container .logo-box .logo-icon {
@@ -4712,7 +4714,7 @@
   height: 100%;
   position: absolute;
   -o-object-position: top;
-     object-position: top;
+  object-position: top;
 }
 .address-verification-container .profile-details .address-verification-details-name {
   font-family: Inter;
@@ -5010,7 +5012,8 @@
     grid-template-columns: 35% 45% 20%;
     width: 94%;
   }
-  .residential-add-peer-header .residential-peer-header-text:nth-child(3), .residential-add-peer-header .residential-peer-header-text:nth-child(4) {
+  .residential-add-peer-header .residential-peer-header-text:nth-child(3),
+  .residential-add-peer-header .residential-peer-header-text:nth-child(4) {
     display: none;
   }
   .residential-added-peer-box {
@@ -5100,7 +5103,7 @@
     margin-bottom: 1.5rem;
   }
   .address-verification-container .logo-box .logo-text {
-    font-family: "Gilroy-Bold" !important;
+    font-family: 'Gilroy-Bold' !important;
     font-size: 23px;
   }
   .address-verification-container .logo-box .logo-icon {
@@ -5345,4 +5348,4 @@
   .footer .footer-container {
     padding-inline: 16px;
   }
-}/*# sourceMappingURL=global.css.map */
+} /*# sourceMappingURL=global.css.map */

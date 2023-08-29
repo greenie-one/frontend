@@ -61,8 +61,8 @@ export const AllExperiences = () => {
                       <Box className="tenure-box">
                         <Text className="since-text">Since</Text>
                         <Text className="tenure">
-                          {dateOfJoining?.toString().substring(3, 15)} -{' '}
-                          {dateOfLeaving ? dateOfLeaving?.toString().substring(3, 15) : 'Present'}
+                          {dateOfJoining?.toString().substring(0, 10)} -{' '}
+                          {dateOfLeaving ? dateOfLeaving?.toString().substring(0, 10) : 'Present'}
                         </Text>
                       </Box>
                     </Box>

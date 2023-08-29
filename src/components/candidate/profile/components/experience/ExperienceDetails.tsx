@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { ActionIcon, Text, Box, Button, Title, Modal, Checkbox } from '@mantine/core';
+import { Text, Box, Button, Title, Modal, Checkbox } from '@mantine/core';
 import { CgSandClock } from 'react-icons/cg';
-import { MdVerified, MdDelete } from 'react-icons/md';
+import { MdVerified } from 'react-icons/md';
 import { DeleteConfirmationModal } from '../../../../common/GenericModals';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -218,33 +218,28 @@ export const ExperienceDetails: React.FC = () => {
           </Box>
           <Box className="experience-details-screen">
             <Box className="experience-details-wrapper">
-              <Box className="experience-details">
-                <Box className="experience-details-text-box">
+              <Box className="experience-details exp-top">
+                <Box className="experience-details-text-box detail-left">
                   <Text className="designation">{filteredExperience?.designation}</Text>
                   <Text className="company-name">{filteredExperience?.companyName}</Text>
                   {filteredExperience?.noOfVerifications >= 2 ? (
-                    <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
+                    <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified btn-exp">
                       Verified
                     </Button>
                   ) : (
-                    <Button leftIcon={<CgSandClock size={'16px'} />} className="pending">
+                    <Button leftIcon={<CgSandClock size={'16px'} />} className="pending btn-exp">
                       Pending
                     </Button>
                   )}
                 </Box>
               </Box>
-              <Box className="actions-icons">
-                <Box className="action-icon">
-                  <ActionIcon
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      deleteModalOpen();
-                    }}
-                  >
-                    <MdDelete size={'24px'} color="#697082" />
-                  </ActionIcon>
-                </Box>
-              </Box>
+              <Button
+                disabled={filteredExperience?.noOfVerifications >= 2}
+                className="green-btn"
+                onClick={() => handleOpenModal('Verify Experience')}
+              >
+                Get Verified
+              </Button>
             </Box>
             <Box className="about-company">
               <Title className="experience-details-box-heading">About Company</Title>
@@ -263,7 +258,7 @@ export const ExperienceDetails: React.FC = () => {
                       className="details-link"
                       title={filteredExperience?.linkedInUrl}
                     >
-                      {filteredExperience?.linkedInUrl ? filteredExperience?.linkedInUrl : '-'}
+                      {filteredExperience?.companyName}
                     </a>
                   ) : (
                     '-'
@@ -289,9 +284,9 @@ export const ExperienceDetails: React.FC = () => {
                 <Box className="comapny-type-box">
                   <Text className="experience-details-box-heading">Tenure</Text>
                   <Text className="experience-details-box-text">
-                    {filteredExperience?.dateOfJoining?.toString().substring(3, 15)} -{' '}
+                    {filteredExperience?.dateOfJoining?.toString().substring(0, 10)} -{' '}
                     {filteredExperience?.dateOfLeaving
-                      ? filteredExperience?.dateOfLeaving?.toString().substring(3, 15)
+                      ? filteredExperience?.dateOfLeaving?.toString().substring(0, 10)
                       : 'Present'}
                   </Text>
                 </Box>
@@ -364,18 +359,23 @@ export const ExperienceDetails: React.FC = () => {
                 Show Skills
               </Text>
             </Box>
+
             <Button
-              disabled={filteredExperience?.noOfVerifications >= 2}
               className="green-btn"
-              onClick={() => handleOpenModal('Verify Experience')}
+              style={{ background: 'rgb(105, 112, 130)' }}
+              onClick={(event) => {
+                event.stopPropagation();
+                deleteModalOpen();
+              }}
             >
-              Get Verified
+              Delete Experience
             </Button>
           </Box>
 
           <DeleteConfirmationModal
             opened={deleteModalOpened}
             close={deleteModalClose}
+            deleteText="Work Experience"
             cb={() => handleDeleteWorkInfo(filteredExperience?.id)}
           />
         </Box>

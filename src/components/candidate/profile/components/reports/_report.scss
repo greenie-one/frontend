@@ -338,6 +338,12 @@
   }
 }
 
+.pageDivider {
+  width: calc(100% - 7.5rem);
+  margin-inline: auto;
+  border-radius: 1rem;
+}
+
 .report-container {
   background-color: white;
   // aspect-ratio: 1/1.414;
@@ -346,6 +352,7 @@
   padding-inline: 10rem;
   margin-block: 2rem;
   font-size: rem(14);
+  min-height: 100vh;
   .breakLine {
     background: black;
     height: 1px;
@@ -721,7 +728,7 @@
       width: 100%;
       border-radius: 4px;
       overflow: hidden;
-      margin-bottom: 1rem;
+      margin-block: 1rem;
 
       .row {
         display: grid;
@@ -810,13 +817,17 @@
   .peer-exp-name {
     margin-top: 4rem;
     display: flex;
+    flex-direction: column-reverse;
+    align-items: flex-start;
+    gap: 4px;
+
     font-size: 18px;
     font-weight: 600;
     span {
       font-size: 16px;
       color: #a3a3a3;
-      font-weight: 400;
-      margin-inline-start: rem(30);
+      font-weight: 500;
+      border-bottom: 1px solid hsl(0, 0%, 64%, 0.4);
     }
   }
 }

@@ -20,7 +20,7 @@ export const useIDVerificationMethods = () => {
   /********** AADHAR CARD METHODS **********/
   const [opened, { open, close }] = useDisclosure(false);
   const [checked, setChecked] = useState<boolean>(false);
-  const [secondsRemaining, setSecondsRemaining] = useState<number>(45);
+  const [secondsRemaining, setSecondsRemaining] = useState<number>(30);
   const [aadharVerificationData, setAadharVerificationData] = useState<AadharVerificationResponse>({
     requestId: '',
     taskId: '',
@@ -170,7 +170,7 @@ export const useIDVerificationMethods = () => {
         showSuccessNotification({ title: 'Success !', message: 'Verified Licence successfully' });
         scrollToTop();
         setForceRender((prev) => !prev);
-        navigate('/candidate/profile/IDs/verify/driving_licence/details');
+        navigate('/candidate/profile/IDs/verify/driving_license/details');
       } else {
         showErrorNotification(res.error.code);
       }

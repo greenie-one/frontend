@@ -17,7 +17,7 @@ type OtpVerificationBody = {
 };
 
 const VerificationHeading = () => {
-  const { unverifiedLink, verificationBy, personBeingVerified } = useVerificationContext();
+  const { unverifiedLink, verificationBy, personBeingVerified, candidateName } = useVerificationContext();
 
   return (
     <>
@@ -29,7 +29,7 @@ const VerificationHeading = () => {
         </span>
       </Box>
       <Text className="address-verification-dark-text">
-        You have been chosen as a peer to verify work experience of <span>{'Raunak Rane'}</span>. Kindly be a valuable
+        You have been chosen as a peer to verify work experience of <span>{candidateName}</span>. Kindly be a valuable
         reference and help elevate their profile.
       </Text>
       <Title className="address-verification-details-main-title" style={{ textAlign: 'center' }}>
@@ -48,7 +48,7 @@ export const VerifyPeer = () => {
   const { unverifiedLink, peerUUID, getVerificationData, totalSteps, setActiveStep, otpTarget } =
     useVerificationContext();
 
-  const [countdown, setCountDown] = useState<number>(60);
+  const [countdown, setCountDown] = useState<number>(30);
   const [otpProcess, setOtpProcess] = useState<number>(0);
   const [otp, setOtp] = useState<string>();
 
@@ -68,7 +68,7 @@ export const VerifyPeer = () => {
         setOtpProcess((prev) => prev + 1);
       }
 
-      setCountDown(60);
+      setCountDown(30);
 
       showSuccessNotification({ title: 'Success !', message: 'OTP Sent to your phone number' });
     } else {

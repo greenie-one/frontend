@@ -367,7 +367,7 @@ export const AddResidentialInfo = () => {
             <Box className="input-section">
               <Title className="title">
                 Address Line 1{'  '}
-                <Tooltip label="For best results enter the address as per the ID">
+                <Tooltip label="For best results enter an address as per verified ID">
                   <span>
                     <IoInformationCircleSharp size={22} color="#17a672" />
                   </span>
@@ -379,7 +379,6 @@ export const AddResidentialInfo = () => {
                 className="inputClass"
                 {...residentialInfoForm.getInputProps('address_line_1')}
                 withAsterisk
-                maxLength={40}
               />
             </Box>
             <Box className="input-section ">
@@ -389,7 +388,6 @@ export const AddResidentialInfo = () => {
                 className="inputClass"
                 {...residentialInfoForm.getInputProps('address_line_2')}
                 withAsterisk
-                maxLength={40}
               />
             </Box>
             <Box className="input-section ">
@@ -399,7 +397,6 @@ export const AddResidentialInfo = () => {
                 className="inputClass"
                 {...residentialInfoForm.getInputProps('landmark')}
                 withAsterisk
-                maxLength={25}
               />
             </Box>
             <Box className="input-section ">
@@ -409,7 +406,6 @@ export const AddResidentialInfo = () => {
                 className="inputClass"
                 {...residentialInfoForm.getInputProps('city')}
                 withAsterisk
-                maxLength={15}
               />
             </Box>
             <Box className="input-section ">
@@ -419,7 +415,22 @@ export const AddResidentialInfo = () => {
                 maxLength={6}
                 className="inputClass"
                 withAsterisk
-                type="number"
+                onInput={(event) => {
+                  const inputElement = event.target as typeof event.target & {
+                    value: string;
+                  };
+                  const currentValue = inputElement.value;
+                  if (!currentValue) {
+                    return;
+                  }
+                  const lastInput = currentValue.slice(-1);
+
+                  const isDigit = lastInput.charCodeAt(0) >= 48 && lastInput.charCodeAt(0) <= 57;
+
+                  if (!isDigit) {
+                    inputElement.value = currentValue.toString().slice(0, -1);
+                  }
+                }}
                 onChange={handlePincodeChange}
                 value={residentialInfoForm.values.pincode}
               />
@@ -475,8 +486,7 @@ export const AddResidentialInfo = () => {
                   label="From Year"
                   className="inputClass"
                   {...residentialInfoForm.getInputProps('start_date.year')}
-                  withAsterisk={!checked}
-                  disabled={checked}
+                  withAsterisk
                   styles={() => ({
                     item: {
                       '&[data-selected]': {

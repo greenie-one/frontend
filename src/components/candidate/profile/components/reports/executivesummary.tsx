@@ -34,6 +34,9 @@ const calculateIDProgress = (idDetails: IdDetailsResponse): number => {
 };
 
 const calculateExperienceProgress = (workExperienceDetails: WorkExperience[]): number => {
+  if (workExperienceDetails.length === 0) {
+    return 0;
+  }
   let verifiedExperiencesCount = 0;
 
   for (const experience of workExperienceDetails) {
@@ -46,6 +49,9 @@ const calculateExperienceProgress = (workExperienceDetails: WorkExperience[]): n
 };
 
 const calculateResidentialProgress = (residentialInfo: ResidentialType[]): number => {
+  if (residentialInfo.length === 0) {
+    return 0;
+  }
   let verifiedAddressesCount = 0;
 
   for (const residential of residentialInfo) {
@@ -107,7 +113,8 @@ export const ExecutiveSummary: React.FC<ChildComponentProps> = ({
               </span>
               <div>
                 <p>
-                  {AccountDetails.firstName} {AccountDetails.lastName}
+                  {AccountDetails.firstName ? AccountDetails.firstName : '-'}{' '}
+                  {AccountDetails.lastName ? AccountDetails.lastName : ''}
                 </p>
                 {AccountDetails.greenieId ? (
                   <Button leftIcon={<MdVerified color="#17A672" size={'16px'} />} className="verified report-verifybtn">
@@ -144,16 +151,22 @@ export const ExecutiveSummary: React.FC<ChildComponentProps> = ({
         <Box className="basic-info-box-wrapper wrapper-executive">
           <Box className="info-box">
             <Text className="experience-details-box-heading">Greenie ID</Text>
-            <Text className="experience-details-box-text">{AccountDetails ? AccountDetails.greenieId : '-'}</Text>
+            <Text className="experience-details-box-text">
+              {AccountDetails.greenieId ? AccountDetails.greenieId : '-'}
+            </Text>
           </Box>
           <Box className="info-box">
             <Text className="experience-details-box-heading">Greenie Rating</Text>
-            <Text className="experience-details-box-text">
-              <span>
-                <img className="star-img" src={level} alt="level" />
-              </span>
-              {(totalProgress(IdDetails, workExperienceDetails, ResidentialInfo) * 5) / 100} Rating
-            </Text>
+            {(totalProgress(IdDetails, workExperienceDetails, ResidentialInfo) * 5) / 100 > 0 ? (
+              <Text className="experience-details-box-text">
+                <span>
+                  <img className="star-img" src={level} alt="level" />
+                </span>
+                {(totalProgress(IdDetails, workExperienceDetails, ResidentialInfo) * 5) / 100} Rating
+              </Text>
+            ) : (
+              '-'
+            )}
           </Box>
         </Box>
         <div className="location">
@@ -217,53 +230,75 @@ export const ExecutiveSummary: React.FC<ChildComponentProps> = ({
           </Box>
         </Box>
 
-        {workExperienceDetails.length > 0 ? (
-          <div className="location">
-            <p>Work Experience ({workExperienceDetails.length})</p>
-          </div>
-        ) : null}
+        <div className="location">
+          <p>Work Experience ({workExperienceDetails.length})</p>
+        </div>
 
-        <Box className="basic-info-box-wrapper executive-wrapper">
-          {workExperienceDetails.map((experience, index) => (
-            <Box key={index} className="info-box">
-              <Text className="experience-details-box-heading">{experience.designation}</Text>
-              <Text className="experience-details-box-text">{experience.companyName}</Text>
-              {experience.noOfVerifications >= 2 ? (
-                <Button leftIcon={<MdVerified color="#17A672" size={'16px'} />} className="verified report-verifybtn">
-                  Verified
-                </Button>
-              ) : (
-                <Button leftIcon={<CgSandClock size={'16px'} />} className="pending report-verifybtn">
-                  Pending
-                </Button>
-              )}
+        {workExperienceDetails.length > 0 ? (
+          <Box className="basic-info-box-wrapper executive-wrapper">
+            {workExperienceDetails.map((experience, index) => (
+              <Box key={index} className="info-box">
+                <Text className="experience-details-box-heading">{experience.designation}</Text>
+                <Text className="experience-details-box-text">{experience.companyName}</Text>
+                {experience.noOfVerifications >= 2 ? (
+                  <Button leftIcon={<MdVerified color="#17A672" size={'16px'} />} className="verified report-verifybtn">
+                    Verified
+                  </Button>
+                ) : (
+                  <Button leftIcon={<CgSandClock size={'16px'} />} className="pending report-verifybtn">
+                    Pending
+                  </Button>
+                )}
+              </Box>
+            ))}
+          </Box>
+        ) : (
+          <>
+            <Box className="added-peer-box">
+              <Box
+                style={{ borderRadius: '1rem', fontWeight: '500', marginTop: '1rem', gridTemplateColumns: '1fr' }}
+                className="added-peers added-peers-exp "
+              >
+                No Work Experience Added
+              </Box>
             </Box>
-          ))}
-        </Box>
+          </>
+        )}
+        <div className="location">
+          <p>Residential Addresses ({ResidentialInfo.length})</p>
+        </div>
         {ResidentialInfo.length > 0 ? (
-          <div className="location">
-            <p>Residential Addresses ({ResidentialInfo.length})</p>
-          </div>
-        ) : null}
-        <Box className="basic-info-box-wrapper executive-wrapper">
-          {ResidentialInfo.map((resident, index) => (
-            <Box key={index} className="info-box">
-              <Text className="experience-details-box-heading">{resident.addressType} Address</Text>
-              <Text className="experience-details-box-text">
-                {resident.address_line_1}, {resident.address_line_2}, {resident.city} - {resident.pincode}
-              </Text>
-              {resident.isVerified ? (
-                <Button leftIcon={<MdVerified color="#17A672" size={'16px'} />} className="verified report-verifybtn">
-                  Verified
-                </Button>
-              ) : (
-                <Button leftIcon={<CgSandClock size={'16px'} />} className="pending report-verifybtn">
-                  Pending
-                </Button>
-              )}
+          <Box className="basic-info-box-wrapper executive-wrapper">
+            {ResidentialInfo.map((resident, index) => (
+              <Box key={index} className="info-box">
+                <Text className="experience-details-box-heading">{resident.addressType} Address</Text>
+                <Text className="experience-details-box-text">
+                  {resident.address_line_1}, {resident.address_line_2}, {resident.city} - {resident.pincode}
+                </Text>
+                {resident.isVerified ? (
+                  <Button leftIcon={<MdVerified color="#17A672" size={'16px'} />} className="verified report-verifybtn">
+                    Verified
+                  </Button>
+                ) : (
+                  <Button leftIcon={<CgSandClock size={'16px'} />} className="pending report-verifybtn">
+                    Pending
+                  </Button>
+                )}
+              </Box>
+            ))}
+          </Box>
+        ) : (
+          <>
+            <Box className="added-peer-box">
+              <Box
+                style={{ borderRadius: '1rem', fontWeight: '500', marginTop: '1rem', gridTemplateColumns: '1fr' }}
+                className="added-peers added-peers-exp "
+              >
+                No Residential Address Added
+              </Box>
             </Box>
-          ))}
-        </Box>
+          </>
+        )}
       </main>
     </>
   );

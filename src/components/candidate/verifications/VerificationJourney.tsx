@@ -68,7 +68,12 @@ export const VerificationJourney: React.FC = (): JSX.Element => {
                     {activeStep === 4 ? <VerifyAttributes /> : <></>}
                     {activeStep === 5 ? (
                       <VerificationQuestions
-                        question={<>Was the candidate's salary {verificationData.data.selectedFields.salary} LPA ?</>}
+                        question={
+                          <>
+                            Was the candidate's salary ₹{' '}
+                            {Number(verificationData.data.selectedFields.salary).toLocaleString()} ?
+                          </>
+                        }
                         _id="salary"
                         parentKey="selectedFields"
                       />
@@ -160,7 +165,10 @@ export const VerificationJourney: React.FC = (): JSX.Element => {
                             {activeStep === 5 ? (
                               <VerificationQuestions
                                 question={
-                                  <>Was the candidate's salary {verificationData.data.selectedFields.salary} LPA ?</>
+                                  <>
+                                    Was the candidate's salary ₹{' '}
+                                    {Number(verificationData.data.selectedFields.salary).toLocaleString()} ?
+                                  </>
                                 }
                                 _id="salary"
                                 parentKey="selectedFields"
@@ -176,7 +184,10 @@ export const VerificationJourney: React.FC = (): JSX.Element => {
                             {activeStep === 5 ? (
                               <VerificationQuestions
                                 question={
-                                  <>Was the candidate's salary {verificationData.data.selectedFields.salary} LPA ?</>
+                                  <>
+                                    Was the candidate's salary ₹
+                                    {Number(verificationData.data.selectedFields.salary).toLocaleString()} ?
+                                  </>
                                 }
                                 _id="salary"
                                 parentKey="selectedFields"
@@ -193,7 +204,10 @@ export const VerificationJourney: React.FC = (): JSX.Element => {
                             {activeStep === 5 ? (
                               <VerificationQuestions
                                 question={
-                                  <>Was the candidate's salary {verificationData.data.selectedFields.salary} LPA ?</>
+                                  <>
+                                    Was the candidate's salary ₹{' '}
+                                    {Number(verificationData.data.selectedFields.salary).toLocaleString()} ?
+                                  </>
                                 }
                                 _id="salary"
                                 parentKey="selectedFields"

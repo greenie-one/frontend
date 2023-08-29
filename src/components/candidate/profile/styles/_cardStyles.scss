@@ -1,8 +1,9 @@
 .section-cards-wrapper {
   display: grid;
   grid-template-columns: repeat(3, 32%);
-  align-items: center;
+  align-items: stretch;
   justify-content: space-between;
+  row-gap: 1.5rem;
 }
 
 .verificationId-section {
@@ -68,7 +69,7 @@
   height: 230px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  // justify-content: space-between;
   flex-direction: column;
   margin-bottom: 1rem;
 
@@ -99,7 +100,7 @@
     letter-spacing: -0.02em;
     margin-bottom: 3px;
     color: #a3a3a3;
-    margin-top: 0.5rem;
+    margin-top: 2.5rem;
   }
   .tenure {
     font-weight: 600;
@@ -119,17 +120,17 @@
   flex-direction: column;
   justify-content: space-between;
   margin-bottom: 1rem;
-
+  height: calc(100% - 1rem);
   .top-box {
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
 
     .address-box {
-      height: 150px;
+      // height: 150px;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+      // justify-content: space-between;
       margin-bottom: 1rem;
 
       .pending {
@@ -138,6 +139,17 @@
 
       .verified {
         width: 100px;
+      }
+      .address-type {
+        font-size: 14px;
+        border: 1px solid hsl(223, 11%, 46%, 0.5);
+        width: max-content;
+        padding-block: 0.1em;
+        padding-inline: 1em;
+        margin-block: 0.5rem 0.75em;
+        border-radius: 1rem;
+        font-weight: 600;
+        color: #697082;
       }
     }
 
@@ -157,15 +169,16 @@
       line-height: 20px;
       letter-spacing: -0.02em;
       color: $dark;
-      margin-bottom: 12px;
+      margin-bottom: 6px;
     }
   }
 
   .card-footer {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
+    // align-items: center;
 
     .since-text {
       font-weight: 400;

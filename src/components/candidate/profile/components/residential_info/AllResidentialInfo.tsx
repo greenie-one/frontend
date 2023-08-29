@@ -69,7 +69,8 @@ export const AllResidentialInfo = () => {
                     <Box>
                       <Text className="since-text">Since</Text>
                       <Text className="tenure">
-                        {info.start_date?.toString().substring(3, 15)} - {info.end_date?.toString().substring(3, 15)}
+                        {info.start_date?.toString().substring(0, 10)} -{' '}
+                        {info.end_date ? info.end_date?.toString().substring(0, 10) : 'Present'}
                       </Text>
                     </Box>
                   </Box>
