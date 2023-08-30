@@ -55,9 +55,10 @@
   width: 100%;
   top: calc(100% + 0.75rem);
   z-index: 9;
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 6px;
-  height: 15rem;
+  max-height: 15rem;
   overflow-y: scroll;
   -ms-overflow-style: none;
   scrollbar-width: 0;
