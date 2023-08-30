@@ -43,6 +43,8 @@ import { Layout } from '../Layout';
 import { UndertakingText } from '../UndertakingText';
 import dayjs from 'dayjs';
 import { IoInformationCircleSharp } from 'react-icons/io5';
+import { CandidateFeedback } from '../../../../../utils/functions/CandidateFeedback';
+import { feedbackExistCheck } from '../../../../../utils/functions/handleFeedbackProcess';
 
 export const AddExperience = () => {
   const navigate = useNavigate();
@@ -51,10 +53,12 @@ export const AddExperience = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [selectedFilesList, setSelectedFilesList] = useState<Array<File>>([]);
   const [experienceId, setExperienceId] = useState<string>('');
+  const [feedbackOverCB, setFeedbackOverCB] = useState<() => void>(() => false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { authClient, setForceRender, deleteWorkExperience, workExperienceForm, skillForm, scrollToTop } =
     useGlobalContext();
   const authToken = authClient.getAccessToken();
+  const [feedbackModalOpened, { open: feedbackModalOpen, close: feedbackModalClose }] = useDisclosure();
 
   const [checked, setChecked] = useState<boolean>(false);
   const isMobile = useMediaQuery('(max-width: 768px)');
@@ -356,6 +360,15 @@ export const AddExperience = () => {
     workExperienceForm.reset();
     setSelectedSkills([]);
     setSelectedFilesList([]);
+  };
+
+  const handleFeedback = async (onFeedbackOver: () => void) => {
+    setFeedbackOverCB(onFeedbackOver);
+    const feedbackGiven = await feedbackExistCheck('add_work_exp', authClient);
+
+    if (!feedbackGiven) {
+      feedbackModalOpen();
+    }
   };
 
   return (
@@ -876,10 +889,10 @@ export const AddExperience = () => {
                 </Box>
               </Box>
               <Box className="congrats-btns-wrapper">
-                <Button className="green-btn btn" onClick={open}>
+                <Button className="green-btn btn" onClick={() => handleFeedback(open)}>
                   Go to Verification
                 </Button>
-                <Button className="cancel-btn btn" onClick={handleProfilePage}>
+                <Button className="cancel-btn btn" onClick={() => handleFeedback(handleProfilePage)}>
                   Go to Profile
                 </Button>
               </Box>
@@ -887,6 +900,12 @@ export const AddExperience = () => {
           )}
         </section>
       </Layout>
+      <CandidateFeedback
+        feedback="add_work_exp"
+        opened={feedbackModalOpened}
+        close={feedbackModalClose}
+        onFeedbackOver={feedbackOverCB}
+      />
     </>
   );
 };

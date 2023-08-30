@@ -16,6 +16,8 @@ import { showErrorNotification } from '../../../../../utils/functions/showNotifi
 import { addressVerificationAPIList } from '../../../../../assets/api/ApiList';
 import classes from './styles/styles.module.css';
 import { MdOutlineContentCopy } from 'react-icons/md';
+import { feedbackExistCheck } from '../../../../../utils/functions/handleFeedbackProcess';
+import { CandidateFeedback } from '../../../../../utils/functions/CandidateFeedback';
 
 const PeerInfoLabels: Array<{ id: keyof ResidentialInfoPeerType; label: string }> = [
   { id: 'name', label: 'Name' },
@@ -39,6 +41,7 @@ export const VerifyResidentialInfo: React.FC = () => {
 
   const isMobile = useMediaQuery('(max-width: 800px)');
   const [opened, { open, close }] = useDisclosure(false);
+  const [fbOpened, { open: fbOpen, close: fbClose }] = useDisclosure(false);
 
   const { scrollToTop, residentialInfoVerificationForm, residentialInfoData, authClient } = useGlobalContext();
   const filteredInfo = residentialInfoData.find((info: ResidentialInfoResponse) => info.id === id);
@@ -70,6 +73,11 @@ export const VerifyResidentialInfo: React.FC = () => {
     if (res.ok) {
       setLink(res.value.link);
       scrollToTop();
+
+      const feedbackGiven = await feedbackExistCheck('add_residential_peer', authClient);
+      if (feedbackGiven) {
+        fbOpen();
+      }
     } else {
       showErrorNotification(res.error.code);
     }
@@ -260,6 +268,12 @@ export const VerifyResidentialInfo: React.FC = () => {
           </Box>
         </Box>
       </Modal>
+      <CandidateFeedback
+        opened={fbOpened}
+        close={fbClose}
+        feedback="add_residential_peer"
+        onFeedbackOver={() => console.log('Ok')}
+      />
     </>
   );
 };
