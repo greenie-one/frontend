@@ -11,7 +11,7 @@ import { useForm } from '@mantine/form';
 
 type SearchBox = {
   innerComponent: boolean;
-  setFetchedAddress?: React.Dispatch<React.SetStateAction<FetchedAddressType>>;
+  setFetchedAddress?: React.Dispatch<React.SetStateAction<AddressType>>;
   residentialInfoForm?: ReturnType<typeof useForm<residentialInfoFormType>>;
 };
 
@@ -56,24 +56,55 @@ export const SearchBox: React.FC<SearchBox> = ({
     }
   };
 
+  const getFullAddress = async (placeId: string): Promise<AddressType | null> => {
+    if (!placeId) {
+      return null;
+    }
+
+    const queryParams = new URLSearchParams({
+      placeId: placeId,
+    }).toString();
+
+    const res = await HttpClient.callApiAuth<AddressType>(
+      {
+        url: `${searchEndpoints.getFullAddress}?${queryParams}`,
+        method: 'GET',
+      },
+      authClient
+    );
+
+    if (res.ok) {
+      return res.value;
+    } else {
+      console.error(res.error);
+      return null;
+    }
+  };
+
   useEffect(() => {
     fetchAddresses(query);
   }, [query]);
 
-  const handleSelectedAddress = (event: React.MouseEvent<HTMLButtonElement>, address: FetchedAddressType) => {
+  const handleSelectedAddress = async (event: React.MouseEvent<HTMLButtonElement>, address: FetchedAddressType) => {
+    const fullAddress = await getFullAddress(address.placeId);
     setShowSearchList(false);
+
+    if (!fullAddress) {
+      return;
+    }
+
     if (innerComponent) {
       if (setFetchedAddress) {
-        setFetchedAddress(address);
+        setFetchedAddress(fullAddress);
       }
 
       if (residentialInfoForm) {
-        residentialInfoForm.setValues(address.address);
+        residentialInfoForm.setValues(fullAddress.address);
       }
 
-      navigate('.', { replace: true, state: address });
+      navigate('.', { replace: true, state: fullAddress });
     } else {
-      navigate('/candidate/profile/address/addResidentialInfo', { state: address });
+      navigate('/candidate/profile/address/addResidentialInfo', { state: fullAddress });
       scrollToTop();
     }
   };
@@ -143,7 +174,7 @@ export const SearchBox: React.FC<SearchBox> = ({
                 return (
                   <List.Item key={idx} className={classes.addressListItems}>
                     <button onClick={(e) => handleSelectedAddress(e, address)} className={classes.addressButton}>
-                      {address.addressString}
+                      {address.description}
                     </button>
                   </List.Item>
                 );

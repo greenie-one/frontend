@@ -58,13 +58,18 @@ type PeerVerificationDataResponse = {
 };
 
 type AddressType = {
-  address_line_1: string;
-  address_line_2: string;
-  city: string;
-  state: string;
-  country: string;
-  pincode: string;
-  type: string;
+  long: number;
+  lat: number;
+  address: {
+    address_line_1: string;
+    address_line_2: string;
+    landmark: string;
+    city: string;
+    state: string;
+    country: string;
+    pincode: string;
+  };
+  formattedAddress: string;
 };
 
 type CoordinatesType = {
@@ -73,8 +78,6 @@ type CoordinatesType = {
 };
 
 type FetchedAddressType = {
-  id: string;
-  address: AddressType;
-  addressString: string;
-  position: CoordinatesType;
+  description: string;
+  placeId: string;
 };
