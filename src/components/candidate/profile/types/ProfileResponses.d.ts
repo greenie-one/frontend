@@ -71,6 +71,10 @@ type ResidentialInfoResponse = {
   country: string;
   start_date: Date | null;
   end_date: Date | null;
+  location: {
+    longitude: number;
+    latitude: number;
+  };
   isVerified: boolean;
 };
 
