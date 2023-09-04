@@ -227,9 +227,11 @@ export const AddExperience = () => {
       if (!res.ok) {
         showErrorNotification(res.error.code);
         setActive(2);
-        throw new Error(res.error.code);
+        return true;
       }
     }
+
+    return false;
   };
 
   const handleUploadDocument = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -293,6 +295,8 @@ export const AddExperience = () => {
   };
 
   const addDocumentsToExperience = async (experienceId: string) => {
+    let errorState = false;
+
     for (const documents of selectedFilesList) {
       const formData = new FormData();
       formData.append('document', documents);
@@ -311,7 +315,7 @@ export const AddExperience = () => {
       } catch (error: unknown) {
         showErrorNotification('GR0000');
         setActive(3);
-        throw new Error(String(error));
+        errorState = true;
       } finally {
         if (fileInputRef.current) {
           fileInputRef.current.value = '';
@@ -319,10 +323,14 @@ export const AddExperience = () => {
         }
       }
     }
+
+    return errorState;
   };
 
   const handleFinish = async () => {
     let experienceId;
+    let errorThrown = false;
+
     try {
       experienceId = await createNewExperience();
       if (!experienceId) {
@@ -331,10 +339,13 @@ export const AddExperience = () => {
 
       setExperienceId(experienceId);
 
-      await addSkillsToExperience(experienceId);
-      await addDocumentsToExperience(experienceId);
-      showSuccessNotification({ title: 'Success', message: 'Work experience added successfully.' });
-      setActive(4);
+      errorThrown = await addSkillsToExperience(experienceId);
+      errorThrown = await addDocumentsToExperience(experienceId);
+
+      if (!errorThrown) {
+        showSuccessNotification({ title: 'Success', message: 'Work experience added successfully.' });
+        setActive(4);
+      }
     } catch (err: unknown) {
       console.error('~ AddExperience.tsx ~ handleFinish(): ', err);
 
@@ -372,6 +383,8 @@ export const AddExperience = () => {
       afterFeedback === 'verification' ? open() : handleProfilePage();
     }
   };
+
+  console.log(active);
 
   return (
     <>
