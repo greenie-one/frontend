@@ -74,15 +74,18 @@ export const VerifyResidentialInfo: React.FC = () => {
       setLink(res.value.link);
       scrollToTop();
 
+      residentialInfoVerificationForm.reset();
+      close();
       const feedbackGiven = await feedbackExistCheck('add_residential_peer', authClient);
       if (feedbackGiven) {
         fbOpen();
+      } else {
+        console.info('Feedback Completed!');
       }
     } else {
+      close();
       showErrorNotification(res.error.code);
     }
-
-    close();
   };
 
   const handleAddPeer = () => {
@@ -272,7 +275,7 @@ export const VerifyResidentialInfo: React.FC = () => {
         opened={fbOpened}
         close={fbClose}
         feedback="add_residential_peer"
-        onFeedbackOver={() => console.log('Ok')}
+        onFeedbackOver={() => console.info('Feedback Completed!')}
       />
     </>
   );

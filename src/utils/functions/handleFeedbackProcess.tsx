@@ -35,21 +35,24 @@ export const feedbackExistCheck = async (type: FeedbackTypes, authClient: AuthCl
 };
 
 export const postUserFeedback = async (type: FeedbackTypes, authClient: AuthClient, feedbackBody: FeedbackBody) => {
-  showLoadingNotification({ title: 'Please Wait', message: 'We are submitting youe feedback.' });
+  showLoadingNotification({ title: 'Please Wait', message: 'We are submitting your feedback.' });
   const res = await HttpClient.callApiAuth<{ feedback: boolean }>(
     {
       url: `${BASE_URL}/feedback/add`,
       method: 'POST',
-      body: feedbackBody,
+      body: {
+        type: type,
+        ...feedbackBody,
+      },
     },
     authClient
   );
 
   if (res.ok) {
     showSuccessNotification({ title: 'Success', message: 'Thank You! We recieved your feedback.' });
-    return true;
+    return { status: true, code: undefined };
   } else {
     showErrorNotification(res.error.code);
-    return false;
+    return { status: false, code: res.error.code };
   }
 };

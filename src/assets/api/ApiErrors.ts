@@ -63,6 +63,7 @@ export const ErrorMessage: Record<string, CustomError> = {
   "GR0055": {title:'Error !',message:'Peer already verified'},
   "GR0056": {title:'Error !',message:'Give all fields for verification'},
   "GR0058": {title:'Error !',message:'Location already captured'},
+  "GR0061": {title:'Error !',message:'Feedback already given'},
 
   // CUSTOM ERRORS
   "NO_SKILL": {title: "Error !", message: "Please add atleast one skill."},

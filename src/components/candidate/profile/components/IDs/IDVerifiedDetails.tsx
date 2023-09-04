@@ -6,12 +6,18 @@ import { Layout } from '../Layout';
 import { BsArrowLeft } from 'react-icons/bs';
 import { AiOutlineRight } from 'react-icons/ai';
 import emptyProfile from '../../assets/emptyProfile.png';
+import { CandidateFeedback } from '../../../../../utils/functions/CandidateFeedback';
+import { useDisclosure } from '@mantine/hooks';
+import { feedbackExistCheck } from '../../../../../utils/functions/handleFeedbackProcess';
 
 export const IDVerifiedDetails: React.FC = () => {
   const params = useParams();
   const navigate = useNavigate();
   const { state } = useLocation();
   const { profileData, scrollToTop, IDs } = useGlobalContext();
+  const { authClient } = useGlobalContext();
+
+  const [fbOpened, { open: fbOpen, close: fbClose }] = useDisclosure(false);
 
   const handleContinue = () => {
     scrollToTop();
@@ -27,6 +33,19 @@ export const IDVerifiedDetails: React.FC = () => {
   };
 
   const details: DocsType | undefined = IDs?.find((item) => item.id_type.toLowerCase() === params.id?.toLowerCase());
+
+  const handleFeedback = async () => {
+    const feedbackType =
+      params.id?.toLowerCase() === 'aadhar' ? 'aadhar' : params.id?.toLowerCase() === 'pan' ? 'pan' : 'driving_license';
+
+    const feedbackGiven = await feedbackExistCheck(feedbackType, authClient);
+
+    if (feedbackGiven) {
+      fbOpen();
+    } else {
+      handleContinue();
+    }
+  };
 
   return (
     <>
@@ -113,13 +132,29 @@ export const IDVerifiedDetails: React.FC = () => {
                 </Box>
               </Box>
 
-              <Button className="primaryBtn" onClick={handleContinue}>
+              <Button className="primaryBtn" onClick={handleFeedback}>
                 Continue
               </Button>
             </Box>
           </Box>
         </section>
       </Layout>
+      {params.id ? (
+        <CandidateFeedback
+          opened={fbOpened}
+          close={fbClose}
+          feedback={
+            params.id.toLowerCase() === 'aadhar'
+              ? 'aadhar'
+              : params.id.toLowerCase() === 'pan'
+              ? 'pan'
+              : 'driving_license'
+          }
+          onFeedbackOver={() => console.info('Feedback Completed!')}
+        />
+      ) : (
+        <></>
+      )}
     </>
   );
 };

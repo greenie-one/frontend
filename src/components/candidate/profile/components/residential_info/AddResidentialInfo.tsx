@@ -21,6 +21,7 @@ import { IoInformationCircleSharp } from 'react-icons/io5';
 import dayjs from 'dayjs';
 import { feedbackExistCheck } from '../../../../../utils/functions/handleFeedbackProcess';
 import { useDisclosure } from '@mantine/hooks';
+import { CandidateFeedback } from '../../../../../utils/functions/CandidateFeedback';
 
 const marker = new Icon({
   iconUrl: mapMarker,
@@ -235,8 +236,9 @@ export const AddResidentialInfo = () => {
         message: 'We have added your residential information.',
       });
       setForceRender((prev) => !prev);
-      const feedbackGiven = feedbackExistCheck('add_residential_info', authClient);
-      if (!feedbackGiven) {
+      const feedbackGiven = await feedbackExistCheck('add_residential_info', authClient);
+
+      if (feedbackGiven) {
         feedbackModalOpen();
       } else {
         handleToggleScreen();
@@ -575,6 +577,12 @@ export const AddResidentialInfo = () => {
           </form>
         </section>
       </Layout>
+      <CandidateFeedback
+        feedback="add_residential_info"
+        opened={feedbackModalOpened}
+        close={feedbackModalClose}
+        onFeedbackOver={handleToggleScreen}
+      />
     </>
   );
 };

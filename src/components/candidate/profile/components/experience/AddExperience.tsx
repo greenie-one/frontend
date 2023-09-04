@@ -53,7 +53,7 @@ export const AddExperience = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [selectedFilesList, setSelectedFilesList] = useState<Array<File>>([]);
   const [experienceId, setExperienceId] = useState<string>('');
-  const [feedbackOverCB, setFeedbackOverCB] = useState<() => void>(() => false);
+  const [feedbackOver, setFeedbackOver] = useState<'verification' | 'profile'>('verification');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { authClient, setForceRender, deleteWorkExperience, workExperienceForm, skillForm, scrollToTop } =
     useGlobalContext();
@@ -362,12 +362,14 @@ export const AddExperience = () => {
     setSelectedFilesList([]);
   };
 
-  const handleFeedback = async (onFeedbackOver: () => void) => {
-    setFeedbackOverCB(onFeedbackOver);
+  const handleFeedback = async (afterFeedback: 'verification' | 'profile') => {
+    setFeedbackOver(afterFeedback);
     const feedbackGiven = await feedbackExistCheck('add_work_exp', authClient);
 
-    if (!feedbackGiven) {
+    if (feedbackGiven) {
       feedbackModalOpen();
+    } else {
+      afterFeedback === 'verification' ? open() : handleProfilePage();
     }
   };
 
@@ -889,10 +891,10 @@ export const AddExperience = () => {
                 </Box>
               </Box>
               <Box className="congrats-btns-wrapper">
-                <Button className="green-btn btn" onClick={() => handleFeedback(open)}>
+                <Button className="green-btn btn" onClick={() => handleFeedback('verification')}>
                   Go to Verification
                 </Button>
-                <Button className="cancel-btn btn" onClick={() => handleFeedback(handleProfilePage)}>
+                <Button className="cancel-btn btn" onClick={() => handleFeedback('profile')}>
                   Go to Profile
                 </Button>
               </Box>
@@ -904,7 +906,7 @@ export const AddExperience = () => {
         feedback="add_work_exp"
         opened={feedbackModalOpened}
         close={feedbackModalClose}
-        onFeedbackOver={feedbackOverCB}
+        onFeedbackOver={feedbackOver === 'verification' ? open : handleProfilePage}
       />
     </>
   );

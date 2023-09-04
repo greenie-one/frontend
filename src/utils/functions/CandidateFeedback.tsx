@@ -44,10 +44,17 @@ export const CandidateFeedback: React.FC<FeedbackProps> = ({
   });
 
   const submitFeedback = async () => {
-    const success = await postUserFeedback(feedback, authClient, feedbackForm.values);
-    if (success) {
+    const response = await postUserFeedback(feedback, authClient, feedbackForm.values);
+    if (response.status) {
       close();
       onFeedbackOver();
+    } else {
+      if (response.code === 'GR0061') {
+        close();
+        onFeedbackOver();
+      } else {
+        close();
+      }
     }
   };
 
