@@ -9,6 +9,7 @@ type SentRequestActionType = {
   name: string;
   setForceRenderList: React.Dispatch<React.SetStateAction<boolean>>;
   createdAt?: string;
+  requestType: 'work' | 'address';
 };
 
 type CancelationModalType = {
