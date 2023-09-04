@@ -32,15 +32,26 @@ export const AddSkills = () => {
 
   const handleAddSkill = () => {
     if (!skillForm.validate().hasErrors) {
-      setSkills((prevSkills) => [
-        ...prevSkills,
-        {
-          ...skillForm.values,
-        },
-      ]);
+      if (skillForm.values.workExperience !== '') {
+        setSkills((prevSkills) => [
+          ...prevSkills,
+          {
+            ...skillForm.values,
+          },
+        ]);
+      } else {
+        setSkills((prevSkills) => [
+          ...prevSkills,
+          {
+            skillName: skillForm.values.skillName,
+            expertise: skillForm.values.expertise,
+          },
+        ]);
+      }
 
       skillForm.setFieldValue('skillName', '');
       skillForm.setFieldValue('expertise', '');
+      skillForm.setFieldValue('workExperience', '');
     }
   };
 
@@ -156,7 +167,6 @@ export const AddSkills = () => {
                   clearable
                   searchable
                   nothingFound="No options"
-                  withAsterisk
                   className="inputClass"
                   label="Select work experience"
                   styles={() => ({

@@ -514,7 +514,7 @@ export const AddExperience = () => {
                   onInput={(e) => handleCTC(e)}
                   withAsterisk
                   hideControls
-                  label="Enter your CTC in Rs."
+                  label="Enter your CTC(Cost To Company - Yearly Salary) in Rs."
                   parser={(value) => value.replace(/\\s?|(,*)/g, '')}
                   formatter={(value) =>
                     !Number.isNaN(parseFloat(value)) ? `${value}`.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',') : ''
@@ -776,7 +776,10 @@ export const AddExperience = () => {
                     return (
                       <Box key={index}>
                         <Box className="added-documents">
-                          <Text className="document-name">
+                          <Text
+                            style={{ textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden' }}
+                            className="document-name"
+                          >
                             <span>{index + 1}</span> {file.name}
                           </Text>
                           <Select
