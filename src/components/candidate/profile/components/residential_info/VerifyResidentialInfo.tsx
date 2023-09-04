@@ -1,4 +1,4 @@
-import { Title, Text, Box, Button, TextInput, Select, Modal, CopyButton } from '@mantine/core';
+import { Title, Text, Box, Button, TextInput, Select, Modal, CopyButton, NumberInput } from '@mantine/core';
 import React, { useState, useEffect } from 'react';
 import { CgSandClock } from 'react-icons/cg';
 import location from '../../assets/location.png';
@@ -104,6 +104,32 @@ export const VerifyResidentialInfo: React.FC = () => {
     }
   };
 
+  const handleDigits = (event: React.FormEvent<HTMLInputElement>) => {
+    const inputElement = event.target as typeof event.target & {
+      value: string;
+    };
+    const currentValue = inputElement.value;
+    if (!currentValue) {
+      return;
+    }
+
+    if (currentValue.length > 10) {
+      inputElement.value = currentValue.toString().slice(0, -1);
+      return;
+    }
+
+    const lastInput = currentValue.slice(-1);
+
+    const isDigit = lastInput.charCodeAt(0) >= 48 && lastInput.charCodeAt(0) <= 57;
+    const isComma = lastInput.charCodeAt(0) === 44;
+
+    if (!(isDigit || isComma)) {
+      inputElement.value = currentValue.toString().slice(0, -1);
+    }
+
+    residentialInfoVerificationForm.setFieldValue('phone', inputElement.value);
+  };
+
   useEffect(() => {
     if (filteredInfo) {
       setResidentialInfo(filteredInfo);
@@ -189,13 +215,12 @@ export const VerifyResidentialInfo: React.FC = () => {
                     className="inputClass"
                     {...residentialInfoVerificationForm.getInputProps('email')}
                   />
-                  <TextInput
+                  <NumberInput
                     withAsterisk
+                    hideControls
                     label="Contact number"
                     className="inputClass"
-                    maxLength={10}
-                    minLength={10}
-                    {...residentialInfoVerificationForm.getInputProps('phone')}
+                    onInput={(e) => handleDigits(e)}
                   />
                 </Box>
                 <Text className="add-peer-sub-text">
