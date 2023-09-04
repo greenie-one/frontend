@@ -95,7 +95,7 @@ type SkillResponse = {
 type Skill = {
   skillName: string;
   expertise: string;
-  workExperience: string;
+  workExperience?: string;
 };
 
 type AadharVerificationResponse = {

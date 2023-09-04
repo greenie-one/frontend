@@ -16,7 +16,7 @@ type ExperienceRequestBody = {
 type SkillRequestBody = {
   skillName: string;
   expertise: string;
-  workExperience: string;
+  workExperience?: string;
 };
 
 type IDRequestBody = {
