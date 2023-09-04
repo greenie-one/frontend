@@ -61,8 +61,8 @@ const SentRequestActions: React.FC<SentRequestActionType> = ({
   const handleRemind = async () => {
     const requestURL =
       requestType === 'work'
-        ? `${peerVerificationAPIList.remindRequest}/${requestId}`
-        : `${addressVerificationAPIList.createPeer}/${requestId}`;
+        ? `${peerVerificationAPIList.remindRequest}/${requestId}/resend`
+        : `${addressVerificationAPIList.createPeer}/${requestId}/resend`;
     showLoadingNotification({ title: 'Please wait!', message: 'We are sending a reminder to the peer.' });
 
     const res = await HttpClient.callApiAuth<{ message: string; success: boolean }>(
