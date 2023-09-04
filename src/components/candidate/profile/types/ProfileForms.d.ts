@@ -60,6 +60,7 @@ type residentialInfoFormType = {
 type skillFormType = {
   skillName: string;
   expertise: string;
+  workExperience: string;
 };
 
 type PeerVerificationFormType = {
