@@ -1,7 +1,7 @@
 import { Text, Box, Button } from '@mantine/core';
 import { BsArrowLeft } from 'react-icons/bs';
 import { AiOutlineRight } from 'react-icons/ai';
-import { MdEdit, MdVerified, MdDelete } from 'react-icons/md';
+import { MdVerified } from 'react-icons/md';
 import { CgSandClock } from 'react-icons/cg';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
 import { useNavigate } from 'react-router-dom';
@@ -51,7 +51,7 @@ export const AllSkills = () => {
                     )}
                   </Box>
                   {expertise && <Text className="skill-rate">{skillExpertiseDict[expertise]}</Text>}
-                  <Box className="skill-btn-wrapper">
+                  {/* <Box className="skill-btn-wrapper">
                     {isVerified ? (
                       <Button className="view-details-btn">View details</Button>
                     ) : (
@@ -67,7 +67,7 @@ export const AllSkills = () => {
                         <MdDelete />
                       </button>
                     </Box>
-                  </Box>
+                  </Box> */}
                 </Box>
               );
             })}
