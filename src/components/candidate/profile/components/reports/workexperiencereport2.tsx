@@ -60,8 +60,8 @@ export const WorkExperienceReport2: React.FC<ChildComponentProps> = ({ peerDetai
                           </div>
                         </div>
 
-                        {peerDetails.map(
-                          (peer, i) =>
+                        {peerDetails.map((peer, i) => {
+                          return (
                             peer.ref == experience.id && (
                               <React.Fragment key={i}>
                                 <div>
@@ -188,7 +188,8 @@ export const WorkExperienceReport2: React.FC<ChildComponentProps> = ({ peerDetai
                                 </div>
                               </React.Fragment>
                             )
-                        )}
+                          );
+                        })}
                       </>
                     </React.Fragment>
                   );
