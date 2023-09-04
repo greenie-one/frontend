@@ -130,7 +130,6 @@ export const RenderRequestList: React.FC<RenderRequestListProps> = ({
       {[...requestList]
         .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
         .map((request) => {
-          console.log(new Date(request.createdAt).getTime());
           if (!request.isVerificationCompleted) {
             return (
               <Box key={request.id} className={request_item}>

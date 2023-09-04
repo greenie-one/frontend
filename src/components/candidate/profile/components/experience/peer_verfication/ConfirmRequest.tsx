@@ -15,6 +15,8 @@ import {
 } from '../../../../../../utils/functions/showNotification';
 import { HttpClient } from '../../../../../../utils/generic/httpClient';
 import { peerVerificationAPIList } from '../../../../../../assets/api/ApiList';
+import { feedbackExistCheck } from '../../../../../../utils/functions/handleFeedbackProcess';
+import { CandidateFeedback } from '../../../../../../utils/functions/CandidateFeedback';
 
 type ConfrimRequestPropsType = {
   addedPeers: Peer[];
@@ -35,6 +37,7 @@ export const ConfirmRequest: React.FC<ConfrimRequestPropsType> = ({
   const { scrollToTop, authClient } = useGlobalContext();
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [opened, { open, close }] = useDisclosure(false);
+  const [feedbackModalOpened, { open: feedbackModalOpen, close: feedbackModalClose }] = useDisclosure();
 
   const handleCreatePeerRequest = async () => {
     showLoadingNotification({ title: 'Please Wait !', message: 'Wait while we send the request' });
@@ -59,9 +62,19 @@ export const ConfirmRequest: React.FC<ConfrimRequestPropsType> = ({
   };
 
   const handleFinish = () => {
-    close();
     scrollToTop();
     navigate('/candidate/profile/myVerification');
+  };
+
+  const handleFeedback = async () => {
+    close();
+    const feedbackGiven = await feedbackExistCheck('add_work_peer', authClient);
+
+    if (feedbackGiven) {
+      feedbackModalOpen();
+    } else {
+      handleFinish();
+    }
   };
 
   return (
@@ -72,7 +85,7 @@ export const ConfirmRequest: React.FC<ConfrimRequestPropsType> = ({
         size={'60%'}
         fullScreen={isMobile}
         opened={opened}
-        onClose={handleFinish}
+        onClose={handleFeedback}
         centered
       >
         <Box className="disclaimer-modal completion-modal">
@@ -85,7 +98,7 @@ export const ConfirmRequest: React.FC<ConfrimRequestPropsType> = ({
               Pending
             </Button>
           </Box>
-          <Button radius={'xl'} className="continue-btn" onClick={handleFinish}>
+          <Button radius={'xl'} className="continue-btn" onClick={handleFeedback}>
             See Request
           </Button>
           <Box className="note noteConfirm" style={{ alignItems: 'center' }}>
@@ -144,6 +157,12 @@ export const ConfirmRequest: React.FC<ConfrimRequestPropsType> = ({
           Cancel
         </Button>
       </Box>
+      <CandidateFeedback
+        feedback="add_work_peer"
+        opened={feedbackModalOpened}
+        close={feedbackModalClose}
+        onFeedbackOver={handleFinish}
+      />
     </>
   );
 };
