@@ -14,6 +14,15 @@ import { DeleteConfirmationModal } from '../../../../common/GenericModals';
 import { HttpClient } from '../../../../../utils/generic/httpClient';
 import { addressVerificationAPIList } from '../../../../../assets/api/ApiList';
 import { showErrorNotification } from '../../../../../utils/functions/showNotification';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+import mapMarker from '../../assets/map-marker.png';
+import { Icon } from 'leaflet';
+
+const marker = new Icon({
+  iconUrl: mapMarker,
+  iconSize: [40, 40],
+});
 
 const months = [
   'January',
@@ -231,6 +240,33 @@ export const ResidentialInfoDetails: React.FC = () => {
               </Button>
             </Box>
 
+            <Box style={{ height: '15rem', borderRadius: '2px', overflow: 'hidden' }} className="wrapper">
+              {residential?.location ? (
+                <MapContainer
+                  key={JSON.stringify([residential?.location.latitude, residential?.location.longitude])}
+                  center={[residential?.location.latitude, residential?.location.longitude]}
+                  zoom={14}
+                  scrollWheelZoom={false}
+                  style={{ height: '15rem', zIndex: '1' }}
+                  maxZoom={15}
+                  zoomControl={false}
+                  attributionControl={false}
+                >
+                  <TileLayer
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  />
+                  <Marker position={[residential?.location.latitude, residential?.location.longitude]} icon={marker}>
+                    <Popup>
+                      {residential?.address_line_1}, {residential?.address_line_2}, {residential?.landmark},{' '}
+                      {residential?.city} {residential?.pincode}
+                    </Popup>
+                  </Marker>
+                </MapContainer>
+              ) : (
+                <></>
+              )}
+            </Box>
             <Box className="wrapper">
               <Title className="title">Other information</Title>
               <Box className="other-info-box">

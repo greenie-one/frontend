@@ -59,17 +59,17 @@ export const AddResidentialInfo = () => {
   const [addressTypeOptions, setAddressTypeOptions] = useState<Array<{ value: string; label: string }>>(optionData);
   const [startYearOptions, setStartYearOptions] = useState<Array<string>>([]);
   const [endYearOptions, setEndYearOptions] = useState<Array<string>>([]);
-  const [fetchedAddress, setFetchedAddress] = useState<FetchedAddressType>(location.state as FetchedAddressType);
+  const [fetchedAddress, setFetchedAddress] = useState<AddressType>(location.state as AddressType);
 
   const residentialInfoForm = useForm<residentialInfoFormType>({
     initialValues: {
-      address_line_1: fetchedAddress?.address.address_line_1 || '',
-      address_line_2: fetchedAddress?.address.address_line_2 || '',
-      landmark: '',
-      pincode: fetchedAddress?.address.pincode || '',
-      city: fetchedAddress?.address.city || '',
-      state: fetchedAddress?.address.state || '',
-      country: fetchedAddress?.address.country || '',
+      address_line_1: fetchedAddress.address.address_line_1 || '',
+      address_line_2: fetchedAddress.address.address_line_2 || '',
+      landmark: fetchedAddress.address.landmark || '',
+      pincode: fetchedAddress.address.pincode || '',
+      city: fetchedAddress.address.city || '',
+      state: fetchedAddress.address.state || '',
+      country: fetchedAddress.address.country || '',
       start_date: {
         month: '',
         year: '',
@@ -294,13 +294,13 @@ export const AddResidentialInfo = () => {
   useEffect(() => {
     residentialInfoData.forEach((info) => {
       if (info.addressType === 'Current') {
-        setAddressTypeOptions([...optionData].filter((option) => option.value !== 'Current'));
+        setAddressTypeOptions((current) => current.filter((option) => option.value !== 'Current'));
       }
     });
 
     residentialInfoData.forEach((info) => {
       if (info.addressType === 'Permanent') {
-        setAddressTypeOptions([...optionData].filter((option) => option.value !== 'Permanent'));
+        setAddressTypeOptions((current) => current.filter((option) => option.value !== 'Permanent'));
       }
     });
 
@@ -325,11 +325,11 @@ export const AddResidentialInfo = () => {
                 residentialInfoForm={residentialInfoForm}
               />
             </Box>
-            <Text className="address-string">{fetchedAddress.addressString}</Text>
+            <Text className="address-string">{fetchedAddress.formattedAddress}</Text>
             <Box className="map-box-container">
               <MapContainer
-                key={JSON.stringify([fetchedAddress.position.latitude, fetchedAddress.position.longitude])}
-                center={[fetchedAddress.position.latitude, fetchedAddress.position.longitude]}
+                key={JSON.stringify([fetchedAddress.lat, fetchedAddress.long])}
+                center={[fetchedAddress.lat, fetchedAddress.long]}
                 zoom={14}
                 scrollWheelZoom={false}
               >
@@ -337,8 +337,8 @@ export const AddResidentialInfo = () => {
                   attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                <Marker position={[fetchedAddress.position.latitude, fetchedAddress.position.longitude]} icon={marker}>
-                  <Popup>{fetchedAddress.addressString}</Popup>
+                <Marker position={[fetchedAddress.lat, fetchedAddress.long]} icon={marker}>
+                  <Popup>{fetchedAddress.formattedAddress}</Popup>
                 </Marker>
               </MapContainer>
             </Box>
