@@ -99,7 +99,6 @@ export const useProfileForms = () => {
     validate: {
       skillName: isNotEmpty('Please enter your skill'),
       expertise: isNotEmpty('Please enter your expertise'),
-      workExperience: isNotEmpty('Please select a work experience'),
     },
   });
 

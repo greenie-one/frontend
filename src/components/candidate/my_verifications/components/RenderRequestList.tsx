@@ -6,7 +6,7 @@ import { RequestListType } from './RequestList';
 import { CancelationModal, ReminderModal } from './Modals';
 import profileImage from '../../../auth/assets/profileillustration.png';
 
-import { peerVerificationAPIList } from '../../../../assets/api/ApiList';
+import { addressVerificationAPIList, peerVerificationAPIList } from '../../../../assets/api/ApiList';
 import { useGlobalContext } from '../../../../context/GlobalContext';
 import { HttpClient } from '../../../../utils/generic/httpClient';
 import {
@@ -52,16 +52,22 @@ const SentRequestActions: React.FC<SentRequestActionType> = ({
   name,
   setForceRenderList,
   createdAt,
+  requestType,
 }): JSX.Element => {
   const { authClient } = useGlobalContext();
   const [reminderModalOpened, { open: reminderModalOpen, close: reminderModalClose }] = useDisclosure(false);
   const [cancelationModalOpened, { open: cancelationModalOpen, close: cancelationModalClose }] = useDisclosure(false);
 
   const handleRemind = async () => {
+    const requestURL =
+      requestType === 'work'
+        ? `${peerVerificationAPIList.remindRequest}/${requestId}/resend`
+        : `${addressVerificationAPIList.createPeer}/${requestId}/resend`;
     showLoadingNotification({ title: 'Please wait!', message: 'We are sending a reminder to the peer.' });
+
     const res = await HttpClient.callApiAuth<{ message: string; success: boolean }>(
       {
-        url: `${peerVerificationAPIList.remindRequest}/${requestId}/resend`,
+        url: requestURL,
         method: 'GET',
       },
       authClient
@@ -75,10 +81,15 @@ const SentRequestActions: React.FC<SentRequestActionType> = ({
   };
 
   const handleCancelRequest = async () => {
+    const requestURL =
+      requestType === 'work'
+        ? `${peerVerificationAPIList.remindRequest}/${requestId}`
+        : `${addressVerificationAPIList.createPeer}/${requestId}`;
     showLoadingNotification({ title: 'Please wait!', message: 'We are sending a reminder to the peer.' });
+
     const res = await HttpClient.callApiAuth<{ message: string; success: boolean }>(
       {
-        url: `${peerVerificationAPIList.remindRequest}/${requestId}`,
+        url: requestURL,
         method: 'DELETE',
       },
       authClient
@@ -158,6 +169,7 @@ export const RenderRequestList: React.FC<RenderRequestListProps> = ({
                     requestId={request.id}
                     name={request.name}
                     createdAt={request.createdAt}
+                    requestType={request.peerPost ? 'work' : 'address'}
                   />
                 )}
               </Box>
