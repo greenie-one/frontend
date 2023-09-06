@@ -313,7 +313,7 @@ export const AddExperience = () => {
           await createAddDocumentRequest(documents, res.data, experienceId);
         }
       } catch (error: unknown) {
-        showErrorNotification('GR0000');
+        showErrorNotification('GR1011');
         setActive(3);
         errorState = true;
       } finally {
@@ -383,8 +383,6 @@ export const AddExperience = () => {
       afterFeedback === 'verification' ? open() : handleProfilePage();
     }
   };
-
-  console.log(active);
 
   return (
     <>
