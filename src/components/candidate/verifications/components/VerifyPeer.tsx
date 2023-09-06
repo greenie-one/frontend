@@ -131,6 +131,7 @@ export const VerifyPeer = () => {
               </Text>
               <Box className="input-section">
                 <PinInput
+                  type="number"
                   length={6}
                   oneTimeCode
                   aria-label="One time code"
