@@ -41,6 +41,8 @@ export const ConfirmRequest: React.FC<ConfrimRequestPropsType> = ({
 
   const handleCreatePeerRequest = async () => {
     showLoadingNotification({ title: 'Please Wait !', message: 'Wait while we send the request' });
+    let createResult = true;
+
     for (const response of createPeerResponse) {
       response.phone = '+91' + response.phone.slice(-10);
       const res = await HttpClient.callApiAuth<{ id: string; name: string }>(
@@ -52,12 +54,15 @@ export const ConfirmRequest: React.FC<ConfrimRequestPropsType> = ({
         authClient
       );
 
-      if (res.ok) {
-        showSuccessNotification({ title: 'Success !', message: 'Request sent successfully' });
-        open();
-      } else {
+      if (!res.ok) {
         showErrorNotification(res.error.code);
+        createResult = false;
       }
+    }
+
+    if (createResult) {
+      showSuccessNotification({ title: 'Success !', message: 'All Request sent successfully' });
+      open();
     }
   };
 

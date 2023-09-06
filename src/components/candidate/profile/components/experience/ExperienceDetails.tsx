@@ -192,7 +192,12 @@ export const ExperienceDetails: React.FC = () => {
               <Box className="folder-wrapper">
                 {experienceDocuments.map(({ name, _id, privateUrl }) => {
                   return (
-                    <Link key={_id} className="folder" to={privateUrl} target="_blank">
+                    <Link
+                      key={_id}
+                      className="folder"
+                      to={`${privateUrl}?token=${authClient.getAccessToken()}`}
+                      target="_blank"
+                    >
                       <img src={pdfIcon} alt="PDF Icon" />
                       <Text className="doc-name">{name}</Text>
                     </Link>

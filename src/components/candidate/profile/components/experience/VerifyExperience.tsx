@@ -1,5 +1,5 @@
 import React, { useReducer, useState, useEffect } from 'react';
-import { Title, Text, Box, Button, TextInput, Select, Divider, NumberInput } from '@mantine/core';
+import { Title, Text, Box, Button, TextInput, Select, Divider } from '@mantine/core';
 import { useForm, isNotEmpty, isEmail, hasLength } from '@mantine/form';
 import { MdVerified, MdOutlineDelete } from 'react-icons/md';
 import { AiOutlinePlus } from 'react-icons/ai';
@@ -98,21 +98,8 @@ export const VerifyExperience: React.FC = () => {
       value: string;
     };
     const currentValue = inputElement.value;
-    if (!currentValue) {
-      return;
-    }
 
     if (currentValue.length > 10) {
-      inputElement.value = currentValue.toString().slice(0, -1);
-      return;
-    }
-
-    const lastInput = currentValue.slice(-1);
-
-    const isDigit = lastInput.charCodeAt(0) >= 48 && lastInput.charCodeAt(0) <= 57;
-    const isComma = lastInput.charCodeAt(0) === 44;
-
-    if (!(isDigit || isComma)) {
       inputElement.value = currentValue.toString().slice(0, -1);
     }
 
@@ -152,6 +139,7 @@ export const VerifyExperience: React.FC = () => {
     };
     setAddedPeers((prevPeers) => [...prevPeers, newPeer]);
     peerVerificationForm.reset();
+    peerVerificationForm.setFieldValue('contactNumber', '');
   };
 
   const handleRemovePeer = (index: number) => {
@@ -313,11 +301,12 @@ export const VerifyExperience: React.FC = () => {
                   className="inputClass"
                   {...peerVerificationForm.getInputProps('email')}
                 />
-                <NumberInput
+                <TextInput
                   withAsterisk
-                  hideControls
+                  type="number"
                   label="Contact number"
                   className="inputClass"
+                  value={peerVerificationForm.values.contactNumber}
                   onInput={(e) => handleDigits(e)}
                 />
               </Box>
