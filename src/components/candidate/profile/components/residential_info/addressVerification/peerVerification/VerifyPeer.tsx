@@ -135,6 +135,7 @@ export const VerifyPeer: React.FC<VerifyPeerProps> = ({
             <Text className="address-verification-bold-title">Enter the one-time password sent to your {type}.</Text>
             <Box className="input-section">
               <PinInput
+                type="number"
                 length={6}
                 oneTimeCode
                 aria-label="One time code"
