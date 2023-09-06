@@ -145,7 +145,7 @@ export const GlobalContextProvider: React.FC<{
     if (res.ok) {
       setIDs(res.value.ids);
     } else {
-      showErrorNotification(res.error.code);
+      console.error(res.error.message);
     }
   };
 
@@ -235,7 +235,7 @@ export const GlobalContextProvider: React.FC<{
     if (res.ok) {
       setWorkExperienceData(res.value.workExperiences);
     } else {
-      showErrorNotification(res.error.code);
+      console.error(res.error.message);
     }
   };
 
@@ -272,7 +272,7 @@ export const GlobalContextProvider: React.FC<{
     if (res.ok) {
       setResidentialInfoData(res.value.residentialInfo.residentialInfos);
     } else {
-      showErrorNotification(res.error.code);
+      console.error(res.error.message);
     }
   };
 
@@ -318,7 +318,7 @@ export const GlobalContextProvider: React.FC<{
     if (res.ok) {
       setSkillData(res.value.skills);
     } else {
-      showErrorNotification(res.error.code);
+      console.error(res.error.message);
     }
   };
 
