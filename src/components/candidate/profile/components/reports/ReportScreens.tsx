@@ -16,8 +16,7 @@ import { LoadingState } from '../../../../common/LoadingState';
 import { PageNotFound } from '../../../../../pages/PageNotFound';
 export const ReportScreens: React.FC = (): JSX.Element => {
   const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
-  const email = searchParams.get('email') || '';
+
   const [pending, setPending] = useState<boolean>(true);
   const [userNotFound, setUserNotFound] = useState<boolean>(false);
   const [IdDetails, setIdDetails] = useState<IdDetailsResponse>({} as IdDetailsResponse);
@@ -32,7 +31,7 @@ export const ReportScreens: React.FC = (): JSX.Element => {
     setPending(true);
     setUserNotFound(false);
     const res = await HttpClient.callApi<ReportData>({
-      url: `${reportAPI}?email=${email}`,
+      url: `${reportAPI}${location.search}`,
       method: 'GET',
     });
 
@@ -54,7 +53,7 @@ export const ReportScreens: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     getReportData();
-  }, [email]);
+  }, [location.search]);
 
   return (
     <>
