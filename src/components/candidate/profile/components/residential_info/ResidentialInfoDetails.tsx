@@ -175,14 +175,14 @@ export const ResidentialInfoDetails: React.FC = () => {
                   <AiOutlineHome size={'20px'} />
                 </Box>
 
-                <Text className="text">Yes, I will verify myself</Text>
+                <Text className="text">Confirm my location</Text>
               </Box>
               <Box className="residential-info-modal-choice-box" onClick={() => handleGoToVerification('Peer')}>
                 <Box className="residential-info-modal-icon">
                   <MdAddLocationAlt size={'20px'} />
                 </Box>
 
-                <Text className="text">No, I do not reside here</Text>
+                <Text className="text">Ask someone here to confirm</Text>
               </Box>
             </Box>
           </Box>
