@@ -1,5 +1,5 @@
 import { Layout } from '../components/candidate/profile/components/Layout';
-import { hasLength, isNotEmpty, useForm } from '@mantine/form';
+import { hasLength, isEmail, useForm } from '@mantine/form';
 import { Box, PasswordInput, Group, Stack, TextInput, Button, Tabs } from '@mantine/core';
 import '../components/candidate/profile/styles/_hrForm.scss';
 import { useNavigate } from 'react-router-dom';
@@ -11,6 +11,7 @@ import {
 import { HttpClient } from '../utils/generic/httpClient';
 import { BASE_URL, reportAPI } from '../assets/api/ApiList';
 import { useGlobalContext } from '../context/GlobalContext';
+import { useState } from 'react';
 
 type FormData = {
   email: string;
@@ -20,6 +21,8 @@ type FormData = {
 export const AdminForm: React.FC = (): JSX.Element => {
   const navigate = useNavigate();
   const { authClient } = useGlobalContext();
+
+  const [inputValue, setInputValue] = useState<'email' | 'phone'>('email');
 
   const form = useForm<FormData>({
     initialValues: {
@@ -35,9 +38,11 @@ export const AdminForm: React.FC = (): JSX.Element => {
   const reportForm = useForm({
     initialValues: {
       email: '',
+      phone: '',
     },
     validate: {
-      email: isNotEmpty('This field is required!'),
+      email: isEmail('This field is required!'),
+      phone: hasLength({ min: 10, max: 10 }, 'Phone number must of 10 digits'),
     },
   });
 
@@ -75,25 +80,27 @@ export const AdminForm: React.FC = (): JSX.Element => {
   const onGenerateReportFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (reportForm.validate().hasErrors) {
+    if (reportForm.validateField(inputValue).hasError) {
       return;
     }
 
-    const emailId = reportForm.values.email;
-
+    const query =
+      inputValue === 'email'
+        ? `${encodeURIComponent('email')}=${encodeURIComponent(reportForm.values.email)}`
+        : `${encodeURIComponent('phone')}=${encodeURIComponent('+91' + reportForm.values.phone.slice(-10))}`;
     showLoadingNotification({ title: 'Please Wait', message: '' });
 
     try {
       const res = await HttpClient.callApiAuth<ReportData>(
         {
-          url: `${reportAPI}?email=${emailId}`,
+          url: `${reportAPI}?${query}`,
           method: 'GET',
         },
         authClient
       );
 
       if (res.ok) {
-        navigate(`/screens?email=${emailId}`);
+        navigate(`/screens?${query}`);
         showSuccessNotification({ title: 'Success', message: '' });
       } else {
         showErrorNotification(res.error.code);
@@ -134,6 +141,7 @@ export const AdminForm: React.FC = (): JSX.Element => {
                   placeholder="Enter password"
                   value={form.values.password}
                   onChange={(event) => form.setFieldValue('password', event.currentTarget.value)}
+                  error={form.errors.password && 'Password must be at least 9 characters long'}
                   radius="md"
                 />
 
@@ -148,15 +156,38 @@ export const AdminForm: React.FC = (): JSX.Element => {
           <Tabs.Panel value="generateReport">
             <form className="hrForm adminForm" onSubmit={onGenerateReportFormSubmit}>
               <Stack>
-                <TextInput
-                  required
-                  label="Email or Phone"
-                  placeholder="hello@gmail.com"
-                  value={reportForm.values.email}
-                  onChange={(event) => reportForm.setFieldValue('email', event.currentTarget.value)}
-                  error={reportForm.errors.email && 'Invalid email'}
-                  radius="md"
-                />
+                <Box>
+                  <TextInput
+                    required
+                    label={`Enter Candidate ${inputValue === 'email' ? 'Email' : 'Phone Number'}`}
+                    placeholder={inputValue === 'email' ? 'hello@gmail.com' : '9876543210'}
+                    value={inputValue === 'email' ? reportForm.values.email : reportForm.values.phone}
+                    onChange={(event) => reportForm.setFieldValue(inputValue, event.currentTarget.value)}
+                    error={
+                      inputValue === 'email'
+                        ? reportForm.errors.email && 'Invalid email'
+                        : reportForm.errors.phone && 'Invalid phone number'
+                    }
+                    radius="md"
+                  />
+                  <button
+                    type="button"
+                    style={{
+                      color: '#697082',
+                      fontWeight: '500',
+                      fontSize: '0.825rem',
+                      borderBottom: '1px solid #697082',
+                      marginBlock: '0.5rem',
+                    }}
+                    onClick={() => {
+                      reportForm.clearErrors();
+                      reportForm.reset();
+                      setInputValue((current) => (current === 'email' ? 'phone' : 'email'));
+                    }}
+                  >
+                    {inputValue === 'email' ? 'Use Phone Number' : 'Use Email ID'}
+                  </button>
+                </Box>
                 <Group position="apart" mt="xl">
                   <Button className="sendInvite" type="submit" radius="xl">
                     Generate Report
