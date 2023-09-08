@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Box, Text, Title, Button, PinInput, createStyles } from '@mantine/core';
+import { Box, Text, Title, Button, PinInput, createStyles, Select, Textarea, Modal } from '@mantine/core';
 import { useVerificationContext } from '../context/VerificationContext';
 import { HttpClient } from '../../../../utils/generic/httpClient';
 import {
@@ -10,6 +10,17 @@ import {
 import { peerVerificationAPIList } from '../../../../assets/api/ApiList';
 import { peerPost } from '../../constants/dictionaries';
 import { MdVerified } from 'react-icons/md';
+import { useDisclosure, useMediaQuery } from '@mantine/hooks';
+import { useParams } from 'react-router-dom';
+import { useGlobalContext } from '../../../../context/GlobalContext';
+
+const disputesReasons = [
+  'Wrong Name',
+  'Wrong Designation',
+  'Wrong Mobile Number',
+  'Wrong Email ID',
+  'Multiple Wrong Information',
+];
 
 type OtpVerificationBody = {
   otpType: string;
@@ -17,7 +28,8 @@ type OtpVerificationBody = {
 };
 
 const VerificationHeading = () => {
-  const { unverifiedLink, verificationBy, personBeingVerified, candidateName } = useVerificationContext();
+  const { unverifiedLink, peerPhone, peerEmail, verificationBy, personBeingVerified, candidateName } =
+    useVerificationContext();
 
   return (
     <>
@@ -33,19 +45,41 @@ const VerificationHeading = () => {
         reference and help elevate their profile.
       </Text>
       <Title className="address-verification-details-main-title" style={{ textAlign: 'center' }}>
-        Please verify your {unverifiedLink} to confirm your identity
+        Please confirm your identity
       </Title>
-      <Box className="address-verification-details">
-        <Title className="address-verification-details-title">{personBeingVerified ?? 'Peer name'}</Title>
-        <Text className="address-verification-details-address">{peerPost[verificationBy]}</Text>
+      <Box className="address-verification-details peerVerificationDetails">
+        <Box className="peerIdentityBox">
+          <span className="peerIdentityLabel">Your Name</span>
+          <Title className="peerIdentityValue">{personBeingVerified}</Title>
+        </Box>
+        <Box className="peerIdentityBox">
+          <span className="peerIdentityLabel">Your Designation</span>
+          <Title className="peerIdentityValue">{peerPost[verificationBy]}</Title>
+        </Box>
+        <Box className="peerIdentityBox">
+          <span className="peerIdentityLabel">Your Mobile Number</span>
+          <Title className="peerIdentityValue">{peerPhone}</Title>
+        </Box>
+        <Box className="peerIdentityBox">
+          <span className="peerIdentityLabel">Your Email ID</span>
+          <Title className="peerIdentityValue">{peerEmail}</Title>
+        </Box>
       </Box>
     </>
   );
 };
 
 export const VerifyPeer = () => {
+  const isMobile = useMediaQuery('(max-width: 768px)');
+  const [opened, { open, close }] = useDisclosure(false);
+
+  const params = useParams();
+
+  const peerUUID = String(params.uuid);
+
   const { classes: inputClasses } = OtpInputStyles();
-  const { unverifiedLink, peerUUID, getVerificationData, totalSteps, setActiveStep, otpTarget } =
+  const { scrollToTop } = useGlobalContext();
+  const { unverifiedLink, disputeForm, getVerificationData, totalSteps, setActiveStep, otpTarget } =
     useVerificationContext();
 
   const [countdown, setCountDown] = useState<number>(30);
@@ -98,6 +132,52 @@ export const VerifyPeer = () => {
     }
   };
 
+  const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const inputValue = event.target.value;
+    const wordCount = inputValue.length;
+
+    if (wordCount <= 250) {
+      disputeForm.setFieldValue('disputeReason', inputValue);
+    }
+  };
+
+  const handleNotMe = async () => {
+    if (disputeForm.validate().hasErrors) {
+      return;
+    }
+
+    showLoadingNotification({ title: 'Please wait', message: 'We are processing your request' });
+
+    const res = await HttpClient.callApi({
+      url: `${peerVerificationAPIList.getVerificationData}/${peerUUID}`,
+      method: 'PATCH',
+      body: {
+        isReal: {
+          state: 'REJECTED',
+          dispute_type: disputeForm.values.disputeType,
+          dispute_reason: disputeForm.values.disputeReason || 'NA',
+        },
+      },
+    });
+
+    if (res.ok) {
+      showSuccessNotification({ title: 'Success', message: 'We recieved your response.' });
+      disputeForm.reset();
+      close();
+      scrollToTop();
+      setActiveStep(totalSteps);
+    } else {
+      disputeForm.reset();
+      close();
+      showErrorNotification(res.error.code || 'SOMETHING_WENT_WRONG');
+    }
+  };
+
+  const handleClose = () => {
+    disputeForm.reset();
+    close();
+  };
+
   useEffect(() => {
     const timer = setInterval(() => {
       setCountDown((prev) => prev - 1);
@@ -115,10 +195,10 @@ export const VerifyPeer = () => {
           <Box className="address-verification-container">
             <VerificationHeading />
             <Button className="green-outline-btn" onClick={sendOtp}>
-              Click to send OTP
+              Yes, It&apos;s Me
             </Button>
-            <button className="address-verification-details-link" onClick={() => setActiveStep(totalSteps)}>
-              Not me
+            <button className="address-verification-details-link" onClick={open}>
+              No, It&apos;s Not Me
             </button>
           </Box>
         )}
@@ -151,10 +231,67 @@ export const VerifyPeer = () => {
               <Button className="primaryBtn" onClick={verifyOtp}>
                 Verify
               </Button>
+              <button style={{ marginTop: '-0.5rem' }} className="address-verification-details-link" onClick={open}>
+                No, It&apos;s Not Me
+              </button>
             </Box>
           </Box>
         )}
       </Box>
+      <Modal
+        radius={'lg'}
+        centered
+        size={'60%'}
+        fullScreen={isMobile}
+        opened={opened}
+        onClose={handleClose}
+        title="Add a dispute to the information"
+        styles={{
+          title: {
+            fontFamily: 'Inter',
+            fontSize: '1.25rem',
+            fontWeight: 600,
+          },
+        }}
+      >
+        <Box className="verification-modal">
+          <Select
+            clearable
+            searchable
+            nothingFound="No options"
+            className="inputClass"
+            placeholder="Select reason for dispute"
+            data={disputesReasons}
+            label="Dispute type"
+            styles={() => ({
+              item: {
+                '&[data-selected]': {
+                  '&, &:hover': {
+                    backgroundColor: '#17a672',
+                    color: 'white',
+                  },
+                },
+              },
+            })}
+            {...disputeForm.getInputProps('disputeType')}
+          />
+          <Box className="text-area-box">
+            <Textarea
+              value={disputeForm.values.disputeReason}
+              onChange={handleInputChange}
+              placeholder="Provide more information about dispute"
+              className="text-area"
+            />
+            <Text className="word-limit">{disputeForm.values.disputeReason.length} / 250 </Text>
+          </Box>
+          <Button className="green-btn" onClick={handleNotMe}>
+            Raise dispute
+          </Button>
+          <Text className="fact">
+            This information will not be shared with the candidate, it will be only used to maintain records
+          </Text>
+        </Box>
+      </Modal>
     </main>
   );
 };

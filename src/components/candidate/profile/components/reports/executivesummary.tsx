@@ -184,7 +184,7 @@ export const ExecutiveSummary: React.FC<ChildComponentProps> = ({
           <Box className="added-peers executive-peers">
             <Text className="peer-name ">Personal Identification</Text>
             <Text className="peer-name text-verified">
-              {calculateIDProgress(IdDetails) >= 33 ? 'Verified' : <span style={{ color: '#ff7272' }}>Pending</span>}
+              {calculateIDProgress(IdDetails) >= 33 ? 'Verified' : <span style={{ color: '#fab005' }}>Pending</span>}
             </Text>
             <Text className="peer-name">
               <span className="peer-progress">
@@ -200,7 +200,7 @@ export const ExecutiveSummary: React.FC<ChildComponentProps> = ({
               {calculateResidentialProgress(ResidentialInfo) > 0 ? (
                 'Verified'
               ) : (
-                <span style={{ color: '#ff7272' }}>Pending</span>
+                <span style={{ color: '#fab005' }}>Pending</span>
               )}
             </Text>
             <Text className="peer-name">
@@ -217,7 +217,7 @@ export const ExecutiveSummary: React.FC<ChildComponentProps> = ({
               {calculateExperienceProgress(workExperienceDetails) > 0 ? (
                 'Verified'
               ) : (
-                <span style={{ color: '#ff7272' }}>Pending</span>
+                <span style={{ color: '#fab005' }}>Pending</span>
               )}
             </Text>
             <Text className="peer-name">

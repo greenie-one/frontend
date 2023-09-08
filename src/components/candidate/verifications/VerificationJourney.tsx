@@ -84,8 +84,14 @@ export const VerificationJourney: React.FC = (): JSX.Element => {
                       <>
                         {activeStep === 6 ? (
                           <VerificationQuestions
-                            question={<>Has the candidate completed the exit procedure?</>}
-                            _id="exitProcedure"
+                            question={
+                              verificationData.dateOfLeaving ? (
+                                <>Has the candidate completed the exit procedure?</>
+                              ) : (
+                                <>Is the candidate completed on notice period?</>
+                              )
+                            }
+                            _id={verificationData.dateOfLeaving ? 'exitProcedure' : 'onNotice'}
                             parentKey="otherQuestions"
                           />
                         ) : (
@@ -108,8 +114,14 @@ export const VerificationJourney: React.FC = (): JSX.Element => {
                         {activeStep === 6 ? <VerifySkills /> : <></>}
                         {activeStep === 7 ? (
                           <VerificationQuestions
-                            question={<>Has the candidate completed the exit procedure?</>}
-                            _id="exitProcedure"
+                            question={
+                              verificationData.dateOfLeaving ? (
+                                <>Has the candidate completed the exit procedure?</>
+                              ) : (
+                                <>Is the candidate completed on notice period?</>
+                              )
+                            }
+                            _id={verificationData.dateOfLeaving ? 'exitProcedure' : 'onNotice'}
                             parentKey="otherQuestions"
                           />
                         ) : (
@@ -133,8 +145,14 @@ export const VerificationJourney: React.FC = (): JSX.Element => {
                         {activeStep === 7 ? <VerifySkills /> : <></>}
                         {activeStep === 8 ? (
                           <VerificationQuestions
-                            question={<>Has the candidate completed the exit procedure?</>}
-                            _id="exitProcedure"
+                            question={
+                              verificationData.dateOfLeaving ? (
+                                <>Has the candidate completed the exit procedure?</>
+                              ) : (
+                                <>Is the candidate completed on notice period?</>
+                              )
+                            }
+                            _id={verificationData.dateOfLeaving ? 'exitProcedure' : 'onNotice'}
                             parentKey="otherQuestions"
                           />
                         ) : (

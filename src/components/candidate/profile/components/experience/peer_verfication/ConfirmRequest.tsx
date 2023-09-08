@@ -55,7 +55,7 @@ export const ConfirmRequest: React.FC<ConfrimRequestPropsType> = ({
       );
 
       if (!res.ok) {
-        showErrorNotification(res.error.code);
+        showErrorNotification(res.error.code || 'SOMETHING_WENT_WRONG');
         createResult = false;
       }
     }

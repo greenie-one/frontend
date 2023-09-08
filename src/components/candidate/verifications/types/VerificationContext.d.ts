@@ -27,4 +27,6 @@ type VerificationContextType = {
   candidateName: string;
   peerVerified: boolean;
   otpTarget: string;
+  peerPhone: string;
+  peerEmail: string;
 };
