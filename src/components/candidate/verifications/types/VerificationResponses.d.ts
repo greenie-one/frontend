@@ -59,6 +59,7 @@ type GetVerificationDataResponse = {
 };
 
 type PostVerificationDataType = {
+  isReal: StatusType;
   selectedFields: DynamicObjectType;
   allQuestions: {
     attitudeRating: string;
@@ -67,7 +68,8 @@ type PostVerificationDataType = {
     designation: StatusType;
   };
   otherQuestions?: {
-    exitProcedure: StatusType;
+    exitProcedure?: StatusType;
+    onNotice?: StatusType;
     eligibleForRehire: StatusType;
   };
   skills: Array<DynamicObjectWithIdType>;

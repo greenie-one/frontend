@@ -360,7 +360,7 @@ export const ResidentialInfoDetails: React.FC = () => {
                         ) : (
                           <Box className="request-status">
                             <Box className="request-box-icon">
-                              <CgSandClock color="#ff7272" />
+                              <CgSandClock color="#fab005" />
                             </Box>
                             <Text className="request-status-text pending-status">Pending</Text>
                           </Box>

@@ -173,6 +173,36 @@ $dark: #191919;
       max-width: 200px;
       text-align: center;
     }
+
+    &.peerVerificationDetails {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      column-gap: 1rem;
+      row-gap: 1rem;
+      width: min(100%, 40rem);
+      margin-block: 2rem;
+
+      .peerIdentityBox {
+        border: 1px solid #d1d4db;
+        padding: 0.25rem 1rem;
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+
+        .peerIdentityLabel {
+          font-size: 13px;
+          color: #697082;
+          font-weight: 500;
+        }
+
+        .peerIdentityValue {
+          font-size: 1rem;
+          font-weight: 500;
+          color: #282828;
+        }
+      }
+    }
   }
 
   .profile-details {

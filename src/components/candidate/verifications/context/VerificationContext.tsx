@@ -35,6 +35,8 @@ export const VerificationContextProvider: React.FC<{ children: React.ReactNode }
   );
   const [personBeingVerified, setPersonBeingVerified] = useState<string>('');
   const [candidateName, setCandidateName] = useState<string>('');
+  const [peerPhone, setPeerName] = useState<string>('');
+  const [peerEmail, setPeerEmail] = useState<string>('');
   const [peerVerified, setPeerVerified] = useState<boolean>(false);
   const [otpTarget, setOtpTarget] = useState<string>('');
 
@@ -63,6 +65,8 @@ export const VerificationContextProvider: React.FC<{ children: React.ReactNode }
     } else {
       setPersonBeingVerified((res.error as APIErrorPeer).name);
       setCandidateName((res.error as APIErrorPeer).username);
+      setPeerName((res.error as APIErrorPeer).phone);
+      setPeerEmail((res.error as APIErrorPeer).email);
       setActiveStep(0);
       switch (res.error.code) {
         case 'GR0050': {
@@ -139,6 +143,8 @@ export const VerificationContextProvider: React.FC<{ children: React.ReactNode }
     candidateName,
     peerVerified,
     otpTarget,
+    peerPhone,
+    peerEmail,
   };
 
   return <VerificationContext.Provider value={storeValues}>{children}</VerificationContext.Provider>;
