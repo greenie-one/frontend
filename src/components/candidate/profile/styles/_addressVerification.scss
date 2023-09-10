@@ -182,6 +182,11 @@ $dark: #191919;
       width: min(100%, 40rem);
       margin-block: 2rem;
 
+      @media screen and (max-width: 768px) {
+        grid-template-columns: 1fr;
+        width: min(100%, 30rem);
+      }
+
       .peerIdentityBox {
         border: 1px solid #d1d4db;
         padding: 0.25rem 1rem;

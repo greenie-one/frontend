@@ -12,7 +12,11 @@ import { Layout } from '../Layout';
 import { FcInfo } from 'react-icons/fc';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { HttpClient } from '../../../../../utils/generic/httpClient';
-import { showErrorNotification } from '../../../../../utils/functions/showNotification';
+import {
+  showErrorNotification,
+  showLoadingNotification,
+  showSuccessNotification,
+} from '../../../../../utils/functions/showNotification';
 import { addressVerificationAPIList } from '../../../../../assets/api/ApiList';
 import classes from './styles/styles.module.css';
 import { MdOutlineContentCopy } from 'react-icons/md';
@@ -39,7 +43,7 @@ export const VerifyResidentialInfo: React.FC = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const isMobile = useMediaQuery('(max-width: 800px)');
+  const isMobile = useMediaQuery('(max-width: 992px)');
   const [opened, { open, close }] = useDisclosure(false);
   const [fbOpened, { open: fbOpen, close: fbClose }] = useDisclosure(false);
 
@@ -53,10 +57,11 @@ export const VerifyResidentialInfo: React.FC = () => {
   const handleProceed = async () => {
     if (!id) return;
 
+    showLoadingNotification({ title: 'Please Wait', message: 'We are sending request to peer' });
     const requestBody: CreateAddressVerificationRequest = {
       name: peer.name,
       email: peer.email,
-      phone: peer.phone,
+      phone: `+91${peer.phone.slice(-10)}`,
       ref: id,
       verificationBy: peer.peerType,
     };
@@ -71,6 +76,7 @@ export const VerifyResidentialInfo: React.FC = () => {
     );
 
     if (res.ok) {
+      showSuccessNotification({ title: 'Success', message: 'Request sent successfully' });
       setLink(res.value.link);
       scrollToTop();
 
@@ -84,24 +90,28 @@ export const VerifyResidentialInfo: React.FC = () => {
       }
     } else {
       close();
-      showErrorNotification(res.error.code);
+      showErrorNotification(res.error.code || 'SOMETHING_WENT_WRONG');
     }
   };
 
   const handleAddPeer = () => {
-    if (!residentialInfoVerificationForm.validate().hasErrors) {
-      let newPeer: ResidentialInfoPeerType = {} as ResidentialInfoPeerType;
-
-      Object.keys(residentialInfoVerificationForm.values).forEach((key) => {
-        newPeer = {
-          ...newPeer,
-          [key]: residentialInfoVerificationForm.values[key],
-        };
-      });
-
-      setPeer(newPeer);
-      open();
+    if (residentialInfoVerificationForm.validate().hasErrors) {
+      return;
     }
+
+    residentialInfoVerificationForm.clearErrors();
+
+    let newPeer: ResidentialInfoPeerType = {} as ResidentialInfoPeerType;
+
+    Object.keys(residentialInfoVerificationForm.values).forEach((key) => {
+      newPeer = {
+        ...newPeer,
+        [key]: residentialInfoVerificationForm.values[key],
+      };
+    });
+
+    setPeer(newPeer);
+    open();
   };
 
   const handleDigits = (event: React.FormEvent<HTMLInputElement>) => {
@@ -217,10 +227,12 @@ export const VerifyResidentialInfo: React.FC = () => {
                   />
                   <NumberInput
                     withAsterisk
+                    type="number"
                     hideControls
                     label="Contact number"
                     className="inputClass"
                     onInput={(e) => handleDigits(e)}
+                    error={residentialInfoVerificationForm.errors.phone}
                   />
                 </Box>
                 <Text className="add-peer-sub-text">
