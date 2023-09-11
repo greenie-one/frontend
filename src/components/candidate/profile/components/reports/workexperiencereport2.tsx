@@ -9,6 +9,7 @@ type ChildComponentProps = {
   workExperienceDetails: WorkExperience[];
   peerDetails: WorkPeerReportResponse[];
   skills: CandidateSkillType[];
+  documents: DocumentResponse[];
 };
 
 const WorkPeerType: Record<string, string> = {
@@ -30,6 +31,7 @@ export const WorkExperienceReport2: React.FC<ChildComponentProps> = ({
   skills,
   peerDetails,
   workExperienceDetails,
+  documents,
 }) => {
   console.log(workExperienceDetails);
 
@@ -265,7 +267,93 @@ export const WorkExperienceReport2: React.FC<ChildComponentProps> = ({
                                   </>
                                 )}
                               </div>
-                              <hr className="breakLine"></hr>
+                              <div>
+                                <div className="peer-exp-name">
+                                  <p>Documents</p>
+                                </div>
+
+                                {peer.documents.length > 0 ? (
+                                  <>
+                                    <Box className="add-peer-header add-peer-exp-header">
+                                      <Text className="add-peer-header-text">Document</Text>
+                                      <Text className="add-peer-header-text">Document Type</Text>
+                                      <Text className="add-peer-header-text">Verified On</Text>
+                                      <Text className="add-peer-header-text">Status</Text>
+                                      <Text className="add-peer-header-text">Remarks</Text>
+                                    </Box>
+                                    <Box className="added-peer-box">
+                                      {peer.documents.map((doc, idx) => {
+                                        const currentDoc =
+                                          documents.find((_doc) => _doc._id === doc.id) || ({} as DocumentResponse);
+                                        return (
+                                          <Box key={idx} className="added-peers added-exp-peers">
+                                            <Text
+                                              style={{
+                                                textDecoration: 'underline',
+                                              }}
+                                              className="peer-name title"
+                                            >
+                                              {currentDoc.name}
+                                            </Text>
+                                            <Text className="peer-name">Work Document</Text>
+                                            <Text className="peer-name">
+                                              {peer.isVerificationCompleted
+                                                ? peer.updatedAt?.substring(0, 10).split('-').reverse().join('-')
+                                                : '-'}
+                                            </Text>
+                                            <Text
+                                              style={{
+                                                color:
+                                                  peer.isReal.state === 'REJECTED'
+                                                    ? '#ff7272'
+                                                    : peer.isReal.state === 'ACCEPTED'
+                                                    ? '#17A672'
+                                                    : '#FAB005',
+                                              }}
+                                              className={`peer-name ${
+                                                doc.status.state === 'ACCEPTED' ? 'text-verified' : 'text-dispute'
+                                              }`}
+                                            >
+                                              {peer.isReal.state === 'ACCEPTED'
+                                                ? `${doc.status.state === 'ACCEPTED' ? 'Approved' : 'Disputed'}`
+                                                : peer.isReal.state === 'REJECTED'
+                                                ? 'Rejected'
+                                                : 'Pending'}
+                                            </Text>
+                                            <Text className="peer-name">
+                                              {peer.isReal.state === 'REJECTED'
+                                                ? 'Verification Rejected By Peer'
+                                                : peer.isReal.state === 'PENDING'
+                                                ? 'Verification Pending'
+                                                : doc.status.state === 'REJECTED'
+                                                ? `${doc.status.dispute_type} - ${doc.status.dispute_reason}`
+                                                : 'No Remarks'}
+                                            </Text>
+                                          </Box>
+                                        );
+                                      })}
+                                    </Box>
+                                  </>
+                                ) : (
+                                  <>
+                                    <Box className="added-peer-box">
+                                      <Box
+                                        style={{
+                                          height: '5rem',
+                                          borderRadius: '1rem',
+                                          fontWeight: '500',
+                                          marginTop: '1rem',
+                                          gridTemplateColumns: '1fr',
+                                          fontSize: '1rem',
+                                        }}
+                                        className="added-peers added-peers-exp "
+                                      >
+                                        No Document Added
+                                      </Box>
+                                    </Box>
+                                  </>
+                                )}
+                              </div>
                             </div>
                           </React.Fragment>
                         );

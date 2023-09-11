@@ -306,6 +306,7 @@ type PeersResponse = {
 };
 
 type DocumentResponse = {
+  _id: string;
   name: string;
   privateUrl: string;
   type: string;

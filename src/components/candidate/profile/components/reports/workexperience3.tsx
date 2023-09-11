@@ -345,6 +345,7 @@ export const WorkExperienceReport3: React.FC<ChildComponentProps> = ({
                   )}
                 </div>
                 <WorkExperienceReport2
+                  documents={document}
                   workExperienceDetails={workExperienceDetails.filter((workEx) => workEx.id === experience.id)}
                   peerDetails={peerDetails}
                   skills={skills}
