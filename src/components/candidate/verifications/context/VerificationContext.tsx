@@ -97,6 +97,12 @@ export const VerificationContextProvider: React.FC<{ children: React.ReactNode }
 
   const postVerificationData = async () => {
     let requestBody: PostVerificationDataType = { ...verificationResponse };
+    requestBody = {
+      ...requestBody,
+      isReal: {
+        state: 'ACCEPTED',
+      },
+    };
 
     if (!verificationResponse.documents) {
       requestBody = { ...requestBody, documents: [] };

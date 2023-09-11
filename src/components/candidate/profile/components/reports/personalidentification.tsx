@@ -54,7 +54,12 @@ export const PersonalIdentification: React.FC<ChildComponentProps> = ({ IdDetail
             </div>
             <Box className="added-peer-box">
               <Box
-                style={{ borderRadius: '1rem', fontWeight: '500', marginTop: '1rem', gridTemplateColumns: '1fr' }}
+                style={{
+                  borderRadius: '1rem',
+                  fontWeight: '500',
+                  marginTop: '1rem',
+                  gridTemplateColumns: '1fr',
+                }}
                 className="added-peers added-peers-exp "
               >
                 Aadhar Not Verified
@@ -136,10 +141,17 @@ export const PersonalIdentification: React.FC<ChildComponentProps> = ({ IdDetail
             </div>
             <Box className="added-peer-box">
               <Box
-                style={{ borderRadius: '1rem', fontWeight: '500', marginTop: '1rem', gridTemplateColumns: '1fr' }}
+                style={{
+                  color: '#fab005',
+                  borderColor: '#fab005',
+                  borderRadius: '1rem',
+                  fontWeight: '500',
+                  marginTop: '1rem',
+                  gridTemplateColumns: '1fr',
+                }}
                 className="added-peers added-peers-exp "
               >
-                PAN Not Verified
+                PAN Card Not added - Apply for Aadhar card verification first
               </Box>
             </Box>
           </>
@@ -244,10 +256,17 @@ export const PersonalIdentification: React.FC<ChildComponentProps> = ({ IdDetail
             </div>
             <Box className="added-peer-box">
               <Box
-                style={{ borderRadius: '1rem', fontWeight: '500', marginTop: '1rem', gridTemplateColumns: '1fr' }}
+                style={{
+                  borderRadius: '1rem',
+                  color: '#fab005',
+                  borderColor: '#fab005',
+                  fontWeight: '500',
+                  marginTop: '1rem',
+                  gridTemplateColumns: '1fr',
+                }}
                 className="added-peers added-peers-exp "
               >
-                Driving License Not Verified
+                Driving license not added - Apply to Aadhar card and PAN card verification first.
               </Box>
             </Box>
           </>

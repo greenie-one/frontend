@@ -16,7 +16,9 @@ export const Report: React.FC = (): JSX.Element => {
 
         <p className="greenie-text">www.greenie.one</p>
         <div className="disclaimer-box">
-          <span className="disclaimer-text">Disclaimer</span>
+          <span style={{ borderBottom: '0' }} className="disclaimer-text">
+            Disclaimer
+          </span>
           <p className="disclaimer-details">
             This report is based on the information gathered from various sources that were made available to Greenie
             team during the verification process and should not be considered as a definitive pronouncement on the
