@@ -371,13 +371,17 @@
     padding: 2rem;
   }
   .report-name {
-    margin-top: rem(20);
-    font-weight: 500;
+    font-size: 1.25rem;
+    margin-top: rem(10);
+    font-weight: 600;
   }
   .report-verify {
     background: -webkit-linear-gradient(#17a672, #8cf078);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    font-size: rem(17);
+    text-transform: capitalize;
+    font-weight: 600;
   }
   &.front-report {
     justify-content: center;
@@ -641,6 +645,10 @@
     justify-content: center;
     margin-block-start: 4rem;
     .disclaimer-text {
+      border-bottom: 1px solid #2e2e48;
+      width: max-content;
+      margin-left: auto;
+      margin-right: auto;
       text-align: center;
       color: #2e2e48;
       font-size: 24px;
@@ -678,13 +686,13 @@
         gap: rem(20);
         .profile-thumbnail {
           aspect-ratio: 1;
-          width: 60px;
+          width: rem(80);
           display: grid;
           place-items: center;
           border-radius: 50%;
           overflow: hidden;
           .profile-img {
-            width: rem(70);
+            width: 100%;
             aspect-ratio: 1;
           }
         }

@@ -31,7 +31,7 @@ export const ResidentialReport: React.FC<ChildComponentProps> = ({ ResidentialIn
         <ReportTop />
 
         <div className="disclaimer-box">
-          <span className="disclaimer-text">Residential Information</span>
+          <span className="disclaimer-text">Residential Information (Verification Parameters)</span>
           {ResidentialInfo.length > 0 ? (
             <>
               {ResidentialInfo.map((resident, index) => {

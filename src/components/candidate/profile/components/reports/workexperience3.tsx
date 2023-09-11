@@ -11,11 +11,14 @@ import {
   showSuccessNotification,
 } from '../../../../../utils/functions/showNotification';
 import './_report.scss';
+import { skillExpertiseDict } from '../../../constants/dictionaries';
+import { WorkExperienceReport2 } from './workexperiencereport2';
 
 type ChildComponentProps = {
   workExperienceDetails: WorkExperience[];
   peerDetails: WorkPeerReportResponse[];
   document: DocumentResponse[];
+  skills: CandidateSkillType[];
 };
 
 const WorkPeerType: Record<string, string> = {
@@ -30,6 +33,7 @@ export const WorkExperienceReport3: React.FC<ChildComponentProps> = ({
   document,
   peerDetails,
   workExperienceDetails,
+  skills,
 }) => {
   const viewPDFDocument = async (requestURL: string): Promise<void> => {
     showLoadingNotification({ title: 'Please wait', message: '' });
@@ -68,18 +72,44 @@ export const WorkExperienceReport3: React.FC<ChildComponentProps> = ({
               <div key={index}>
                 <div className="disclaimer-box">
                   <div className="residential-address residential-top ">
-                    <div className="residential-address-left ">
-                      <p>{experience.companyName}</p>
+                    <div
+                      style={{
+                        border: '1px solid #e1e1e1',
+                        minWidth: '16rem',
+                        width: 'max-content',
+                        padding: '1.5rem',
+                        borderRadius: '15px',
+                      }}
+                      className="residential-address-left "
+                    >
+                      <p style={{ fontSize: '1.1rem', fontWeight: 500, marginBottom: '5px' }} className="">
+                        {experience.designation}
+                      </p>
+                      <p style={{ fontSize: '1rem', color: '#a3a3a3', fontWeight: 500, marginBottom: '10px' }}>
+                        {experience.companyName}
+                      </p>
                       {experience.noOfVerifications >= 2 ? (
                         <Button
+                          style={{ border: '1px solid', borderRadius: '34px', padding: '2px 8px' }}
                           leftIcon={<MdVerified color="#17A672" size={'16px'} />}
                           className="verified report-verifybtn"
                         >
                           Verified
                         </Button>
-                      ) : (
-                        <Button leftIcon={<CgSandClock size={'16px'} />} className="pending report-verifybtn">
+                      ) : peerDetails.filter((peer) => peer.ref === experience.id).length > 0 ? (
+                        <Button
+                          style={{ border: '1px solid', borderRadius: '34px', padding: '2px 8px' }}
+                          leftIcon={<CgSandClock size={'16px'} />}
+                          className="pending report-verifybtn"
+                        >
                           Pending
+                        </Button>
+                      ) : (
+                        <Button
+                          style={{ color: '#ff7272', border: '1px solid', borderRadius: '34px', padding: '2px 8px' }}
+                          className="pending report-verifybtn"
+                        >
+                          Not Verified
                         </Button>
                       )}
                     </div>
@@ -148,45 +178,6 @@ export const WorkExperienceReport3: React.FC<ChildComponentProps> = ({
                     <Text className="experience-details-box-text">{experience.workType}</Text>
                   </Box>
                 </Box>
-                <div>
-                  <div className="peer-exp-name">
-                    <p>Referees</p>
-                  </div>
-
-                  <Box className="add-peer-header work-header">
-                    <Text className="add-peer-header-text">Referee Name</Text>
-                    <Text className="add-peer-header-text">Referee Type</Text>
-                    <Text className="add-peer-header-text">Status</Text>
-                    <Text className="add-peer-header-text">Remarks</Text>
-                  </Box>
-                  {peerDetails.filter((peer) => peer.ref === experience.id).length > 0 ? (
-                    <Box className="added-peer-box">
-                      {peerDetails
-                        .filter((peer) => peer.ref === experience.id)
-                        .map((peer, i) => (
-                          <Box key={i} className="added-peers added-peers-exp ">
-                            <Text className="peer-name title">{peer.name}</Text>
-                            <Text className="peer-name">{WorkPeerType[peer.verificationBy]}</Text>
-                            <Text
-                              className={`peer-name ${peer.isVerificationCompleted ? 'text-verified' : 'text-dispute'}`}
-                            >
-                              {peer.isVerificationCompleted ? 'Approved' : 'Not Approved'}
-                            </Text>
-                            <Text className="peer-name name-wrap">{peer.allQuestions.review}</Text>
-                          </Box>
-                        ))}
-                    </Box>
-                  ) : (
-                    <Box className="added-peer-box">
-                      <Box className="added-peers added-peers-exp ">
-                        <Text className="peer-name title">No Referee</Text>
-                        <Text className="peer-name">-</Text>
-                        <Text className={`peer-name`}>-</Text>
-                        <Text className="peer-name name-wrap">-</Text>
-                      </Box>
-                    </Box>
-                  )}
-                </div>
                 <>
                   <div className="peer-exp-name">
                     <p>Documents</p>
@@ -219,7 +210,146 @@ export const WorkExperienceReport3: React.FC<ChildComponentProps> = ({
                     </Box>
                   )}
                 </>
-                <hr className="breakLine"></hr>
+                <>
+                  <div className="peer-exp-name">
+                    <p>Skills</p>
+                  </div>
+                  {skills.filter((skill) => skill.workExperience === experience.id).length > 0 ? (
+                    <Box className="folder-wrapper report-folder-wrapper">
+                      {skills
+                        .filter((skill) => skill.workExperience === experience.id)
+                        .map((skill, i) => (
+                          <div key={i} className="folder">
+                            <Text className="experience-details-box-heading">{skill.skillName}</Text>
+                            <Text
+                              style={{
+                                color: '#697082',
+                                background: '#f4f4f4',
+                                borderRadius: '34px',
+                                padding: '4px 12px',
+                                fontSize: '13px',
+                                fontWeight: 500,
+                                width: 'max-content',
+                              }}
+                              className="doc-name"
+                            >
+                              {skillExpertiseDict[skill.expertise]}
+                            </Text>
+                          </div>
+                        ))}
+                    </Box>
+                  ) : (
+                    <Box className="added-peer-box">
+                      <Box style={{ borderRadius: '1rem', marginTop: '1rem' }} className="added-peers added-peers-exp ">
+                        No Skill Added.
+                      </Box>
+                    </Box>
+                  )}
+                </>
+                <div>
+                  <div className="peer-exp-name">
+                    <p>Referees</p>
+                  </div>
+
+                  {peerDetails.filter((peer) => peer.ref === experience.id).length > 0 ? (
+                    <>
+                      <Box
+                        style={{ gridTemplateColumns: '1.5fr 0.75fr 1.5fr 0.75fr 1fr' }}
+                        className="add-peer-header work-header"
+                      >
+                        <Text className="add-peer-header-text">Referee Name</Text>
+                        <Text className="add-peer-header-text">Referee Type</Text>
+                        <Text className="add-peer-header-text">Referee Details</Text>
+                        <Text className="add-peer-header-text">Status</Text>
+                        <Text className="add-peer-header-text">Remarks</Text>
+                      </Box>
+                      <Box className="added-peer-box">
+                        {peerDetails
+                          .filter((peer) => peer.ref === experience.id)
+                          .map((peer, i) => (
+                            <Box
+                              style={{ gridTemplateColumns: '1.5fr 0.75fr 1.5fr 0.75fr 1fr' }}
+                              key={i}
+                              className="added-peers added-peers-exp "
+                            >
+                              <Text className="peer-name title">{peer.name}</Text>
+                              <Text className="peer-name">{WorkPeerType[peer.verificationBy]}</Text>
+                              <Text
+                                style={{
+                                  display: 'flex',
+                                  flexDirection: 'column',
+                                  alignItems: 'flex-start',
+                                  gap: '10px',
+                                }}
+                                className="peer-name"
+                              >
+                                <span>
+                                  Email:
+                                  <br />
+                                  <a href={`mailto:${peer.email}`}>{peer.email}</a>
+                                </span>
+
+                                <span>
+                                  Phone:
+                                  <br />
+                                  <a href={`tel:+${peer.phone}`}>{peer.phone}</a>
+                                </span>
+                              </Text>
+                              <Text
+                                className={`peer-name ${
+                                  peer.isVerificationCompleted ? 'text-verified' : 'text-dispute'
+                                }`}
+                                style={{
+                                  color:
+                                    peer.isReal.state === 'REJECTED'
+                                      ? '#ff7272'
+                                      : peer.isReal.state === 'ACCEPTED'
+                                      ? '#17A672'
+                                      : '#FAB005',
+                                }}
+                              >
+                                {peer.isReal.state === 'ACCEPTED'
+                                  ? 'Approved'
+                                  : peer.isReal.state === 'REJECTED'
+                                  ? 'Rejected'
+                                  : 'Pending'}
+                              </Text>
+                              <Text className="peer-name name-wrap">
+                                {peer.isReal.state === 'REJECTED'
+                                  ? `${peer.isReal.dispute_type}${
+                                      peer.isReal.dispute_reason ? ` - ${peer.isReal.dispute_reason}` : ''
+                                    }`
+                                  : peer.allQuestions.review}
+                              </Text>
+                            </Box>
+                          ))}
+                      </Box>
+                    </>
+                  ) : (
+                    <>
+                      <Box className="add-peer-header work-header">
+                        <Text className="add-peer-header-text">Referee Name</Text>
+                        <Text className="add-peer-header-text">Referee Type</Text>
+                        <Text className="add-peer-header-text">Status</Text>
+                        <Text className="add-peer-header-text">Remarks</Text>
+                      </Box>
+                      <Box className="added-peer-box">
+                        <Box className="added-peers added-peers-exp ">
+                          <Text className="peer-name title">No Referee</Text>
+                          <Text className="peer-name">-</Text>
+                          <Text className={`peer-name`}>-</Text>
+                          <Text className="peer-name name-wrap">-</Text>
+                        </Box>
+                      </Box>
+                    </>
+                  )}
+                </div>
+                <WorkExperienceReport2
+                  documents={document}
+                  workExperienceDetails={workExperienceDetails.filter((workEx) => workEx.id === experience.id)}
+                  peerDetails={peerDetails}
+                  skills={skills}
+                />
               </div>
             ))}
           </>

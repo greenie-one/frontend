@@ -239,6 +239,11 @@ type ResidentialType = {
   updatedAt: string;
 };
 
+type SkillsVerification = {
+  id: string;
+  status: StatusType;
+};
+
 type WorkPeerReportResponse = {
   ref: string;
   name: string;
@@ -248,6 +253,7 @@ type WorkPeerReportResponse = {
   phoneVerified?: boolean;
   verificationBy: WorkVerificationBy;
   selectedFields?: SelectedFields;
+  isReal: StatusType;
   allQuestions?: AllQuestions;
   otherQuestions: HRQuestions;
   skills: SkillsVerification[];
@@ -300,9 +306,18 @@ type PeersResponse = {
 };
 
 type DocumentResponse = {
+  _id: string;
   name: string;
   privateUrl: string;
   type: string;
+  workExperience: string;
+};
+
+type CandidateSkillType = {
+  _id: string;
+  user: string;
+  skillName: string;
+  expertise: string;
   workExperience: string;
 };
 
@@ -312,6 +327,7 @@ type WorkExperienceDetails = {
   workExp: {
     workExperiences: WorkExperience[];
   };
+  skills: CandidateSkillType[];
 };
 
 type ResidentialDetailsResponse = {
