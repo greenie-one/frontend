@@ -33,8 +33,6 @@ export const WorkExperienceReport2: React.FC<ChildComponentProps> = ({
   workExperienceDetails,
   documents,
 }) => {
-  console.log(workExperienceDetails);
-
   return (
     <>
       <div className="">

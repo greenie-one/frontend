@@ -16,6 +16,7 @@ type ChildComponentProps = {
   workExperienceDetails: WorkExperience[];
   skills: CandidateSkillType[];
   peerDetails: WorkPeerReportResponse[];
+  residentialPeerDetails: PeersResponse[];
 };
 
 const calculateIDProgress = (idDetails: IdDetailsResponse): number => {
@@ -103,6 +104,7 @@ export const ExecutiveSummary: React.FC<ChildComponentProps> = ({
   workExperienceDetails,
   peerDetails,
   skills,
+  residentialPeerDetails,
 }) => {
   // console.log(IdDetails.aadhar);
   return (
@@ -155,7 +157,7 @@ export const ExecutiveSummary: React.FC<ChildComponentProps> = ({
             </div>
           </div>
         </div>
-        <Box className="basic-info-box-wrapper wrapper-executive">
+        <Box style={{ marginTop: '4rem' }} className="basic-info-box-wrapper wrapper-executive">
           <Box className="info-box">
             <Text className="experience-details-box-heading">Greenie ID</Text>
             <Text className="experience-details-box-text">
@@ -290,9 +292,13 @@ export const ExecutiveSummary: React.FC<ChildComponentProps> = ({
                   <Button leftIcon={<MdVerified color="#17A672" size={'16px'} />} className="verified report-verifybtn">
                     Verified
                   </Button>
-                ) : (
+                ) : residentialPeerDetails.filter((peer) => peer.ref === resident.id).length > 0 ? (
                   <Button leftIcon={<CgSandClock size={'16px'} />} className="pending report-verifybtn">
                     Pending
+                  </Button>
+                ) : (
+                  <Button style={{ color: '#ff7272' }} className="pending report-verifybtn">
+                    Not Verified
                   </Button>
                 )}
               </Box>
