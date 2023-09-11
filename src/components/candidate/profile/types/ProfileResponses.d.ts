@@ -278,6 +278,7 @@ type VerificationStatus = {
 };
 
 type PeersResponse = {
+  isReal: StatusType;
   ref: string;
   name: string;
   email: string;
