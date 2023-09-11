@@ -19,6 +19,7 @@ type CaptureLocationProps = {
 };
 
 type LocationRequestType = {
+  isReal: StatusType;
   latitude: number;
   longitude: number;
 };
@@ -68,6 +69,9 @@ export const CaptureLocation: React.FC<CaptureLocationProps> = ({ uuid, peerData
     });
 
     const requestBody: LocationRequestType = {
+      isReal: {
+        state: 'ACCEPTED',
+      },
       latitude: position.coords.latitude,
       longitude: position.coords.longitude,
     };
