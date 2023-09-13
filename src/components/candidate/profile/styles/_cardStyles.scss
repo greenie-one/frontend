@@ -218,6 +218,11 @@
   }
 }
 
+@media screen and (max-width: 540px) {
+  .section-cards-wrapper {
+    grid-template-columns: 100%;
+  }
+}
 @media screen and (max-width: 414px) {
   .experience-section {
     .experience-card {
@@ -233,10 +238,6 @@
         height: 150px;
       }
     }
-  }
-
-  .section-cards-wrapper {
-    grid-template-columns: 100%;
   }
 
   .residential-info {

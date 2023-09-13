@@ -12,6 +12,7 @@ import { useDisclosure } from '@mantine/hooks';
 import { ConfirmationModal } from '../components/ConfirmationModals';
 import { useNavigate } from 'react-router-dom';
 import { useGlobalContext } from '../../../../../../../context/GlobalContext';
+import { LocationConfirmationModal, LocationDenyModal } from '../components/LocationConfirmationModal';
 
 type CaptureLocationProps = {
   uuid: string;
@@ -37,6 +38,8 @@ export const CaptureLocation: React.FC<CaptureLocationProps> = ({ uuid, peerData
   const { scrollToTop } = useGlobalContext();
   const navigate = useNavigate();
   const [opened, { open, close }] = useDisclosure(false);
+  const [locationModalOpened, { open: locationModalOpen, close: locationModalClose }] = useDisclosure(false);
+  const [denyModalOpened, { open: denyModalOpen, close: denyModalClose }] = useDisclosure(false);
 
   const [addressVerified, setAddressVerified] = React.useState<boolean | null>(null);
 
@@ -53,7 +56,6 @@ export const CaptureLocation: React.FC<CaptureLocationProps> = ({ uuid, peerData
     });
 
     if (navigator.geolocation) {
-      showSuccessNotification({ title: 'Success', message: 'Location Permission Granted' });
       navigator.geolocation.getCurrentPosition(setPosition, showError);
     } else {
       showErrorNotification('Geo-Location is not supported by this browser.');
@@ -63,10 +65,7 @@ export const CaptureLocation: React.FC<CaptureLocationProps> = ({ uuid, peerData
   };
 
   const setPosition = async (position: { coords: CoordinatesType }) => {
-    showLoadingNotification({
-      title: 'Verifying Address...',
-      message: 'Please wait while we verify your location.',
-    });
+    showSuccessNotification({ title: 'Success', message: 'Location Permission Granted' });
 
     const requestBody: LocationRequestType = {
       isReal: {
@@ -76,6 +75,10 @@ export const CaptureLocation: React.FC<CaptureLocationProps> = ({ uuid, peerData
       longitude: position.coords.longitude,
     };
 
+    showLoadingNotification({
+      title: 'Verifying Address...',
+      message: 'Please wait while we verify your location.',
+    });
     const res = await HttpClient.callApi<CaptureSuccessResponse>({
       url: `${addressVerificationAPIList.peerCaptureLocation}/${uuid}`,
       method: 'POST',
@@ -180,11 +183,21 @@ export const CaptureLocation: React.FC<CaptureLocationProps> = ({ uuid, peerData
           <Title className="address-verification-details-main-title">
             Please allow permission to capture location to confirm the verification
           </Title>
-          <Button sx={{ marginTop: '2rem' }} className="green-outline-btn" onClick={getLocation}>
+          <Button sx={{ marginTop: '2rem' }} className="green-outline-btn" onClick={locationModalOpen}>
             Capture Location
           </Button>
         </Box>
       </Box>
+      <LocationConfirmationModal
+        opened={locationModalOpened}
+        close={locationModalClose}
+        onConfirm={getLocation}
+        onDeny={() => {
+          locationModalClose();
+          denyModalOpen();
+        }}
+      />
+      <LocationDenyModal opened={denyModalOpened} close={denyModalClose} />
     </>
   );
 };
