@@ -16,7 +16,7 @@ type GetAddressVerificationResponse = {
   isVerificationCompleted: boolean;
   createdAt: string;
   updatedAt: string;
-  isReal: StatusType;
+  isReal?: StatusType;
 };
 
 type ResidentialInfoDataResponse = {

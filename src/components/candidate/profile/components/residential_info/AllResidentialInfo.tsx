@@ -80,11 +80,15 @@ export const AllResidentialInfo = () => {
                   ? info.isVerified
                     ? 'verified'
                     : 'notVerified'
-                  : peerDetail.isReal.state === 'PENDING'
-                  ? 'pending'
-                  : peerDetail.isReal.state === 'REJECTED'
-                  ? 'rejected'
-                  : 'verified';
+                  : peerDetail.isReal
+                  ? peerDetail.isReal.state === 'PENDING'
+                    ? 'pending'
+                    : peerDetail.isReal.state === 'REJECTED'
+                    ? 'rejected'
+                    : 'verified'
+                  : info.isVerified
+                  ? 'verified'
+                  : 'pending';
               return (
                 <Box className="residential-card" key={index} onClick={() => handleGoToDetails(info.id)}>
                   <Box className="top-box">
