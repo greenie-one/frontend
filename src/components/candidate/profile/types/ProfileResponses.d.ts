@@ -264,6 +264,7 @@ type WorkPeerReportResponse = {
 };
 
 type AccountDetails = {
+  profilePic: string;
   email: string;
   firstName: string;
   greenieId: string;

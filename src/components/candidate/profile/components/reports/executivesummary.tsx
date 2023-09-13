@@ -116,7 +116,10 @@ export const ExecutiveSummary: React.FC<ChildComponentProps> = ({
           <div className="residential-address">
             <div className="residential-address-left workexperience">
               <span className="profile-thumbnail">
-                <img src={dummyThumbnail} className="profile-img" />
+                <img
+                  src={AccountDetails.profilePic ? AccountDetails.profilePic : dummyThumbnail}
+                  className="profile-img"
+                />
               </span>
               <div
                 style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'center' }}

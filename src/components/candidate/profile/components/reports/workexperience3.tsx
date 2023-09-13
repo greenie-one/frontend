@@ -296,29 +296,39 @@ export const WorkExperienceReport3: React.FC<ChildComponentProps> = ({
                                 </span>
                               </Text>
                               <Text
-                                className={`peer-name ${
-                                  peer.isVerificationCompleted ? 'text-verified' : 'text-dispute'
-                                }`}
-                                style={{
-                                  color:
-                                    peer.isReal.state === 'REJECTED'
-                                      ? '#ff7272'
-                                      : peer.isReal.state === 'ACCEPTED'
-                                      ? '#17A672'
-                                      : '#FAB005',
-                                }}
+                                className={`peer-name ${peer.isVerificationCompleted ? 'text-verified' : 'pending'}`}
+                                style={
+                                  peer.isReal
+                                    ? {
+                                        color:
+                                          peer.isReal.state === 'REJECTED'
+                                            ? '#ff7272'
+                                            : peer.isReal.state === 'ACCEPTED'
+                                            ? '#17A672'
+                                            : '#FAB005',
+                                        border: '0',
+                                        fontSize: '14px',
+                                      }
+                                    : { border: '0', fontSize: '14px' }
+                                }
                               >
-                                {peer.isReal.state === 'ACCEPTED'
+                                {peer.isReal
+                                  ? peer.isReal.state === 'ACCEPTED'
+                                    ? 'Approved'
+                                    : peer.isReal.state === 'REJECTED'
+                                    ? 'Rejected'
+                                    : 'Pending'
+                                  : peer.isVerificationCompleted
                                   ? 'Approved'
-                                  : peer.isReal.state === 'REJECTED'
-                                  ? 'Rejected'
                                   : 'Pending'}
                               </Text>
                               <Text className="peer-name name-wrap">
-                                {peer.isReal.state === 'REJECTED'
-                                  ? `${peer.isReal.dispute_type}${
-                                      peer.isReal.dispute_reason ? ` - ${peer.isReal.dispute_reason}` : ''
-                                    }`
+                                {peer.isReal
+                                  ? peer.isReal.state === 'REJECTED'
+                                    ? `${peer.isReal.dispute_type}${
+                                        peer.isReal.dispute_reason ? ` - ${peer.isReal.dispute_reason}` : ''
+                                      }`
+                                    : peer.allQuestions.review
                                   : peer.allQuestions.review}
                               </Text>
                             </Box>

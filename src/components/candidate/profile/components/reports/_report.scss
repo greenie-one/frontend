@@ -251,7 +251,7 @@
 
             img {
               aspect-ratio: 1;
-              width: rem(65);
+              width: rem(80);
             }
           }
 
@@ -372,13 +372,11 @@
   }
   .report-name {
     font-size: 1.25rem;
-    margin-top: rem(10);
+    margin-top: rem(4);
     font-weight: 600;
   }
   .report-verify {
-    background: -webkit-linear-gradient(#17a672, #8cf078);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: #17a672;
     font-size: rem(17);
     text-transform: capitalize;
     font-weight: 600;
@@ -686,7 +684,7 @@
         gap: rem(20);
         .profile-thumbnail {
           aspect-ratio: 1;
-          width: rem(80);
+          width: rem(110);
           display: grid;
           place-items: center;
           border-radius: 50%;
