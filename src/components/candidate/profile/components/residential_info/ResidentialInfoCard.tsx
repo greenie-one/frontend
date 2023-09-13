@@ -17,6 +17,7 @@ export const ResidentialInfoCard: React.FC<ResidentialInfoCardProps> = ({
   isVerified,
   city,
   addressType,
+  verificationStatus,
 }) => {
   return (
     <Box className="residential-card">
@@ -29,13 +30,24 @@ export const ResidentialInfoCard: React.FC<ResidentialInfoCardProps> = ({
             {address_line_1} {address_line_2}, {landmark}, {city} {pincode}
           </Box>
           <Box className="address-type">{addressType}</Box>
-          {isVerified ? (
-            <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
-              Verified
+          {verificationStatus === 'notVerified' && (
+            <Button style={{ color: '#ff7272', borderColor: '#ff7272' }} className="verified">
+              Not Verified
             </Button>
-          ) : (
+          )}
+          {verificationStatus === 'pending' && (
             <Button leftIcon={<CgSandClock size={'16px'} />} className="pending">
               Pending
+            </Button>
+          )}
+          {verificationStatus === 'rejected' && (
+            <Button style={{ color: '#ff7272', borderColor: '#ff7272' }} className="verified">
+              Rejected
+            </Button>
+          )}
+          {verificationStatus === 'verified' && (
+            <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
+              Verified
             </Button>
           )}
         </Box>

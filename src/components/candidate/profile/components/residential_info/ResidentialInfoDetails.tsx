@@ -175,14 +175,14 @@ export const ResidentialInfoDetails: React.FC = () => {
                   <AiOutlineHome size={'20px'} />
                 </Box>
 
-                <Text className="text">I am at the location, I will verify.</Text>
+                <Text className="text">I am at this location, I will verify.</Text>
               </Box>
               <Box className="residential-info-modal-choice-box" onClick={() => handleGoToVerification('Peer')}>
                 <Box className="residential-info-modal-icon">
                   <MdAddLocationAlt size={'20px'} />
                 </Box>
 
-                <Text className="text">Ask someone who is present at the location to verify.</Text>
+                <Text className="text">Ask someone who is present at this location to verify.</Text>
               </Box>
             </Box>
           </Box>
@@ -219,14 +219,34 @@ export const ResidentialInfoDetails: React.FC = () => {
                     {residential?.address_line_1}, {residential?.address_line_2}, {residential?.landmark},{' '}
                     {residential?.city} {residential?.pincode}
                   </Box>
-                  {residential?.isVerified ? (
-                    <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
-                      Verified
-                    </Button>
+                  {sentRequests.length === 0 ? (
+                    residential?.isVerified ? (
+                      <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
+                        Verified
+                      </Button>
+                    ) : (
+                      <Button style={{ color: '#ff7272', borderColor: '#ff7272' }} className="verified">
+                        Not Verified
+                      </Button>
+                    )
                   ) : (
-                    <Button leftIcon={<CgSandClock size={'16px'} />} className="pending">
-                      Pending
-                    </Button>
+                    <>
+                      {sentRequests[0].isReal.state === 'PENDING' && (
+                        <Button leftIcon={<CgSandClock size={'16px'} />} className="pending">
+                          Pending
+                        </Button>
+                      )}
+                      {sentRequests[0].isReal.state === 'REJECTED' && (
+                        <Button style={{ color: '#ff7272', borderColor: '#ff7272' }} className="verified">
+                          Rejected
+                        </Button>
+                      )}
+                      {sentRequests[0].isReal.state === 'ACCEPTED' && (
+                        <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
+                          Verified
+                        </Button>
+                      )}
+                    </>
                   )}
                 </Box>
               </Box>
@@ -348,22 +368,24 @@ export const ResidentialInfoDetails: React.FC = () => {
                             {date[0]} {months[Number(date[1]) - 1]} {date[2]}
                           </strong>
                         </Text>
-                        {request.isVerificationCompleted ? (
-                          <Box className="request-status">
-                            <Box className="request-box-icon">
-                              <MdVerified color="#17a672" />
-                            </Box>
-                            <Text style={{ color: '#17a672' }} className="request-status-text verified-status">
-                              Verified
-                            </Text>
-                          </Box>
-                        ) : (
-                          <Box className="request-status">
-                            <Box className="request-box-icon">
-                              <CgSandClock color="#fab005" />
-                            </Box>
-                            <Text className="request-status-text pending-status">Pending</Text>
-                          </Box>
+                        {request.isReal.state === 'PENDING' && (
+                          <Button style={{ border: '0' }} leftIcon={<CgSandClock size={'16px'} />} className="pending">
+                            Pending
+                          </Button>
+                        )}
+                        {request.isReal.state === 'REJECTED' && (
+                          <Button style={{ color: '#ff7272', border: '0' }} className="verified">
+                            Rejected
+                          </Button>
+                        )}
+                        {request.isReal.state === 'ACCEPTED' && (
+                          <Button
+                            style={{ border: '0' }}
+                            leftIcon={<MdVerified color="#8CF078" size={'16px'} />}
+                            className="verified"
+                          >
+                            Verified
+                          </Button>
                         )}
                       </Box>
                     );

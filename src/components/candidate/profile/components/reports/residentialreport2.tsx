@@ -182,37 +182,61 @@ export const ResidentialReport2: React.FC<ChildComponentProps> = ({ residentialP
                                   </span>
                                 </Text>
                                 <Text
-                                  style={{
-                                    color:
-                                      peer.isReal.state === 'REJECTED'
-                                        ? '#ff7272'
-                                        : peer.isReal.state === 'ACCEPTED'
-                                        ? '#17A672'
-                                        : '#FAB005',
-                                  }}
-                                  className={`peer-name ${
-                                    peer.isVerificationCompleted ? 'text-verified' : 'text-dispute'
-                                  }`}
+                                  style={
+                                    peer.isReal
+                                      ? {
+                                          color:
+                                            peer.isReal.state === 'REJECTED'
+                                              ? '#ff7272'
+                                              : peer.isReal.state === 'ACCEPTED'
+                                              ? '#17A672'
+                                              : '#FAB005',
+                                          border: '0',
+                                          fontSize: '14px',
+                                        }
+                                      : { border: '0', fontSize: '14px' }
+                                  }
+                                  className={`peer-name ${peer.isVerificationCompleted ? 'text-verified' : 'pending'}`}
                                 >
-                                  {peer.isReal.state === 'PENDING'
-                                    ? 'Pending'
-                                    : peer.isReal.state === 'ACCEPTED'
+                                  {peer.isReal
+                                    ? peer.isReal.state === 'PENDING'
+                                      ? 'Pending'
+                                      : peer.isReal.state === 'ACCEPTED'
+                                      ? 'Approved'
+                                      : 'Rejected'
+                                    : peer.isVerificationCompleted
                                     ? 'Approved'
-                                    : 'Rejected'}
+                                    : 'Pending'}
                                 </Text>
 
                                 <Text className="peer-name name-wrap">
-                                  {peer.isReal.state === 'PENDING' && 'No Remarks'}
-                                  {peer.isReal.state === 'ACCEPTED' && 'Geo-Location API'}
-                                  {peer.isReal.state === 'REJECTED' &&
-                                    `${peer.isReal.dispute_type}${
-                                      peer.isReal.dispute_reason ? ` - ${peer.isReal.dispute_reason}` : ''
-                                    }`}
+                                  {peer.isReal ? (
+                                    <>
+                                      {peer.isReal.state === 'PENDING' && 'No Remarks'}
+                                      {peer.isReal.state === 'ACCEPTED' && 'Geo-Location API'}
+                                      {peer.isReal.state === 'REJECTED' &&
+                                        `${peer.isReal.dispute_type}${
+                                          peer.isReal.dispute_reason ? ` - ${peer.isReal.dispute_reason}` : ''
+                                        }`}
+                                    </>
+                                  ) : peer.isVerificationCompleted ? (
+                                    'Geo-Location API'
+                                  ) : (
+                                    'No Remarks'
+                                  )}
                                 </Text>
                               </Box>
                             </Box>
-                            {peer.isVerificationCompleted && peer.isReal.state === 'ACCEPTED' ? (
-                              <ResidentialReport ResidentialInfo={[resident]} />
+                            {peer.isVerificationCompleted ? (
+                              peer.isReal ? (
+                                peer.isReal.state === 'ACCEPTED' ? (
+                                  <ResidentialReport ResidentialInfo={[resident]} />
+                                ) : (
+                                  <></>
+                                )
+                              ) : (
+                                <ResidentialReport ResidentialInfo={[resident]} />
+                              )
                             ) : (
                               <></>
                             )}

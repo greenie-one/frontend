@@ -32,8 +32,8 @@ export const CandidateFeedback: React.FC<FeedbackProps> = ({
   const { classes } = useStyles();
   const isMobile = useMediaQuery('(max-width: 50em)');
 
-  const experienceChips = ['Bad', 'Poor', 'Alright', 'Good', 'Loved it'];
-  const referSomeoneChips = ['Nope', 'Maybe', 'Alright', 'I will', 'Already Referred'];
+  const experienceChips = ['Loved it', 'Good', 'Alright', 'Poor', 'Bad'];
+  const referSomeoneChips = ['Already Referred', 'I will', 'Alright', 'Maybe', 'Nope'];
 
   const feedbackForm = useForm({
     initialValues: {
