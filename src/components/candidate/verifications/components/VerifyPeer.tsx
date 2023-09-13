@@ -258,6 +258,7 @@ export const VerifyPeer = () => {
           <Select
             clearable
             searchable
+            withAsterisk
             nothingFound="No options"
             className="inputClass"
             placeholder="Select reason for dispute"

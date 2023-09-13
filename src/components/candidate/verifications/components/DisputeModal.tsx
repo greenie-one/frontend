@@ -54,7 +54,7 @@ export const DisputeModal: React.FC<DisputeModalProps> = ({
     const responseObj: StatusType = {
       state: 'REJECTED',
       dispute_type: disputeForm.values.disputeType,
-      dispute_reason: disputeForm.values.disputeReason,
+      dispute_reason: disputeForm.values.disputeReason || 'NA',
     };
 
     if (parentKey === 'documents' || parentKey === 'skills') {
@@ -63,7 +63,7 @@ export const DisputeModal: React.FC<DisputeModalProps> = ({
         status: {
           state: 'REJECTED',
           dispute_type: disputeForm.values.disputeType,
-          dispute_reason: disputeForm.values.disputeReason,
+          dispute_reason: disputeForm.values.disputeReason || 'NA',
         },
       };
 
@@ -145,6 +145,7 @@ export const DisputeModal: React.FC<DisputeModalProps> = ({
         <Select
           clearable
           searchable
+          withAsterisk
           nothingFound="No options"
           className="inputClass"
           placeholder="Select reason for dispute"
