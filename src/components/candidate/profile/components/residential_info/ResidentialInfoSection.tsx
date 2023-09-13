@@ -123,11 +123,15 @@ export const ResidentialInfoSection = () => {
                   ? info.isVerified
                     ? 'verified'
                     : 'notVerified'
-                  : peerDetail.isReal.state === 'PENDING'
-                  ? 'pending'
-                  : peerDetail.isReal.state === 'REJECTED'
-                  ? 'rejected'
-                  : 'verified';
+                  : peerDetail.isReal
+                  ? peerDetail.isReal.state === 'PENDING'
+                    ? 'pending'
+                    : peerDetail.isReal.state === 'REJECTED'
+                    ? 'rejected'
+                    : 'verified'
+                  : info.isVerified
+                  ? 'verified'
+                  : 'pending';
 
               return (
                 <Box key={index} onClick={() => handleDetailsPage(info.id)}>
