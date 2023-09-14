@@ -161,9 +161,14 @@ export const ExecutiveSummary: React.FC<ChildComponentProps> = ({
           </div>
         </div>
         <Box style={{ marginTop: '4rem' }} className="basic-info-box-wrapper wrapper-executive">
-          <Box className="info-box">
-            <Text className="experience-details-box-heading">Greenie ID</Text>
-            <Text className="experience-details-box-text">
+          <Box style={{ background: '#17A672', border: '1px solid #17A672', color: '#ffffff' }} className="info-box">
+            <Text style={{ color: '#ffffff', marginBottom: '0' }} className="experience-details-box-heading">
+              Greenie ID
+            </Text>
+            <Text
+              style={{ color: '#ffffff', fontSize: '20px', fontWeight: 700, marginTop: '0' }}
+              className="experience-details-box-text"
+            >
               {AccountDetails.greenieId ? AccountDetails.greenieId : '-'}
             </Text>
           </Box>

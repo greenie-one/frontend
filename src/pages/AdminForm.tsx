@@ -22,7 +22,7 @@ export const AdminForm: React.FC = (): JSX.Element => {
   const navigate = useNavigate();
   const { authClient } = useGlobalContext();
 
-  const [inputValue, setInputValue] = useState<'email' | 'phone' | 'greenieId'>('email');
+  const [inputValue, setInputValue] = useState<'email' | 'phone' | 'grnID'>('email');
 
   const form = useForm<FormData>({
     initialValues: {
@@ -39,12 +39,12 @@ export const AdminForm: React.FC = (): JSX.Element => {
     initialValues: {
       email: '',
       phone: '',
-      greenieId: '',
+      grnID: '',
     },
     validate: {
       email: isEmail('This field is required!'),
       phone: hasLength({ min: 10, max: 10 }, 'Phone number must of 10 digits'),
-      greenieId: hasLength({ min: 8, max: 8 }, 'Greenie ID must of 8 characters'),
+      grnID: hasLength({ min: 8, max: 8 }, 'Greenie ID must of 8 characters'),
     },
   });
 
@@ -91,7 +91,7 @@ export const AdminForm: React.FC = (): JSX.Element => {
         ? `${encodeURIComponent('email')}=${encodeURIComponent(reportForm.values.email.trim())}`
         : inputValue === 'phone'
         ? `${encodeURIComponent('phone')}=${encodeURIComponent('+91' + reportForm.values.phone.slice(-10))}`
-        : `${encodeURIComponent('greenieId')}=${encodeURIComponent(reportForm.values.greenieId.trim())}`;
+        : `${encodeURIComponent('grnID')}=${encodeURIComponent(reportForm.values.grnID.trim())}`;
 
     showLoadingNotification({ title: 'Please Wait', message: '' });
 
@@ -179,7 +179,7 @@ export const AdminForm: React.FC = (): JSX.Element => {
                         ? reportForm.values.email
                         : inputValue === 'phone'
                         ? reportForm.values.phone
-                        : reportForm.values.greenieId
+                        : reportForm.values.grnID
                     }
                     onChange={(event) => reportForm.setFieldValue(inputValue, event.currentTarget.value)}
                     error={
@@ -187,7 +187,7 @@ export const AdminForm: React.FC = (): JSX.Element => {
                         ? reportForm.errors.email && 'Invalid email'
                         : inputValue === 'phone'
                         ? reportForm.errors.phone && 'Invalid phone number'
-                        : reportForm.errors.greenieId && 'Invalid greenie ID'
+                        : reportForm.errors.grnID && 'Invalid greenie ID'
                     }
                     radius="md"
                   />
@@ -222,7 +222,7 @@ export const AdminForm: React.FC = (): JSX.Element => {
                         onClick={() => {
                           reportForm.clearErrors();
                           reportForm.reset();
-                          setInputValue('greenieId');
+                          setInputValue('grnID');
                         }}
                       >
                         Use Greenie ID
@@ -260,14 +260,14 @@ export const AdminForm: React.FC = (): JSX.Element => {
                         onClick={() => {
                           reportForm.clearErrors();
                           reportForm.reset();
-                          setInputValue('greenieId');
+                          setInputValue('grnID');
                         }}
                       >
                         Use Greenie ID
                       </button>
                     </>
                   )}
-                  {inputValue === 'greenieId' && (
+                  {inputValue === 'grnID' && (
                     <>
                       <button
                         type="button"
