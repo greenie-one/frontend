@@ -148,23 +148,6 @@ export const WorkExperienceReport3: React.FC<ChildComponentProps> = ({
                     </Text>
                   </Box>
                   <Box className="info-box">
-                    <Text className="experience-details-box-heading">LinkedIn</Text>
-                    <Text className="experience-details-box-text">
-                      {experience.linkedInUrl ? (
-                        <a
-                          style={{ textDecoration: 'underline' }}
-                          href={experience.linkedInUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          {experience.companyName}
-                        </a>
-                      ) : (
-                        '-'
-                      )}
-                    </Text>
-                  </Box>
-                  <Box className="info-box">
                     <Text className="experience-details-box-heading">Tenure</Text>
                     <Text className="experience-details-box-text">
                       {experience.dateOfJoining.substring(0, 10).split('-').reverse().join('-')} -{' '}

@@ -149,10 +149,14 @@ export const WorkExperienceReport2: React.FC<ChildComponentProps> = ({
                                   <p>{peer.updatedAt?.substring(0, 10).split('-').reverse().join('-')}</p>
                                 </div>
                               </div>
-                              <Box className="add-peer-header">
+                              <Box
+                                style={{ gridTemplateColumns: '0.75fr 1.5fr 0.75fr 0.75fr 1.75fr' }}
+                                className="add-peer-header"
+                              >
                                 <Text className="add-peer-header-text">Particular</Text>
                                 <Text className="add-peer-header-text">Verified as</Text>
                                 <Text className="add-peer-header-text">Verified on</Text>
+                                <Text className="add-peer-header-text">Status</Text>
                                 <Text className="add-peer-header-text">Remarks</Text>
                               </Box>
                               <Box className="added-peer-box">
@@ -160,7 +164,11 @@ export const WorkExperienceReport2: React.FC<ChildComponentProps> = ({
                                   {Object.keys(peer.allQuestions).map((question, idx) => {
                                     if (question === 'attitudeRating' || question === 'review') {
                                       return (
-                                        <Box key={idx} className="added-peers">
+                                        <Box
+                                          key={idx}
+                                          style={{ gridTemplateColumns: '0.75fr 1.5fr 0.75fr 0.75fr 1.75fr' }}
+                                          className="added-peers"
+                                        >
                                           <Text className="peer-name title">{allQuestionsParticulars[question]}</Text>
                                           <Text style={{ textTransform: 'capitalize' }} className="peer-name">
                                             {peer.allQuestions[question] === 'not-given'
@@ -172,12 +180,63 @@ export const WorkExperienceReport2: React.FC<ChildComponentProps> = ({
                                               ? peer.updatedAt?.substring(0, 10).split('-').reverse().join('-')
                                               : '-'}
                                           </Text>
+                                          <Text
+                                            style={
+                                              peer.isReal
+                                                ? {
+                                                    color:
+                                                      peer.isReal.state === 'REJECTED'
+                                                        ? '#ff7272'
+                                                        : peer.isReal.state === 'ACCEPTED'
+                                                        ? '#17A672'
+                                                        : '#FAB005',
+                                                  }
+                                                : {}
+                                            }
+                                            className={`peer-name ${
+                                              peer.allQuestions[question].state === 'ACCEPTED'
+                                                ? 'text-verified'
+                                                : 'text-dispute'
+                                            }`}
+                                          >
+                                            {question === 'review' ? (
+                                              <span style={{ color: '#191919' }}>-</span>
+                                            ) : (
+                                              <>
+                                                {peer.isReal ? (
+                                                  peer.isReal.state === 'ACCEPTED' ? (
+                                                    peer.allQuestions[question].state === 'ACCEPTED' ? (
+                                                      'Approved'
+                                                    ) : (
+                                                      <span style={{ color: '#ff7272' }}>Disputed</span>
+                                                    )
+                                                  ) : peer.isReal.state === 'REJECTED' ? (
+                                                    'Rejected'
+                                                  ) : (
+                                                    'Pending'
+                                                  )
+                                                ) : peer.isVerificationCompleted ? (
+                                                  peer.allQuestions[question].state === 'ACCEPTED' ? (
+                                                    'Approved'
+                                                  ) : (
+                                                    <span style={{ color: '#ff7272' }}>Disputed</span>
+                                                  )
+                                                ) : (
+                                                  <span style={{ color: '#fab005' }}>Pending</span>
+                                                )}
+                                              </>
+                                            )}
+                                          </Text>
                                           <Text className="peer-name">No Remarks</Text>
                                         </Box>
                                       );
                                     } else {
                                       return (
-                                        <Box key={idx} className="added-peers">
+                                        <Box
+                                          key={idx}
+                                          style={{ gridTemplateColumns: '0.75fr 1.5fr 0.75fr 0.75fr 1.75fr' }}
+                                          className="added-peers"
+                                        >
                                           <Text className="peer-name title">{allQuestionsParticulars[question]}</Text>
                                           <Text className="peer-name">
                                             {question === 'peerPost'
@@ -188,6 +247,47 @@ export const WorkExperienceReport2: React.FC<ChildComponentProps> = ({
                                             {peer.isVerificationCompleted
                                               ? peer.updatedAt?.substring(0, 10).split('-').reverse().join('-')
                                               : '-'}
+                                          </Text>
+                                          <Text
+                                            style={
+                                              peer.isReal
+                                                ? {
+                                                    color:
+                                                      peer.isReal.state === 'REJECTED'
+                                                        ? '#ff7272'
+                                                        : peer.isReal.state === 'ACCEPTED'
+                                                        ? '#17A672'
+                                                        : '#FAB005',
+                                                  }
+                                                : {}
+                                            }
+                                            className={`peer-name ${
+                                              peer.allQuestions[question].state === 'ACCEPTED'
+                                                ? 'text-verified'
+                                                : 'text-dispute'
+                                            }`}
+                                          >
+                                            {peer.isReal ? (
+                                              peer.isReal.state === 'ACCEPTED' ? (
+                                                peer.allQuestions[question].state === 'ACCEPTED' ? (
+                                                  'Approved'
+                                                ) : (
+                                                  <span style={{ color: '#ff7272' }}>Disputed</span>
+                                                )
+                                              ) : peer.isReal.state === 'REJECTED' ? (
+                                                'Rejected'
+                                              ) : (
+                                                'Pending'
+                                              )
+                                            ) : peer.isVerificationCompleted ? (
+                                              peer.allQuestions[question].state === 'ACCEPTED' ? (
+                                                'Approved'
+                                              ) : (
+                                                <span style={{ color: '#ff7272' }}>Disputed</span>
+                                              )
+                                            ) : (
+                                              <span style={{ color: '#fab005' }}>Pending</span>
+                                            )}
                                           </Text>
                                           <Text className="peer-name">
                                             {peer.isReal
@@ -427,6 +527,7 @@ export const WorkExperienceReport2: React.FC<ChildComponentProps> = ({
                                 )}
                               </div>
                             </div>
+                            <hr className="breakLine"></hr>
                           </React.Fragment>
                         );
                       })}

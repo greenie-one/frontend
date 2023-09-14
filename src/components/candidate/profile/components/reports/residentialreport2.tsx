@@ -39,29 +39,73 @@ export const ResidentialReport2: React.FC<ChildComponentProps> = ({ residentialP
                         {resident.address_line_1} {resident.address_line_2} {resident.city} - {resident.pincode}
                       </p>
 
-                      {resident.isVerified ? (
-                        <Button
-                          style={{ border: '1px solid', borderRadius: '34px', padding: '2px 8px' }}
-                          leftIcon={<MdVerified color="#17A672" size={'16px'} />}
-                          className="verified report-verifybtn"
-                        >
-                          Verified
-                        </Button>
-                      ) : residentialPeer.filter((peer) => peer.ref === resident.id).length > 0 ? (
-                        <Button
-                          style={{ border: '1px solid', borderRadius: '34px', padding: '2px 8px' }}
-                          leftIcon={<CgSandClock size={'16px'} />}
-                          className="pending report-verifybtn"
-                        >
-                          Pending
-                        </Button>
+                      {residentialPeer.filter((peer) => peer.ref === resident.id).length > 0 ? (
+                        residentialPeer.filter((peer) => peer.ref === resident.id)[0].isReal ? (
+                          <>
+                            {residentialPeer.filter((peer) => peer.ref === resident.id)[0].isReal.state ===
+                              'PENDING' && (
+                              <Button
+                                style={{ color: '#FAB005', borderColor: '#FAB005' }}
+                                leftIcon={<CgSandClock size={'16px'} />}
+                                className="pending"
+                              >
+                                Pending
+                              </Button>
+                            )}
+                            {residentialPeer.filter((peer) => peer.ref === resident.id)[0].isReal.state ===
+                              'REJECTED' && (
+                              <Button style={{ color: '#ff7272', borderColor: '#ff7272' }} className="verified">
+                                Rejected
+                              </Button>
+                            )}
+                            {residentialPeer.filter((peer) => peer.ref === resident.id)[0].isReal.state ===
+                              'ACCEPTED' && (
+                              <Button
+                                style={{ color: '#17A672', borderColor: '#17A672' }}
+                                leftIcon={<MdVerified color="#17A672" size={'16px'} />}
+                                className="verified"
+                              >
+                                Verified
+                              </Button>
+                            )}
+                          </>
+                        ) : (
+                          <>
+                            {resident.isVerified ? (
+                              <Button
+                                style={{ color: '#17A672' }}
+                                leftIcon={<MdVerified color="#17A672" size={'16px'} />}
+                                className="verified"
+                              >
+                                Verified
+                              </Button>
+                            ) : (
+                              <Button
+                                style={{ color: '#FAB005', borderColor: '#FAB005' }}
+                                leftIcon={<CgSandClock size={'16px'} />}
+                                className="pending"
+                              >
+                                Pending
+                              </Button>
+                            )}
+                          </>
+                        )
                       ) : (
-                        <Button
-                          style={{ color: '#ff7272', border: '1px solid', borderRadius: '34px', padding: '2px 8px' }}
-                          className="pending report-verifybtn"
-                        >
-                          Not Verified
-                        </Button>
+                        <>
+                          {resident.isVerified ? (
+                            <Button
+                              style={{ color: '#17A672' }}
+                              leftIcon={<MdVerified color="#17A672" size={'16px'} />}
+                              className="verified"
+                            >
+                              Verified
+                            </Button>
+                          ) : (
+                            <Button style={{ color: '#ff7272', borderColor: '#ff7272' }} className="verified">
+                              Not Verified
+                            </Button>
+                          )}
+                        </>
                       )}
                     </div>
                   </div>
