@@ -88,7 +88,7 @@ export const VerificationJourney: React.FC = (): JSX.Element => {
                               verificationData.dateOfLeaving ? (
                                 <>Has the candidate completed the exit procedure?</>
                               ) : (
-                                <>Is the candidate completed on notice period?</>
+                                <>Is the candidate on notice period?</>
                               )
                             }
                             _id={verificationData.dateOfLeaving ? 'exitProcedure' : 'onNotice'}
@@ -118,7 +118,7 @@ export const VerificationJourney: React.FC = (): JSX.Element => {
                               verificationData.dateOfLeaving ? (
                                 <>Has the candidate completed the exit procedure?</>
                               ) : (
-                                <>Is the candidate completed on notice period?</>
+                                <>Is the candidate on notice period?</>
                               )
                             }
                             _id={verificationData.dateOfLeaving ? 'exitProcedure' : 'onNotice'}
@@ -149,7 +149,7 @@ export const VerificationJourney: React.FC = (): JSX.Element => {
                               verificationData.dateOfLeaving ? (
                                 <>Has the candidate completed the exit procedure?</>
                               ) : (
-                                <>Is the candidate completed on notice period?</>
+                                <>Is the candidate on notice period?</>
                               )
                             }
                             _id={verificationData.dateOfLeaving ? 'exitProcedure' : 'onNotice'}
