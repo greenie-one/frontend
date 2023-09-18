@@ -71,58 +71,66 @@ export const WorkExperienceReport2: React.FC<ChildComponentProps> = ({ peerDetai
                                       {WorkPeerType[peer.verificationBy]} (Peer{i + 1})
                                     </span>
                                   </div>
-
-                                  <Box className="add-peer-header add-peer-exp-header">
-                                    <Text className="add-peer-header-text">Particular</Text>
-                                    <Text className="add-peer-header-text">Verified As</Text>
-                                    <Text className="add-peer-header-text">Verified On</Text>
-                                    <Text className="add-peer-header-text">Status</Text>
-                                    <Text className="add-peer-header-text">Remarks</Text>
-                                  </Box>
-                                  <Box className="added-peer-box">
-                                    {Object.keys(peer.selectedFields).map((field, idx) => {
-                                      return (
-                                        <Box key={idx} className="added-peers added-exp-peers">
-                                          <Text className="peer-name title">{optionalAttrDict[field]}</Text>
-                                          <Text className="peer-name">
-                                            {field === 'dateOfJoining' || field === 'dateOfLeaving'
-                                              ? String(experience[field as keyof WorkExperience])
-                                                  .substring(0, 10)
-                                                  .split('-')
-                                                  .reverse()
-                                                  .join('-')
-                                              : experience[field as keyof WorkExperience]}
-                                          </Text>
-                                          <Text className="peer-name">
-                                            {peer.isVerificationCompleted
-                                              ? peer.updatedAt?.substring(0, 10).split('-').reverse().join('-')
-                                              : '-'}
-                                          </Text>
-                                          <Text
-                                            className={`peer-name ${
-                                              peer.selectedFields[field].state === 'ACCEPTED'
-                                                ? 'text-verified'
-                                                : 'text-dispute'
-                                            }`}
-                                          >
-                                            {peer.selectedFields[field].state === 'ACCEPTED'
-                                              ? 'Approved'
-                                              : peer.selectedFields[field].state === 'REJECTED'
-                                              ? 'Disputed'
-                                              : 'Pending'}
-                                          </Text>
-                                          <Text className="peer-name">
-                                            {peer.selectedFields[field].state === 'REJECTED'
-                                              ? `${peer.selectedFields[field].dispute_type} - ${peer.selectedFields[field].dispute_reason}`
-                                              : 'No Remarks'}
-                                          </Text>
-                                        </Box>
-                                      );
-                                    })}
-                                  </Box>
+                                  {peer.selectedFields ? (
+                                    <React.Fragment>
+                                      <Box className="add-peer-header add-peer-exp-header">
+                                        <Text className="add-peer-header-text">Particular</Text>
+                                        <Text className="add-peer-header-text">Verified As</Text>
+                                        <Text className="add-peer-header-text">Verified On</Text>
+                                        <Text className="add-peer-header-text">Status</Text>
+                                        <Text className="add-peer-header-text">Remarks</Text>
+                                      </Box>
+                                      <Box className="added-peer-box">
+                                        {Object.keys(peer.selectedFields).map((field, idx) => {
+                                          return (
+                                            <Box key={idx} className="added-peers added-exp-peers">
+                                              <Text className="peer-name title">{optionalAttrDict[field]}</Text>
+                                              <Text className="peer-name">
+                                                {field === 'dateOfJoining' || field === 'dateOfLeaving'
+                                                  ? String(experience[field as keyof WorkExperience])
+                                                      .substring(0, 10)
+                                                      .split('-')
+                                                      .reverse()
+                                                      .join('-')
+                                                  : experience[field as keyof WorkExperience]}
+                                              </Text>
+                                              <Text className="peer-name">
+                                                {peer.isVerificationCompleted
+                                                  ? peer.updatedAt?.substring(0, 10).split('-').reverse().join('-')
+                                                  : '-'}
+                                              </Text>
+                                              <Text
+                                                className={`peer-name ${
+                                                  peer.selectedFields[field].state === 'ACCEPTED'
+                                                    ? 'text-verified'
+                                                    : 'text-dispute'
+                                                }`}
+                                              >
+                                                {peer.selectedFields[field].state === 'ACCEPTED'
+                                                  ? 'Approved'
+                                                  : peer.selectedFields[field].state === 'REJECTED'
+                                                  ? 'Disputed'
+                                                  : 'Pending'}
+                                              </Text>
+                                              <Text className="peer-name">
+                                                {peer.selectedFields[field].state === 'REJECTED'
+                                                  ? `${peer.selectedFields[field].dispute_type} - ${peer.selectedFields[field].dispute_reason}`
+                                                  : 'No Remarks'}
+                                              </Text>
+                                            </Box>
+                                          );
+                                        })}
+                                      </Box>
+                                    </React.Fragment>
+                                  ) : (
+                                    <React.Fragment></React.Fragment>
+                                  )}
                                 </div>
                                 <div>
-                                  <div className="location">
+                                  <div
+                                    style={{ marginTop: peer.selectedFields ? '4rem' : '2rem' }}
+                                    className="location"
+                                  >
                                     <p>Conduct report</p>
                                     <div className="location-date">
                                       <p>Last updated</p>

@@ -31,7 +31,7 @@ export const ResidentialReport: React.FC<ChildComponentProps> = ({ ResidentialIn
         <ReportTop />
 
         <div className="disclaimer-box">
-          <span className="disclaimer-text">Residential Information</span>
+          <span className="disclaimer-text">Residential Information (Verification Parameters)</span>
           {ResidentialInfo.length > 0 ? (
             <>
               {ResidentialInfo.map((resident, index) => {
@@ -147,7 +147,25 @@ export const ResidentialReport: React.FC<ChildComponentProps> = ({ ResidentialIn
                     </React.Fragment>
                   );
                 } else {
-                  return <React.Fragment key={index}></React.Fragment>;
+                  return (
+                    <React.Fragment key={index}>
+                      <div className="added-peer-box">
+                        <div
+                          style={{
+                            height: '5rem',
+                            borderRadius: '1rem',
+                            fontWeight: '500',
+                            marginTop: '1rem',
+                            gridTemplateColumns: '1fr',
+                            fontSize: '1rem',
+                          }}
+                          className="added-peers added-peers-exp "
+                        >
+                          No Residential Address is Verified.
+                        </div>
+                      </div>
+                    </React.Fragment>
+                  );
                 }
               })}
             </>
