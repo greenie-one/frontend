@@ -17,10 +17,10 @@ import { LocationConfirmationModal, LocationDenyModal } from '../components/Loca
 type CaptureLocationProps = {
   uuid: string;
   peerData: PeerVerificationDataResponse;
+  setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
 };
 
 type LocationRequestType = {
-  isReal: StatusType;
   latitude: number;
   longitude: number;
 };
@@ -34,7 +34,7 @@ const formattedDate = (data: string) => {
   return data.substring(0, 10).split('-').reverse().join('-');
 };
 
-export const CaptureLocation: React.FC<CaptureLocationProps> = ({ uuid, peerData }): JSX.Element => {
+export const CaptureLocation: React.FC<CaptureLocationProps> = ({ uuid, peerData, setCurrentStep }): JSX.Element => {
   const { scrollToTop } = useGlobalContext();
   const navigate = useNavigate();
   const [opened, { open, close }] = useDisclosure(false);
@@ -46,6 +46,22 @@ export const CaptureLocation: React.FC<CaptureLocationProps> = ({ uuid, peerData
   if (JSON.stringify(peerData) === '{}') {
     return <></>;
   }
+
+  const handleNotMe = async () => {
+    const res = await HttpClient.callApi({
+      url: `${addressVerificationAPIList.getVerificationData}/isReal/${uuid}`,
+      method: 'POST',
+      body: {
+        isReal: {
+          state: 'ACCEPTED',
+        },
+      },
+    });
+
+    if (!res.ok) {
+      throw new Error(res.error.message);
+    }
+  };
 
   const getLocation = () => {
     setAddressVerified(null);
@@ -67,39 +83,44 @@ export const CaptureLocation: React.FC<CaptureLocationProps> = ({ uuid, peerData
   const setPosition = async (position: { coords: CoordinatesType }) => {
     showSuccessNotification({ title: 'Success', message: 'Location Permission Granted' });
 
-    const requestBody: LocationRequestType = {
-      isReal: {
-        state: 'ACCEPTED',
-      },
-      latitude: position.coords.latitude,
-      longitude: position.coords.longitude,
-    };
-
     showLoadingNotification({
       title: 'Verifying Address...',
       message: 'Please wait while we verify your location.',
     });
-    const res = await HttpClient.callApi<CaptureSuccessResponse>({
-      url: `${addressVerificationAPIList.peerCaptureLocation}/${uuid}`,
-      method: 'POST',
-      body: requestBody,
-    });
 
-    if (res.ok) {
-      setAddressVerified(true);
-      showSuccessNotification({
-        title: 'Verified!',
-        message: 'Your location has been captured successfully!',
+    try {
+      await handleNotMe();
+
+      const requestBody: LocationRequestType = {
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+      };
+
+      const res = await HttpClient.callApi<CaptureSuccessResponse>({
+        url: `${addressVerificationAPIList.peerCaptureLocation}/${uuid}`,
+        method: 'POST',
+        body: requestBody,
       });
-    } else {
-      showErrorNotification(res.error.code);
 
-      if (res.error.code === 'GR0058') {
-        navigate('.?verified=true');
-        scrollToTop();
+      if (res.ok) {
+        setAddressVerified(true);
+        showSuccessNotification({
+          title: 'Verified!',
+          message: 'Your location has been captured successfully!',
+        });
       } else {
-        setAddressVerified(false);
+        showErrorNotification(res.error.code);
+
+        if (res.error.code === 'GR0058') {
+          navigate('.?verified=true');
+          scrollToTop();
+        } else {
+          setAddressVerified(false);
+        }
       }
+    } catch (err: unknown) {
+      console.error('Error: ', err);
+      showErrorNotification('SOMETHING_WENT_WRONG');
     }
   };
 

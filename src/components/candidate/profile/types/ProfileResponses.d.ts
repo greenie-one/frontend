@@ -161,6 +161,7 @@ type SentRequestsResponseType = {
   email: string;
   name: string;
   phone: string;
+  isReal?: StatusType;
   isVerificationCompleted: boolean;
   workExperience: string;
   createdAt: string;

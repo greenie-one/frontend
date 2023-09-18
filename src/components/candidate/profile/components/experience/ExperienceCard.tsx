@@ -1,22 +1,22 @@
-import { Text, Box, Button, Tooltip } from '@mantine/core';
-import { MdVerified } from 'react-icons/md';
-import { CgSandClock } from 'react-icons/cg';
+import { Text, Box, Tooltip } from '@mantine/core';
 import { useState, useEffect } from 'react';
 import { showErrorNotification } from '../../../../../utils/functions/showNotification';
 import { HttpClient } from '../../../../../utils/generic/httpClient';
 import { peerVerificationAPIList } from '../../../../../assets/api/ApiList';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
+import { GetExperienceTag } from '../../../../../utils/functions/GetExperienceTag';
 
 export const ExperienceCard: React.FC<ExperienceCardProp> = ({
   position,
   companyName,
-  noOfVerifications,
   companyStartYear,
   companyEndYear,
   id,
 }) => {
   const { authClient } = useGlobalContext();
   const [tooltipLabel, setToolTipLabel] = useState<string>('');
+  const [sentRequests, setSentRequests] = useState<Array<SentRequestsResponseType>>([]);
+
   const getSentRequests = async () => {
     const res = await HttpClient.callApiAuth<SentRequestsResponseType[]>(
       {
@@ -28,6 +28,7 @@ export const ExperienceCard: React.FC<ExperienceCardProp> = ({
 
     if (res.ok) {
       const filteredData = res.value.filter((request) => request.workExperience === id);
+      setSentRequests(filteredData);
       const extractedData = filteredData.map(({ name, isVerificationCompleted }) => ({
         name,
         isVerificationCompleted,
@@ -42,7 +43,7 @@ export const ExperienceCard: React.FC<ExperienceCardProp> = ({
   };
   useEffect(() => {
     getSentRequests();
-  }, [authClient]);
+  }, [authClient, id]);
 
   return (
     <Box className="experience-card">
@@ -50,40 +51,19 @@ export const ExperienceCard: React.FC<ExperienceCardProp> = ({
         <Text className="companyName">{companyName.substring(0, 25)}</Text>
         <Text className="position">{position.substring(0, 25)}</Text>
       </Box>
-
-      {noOfVerifications >= 2 ? (
-        <Tooltip
-          label={tooltipLabel}
-          withArrow
-          color="teal"
-          openDelay={500}
-          styles={{
-            tooltip: {
-              fontSize: 12,
-            },
-          }}
-        >
-          <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
-            Verified
-          </Button>
-        </Tooltip>
-      ) : (
-        <Tooltip
-          label={tooltipLabel}
-          withArrow
-          color="teal"
-          openDelay={500}
-          styles={{
-            tooltip: {
-              fontSize: 10,
-            },
-          }}
-        >
-          <Button leftIcon={<CgSandClock size={'16px'} />} className="pending">
-            Pending
-          </Button>
-        </Tooltip>
-      )}
+      <Tooltip
+        label={tooltipLabel}
+        withArrow
+        color="teal"
+        openDelay={500}
+        styles={{
+          tooltip: {
+            fontSize: 12,
+          },
+        }}
+      >
+        <GetExperienceTag peerDetails={sentRequests} />
+      </Tooltip>
 
       <Box className="tenure-box">
         <Text className="since-text">Since</Text>
