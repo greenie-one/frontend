@@ -40,7 +40,7 @@ const months = [
 ];
 
 const formattedDate = (data: string) => {
-  return data?.substring(0, 10).split('-').reverse();
+  return data?.substring(0, 10).split('-').reverse().join('-');
 };
 
 type VerificationType = 'MySelf' | 'Peer';

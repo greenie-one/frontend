@@ -33,9 +33,9 @@ export const GetExperienceTag: React.FC<{ peerDetails: Array<SentRequestsRespons
     }
   }
 
-  const acceptedRequests = statusCount[1];
+  const acceptedRequests = statusCount[0];
   const pendingRequests = statusCount[1];
-  const rejectedRequests = statusCount[1];
+  const rejectedRequests = statusCount[2];
 
   if (rejectedRequests === totalPeers) {
     return (
