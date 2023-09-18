@@ -24,7 +24,6 @@ import { skillsAPIList } from '../../../../../assets/api/ApiList';
 import uploadIcon from '../../assets/upload.png';
 import checkedIcon from '../../assets/check.png';
 import { workExperienceAPiList } from '../../../../../assets/api/ApiList';
-import { CgSandClock } from 'react-icons/cg';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
 import { HttpClient } from '../../../../../utils/generic/httpClient';
 import { useNavigate } from 'react-router-dom';
@@ -872,8 +871,8 @@ export const AddExperience = () => {
                 <Box className="experience-details-text-box">
                   <Text className="designation">{workExperienceForm.values.designation}</Text>
                   <Text className="company-name">{workExperienceForm.values.designation.companyName}</Text>
-                  <Button leftIcon={<CgSandClock size={'16px'} />} className="pending">
-                    Pending
+                  <Button style={{ color: '#ff7272', borderColor: '#ff7272' }} className="verified">
+                    Not Verified
                   </Button>
                 </Box>
               </Box>

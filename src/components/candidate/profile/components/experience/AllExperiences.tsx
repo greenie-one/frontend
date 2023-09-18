@@ -1,15 +1,44 @@
-import { Text, Box, Button } from '@mantine/core';
+import { Text, Box } from '@mantine/core';
 import { BsArrowLeft } from 'react-icons/bs';
 import { AiOutlineRight } from 'react-icons/ai';
-import { MdVerified } from 'react-icons/md';
-import { CgSandClock } from 'react-icons/cg';
 import { useGlobalContext } from '../../../../../context/GlobalContext';
 import { useNavigate } from 'react-router-dom';
 import { Layout } from '../Layout';
+import { HttpClient } from '../../../../../utils/generic/httpClient';
+import { peerVerificationAPIList } from '../../../../../assets/api/ApiList';
+import React from 'react';
+import { showErrorNotification } from '../../../../../utils/functions/showNotification';
+import { GetExperienceTag } from '../../../../../utils/functions/GetExperienceTag';
 
 export const AllExperiences = () => {
   const navigate = useNavigate();
-  const { workExperienceData } = useGlobalContext();
+  const { workExperienceData, authClient } = useGlobalContext();
+
+  const [sentRequests, setSentRequests] = React.useState<Array<SentRequestsResponseType>>([]);
+
+  const getSentRequests = async () => {
+    const res = await HttpClient.callApiAuth<SentRequestsResponseType[]>(
+      {
+        url: peerVerificationAPIList.getSentRequest,
+        method: 'GET',
+      },
+      authClient
+    );
+
+    if (res.ok) {
+      setSentRequests(res.value);
+    } else {
+      showErrorNotification(res.error.code);
+    }
+  };
+
+  const filterPeerById = (id: string) => {
+    return sentRequests.filter((req) => req.workExperience === id);
+  };
+
+  React.useEffect(() => {
+    getSentRequests();
+  }, [authClient]);
 
   const handleDetailsPage = (workId: string) => {
     navigate(`/candidate/profile/experience/${workId}`);
@@ -37,7 +66,8 @@ export const AllExperiences = () => {
           <Box className="see-all-experiences-wrapper">
             {[...workExperienceData]
               .reverse()
-              .map(({ designation, companyName, noOfVerifications, id, dateOfJoining, dateOfLeaving }, index) => {
+              .map(({ designation, companyName, id, dateOfJoining, dateOfLeaving }, index) => {
+                const peerDetails = filterPeerById(id);
                 return (
                   <Box
                     key={index}
@@ -48,15 +78,7 @@ export const AllExperiences = () => {
                     <Box className="experience-card">
                       <Text className="position">{designation}</Text>
                       <Text className="companyName">{companyName}</Text>
-                      {noOfVerifications >= 2 ? (
-                        <Button leftIcon={<MdVerified color="#8CF078" size={'16px'} />} className="verified">
-                          Verified
-                        </Button>
-                      ) : (
-                        <Button leftIcon={<CgSandClock size={'16px'} />} className="pending">
-                          Pending
-                        </Button>
-                      )}
+                      <GetExperienceTag peerDetails={peerDetails} />
 
                       <Box className="tenure-box">
                         <Text className="since-text">Since</Text>

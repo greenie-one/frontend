@@ -101,7 +101,7 @@ export const PeerVerification: React.FC = (): JSX.Element => {
           )}
         </>
       ) : (
-        <CaptureLocation uuid={String(uuid)} peerData={peerData} />
+        <CaptureLocation uuid={String(uuid)} setCurrentStep={setCurrentStep} peerData={peerData} />
       )}
     </Layout>
   );
