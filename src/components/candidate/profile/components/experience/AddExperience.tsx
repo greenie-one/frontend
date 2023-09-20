@@ -315,6 +315,7 @@ export const AddExperience = () => {
         showErrorNotification('GR1011');
         setActive(3);
         errorState = true;
+        throw new Error('GR1011');
       } finally {
         if (fileInputRef.current) {
           fileInputRef.current.value = '';
@@ -326,7 +327,7 @@ export const AddExperience = () => {
     return errorState;
   };
 
-  const handleFinish = async () => {
+  const handleFinish = async (withDocuments: boolean) => {
     let experienceId;
     let errorThrown = false;
 
@@ -339,7 +340,10 @@ export const AddExperience = () => {
       setExperienceId(experienceId);
 
       errorThrown = await addSkillsToExperience(experienceId);
-      errorThrown = await addDocumentsToExperience(experienceId);
+
+      if (withDocuments) {
+        errorThrown = await addDocumentsToExperience(experienceId);
+      }
 
       if (!errorThrown) {
         showSuccessNotification({ title: 'Success', message: 'Work experience added successfully.' });
@@ -349,7 +353,7 @@ export const AddExperience = () => {
       console.error('~ AddExperience.tsx ~ handleFinish(): ', err);
 
       if (experienceId) {
-        deleteWorkExperience(experienceId);
+        deleteWorkExperience(experienceId, false);
       }
     }
   };
@@ -847,11 +851,11 @@ export const AddExperience = () => {
               )}
 
               <Box className="btn-wrapper">
-                <Button type="button" className="cancel-btn" variant="default" onClick={handleFinish}>
+                <Button type="button" className="cancel-btn" variant="default" onClick={() => handleFinish(false)}>
                   Skip
                 </Button>
                 {documentsChecked ? (
-                  <Button className="green-btn" onClick={handleFinish}>
+                  <Button className="green-btn" onClick={() => handleFinish(true)}>
                     Finish
                   </Button>
                 ) : (
