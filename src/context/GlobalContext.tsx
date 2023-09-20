@@ -239,7 +239,7 @@ export const GlobalContextProvider: React.FC<{
     }
   };
 
-  const deleteWorkExperience = async (id: string) => {
+  const deleteWorkExperience = async (id: string, withNotification = true) => {
     showLoadingNotification({ title: 'Please wait !', message: 'Wait while we delete your Work Experience' });
     const res = await HttpClient.callApiAuth(
       {
@@ -250,7 +250,9 @@ export const GlobalContextProvider: React.FC<{
     );
     if (res.ok) {
       setForceRender(!forceRender);
-      showSuccessNotification({ title: 'Success !', message: 'Work Experience deleted successfully' });
+      if (withNotification) {
+        showSuccessNotification({ title: 'Success !', message: 'Work Experience deleted successfully' });
+      }
     } else {
       showErrorNotification(res.error.code);
     }

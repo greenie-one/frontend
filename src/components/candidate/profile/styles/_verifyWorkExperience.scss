@@ -554,6 +554,10 @@
 .verification-document-name {
   color: $dark;
   font-weight: 500;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .selected-attributes {
