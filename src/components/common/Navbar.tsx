@@ -23,13 +23,16 @@ export const Navbar = () => {
     <Box
       className={`${classes.root} app-padding-inline`}
       style={{
+        width: 'calc(100% - 2rem)',
         boxShadow: scrollPos > 600 ? '0px 4px 34px rgba(0, 0, 0, 0.15)' : '',
-        paddingLeft: scrollPos > 600 ? '2rem' : '',
-        paddingRight: scrollPos > 600 ? '2rem' : '',
+        paddingLeft: '2rem',
+        paddingRight: '2rem',
         borderRadius: scrollPos > 600 ? '5rem' : '',
         position: scrollPos > 600 ? 'fixed' : 'relative',
         top: scrollPos > 600 ? 0 : '',
-        margin: scrollPos > 600 ? '1rem 8rem' : '',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        margin: scrollPos > 600 ? '1rem 0' : '',
         backgroundColor: 'white',
         transition: 'all 0.5s ease',
       }}
@@ -122,6 +125,7 @@ const useStyles = createStyles(() => ({
     //background: 'linear-gradient(180deg, #ffffff 0%, #edfff9 44.79%, #ffffff 89.07%, #d7fff0 100%)',
     backgroundSize: '100dvw 100dvh',
     zIndex: 10,
+    maxWidth: 'calc(100vw - calc(var(--app-padding-inline) * 2))',
   },
 
   header: {

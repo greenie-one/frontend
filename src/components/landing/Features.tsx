@@ -53,7 +53,7 @@ const featuresCardContent = [
     id: randomId(),
     cardBg: '#17A672',
     title: 'Instant Verification Of Documents',
-    text: "Greeni's cutting edge automation enables verifying identity, address, employment, salary, experience and skills under 100 seconds",
+    text: "Greenie's cutting edge automation enables verifying identity, address, employment, salary, experience and skills under 100 seconds",
     textColor: '#FFFFFF',
     titleColor: '#FFFFFF',
     illustrationSmall: dataControllMobile,
