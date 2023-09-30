@@ -7,12 +7,16 @@ import dummyThumbnail from '../../assets/johnMarston.png';
 import level from '../../assets/levelFilled.png';
 import { ReportTop } from './ReportTop';
 import './_report.scss';
+import { skillExpertiseDict } from '../../../constants/dictionaries';
 
 type ChildComponentProps = {
   IdDetails: IdDetailsResponse;
   AccountDetails: AccountDetails;
   ResidentialInfo: ResidentialType[];
   workExperienceDetails: WorkExperience[];
+  skills: CandidateSkillType[];
+  peerDetails: WorkPeerReportResponse[];
+  residentialPeerDetails: PeersResponse[];
 };
 
 const calculateIDProgress = (idDetails: IdDetailsResponse): number => {
@@ -98,6 +102,9 @@ export const ExecutiveSummary: React.FC<ChildComponentProps> = ({
   AccountDetails,
   ResidentialInfo,
   workExperienceDetails,
+  peerDetails,
+  skills,
+  residentialPeerDetails,
 }) => {
   // console.log(IdDetails.aadhar);
   return (
@@ -109,9 +116,14 @@ export const ExecutiveSummary: React.FC<ChildComponentProps> = ({
           <div className="residential-address">
             <div className="residential-address-left workexperience">
               <span className="profile-thumbnail">
-                <img src={dummyThumbnail} className="profile-img" />
+                <img
+                  src={AccountDetails.profilePic ? AccountDetails.profilePic : dummyThumbnail}
+                  className="profile-img"
+                />
               </span>
-              <div>
+              <div
+                style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'center' }}
+              >
                 <p>
                   {AccountDetails.firstName ? AccountDetails.firstName : '-'}{' '}
                   {AccountDetails.lastName ? AccountDetails.lastName : ''}
@@ -131,7 +143,7 @@ export const ExecutiveSummary: React.FC<ChildComponentProps> = ({
             <div className="residential-address-right right-view-profile">
               <div>
                 <RingProgress
-                  size={65}
+                  size={80}
                   thickness={4}
                   roundCaps
                   sections={[
@@ -148,10 +160,15 @@ export const ExecutiveSummary: React.FC<ChildComponentProps> = ({
             </div>
           </div>
         </div>
-        <Box className="basic-info-box-wrapper wrapper-executive">
-          <Box className="info-box">
-            <Text className="experience-details-box-heading">Greenie ID</Text>
-            <Text className="experience-details-box-text">
+        <Box style={{ marginTop: '4rem' }} className="basic-info-box-wrapper wrapper-executive">
+          <Box style={{ background: '#17A672', border: '1px solid #17A672', color: '#ffffff' }} className="info-box">
+            <Text style={{ color: '#ffffff', marginBottom: '0' }} className="experience-details-box-heading">
+              Greenie ID
+            </Text>
+            <Text
+              style={{ color: '#ffffff', fontSize: '20px', fontWeight: 700, marginTop: '0' }}
+              className="experience-details-box-text"
+            >
               {AccountDetails.greenieId ? AccountDetails.greenieId : '-'}
             </Text>
           </Box>
@@ -184,7 +201,7 @@ export const ExecutiveSummary: React.FC<ChildComponentProps> = ({
           <Box className="added-peers executive-peers">
             <Text className="peer-name ">Personal Identification</Text>
             <Text className="peer-name text-verified">
-              {calculateIDProgress(IdDetails) >= 33 ? 'Verified' : <span style={{ color: '#ff7272' }}>Pending</span>}
+              {calculateIDProgress(IdDetails) >= 33 ? 'Verified' : <span style={{ color: '#fab005' }}>Pending</span>}
             </Text>
             <Text className="peer-name">
               <span className="peer-progress">
@@ -200,7 +217,7 @@ export const ExecutiveSummary: React.FC<ChildComponentProps> = ({
               {calculateResidentialProgress(ResidentialInfo) > 0 ? (
                 'Verified'
               ) : (
-                <span style={{ color: '#ff7272' }}>Pending</span>
+                <span style={{ color: '#fab005' }}>Pending</span>
               )}
             </Text>
             <Text className="peer-name">
@@ -217,7 +234,7 @@ export const ExecutiveSummary: React.FC<ChildComponentProps> = ({
               {calculateExperienceProgress(workExperienceDetails) > 0 ? (
                 'Verified'
               ) : (
-                <span style={{ color: '#ff7272' }}>Pending</span>
+                <span style={{ color: '#fab005' }}>Pending</span>
               )}
             </Text>
             <Text className="peer-name">
@@ -244,9 +261,13 @@ export const ExecutiveSummary: React.FC<ChildComponentProps> = ({
                   <Button leftIcon={<MdVerified color="#17A672" size={'16px'} />} className="verified report-verifybtn">
                     Verified
                   </Button>
-                ) : (
+                ) : peerDetails.filter((peer) => peer.ref === experience.id).length > 0 ? (
                   <Button leftIcon={<CgSandClock size={'16px'} />} className="pending report-verifybtn">
                     Pending
+                  </Button>
+                ) : (
+                  <Button style={{ color: '#ff7272' }} className="pending report-verifybtn">
+                    Not Verified
                   </Button>
                 )}
               </Box>
@@ -279,9 +300,13 @@ export const ExecutiveSummary: React.FC<ChildComponentProps> = ({
                   <Button leftIcon={<MdVerified color="#17A672" size={'16px'} />} className="verified report-verifybtn">
                     Verified
                   </Button>
-                ) : (
+                ) : residentialPeerDetails.filter((peer) => peer.ref === resident.id).length > 0 ? (
                   <Button leftIcon={<CgSandClock size={'16px'} />} className="pending report-verifybtn">
                     Pending
+                  </Button>
+                ) : (
+                  <Button style={{ color: '#ff7272' }} className="pending report-verifybtn">
+                    Not Verified
                   </Button>
                 )}
               </Box>
@@ -295,6 +320,30 @@ export const ExecutiveSummary: React.FC<ChildComponentProps> = ({
                 className="added-peers added-peers-exp "
               >
                 No Residential Address Added
+              </Box>
+            </Box>
+          </>
+        )}
+        <div className="location">
+          <p>Skills ({skills.length})</p>
+        </div>
+        {skills.length > 0 ? (
+          <Box className="basic-info-box-wrapper executive-wrapper">
+            {skills.map((skill, index) => (
+              <Box key={index} className="info-box">
+                <Text className="experience-details-box-heading">{skill.skillName}</Text>
+                <Text className="experience-details-box-text">{skillExpertiseDict[skill.expertise]}</Text>
+              </Box>
+            ))}
+          </Box>
+        ) : (
+          <>
+            <Box className="added-peer-box">
+              <Box
+                style={{ borderRadius: '1rem', fontWeight: '500', marginTop: '1rem', gridTemplateColumns: '1fr' }}
+                className="added-peers added-peers-exp "
+              >
+                No Skills Added
               </Box>
             </Box>
           </>

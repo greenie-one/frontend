@@ -22,7 +22,7 @@ export const AdminForm: React.FC = (): JSX.Element => {
   const navigate = useNavigate();
   const { authClient } = useGlobalContext();
 
-  const [inputValue, setInputValue] = useState<'email' | 'phone'>('email');
+  const [inputValue, setInputValue] = useState<'email' | 'phone' | 'grnID'>('email');
 
   const form = useForm<FormData>({
     initialValues: {
@@ -39,10 +39,12 @@ export const AdminForm: React.FC = (): JSX.Element => {
     initialValues: {
       email: '',
       phone: '',
+      grnID: '',
     },
     validate: {
       email: isEmail('This field is required!'),
       phone: hasLength({ min: 10, max: 10 }, 'Phone number must of 10 digits'),
+      grnID: hasLength({ min: 8, max: 8 }, 'Greenie ID must of 8 characters'),
     },
   });
 
@@ -86,8 +88,11 @@ export const AdminForm: React.FC = (): JSX.Element => {
 
     const query =
       inputValue === 'email'
-        ? `${encodeURIComponent('email')}=${encodeURIComponent(reportForm.values.email)}`
-        : `${encodeURIComponent('phone')}=${encodeURIComponent('+91' + reportForm.values.phone.slice(-10))}`;
+        ? `${encodeURIComponent('email')}=${encodeURIComponent(reportForm.values.email.trim())}`
+        : inputValue === 'phone'
+        ? `${encodeURIComponent('phone')}=${encodeURIComponent('+91' + reportForm.values.phone.slice(-10))}`
+        : `${encodeURIComponent('grnID')}=${encodeURIComponent(reportForm.values.grnID.trim())}`;
+
     showLoadingNotification({ title: 'Please Wait', message: '' });
 
     try {
@@ -159,34 +164,147 @@ export const AdminForm: React.FC = (): JSX.Element => {
                 <Box>
                   <TextInput
                     required
-                    label={`Enter Candidate ${inputValue === 'email' ? 'Email' : 'Phone Number'}`}
-                    placeholder={inputValue === 'email' ? 'hello@gmail.com' : '9876543210'}
-                    value={inputValue === 'email' ? reportForm.values.email : reportForm.values.phone}
+                    label={`Enter Candidate ${
+                      inputValue === 'email' ? 'Email' : inputValue === 'phone' ? 'Phone Number' : 'Greenie ID'
+                    }`}
+                    placeholder={
+                      inputValue === 'email'
+                        ? 'hello@gmail.com'
+                        : inputValue === 'phone'
+                        ? '9876543210'
+                        : 'Greenie ID Here'
+                    }
+                    value={
+                      inputValue === 'email'
+                        ? reportForm.values.email
+                        : inputValue === 'phone'
+                        ? reportForm.values.phone
+                        : reportForm.values.grnID
+                    }
                     onChange={(event) => reportForm.setFieldValue(inputValue, event.currentTarget.value)}
                     error={
                       inputValue === 'email'
                         ? reportForm.errors.email && 'Invalid email'
-                        : reportForm.errors.phone && 'Invalid phone number'
+                        : inputValue === 'phone'
+                        ? reportForm.errors.phone && 'Invalid phone number'
+                        : reportForm.errors.grnID && 'Invalid greenie ID'
                     }
                     radius="md"
                   />
-                  <button
-                    type="button"
-                    style={{
-                      color: '#697082',
-                      fontWeight: '500',
-                      fontSize: '0.825rem',
-                      borderBottom: '1px solid #697082',
-                      marginBlock: '0.5rem',
-                    }}
-                    onClick={() => {
-                      reportForm.clearErrors();
-                      reportForm.reset();
-                      setInputValue((current) => (current === 'email' ? 'phone' : 'email'));
-                    }}
-                  >
-                    {inputValue === 'email' ? 'Use Phone Number' : 'Use Email ID'}
-                  </button>
+                  {inputValue === 'email' && (
+                    <>
+                      <button
+                        type="button"
+                        style={{
+                          color: '#697082',
+                          fontWeight: '500',
+                          fontSize: '0.825rem',
+                          borderBottom: '1px solid #697082',
+                          marginBlock: '1rem',
+                        }}
+                        onClick={() => {
+                          reportForm.clearErrors();
+                          reportForm.reset();
+                          setInputValue('phone');
+                        }}
+                      >
+                        Use Phone Number
+                      </button>
+                      <button
+                        type="button"
+                        style={{
+                          color: '#697082',
+                          fontWeight: '500',
+                          fontSize: '0.825rem',
+                          borderBottom: '1px solid #697082',
+                          marginBlock: '1rem',
+                        }}
+                        onClick={() => {
+                          reportForm.clearErrors();
+                          reportForm.reset();
+                          setInputValue('grnID');
+                        }}
+                      >
+                        Use Greenie ID
+                      </button>
+                    </>
+                  )}
+                  {inputValue === 'phone' && (
+                    <>
+                      <button
+                        type="button"
+                        style={{
+                          color: '#697082',
+                          fontWeight: '500',
+                          fontSize: '0.825rem',
+                          borderBottom: '1px solid #697082',
+                          marginBlock: '1rem',
+                        }}
+                        onClick={() => {
+                          reportForm.clearErrors();
+                          reportForm.reset();
+                          setInputValue('email');
+                        }}
+                      >
+                        Use Email
+                      </button>
+                      <button
+                        type="button"
+                        style={{
+                          color: '#697082',
+                          fontWeight: '500',
+                          fontSize: '0.825rem',
+                          borderBottom: '1px solid #697082',
+                          marginBlock: '1rem',
+                        }}
+                        onClick={() => {
+                          reportForm.clearErrors();
+                          reportForm.reset();
+                          setInputValue('grnID');
+                        }}
+                      >
+                        Use Greenie ID
+                      </button>
+                    </>
+                  )}
+                  {inputValue === 'grnID' && (
+                    <>
+                      <button
+                        type="button"
+                        style={{
+                          color: '#697082',
+                          fontWeight: '500',
+                          fontSize: '0.825rem',
+                          borderBottom: '1px solid #697082',
+                          marginBlock: '1rem',
+                        }}
+                        onClick={() => {
+                          reportForm.clearErrors();
+                          reportForm.reset();
+                          setInputValue('email');
+                        }}
+                      >
+                        Use Email
+                      </button>
+                      <button
+                        type="button"
+                        style={{
+                          color: '#697082',
+                          fontWeight: '500',
+                          fontSize: '0.825rem',
+                          borderBottom: '1px solid #697082',
+                          marginBlock: '1rem',
+                        }}
+                        onClick={() => {
+                          reportForm.clearErrors();
+                          reportForm.reset();
+                          setInputValue('phone');
+                        }}
+                      >
+                        Use Phone Number
+                      </button>
+                    </>
+                  )}
                 </Box>
                 <Group position="apart" mt="xl">
                   <Button className="sendInvite" type="submit" radius="xl">

@@ -554,6 +554,10 @@
 .verification-document-name {
   color: $dark;
   font-weight: 500;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .selected-attributes {
@@ -660,7 +664,7 @@
 
   .document-list {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, 30%);
     gap: 2rem;
 
     .docs-wrapper {

@@ -58,7 +58,15 @@ export const PeerVerification: React.FC = (): JSX.Element => {
   return (
     <Layout>
       {currentStep === -1 ? (
-        <WelcomeScreen firstName={errorData.username} getPeerData={getPeerData} setCurrentStep={setCurrentStep} />
+        errorData.username || peerData.name ? (
+          <WelcomeScreen
+            firstName={errorData.username || peerData.name}
+            getPeerData={getPeerData}
+            setCurrentStep={setCurrentStep}
+          />
+        ) : (
+          <></>
+        )
       ) : currentStep >= 0 && errorCode !== '' ? (
         <>
           {errorCode === 'GR0050' ? (
@@ -66,6 +74,8 @@ export const PeerVerification: React.FC = (): JSX.Element => {
               type="EMAIL"
               peerName={errorData.name}
               verificationBy={errorData.verificationBy}
+              phone={errorData.phone}
+              email={errorData.email}
               uuid={String(uuid)}
               getPeerData={getPeerData}
               currentStep={currentStep}
@@ -79,6 +89,8 @@ export const PeerVerification: React.FC = (): JSX.Element => {
               type="MOBILE"
               peerName={errorData.name}
               verificationBy={errorData.verificationBy}
+              phone={errorData.phone}
+              email={errorData.email}
               uuid={String(uuid)}
               getPeerData={getPeerData}
               currentStep={currentStep}
@@ -89,7 +101,7 @@ export const PeerVerification: React.FC = (): JSX.Element => {
           )}
         </>
       ) : (
-        <CaptureLocation uuid={String(uuid)} peerData={peerData} />
+        <CaptureLocation uuid={String(uuid)} setCurrentStep={setCurrentStep} peerData={peerData} />
       )}
     </Layout>
   );

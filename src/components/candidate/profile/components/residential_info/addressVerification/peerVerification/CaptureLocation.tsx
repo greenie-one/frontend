@@ -12,10 +12,12 @@ import { useDisclosure } from '@mantine/hooks';
 import { ConfirmationModal } from '../components/ConfirmationModals';
 import { useNavigate } from 'react-router-dom';
 import { useGlobalContext } from '../../../../../../../context/GlobalContext';
+import { LocationConfirmationModal, LocationDenyModal } from '../components/LocationConfirmationModal';
 
 type CaptureLocationProps = {
   uuid: string;
   peerData: PeerVerificationDataResponse;
+  setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
 };
 
 type LocationRequestType = {
@@ -32,16 +34,34 @@ const formattedDate = (data: string) => {
   return data.substring(0, 10).split('-').reverse().join('-');
 };
 
-export const CaptureLocation: React.FC<CaptureLocationProps> = ({ uuid, peerData }): JSX.Element => {
+export const CaptureLocation: React.FC<CaptureLocationProps> = ({ uuid, peerData, setCurrentStep }): JSX.Element => {
   const { scrollToTop } = useGlobalContext();
   const navigate = useNavigate();
   const [opened, { open, close }] = useDisclosure(false);
+  const [locationModalOpened, { open: locationModalOpen, close: locationModalClose }] = useDisclosure(false);
+  const [denyModalOpened, { open: denyModalOpen, close: denyModalClose }] = useDisclosure(false);
 
   const [addressVerified, setAddressVerified] = React.useState<boolean | null>(null);
 
   if (JSON.stringify(peerData) === '{}') {
     return <></>;
   }
+
+  const handleNotMe = async () => {
+    const res = await HttpClient.callApi({
+      url: `${addressVerificationAPIList.getVerificationData}/isReal/${uuid}`,
+      method: 'POST',
+      body: {
+        isReal: {
+          state: 'ACCEPTED',
+        },
+      },
+    });
+
+    if (!res.ok) {
+      throw new Error(res.error.message);
+    }
+  };
 
   const getLocation = () => {
     setAddressVerified(null);
@@ -52,7 +72,6 @@ export const CaptureLocation: React.FC<CaptureLocationProps> = ({ uuid, peerData
     });
 
     if (navigator.geolocation) {
-      showSuccessNotification({ title: 'Success', message: 'Location Permission Granted' });
       navigator.geolocation.getCurrentPosition(setPosition, showError);
     } else {
       showErrorNotification('Geo-Location is not supported by this browser.');
@@ -62,37 +81,46 @@ export const CaptureLocation: React.FC<CaptureLocationProps> = ({ uuid, peerData
   };
 
   const setPosition = async (position: { coords: CoordinatesType }) => {
+    showSuccessNotification({ title: 'Success', message: 'Location Permission Granted' });
+
     showLoadingNotification({
       title: 'Verifying Address...',
       message: 'Please wait while we verify your location.',
     });
 
-    const requestBody: LocationRequestType = {
-      latitude: position.coords.latitude,
-      longitude: position.coords.longitude,
-    };
+    try {
+      await handleNotMe();
 
-    const res = await HttpClient.callApi<CaptureSuccessResponse>({
-      url: `${addressVerificationAPIList.peerCaptureLocation}/${uuid}`,
-      method: 'POST',
-      body: requestBody,
-    });
+      const requestBody: LocationRequestType = {
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+      };
 
-    if (res.ok) {
-      setAddressVerified(true);
-      showSuccessNotification({
-        title: 'Verified!',
-        message: 'Your location has been captured successfully!',
+      const res = await HttpClient.callApi<CaptureSuccessResponse>({
+        url: `${addressVerificationAPIList.peerCaptureLocation}/${uuid}`,
+        method: 'POST',
+        body: requestBody,
       });
-    } else {
-      showErrorNotification(res.error.code);
 
-      if (res.error.code === 'GR0058') {
-        navigate('.?verified=true');
-        scrollToTop();
+      if (res.ok) {
+        setAddressVerified(true);
+        showSuccessNotification({
+          title: 'Verified!',
+          message: 'Your location has been captured successfully!',
+        });
       } else {
-        setAddressVerified(false);
+        showErrorNotification(res.error.code);
+
+        if (res.error.code === 'GR0058') {
+          navigate('.?verified=true');
+          scrollToTop();
+        } else {
+          setAddressVerified(false);
+        }
       }
+    } catch (err: unknown) {
+      console.error('Error: ', err);
+      showErrorNotification('SOMETHING_WENT_WRONG');
     }
   };
 
@@ -176,11 +204,21 @@ export const CaptureLocation: React.FC<CaptureLocationProps> = ({ uuid, peerData
           <Title className="address-verification-details-main-title">
             Please allow permission to capture location to confirm the verification
           </Title>
-          <Button sx={{ marginTop: '2rem' }} className="green-outline-btn" onClick={getLocation}>
+          <Button sx={{ marginTop: '2rem' }} className="green-outline-btn" onClick={locationModalOpen}>
             Capture Location
           </Button>
         </Box>
       </Box>
+      <LocationConfirmationModal
+        opened={locationModalOpened}
+        close={locationModalClose}
+        onConfirm={getLocation}
+        onDeny={() => {
+          locationModalClose();
+          denyModalOpen();
+        }}
+      />
+      <LocationDenyModal opened={denyModalOpened} close={denyModalClose} />
     </>
   );
 };

@@ -21,6 +21,7 @@ type ResidentialInfoCardProps = {
   isVerified: boolean;
   city: string;
   addressType: string;
+  verificationStatus: 'notVerified' | 'pending' | 'rejected' | 'verified';
 };
 
 type ResidentialInfoDetailsCardProps = {

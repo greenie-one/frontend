@@ -45,7 +45,7 @@ export const AllSkills = () => {
                         Verified
                       </Button>
                     ) : (
-                      <Button leftIcon={<CgSandClock color="#FF7272" size={'16px'} />} className="pending">
+                      <Button leftIcon={<CgSandClock color="#fab005" size={'16px'} />} className="pending">
                         Pending
                       </Button>
                     )}

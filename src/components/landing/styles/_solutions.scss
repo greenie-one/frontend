@@ -31,7 +31,7 @@
       align-items: center;
       justify-content: space-between;
 
-      @media (max-width: 425px) {
+      @media (max-width: 640px) {
         flex-direction: column;
         gap: 2rem;
       }
@@ -100,7 +100,7 @@
           width: 50%;
         }
 
-        @media (max-width: 425px) {
+        @media (max-width: 640px) {
           width: 100%;
         }
       }
@@ -131,8 +131,8 @@
           grid-template-rows: repeat(3, 80px);
         }
 
-        @media (max-width: 320px) {
-          grid-template-columns: repeat(2, 100px);
+        @media (max-width: 640px) {
+          grid-template-columns: repeat(2, 1fr);
           grid-template-rows: repeat(3, 70px);
         }
 
@@ -196,7 +196,7 @@
         flex-direction: row-reverse;
         margin-top: 10vh;
 
-        @media (max-width: 425px) {
+        @media (max-width: 640px) {
           flex-direction: column;
           margin-top: 5vh;
         }

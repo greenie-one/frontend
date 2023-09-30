@@ -4,6 +4,7 @@ import { CgSandClock } from 'react-icons/cg';
 import { Text, Box, Button } from '@mantine/core';
 import { ReportTop } from './ReportTop';
 import './_report.scss';
+import { ResidentialReport } from './residentialreport';
 
 type ChildComponentProps = {
   ResidentialInfo: ResidentialType[];
@@ -22,23 +23,89 @@ export const ResidentialReport2: React.FC<ChildComponentProps> = ({ residentialP
               {ResidentialInfo.map((resident, index) => (
                 <>
                   <div key={index} className="residential-address">
-                    <div className="residential-address-left left-residential">
+                    <div
+                      style={{
+                        border: '1px solid #e1e1e1',
+                        maxWidth: '24rem',
+                        width: 'max-content',
+                        padding: '1.5rem',
+                        borderRadius: '15px',
+                      }}
+                      className="residential-address-left left-residential"
+                    >
                       <p>{resident.addressType} Address</p>
-                      <p>
+                      <p style={{ marginBottom: '1rem' }}>
                         {' '}
                         {resident.address_line_1} {resident.address_line_2} {resident.city} - {resident.pincode}
                       </p>
-                      {resident.isVerified ? (
-                        <Button
-                          leftIcon={<MdVerified color="#17A672" size={'16px'} />}
-                          className="verified report-verifybtn"
-                        >
-                          Verified
-                        </Button>
+
+                      {residentialPeer.filter((peer) => peer.ref === resident.id).length > 0 ? (
+                        residentialPeer.filter((peer) => peer.ref === resident.id)[0].isReal ? (
+                          <>
+                            {residentialPeer.filter((peer) => peer.ref === resident.id)[0].isReal.state ===
+                              'PENDING' && (
+                              <Button
+                                style={{ color: '#FAB005', borderColor: '#FAB005' }}
+                                leftIcon={<CgSandClock size={'16px'} />}
+                                className="pending"
+                              >
+                                Pending
+                              </Button>
+                            )}
+                            {residentialPeer.filter((peer) => peer.ref === resident.id)[0].isReal.state ===
+                              'REJECTED' && (
+                              <Button style={{ color: '#ff7272', borderColor: '#ff7272' }} className="verified">
+                                Rejected
+                              </Button>
+                            )}
+                            {residentialPeer.filter((peer) => peer.ref === resident.id)[0].isReal.state ===
+                              'ACCEPTED' && (
+                              <Button
+                                style={{ color: '#17A672', borderColor: '#17A672' }}
+                                leftIcon={<MdVerified color="#17A672" size={'16px'} />}
+                                className="verified"
+                              >
+                                Verified
+                              </Button>
+                            )}
+                          </>
+                        ) : (
+                          <>
+                            {resident.isVerified ? (
+                              <Button
+                                style={{ color: '#17A672' }}
+                                leftIcon={<MdVerified color="#17A672" size={'16px'} />}
+                                className="verified"
+                              >
+                                Verified
+                              </Button>
+                            ) : (
+                              <Button
+                                style={{ color: '#FAB005', borderColor: '#FAB005' }}
+                                leftIcon={<CgSandClock size={'16px'} />}
+                                className="pending"
+                              >
+                                Pending
+                              </Button>
+                            )}
+                          </>
+                        )
                       ) : (
-                        <Button leftIcon={<CgSandClock size={'16px'} />} className="pending report-verifybtn">
-                          Pending
-                        </Button>
+                        <>
+                          {resident.isVerified ? (
+                            <Button
+                              style={{ color: '#17A672' }}
+                              leftIcon={<MdVerified color="#17A672" size={'16px'} />}
+                              className="verified"
+                            >
+                              Verified
+                            </Button>
+                          ) : (
+                            <Button style={{ color: '#ff7272', borderColor: '#ff7272' }} className="verified">
+                              Not Verified
+                            </Button>
+                          )}
+                        </>
                       )}
                     </div>
                   </div>
@@ -115,37 +182,119 @@ export const ResidentialReport2: React.FC<ChildComponentProps> = ({ residentialP
                     <div className="peer-exp-name">
                       <p>Referees</p>
                     </div>
-                    <Box className="add-peer-header work-header">
-                      <Text className="add-peer-header-text">Particular</Text>
-                      <Text className="add-peer-header-text">Peer Relation</Text>
-                      <Text className="add-peer-header-text">Status</Text>
-                      <Text className="add-peer-header-text">Remarks</Text>
-                    </Box>
                     {residentialPeer.filter((peer) => peer.ref == resident.id).length ? (
                       residentialPeer
                         .filter((peer) => peer.ref == resident.id)
                         .map((peer, index) => (
                           <React.Fragment key={index}>
+                            <Box
+                              style={{ gridTemplateColumns: '1.5fr 0.75fr 1.5fr 0.75fr 1fr' }}
+                              className="add-peer-header work-header"
+                            >
+                              <Text className="add-peer-header-text">Particular</Text>
+                              <Text className="add-peer-header-text">Peer Relation</Text>
+                              <Text className="add-peer-header-text">Peer Details</Text>
+                              <Text className="add-peer-header-text">Status</Text>
+                              <Text className="add-peer-header-text">Remarks</Text>
+                            </Box>
                             <Box className="added-peer-box">
-                              <Box className="added-peers added-peers-exp ">
+                              <Box
+                                style={{ gridTemplateColumns: '1.5fr 0.75fr 1.5fr 0.75fr 1fr' }}
+                                className="added-peers added-peers-exp "
+                              >
                                 <Text className="peer-name title">{peer.name}</Text>
                                 <Text className="peer-name">{peer.verificationBy}</Text>
                                 <Text
-                                  className={`peer-name ${
-                                    peer.isVerificationCompleted ? 'text-verified' : 'text-dispute'
-                                  }`}
+                                  style={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    alignItems: 'flex-start',
+                                    gap: '10px',
+                                  }}
+                                  className="peer-name"
                                 >
-                                  {peer.isVerificationCompleted ? 'Approved' : 'Pending'}
+                                  <span>
+                                    Email:
+                                    <br />
+                                    <a href={`mailto:${peer.email}`}>{peer.email}</a>
+                                  </span>
+
+                                  <span>
+                                    Phone:
+                                    <br />
+                                    <a href={`tel:+${peer.phone}`}>{peer.phone}</a>
+                                  </span>
                                 </Text>
+                                <Text
+                                  style={
+                                    peer.isReal
+                                      ? {
+                                          color:
+                                            peer.isReal.state === 'REJECTED'
+                                              ? '#ff7272'
+                                              : peer.isReal.state === 'ACCEPTED'
+                                              ? '#17A672'
+                                              : '#FAB005',
+                                          border: '0',
+                                          fontSize: '14px',
+                                        }
+                                      : { border: '0', fontSize: '14px' }
+                                  }
+                                  className={`peer-name ${peer.isVerificationCompleted ? 'text-verified' : 'pending'}`}
+                                >
+                                  {peer.isReal
+                                    ? peer.isReal.state === 'PENDING'
+                                      ? 'Pending'
+                                      : peer.isReal.state === 'ACCEPTED'
+                                      ? 'Approved'
+                                      : 'Rejected'
+                                    : peer.isVerificationCompleted
+                                    ? 'Approved'
+                                    : 'Pending'}
+                                </Text>
+
                                 <Text className="peer-name name-wrap">
-                                  {peer.isVerificationCompleted ? 'Geo-Location API' : 'No Remarks'}
+                                  {peer.isReal ? (
+                                    <>
+                                      {peer.isReal.state === 'PENDING' && 'No Remarks'}
+                                      {peer.isReal.state === 'ACCEPTED' && 'Geo-Location API'}
+                                      {peer.isReal.state === 'REJECTED' &&
+                                        `${peer.isReal.dispute_type}${
+                                          peer.isReal.dispute_reason ? ` - ${peer.isReal.dispute_reason}` : ''
+                                        }`}
+                                    </>
+                                  ) : peer.isVerificationCompleted ? (
+                                    'Geo-Location API'
+                                  ) : (
+                                    'No Remarks'
+                                  )}
                                 </Text>
                               </Box>
                             </Box>
+                            {peer.isVerificationCompleted ? (
+                              peer.isReal ? (
+                                peer.isReal.state === 'ACCEPTED' ? (
+                                  <ResidentialReport ResidentialInfo={[resident]} />
+                                ) : (
+                                  <></>
+                                )
+                              ) : (
+                                <ResidentialReport ResidentialInfo={[resident]} />
+                              )
+                            ) : (
+                              <></>
+                            )}
                           </React.Fragment>
                         ))
                     ) : resident.isVerified ? (
                       <React.Fragment key={index}>
+                        <Box className="add-peer-header work-header">
+                          <Text className="add-peer-header-text">Particular</Text>
+                          <Text className="add-peer-header-text">Peer Relation</Text>
+
+                          <Text className="add-peer-header-text">Status</Text>
+                          <Text className="add-peer-header-text">Remarks</Text>
+                        </Box>
                         <Box className="added-peer-box">
                           <Box className="added-peers added-peers-exp ">
                             <Text className="peer-name title">Self Verified</Text>
@@ -154,17 +303,48 @@ export const ResidentialReport2: React.FC<ChildComponentProps> = ({ residentialP
                             <Text className="peer-name name-wrap">Geo-Location API</Text>
                           </Box>
                         </Box>
+                        <ResidentialReport ResidentialInfo={[resident]} />
                       </React.Fragment>
                     ) : (
-                      <Box className="added-peer-box">
-                        <Box className="added-peers added-peers-exp ">
-                          <Text className="peer-name title">No Referee</Text>
-                          <Text className="peer-name">-</Text>
-                          <Text className={`peer-name`}>-</Text>
-                          <Text className="peer-name name-wrap">-</Text>
+                      <React.Fragment key={index}>
+                        <Box className="add-peer-header work-header">
+                          <Text className="add-peer-header-text">Particular</Text>
+                          <Text className="add-peer-header-text">Peer Relation</Text>
+
+                          <Text className="add-peer-header-text">Status</Text>
+                          <Text className="add-peer-header-text">Remarks</Text>
                         </Box>
-                      </Box>
+                        <Box className="added-peer-box">
+                          <Box className="added-peers added-peers-exp ">
+                            <Text className="peer-name title">No Referee</Text>
+                            <Text className="peer-name">-</Text>
+                            <Text className={`peer-name`}>-</Text>
+                            <Text className="peer-name name-wrap">-</Text>
+                          </Box>
+                        </Box>
+                        <div className="disclaimer-box">
+                          <div style={{ margin: '0' }} className="location">
+                            <p>Location Accuracy</p>
+                          </div>
+                          <Box className="added-peer-box">
+                            <Box
+                              style={{
+                                height: '4rem',
+                                borderRadius: '1rem',
+                                fontWeight: '500',
+                                marginTop: '1rem',
+                                gridTemplateColumns: '1fr',
+                                fontSize: '1rem',
+                              }}
+                              className="added-peers added-peers-exp "
+                            >
+                              Address Not Verified Yet.
+                            </Box>
+                          </Box>
+                        </div>
+                      </React.Fragment>
                     )}
+
                     <hr className="breakLine"></hr>
                   </div>
                 </>

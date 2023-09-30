@@ -137,15 +137,11 @@ const useStyles = createStyles(() => ({
       fontSize: '2.5rem',
     },
 
+    [`@media screen and (max-width: ${em(640)})`]: {
+      fontSize: '2rem',
+    },
+
     [`@media screen and (max-width: ${em(540)})`]: {
-      fontSize: '2 rem',
-    },
-
-    [`@media screen and (max-width: ${em(414)})`]: {
-      fontSize: '1.5rem',
-    },
-
-    [`@media screen and (max-width: ${em(425)})`]: {
       fontSize: '1.7rem',
     },
 

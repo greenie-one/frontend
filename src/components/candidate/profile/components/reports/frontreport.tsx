@@ -10,14 +10,20 @@ export const FrontReport: React.FC<FrontReportProps> = ({ userName }): JSX.Eleme
   return (
     <>
       <main className="report-container front-report">
-        <div className="report-container-head ">
-          <span className="greenie">Greenie</span>
-          <span className="verified report-verifybtn">
-            <MdVerified />
-          </span>
+        <div style={{ marginTop: '-10rem' }}>
+          <div style={{ justifyContent: 'center' }} className="report-container-head ">
+            <span className="greenie">Greenie</span>
+            <span style={{ padding: '3px', height: '44px' }} className="verified report-verifybtn">
+              <MdVerified size={22} />
+            </span>
+          </div>
+          <p style={{ textAlign: 'center' }} className="report-name">
+            {userName}
+          </p>
+          <p style={{ textAlign: 'center' }} className="report-verify">
+            Background verification report
+          </p>
         </div>
-        <p className="report-name">{userName}</p>
-        <p className="report-verify">Background verification report</p>
       </main>
     </>
   );

@@ -4,8 +4,7 @@ import { FrontReport } from './frontreport';
 import { ExecutiveSummary } from './executivesummary';
 import { PersonalIdentification } from './personalidentification';
 import { WorkExperienceReport3 } from './workexperience3';
-import { WorkExperienceReport2 } from './workexperiencereport2';
-import { ResidentialReport } from './residentialreport';
+// import { WorkExperienceReport2 } from './workexperiencereport2';
 import { ResidentialReport2 } from './residentialreport2';
 import { useLocation } from 'react-router-dom';
 import { HttpClient } from '../../../../../utils/generic/httpClient';
@@ -26,6 +25,7 @@ export const ReportScreens: React.FC = (): JSX.Element => {
   const [ResidentialInfo, setResidentialInfo] = useState<ResidentialType[]>([]);
   const [residentialPeer, setResidentialPeer] = useState<PeersResponse[]>([]);
   const [document, setDocument] = useState<DocumentResponse[]>([]);
+  const [skills, setSkills] = useState<CandidateSkillType[]>([]);
 
   const getReportData = async () => {
     setPending(true);
@@ -43,6 +43,7 @@ export const ReportScreens: React.FC = (): JSX.Element => {
       setWorkExperienceDetails(res.value.workExperienceDetails.workExp.workExperiences);
       setResidentialInfo(res.value.ResidentialDetails.residentialInfo);
       setPeerDetails(res.value.workExperienceDetails.peers);
+      setSkills(res.value.workExperienceDetails.skills);
     } else {
       if (res.error.code === 'GR0008') {
         setUserNotFound(true);
@@ -73,6 +74,9 @@ export const ReportScreens: React.FC = (): JSX.Element => {
             AccountDetails={AccountDetails}
             ResidentialInfo={ResidentialInfo}
             workExperienceDetails={workExperienceDetails}
+            peerDetails={peerDetails}
+            skills={skills}
+            residentialPeerDetails={residentialPeer}
           />
           <hr className="pageDivider"></hr>
           {<PersonalIdentification IdDetails={IdDetails} />}
@@ -82,15 +86,12 @@ export const ReportScreens: React.FC = (): JSX.Element => {
               document={document}
               peerDetails={peerDetails}
               workExperienceDetails={workExperienceDetails}
+              skills={skills}
             />
-            <hr className="pageDivider"></hr>
-            <WorkExperienceReport2 peerDetails={peerDetails} workExperienceDetails={workExperienceDetails} />
           </>
           <>
             <hr className="pageDivider"></hr>
             <ResidentialReport2 residentialPeer={residentialPeer} ResidentialInfo={ResidentialInfo} />
-            <hr className="pageDivider"></hr>
-            <ResidentialReport ResidentialInfo={ResidentialInfo} />
           </>
         </>
       )}

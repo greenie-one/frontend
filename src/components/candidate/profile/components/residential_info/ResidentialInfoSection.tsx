@@ -8,13 +8,42 @@ import { useNavigate } from 'react-router-dom';
 import { SearchBox } from './components/SearchBox';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { FcInfo } from 'react-icons/fc';
+import { useEffect, useState } from 'react';
+import { HttpClient } from '../../../../../utils/generic/httpClient';
+import { addressVerificationAPIList } from '../../../../../assets/api/ApiList';
 
 export const ResidentialInfoSection = () => {
   const navigate = useNavigate();
   const isMobile = useMediaQuery('(max-width: 768px)');
-  const { residentialInfoData, scrollToTop } = useGlobalContext();
+  const { residentialInfoData, scrollToTop, authClient } = useGlobalContext();
 
   const [searchModalOpened, { open: searchModalOpen, close: searchModalClose }] = useDisclosure(false);
+  const [sentRequests, setSentRequests] = useState<Array<GetAddressVerificationResponse>>([]);
+
+  const getRequests = async () => {
+    const res = await HttpClient.callApiAuth<Array<GetAddressVerificationResponse>>(
+      {
+        url: addressVerificationAPIList.getRequests,
+        method: 'GET',
+      },
+      authClient
+    );
+
+    if (res.ok) {
+      const requests = res.value;
+      setSentRequests(requests);
+    } else {
+      setSentRequests([]);
+    }
+  };
+
+  useEffect(() => {
+    if (residentialInfoData.length) {
+      getRequests();
+    } else {
+      setSentRequests([]);
+    }
+  }, [residentialInfoData.length]);
 
   const handleToggleResidentialDetails = (): void => {
     navigate('/candidate/profile/address/allAddresses');
@@ -88,9 +117,25 @@ export const ResidentialInfoSection = () => {
             ?.reverse()
             ?.slice(0, 3)
             ?.map((info, index) => {
+              const peerDetail = sentRequests.find((request) => request.ref === info.id);
+              const verificationStatus: 'notVerified' | 'pending' | 'rejected' | 'verified' =
+                peerDetail === undefined
+                  ? info.isVerified
+                    ? 'verified'
+                    : 'notVerified'
+                  : peerDetail.isReal
+                  ? peerDetail.isReal.state === 'PENDING'
+                    ? 'pending'
+                    : peerDetail.isReal.state === 'REJECTED'
+                    ? 'rejected'
+                    : 'verified'
+                  : info.isVerified
+                  ? 'verified'
+                  : 'pending';
+
               return (
                 <Box key={index} onClick={() => handleDetailsPage(info.id)}>
-                  <ResidentialInfoCard {...info} />
+                  <ResidentialInfoCard {...info} verificationStatus={verificationStatus} />
                 </Box>
               );
             })}

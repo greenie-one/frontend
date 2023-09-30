@@ -21,7 +21,7 @@ type GlobalContextType = {
   skillData: SkillResponse[];
   getWorkExperience: () => void;
   getResidentialInfo: () => void;
-  deleteWorkExperience: (id: string) => void;
+  deleteWorkExperience: (id: string, withNotification?: boolean) => void;
   deleteResidentialInfo: (id: string) => void;
   getProfile: () => void;
   setProfileData: React.Dispatch<React.SetStateAction<UserProfileType>>;
