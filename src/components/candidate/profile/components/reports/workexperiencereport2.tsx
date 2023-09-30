@@ -63,81 +63,60 @@ export const WorkExperienceReport2: React.FC<ChildComponentProps> = ({
                                 <Text className="add-peer-header-text">Remarks</Text>
                               </Box>
                               <Box className="added-peer-box">
-                                {Object.keys(peer.selectedFields).map((field, idx) => {
-                                  return (
-                                    <Box key={idx} className="added-peers added-exp-peers">
-                                      <Text className="peer-name title">{optionalAttrDict[field]}</Text>
-                                      <Text className="peer-name">
-                                        {field === 'dateOfJoining' || field === 'dateOfLeaving'
-                                          ? String(experience[field as keyof WorkExperience])
-                                              .substring(0, 10)
-                                              .split('-')
-                                              .reverse()
-                                              .join('-')
-                                          : experience[field as keyof WorkExperience]}
-                                      </Text>
-                                      <Text className="peer-name">
-                                        {peer.isVerificationCompleted
-                                          ? peer.updatedAt?.substring(0, 10).split('-').reverse().join('-')
-                                          : '-'}
-                                      </Text>
-                                      <Text
-                                        style={
-                                          peer.isReal
-                                            ? {
-                                                color:
-                                                  peer.isReal.state === 'REJECTED'
-                                                    ? '#ff7272'
-                                                    : peer.isReal.state === 'ACCEPTED'
-                                                    ? '#17A672'
-                                                    : '#FAB005',
-                                              }
-                                            : {}
-                                        }
-                                        className={`peer-name ${
-                                          peer.selectedFields[field].state === 'ACCEPTED'
-                                            ? 'text-verified'
-                                            : 'text-dispute'
-                                        }`}
-                                      >
-                                        {peer.isReal ? (
-                                          peer.isReal.state === 'ACCEPTED' ? (
-                                            peer.selectedFields[field].state === 'ACCEPTED' ? (
-                                              'Approved'
-                                            ) : (
-                                              <span style={{ color: '#ff7272' }}>Disputed</span>
-                                            )
-                                          ) : peer.isReal.state === 'REJECTED' ? (
-                                            'Rejected'
-                                          ) : (
-                                            'Pending'
-                                          )
-                                        ) : peer.isVerificationCompleted ? (
-                                          peer.selectedFields[field].state === 'ACCEPTED' ? (
-                                            'Approved'
-                                          ) : (
-                                            <span style={{ color: '#ff7272' }}>Disputed</span>
-                                          )
-                                        ) : (
-                                          <span style={{ color: '#fab005' }}>Pending</span>
-                                        )}
-                                      </Text>
-                                      <Text className="peer-name">
-                                        {peer.isReal
-                                          ? peer.isReal.state === 'REJECTED'
-                                            ? 'Verification Rejected By Peer'
-                                            : peer.isReal.state === 'PENDING'
-                                            ? 'Verification Pending'
-                                            : peer.selectedFields[field].state === 'REJECTED'
-                                            ? `${peer.selectedFields[field].dispute_type} - ${peer.selectedFields[field].dispute_reason}`
-                                            : 'No Remarks'
-                                          : peer.selectedFields[field].state === 'REJECTED'
-                                          ? `${peer.selectedFields[field].dispute_type} - ${peer.selectedFields[field].dispute_reason}`
-                                          : 'No Remarks'}
-                                      </Text>
+                                {peer.selectedFields ? (
+                                  <React.Fragment>
+                                    <Box className="add-peer-header add-peer-exp-header">
+                                      <Text className="add-peer-header-text">Particular</Text>
+                                      <Text className="add-peer-header-text">Verified As</Text>
+                                      <Text className="add-peer-header-text">Verified On</Text>
+                                      <Text className="add-peer-header-text">Status</Text>
+                                      <Text className="add-peer-header-text">Remarks</Text>
                                     </Box>
-                                  );
-                                })}
+                                    <Box className="added-peer-box">
+                                      {Object.keys(peer.selectedFields).map((field, idx) => {
+                                        return (
+                                          <Box key={idx} className="added-peers added-exp-peers">
+                                            <Text className="peer-name title">{optionalAttrDict[field]}</Text>
+                                            <Text className="peer-name">
+                                              {field === 'dateOfJoining' || field === 'dateOfLeaving'
+                                                ? String(experience[field as keyof WorkExperience])
+                                                    .substring(0, 10)
+                                                    .split('-')
+                                                    .reverse()
+                                                    .join('-')
+                                                : experience[field as keyof WorkExperience]}
+                                            </Text>
+                                            <Text className="peer-name">
+                                              {peer.isVerificationCompleted
+                                                ? peer.updatedAt?.substring(0, 10).split('-').reverse().join('-')
+                                                : '-'}
+                                            </Text>
+                                            <Text
+                                              className={`peer-name ${
+                                                peer.selectedFields[field].state === 'ACCEPTED'
+                                                  ? 'text-verified'
+                                                  : 'text-dispute'
+                                              }`}
+                                            >
+                                              {peer.selectedFields[field].state === 'ACCEPTED'
+                                                ? 'Approved'
+                                                : peer.selectedFields[field].state === 'REJECTED'
+                                                ? 'Disputed'
+                                                : 'Pending'}
+                                            </Text>
+                                            <Text className="peer-name">
+                                              {peer.selectedFields[field].state === 'REJECTED'
+                                                ? `${peer.selectedFields[field].dispute_type} - ${peer.selectedFields[field].dispute_reason}`
+                                                : 'No Remarks'}
+                                            </Text>
+                                          </Box>
+                                        );
+                                      })}
+                                    </Box>
+                                  </React.Fragment>
+                                ) : (
+                                  <React.Fragment></React.Fragment>
+                                )}
                               </Box>
                             </div>
 
