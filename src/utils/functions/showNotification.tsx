@@ -37,6 +37,7 @@ export const showLoadingNotification = (item: { title: string; message: string }
     title: item.title,
     message: item.message,
     loading: true,
+    autoClose: false,
     sx: { borderRadius: em(8) },
   });
 };

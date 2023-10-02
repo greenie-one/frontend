@@ -73,3 +73,14 @@
 .cancelBtn:hover {
   background: #17a672;
 }
+
+@media screen and (max-width: 40em) {
+  .confirmPeerDetails {
+    grid-template-columns: 1fr;
+    width: min(100%, 30rem);
+  }
+
+  .confirmationBtnWrapper {
+    flex-direction: column;
+  }
+}

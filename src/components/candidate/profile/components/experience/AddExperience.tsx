@@ -79,6 +79,13 @@ export const AddExperience = () => {
     if (!currentValue) {
       return;
     }
+
+    if (currentValue.length > 10) {
+      inputElement.value = currentValue.toString().slice(0, -1);
+      workExperienceForm.setFieldValue('salary', inputElement.value);
+      return;
+    }
+
     const lastInput = currentValue.slice(-1);
 
     const isDigit = lastInput.charCodeAt(0) >= 48 && lastInput.charCodeAt(0) <= 57;

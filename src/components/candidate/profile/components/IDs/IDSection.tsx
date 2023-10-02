@@ -214,7 +214,7 @@ export const IDSection: React.FC = () => {
       )}
 
       {IDs?.length > 1 && (
-        <Grid>
+        <Grid className="idGrid">
           {IDs?.map(({ id_type }, index) => (
             <Grid.Col span={4} key={index}>
               <IDCard documentName={id_type} />
